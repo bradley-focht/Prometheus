@@ -1,0 +1,48 @@
+﻿@using Prometheus.Domain.Abstract;
+@using Prometheus.WebUI.HtmlHelpers;
+@model IEnumerable<IServiceBundle>
+
+@{
+    ViewBag.Title = "Service Portfolio";
+    Layout = "~/Views/Shared/_BasicLayout.cshtml";
+}
+<div>
+    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active");
+</div>
+
+<div class="std-indent" style="width:50%;">
+    @foreach (IServiceBundle serviceBundle in Model)
+    {
+        <table class="std-table">
+            <tr>
+                <td colspan="2">
+                    <h4>@serviceBundle.Name</h4>
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top; width:50%;">
+                    <b>Description: </b><br />
+                    @Html.Raw(serviceBundle.Description)
+                </td>
+                <td style="vertical-align:top; width:50%;">
+                    <b>Services:</b><br />
+                        
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">
+                    <strong>Business Value:</strong> <br />
+                    @Html.Raw(serviceBundle.BusinessValue)
+                </td>
+            </tr>
+            <tr>
+                <td style="vertical-align:top;">
+                    <b>Measures:</b><br />
+                    @serviceBundle.Measures;
+                </td>
+            </tr>
+        </table>
+    }
+
+
+</div>

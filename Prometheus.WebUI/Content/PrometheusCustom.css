@@ -1,0 +1,20 @@
+﻿.font-title1 {
+  color: #151515;
+  font-size:large;
+  font-weight:300;
+}
+
+.font-title2 {
+    color:#151515;
+    font-size:medium;
+    font-weight:200;
+}
+
+.std-indent {
+    padding-left:3%;
+}
+
+.std-table {
+    padding:3px; 
+    width:100%;
+}
