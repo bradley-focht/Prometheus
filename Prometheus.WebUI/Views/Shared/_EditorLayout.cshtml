@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using Prometheus.WebUI.HtmlHelpers;
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -10,23 +12,25 @@
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
 
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                </ul>
-            </div>
-        </div>
+        <label class="navbar-brand">@ViewBag.Title</label>
+    </div>
+    <div class="breadcrumb-container">
+        @RenderSection("Breadcrumb")
     </div>
 
-    <div class="container body-content">
-        @RenderBody()
+    <div class="std-indent">
+        <table class="std-table" style="width:100%">
+            <tr>
+                <td></td>
+                <td>@RenderBody()</td>
 
+            </tr>
+            <tr>
+                <td colspan="2"></td>
+            </tr>
+
+        </table>
     </div>
-
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
 </body>
 </html>

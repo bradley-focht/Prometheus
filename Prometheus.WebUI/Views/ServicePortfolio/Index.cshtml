@@ -6,42 +6,44 @@
     ViewBag.Title = "Service Portfolio";
     Layout = "~/Views/Shared/_BasicLayout.cshtml";
 }
-<div>
-    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active");
-</div>
+
+@section Breadcrumb {
+    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active", "breadcrumb-container")
+}
 
 <div class="std-indent" style="width:50%;">
     @foreach (IServiceBundle serviceBundle in Model)
     {
-        <table class="std-table">
+        <table class="std-table" cellpadding="5">
             <tr>
-                <td colspan="2">
-                    <h4>@serviceBundle.Name</h4>
+                <td colspan="2" style="border-bottom:1px solid black;">
+                    <label class="font-title2-green">@serviceBundle.Name</label>
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align:top; width:50%;">
-                    <b>Description: </b><br />
+                <td style="vertical-align:top; width:60%;">
+                    <label class="font-title-initial">Description: </label><br />
                     @Html.Raw(serviceBundle.Description)
                 </td>
-                <td style="vertical-align:top; width:50%;">
-                    <b>Services:</b><br />
+                <td style="vertical-align:top; width:40%; border-bottom:1px solid black;" rowspan="3">
+                    <label class="font-title-initial">Services:</label><br />
                         
                 </td>
             </tr>
             <tr>
                 <td style="vertical-align:top;">
-                    <strong>Business Value:</strong> <br />
+                    <label class="font-title-initial">Business Value:</label> <br />
                     @Html.Raw(serviceBundle.BusinessValue)
                 </td>
             </tr>
             <tr>
-                <td style="vertical-align:top;">
-                    <b>Measures:</b><br />
+                <td style="vertical-align:top; border-bottom:1px solid black;">
+                    <blabel class="font-title-initial">Measures:</blabel><br />
                     @serviceBundle.Measures;
                 </td>
             </tr>
         </table>
+        <br/><br/>
     }
 
 

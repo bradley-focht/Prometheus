@@ -20,10 +20,11 @@ namespace Prometheus.WebUI.HtmlHelpers
 		/// <param name="cssClass"></param>
 		/// <returns></returns>
 		public static MvcHtmlString BreadrumbTrail(this HtmlHelper html, IEnumerable<KeyValuePair<string, string>> 
-			links, int activeLinkId, string CssClass, string activeLiCssClass)
+			links, int activeLinkId, string CssClass, string activeLiCssClass, string containerCss)
 		{
 			//build an outer, set, div size
 			TagBuilder container = new TagBuilder("div");
+			container.AddCssClass(containerCss);
 
 			TagBuilder list = new TagBuilder("ol");
 			list.AddCssClass(CssClass);
@@ -38,7 +39,7 @@ namespace Prometheus.WebUI.HtmlHelpers
 
 				listItem.InnerHtml +="<a href=\"/" + link.Value + "\">" + link.Key + "</a>";
 				list.InnerHtml += listItem;
-
+				container.InnerHtml += list;
 				i++;
 			}
 			container.InnerHtml += list;

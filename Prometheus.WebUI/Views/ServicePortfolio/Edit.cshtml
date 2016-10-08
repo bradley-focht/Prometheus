@@ -1,0 +1,10 @@
+﻿@model Prometheus.WebUI.Models.ServiceBundleModel
+@using Prometheus.WebUI.HtmlHelpers;
+@{
+    ViewBag.Title = "Edit Service Portfolio";
+    Layout = "~/Views/Shared/_EditorLayout.cshtml";
+}
+
+@section Breadcrumb {
+    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active", "breadcrumb-container")
+}

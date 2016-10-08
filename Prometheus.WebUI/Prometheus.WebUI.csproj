@@ -105,7 +105,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="HtmlHelpers\BreadcrumbHelper.cs" />
+    <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
     <Compile Include="Global.asax.cs">
@@ -126,6 +127,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Shared\_BasicLayout.cshtml" />
     <Content Include="Views\ServicePortfolio\Index.cshtml" />
+    <Content Include="Views\Shared\_EditorLayout.cshtml" />
+    <Content Include="Views\ServicePortfolio\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -135,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Service\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Prometheus.Domain\Prometheus.Domain.csproj">

@@ -33,7 +33,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="ServiceBundleId"></param>
 		/// <returns></returns>
-		public ActionResult EditServiceBundle(int ServiceBundleId)
+		public ActionResult Edit(int id = 0)
 		{
 			return View();
 		}

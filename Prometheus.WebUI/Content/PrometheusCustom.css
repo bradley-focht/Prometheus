@@ -6,8 +6,20 @@
 
 .font-title2 {
     color:#151515;
-    font-size:medium;
+    font-size:large;
     font-weight:200;
+}
+
+.font-title2-green {
+    color: #139A23;
+    font-size:large;
+    font-weight:500;
+}
+
+.font-title-initial {
+    color: #151515;
+    font-size:smaller;
+    font-weight:600;
 }
 
 .std-indent {
@@ -15,6 +27,11 @@
 }
 
 .std-table {
-    padding:3px; 
+    padding:5px; 
     width:100%;
+}
+
+.breadcrumb-container{
+    height:40px;
+    vertical-align:central;
 }

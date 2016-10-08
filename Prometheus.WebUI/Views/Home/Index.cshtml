@@ -1,13 +1,15 @@
 ﻿@{ 
     ViewBag.Title = "Home";
     Layout = "~/Views/Shared/_BasicLayout.cshtml"; }
+
+@section Breadcrumb { }
 <div class="std-indent">
     <h2>What would you like to do today?</h2>
 
     <div style="height:40px;"></div>
     <div class="std-indent">
         <p>
-            <label class="font-title1"><a href="~/ServicePortfolio">Service Portfolio</a></label> | edit   <br />
+            <label class="font-title1"><a href="~/ServicePortfolio">Service Portfolio</a></label> | @Html.ActionLink("edit", "Edit", "ServicePortfolio", new { id = "0" }, null)   <br />
             <label class="font-title1">Services</label> | edit | maintenance <br />
         </p><p>
             <label class="font-title1">Business Service Catalog</label>  <br />
