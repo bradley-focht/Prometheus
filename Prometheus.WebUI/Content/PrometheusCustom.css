@@ -4,6 +4,11 @@
   font-weight:300;
 }
 
+.div-title {
+    border-bottom:1px solid black;
+    padding-bottom: 3px;
+}
+
 .font-title2 {
     color:#151515;
     font-size:large;

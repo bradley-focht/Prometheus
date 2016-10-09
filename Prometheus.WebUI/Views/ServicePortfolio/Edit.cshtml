@@ -1,10 +1,52 @@
-﻿@model Prometheus.WebUI.Models.ServiceBundleModel
-@using Prometheus.WebUI.HtmlHelpers;
+﻿@using Prometheus.WebUI.HtmlHelpers
+@model Prometheus.Domain.Abstract.IServiceBundle
 @{
-    ViewBag.Title = "Edit Service Portfolio";
-    Layout = "~/Views/Shared/_EditorLayout.cshtml";
+    if (Model.id == 0)
+    {
+        ViewBag.Title = "Add new service bundle";
+    }
+    else
+    {
+        ViewBag.Title = "Edit " + Model.Name;
+    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Breadcrumb {
-    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active", "breadcrumb-container")
+    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> {
+                            new KeyValuePair<string, string>("Home", "Home"),
+                            new KeyValuePair<string, string>("View Service Bundles", "ServicePortfolio/Show")
+                            }, 1, "breadcrumb", "active")
 }
+
+<table>
+    <tr>
+        <td>
+            @using (Html.BeginForm())
+            {
+
+
+                <div class="panel-body">
+                    @foreach (var property in ViewData.ModelMetadata.Properties)
+                    {
+                        if (property.PropertyName != "Id" && property.PropertyName != "id")
+                        {
+                            <div class="form-group">
+                                <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                                @Html.ValidationMessage(property.PropertyName)
+                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+
+                            </div>
+}
+                    }
+
+                </div>
+
+                <div class="panel-footer">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    @Html.ActionLink("Cancel", "Show", null, new { @class = "btn btn-default" })
+                </div>}
+
+        </td>
+    </tr>
+</table>

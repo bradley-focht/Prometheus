@@ -7,14 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Prometheus</title>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
 
-        <label class="navbar-brand">@ViewBag.Title</label>
-    </div>
+    @Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml")
+
     <div class="breadcrumb-container">
         @RenderSection("Breadcrumb")
     </div>
@@ -22,8 +21,8 @@
     <div class="std-indent">
         <table class="std-table" style="width:100%">
             <tr>
-                <td></td>
-                <td>@RenderBody()</td>
+                <td stye="width:20%">@RenderSection("Sidebar")</td>
+                <td style="width:80%">@RenderSection("Content")</td>
 
             </tr>
             <tr>

@@ -4,11 +4,11 @@
 
 @{
     ViewBag.Title = "Service Portfolio";
-    Layout = "~/Views/Shared/_BasicLayout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @section Breadcrumb {
-    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active", "breadcrumb-container")
+    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active")
 }
 
 <div class="std-indent" style="width:50%;">
