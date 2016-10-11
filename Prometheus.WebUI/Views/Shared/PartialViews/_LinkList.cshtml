@@ -1,0 +1,26 @@
+﻿@using Prometheus.WebUI.Models
+@model LinkListModel
+
+<div class="std-div">
+
+
+    @{ if (Model.ListItems.Any())
+        {
+            foreach (KeyValuePair<int, string> item in Model.ListItems)
+            {
+                if (Model.SelectedItemId == item.Key)           //highlight selected item
+                {
+                    @Html.ActionLink(item.Value, Model.ActionName, new { id = item.Key }, new { @class = "btn btn-selected" })
+            }
+                else                                           //don't highlight others
+                {
+                    @Html.ActionLink(item.Value, Model.ActionName, new { id = item.Key }, new { @class = "btn btn-default" })
+                }
+            }
+        }
+        else                                                   //no results found
+        {
+            <label>No service bundles exist</label>
+}
+        }
+        </div>

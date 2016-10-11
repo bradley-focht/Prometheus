@@ -4,11 +4,8 @@
 
 @{
     ViewBag.Title = "Service Portfolio";
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"), new KeyValuePair<string, string>(ViewBag.Title, "#") };
     Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-@section Breadcrumb {
-    @Html.BreadrumbTrail(new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home") }, 0, "breadcrumb", "active")
 }
 
 <div class="std-indent" style="width:50%;">
@@ -17,13 +14,16 @@
         <table class="std-table" cellpadding="5">
             <tr>
                 <td colspan="2" style="border-bottom:1px solid black;">
-                    <label class="font-title2-green">@serviceBundle.Name</label>
+                    <label class="font-title2-blue">@serviceBundle.Name</label>
                 </td>
             </tr>
             <tr>
                 <td style="vertical-align:top; width:60%;">
                     <label class="font-title-initial">Description: </label><br />
-                    @Html.Raw(serviceBundle.Description)
+                    @if (serviceBundle.Description != null)
+                    {
+                        Html.Raw(serviceBundle.Description);
+                    }
                 </td>
                 <td style="vertical-align:top; width:40%; border-bottom:1px solid black;" rowspan="3">
                     <label class="font-title-initial">Services:</label><br />
@@ -33,13 +33,19 @@
             <tr>
                 <td style="vertical-align:top;">
                     <label class="font-title-initial">Business Value:</label> <br />
-                    @Html.Raw(serviceBundle.BusinessValue)
+                    @if (serviceBundle.BusinessValue != null)
+                    {
+                        Html.Raw(serviceBundle.BusinessValue);
+                    }
                 </td>
             </tr>
             <tr>
                 <td style="vertical-align:top; border-bottom:1px solid black;">
                     <blabel class="font-title-initial">Measures:</blabel><br />
-                    @serviceBundle.Measures;
+                    @if (serviceBundle.Measures != null)
+                    {
+                        Html.Raw(serviceBundle.Measures);
+                    }
                 </td>
             </tr>
         </table>

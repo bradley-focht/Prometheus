@@ -1,10 +1,9 @@
 ﻿namespace Prometheus.Domain.Abstract
 {
-
-	//temp interface
-	public class IService
+	public class ILifecycleStatus
 	{
 		public int Id { get; set; }
 		public string Name { get; set; }
+		public string Description { get; set; }
 	}
 }

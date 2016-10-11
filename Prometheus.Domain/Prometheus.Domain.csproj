@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstract\ILifecycleStatus.cs" />
     <Compile Include="Abstract\IService.cs" />
     <Compile Include="Abstract\IServiceBundle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

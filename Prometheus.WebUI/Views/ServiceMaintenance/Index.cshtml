@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Services Maintenance";
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="std-indent">
+    @Html.ActionLink("Lifecycle Status", "ShowLifecycle", "ServiceMaintenance")
+</div>

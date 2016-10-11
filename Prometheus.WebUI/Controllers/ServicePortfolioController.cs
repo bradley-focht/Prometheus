@@ -10,7 +10,10 @@ namespace Prometheus.WebUI.Controllers
 {
     public class ServicePortfolioController : Controller
     {
-        // GET: ServicePortfolio
+        /// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
         public ActionResult Index()
         {
 			//temp code please remove on implementation
@@ -19,7 +22,7 @@ namespace Prometheus.WebUI.Controllers
 						var portfolioItem = new IServiceBundle();
 			portfolioItem.Description = "some new service";
 			portfolioItem.Name = "Workplace services";
-			portfolioItem.id = 1;
+			portfolioItem.Id = 1;
 			portfolioItem.Measures = "A B C";
 			
 
@@ -29,29 +32,67 @@ namespace Prometheus.WebUI.Controllers
         }
 
 		/// <summary>
-		/// Used for the Service Portfolio Editor, default view with no item selected for editing
+		/// Save updates to records or save new records if no id
 		/// </summary>
 		/// <param name="ServiceBundleId"></param>
 		/// <returns></returns>
-		public ActionResult Show(int id = 0)
+		[HttpPost]
+		public ActionResult Save(IService service)
 		{
 			ServiceBundleModel model = new ServiceBundleModel();
 			model.ServiceBundles = new List<KeyValuePair<int, string>>();
-			model.CurrentServiceBundle = new IServiceBundle() { id = 0 };
+			model.CurrentServiceBundle = new IServiceBundle() { Id = 0 };
 
 
 			return View(model);
 		}
 
-
-
-		public ActionResult Edit(int id)
+		/// <summary>
+		/// Returns the Service Portfolio Editor with a model with id = 0;
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Add()
 		{
-			var serviceBundle = new IServiceBundle();
+			var newServiceBundle = new IServiceBundle();
+			newServiceBundle.Id = 0;
 
-			return View(serviceBundle);
+			return View("Editor", newServiceBundle);
 		}
 
+
+
+		public ActionResult Retrieve(int id = 0)
+		{
+			ServiceBundleModel model = new ServiceBundleModel();
+			model.ServiceBundles = new List<KeyValuePair<int, string>> { new KeyValuePair<int, string>(1, "Hip Replacement") };
+
+			model.CurrentServiceBundle = new IServiceBundle() { Id = id, Name = "i'm a test!", Description=null, BusinessValue=null, Measures="not now" };
+
+			return View(model);
+		}
+
+		/// <summary>
+		/// Last chance before deleting a record
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult ConfirmDelete(int id)
+		{
+
+			return null;
+		}
+
+
+		/// <summary>
+		/// Delete a service bundle
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult Delete(int id)
+		{
+
+			return null;
+		}
 
     }
 }

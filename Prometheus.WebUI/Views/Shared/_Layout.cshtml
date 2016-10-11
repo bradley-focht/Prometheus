@@ -9,12 +9,9 @@
     <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    @Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml")
+    @Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml", (IList<KeyValuePair<string, string>>)ViewBag.Links)
 
-    <div class="breadcrumb-container">
-        @RenderSection("Breadcrumb")
-    </div>
-
+ 
 
 
     @RenderBody()

@@ -1,27 +1,27 @@
 ﻿@{ 
     ViewBag.Title = "Home";
+    ViewBag.Links = null;
     Layout = "~/Views/Shared/_Layout.cshtml"; }
 
-@section Breadcrumb { }
-<div class="std-indent">
-    <h2>What would you like to do today?</h2>
 
-    <div style="height:40px;"></div>
-    <div class="std-indent">
-        <p>
-            <label class="font-title1"><a href="~/ServicePortfolio">Service Portfolio</a></label> | @Html.ActionLink("edit", "Show", "ServicePortfolio")   <br />
-            <label class="font-title1">Services</label> | edit | maintenance <br />
-        </p><p>
-            <label class="font-title1">Business Service Catalog</label>  <br />
-            <label class="font-title1">Supporting Service Catalog</label>
-        </p><p>
-            <label class="font-title1">Submit a Service Request</label> | edit | maintenance <br />
-            <label class="font-title1">Service Request Approvals</label>
-        </p>
-        <p>
-            <label class="font-title1">System Access</label> | permissions
+    <div class="std-indent" style="display:inline-block;">
+        <div>
+            <label class="font-title1">What would you like to do today?</label>
 
 
+            <div class="std-indent" style="padding-top:30px; padding-bottom:30px; border-bottom:1px solid #333333; border-top: 1px solid #333333;">
+                <p>
+                    <label class="font-title3">@Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio")</label> | @Html.ActionLink("edit", "Retrieve", "ServicePortfolio")   <br />
+                    <label class="font-title3">Services</label> | edit | @Html.ActionLink("maintenance", "Index", "ServiceMaintenance") <br />
+                </p><p>
+                    <label class="font-title3">Business Service Catalog</label>  <br />
+                    <label class="font-title3">Supporting Service Catalog</label>
+                </p><p>
+                    <label class="font-title3">Submit a Service Request</label> | edit | maintenance <br />
+                    <label class="font-title3">Service Request Approvals</label>
+                </p>
+                <p>
+                    <label class="font-title3">System Access</label> | permissions
+            </div>
+        </div>
     </div>
-
-</div>

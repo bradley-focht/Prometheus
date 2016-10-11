@@ -1,0 +1,50 @@
+﻿@model Prometheus.WebUI.Models.ServiceBundleModel
+@using Prometheus.WebUI.Models;
+
+@{
+    ViewBag.Title = "View Service Bundles";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    //Breadcrumb navigation links
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#") };
+
+    //item list for ItemListView partial view
+    LinkListModel listModel = new LinkListModel(Model.ServiceBundles, Model.CurrentServiceBundle.Id, "Edit");
+}
+
+@section Sidebar {
+    <div class="div-title">
+        <div style="float:right; display:inline-block">@Html.ActionLink("Add", "Add", null, new { @class = "btn btn-default" })</div>
+        <label class="font-title-initial">Service Bundles</label>
+        
+    </div>
+    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", listModel)
+    
+    }    
+
+
+@section Content {
+    @{if (Model.CurrentServiceBundle.Id > 0)
+        {
+            <div style="display:inline-block;">
+                <label class="font-title-initial">Name:</label><br />
+                @Model.CurrentServiceBundle.Name<br />
+                <label class="font-title-initial">Description:</label><br />
+                Html.Raw(Model.CurrentServiceBundle.Description);<br />
+                <label class="font-title-initial">Business Value:</label><br />
+                Html.Raw(Model.CurrentServiceBundle.BusinessValue);<br />
+                <label class="font-title-initial">Measures:</label><br />
+                @Model.CurrentServiceBundle.Measures<br />
+                <label class="font-title-initial">Services:</label><br />
+
+                <div class="panel panel-footer" style="width:100%;">
+                    <div class="float-right-div">
+                        @Html.ActionLink("Edit", "Update", new { id = Model.CurrentServiceBundle.Id }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Delete", "Retrieve", new { id = 0 }, new { @class = "btn btn-danger" })
+                    </div>
+
+                </div>
+            </div>
+        }
+    }
+}

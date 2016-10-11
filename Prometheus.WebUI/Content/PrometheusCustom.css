@@ -1,6 +1,6 @@
 ﻿.font-title1 {
   color: #151515;
-  font-size:large;
+  font-size:25px;
   font-weight:300;
 }
 
@@ -15,10 +15,16 @@
     font-weight:200;
 }
 
-.font-title2-green {
-    color: #139A23;
+.font-title2-blue {
+    color: #3366CC;
     font-size:large;
     font-weight:500;
+}
+
+.font-title3 {
+    color: #151515;
+    font-weight:200;
+    font-size:15px;
 }
 
 .font-title-initial {
@@ -27,16 +33,62 @@
     font-weight:600;
 }
 
+.font-small-inverse-dull {
+    font-size:x-small;
+    color: #cccccc;
+}
+
+.font-small-inverse-bright {
+    font-size:x-small;
+    color: #ffd000;
+}
+
+
 .std-indent {
     padding-left:3%;
 }
 
 .std-table {
-    padding:5px; 
+    padding:10px; 
     width:100%;
 }
 
+.std-cell {
+    padding-right:5px;
+    vertical-align:top;
+}
+
+.std-div {
+    padding:10px;
+}
+
+.float-right-div {
+    float:right;
+    display:inline-block;
+}
 .breadcrumb-container{
-    height:40px;
+    height:30px;
     vertical-align:central;
+}
+
+
+
+.btn-small {
+      display: inline-block;
+  padding: 2px 3px;
+  margin-bottom: 0;
+  font-size: 8px;
+  font-weight: normal;
+  line-height: 1.428571429;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: 4px;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+       -o-user-select: none;
+          user-select: none;
 }

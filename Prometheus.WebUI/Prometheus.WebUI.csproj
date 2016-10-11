@@ -106,12 +106,15 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\LinkListModel.cs" />
+    <Compile Include="Models\LifecycleModel.cs" />
     <Compile Include="Models\ServiceBundleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -125,11 +128,14 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\ServicePortfolio\Index.cshtml" />
-    <Content Include="Views\ServicePortfolio\Show.cshtml" />
+    <Content Include="Views\ServicePortfolio\Retrieve.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TitleBar.cshtml" />
-    <Content Include="Views\ServicePortfolio\Edit.cshtml" />
+    <Content Include="Views\ServicePortfolio\Editor.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_SidebarLayout.cshtml" />
+    <Content Include="Views\ServiceMaintenance\Index.cshtml" />
+    <Content Include="Views\ServiceMaintenance\ShowLifecycle.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_LinkList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

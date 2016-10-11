@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Lifecycle";
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("Services Maintenance", "ServiceMaintenance/Index"),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
+
+
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+@section Sidebar {
+    <div>
+        List of Lifecycle statuses
+    </div>
+    
+    }
+
+
+@section Content {
+    When clicky, shows name and description, i guess? [Add]
+    }

@@ -6,7 +6,7 @@ namespace Prometheus.Domain.Abstract
 {
 	public class IServiceBundle
 	{
-		public int id { get; set; }
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
 		public string BusinessValue { get; set; }
