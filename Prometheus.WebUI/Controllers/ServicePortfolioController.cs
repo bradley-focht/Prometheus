@@ -30,11 +30,10 @@ namespace Prometheus.WebUI.Controllers
 
             return View(portfolioItems);
         }
-
 		/// <summary>
-		/// Save updates to records or save new records if no id
+		/// Save changes and return to retrieve view
 		/// </summary>
-		/// <param name="ServiceBundleId"></param>
+		/// <param name="service"></param>
 		/// <returns></returns>
 		[HttpPost]
 		public ActionResult Save(IService service)
@@ -44,7 +43,7 @@ namespace Prometheus.WebUI.Controllers
 			model.CurrentServiceBundle = new IServiceBundle() { Id = 0 };
 
 
-			return View(model);
+			return View("Retrieve", model);
 		}
 
 		/// <summary>

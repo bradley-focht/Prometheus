@@ -1,0 +1,34 @@
+﻿@model Prometheus.Domain.Abstract.ILifecycleStatus
+
+
+<div class="std-div">
+
+    <table class="std-table">
+        <tr>
+            <td class="std-cell">
+
+                <label class="font-title-initial">Name:</label><br />
+                @Model.Name
+            <p />
+                <label class="font-title-initial">Comment:</label><br />
+                @Model.Comment
+            <p />
+                <label class="font-title-initial">Position:</label><br />
+                @Model.Position
+            <p />
+                <label class="font-title-initial">Visible in Catalogs</label><br />
+                @if (Model.CatalogVisibile)
+                {
+                    <label>yes</label>
+                } else
+                {
+                    <label>no</label>
+                }
+
+            </td><td class="std-cell">
+                     <label class="font-title-initial">Services:</label><p />
+            </td>
+        </tr>
+    </table>
+</div>
+

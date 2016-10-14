@@ -1,0 +1,19 @@
+﻿@using Prometheus.WebUI.Models
+@model Prometheus.WebUI.Models.ServiceBundleModel
+
+@{
+    ViewBag.Title = "Confirm Delete";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+    DeleteConfirmationModel deleteModel = new DeleteConfirmationModel();
+    deleteModel.CancelArgs = "0";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Service Bundles", "ServicePortfolio/Retrieve/" + Model.CurrentServiceBundle.Id),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#") };
+}
+@section Content {
+@Html.Partial("/Views/Shared/PartialViews/_DeleteConf.cshtml", deleteModel)
+
+}
+@section Sidebar { }

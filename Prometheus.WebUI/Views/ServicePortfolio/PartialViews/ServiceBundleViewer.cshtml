@@ -1,0 +1,30 @@
+﻿@using Prometheus.Domain.Abstract
+@model Prometheus.Domain.Abstract.IServiceBundle
+
+
+<div class="std-div">
+
+    <table class="std-table">
+        <tr>
+            <td class="std-cell">
+
+                <label class="font-title-initial">Name:</label><br />
+                @Model.Name
+            <p />
+                <label class="font-title-initial">Description:</label><br />
+                @Html.Raw(Model.Description)
+            <p />
+                <label class="font-title-initial">Business Value:</label><br />
+                @Html.Raw(Model.BusinessValue)
+            <p />
+                <label class="font-title-initial">Measures:</label><br />
+                @Model.Measures
+
+
+            </td><td class="std-cell">
+                     <label class="font-title-initial">Services:</label><p />
+            </td>
+        </tr>
+    </table>
+</div>
+

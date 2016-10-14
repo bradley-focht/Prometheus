@@ -1,0 +1,43 @@
+﻿@using Prometheus.Domain.Abstract
+@model IServiceBundle
+
+
+
+<div class="std-div">
+    @using (Html.BeginForm())
+    {
+        <table class="std-table">
+            <tr>
+                <td class="std-cell">
+
+                        @foreach (var property in ViewData.ModelMetadata.Properties)
+                        {
+                            if (property.PropertyName != "Id" && property.PropertyName != "id" && property.PropertyName != "Services")
+                            {
+                                <div class="form-group">
+                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                                    @Html.ValidationMessage(property.PropertyName)
+                                    @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+
+                                </div>
+}
+                        }
+
+
+    </td>
+            <tr>
+                <td colspan="2" class="std-cell">
+
+                    <div class="panel-footer">
+                        &nbsp;
+                        <div class="float-right-div">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            @Html.ActionLink("Cancel", "Retrieve", null, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+    }
+    </div>
