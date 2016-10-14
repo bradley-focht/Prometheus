@@ -16,7 +16,17 @@ namespace DataService.Models
 		public Guid CreatedByUserId { get; set; }
 		public Guid UpdatedByUserId { get; set; }
 
+		[Required(ErrorMessage = "Name is required")]
+		public string Name { get; set; }
+
+		[DataType(DataType.MultilineText)]
+		public string Description { get; set; }
+
+		[DataType(DataType.MultilineText)]
+		public string BusinessValue { get; set; }
+		public string Measures { get; set; }
+		
 		//Navigation properties
-		public virtual ICollection<Service> Services { get; set; }
+		public virtual ICollection<IService> Services { get; set; }
 	}
 }

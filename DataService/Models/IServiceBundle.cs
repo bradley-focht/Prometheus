@@ -1,9 +1,6 @@
-﻿using System;
-
-namespace DataService.Models
+﻿namespace DataService.Models
 {
-	public interface IServiceBundle : IUserCreatedEntity
+	public interface IServiceBundle
 	{
-		Guid Id { get; set; }
 	}
 }

@@ -18,6 +18,17 @@ namespace DataService.Models
 		public Guid CreatedByUserId { get; set; }
 		public Guid UpdatedByUserId { get; set; }
 
+		public string Name { get; set; }
+		public string Description { get; set; }
+		public string BusinessOwner { get; set; }
+		public string ServiceOwner { get; set; }
+		public Guid LifecycleStatus { get; set; }
+		public Guid ServiceTypeRole { get; set; }
+		public Guid ServiceTypeProvision { get; set; }
+		//public IEnumerable<ServiceRequest> ServiceRequests { get; set; }
+
+
+
 		//Navigation Properties
 		public virtual ServiceBundle ServiceBundle { get; set; }
 		public virtual ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
