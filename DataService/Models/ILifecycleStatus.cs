@@ -6,7 +6,7 @@ namespace DataService.Models
 	{
 		bool CatalogVisible { get; set; }
 		string Comment { get; set; }
-		Guid Id { get; set; }
+		Guid? Id { get; set; }
 		string Name { get; set; }
 		int Position { get; set; }
 	}

@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using Prometheus.Domain.Abstract;
-using Prometheus.WebUI.Models;
+using DataService.Models;
+using Prometheus.WebUI.Models.ServicePortfolio;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -17,33 +15,24 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult Index()
         {
 			//temp code please remove on implementation
-			List<IServiceBundle> portfolioItems = new List<IServiceBundle>();
+			var portfolioItems = new List<IServiceBundle>();
 
-						var portfolioItem = new IServiceBundle();
-			portfolioItem.Description = "some new service";
-			portfolioItem.Name = "Workplace services";
-			portfolioItem.Id = 1;
-			portfolioItem.Measures = "A B C";
-			
 
-			portfolioItems.Add(portfolioItem);
+			portfolioItems.Add(new ServiceBundle() {Id = Guid.NewGuid(), Name = "Workplace Services", Description = "some new service" });
+
 
             return View(portfolioItems);
         }
 		/// <summary>
-		/// Save changes and return to retrieve view
-		/// </summary>
-		/// <param name="service"></param>
-		/// <returns></returns>
+        /// 
+        /// </summary>
+        /// <param name="serviceBundle"></param>
+        /// <returns></returns>
 		[HttpPost]
-		public ActionResult Save(IService service)
+		public ActionResult Save(ServiceBundle serviceBundle)           
 		{
-			ServiceBundleModel model = new ServiceBundleModel();
-			model.ServiceBundles = new List<KeyValuePair<int, string>>();
-			model.CurrentServiceBundle = new IServiceBundle() { Id = 0 };
 
-
-			return View("Retrieve", model);
+			return RedirectToAction("Show");
 		}
 
 		/// <summary>
@@ -52,21 +41,22 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Add()
 		{
-			var newServiceBundle = new IServiceBundle();
-			newServiceBundle.Id = 0;
+            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundle());
 
-			return View("Editor", newServiceBundle);
+            return View(model);
 		}
 
 
-
-		public ActionResult Retrieve(int id = 0)
+        /// <summary>
+        /// Show the initial service portfolio editor and if an item is selected, otherwise 
+        ///   currentSelection is null
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+		public ActionResult Show(Guid? id = null)
 		{
-			ServiceBundleModel model = new ServiceBundleModel();
-			model.ServiceBundles = new List<KeyValuePair<int, string>> { new KeyValuePair<int, string>(1, "Hip Replacement") };
-
-			model.CurrentServiceBundle = new IServiceBundle() { Id = id, Name = "i'm a test!", Description=null, BusinessValue=null, Measures="not now" };
-
+            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundle());
+            
 			return View(model);
 		}
 

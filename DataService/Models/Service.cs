@@ -10,7 +10,7 @@ namespace DataService.Models
 		//PK
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-		public Guid Id { get; set; }
+		public Guid? Id { get; set; }
 		//FK
 		public Guid ServiceBundleId { get; set; }
 		public DateTime? DateCreated { get; set; }

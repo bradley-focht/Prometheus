@@ -1,5 +1,7 @@
-﻿@model Prometheus.WebUI.Models.ServiceBundleModel
-@using Prometheus.WebUI.Models;
+﻿@using Prometheus.WebUI.Models.ServicePortfolio
+@using Prometheus.WebUI.Models.Shared
+@model  ServiceBundleModel
+
 
 @{
     ViewBag.Title = "View Service Bundles";
@@ -9,22 +11,17 @@
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#") };
 
     //item list for ItemListView partial view
-    LinkListModel listModel = new LinkListModel(Model.ServiceBundles, Model.CurrentServiceBundle.Id, "Edit");
+    LinkListModel listModel = new LinkListModel(Model.ServiceBundles, Model.CurrentServiceBundle.Id, "Show", "Add", "Service Bundles");
 }
 
 @section Sidebar {
-    <div class="div-title">
-        <div style="float:right; display:inline-block">@Html.ActionLink("Add", "Add", null, new { @class = "btn btn-default" })</div>
-        <label class="font-title-initial">Service Bundles</label>
-        
-    </div>
     @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", listModel)
     
     }    
 
 
 @section Content {
-    @{if (Model.CurrentServiceBundle.Id > 0)
+    @{if (Model.CurrentServiceBundle.Id != null)
         {
             <div style="display:inline-block;">
                 <label class="font-title-initial">Name:</label><br />
@@ -40,7 +37,7 @@
                 <div class="panel panel-footer" style="width:100%;">
                     <div class="float-right-div">
                         @Html.ActionLink("Edit", "Update", new { id = Model.CurrentServiceBundle.Id }, new { @class = "btn btn-default" })
-                        @Html.ActionLink("Delete", "Retrieve", new { id = 0 }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Delete", "ConfirmDelete", new { id = 0 }, new { @class = "btn btn-danger" })
                     </div>
 
                 </div>

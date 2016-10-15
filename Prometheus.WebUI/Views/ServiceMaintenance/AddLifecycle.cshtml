@@ -1,10 +1,11 @@
-﻿@using Prometheus.WebUI.Models.Shared
+﻿@using Prometheus.WebUI.Models
 @model Prometheus.WebUI.Models.Service.LifecycleModel
 @{
-    ViewBag.Title = "Lifecycle";
+    ViewBag.Title = "Add Lifecycle";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Services Maintenance", "ServiceMaintenance/Index"),
-                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
+                                                             new KeyValuePair<string, string>("Lifecycle", "ServiceMaintenance/ShowLifecycle"),
+                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
@@ -12,14 +13,13 @@
     LinkListModel linkListModel = new LinkListModel(Model.Statuses, Model.CurrentStatus.Id, "ShowLifecycle", "AddLifecycle", "Lifecycle Statuses");
 }
 
-@section Sidebar {
-    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", linkListModel)
-}
 
 
 @section Content {
-   @if (Model.CurrentStatus.Id != null)
-   {
-       @Html.Partial("/Views/ServiceMaintenance/PartialViews/LifecycleViewer.cshtml", Model.CurrentStatus);
-   }
+    @Html.Partial("/Views/ServiceMaintenance/PartialViews/LifecycleEditor.cshtml", Model.CurrentStatus)
+}
+
+
+@section Sidebar {
+    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", linkListModel)
 }

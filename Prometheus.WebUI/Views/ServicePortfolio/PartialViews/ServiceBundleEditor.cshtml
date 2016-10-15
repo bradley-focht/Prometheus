@@ -1,30 +1,42 @@
-﻿@using Prometheus.Domain.Abstract
+﻿@using DataService.Models
 @model IServiceBundle
 
 
 
 <div class="std-div">
-    @using (Html.BeginForm())
+    @using (Html.BeginForm("Save", "ServicePortfolio", FormMethod.Post))
     {
         <table class="std-table">
             <tr>
+                <td class="std-cell" colspan="2">
+                    @if (Model.Id == null)
+                    { <label class="font-title3">Add Lifecycle Status</label>
+                    }
+                    else
+                    {
+                        <label class="font-title3">Edit @Model.Name</label>
+                        }
+            </td>
+            </tr>
+            <tr>
                 <td class="std-cell">
 
-                        @foreach (var property in ViewData.ModelMetadata.Properties)
+                    @foreach (var property in ViewData.ModelMetadata.Properties)
+                    {
+                        if (property.PropertyName != "Id" && property.PropertyName != "Services" &&
+                               !property.PropertyName.Contains("UserId") && !property.PropertyName.Contains("Date"))
                         {
-                            if (property.PropertyName != "Id" && property.PropertyName != "id" && property.PropertyName != "Services")
-                            {
-                                <div class="form-group">
-                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                                    @Html.ValidationMessage(property.PropertyName)
-                                    @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                            <div class="form-group">
+                                <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                                @Html.ValidationMessage(property.PropertyName)
+                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
 
-                                </div>
-}
+                            </div>
                         }
+                    }
 
 
-    </td>
+                </td>
             <tr>
                 <td colspan="2" class="std-cell">
 
@@ -32,7 +44,7 @@
                         &nbsp;
                         <div class="float-right-div">
                             <input type="submit" value="Save" class="btn btn-primary" />
-                            @Html.ActionLink("Cancel", "Retrieve", null, new { @class = "btn btn-default" })
+                            @Html.ActionLink("Cancel", "Show", null, new { @class = "btn btn-default" })
                         </div>
                     </div>
 
@@ -40,4 +52,4 @@
             </tr>
         </table>
     }
-    </div>
+</div>

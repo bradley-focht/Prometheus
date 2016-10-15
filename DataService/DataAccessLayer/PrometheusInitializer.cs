@@ -40,7 +40,7 @@ namespace DataService.DataAccessLayer
 			//Add a sample service bundle with services and service request options
 			context.ServiceBundles.Add(new ServiceBundle
 			{
-				Services = new List<Service>
+				Services = new List<IService>
 				{
 					new Service
 					{

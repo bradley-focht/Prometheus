@@ -1,0 +1,83 @@
+﻿@model DataService.Models.ILifecycleStatus
+
+<div class="std-div">
+    @using (Html.BeginForm())
+    {
+        <table class="std-table">
+            <tr>
+                <td colspan="2" class="std-cell">
+                    @if (Model.Id == null)
+                    {
+                        <label class="font-title3">Add Lifecycle Status</label>
+                    }
+                    else
+                    {
+                        <label class="font-title3">Edit @Model.Name</label>
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td class="std-cell">
+
+                    @foreach (var property in ViewData.ModelMetadata.Properties)
+                    {
+
+                        if (property.PropertyName == "CatalogVisible")
+                        {
+                            <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                            <div class="form-group">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-primary">
+                                        @Html.RadioButton("CatalogVisible", "no",
+                                        new { id = "false" }) no
+                                    </label>
+
+                                    <label class="btn btn-primary">
+                                        @Html.RadioButton("CatalogVisible", "yes",
+                                        new { id = "true" }) yes
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                        else if (property.PropertyName == "Position")
+                        {
+                            <div class="form-group">
+                                <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                            <br/>
+                                 @Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                            </div>
+                        }
+
+                        else if (property.PropertyName != "Id" && property.PropertyName != "id" && property.PropertyName != "Services")
+                        {
+                            <div class="form-group">
+                                <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                                @Html.ValidationMessage(property.PropertyName)
+                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+
+                            </div>
+                        }
+
+
+                    }
+
+
+                </td>
+            <tr>
+                <td colspan="2" class="std-cell">
+
+                    <div class="panel-footer">
+                        &nbsp;
+                        <div class="float-right-div">
+                            <input type="submit" value="Save" class="btn btn-primary" />
+                            @Html.ActionLink("Cancel", "ShowLifecycle", null, new { @class = "btn btn-default" })
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        </table>
+        @Html.Hidden("Id", Model.Id);
+    }
+</div>

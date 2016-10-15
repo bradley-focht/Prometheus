@@ -1,5 +1,4 @@
-﻿@using Prometheus.Domain.Abstract;
-@using Prometheus.WebUI.HtmlHelpers;
+﻿@using DataService.Models
 @model IEnumerable<IServiceBundle>
 
 @{
@@ -8,49 +7,54 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="std-indent" style="width:50%;">
-    @foreach (IServiceBundle serviceBundle in Model)
+<div class="std-indent" style="width: 50%;">
+    @if (Model != null && Model.Any())
     {
-        <table class="std-table" cellpadding="5">
-            <tr>
-                <td colspan="2" style="border-bottom:1px solid black;">
-                    <label class="font-title2-blue">@serviceBundle.Name</label>
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align:top; width:60%;">
-                    <label class="font-title-initial">Description: </label><br />
-                    @if (serviceBundle.Description != null)
-                    {
-                        Html.Raw(serviceBundle.Description);
-                    }
-                </td>
-                <td style="vertical-align:top; width:40%; border-bottom:1px solid black;" rowspan="3">
-                    <label class="font-title-initial">Services:</label><br />
-                        
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align:top;">
-                    <label class="font-title-initial">Business Value:</label> <br />
-                    @if (serviceBundle.BusinessValue != null)
-                    {
-                        Html.Raw(serviceBundle.BusinessValue);
-                    }
-                </td>
-            </tr>
-            <tr>
-                <td style="vertical-align:top; border-bottom:1px solid black;">
-                    <blabel class="font-title-initial">Measures:</blabel><br />
-                    @if (serviceBundle.Measures != null)
-                    {
-                        Html.Raw(serviceBundle.Measures);
-                    }
-                </td>
-            </tr>
-        </table>
-        <br/><br/>
+        foreach (var serviceBundle in Model)
+        {
+            <table class="std-table">
+                <tr>
+                    <td colspan="2" style="border-bottom: 1px solid black;">
+                        <label class="font-title2-blue">@serviceBundle.Name</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; width: 60%;">
+                        <label class="font-title-initial">Description: </label><br />
+                        @if (serviceBundle.Description != null)
+                        {
+                            @Html.Raw(serviceBundle.Description)
+                            ;
+                        }
+                    </td>
+                    <td style="vertical-align: top; width: 40%; border-bottom: 1px solid black;" rowspan="3">
+                        <label class="font-title-initial">Services:</label><br />
+
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top;">
+                        <label class="font-title-initial">Business Value:</label> <br />
+                        @if (serviceBundle.BusinessValue != null)
+                        {
+                            @Html.Raw(serviceBundle.BusinessValue)
+                            ;
+                        }
+                    </td>
+                </tr>
+                <tr>
+                    <td style="vertical-align: top; border-bottom: 1px solid black;">
+                        <blabel class="font-title-initial">Measures:</blabel><br />
+                        @if (serviceBundle.Measures != null)
+                        {
+                            Html.Raw(serviceBundle.Measures);
+                        }
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <br />
+        }
+
     }
-
-
 </div>

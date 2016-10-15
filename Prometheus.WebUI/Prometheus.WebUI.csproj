@@ -113,9 +113,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\LinkListModel.cs" />
-    <Compile Include="Models\LifecycleModel.cs" />
-    <Compile Include="Models\ServiceBundleModel.cs" />
+    <Compile Include="Models\Shared\DeleteConfirmationModel.cs" />
+    <Compile Include="Models\Shared\LinkListModel.cs" />
+    <Compile Include="Models\Service\LifecycleModel.cs" />
+    <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
+    <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +130,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\ServicePortfolio\Index.cshtml" />
-    <Content Include="Views\ServicePortfolio\Retrieve.cshtml" />
+    <Content Include="Views\ServicePortfolio\Show.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TitleBar.cshtml" />
     <Content Include="Views\ServicePortfolio\Editor.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -136,6 +138,18 @@
     <Content Include="Views\ServiceMaintenance\Index.cshtml" />
     <Content Include="Views\ServiceMaintenance\ShowLifecycle.cshtml" />
     <Content Include="Views\Shared\PartialViews\_LinkList.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_ConfirmDelete.cshtml" />
+    <Content Include="Views\ServiceMaintenance\PartialViews\LifecycleViewer.cshtml" />
+    <Content Include="Views\ServiceMaintenance\LifecycleConfirmDelete.cshtml" />
+    <Content Include="Views\ServiceMaintenance\PartialViews\LifecycleEditor.cshtml" />
+    <Content Include="Views\ServiceMaintenance\ShowServices.cshtml" />
+    <Content Include="Views\ServiceMaintenance\AddLifecycle.cshtml" />
+    <Content Include="Views\ServicePortfolio\PartialViews\ServiceBundleEditor.cshtml" />
+    <Content Include="Views\ServicePortfolio\PartialViews\ServiceBundleViewer.cshtml" />
+    <Content Include="Views\ServicePortfolio\ConfirmDelete.cshtml" />
+    <Content Include="Views\ServiceMaintenance\UpdateLifecycle.cshtml" />
+    <Content Include="Views\ServicePortfolio\Add.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\tinymce_jquery_full.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -148,6 +162,10 @@
     <Folder Include="Views\Service\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataService\DataService.csproj">
+      <Project>{7757884f-c8d9-48ac-a4d6-6238d0203431}</Project>
+      <Name>DataService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Prometheus.Domain\Prometheus.Domain.csproj">
       <Project>{cb92e2ce-ecfc-4dd7-8883-0bd219efb59e}</Project>
       <Name>Prometheus.Domain</Name>

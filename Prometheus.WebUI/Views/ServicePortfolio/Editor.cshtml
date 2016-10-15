@@ -1,7 +1,7 @@
 ﻿
-@model Prometheus.Domain.Abstract.IServiceBundle
+@model DataService.Models.IServiceBundle
 @{
-    if (Model.Id == 0)
+    if (Model.Id == null)
     {
         ViewBag.Title = "Add new service bundle";
     }
@@ -59,7 +59,7 @@
                             &nbsp;
                             <div class="float-right-div">
                                 <input type="submit" value="Save" class="btn btn-primary" />
-                                @Html.ActionLink("Cancel", "Retrieve", null, new { @class = "btn btn-default" })
+                                @Html.ActionLink("Cancel", "Show", null, new { @class = "btn btn-default" })
                             </div>
                         </div>
 
