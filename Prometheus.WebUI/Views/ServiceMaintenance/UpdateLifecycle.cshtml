@@ -13,11 +13,11 @@
     LinkListModel linkListModel = new LinkListModel(Model.Statuses, Model.CurrentStatus.Id, "ShowLifecycle", "AddLifecycle", "Lifecycle Statuses");
 }
 
-@section Sidebar{
+@section Content{
     @Html.Partial("/Views/ServiceMaintenance/PartialViews/LifecycleEditor.cshtml", Model.CurrentStatus)
 }
 
-@section Content
+@section Sidebar
 {
     @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", linkListModel)
 }

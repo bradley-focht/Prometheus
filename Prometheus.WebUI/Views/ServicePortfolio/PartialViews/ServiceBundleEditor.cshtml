@@ -1,23 +1,11 @@
 ﻿@using DataService.Models
-@model IServiceBundle
-
-
+@using RTE
+@model ServiceBundle
 
 <div class="std-div">
     @using (Html.BeginForm("Save", "ServicePortfolio", FormMethod.Post))
     {
         <table class="std-table">
-            <tr>
-                <td class="std-cell" colspan="2">
-                    @if (Model.Id == null)
-                    { <label class="font-title3">Add Lifecycle Status</label>
-                    }
-                    else
-                    {
-                        <label class="font-title3">Edit @Model.Name</label>
-                        }
-            </td>
-            </tr>
             <tr>
                 <td class="std-cell">
 
@@ -26,12 +14,45 @@
                         if (property.PropertyName != "Id" && property.PropertyName != "Services" &&
                                !property.PropertyName.Contains("UserId") && !property.PropertyName.Contains("Date"))
                         {
-                            <div class="form-group">
-                                <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                                @Html.ValidationMessage(property.PropertyName)
-                                @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
+                            if (property.PropertyName == "Description")
+                            {
+                                <div class="form-group">
+                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                                    @{
+                                        Editor editor1 = new Editor(HttpContext.Current, "Description");
+                                        editor1.LoadFormData("");
 
-                            </div>
+                                        editor1.Toolbar = "email";
+
+
+                                        editor1.ShowResizeCorner = true;
+                                        editor1.Height = 200;
+                                        editor1.Width = 557;
+                                        editor1.MvcInit();
+                                        editor1.ShowBottomBar = false;
+                                        editor1.Skin = "office2007silver";
+
+                                        ViewBag.Editor = editor1.MvcGetString();
+                                        <div style="width: 550px">
+                                            @Html.Raw(ViewBag.Editor)
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <div style="width: 400px;">
+
+                                </div>
+                    <div class="form-group">
+                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                                    @Html.ValidationMessage(property.PropertyName)
+                                    @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+
+                                </div>
+                            }
+
+
                         }
                     }
 

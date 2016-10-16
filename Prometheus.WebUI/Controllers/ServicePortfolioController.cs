@@ -18,7 +18,7 @@ namespace Prometheus.WebUI.Controllers
 			var portfolioItems = new List<IServiceBundle>();
 
 
-			portfolioItems.Add(new ServiceBundle() {Id = Guid.NewGuid(), Name = "Workplace Services", Description = "some new service" });
+			portfolioItems.Add(new ServiceBundle() {Id = 1, Name = "Workplace Services", Description = "some new service" });
 
 
             return View(portfolioItems);

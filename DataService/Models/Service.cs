@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace DataService.Models
 {
@@ -10,7 +12,8 @@ namespace DataService.Models
 		//PK
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-		public Guid? Id { get; set; }
+        [HiddenInput(DisplayValue = false)]
+		public int Id { get; set; }
 		//FK
 		public Guid ServiceBundleId { get; set; }
 		public DateTime? DateCreated { get; set; }
@@ -18,13 +21,23 @@ namespace DataService.Models
 		public Guid CreatedByUserId { get; set; }
 		public Guid UpdatedByUserId { get; set; }
 
+        [Required(ErrorMessage="name required")]
 		public string Name { get; set; }
-		public string Description { get; set; }
-		public string BusinessOwner { get; set; }
+        [DataType(DataType.MultilineText)]
+        
+        public string Description { get; set; }
+
+        [Display(Name="Business Owner")]
+        public string BusinessOwner { get; set; }
+        [Display(Name="Service Owner")]
 		public string ServiceOwner { get; set; }
+        [Display(Name="Lifecycle Status")]
 		public Guid LifecycleStatus { get; set; }
+
+        [Display(Name="Service Type Role")]
 		public Guid ServiceTypeRole { get; set; }
-		public Guid ServiceTypeProvision { get; set; }
+        [Display(Name = "Service Type Provision")]
+        public Guid ServiceTypeProvision { get; set; }
 		//public IEnumerable<ServiceRequest> ServiceRequests { get; set; }
 
 

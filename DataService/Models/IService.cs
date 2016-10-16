@@ -10,7 +10,7 @@ namespace DataService.Models
 		DateTime? DateCreated { get; set; }
 		DateTime? DateUpdated { get; set; }
 		string Description { get; set; }
-		Guid? Id { get; set; }
+		int Id { get; set; }
 		Guid LifecycleStatus { get; set; }
 		string Name { get; set; }
 		ServiceBundle ServiceBundle { get; set; }

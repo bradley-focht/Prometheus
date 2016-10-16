@@ -11,6 +11,6 @@ namespace Prometheus.WebUI.Models.ServicePortfolio
             CurrentServiceBundle = currentServiceBundle;
         }
 		public IServiceBundle CurrentServiceBundle { get; set; }
-		public IEnumerable<KeyValuePair<Guid, string>> ServiceBundles { get; set; }
+		public IEnumerable<KeyValuePair<int, string>> ServiceBundles { get; set; }
 	}
 }

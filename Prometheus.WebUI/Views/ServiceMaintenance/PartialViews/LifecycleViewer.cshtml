@@ -27,7 +27,7 @@
 
 
     <div class="panel-footer">
-        &nbsp;
+        @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", null, new { @class = "btn btn-danger" })
         <div class="float-right-div">
             @Html.ActionLink("Edit", "UpdateLifecycle", null, new { @class = "btn btn-primary" })
             @Html.ActionLink("Cancel", "ShowLifecycle", null, new { @class = "btn btn-default" })

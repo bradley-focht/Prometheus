@@ -5085,8 +5085,7 @@ a.thumbnail:focus {
 
 .alert-danger {
   color: #b94a48;
-  background-color: #f2dede;
-  border-color: #eed3d7;
+    font-size: 10px;
 }
 
 .alert-danger hr {

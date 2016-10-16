@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Services";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+@section Sidebar
+{
+    
+}
+
+@section Content {
+    @Html.Action("ShowServiceNav", "ServiceEdit", "General");
+    }

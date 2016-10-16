@@ -8,7 +8,7 @@ namespace DataService.Models
 	{
 		[Key]
 		[HiddenInput(DisplayValue = false)]
-		public Guid? Id { get; set; }
+		public int Id { get; set; }
 
 		[Required(ErrorMessage ="name required")]
 		public string Name { get; set; }
@@ -16,7 +16,7 @@ namespace DataService.Models
 		public int Position { get; set; }
 		
 		[Display(Name="Catalog Visible")]
-		[Required(ErrorMessage = "Selection required")]
+		[Required(ErrorMessage = "selection required")]
 		public bool CatalogVisible { get; set; }
 	}
 }

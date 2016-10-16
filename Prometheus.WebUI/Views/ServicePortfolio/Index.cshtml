@@ -7,12 +7,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="std-indent" style="width: 50%;">
+<div class="std-indent" style="width: 100%;">
     @if (Model != null && Model.Any())
     {
         foreach (var serviceBundle in Model)
         {
-            <table class="std-table">
+            <table class="std-table" style="width: 500px;">
                 <tr>
                     <td colspan="2" style="border-bottom: 1px solid black;">
                         <label class="font-title2-blue">@serviceBundle.Name</label>

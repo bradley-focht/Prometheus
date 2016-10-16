@@ -1,0 +1,21 @@
+﻿@model string
+@{
+    var navItems = new List<string> { "General", "Goals", "SWOT", "Work Units", "Contracts", "Measures", "Processes", "Pricing", "Documents" };
+
+    <div class="btn-group">
+        @foreach (string item in navItems)
+        {
+        if (item.Contains(Model))
+        {
+        <label class="btn btn-primary active">@item</label>
+        }
+        else
+        {
+                
+
+        @Html.ActionLink(item, "Update" + item.Replace(" ", ""), null, new { @class = "btn btn-default" })
+        }
+        }
+    </div>
+}
+

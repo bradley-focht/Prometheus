@@ -1,0 +1,36 @@
+﻿
+@{
+    ViewBag.Title = "Add New Service ";
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Services", "ServiceEdit/Index"),
+                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+@section Sidebar
+{
+    @Html.Action("ShowServiceList", new Guid())
+}
+
+@section Content
+{
+    @using (Html.BeginForm("SaveService", "ServiceEdit", FormMethod.Post))
+    {
+        <div class="panel-group std-div">
+            <div class="panel-body">
+                <label class="font-title-initial">Name</label>
+
+                @Html.TextBox("Name", null, new {@class = "form-control"})
+
+            </div>
+
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    <input type="submit" value="Save" class="btn btn-primary"/>
+                    @Html.ActionLink("Cancel", "Index", null, new {@class = "btn btn-default"})
+                </div>
+                &nbsp;
+            </div>
+        </div>
+    }
+}

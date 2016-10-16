@@ -11,7 +11,7 @@ namespace DataService.Models
 		//PK
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-		public Guid? Id { get; set; }
+		public int Id { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public Guid CreatedByUserId { get; set; }
@@ -20,9 +20,7 @@ namespace DataService.Models
 		[Required(ErrorMessage = "Name is required")]
 		public string Name { get; set; }
 
-        
         [DataType(DataType.MultilineText)]
-        [UIHint("tinymce_jquery_full"), AllowHtml]
         public string Description { get; set; }
 
 		[DataType(DataType.MultilineText)]

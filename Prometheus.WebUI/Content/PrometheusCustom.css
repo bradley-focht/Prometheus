@@ -63,6 +63,7 @@
 .std-div {
     padding:10px;
     display: inline-block;
+    min-width: 200px;
 }
 
 .float-right-div {

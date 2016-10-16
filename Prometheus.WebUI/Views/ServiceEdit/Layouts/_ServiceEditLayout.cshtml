@@ -1,0 +1,15 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Update {service name}";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Services", "ServiceEdit/Index"),
+                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+    string section = ViewBag.Section;
+}
+<div>
+    @Html.Partial("/Views/ServiceEdit/PartialViews/ServiceNav.cshtml", section)
+</div>
+<div class="std-indent">
+    @RenderBody()
+</div>
