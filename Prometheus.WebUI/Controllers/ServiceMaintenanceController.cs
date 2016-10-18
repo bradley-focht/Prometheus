@@ -23,7 +23,7 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult ShowLifecycle(int id)
+        public ActionResult ShowLifecycle(int id=0)
         {
             /* test region */
             LifecycleModel lm = new LifecycleModel();

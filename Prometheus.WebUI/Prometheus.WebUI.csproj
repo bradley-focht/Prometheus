@@ -97,10 +97,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="bin\NetSpell.SpellChecker.dll" />
-    <Content Include="bin\Prometheus.WebUI.dll" />
-    <Content Include="bin\Prometheus.WebUI.pdb" />
-    <Content Include="bin\RichTextEditor.dll" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\PrometheusCustom.css" />
@@ -1111,7 +1107,6 @@
     <Content Include="richtexteditor\config\guest.config" />
     <Content Include="richtexteditor\config\default.config" />
     <Content Include="richtexteditor\config\admin.config" />
-    <Content Include="bin\richtexteditor.lic" />
     <None Include="richtexteditor\core\jsml.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -1142,6 +1137,7 @@
     <Compile Include="Models\Service\LifecycleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
+    <Compile Include="Models\Shared\TableDataModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -1187,6 +1183,7 @@
     <Content Include="Views\ServiceEdit\UpdateMeasures.cshtml" />
     <Content Include="Views\ServiceEdit\UpdateProcesses.cshtml" />
     <Content Include="Views\ServiceEdit\UpdatePricing.cshtml" />
+    <Content Include="Views\Shared\_TableViewer.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

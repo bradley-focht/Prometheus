@@ -21,27 +21,9 @@
 
 
 @section Content {
-    @{if (Model.CurrentServiceBundle.Id != null)
+    @{if (Model.CurrentServiceBundle.Id != 0)
         {
-            <div style="display:inline-block;">
-                <label class="font-title-initial">Name:</label><br />
-                @Model.CurrentServiceBundle.Name<br />
-                <label class="font-title-initial">Description:</label><br />
-                Html.Raw(Model.CurrentServiceBundle.Description);<br />
-                <label class="font-title-initial">Business Value:</label><br />
-                Html.Raw(Model.CurrentServiceBundle.BusinessValue);<br />
-                <label class="font-title-initial">Measures:</label><br />
-                @Model.CurrentServiceBundle.Measures<br />
-                <label class="font-title-initial">Services:</label><br />
-
-                <div class="panel panel-footer" style="width:100%;">
-                    <div class="float-right-div">
-                        @Html.ActionLink("Edit", "Update", new { id = Model.CurrentServiceBundle.Id }, new { @class = "btn btn-default" })
-                        @Html.ActionLink("Delete", "ConfirmDelete", new { id = 0 }, new { @class = "btn btn-danger" })
-                    </div>
-
-                </div>
-            </div>
+           @Html.Partial("/Views/ServicePortfolio/Partialviews/ServiceBundleViewer.cshtml", Model.CurrentServiceBundle)
         }
     }
 }

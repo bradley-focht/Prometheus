@@ -13,7 +13,7 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult Index(int id)
+        public ActionResult Index(int id = 0)
         {
             return View();
         }
@@ -147,34 +147,21 @@ namespace Prometheus.WebUI.Controllers
         /// Builds the partial view with selected item
         ///    actions are assumed to follow Add - Show - Update - Delete
         /// </summary>
-        /// <param name="selectedSercice"></param>
+        /// <param name="selectedId"></param>
         /// <returns></returns>
         [ChildActionOnly]
-        public ActionResult ShowServiceList(int selectedSercice)
+        public ActionResult ShowServiceList(int selectedId=0)
         {
             LinkListModel servicesModel = new LinkListModel();
-            servicesModel.SelectedItemId = selectedSercice;
-            servicesModel.ListItems = new List<KeyValuePair<int, string>>() {new KeyValuePair<int, string>(0, "Operations")};
+            servicesModel.SelectedItemId = selectedId;
+            servicesModel.ListItems = new List<KeyValuePair<int, string>> {new KeyValuePair<int, string>(1, "Operations")};
             servicesModel.AddAction = "AddService";
-            servicesModel.SelectAction = "ShowServiceBasic";
+            servicesModel.SelectAction = "ShowGeneral";
             servicesModel.Title = "Services";
 
             return PartialView("PartialViews/_LinkList", servicesModel);
         }
 
         
-        /// <summary>
-        /// Navigation link list for the Services navigation bar. 
-        /// </summary>
-        /// <param name="currentNav"></param>
-        /// <returns></returns>
-        [ChildActionOnly]
-        public ActionResult ShowServiceNav(string currentNav)
-        {
-            //currently these items are not stored in a database
-            List<string> navLinks = new List<string> {"General", "Goals", "SWOT", "Work Units", "Contracts", "Measurements", "Process", "Pricing" };
-
-            return PartialView("ServiceNav", navLinks);
-        }
     }
 }

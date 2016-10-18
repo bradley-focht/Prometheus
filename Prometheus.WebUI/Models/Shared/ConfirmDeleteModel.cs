@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Prometheus.WebUI.Models.Shared
+﻿namespace Prometheus.WebUI.Models.Shared
 {
 	public class ConfirmDeleteModel
 	{
