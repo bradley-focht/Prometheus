@@ -12,7 +12,7 @@
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
     LinkListModel linkListModel = new LinkListModel(Model.Statuses, Model.CurrentStatus.Id, "ShowLifecycle", "AddLifecycle", "Lifecycle Statuses");
-    ConfirmDeleteModel deleteModel = new ConfirmDeleteModel(Model.CurrentStatus.Id.Value, Model.CurrentStatus.Name, "DeleteLifecycle", "ShowLifeCycle", "ServiceMaintenance");
+    ConfirmDeleteModel deleteModel = new ConfirmDeleteModel(Model.CurrentStatus.Id, Model.CurrentStatus.Name, "DeleteLifecycle", "ShowLifeCycle", "ServiceMaintenance");
 }
 
 

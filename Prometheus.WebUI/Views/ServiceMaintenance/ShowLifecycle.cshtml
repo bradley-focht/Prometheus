@@ -18,7 +18,7 @@
 
 
 @section Content {
-   @if (Model.CurrentStatus.Id != null)
+   @if (Model.CurrentStatus.Id != 0)
    {
        @Html.Partial("/Views/ServiceMaintenance/PartialViews/LifecycleViewer.cshtml", Model.CurrentStatus);
    }

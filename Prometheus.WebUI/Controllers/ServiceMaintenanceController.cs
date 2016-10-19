@@ -27,10 +27,11 @@ namespace Prometheus.WebUI.Controllers
         {
             /* test region */
             LifecycleModel lm = new LifecycleModel();
-            lm.CurrentStatus = new LifecycleStatus() {Id = 1, Name = "Test Select"};
+           lm.CurrentStatus = new LifecycleStatus();
+            lm.CurrentStatus.Id = id;
             lm.Statuses = new List<KeyValuePair<int, string>>()
             {
-                new KeyValuePair<int, string>(id, "Operations")
+                new KeyValuePair<int, string>(10, "Operations")
             };
             /*end test region */
 
@@ -64,7 +65,7 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("ShowLifecycle");
         }
 
-        public ActionResult UpdateLifecycle(int id)
+        public ActionResult UpdateLifecycle(int id=0)
         {                    
             /*start test region*/
             LifecycleModel lm = new LifecycleModel();
@@ -78,7 +79,7 @@ namespace Prometheus.WebUI.Controllers
             return View(lm);
         }
 
-        public ActionResult ConfirmDeleteLifecycle(int id)
+        public ActionResult ConfirmDeleteLifecycle(int id=0)
         {
             /*start test region*/
             LifecycleModel lm = new LifecycleModel();
@@ -92,8 +93,9 @@ namespace Prometheus.WebUI.Controllers
             return View(lm);
         }
 
+     
         [HttpPost]
-        public ActionResult DeleteLifecylce(int id)
+        public ActionResult DeleteLifecycle(int id=0)
         {
             //perform delete
 

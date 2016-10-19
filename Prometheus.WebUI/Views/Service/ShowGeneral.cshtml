@@ -1,17 +1,19 @@
 ﻿
 @{
-    ViewBag.Title = "View Services ";
+    ViewBag.Title = "Update Service ";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Services", "ServiceEdit/Index"),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
-@section Sidebar {
-  @Html.Action("ShowServiceList", 0)
+@section Sidebar
+{
+    @Html.Action("ShowServiceList", 1)
 }
 
-@section Content {
 
-
-
+@section Content
+{
+    
 }

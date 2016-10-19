@@ -1,0 +1,38 @@
+﻿@using DataService.Models
+@model Prometheus.WebUI.Models.Service.ServiceModel
+@{
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewBag.Title = "Update " + Model.Service.Name;
+
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
+                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+   
+    
+}
+
+
+    @section Content
+    {
+        @if (Model.Service.Id > 0)
+        {
+            <div>
+                @Html.Action("ShowNav", new {id = Model.Service.Id, section = Model.SelectedSection})
+            </div>
+
+
+            switch (Model.SelectedSection)
+            {
+                case "General":
+                    @Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (Service) Model.Service)
+                break;
+            
+
+        }
+    }
+}
+
+@section Sidebar
+{
+            @Html.Action("ShowServiceList", Model.Service.Id)
+}

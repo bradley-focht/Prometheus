@@ -1124,7 +1124,7 @@
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
-    <Compile Include="Controllers\ServiceEditController.cs" />
+    <Compile Include="Controllers\ServiceEditorController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -1132,6 +1132,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\Shared\ServiceNavModel.cs" />
+    <Compile Include="Models\Service\ServiceModel.cs" />
     <Compile Include="Models\Shared\ConfirmDeleteModel.cs" />
     <Compile Include="Models\Shared\LinkListModel.cs" />
     <Compile Include="Models\Service\LifecycleModel.cs" />
@@ -1168,22 +1170,15 @@
     <Content Include="Views\ServicePortfolio\ConfirmDelete.cshtml" />
     <Content Include="Views\ServiceMaintenance\UpdateLifecycle.cshtml" />
     <Content Include="Views\ServicePortfolio\Add.cshtml" />
-    <Content Include="Views\ServiceEdit\Index.cshtml" />
-    <Content Include="Views\ServiceEdit\ShowServiceList.cshtml" />
-    <Content Include="Views\ServiceEdit\AddService.cshtml" />
-    <Content Include="Views\ServiceEdit\PartialViews\ServiceNav.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdateGeneral.cshtml" />
-    <Content Include="Views\ServiceEdit\Layouts\_ServiceEditLayout.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdateGoals.cshtml" />
-    <Content Include="Views\ServiceEdit\ConfirmDelete.cshtml" />
+    <Content Include="Views\Service\Index.cshtml" />
+    <Content Include="Views\Service\AddService.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_ServiceNav.cshtml" />
+    <Content Include="Views\Service\Show.cshtml" />
+    <Content Include="Views\Service\ConfirmDelete.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteLifecycle.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdateSwot.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdateWorkUnits.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdateContracts.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdateMeasures.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdateProcesses.cshtml" />
-    <Content Include="Views\ServiceEdit\UpdatePricing.cshtml" />
     <Content Include="Views\Shared\_TableViewer.cshtml" />
+    <Content Include="Views\Service\ShowGeneral.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1193,7 +1188,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Service\" />
+    <Folder Include="Views\ServiceEditor\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataService\DataService.csproj">

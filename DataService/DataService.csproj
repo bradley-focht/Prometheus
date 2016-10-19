@@ -84,12 +84,14 @@
     <Compile Include="Models\IRole.cs" />
     <Compile Include="Models\IService.cs" />
     <Compile Include="Models\IServiceBundle.cs" />
+    <Compile Include="Models\IServiceGoals.cs" />
     <Compile Include="Models\IServiceRequestOption.cs" />
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\IUserCreatedEntity.cs" />
     <Compile Include="Models\LifecycleStatus.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ServiceBundle.cs" />
+    <Compile Include="Models\ServiceGoals.cs" />
     <Compile Include="Models\ServiceRequestOption.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
