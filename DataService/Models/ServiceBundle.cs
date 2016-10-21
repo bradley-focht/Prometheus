@@ -2,32 +2,33 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web.Mvc;
 
 namespace DataService.Models
 {
 	public class ServiceBundle : IServiceBundle
 	{
 		//PK
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+
+		//Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
-		public Guid CreatedByUserId { get; set; }
-		public Guid UpdatedByUserId { get; set; }
+		public int CreatedByUserId { get; set; }
+		public int UpdatedByUserId { get; set; }
 
-		[Required(ErrorMessage = "Name is required")]
+		[Required(ErrorMessage = "Service Bundle: Name is required")]
 		public string Name { get; set; }
 
-        [DataType(DataType.MultilineText)]
-        public string Description { get; set; }
+		[DataType(DataType.MultilineText)]
+		public string Description { get; set; }
 
 		[DataType(DataType.MultilineText)]
 		public string BusinessValue { get; set; }
 		public string Measures { get; set; }
-		
+
 		//Navigation properties
-		public virtual ICollection<IService> Services { get; set; }
+		public virtual ICollection<Service> Services { get; set; }
 	}
 }

@@ -8,14 +8,16 @@ namespace DataService.Models
 	public class Role : IRole
 	{
 		//PK
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-		public Guid Id { get; set; }
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		public int Id { get; set; }
+
+		//Fields
 		public string Name { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
-		public Guid CreatedByUserId { get; set; }
-		public Guid UpdatedByUserId { get; set; }
+		public int CreatedByUserId { get; set; }
+		public int UpdatedByUserId { get; set; }
 
 		//Navigation properties
 		public virtual ICollection<User> Users { get; set; }

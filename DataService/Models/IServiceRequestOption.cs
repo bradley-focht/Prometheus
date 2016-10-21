@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace DataService.Models
+﻿namespace DataService.Models
 {
 	public interface IServiceRequestOption : IUserCreatedEntity
 	{
-		Guid Id { get; set; }
-		Guid ServiceId { get; set; }
+		int Id { get; set; }
+		int ServiceId { get; set; }
 	}
 }

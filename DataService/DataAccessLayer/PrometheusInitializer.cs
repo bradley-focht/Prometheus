@@ -40,10 +40,17 @@ namespace DataService.DataAccessLayer
 			//Add a sample service bundle with services and service request options
 			context.ServiceBundles.Add(new ServiceBundle
 			{
-				Services = new List<IService>
+				Name = "First Service Bundle Name",
+				Services = new List<Service>
 				{
 					new Service
 					{
+						Name = "First Service",
+						//TODO: Brad please give a meaningful name for lifecycleStatus
+						LifecycleStatus = new LifecycleStatus()
+						{
+							Name = "lifeName"
+						},
 						ServiceRequestOptions = new List<ServiceRequestOption>
 						{
 							new ServiceRequestOption(),
@@ -52,6 +59,10 @@ namespace DataService.DataAccessLayer
 					},
 					new Service
 					{
+						Name = "Second Service",LifecycleStatus = new LifecycleStatus()
+						{
+							Name = "lifeName1"
+						},
 						ServiceRequestOptions = new List<ServiceRequestOption>
 						{
 							new ServiceRequestOption(),

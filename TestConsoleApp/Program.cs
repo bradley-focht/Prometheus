@@ -12,6 +12,7 @@ namespace TestConsoleApp
 				{
 					Console.WriteLine(option.Id);
 				}
+				Console.ReadLine();
 			}
 		}
 	}
