@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace DataService.Models
+﻿namespace DataService.Models
 {
 	public interface IRole : IUserCreatedEntity
 	{
-		Guid Id { get; set; }
+		int Id { get; set; }
 		string Name { get; set; }
 	}
 }

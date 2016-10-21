@@ -1,10 +1,8 @@
-﻿using System;
-
-namespace DataService.Models
+﻿namespace DataService.Models
 {
 	public interface IUserCreatedEntity : ICreatedEntity
 	{
-		Guid CreatedByUserId { get; set; }
-		Guid UpdatedByUserId { get; set; }
+		int CreatedByUserId { get; set; }
+		int UpdatedByUserId { get; set; }
 	}
 }

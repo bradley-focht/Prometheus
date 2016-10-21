@@ -9,13 +9,16 @@ namespace DataService.Models
 		//PK
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-		public Guid Id { get; set; }
+		public int Id { get; set; }
+
 		//FK
-		public Guid ServiceId { get; set; }
+		public int ServiceId { get; set; }
+
+		//Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
-		public Guid CreatedByUserId { get; set; }
-		public Guid UpdatedByUserId { get; set; }
+		public int CreatedByUserId { get; set; }
+		public int UpdatedByUserId { get; set; }
 
 		//Navigation properties
 		public virtual Service Service { get; set; }
