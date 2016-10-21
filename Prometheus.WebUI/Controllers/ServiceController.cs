@@ -79,5 +79,57 @@ namespace Prometheus.WebUI.Controllers
             return View(sm);
         }
 
-  }
+        [ChildActionOnly]
+        public ActionResult ShowServiceGoals(Service service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> { "Goal", "Duration", "Start Date", "End Date"};
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "test the system", "short term", "september", "october"}),
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "add actual data", "short term", "october", "march"})
+            };
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+        [ChildActionOnly]
+        public ActionResult ShowServiceContracts(Service service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> { "Vendor", "Contract Number", "Start Date", "End Date" };
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "Prometheus", "44-4507-A", "next month", "last month"})};
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+        [ChildActionOnly]
+        public ActionResult ShowServiceWorkUnits(Service service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> { "Work Unit", "Manager", "Roles" };
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "OCIO", "Vinay chandramohan", "Making the Service Portfolio"}),
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "Executive", "Sean Boczulak", "be da boss"})
+            };
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult ShowServiceMeasures(Service service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> { "Method", "Outcome" };
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "divide by 0", "exception"})};
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+    }
 }

@@ -17,8 +17,12 @@ namespace DataService.Models
 		Guid ServiceBundleId { get; set; }
 		string ServiceOwner { get; set; }
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
-		Guid ServiceTypeProvision { get; set; }
-		Guid ServiceTypeRole { get; set; }
+        IEnumerable<IServiceGoal> ServiceGoals { get; set; }
+        int ServiceTypeProvision { get; set; }
+        int ServiceTypeRole { get; set; }
 		Guid UpdatedByUserId { get; set; }
+	    IEnumerable<IServiceWorkUnit> ServiceWorkUnits { get; set; }
+        IEnumerable<IServiceContract> ServiceContracts { get; set; }
+        IEnumerable<IServiceMeasure> ServiceMeasures { get; set; }
 	}
 }

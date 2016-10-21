@@ -1,0 +1,36 @@
+﻿@model Prometheus.WebUI.Models.Shared.TableDataModel
+<div class="std-div">
+    @if (Model.Titles != null)
+    {
+
+        <table class="table table-hover" style="width:500px">
+            <thead>
+            <tr>
+                @foreach (string title in Model.Titles)
+                {
+
+                    <th><label class="font-title-initial">@title</label></th>
+
+                }
+            </tr>
+            </thead>
+            <tbody>
+                @foreach (var row in Model.Data)
+                {
+                    <tr>
+                        @foreach (string data in row.Value)
+                    {
+                            <td>@Html.Raw(data)</td>
+                        }
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <text>gots no data yo</text>
+
+    }
+</div>

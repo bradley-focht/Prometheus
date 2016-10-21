@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Mvc;
@@ -34,16 +33,46 @@ namespace DataService.Models
         [Display(Name="Lifecycle Status")]
 		public Guid LifecycleStatus { get; set; }
 
-        [Display(Name="Service Type Role")]
+	    [Display(Name = "Service Type Role")]
 		public Guid ServiceTypeRole { get; set; }
         [Display(Name = "Service Type Provision")]
         public Guid ServiceTypeProvision { get; set; }
-		//public IEnumerable<ServiceRequest> ServiceRequests { get; set; }
+        public IEnumerable<IServiceGoal> ServiceGoals { get; set; }
+	    public IEnumerable<IServiceWorkUnit> ServiceWorkUnits { get; set; }
+        public IEnumerable<IServiceContract> ServiceContracts { get; set; }
+	    public IEnumerable<IServiceMeasure> ServiceMeasures { get; set; }
 
 
-
-		//Navigation Properties
-		public virtual ServiceBundle ServiceBundle { get; set; }
+        //Navigation Properties
+        public virtual ServiceBundle ServiceBundle { get; set; }
 		public virtual ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
-	}
+
+	    
+
+        int IService.ServiceTypeProvision
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        int IService.ServiceTypeRole
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
 }
