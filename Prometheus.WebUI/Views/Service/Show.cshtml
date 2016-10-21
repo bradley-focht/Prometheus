@@ -2,37 +2,62 @@
 @model Prometheus.WebUI.Models.Service.ServiceModel
 @{
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
-    ViewBag.Title = "Update " + Model.Service.Name;
+    ViewBag.Title = Model.Service.Name;
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
-   
-    
+
+
 }
 
 
-    @section Content
+@section Content
     {
-        @if (Model.Service.Id > 0)
-        {
+    @if (Model.Service.Id > 0)
+    {
+        <div class="std-div">
             <div>
-                @Html.Action("ShowNav", new {id = Model.Service.Id, section = Model.SelectedSection})
+                @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
             </div>
 
 
-            switch (Model.SelectedSection)
+            @switch (Model.SelectedSection)
             {
-                case "General":
-                    @Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (Service) Model.Service)
-                break;
-            
+                case "SWOT":
+                    <text>this one. kind of scary</text>
+                    break;
+                case "Goals":
+                    @Html.Action("ShowServiceGoals", Model)
 
-        }
+                    break;
+                case "WorkUnits":
+                    @Html.Action("ShowServiceWorkUnits", Model)
+                    break;
+                case "Contracts":
+                    @Html.Action("ShowServiceContracts", Model)
+                    break;
+                case "Measures":
+                    @Html.Action("ShowServiceMeasures", Model)
+                    break;
+                default:
+                    @Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (Service)Model.Service)
+                    break;
+            }
+
+            <div class="panel-footer">
+                &nbsp;
+                <div class="float-right-div">
+                    @Html.ActionLink("Add", "Add", new { section = Model.SelectedSection, id = Model.Service.Id }, new { @class = "btn btn-default" })
+                </div>
+            </div>
+        </div>
+
     }
+}
 }
 
 @section Sidebar
 {
-            @Html.Action("ShowServiceList", Model.Service.Id)
+    @Html.Action("ShowServiceList", Model.Service.Id)
 }
