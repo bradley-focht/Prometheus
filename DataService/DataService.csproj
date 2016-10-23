@@ -89,6 +89,7 @@
     <Compile Include="Models\IServiceMeasure.cs" />
     <Compile Include="Models\IServiceRequestOption.cs" />
     <Compile Include="Models\IServiceWorkUnit.cs" />
+    <Compile Include="Models\ISwotActivity.cs" />
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\IUserCreatedEntity.cs" />
     <Compile Include="Models\LifecycleStatus.cs" />
@@ -98,7 +99,9 @@
     <Compile Include="Models\ServiceGoal.cs" />
     <Compile Include="Models\ServiceMeasure.cs" />
     <Compile Include="Models\ServiceRequestOption.cs" />
+    <Compile Include="Models\ServiceSwot.cs" />
     <Compile Include="Models\ServiceWorkUnit.cs" />
+    <Compile Include="Models\SwotActivity.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Service.cs" />

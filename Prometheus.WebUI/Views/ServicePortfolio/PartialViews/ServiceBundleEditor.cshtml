@@ -1,5 +1,4 @@
 ﻿@using DataService.Models
-@using RTE
 @model ServiceBundle
 
 <div class="std-div">
@@ -14,29 +13,11 @@
                         if (property.PropertyName != "Id" && property.PropertyName != "Services" &&
                                !property.PropertyName.Contains("UserId") && !property.PropertyName.Contains("Date"))
                         {
-                            if (property.PropertyName == "Description")
+                            if (property.PropertyName == "Description" || property.PropertyName == "BusinessValue")
                             {
                                 <div class="form-group">
                                     <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                                    @{
-                                        Editor editor1 = new Editor(HttpContext.Current, "Description");
-                                        editor1.LoadFormData("");
-
-                                        editor1.Toolbar = "email";
-
-
-                                        editor1.ShowResizeCorner = true;
-                                        editor1.Height = 200;
-                                        editor1.Width = 557;
-                                        editor1.MvcInit();
-                                        editor1.ShowBottomBar = false;
-                                        editor1.Skin = "office2007silver";
-
-                                        ViewBag.Editor = editor1.MvcGetString();
-                                        <div style="width: 550px">
-                                            @Html.Raw(ViewBag.Editor)
-                                        </div>
-                                    }
+                                    @Html.TextArea("Description", new { @class = "ckeditor", @id = "sampleEditor"})
                                 </div>
                             }
                             else

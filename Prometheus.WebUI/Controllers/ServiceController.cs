@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using DataService.Models;
 using Prometheus.WebUI.Models.Service;
@@ -19,8 +19,6 @@ namespace Prometheus.WebUI.Controllers
             return View();
         }
 
-
-
         /// <summary>
         /// Builds the partial view with selected item
         ///    actions are assumed to follow Add - Show - Update - Delete
@@ -28,12 +26,15 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [ChildActionOnly]
-        public ActionResult ShowServiceList(int id=0)
+        public ActionResult ShowServiceList(int id = 0)
         {
             /* I am here for the looks, remove me */
             LinkListModel servicesModel = new LinkListModel();
             servicesModel.SelectedItemId = id;
-            servicesModel.ListItems = new List<KeyValuePair<int, string>> {new KeyValuePair<int, string>(10, "Operations")};
+            servicesModel.ListItems = new List<KeyValuePair<int, string>>
+            {
+                new KeyValuePair<int, string>(10, "Operations")
+            };
             servicesModel.AddAction = "AddService";
             servicesModel.SelectAction = "Show/General";
             servicesModel.Title = "Services";
@@ -41,10 +42,19 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("PartialViews/_LinkList", servicesModel);
         }
 
+        /// <summary>
+        /// Navigation Control, entity names are coded here
+        ///   names here are used in action names
+        ///   incoming section names are validated against the list, if no match then first in list is used
+        ///   names should be put just as they will show up, spaces are removed, special characters will cause problems
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [ChildActionOnly]
         public ActionResult ShowNav(string section, int id = 0)
         {
-            var sections = new List<string>
+            var sections = new List<string>                     //list of sections for each service
             {
                 "General",
                 "Goals",
@@ -57,8 +67,18 @@ namespace Prometheus.WebUI.Controllers
                 "Documents"
             };
 
-            ServiceNavModel model = new ServiceNavModel(sections, section, id, "Show"+section);
-            
+            string returnLinkSection = null;                    //validate that the section sent in is in the list
+
+            if (sections.Any(linkSection => section == linkSection.Replace(" ", "")))
+            {
+                returnLinkSection = section.Replace(" ", "");
+            }
+
+            if (returnLinkSection == null)                      //default is the first section in the list
+                returnLinkSection = sections[0];
+
+            ServiceNavModel model = new ServiceNavModel(sections, returnLinkSection, id, "Show" + returnLinkSection);
+
             return PartialView("PartialViews/_ServiceNav", model);
         }
 
@@ -83,12 +103,16 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowServiceGoals(Service service)
         {
             TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> { "Goal", "Duration", "Start Date", "End Date"};
+            tblModel.Titles = new List<string> {"Goal", "Duration", "Start Date", "End Date"};
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "test the system", "short term", "september", "october"}),
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "add actual data", "short term", "october", "march"})
+                new KeyValuePair<int, IEnumerable<string>>(1,
+                    new List<string> {"test the system", "short term", "september", "october"}),
+                new KeyValuePair<int, IEnumerable<string>>(1,
+                    new List<string> {"add actual data", "short term", "october", "march"})
             };
+            tblModel.Action = "ShowGoal";
+            tblModel.Controller = "Service";
 
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
@@ -97,10 +121,12 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowServiceContracts(Service service)
         {
             TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> { "Vendor", "Contract Number", "Start Date", "End Date" };
+            tblModel.Titles = new List<string> {"Vendor", "Contract Number", "Start Date", "End Date"};
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "Prometheus", "44-4507-A", "next month", "last month"})};
+                new KeyValuePair<int, IEnumerable<string>>(1,
+                    new List<string> {"Prometheus", "44-4507-A", "next month", "last month"})
+            };
 
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
@@ -109,11 +135,13 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowServiceWorkUnits(Service service)
         {
             TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> { "Work Unit", "Manager", "Roles" };
+            tblModel.Titles = new List<string> {"Work Unit", "Manager", "Roles"};
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "OCIO", "Vinay chandramohan", "Making the Service Portfolio"}),
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "Executive", "Sean Boczulak", "be da boss"})
+                new KeyValuePair<int, IEnumerable<string>>(1,
+                    new List<string> {"OCIO", "Vinay chandramohan", "Making the Service Portfolio"}),
+                new KeyValuePair<int, IEnumerable<string>>(1,
+                    new List<string> {"Executive", "Sean Boczulak", "be da boss"})
             };
 
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
@@ -124,12 +152,86 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowServiceMeasures(Service service)
         {
             TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> { "Method", "Outcome" };
+            tblModel.Titles = new List<string> {"Method", "Outcome"};
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "divide by 0", "exception"})};
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+            };
 
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult ShowServiceSwot(Service service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> {"Method", "Outcome"};
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+            };
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult ShowServiceProcesses(Service service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> {"Method", "Outcome"};
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+            };
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult ShowServicePricing(Service service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> {"Method", "Outcome"};
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+            };
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+
+        public ActionResult UpdateGeneral(int id = 0)
+        {
+            if (id == 0)
+            {
+                return RedirectToAction("Index");
+            }
+            ServiceModel model = new ServiceModel();
+            model.Service = new Service() {Id = 10, Name = "Operations", Description = "this is where we operate"};
+            model.SelectedSection = "General";
+
+            return View("Update", model);
+        }
+
+        [HttpPost]
+        public ActionResult SaveGeneral(Service service)
+        {
+            return RedirectToAction("Show", new { section="General", id=service.Id});
+        }
+
+        public ActionResult ShowGoal(int id = 0, int itemId = 0)
+        {
+            ServiceSectionModel model = new ServiceSectionModel();
+            model.Section = "Goals";
+            model.Service = new Service();
+            model.Service.Name = "Operations";
+            model.Service.Id = 10;
+            model.Service.ServiceGoals = new List<IServiceGoal> {new ServiceGoal {Description = "some new goal goes here", Name = "hi"} };
+            return View("ShowSection", model);
         }
     }
 }

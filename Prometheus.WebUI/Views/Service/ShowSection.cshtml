@@ -1,0 +1,59 @@
+﻿@using System.Web.Mvc.Html
+@using DataService.Models
+@model Prometheus.WebUI.Models.Service.ServiceSectionModel
+@{
+
+    ServiceGoal s = new ServiceGoal();
+
+    if (Model.Section != null && Model.Section == "Goals")
+    {
+        if (Model.Service?.ServiceGoals != null)
+        {
+            foreach (ServiceGoal serviceGoal in Model.Service.ServiceGoals)
+            {
+                if (serviceGoal.Id == Model.SectionItemId)
+                {
+                    s = serviceGoal;
+                    break;
+                }
+            }
+        }
+    }
+
+
+    ViewBag.Title = s.Name;
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
+                                                               new KeyValuePair<string, string>(Model.Service.Name + " " + Model.Section, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
+                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+
+
+
+}
+
+@section Sidebar
+{
+    
+}
+
+
+@section Content {
+    <div class="std-div">
+
+            @Html.Partial("PartialViews/ShowGoalItem", s)
+    <div class="panel-footer">
+        @Html.ActionLink("Back", "Update", new { id = 1 }, new { @class = "btn btn-primary" })
+        <div class="float-right-div">
+
+
+            @Html.ActionLink("Update", "Update", new { id = 1 }, new { @class = "btn btn-default" })
+
+
+            @Html.ActionLink("Delete", "Delete", new { id = 1 }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+
+</div>
+
+}

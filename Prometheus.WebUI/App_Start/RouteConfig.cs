@@ -10,11 +10,25 @@ namespace Prometheus.WebUI
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
 
+
+
             routes.MapRoute(
-                name: "Service",
+                name: "ShowService",
                 url: "Service/Show/{section}/{id}",
                 defaults: new { controller = "Service", action = "Show", section = UrlParameter.Optional, id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+    name: "ShowServiceSection",
+    url: "Service/{action}/{itemId}/{id}",
+    defaults:
+new
+{
+    controller = "Service",
+    action = "Show",
+    itemId = UrlParameter.Optional,
+    serviceId = UrlParameter.Optional
+});
 
             routes.MapRoute(
                 name: "Default",

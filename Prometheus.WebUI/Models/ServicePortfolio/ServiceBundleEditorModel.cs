@@ -7,7 +7,7 @@ namespace Prometheus.WebUI.Models.ServicePortfolio
 	{
 		public IEnumerable<KeyValuePair<int, string>> Services { get; set; }
 
-	    public ServiceBundleEditorModel(IServiceBundle currentServiceBundle) : base(currentServiceBundle)
+	    public ServiceBundleEditorModel(ServiceBundle currentServiceBundle) : base(currentServiceBundle)
 	    {
 	    }
 	}

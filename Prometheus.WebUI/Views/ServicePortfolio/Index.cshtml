@@ -7,7 +7,21 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="std-indent" style="width: 100%;">
+<div class="std-indent">
+    <label class="font-title2-blue">Workplace Services</label>
+    <dl class="dl-horizontal" style="margin-top: 0; border-top: 1px solid #cccccc; border-bottom: 1px solid #cccccc;">
+        <dt>Description:</dt>
+        <dd>A long description</dd>
+        <dt>Business Value:</dt>
+        <dd>Bus value statements</dd>
+        <dt>Services</dt>
+        <dd>long, csv</dd>
+        <dt>Measures</dt>
+        <dd>some measures for you</dd>
+    </dl>
+
+
+    <p>Option 2</p>
     @if (Model != null && Model.Any())
     {
         foreach (var serviceBundle in Model)
@@ -20,11 +34,9 @@
                 </tr>
                 <tr>
                     <td style="vertical-align: top; width: 60%;">
-                        <label class="font-title-initial">Description: </label><br />
                         @if (serviceBundle.Description != null)
                         {
-                            @Html.Raw(serviceBundle.Description)
-                            ;
+                            @Html.Raw(serviceBundle.Description);
                         }
                     </td>
                     <td style="vertical-align: top; width: 40%; border-bottom: 1px solid black;" rowspan="3">
@@ -37,14 +49,13 @@
                         <label class="font-title-initial">Business Value:</label> <br />
                         @if (serviceBundle.BusinessValue != null)
                         {
-                            @Html.Raw(serviceBundle.BusinessValue)
-                            ;
+                            @Html.Raw(serviceBundle.BusinessValue);
                         }
                     </td>
                 </tr>
                 <tr>
                     <td style="vertical-align: top; border-bottom: 1px solid black;">
-                        <blabel class="font-title-initial">Measures:</blabel><br />
+                        <label class="font-title-initial">Measures:</label><br />
                         @if (serviceBundle.Measures != null)
                         {
                             Html.Raw(serviceBundle.Measures);

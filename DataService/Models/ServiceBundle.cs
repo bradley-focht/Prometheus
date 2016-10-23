@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace DataService.Models
 {
@@ -21,10 +22,13 @@ namespace DataService.Models
 		[Required(ErrorMessage = "Service Bundle: Name is required")]
 		public string Name { get; set; }
 
+        [AllowHtml]
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
+        [AllowHtml]
 		[DataType(DataType.MultilineText)]
+        [Display(Name="Business Value")]
 		public string BusinessValue { get; set; }
 		public string Measures { get; set; }
 

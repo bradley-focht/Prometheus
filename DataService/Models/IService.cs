@@ -20,5 +20,6 @@ namespace DataService.Models
 		//Guid ServiceTypeProvision { get; set; }
 		//Guid ServiceTypeRole { get; set; }
 		int UpdatedByUserId { get; set; }
+	    IEnumerable<IServiceGoal> ServiceGoals { get; set; }
 	}
 }

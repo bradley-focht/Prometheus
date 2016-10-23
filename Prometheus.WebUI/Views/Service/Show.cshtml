@@ -11,7 +11,6 @@
 
 }
 
-
 @section Content
     {
     @if (Model.Service.Id > 0)
@@ -21,36 +20,24 @@
                 @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
             </div>
 
-
-            @switch (Model.SelectedSection)
-            {
-                case "SWOT":
-                    <text>this one. kind of scary</text>
-                    break;
-                case "Goals":
-                    @Html.Action("ShowServiceGoals", Model)
-
-                    break;
-                case "WorkUnits":
-                    @Html.Action("ShowServiceWorkUnits", Model)
-                    break;
-                case "Contracts":
-                    @Html.Action("ShowServiceContracts", Model)
-                    break;
-                case "Measures":
-                    @Html.Action("ShowServiceMeasures", Model)
-                    break;
-                default:
-                    @Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (Service)Model.Service)
-                    break;
-            }
+            @(Model.SelectedSection != "General" ? Html.Action("ShowService" + Model.SelectedSection, Model) : Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (Service) Model.Service))
 
             <div class="panel-footer">
                 &nbsp;
                 <div class="float-right-div">
-                    @Html.ActionLink("Add", "Add", new { section = Model.SelectedSection, id = Model.Service.Id }, new { @class = "btn btn-default" })
+
+                    @if (Model.SelectedSection == "General")
+                    {
+                        @Html.ActionLink("Update", "Update" + Model.SelectedSection, new { id = Model.Service.Id }, new { @class = "btn btn-default" })
+                    }
+                    else
+                    {
+
+                        @Html.ActionLink("Add", "Add" + Model.SelectedSection, new { id = Model.Service.Id }, new { @class = "btn btn-default" })
+                    }
                 </div>
             </div>
+
         </div>
 
     }

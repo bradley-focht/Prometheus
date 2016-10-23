@@ -5,22 +5,34 @@
 
         <table class="table table-hover" style="width:500px">
             <thead>
-            <tr>
-                @foreach (string title in Model.Titles)
+                <tr>
+                    @foreach (string title in Model.Titles)
                 {
 
-                    <th><label class="font-title-initial">@title</label></th>
+                        <th><label class="font-title-initial">@title</label></th>
 
-                }
-            </tr>
+                    }
+                </tr>
             </thead>
             <tbody>
                 @foreach (var row in Model.Data)
                 {
+                    bool firstCol = true;
                     <tr>
                         @foreach (string data in row.Value)
                     {
-                            <td>@Html.Raw(data)</td>
+                            <td>
+                                @if (firstCol)
+                                {
+                                    @Html.ActionLink(Html.Raw(data).ToHtmlString(), Model.Action, new {id = "1", itemId=row.Key} );
+               
+                                    firstCol = false;
+                                }
+                                else
+                                {
+                                    @Html.Raw(data)
+                                }
+                            </td>
                         }
 
                     </tr>

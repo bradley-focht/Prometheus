@@ -6,11 +6,11 @@ namespace Prometheus.WebUI.Models.ServicePortfolio
 {
 	public class ServiceBundleModel
 	{
-        public ServiceBundleModel(IServiceBundle currentServiceBundle)
+        public ServiceBundleModel(ServiceBundle currentServiceBundle)
         {
             CurrentServiceBundle = currentServiceBundle;
         }
-		public IServiceBundle CurrentServiceBundle { get; set; }
+		public ServiceBundle CurrentServiceBundle { get; set; }
 		public IEnumerable<KeyValuePair<int, string>> ServiceBundles { get; set; }
 	}
 }
