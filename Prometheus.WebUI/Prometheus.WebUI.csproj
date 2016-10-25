@@ -277,9 +277,10 @@
     <Content Include="Views\Shared\PartialViews\_TableViewer.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGeneral.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
-    <Content Include="Views\Service\Update.cshtml" />
-    <Content Include="Views\Service\ShowSection.cshtml" />
+    <Content Include="Views\Service\UpdateSectionItem.cshtml" />
+    <Content Include="Views\Service\ShowSectionItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowGoalItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateGoalItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

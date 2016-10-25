@@ -10,22 +10,26 @@
 
         </div>
     </div>
-    <div>
+    <div style="padding-top: 5px; padding-bottom: 5px;">
         @{
             if (Model.ListItems != null && Model.ListItems.Any())
             {
                 foreach (var item in Model.ListItems)
                 {
-                    <div class="std-div">
-                        @if (Model.SelectedItemId == item.Key) //highlight selected item
-                        {
-                            @Html.ActionLink(item.Value, Model.SelectAction, new { id = item.Key }, null)
-                        }
-                        else //don't highlight others
-                        {
-                            @Html.ActionLink(item.Value, Model.SelectAction, new { id = item.Key }, null)
-                        }
-                    </div>
+
+                    if (Model.SelectedItemId == item.Key) //highlight selected item
+                    {
+                        <div class="bg-primary">
+                            @Html.ActionLink(item.Value, Model.SelectAction, Model.Controller, new { id = item.Key }, new { @class = "bg-primary" })
+                        </div>
+                    }
+                    else //don't highlight others
+                    {
+                        <div class="bg-default">
+                            @Html.ActionLink(item.Value, Model.SelectAction, Model.Controller, new { id = item.Key }, null)
+                        </div>
+                    }
+
                 }
             }
             else //no results found

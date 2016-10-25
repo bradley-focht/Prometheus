@@ -1,0 +1,13 @@
+﻿@model DataService.Models.ServiceGoal
+    @{
+        foreach (var property in ViewData.ModelMetadata.Properties)
+        {
+            if (!property.PropertyName.Contains("Id"))
+            {
+                <div>
+                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
+                    @Html.Raw(property.Model)
+                </div>
+            }
+        }
+    }

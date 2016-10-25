@@ -37,6 +37,7 @@ namespace Prometheus.WebUI.Controllers
             };
             servicesModel.AddAction = "AddService";
             servicesModel.SelectAction = "Show/General";
+            servicesModel.Controller = "Service";
             servicesModel.Title = "Services";
 
             return PartialView("PartialViews/_LinkList", servicesModel);
@@ -111,7 +112,8 @@ namespace Prometheus.WebUI.Controllers
                 new KeyValuePair<int, IEnumerable<string>>(1,
                     new List<string> {"add actual data", "short term", "october", "march"})
             };
-            tblModel.Action = "ShowGoal";
+            tblModel.Action = "ShowServiceSectionItem";
+            tblModel.ServiceSection = "Goals";
             tblModel.Controller = "Service";
 
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
@@ -203,7 +205,12 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
 
-
+        /// <summary>
+        /// Sends service to UpdateSection view for form input
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ChildActionOnly]
         public ActionResult UpdateGeneral(int id = 0)
         {
             if (id == 0)
@@ -214,8 +221,9 @@ namespace Prometheus.WebUI.Controllers
             model.Service = new Service() {Id = 10, Name = "Operations", Description = "this is where we operate"};
             model.SelectedSection = "General";
 
-            return View("Update", model);
+            return View("UpdateSectionItem", model);
         }
+
 
         [HttpPost]
         public ActionResult SaveGeneral(Service service)
@@ -223,15 +231,34 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Show", new { section="General", id=service.Id});
         }
 
-        public ActionResult ShowGoal(int id = 0, int itemId = 0)
+        /// <summary>
+        /// Action used to show the SectionItem view that will load the specific partial view for the item required
+        ///    the affiliated child actions for their corresponding partial views must follow the convention ShowService***Item
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ShowServiceSectionItem(string section, int id = 0)
         {
             ServiceSectionModel model = new ServiceSectionModel();
             model.Section = "Goals";
             model.Service = new Service();
             model.Service.Name = "Operations";
             model.Service.Id = 10;
-            model.Service.ServiceGoals = new List<IServiceGoal> {new ServiceGoal {Description = "some new goal goes here", Name = "hi"} };
-            return View("ShowSection", model);
+            model.Service.ServiceGoals = new List<IServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
+            return View("ShowSectionItem", model);
+        }
+
+
+        public ActionResult UpdateServiceSectionItem(string section, int id = 0)
+        {
+            ServiceSectionModel model = new ServiceSectionModel();
+            model.Section = "Goals";
+            model.Service = new Service();
+            model.Service.Name = "Operations";
+            model.Service.Id = 10;
+            model.Service.ServiceGoals = new List<IServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
+            return View("UpdateSectionItem", model);
         }
     }
 }

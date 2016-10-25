@@ -28,6 +28,7 @@ namespace Prometheus.WebUI.Models.Shared
 		public int SelectedItemId { get; set; }
 		public string SelectAction { get; set; }
         public string AddAction { get; set; }
+	    public string Controller { get; set; }
 	    public string Title { get; set; }
     }
 }

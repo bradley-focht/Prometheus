@@ -41,16 +41,18 @@
 @section Content {
     <div class="std-div">
 
-            @Html.Partial("PartialViews/ShowGoalItem", s)
+        @Html.Partial("PartialViews/ShowGoalItem", (ServiceGoal)(from serviceGoal in Model.Service.ServiceGoals
+                                                                 where serviceGoal.Id == Model.SectionItemId
+                                                                 select serviceGoal).First())
     <div class="panel-footer">
-        @Html.ActionLink("Back", "Update", new { id = 1 }, new { @class = "btn btn-primary" })
+        @Html.ActionLink("Back", "Show", new { section = Model.Section, id = Model.Service.Id }, new { @class = "btn btn-primary" })
         <div class="float-right-div">
 
 
-            @Html.ActionLink("Update", "Update", new { id = 1 }, new { @class = "btn btn-default" })
+            @Html.ActionLink("Update", "UpdateServiceSectionItem", new {id = Model.SectionItemId, section = Model.Section}, new { @class = "btn btn-default" })
 
 
-            @Html.ActionLink("Delete", "Delete", new { id = 1 }, new { @class = "btn btn-danger" })
+            @Html.ActionLink("Delete", "Delete", new { id = 1, section = Model.Section }, new { @class = "btn btn-danger" })
         </div>
     </div>
 

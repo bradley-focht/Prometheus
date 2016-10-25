@@ -24,8 +24,7 @@
                             <td>
                                 @if (firstCol)
                                 {
-                                    @Html.ActionLink(Html.Raw(data).ToHtmlString(), Model.Action, new {id = "1", itemId=row.Key} );
-               
+                                    @Html.ActionLink(data, Model.Action,  "Service", new {section = Model.ServiceSection, id = row.Key }, null)
                                     firstCol = false;
                                 }
                                 else

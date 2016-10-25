@@ -16,5 +16,6 @@ namespace Prometheus.WebUI.Models.Shared
         public IEnumerable<KeyValuePair<int, IEnumerable<string>>> Data { get; set; }
         public string Controller { get; set; }
         public string Action { get; set; }
+        public string ServiceSection { get; set; }
     }
 }

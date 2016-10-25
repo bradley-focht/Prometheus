@@ -12,23 +12,26 @@ namespace Prometheus.WebUI
 
 
 
+            /* routes for updating Service portfolio */
             routes.MapRoute(
-                name: "ShowService",
+                name: "ShowServiceSection",
                 url: "Service/Show/{section}/{id}",
                 defaults: new { controller = "Service", action = "Show", section = UrlParameter.Optional, id = UrlParameter.Optional }
             );
 
+
             routes.MapRoute(
-    name: "ShowServiceSection",
-    url: "Service/{action}/{itemId}/{id}",
-    defaults:
-new
-{
-    controller = "Service",
-    action = "Show",
-    itemId = UrlParameter.Optional,
-    serviceId = UrlParameter.Optional
-});
+                name: "ShowServiceSectionItem",
+                url: "Service/ShowServiceSectionItem/{section}/{id}",
+                defaults: new { controller = "Service", action = "ShowServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+                name: "UpdateServiceSectionItem",
+                url: "Service/UpdateServiceSectionItem/{section}/{id}",
+                defaults: new { controller = "Service", action = "UpdateServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
+            );
+
 
             routes.MapRoute(
                 name: "Default",
