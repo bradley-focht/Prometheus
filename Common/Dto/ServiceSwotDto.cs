@@ -1,9 +1,9 @@
 ﻿using Common.Enums;
 using System.Collections.Generic;
 
-namespace DataService.Models
+namespace Common.Dto
 {
-	public class ServiceSwot : IServiceSwot
+	public class ServiceSwotDto : IServiceSwotDto
 	{
 		public int Id { get; set; }
 		//this is either Strength, Weakness, Opportunity, or Threat
@@ -12,6 +12,6 @@ namespace DataService.Models
 
 		public string Description { get; set; }
 
-		public ICollection<SwotActivity> SwotActivities { get; set; }
+		public ICollection<ISwotActivityDto> SwotActivities { get; set; }
 	}
 }

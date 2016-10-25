@@ -31,7 +31,12 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.3\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,19 +50,25 @@
     <Compile Include="Dto\IRoleDto.cs" />
     <Compile Include="Dto\IServiceBundleDto.cs" />
     <Compile Include="Dto\IServiceDto.cs" />
-    <Compile Include="Dto\IServiceGoalsDto.cs" />
+    <Compile Include="Dto\IServiceGoalDto.cs" />
     <Compile Include="Dto\IServiceRequestOptionDto.cs" />
+    <Compile Include="Dto\IServiceSwotDto.cs" />
+    <Compile Include="Dto\ISwotActivityDto.cs" />
     <Compile Include="Dto\IUserCreatedEntityDto.cs" />
     <Compile Include="Dto\IUserDto.cs" />
     <Compile Include="Dto\LifecycleStatusDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\ServiceBundleDto.cs" />
     <Compile Include="Dto\ServiceDto.cs" />
-    <Compile Include="Dto\ServiceGoalsDto.cs" />
+    <Compile Include="Dto\ServiceGoalDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionDto.cs" />
+    <Compile Include="Dto\ServiceSwotDto.cs" />
+    <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Enums\ServiceSwotType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

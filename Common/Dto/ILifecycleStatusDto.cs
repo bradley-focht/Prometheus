@@ -1,4 +1,4 @@
-﻿namespace ServicePortfolio.Dto
+﻿namespace Common.Dto
 {
 	public interface ILifecycleStatusDto
 	{

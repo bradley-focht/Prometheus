@@ -1,5 +1,5 @@
-﻿using ServicePortfolio.Controllers;
-using ServicePortfolio.Dto;
+﻿using Common.Dto;
+using ServicePortfolio.Controllers;
 using System;
 using System.Collections.Generic;
 

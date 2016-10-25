@@ -22,13 +22,13 @@ namespace DataService.Models
 		[Required(ErrorMessage = "Service Bundle: Name is required")]
 		public string Name { get; set; }
 
-        [AllowHtml]
+		[AllowHtml]
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
-        [AllowHtml]
+		[AllowHtml]
 		[DataType(DataType.MultilineText)]
-        [Display(Name="Business Value")]
+		[Display(Name = "Business Value")]
 		public string BusinessValue { get; set; }
 		public string Measures { get; set; }
 

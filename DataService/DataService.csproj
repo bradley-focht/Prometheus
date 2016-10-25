@@ -88,6 +88,7 @@
     <Compile Include="Models\IServiceGoal.cs" />
     <Compile Include="Models\IServiceMeasure.cs" />
     <Compile Include="Models\IServiceRequestOption.cs" />
+    <Compile Include="Models\IServiceSwot.cs" />
     <Compile Include="Models\IServiceWorkUnit.cs" />
     <Compile Include="Models\ISwotActivity.cs" />
     <Compile Include="Models\IUser.cs" />
@@ -110,7 +111,12 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{0F03BAA4-EC68-446D-BDF4-64C689784DC1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

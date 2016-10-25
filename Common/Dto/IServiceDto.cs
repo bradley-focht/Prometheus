@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ServicePortfolio.Dto
+namespace Common.Dto
 {
 	public interface IServiceDto
 	{
@@ -20,5 +20,7 @@ namespace ServicePortfolio.Dto
 		//Guid ServiceTypeProvision { get; set; }
 		//Guid ServiceTypeRole { get; set; }
 		int UpdatedByUserId { get; set; }
+
+		ICollection<IServiceGoalDto> ServiceGoals { get; set; }
 	}
 }

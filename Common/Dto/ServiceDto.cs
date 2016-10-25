@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace ServicePortfolio.Dto
+namespace Common.Dto
 {
 	public class ServiceDto : IServiceDto
 	{
@@ -49,5 +49,6 @@ namespace ServicePortfolio.Dto
 		public virtual IServiceBundleDto ServiceBundle { get; set; }
 		public virtual ILifecycleStatusDto LifecycleStatusDto { get; set; }
 		public virtual ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
+		public virtual ICollection<IServiceGoalDto> ServiceGoals { get; set; }
 	}
 }

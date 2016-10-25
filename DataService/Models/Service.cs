@@ -41,7 +41,7 @@ namespace DataService.Models
 		[Display(Name = "Service Owner")]
 		public string ServiceOwner { get; set; }
 
-	    public IEnumerable<IServiceGoal> ServiceGoals { get; set; }
+		public ICollection<ServiceGoal> ServiceGoals { get; set; }
 
 		//TODO: Brad fill Sean in on these
 		//[Display(Name = "Service Type Role")]

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ServicePortfolio.Dto
+namespace Common.Dto
 {
 	public interface IServiceBundleDto
 	{

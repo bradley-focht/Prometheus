@@ -1,4 +1,4 @@
-﻿using ServicePortfolio.Dto;
+﻿using Common.Dto;
 
 namespace UserManager
 {
