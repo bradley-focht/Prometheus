@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DataService.Models
+﻿namespace DataService.Models
 {
 	public interface ILifecycleStatus
 	{

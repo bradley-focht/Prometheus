@@ -35,7 +35,7 @@ namespace DataService.DataAccessLayer
 			{
 				context.Users.Add(user);
 			}
-			context.SaveChanges();
+			context.SaveChanges(1);
 
 			//Add a sample service bundle with services and service request options
 			context.ServiceBundles.Add(new ServiceBundle

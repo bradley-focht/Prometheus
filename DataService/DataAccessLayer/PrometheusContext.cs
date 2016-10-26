@@ -1,4 +1,5 @@
 ﻿using DataService.Models;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
@@ -8,6 +9,7 @@ namespace DataService.DataAccessLayer
 {
 	public class PrometheusContext : DbContext
 	{
+		private const int NullUserId = 0;
 		public PrometheusContext() : base("PrometheusContext")
 		{
 
@@ -35,10 +37,12 @@ namespace DataService.DataAccessLayer
 		/// http://stackoverflow.com/questions/15820505/dbentityvalidationexception-how-can-i-easily-tell-what-caused-the-error
 		/// </summary>
 		/// <returns></returns>
-		public override int SaveChanges()
+		public int SaveChanges(int userId = NullUserId)
+
 		{
 			try
 			{
+				AddMetadata(userId);
 				return base.SaveChanges();
 			}
 			catch (DbEntityValidationException ex)
@@ -58,5 +62,36 @@ namespace DataService.DataAccessLayer
 				throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
 			}
 		}
+
+		/// <summary>
+		/// Sets the metadata fields such as the updated / created date and user
+		/// </summary>
+		/// <param name="userId"></param>
+		private void AddMetadata(int userId)
+		{
+			var createdEntitiesChanged = ChangeTracker.Entries().Where(x => x.Entity is ICreatedEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+			var userCreatedEntitiesChanged = ChangeTracker.Entries().Where(x => x.Entity is IUserCreatedEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
+
+			foreach (var entity in createdEntitiesChanged)
+			{
+				if (entity.State == EntityState.Added)
+				{
+					((ICreatedEntity)entity.Entity).DateCreated = DateTime.UtcNow;
+				}
+
+				((ICreatedEntity)entity.Entity).DateUpdated = DateTime.UtcNow;
+			}
+
+			foreach (var entity in userCreatedEntitiesChanged)
+			{
+				if (entity.State == EntityState.Added)
+				{
+					((IUserCreatedEntity)entity.Entity).CreatedByUserId = userId;
+				}
+
+				((IUserCreatedEntity)entity.Entity).UpdatedByUserId = userId;
+			}
+		}
 	}
 }
+
