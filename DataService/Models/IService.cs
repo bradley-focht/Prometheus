@@ -13,6 +13,7 @@ namespace DataService.Models
 		string ServiceOwner { get; set; }
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 		ServiceBundle ServiceBundle { get; set; }
+		//TODO: make enums Brad
 		//Guid ServiceTypeProvision { get; set; }
 		//Guid ServiceTypeRole { get; set; }
 		ICollection<ServiceGoal> ServiceGoals { get; set; }

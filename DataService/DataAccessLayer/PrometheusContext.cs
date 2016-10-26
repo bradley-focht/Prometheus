@@ -38,7 +38,6 @@ namespace DataService.DataAccessLayer
 		/// </summary>
 		/// <returns></returns>
 		public int SaveChanges(int userId = NullUserId)
-
 		{
 			try
 			{

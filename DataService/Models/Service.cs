@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web.Mvc;
 
 namespace DataService.Models
 {
@@ -11,7 +10,6 @@ namespace DataService.Models
 		//PK
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-		[HiddenInput(DisplayValue = false)]
 		public int Id { get; set; }
 
 		//FK

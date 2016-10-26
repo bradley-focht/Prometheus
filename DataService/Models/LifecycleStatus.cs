@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Web.Mvc;
 
 namespace DataService.Models
 {
@@ -7,7 +6,6 @@ namespace DataService.Models
 	{
 		//PK
 		[Key]
-		[HiddenInput(DisplayValue = false)]
 		public int Id { get; set; }
 
 		//TODO: Brad document what the fields in this entity do. Ideally we should have comments in the Model interfaces for ALL fields

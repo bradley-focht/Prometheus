@@ -62,7 +62,7 @@ namespace ServicePortfolio.Controllers
 				var existingServiceBundle = context.ServiceBundles.Find(serviceBundle.Id);
 				if (existingServiceBundle == null)
 				{
-					throw new InvalidOperationException("Serivce record must exist in order to be updated.");
+					throw new InvalidOperationException("Service record must exist in order to be updated.");
 				}
 				else
 				{
