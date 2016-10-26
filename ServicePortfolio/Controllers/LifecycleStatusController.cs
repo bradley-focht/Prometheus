@@ -6,23 +6,22 @@ namespace ServicePortfolio.Controllers
 {
 	internal class LifecycleStatusController : ILifecycleStatusController
 	{
-		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames()
+		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames(int userId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ILifecycleStatusDto GetLifecycleStatus(int lifecycleStatusId)
+		public ILifecycleStatusDto GetLifecycleStatus(int userId, int lifecycleStatusId)
 		{
 			throw new NotImplementedException();
 		}
 
-		public ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		public ILifecycleStatusDto SaveLifecycleStatus(int userId, ILifecycleStatusDto lifecycleStatus)
 		{
 			throw new NotImplementedException();
 		}
 
-
-		public bool DeleteLifecycleStatus(int lifecycleStatusId)
+		public bool DeleteLifecycleStatus(int userId, int lifecycleStatusId)
 		{
 			throw new NotImplementedException();
 		}

@@ -11,7 +11,7 @@ namespace ServicePortfolio.Controllers
 {
 	internal class ServiceBundleController : IServiceBundleController
 	{
-		public IServiceBundleDto GetServiceBundle(int serviceBundleId)
+		public IServiceBundleDto GetServiceBundle(int userId, int serviceBundleId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -20,7 +20,7 @@ namespace ServicePortfolio.Controllers
 			}
 		}
 
-		public IEnumerable<IServiceBundleDto> GetServiceBundles()
+		public IEnumerable<IServiceBundleDto> GetServiceBundles(int userId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -29,15 +29,15 @@ namespace ServicePortfolio.Controllers
 			}
 		}
 
-		public IEnumerable<Tuple<int, string>> GetServiceBundleNames()
+		public IEnumerable<Tuple<int, string>> GetServiceBundleNames(int userId)
 		{
-			var bundles = GetServiceBundles();
+			var bundles = GetServiceBundles(userId);
 			var nameList = new List<Tuple<int, string>>();
 			nameList.AddRange(bundles.Select(x => new Tuple<int, string>(x.Id, x.Name)));
 			return nameList.OrderBy(x => x.Item2);
 		}
 
-		public IServiceBundleDto SaveServiceBundle(IServiceBundleDto serviceBundle)
+		public IServiceBundleDto SaveServiceBundle(int userId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -50,12 +50,12 @@ namespace ServicePortfolio.Controllers
 				}
 				else
 				{
-					return UpdateServiceBundle(serviceBundle);
+					return UpdateServiceBundle(userId, serviceBundle);
 				}
 			}
 		}
 
-		private IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
+		private IServiceBundleDto UpdateServiceBundle(int userId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -75,7 +75,7 @@ namespace ServicePortfolio.Controllers
 			}
 		}
 
-		public bool DeleteServiceBundle(int serviceBundleId)
+		public bool DeleteServiceBundle(int userId, int serviceBundleId)
 		{
 			using (var context = new PrometheusContext())
 			{
