@@ -23,8 +23,8 @@ namespace ServicePortfolio.Controllers
 		/// Saves the lifecycle status to the database
 		/// </summary>
 		/// <param name="lifecycleStatus"></param>
-		/// <returns>True if successful</returns>
-		bool SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus);
+		/// <returns>Saved entity DTO</returns>
+		ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus);
 
 		/// <summary>
 		/// Deletes the lifecycle status from the database

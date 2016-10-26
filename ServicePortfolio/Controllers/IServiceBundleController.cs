@@ -29,8 +29,8 @@ namespace ServicePortfolio.Controllers
 		/// Saves the service bundle to the database
 		/// </summary>
 		/// <param name="serviceBundle"></param>
-		/// <returns>True if successful</returns>
-		bool SaveServiceBundle(IServiceBundleDto serviceBundle);
+		/// <returns>Saved entity DTO</returns>
+		IServiceBundleDto SaveServiceBundle(IServiceBundleDto serviceBundle);
 
 		/// <summary>
 		/// Deletes the service bundle from the database

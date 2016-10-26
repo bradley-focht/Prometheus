@@ -31,8 +31,8 @@ namespace ServicePortfolio.Controllers
 		/// Saves the service to the database
 		/// </summary>
 		/// <param name="service"></param>
-		/// <returns>True if successful</returns>
-		bool SaveService(IServiceDto service);
+		/// <returns>Saved entity DTO</returns>
+		IServiceDto SaveService(IServiceDto service);
 
 		/// <summary>
 		/// Deletes the service from the database

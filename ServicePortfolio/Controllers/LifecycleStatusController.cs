@@ -16,7 +16,7 @@ namespace ServicePortfolio.Controllers
 			throw new NotImplementedException();
 		}
 
-		public bool SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		public ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
 		{
 			throw new NotImplementedException();
 		}
