@@ -83,7 +83,12 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("PartialViews/_ServiceNav", model);
         }
 
-
+        /// <summary>
+        /// Show service list
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult Show(string section = "", int id = 0)
         {
             ServiceModel sm = new ServiceModel();
@@ -173,7 +178,9 @@ namespace Prometheus.WebUI.Controllers
             {
                 new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
             };
-
+            tblModel.Action = "ShowServiceSectionItem";
+            tblModel.ServiceSection = "Swot";
+            tblModel.Controller = "Service";
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
 
@@ -245,10 +252,12 @@ namespace Prometheus.WebUI.Controllers
             model.Service = new Service();
             model.Service.Name = "Operations";
             model.Service.Id = 10;
-            model.Service.ServiceGoals = new List<IServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
+            model.Service.ServiceGoals = new List<ServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
             return View("ShowSectionItem", model);
         }
 
+
+        
 
         public ActionResult UpdateServiceSectionItem(string section, int id = 0)
         {
@@ -257,8 +266,32 @@ namespace Prometheus.WebUI.Controllers
             model.Service = new Service();
             model.Service.Name = "Operations";
             model.Service.Id = 10;
-            model.Service.ServiceGoals = new List<IServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
+            model.Service.ServiceGoals = new List<ServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
             return View("UpdateSectionItem", model);
         }
+
+
+        public ActionResult UpdateGoalItem(int id)
+        {
+            ServiceGoal sg = new ServiceGoal();
+            sg.Id = 5;
+            sg.Name = "new goal to acheive";
+            sg.Type = "short term";
+
+            return View("PartialViews/UpdateGoalItem", sg);
+        }
+
+
+        public ActionResult AddServiceSectionItem(string section, int id = 0)
+        {
+            var model = new ServiceSectionModel();
+            model.Section = section;
+            model.Service = new Service();
+            model.Service.Name = "Operations";
+            model.Service.Id = 10;
+
+            return View("AddSectionItem", model);
+        }
+
     }
 }

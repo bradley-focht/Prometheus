@@ -32,6 +32,16 @@ namespace Prometheus.WebUI
                 defaults: new { controller = "Service", action = "UpdateServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
             );
 
+            routes.MapRoute(
+                name: "AddServiceSectionItem",
+                url: "Service/AddServiceSectionItem/{section}/{id}",
+                defaults: new { controller = "Service", action = "AddServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
+);
+
+
+
+
+
 
             routes.MapRoute(
                 name: "Default",

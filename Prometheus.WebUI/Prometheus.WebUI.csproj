@@ -281,6 +281,10 @@
     <Content Include="Views\Service\ShowSectionItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowGoalItem.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGoalItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowSwotItem.cshtml" />
+    <Content Include="Views\Service\AddSectionItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateSwotItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateContractItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -295,10 +299,6 @@
     <ProjectReference Include="..\DataService\DataService.csproj">
       <Project>{7757884f-c8d9-48ac-a4d6-6238d0203431}</Project>
       <Name>DataService</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Prometheus.Domain\Prometheus.Domain.csproj">
-      <Project>{cb92e2ce-ecfc-4dd7-8883-0bd219efb59e}</Project>
-      <Name>Prometheus.Domain</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -11,10 +11,10 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
 <body>
-    @Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml", (IList<KeyValuePair<string, string>>)ViewBag.Links)
+    @Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml", (List<KeyValuePair<string, string>>)ViewBag.Links)
 
 
-   <div class="std-indent" style="display:inline-block;">
+   <div class="std-indent std-div">
 
         @RenderBody()
 
