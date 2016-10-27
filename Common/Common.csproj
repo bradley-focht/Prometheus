@@ -66,6 +66,8 @@
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Enums\ServiceSwotType.cs" />
+    <Compile Include="Enums\ServiceTypeProvision.cs" />
+    <Compile Include="Enums\ServiceTypeRole.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

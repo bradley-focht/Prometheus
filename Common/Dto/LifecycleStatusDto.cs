@@ -9,15 +9,21 @@ namespace Common.Dto
 		[HiddenInput(DisplayValue = false)]
 		public int Id { get; set; }
 
-		//TODO: Brad document what the fields in this entity do. Ideally we should have comments in the Model interfaces for ALL fields
 		//Fields
+        //unique name of each status
 		[Required(ErrorMessage = "Lifecycle Status: Name required")]
 		public string Name { get; set; }
-		public string Comment { get; set; }
-		public int Position { get; set; }
 
+        //optional comment about the intended use of the status
+        public string Comment { get; set; }
+
+        //used for the sort order when displaying statuses
+        [Required(ErrorMessage = "Lifecycle position is required")]
+        public int Position { get; set; }
+
+        //attribute to decide if services with this status will be visible in business/support catalog
 		[Display(Name = "Catalog Visible")]
-		[Required(ErrorMessage = "Catalog Visible: Selection required")]
+		[Required(ErrorMessage = "Catalog Visibility selection required")]
 		public bool CatalogVisible { get; set; }
 	}
 }

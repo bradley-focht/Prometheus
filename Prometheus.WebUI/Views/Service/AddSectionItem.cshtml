@@ -22,25 +22,33 @@
     {
         <div class="std-div">
             @switch (Model.Section)
-                        {
-                            case "Goals":
-                                @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoal())
-                                break;
-                            case "SWOT":
-                                @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwot())
-                                break;
-                            case "Contracts":
-                            @Html.Partial("PartialViews/UpdateContractItem", new ServiceContract());
-                                break;
+            {
+                case "General":
+                    @Html.Partial("PartialViews/AddGeneral", new Service());
+                    break;
+                case "Goals":
+                    @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoal())
+                    break;
+                case "SWOT":
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwot())
+                    break;
+                case "Contracts":
+                    @Html.Partial("PartialViews/UpdateContractItem", new ServiceContract())
+                    break;
+                case "Measures":
+                    @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasure())
+                    break;
+                case "WorkUnits":
+                    @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnit())
+                    break;
 
-
-                        }
+            }
             <div class="panel-footer">
                 &nbsp;
                 <div class="float-right-div">
-                    @Html.ActionLink("Back", "Show", new {id = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
 
-                    <input type="submit" value="Save" class="btn btn-primary"/>
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </div>
 
