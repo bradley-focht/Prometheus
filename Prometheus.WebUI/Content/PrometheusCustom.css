@@ -1,7 +1,7 @@
 ﻿.font-title1 {
-  color: #151515;
-  font-size:25px;
-  font-weight:300;
+    color: #151515;
+    font-size: 25px;
+    font-weight: 300;
 }
 
 .div-title {
@@ -11,82 +11,83 @@
 }
 
 .font-title2 {
-    color:#151515;
-    font-size:large;
-    font-weight:200;
+    color: #151515;
+    font-size: large;
+    font-weight: 200;
 }
 
 .font-title2-blue {
     color: #2255A9;
-    font-size:18px;
-    font-weight:600;
+    font-size: 18px;
+    font-weight: 600;
 }
 
 .font-title3 {
     color: #232323;
-    font-weight:600;
-    font-size:15px;
+    font-weight: 600;
+    font-size: 15px;
 }
 
 .font-title-initial {
     color: #123579;
-    font-size:10px;
-    font-weight:600;
+    font-size: 10px;
+    font-weight: 600;
 }
 
 .font-small-inverse-dull {
-    font-size:x-small;
+    font-size: x-small;
     color: #cccccc;
 }
+
 .std-indent {
-    padding-left:3%;
+    padding-left: 3%;
 }
 
 .std-table {
-    padding:10px; 
-    width:100%;
+    padding: 10px;
+    width: 100%;
 }
 
 .std-cell {
- vertical-align:top;
+    vertical-align: top;
+    padding: 2.5px;
 }
 
 .std-div {
-    padding:10px;
+    padding: 10px;
     display: inline-block;
 }
 
 .float-right-div {
-    float:right;
-    display:inline-block;
+    float: right;
+    display: inline-block;
     margin-left: 20px;
     margin-right: 5px;
 }
-.breadcrumb-container{
-    height:30px;
-    vertical-align:central;
+
+.breadcrumb-container {
+    height: 30px;
+    vertical-align: central;
 }
 
-
-
 .btn-small {
-  display: inline-block;
-  padding: 2px 3px;
-  margin-bottom: 0;
-  font-size: 8px;
-  font-weight: normal;
-  line-height: 1.428571429;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: middle;
-  cursor: pointer;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-       -o-user-select: none;
-          user-select: none;
+    display: inline-block;
+    padding: 2px 3px;
+    margin-bottom: 0;
+    font-size: 8px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
 }
 
 .note {
@@ -95,27 +96,24 @@
     font-weight: 200;
 }
 
-
 .cke_toolbar {
     zoom: 0.84;
 }
-.bg-primary {
-  color: #ffffff;
-  background-color: #cccccc;
-  border-color: #acacac;
-  padding: 3px 6px;
-  white-space: nowrap;
-  border: 1px solid transparent;
-  border-radius: 1px;
 
-  }
+.bg-primary {
+    color: #ffffff;
+    background-color: #cccccc;
+    border-color: #acacac;
+    padding: 3px 6px;
+    white-space: nowrap;
+    border: 1px solid transparent;
+    border-radius: 1px;
+}
 
 
 .bg-default {
-  padding: 3px 6px;
-  }
-
-
+    padding: 3px 6px;
+}
 
 .dd-sp {
     padding-bottom: 10px;
@@ -123,7 +121,7 @@
 
 .dt-sp {
     color: #414141;
-     padding-bottom: 10px;
+    padding-bottom: 10px;
 }
 
 .dt-cell {
@@ -132,7 +130,7 @@
     font-weight: bold;
     padding-right: 5px;
     color: #454545;
-      padding-bottom: 5px;
+    padding-bottom: 5px;
 }
 
 .dd-cell {
@@ -140,4 +138,10 @@
     text-align: left;
     padding-left: 5px;
     padding-bottom: 5px;
+}
+
+.dl-section {
+    margin-top: 0;
+    border-top: 1px solid #cccccc;
+    border-bottom: 1px solid #cccccc;
 }

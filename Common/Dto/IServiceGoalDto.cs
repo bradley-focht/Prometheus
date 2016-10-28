@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Enums;
 
 namespace Common.Dto
 {
@@ -9,5 +10,6 @@ namespace Common.Dto
 		int Id { get; set; }
 		string Name { get; set; }
 		DateTime? StartDate { get; set; }
-	}
+        ServiceGoalType Type { get; set; }
+    }
 }

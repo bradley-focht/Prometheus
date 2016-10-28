@@ -1,5 +1,4 @@
-﻿using DataService.Models;
-
+﻿using Common.Dto;
 namespace Prometheus.WebUI.Models.Service
 {
     public class ServiceModel
@@ -8,13 +7,13 @@ namespace Prometheus.WebUI.Models.Service
         {
             
         }
-        public ServiceModel(IService service, string selectedSection)     
+        public ServiceModel(IServiceDto service, string selectedSection)     
         {
             Service = service;
             SelectedSection = selectedSection;
         }
 
-        public IService Service { get; set; }
+        public IServiceDto Service { get; set; }
         public string SelectedSection { get; set; }
     }
 }

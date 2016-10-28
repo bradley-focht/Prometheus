@@ -1,22 +1,60 @@
 ﻿@model Prometheus.WebUI.Models.Service.SwotTableModel
 
-<table>
+<table style="width:100%">
     <tr>
-        <td class="std-cell">Strengths</td>
-        <td class="std-cell"></td>
-    </tr>
-    <tr>
-        <td class="std-cell">Opportunities</td>
-        <td class="std-cell"></td>
+        <td class="std-cell div-title" style="width:50%"><span class="font-title-initial">Strengths</span></td>
+        <td class="std-cell div-title" style="width:50%"><span class="font-title-initial">Opportunities</span></td>
+    </tr><tr>
+        <td class="std-cell">
+            @if (Model.Strengths != null && Model.Strengths.Any())
+            {
+                
+                foreach (var item in Model.Strengths)
+                 {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new {id = item.Id, section="SWOT"}, null)
+                 }
+            }
+
+        </td>
+
+        
+        <td class="std-cell">
+            @if (Model.Opportunities != null && Model.Opportunities.Any())
+            {
+
+                foreach (var item in Model.Opportunities)
+                {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "SWOT" }, null)
+                }
+            }
+        </td>
     </tr>
 
     <tr>
-        <td class="std-cell">Weaknesses</td>
-        <td class="std-cell"></td>
-    </tr>
+        <td class="std-cell div-title"><span class="font-title-initial">Weaknesses</span></td>
+        <td class="std-cell div-title"><span class="font-title-initial">Threats</span></td>
+    </tr><tr>
+        <td class="std-cell">
+            @if (Model.Weaknesses != null && Model.Weaknesses.Any())
+            {
 
-    <tr>
-        <td class="std-cell">Threats</td>
-        <td class="std-cell"></td>
+                foreach (var item in Model.Weaknesses)
+                {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "SWOT" }, null)
+                }
+            }
+        </td>
+
+        
+        <td class="std-cell">
+            @if (Model.Threats != null && Model.Threats.Any())
+            {
+
+                foreach (var item in Model.Threats)
+                {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "SWOT" }, null)
+                }
+            }
+        </td>
     </tr>
 </table>

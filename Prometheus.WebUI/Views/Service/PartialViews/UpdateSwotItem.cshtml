@@ -1,54 +1,54 @@
-﻿@using Common.Dto
-@using Common.Enums
+﻿@using Common.Enums
 @model Common.Dto.ServiceSwotDto
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
-
-        if (!property.PropertyName.Contains("Id"))
+        if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Activities"))
         {
-            <tr>
-                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                @if (property.PropertyName != null && property.PropertyName == "Type")
-                    {
-
-                    <td class="dd-cell">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default">
-                                @Html.RadioButton("SwotType", "Strength",
-                                        new { id = "SwotType" }) Strength
-                            </label>
-
-                            <label class="btn btn-default">
-                                @Html.RadioButton("SwotType", "Weakness",
-                                        new { id = "SwotType" }) Weakness
-                            </label>
-                            <label class="btn btn-default">
-                                @Html.RadioButton("SwotType", "Opportunity",
-                                        new { id = "SwotType" }) Opportunity
-                            </label>
-                            <label class="btn btn-default">
-                                @Html.RadioButton("SwotType", "Threat",
-                                        new { id = "SwotType" }) Threat
-                            </label>
-
-                        </div>
-
-                    </td>
-                }
-                else if (property.PropertyName == "StartDate")
-                {
-                    <td class="dd-cell">
-                        @Html.TextBox("YourTextBox", "", new { @class = "date-picker", type = "date" })
-                    </td>
-                }
-                else
-                {
-                    <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
-
-                }
-            </tr>
+            continue;
         }
+        <tr>
+            <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+            @if (property.PropertyName != null && property.PropertyName == "Type")
+            {
+
+                <td class="dd-cell">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default">
+                            @Html.RadioButton("SwotType", "Strength",
+                                new { id = "SwotType" }) Strength
+                        </label>
+
+                        <label class="btn btn-default">
+                            @Html.RadioButton("SwotType", "Weakness",
+                                new { id = "SwotType" }) Weakness
+                        </label>
+                        <label class="btn btn-default">
+                            @Html.RadioButton("SwotType", "Opportunity",
+                                new { id = "SwotType" }) Opportunity
+                        </label>
+                        <label class="btn btn-default">
+                            @Html.RadioButton("SwotType", "Threat",
+                                new { id = "SwotType" }) Threat
+                        </label>
+
+                    </div>
+
+                </td>
+            }
+            else {if (property.PropertyName == "Description")
+            {
+                <td class="dd-cell">
+                    @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
+                </td>
+            }
+            else
+            {
+                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
+
+            }
+            }
+        </tr>
     }
 
 

@@ -62,13 +62,16 @@
     <Compile Include="Dto\LifecycleStatusDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\ServiceBundleDto.cs" />
+    <Compile Include="Dto\ServiceContract.cs" />
     <Compile Include="Dto\ServiceDto.cs" />
     <Compile Include="Dto\ServiceGoalDto.cs" />
+    <Compile Include="Dto\ServiceMeasureDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Enums\ServiceGoalType.cs" />
     <Compile Include="Enums\ServiceSections.cs" />
     <Compile Include="Enums\ServiceSwotType.cs" />
     <Compile Include="Enums\ServiceTypeProvision.cs" />

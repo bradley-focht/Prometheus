@@ -7,6 +7,7 @@ namespace Common.Dto
 	{   
         
 		string Description { get; set; }
+        string Item { get; set; }
 		int Id { get; set; }
 		ICollection<ISwotActivityDto> SwotActivities { get; set; }
 		ServiceSwotType Type { get; set; }

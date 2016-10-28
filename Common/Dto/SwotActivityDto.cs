@@ -9,8 +9,12 @@ namespace Common.Dto
 		public int Id { get; set; }
         //this is a title for the item
         public string Name { get; set; }
+
+        //optional extra text
         [AllowHtml]
 		public string Description { get; set; }
-		public DateTime Date { get; set; }
+
+        //date the activity took place on, or start date for multi-day events
+        public DateTime Date { get; set; }
 	}
 }

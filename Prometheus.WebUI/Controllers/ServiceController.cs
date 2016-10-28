@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
-using DataService.Models;
+using Common.Enums;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
 
@@ -61,6 +61,7 @@ namespace Prometheus.WebUI.Controllers
                 "General",
                 "Goals",
                 "SWOT",
+                "SWOTActivities",
                 "Work Units",
                 "Contracts",
                 "Measures",
@@ -103,11 +104,11 @@ namespace Prometheus.WebUI.Controllers
 
             if (id == 0)
             {
-                sm.Service = new Service() {Id = 0};
+                sm.Service = new ServiceDto() {Id = 0};
             }
             else
             {
-                sm = new ServiceModel(new Service() {Id = 10, Name = "Operations"}, section.Replace(" ", ""));
+                sm = new ServiceModel(new ServiceDto() {Id = 10, Name = "Operations"}, section.Replace(" ", ""));
             }
 
             return View(sm);
@@ -123,7 +124,7 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult Save(Service newService)
+        public ActionResult Save(ServiceDto newService)
         {
 
             return RedirectToAction("Show");
@@ -131,7 +132,7 @@ namespace Prometheus.WebUI.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult ShowServiceGoals(Service service)
+        public ActionResult ShowServiceGoals(ServiceDto service)
         {
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Goal", "Duration", "Start Date", "End Date"};
@@ -150,7 +151,7 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ShowServiceContracts(Service service)
+        public ActionResult ShowServiceContracts(ServiceDto service)
         {
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Vendor", "Contract Number", "Start Date", "End Date"};
@@ -164,7 +165,7 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ShowServiceWorkUnits(Service service)
+        public ActionResult ShowServiceWorkUnits(ServiceDto service)
         {
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Work Unit", "Manager", "Roles"};
@@ -184,7 +185,7 @@ namespace Prometheus.WebUI.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult ShowServiceMeasures(Service service)
+        public ActionResult ShowServiceMeasures(ServiceDto service)
         {
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Method", "Outcome"};
@@ -199,35 +200,33 @@ namespace Prometheus.WebUI.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult ShowServiceSwot(Service service)
-        {
-            TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> {"type", "Outcome"};
-            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
-            {
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
-            };
-            tblModel.Action = "ShowServiceSectionItem";
-            tblModel.ServiceSection = "SWOT";
-            tblModel.Controller = "Service";
-            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
-        }
-
-
-        [ChildActionOnly]
-        public ActionResult ShowServiceProcesses(Service service)
+        public ActionResult ShowServiceSwot(ServiceDto service)
         {
             SwotTableModel model = new SwotTableModel();
-            
-            model.Opportunities = new List<Common.Dto.IServiceSwotDto> {new ServiceSwotDto {Id= 1, Item= "Room for more beers"}};
-            model.ServiceId = 1;
+
+            model.Opportunities = new List<Common.Dto.IServiceSwotDto> { new ServiceSwotDto { Id = 1, Item = "Room for more beers" } };
+            model.ServiceId = 10;
 
             return PartialView("PartialViews/ShowSwotTable", model);
         }
 
 
         [ChildActionOnly]
-        public ActionResult ShowServicePricing(Service service)
+        public ActionResult ShowServiceProcesses(ServiceDto service)
+        {
+            TableDataModel tblModel = new TableDataModel();
+            tblModel.Titles = new List<string> {"Method", "Outcome"};
+            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+            {
+                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+            };
+
+            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+
+        [ChildActionOnly]
+        public ActionResult ShowServicePricing(ServiceDto service)
         {
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Method", "Outcome"};
@@ -251,7 +250,7 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Index");
             }
             ServiceSectionModel model = new ServiceSectionModel();
-            model.Service = new Service() {Id = 10, Name = "Operations", Description = "this is where we operate"};
+            model.Service = new ServiceDto {Id = 10, Name = "Operations", Description = "this is where we operate"};
             model.Section = "General";
 
             return View("UpdateSectionItem", model);
@@ -259,7 +258,7 @@ namespace Prometheus.WebUI.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveGeneral(Service service)
+        public ActionResult SaveGeneral(ServiceDto service)
         {
             return RedirectToAction("Show", new { section="General", id=service.Id});
         }
@@ -275,10 +274,10 @@ namespace Prometheus.WebUI.Controllers
         {
             ServiceSectionModel model = new ServiceSectionModel();
             model.Section = section;
-            model.Service = new Service();
+            model.Service = new ServiceDto();
             model.Service.Name = "Operations";
             model.Service.Id = 10;
-            model.Service.ServiceGoals = new List<ServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
+            model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "hi" } }.ToArray();
             return View("ShowSectionItem", model);
         }
 
@@ -289,10 +288,10 @@ namespace Prometheus.WebUI.Controllers
         {
             ServiceSectionModel model = new ServiceSectionModel();
             model.Section = "Goals";
-            model.Service = new Service();
+            model.Service = new ServiceDto();
             model.Service.Name = "Operations";
             model.Service.Id = 10;
-            model.Service.ServiceGoals = new List<ServiceGoal> { new ServiceGoal { Description = "some new goal goes here", Name = "hi" } };
+            model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "hi" } }.ToArray();
             return View("UpdateSectionItem", model);
         }
 
@@ -303,10 +302,10 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult UpdateGoalItem(int id)
         {
-            ServiceGoal sg = new ServiceGoal();
+            ServiceGoalDto sg = new ServiceGoalDto();
             sg.Id = 5;
             sg.Name = "new goal to acheive";
-            sg.Type = "short term";
+            sg.Type = ServiceGoalType.LongTerm;
 
             return View("PartialViews/UpdateGoalItem", sg);
         }
@@ -320,7 +319,7 @@ namespace Prometheus.WebUI.Controllers
         {
             var model = new ServiceSectionModel();
             model.Section = section;
-            model.Service = new Service();
+            model.Service = new ServiceDto();
             model.Service.Name = "Operations";
             model.Service.Id = 10;
 
