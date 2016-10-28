@@ -53,6 +53,7 @@
     <Compile Include="Dto\IServiceGoalDto.cs" />
     <Compile Include="Dto\IServiceRequestOptionDto.cs" />
     <Compile Include="Dto\IServiceSwotDto.cs" />
+    <Compile Include="Dto\IServiceWorkUnitDto.cs" />
     <Compile Include="Dto\ISwotActivityDto.cs" />
     <Compile Include="Dto\IUserCreatedEntityDto.cs" />
     <Compile Include="Dto\IUserDto.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Dto\ServiceGoalDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />
+    <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Enums\ServiceSwotType.cs" />

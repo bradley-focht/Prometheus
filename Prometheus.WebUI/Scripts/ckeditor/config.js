@@ -31,4 +31,9 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Dialog windows are also simplified.
 	config.removeDialogTabs = 'link:advanced';
+
+
 };
+
+CKEDITOR.config.height = '100';
+CKEDITOR.config.width = '350';

@@ -1,13 +1,19 @@
 ﻿@model DataService.Models.ServiceGoal
-    @{
-        foreach (var property in ViewData.ModelMetadata.Properties)
+<table>
+
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        if (!property.PropertyName.Contains("Id"))
         {
-            if (!property.PropertyName.Contains("Id"))
-            {
-                <div>
-                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                    @Html.Raw(property.Model)
-                </div>
-            }
+            <tr>
+                <td class="dt-cell">
+                    @(property.DisplayName ?? property.PropertyName)
+                </td>
+                <td class="dd-cell">@Html.Raw(property.Model)</td>
+            </tr>
+
         }
     }
+
+
+</table>

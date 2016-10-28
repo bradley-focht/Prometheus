@@ -4,13 +4,17 @@
     <div class="btn-group">
         @foreach (string sectionItem in Model.Sections)
         {
-            if (sectionItem.Replace(" ", "") == Model.SelectedSection)
+            if (sectionItem.Replace(" ", "") == Model.SelectedSection || Model.SelectedSection == "GeneralOnly" && sectionItem.Contains("General"))
             {
                 <label class="btn btn-default active">@sectionItem</label>
             }
-            else
+            else if (!Model.SelectedSection.Contains("Only"))
             {
                 @Html.ActionLink(sectionItem, "Show", "Service",  new {section = sectionItem.Replace(" ", ""), id = Model.Id}, new {@class = "btn btn-default"})
+            }
+            else
+            {
+                <label class="btn btn-default disabled">@sectionItem</label>
             }
         }
     </div>

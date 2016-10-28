@@ -1,33 +1,43 @@
 ﻿@model DataService.Models.Service
 
 <div class="std-div">
-    <table style="width: 500px;"><tr>
-        <td style="width: 80%;" class="std-cell">
-            @Model.Name
-            <p/>
-            Description.....
+    <table>
+        <tr>
+            <td class="dt-cell">Name</td>
+            <td class="dd-cell">@Model.Name</td>
+        </tr>
+        <tr>
+            <td class="dt-cell">Description</td>
+            <td class="dd-cell">@Model.Description</td>
+        </tr>
+        <tr>
+            <td class="dt-cell">Business Owner</td>
+            <td class="dd-cell">@Model.BusinessOwner</td>
+        </tr>
+        <tr>
+            <td class="dt-cell">Service Owner</td>
+            <td class="dd-cell">@Model.ServiceOwner</td>
 
-            <p/>
-            <label class="font-title-initial">Business Owner</label>
-            <p/>
-            <label class="font-title-initial">Service Owner</label>
+    </tr>
+    <tr>
 
-
+        <td class="dt-cell">Service Type</td>
+        <td class="dd-cell">
+            <table>
+                <tr>
+                    <td class="dt-cell">Role</td>
+                    <td class="dd-cell"></td>
+                </tr>
+                <tr>
+                    <td class="dt-cell">Provision</td>
+                    <td class="dd-cell"></td>
+                </tr>
+            </table>
         </td>
-
-        <td class="std-cell">
-            <label class="font-title-initial">Service Type</label>
-            <div class="std-indent">
-                
-                <label class="font-title-initial">Role</label>
-                <p/>
-
-                <label class="font-title-initial">Provision</label>
-
-            </div>
-            <label class="font-title-initial">Status</label>
-
-</td>
-    </tr></table>
+        </tr><tr>
+            <td class="dt-cell">Status</td>
+        <td class="dd-cell"></td>
+    </tr>
+</table>
 
 </div>

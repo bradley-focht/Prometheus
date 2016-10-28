@@ -35,7 +35,7 @@ namespace Prometheus.WebUI.Controllers
             {
                 new KeyValuePair<int, string>(10, "Operations")
             };
-            servicesModel.AddAction = "AddService";
+            servicesModel.AddAction = "Add";
             servicesModel.SelectAction = "Show/General";
             servicesModel.Controller = "Service";
             servicesModel.Title = "Services";
@@ -70,14 +70,21 @@ namespace Prometheus.WebUI.Controllers
 
             string returnLinkSection = null;                    //validate that the section sent in is in the list
 
-            if (sections.Any(linkSection => section == linkSection.Replace(" ", "")))
+            if (section == "GeneralOnly") //this is a restrictive case for adding a new service
             {
-                returnLinkSection = section.Replace(" ", "");
+                returnLinkSection = "GeneralOnly";
             }
+            else
+            {
 
-            if (returnLinkSection == null)                      //default is the first section in the list
-                returnLinkSection = sections[0];
+                if (sections.Any(linkSection => section == linkSection.Replace(" ", "")))
+                {
+                    returnLinkSection = section.Replace(" ", "");
+                }
 
+                if (returnLinkSection == null) //default is the first section in the list
+                    returnLinkSection = sections[0];
+            }
             ServiceNavModel model = new ServiceNavModel(sections, returnLinkSection, id, "Show" + returnLinkSection);
 
             return PartialView("PartialViews/_ServiceNav", model);
@@ -104,6 +111,23 @@ namespace Prometheus.WebUI.Controllers
 
             return View(sm);
         }
+
+        /// <summary>
+        /// Add a new service, this is unique from the add sections and the form is restricted to the general section only
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Add()
+        {
+            return View("AddService");
+        }
+
+        [HttpPost]
+        public ActionResult Save(Service newService)
+        {
+
+            return RedirectToAction("Show");
+        }
+
 
         [ChildActionOnly]
         public ActionResult ShowServiceGoals(Service service)
@@ -143,6 +167,9 @@ namespace Prometheus.WebUI.Controllers
         {
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Work Unit", "Manager", "Roles"};
+            tblModel.Action = "ShowServiceSectionItem";
+            tblModel.ServiceSection = "Work Units";
+            tblModel.Controller = "Service";
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
                 new KeyValuePair<int, IEnumerable<string>>(1,
@@ -160,6 +187,7 @@ namespace Prometheus.WebUI.Controllers
         {
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Method", "Outcome"};
+            tblModel.Action = "ShowServiceSectionItem";
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
                 new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
@@ -248,7 +276,7 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowServiceSectionItem(string section, int id = 0)
         {
             ServiceSectionModel model = new ServiceSectionModel();
-            model.Section = "Goals";
+            model.Section = section;
             model.Service = new Service();
             model.Service.Name = "Operations";
             model.Service.Id = 10;

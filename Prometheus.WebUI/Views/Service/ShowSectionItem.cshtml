@@ -1,31 +1,11 @@
 ﻿@using System.Web.Mvc.Html
-@using DataService.Models
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 @{
-
-    ServiceGoal s = new ServiceGoal();
-
-    if (Model.Section != null && Model.Section == "Goals")
-    {
-        if (Model.Service?.ServiceGoals != null)
-        {
-            foreach (ServiceGoal serviceGoal in Model.Service.ServiceGoals)
-            {
-                if (serviceGoal.Id == Model.SectionItemId)
-                {
-                    s = serviceGoal;
-                    break;
-                }
-            }
-        }
-    }
-
-
-    ViewBag.Title = s.Name;
+    ViewBag.Title = Model.Section;
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                               new KeyValuePair<string, string>(Model.Service.Name + " " + Model.Section, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
+                                                               new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
 
@@ -34,7 +14,7 @@
 
 @section Sidebar
 {
-
+@Html.Action("ShowServiceList", Model.Service.Id)
 }
 
 
@@ -46,7 +26,7 @@
                 @Html.Partial("PartialViews/ShowGoalItem", (Model.Service.ServiceGoals.First(g => g.Id == Model.SectionItemId)))
                 break;
             case "SWOT":
-                @Html.Partial("PartialViews/ShowGoalItem", (Model.Service.ServiceSwot.First(g => g.Id == Model.SectionItemId)))
+                @Html.Partial("PartialViews/ShowSwotItem", new Common.Dto.ServiceSwotDto())
                 break;
 
         }

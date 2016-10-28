@@ -4,7 +4,7 @@
 	{
 		Strength,
 		Weakness,
-		Oppertunity,
+		Opportunity,
 		Threat
 	}
 }

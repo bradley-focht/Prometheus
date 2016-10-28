@@ -17,7 +17,7 @@
                             {
                                 <div class="form-group">
                                     <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                                    @Html.TextArea("Description", new { @class = "ckeditor", @id = "sampleEditor"})
+                                    @Html.TextBox("Description", new { @class = "ckeditor", @id = "sampleEditor"})
                                 </div>
                             }
                             else

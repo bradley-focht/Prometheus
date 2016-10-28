@@ -1,78 +1,111 @@
-﻿@model DataService.Models.Service
+﻿@model Common.Dto.ServiceDto
 
-<input type="hidden" name="Id" value="@Model.Id"/>
-    <label class="font-title-initial">Name</label>
-    @Html.ValidationMessage(Model.Name)
-    @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+<input type="hidden" name="Id" value="@Model.Id" />
+<table>
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        if (property.PropertyName == "Description")
+        {
+            <tr>
+                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+                <td class="dd-cell">
 
-    <label class="font-title-initial">Description</label>
-    @Html.TextArea("Description", Model.Description, new { @class = "form-control", rows = "6", cols = "60" })
+                    @Html.TextArea(property.PropertyName, new { @class = "ckeditor ck-mod" })
+                </td>
+                <td>@Html.ValidationMessage(property.PropertyName)</td>
+            </tr>
+        }
+        else if (property.PropertyName == "Name" || property.PropertyName.Contains("Owner"))
+        {
+            <tr>
+                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+                <td class="dd-cell">
+                    @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+                </td>
+                <td>@Html.ValidationMessage(property.PropertyName)</td>
+            </tr>
+        }
+        else if (property.PropertyName.Contains("StatusId"))
+        {
+            <tr>
+                <td class="dt-cell">Lifecycle Status</td>
 
-    <label class="font-title-initial">Service Type</label>
-    <div class="std-indent">
-        <div>
-            <label class="font-title-initial">Role</label><br />
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default">
-                    @Html.RadioButton("Chartered", "Chartered",
-                                        new { id = "false" }) Customer-facing
-                </label>
-
-                <label class="btn btn-default">
-                    @Html.RadioButton("Operational", "Operational",
-                                        new { id = "true" }) Supporting
-                </label>
-            </div>
-        </div>
-        <div>
-            <label class="font-title-initial">Provision</label><br />
-            <div class="btn-group" data-toggle="buttons">
-                <label class="btn btn-default">
-                    @Html.RadioButton("Chartered", "Chartered",
-                                        new { id = "false" }) Internal
-                </label>
-                <label class="btn btn-default">
-                    @Html.RadioButton("Chartered", "Chartered",
-                                        new { id = "false" }) External
-                </label>
-            </div>
-        </div>
-
-    </div>
-    <div>
-        <label class="font-title-initial">Service Owner</label>
-        @Html.TextBox("ServiceOwner", Model.ServiceOwner, new { @class = "form-control" })
-    </div>
-
-    <div>
-        <label class="font-title-initial">Business Owner</label>
-        @Html.TextBox("BusinessOwner", Model.BusinessOwner, new { @class = "form-control" })
-    </div>
-
-    <label class="font-title-initial">Lifecycle Status</label>
-
-    <div class="form-group">
-        <div class="btn-group" data-toggle="buttons">
-            <label class="btn btn-default">
-                @Html.RadioButton("Chartered", "Chartered",
+                <td class="dd-cell">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default">
+                            @Html.RadioButton("Chartered", "Chartered",
                                 new { id = "false" }) Chartered
-            </label>
+                        </label>
 
-            <label class="btn btn-default">
-                @Html.RadioButton("Operational", "Operational",
+                        <label class="btn btn-default">
+                            @Html.RadioButton("Operational", "Operational",
                                 new { id = "true" }) Operational
-            </label>
+                        </label>
 
-            <label class="btn btn-default">
-                @Html.RadioButton("Retired", "Retired",
+                        <label class="btn btn-default">
+                            @Html.RadioButton("Retired", "Retired",
                                 new { id = "true" }) Retired
-            </label>
+                        </label>
 
-            <label class="btn btn-default">
-                @Html.RadioButton("Operational", "Cancelled",
+                        <label class="btn btn-default">
+                            @Html.RadioButton("Operational", "Cancelled",
                                 new { id = "true" }) Cancelled
-            </label>
+                        </label>
 
 
-        </div>
-    </div>
+                    </div>
+                </td>
+                <td>@Html.ValidationMessage(property.PropertyName)</td>
+            </tr>
+        }
+
+        else if (property.PropertyName.Contains("Role"))
+        {
+            <tr>
+                <td class="dt-cell">Service Type</td>
+                <td class="dd-cell">
+                    <table style="margin-top: 10px; margin-bottom: 10px;">
+                        <tr>
+                            <td class="dt-cell">
+                                Role
+                            </td>
+                            <td class="dd-cell">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default">
+                                        @Html.RadioButton("Chartered", "Chartered",
+                                            new {id = "false"}) Customer-facing
+                                    </label>
+
+                                    <label class="btn btn-default">
+                                        @Html.RadioButton("Operational", "Operational",
+                                            new {id = "true"}) Supporting
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="dt-cell">
+                                Provision
+                            </td>
+                            <td class="dd-cell">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default">
+                                        @Html.RadioButton("Chartered", "Chartered",
+                                            new {id = "false"}) Internal
+                                    </label>
+                                    <label class="btn btn-default">
+                                        @Html.RadioButton("Chartered", "Chartered",
+                                            new {id = "false"}) External
+                                    </label>
+                                </div>
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>@Html.ValidationMessage(property.PropertyName)</td>
+            </tr>
+        }
+    }
+
+</table>

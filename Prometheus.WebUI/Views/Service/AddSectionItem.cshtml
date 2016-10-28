@@ -23,14 +23,11 @@
         <div class="std-div">
             @switch (Model.Section)
             {
-                case "General":
-                    @Html.Partial("PartialViews/AddGeneral", new Service());
-                    break;
                 case "Goals":
                     @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoal())
                     break;
                 case "SWOT":
-                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwot())
+                    @Html.Partial("PartialViews/UpdateSwotItem", new Common.Dto.ServiceSwotDto())
                     break;
                 case "Contracts":
                     @Html.Partial("PartialViews/UpdateContractItem", new ServiceContract())

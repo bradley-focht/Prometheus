@@ -26,12 +26,12 @@
 
                     @if (Model.SelectedSection == "General")
                     {
-                        @Html.ActionLink("Update", "Update" + Model.SelectedSection, new { id = Model.Service.Id }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Update", "Update" + Model.SelectedSection, new { id = Model.Service.Id }, new { @class = "btn btn-primary" })
                     }
                     else
                     {
 
-                        @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-primary" })
                     }
                 </div>
             </div>

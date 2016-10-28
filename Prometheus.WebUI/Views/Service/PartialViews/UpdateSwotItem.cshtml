@@ -1,13 +1,49 @@
-﻿@model DataService.Models.ServiceSwot
-    @{
-        foreach (var property in ViewData.ModelMetadata.Properties)
+﻿@using Common.Dto
+@using Common.Enums
+@model Common.Dto.ServiceSwotDto
+    <table>
+        @foreach (var property in ViewData.ModelMetadata.Properties)
         {
+           
             if (!property.PropertyName.Contains("Id"))
             {
-                <div>
-                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                    @Html.TextBox(property.PropertyName, property.Model, null, new {@class="form-control"})
-                </div>
+                <tr>
+                    <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+                    @if (property.PropertyName != null && property.PropertyName == "Type")
+                    {
+
+                        <td class="dd-cell">
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    @Html.RadioButton("SwotType", "Strength",
+                                        new { id = "SwotType" }) Strength
+                                </label>
+
+                                <label class="btn btn-default">
+                                    @Html.RadioButton("SwotType", "Weakness",
+                                        new {id = "SwotType"}) Weakness
+                                </label>
+                                <label class="btn btn-default">
+                                    @Html.RadioButton("SwotType", "Opportunity",
+                                        new {id = "SwotType"}) Opportunity
+                                </label>
+                                <label class="btn btn-default">
+                                    @Html.RadioButton("SwotType", "Threat",
+                                        new { id = "SwotType" }) Threat
+                                </label>
+
+                            </div>
+
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new {@class = "form-control"})</td>
+
+                    }
+                </tr>
             }
         }
-    }
+
+
+    </table>

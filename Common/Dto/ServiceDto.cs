@@ -16,7 +16,7 @@ namespace Common.Dto
 		public int ServiceBundleId { get; set; }
 
         //Id to service status to reduce calls to db
-		[Display(Name = "Lifecycle Status")]
+		[Display(Name = "Lifecycle Status", Order=7)]
 		public int LifecycleStatusId { get; set; }
 
 		//Fields
@@ -29,29 +29,31 @@ namespace Common.Dto
 		public int UpdatedByUserId { get; set; }
 
         //unique name to identify each service
-		[Required(ErrorMessage = "Service: Name required")]
+		[Required(ErrorMessage = "*required")]
+        [Display(Order=1)]
 		public string Name { get; set; }
 
         //lengthy text description
 		[DataType(DataType.MultilineText)]
         [AllowHtml]
-		public string Description { get; set; }
+        [Display(Order = 2)]
+        public string Description { get; set; }
 
         //personal responsible for the business aspects of the service
         // this may be changed to an ssid in the future
-		[Display(Name = "Business Owner")]
-		public string BusinessOwner { get; set; }
+		[Display(Name = "Business Owner", Order = 3)]
+        public string BusinessOwner { get; set; }
 
         //user who is responsibile for execution of the process
         // this may be an ssid in the future
-		[Display(Name = "Service Owner")]
+		[Display(Name = "Service Owner", Order=4)]
 		public string ServiceOwner { get; set; }
 
 		//Determines which service catalog (service or supporting) the service belongs in
-		[Display(Name = "Service Type Role")]
+		[Display(Name = "Service Type Role", Order=5)]
 		public ServiceTypeRole ServiceTypeRole { get; set; }
         //indicate if the service is internally provided or outsourced
-		[Display(Name = "Service Type Provision")]
+		[Display(Name = "Service Type Provision", Order=6)]
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
 
 		//Navigation Properties
