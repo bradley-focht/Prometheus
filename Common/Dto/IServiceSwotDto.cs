@@ -3,8 +3,9 @@ using System.Collections.Generic;
 
 namespace Common.Dto
 {
-	interface IServiceSwotDto
-	{
+    public interface IServiceSwotDto
+	{   
+        
 		string Description { get; set; }
 		int Id { get; set; }
 		ICollection<ISwotActivityDto> SwotActivities { get; set; }

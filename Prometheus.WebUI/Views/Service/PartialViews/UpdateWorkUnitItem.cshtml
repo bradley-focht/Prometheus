@@ -1,0 +1,19 @@
+﻿@using Common.Dto
+@using Common.Enums
+@model Common.Dto.ServiceWorkUnitDto
+    <table>
+        @foreach (var property in ViewData.ModelMetadata.Properties)
+        {
+           
+            if (!property.PropertyName.Contains("Id"))
+            {
+                <tr>
+                    <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>                    
+                    <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new {@class = "form-control"})</td>
+
+                </tr>
+            }
+        }
+
+
+    </table>

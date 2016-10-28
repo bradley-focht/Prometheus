@@ -17,7 +17,7 @@
             <div>
                 @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
             </div>
-
+            
             @(Model.SelectedSection != "General" ? Html.Action("ShowService" + Model.SelectedSection, Model) : Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (Service) Model.Service))
 
             <div class="panel-footer">

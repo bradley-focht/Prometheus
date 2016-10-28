@@ -10,6 +10,9 @@ namespace Common.Dto
         [HiddenInput]
 		public int Id { get; set; }
         
+        //this is a title of the item
+        public string Item { get; set; }
+
         //either strength, weakness, opportunity, threat
         [Display(Order=1)]
         public ServiceSwotType Type { get; set; }

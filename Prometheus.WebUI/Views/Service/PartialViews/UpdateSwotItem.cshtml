@@ -1,49 +1,55 @@
 ﻿@using Common.Dto
 @using Common.Enums
 @model Common.Dto.ServiceSwotDto
-    <table>
-        @foreach (var property in ViewData.ModelMetadata.Properties)
+<table>
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+
+        if (!property.PropertyName.Contains("Id"))
         {
-           
-            if (!property.PropertyName.Contains("Id"))
-            {
-                <tr>
-                    <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                    @if (property.PropertyName != null && property.PropertyName == "Type")
+            <tr>
+                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+                @if (property.PropertyName != null && property.PropertyName == "Type")
                     {
 
-                        <td class="dd-cell">
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    @Html.RadioButton("SwotType", "Strength",
+                    <td class="dd-cell">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default">
+                                @Html.RadioButton("SwotType", "Strength",
                                         new { id = "SwotType" }) Strength
-                                </label>
+                            </label>
 
-                                <label class="btn btn-default">
-                                    @Html.RadioButton("SwotType", "Weakness",
-                                        new {id = "SwotType"}) Weakness
-                                </label>
-                                <label class="btn btn-default">
-                                    @Html.RadioButton("SwotType", "Opportunity",
-                                        new {id = "SwotType"}) Opportunity
-                                </label>
-                                <label class="btn btn-default">
-                                    @Html.RadioButton("SwotType", "Threat",
+                            <label class="btn btn-default">
+                                @Html.RadioButton("SwotType", "Weakness",
+                                        new { id = "SwotType" }) Weakness
+                            </label>
+                            <label class="btn btn-default">
+                                @Html.RadioButton("SwotType", "Opportunity",
+                                        new { id = "SwotType" }) Opportunity
+                            </label>
+                            <label class="btn btn-default">
+                                @Html.RadioButton("SwotType", "Threat",
                                         new { id = "SwotType" }) Threat
-                                </label>
+                            </label>
 
-                            </div>
+                        </div>
 
-                        </td>
-                    }
-                    else
-                    {
-                        <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new {@class = "form-control"})</td>
+                    </td>
+                }
+                else if (property.PropertyName == "StartDate")
+                {
+                    <td class="dd-cell">
+                        @Html.TextBox("YourTextBox", "", new { @class = "date-picker", type = "date" })
+                    </td>
+                }
+                else
+                {
+                    <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
 
-                    }
-                </tr>
-            }
+                }
+            </tr>
         }
+    }
 
 
-    </table>
+</table>

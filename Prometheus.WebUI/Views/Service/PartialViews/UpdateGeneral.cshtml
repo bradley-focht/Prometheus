@@ -10,7 +10,7 @@
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
                 <td class="dd-cell">
 
-                    @Html.TextArea(property.PropertyName, new { @class = "ckeditor ck-mod" })
+                    @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
                 </td>
                 <td>@Html.ValidationMessage(property.PropertyName)</td>
             </tr>

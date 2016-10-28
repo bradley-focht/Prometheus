@@ -20,9 +20,9 @@
 
 @section Content {
     <div class="std-div">
-        @switch (Model.Section)
+        @switch (Model.Section.ToUpper())
         {
-            case "Goals":
+            case "GOALS":
                 @Html.Partial("PartialViews/ShowGoalItem", (Model.Service.ServiceGoals.First(g => g.Id == Model.SectionItemId)))
                 break;
             case "SWOT":

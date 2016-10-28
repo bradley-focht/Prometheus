@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using Common.Dto;
 using DataService.Models;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
@@ -201,13 +202,13 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowServiceSwot(Service service)
         {
             TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> {"Method", "Outcome"};
+            tblModel.Titles = new List<string> {"type", "Outcome"};
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
                 new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
             };
             tblModel.Action = "ShowServiceSectionItem";
-            tblModel.ServiceSection = "Swot";
+            tblModel.ServiceSection = "SWOT";
             tblModel.Controller = "Service";
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
@@ -216,14 +217,12 @@ namespace Prometheus.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult ShowServiceProcesses(Service service)
         {
-            TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> {"Method", "Outcome"};
-            tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
-            {
-                new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
-            };
+            SwotTableModel model = new SwotTableModel();
+            
+            model.Opportunities = new List<Common.Dto.IServiceSwotDto> {new ServiceSwotDto {Id= 1, Item= "Room for more beers"}};
+            model.ServiceId = 1;
 
-            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+            return PartialView("PartialViews/ShowSwotTable", model);
         }
 
 
@@ -245,16 +244,15 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        [ChildActionOnly]
         public ActionResult UpdateGeneral(int id = 0)
         {
             if (id == 0)
             {
                 return RedirectToAction("Index");
             }
-            ServiceModel model = new ServiceModel();
+            ServiceSectionModel model = new ServiceSectionModel();
             model.Service = new Service() {Id = 10, Name = "Operations", Description = "this is where we operate"};
-            model.SelectedSection = "General";
+            model.Section = "General";
 
             return View("UpdateSectionItem", model);
         }
@@ -298,7 +296,11 @@ namespace Prometheus.WebUI.Controllers
             return View("UpdateSectionItem", model);
         }
 
-
+        /// <summary>
+        /// Return the specific goal item to view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult UpdateGoalItem(int id)
         {
             ServiceGoal sg = new ServiceGoal();
@@ -309,6 +311,10 @@ namespace Prometheus.WebUI.Controllers
             return View("PartialViews/UpdateGoalItem", sg);
         }
 
+        public ActionResult UpdateSwotItem(int id)
+        {
+            return View("PartialViews/UpdateSwotItem");
+        }
 
         public ActionResult AddServiceSectionItem(string section, int id = 0)
         {
@@ -319,6 +325,16 @@ namespace Prometheus.WebUI.Controllers
             model.Service.Id = 10;
 
             return View("AddSectionItem", model);
+        }
+
+        public ActionResult ConfirmDeleteServiceSectionItem(string section, int id = 0)
+        {
+            if(id == 0)//something has gone very wrong
+                return RedirectToAction("Show");
+
+            ConfirmDeleteSection model = new ConfirmDeleteSection(0, "No, not me!", section, "DeleteSectionItem");
+            
+            return View("ConfirmDeleteSection", model);
         }
 
     }

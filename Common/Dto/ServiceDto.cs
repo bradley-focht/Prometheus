@@ -62,11 +62,14 @@ namespace Common.Dto
 		public virtual IServiceBundleDto ServiceBundle { get; set; }
         //the entire lifecycle object to which the service belongs
 		public virtual ILifecycleStatusDto LifecycleStatusDto { get; set; }
+       
         //what you can get when you order this service
         public virtual ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 
         //all collections below are part of the service package that goes with each service
 
         public virtual ICollection<IServiceGoalDto> ServiceGoals { get; set; }
+
+        public virtual ICollection<IServiceSwotDto> ServiceSwot { get; set; }
 	}
 }

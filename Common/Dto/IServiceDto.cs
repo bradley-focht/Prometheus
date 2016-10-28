@@ -22,5 +22,6 @@ namespace Common.Dto
 		int UpdatedByUserId { get; set; }
 
 		ICollection<IServiceGoalDto> ServiceGoals { get; set; }
+        ICollection<IServiceSwotDto> ServiceSwot { get; set; }
 	}
 }

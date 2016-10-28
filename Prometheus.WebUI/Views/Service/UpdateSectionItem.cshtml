@@ -29,6 +29,9 @@
                 case "SWOT":
                     @Html.Action("UpdateSwotItem", Model.SectionItemId)
                     break;
+                case "General":
+                    @Html.Partial("PartialViews/UpdateGeneral", new Common.Dto.ServiceDto())
+                    break;
             }
 
 
