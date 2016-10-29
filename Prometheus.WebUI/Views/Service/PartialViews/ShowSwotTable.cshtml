@@ -11,7 +11,7 @@
                 
                 foreach (var item in Model.Strengths)
                  {
-                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new {id = item.Id, section="SWOT"}, null)
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new {id = item.Id, section="Swot"}, null)
                  }
             }
 
@@ -24,7 +24,7 @@
 
                 foreach (var item in Model.Opportunities)
                 {
-                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "SWOT" }, null)
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
                 }
             }
         </td>
@@ -40,7 +40,7 @@
 
                 foreach (var item in Model.Weaknesses)
                 {
-                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "SWOT" }, null)
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
                 }
             }
         </td>
@@ -52,7 +52,7 @@
 
                 foreach (var item in Model.Threats)
                 {
-                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "SWOT" }, null)
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
                 }
             }
         </td>

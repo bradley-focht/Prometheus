@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Enums;
 
 namespace Common.Dto
 {
@@ -17,11 +18,16 @@ namespace Common.Dto
 		string ServiceOwner { get; set; }
 		ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 		IServiceBundleDto ServiceBundle { get; set; }
-		//Guid ServiceTypeProvision { get; set; }
-		//Guid ServiceTypeRole { get; set; }
+		ServiceTypeProvision Provision { get; set; }
+        //used to determine if the service should be in the business or support catalog
+        ServiceTypeRole Role { get; set; }
 		int UpdatedByUserId { get; set; }
 
 		ICollection<IServiceGoalDto> ServiceGoals { get; set; }
         ICollection<IServiceSwotDto> ServiceSwot { get; set; }
+        ICollection<IServiceContractDto> ServiceContracts { get; set; }
+        ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
+        ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
+        
 	}
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using DataService.Models;
+using Common.Dto;
 using Prometheus.WebUI.Models;
 using Prometheus.WebUI.Models.Service;
 
@@ -27,7 +27,7 @@ namespace Prometheus.WebUI.Controllers
         {
             /* test region */
             LifecycleModel lm = new LifecycleModel();
-           lm.CurrentStatus = new LifecycleStatus();
+           lm.CurrentStatus = new LifecycleStatusDto();
             lm.CurrentStatus.Id = id;
             lm.Statuses = new List<KeyValuePair<int, string>>()
             {
@@ -42,7 +42,7 @@ namespace Prometheus.WebUI.Controllers
         {
             /*start test region*/
             LifecycleModel lm = new LifecycleModel();
-            lm.CurrentStatus = new LifecycleStatus();
+            lm.CurrentStatus = new LifecycleStatusDto();
             lm.CurrentStatus.Id = 0;
             lm.Statuses = new List<KeyValuePair<int, string>>()
             {
@@ -55,7 +55,7 @@ namespace Prometheus.WebUI.Controllers
 
 
         [HttpPost]
-        public ActionResult SaveLifecycle(LifecycleStatus model)
+        public ActionResult SaveLifecycle(LifecycleStatusDto model)
         {
             if (ModelState.IsValid)
             {
@@ -69,7 +69,7 @@ namespace Prometheus.WebUI.Controllers
         {                    
             /*start test region*/
             LifecycleModel lm = new LifecycleModel();
-            lm.CurrentStatus = new LifecycleStatus();
+            lm.CurrentStatus = new LifecycleStatusDto();
             lm.CurrentStatus.Id = 0;
             lm.Statuses = new List<KeyValuePair<int, string>>()
             {
@@ -83,7 +83,7 @@ namespace Prometheus.WebUI.Controllers
         {
             /*start test region*/
             LifecycleModel lm = new LifecycleModel();
-            lm.CurrentStatus = new LifecycleStatus();
+            lm.CurrentStatus = new LifecycleStatusDto();
             lm.CurrentStatus.Id = 1;
             lm.Statuses = new List<KeyValuePair<int, string>>()
             {

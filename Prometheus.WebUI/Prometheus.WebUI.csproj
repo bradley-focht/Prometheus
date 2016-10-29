@@ -267,6 +267,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
+    <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
@@ -333,6 +334,7 @@
     <Content Include="Views\Service\PartialViews\UpdateWorkUnitItem.cshtml" />
     <Content Include="Views\Service\ConfirmDeleteSection.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowSwotTable.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateMeasureItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

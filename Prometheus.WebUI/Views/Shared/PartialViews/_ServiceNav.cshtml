@@ -2,19 +2,19 @@
 @{
     
     <div class="btn-group">
-        @foreach (string sectionItem in Model.Sections)
+        @foreach (KeyValuePair<string, string> sectionItem in Model.NavLinks)
         {
-            if (sectionItem.Replace(" ", "") == Model.SelectedSection || Model.SelectedSection == "GeneralOnly" && sectionItem.Contains("General"))
+            if (Model.SelectedRouteString == "GeneralOnly" && sectionItem.Key=="General")
             {
-                <label class="btn btn-default active">@sectionItem</label>
+                <label class="btn btn-default active">@sectionItem.Value</label>
             }
-            else if (!Model.SelectedSection.Contains("Only"))
+            else if (Model.SelectedRouteString != sectionItem.Key)
             {
-                @Html.ActionLink(sectionItem, "Show", "Service",  new {section = sectionItem.Replace(" ", ""), id = Model.Id}, new {@class = "btn btn-default"})
+                @Html.ActionLink(sectionItem.Value, "Show", "Service",  new {section = sectionItem.Key, id = Model.Id}, new {@class = "btn btn-default"})
             }
             else
             {
-                <label class="btn btn-default disabled">@sectionItem</label>
+                <label class="btn btn-default disabled">@sectionItem.Value</label>
             }
         }
     </div>

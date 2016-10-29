@@ -1,9 +1,23 @@
 ﻿@model Prometheus.WebUI.Models.Shared.TableDataModel
+@{
+    int pixels; //determine the size of the table
+    if (Model.Titles.Count() == 1)
+    {
+        pixels = 175;
+    }
+    else
+    {
+        pixels = (Model.Titles.Count()*120)%501;
+    }
+
+    string width = pixels + "px";
+}
+
 <div class="std-div">
     @if (Model.Titles != null)
     {
 
-        <table class="table table-hover" style="width:500px">
+        <table class="table table-hover" style="width:@width">
             <thead>
                 <tr>
                     @foreach (string title in Model.Titles)

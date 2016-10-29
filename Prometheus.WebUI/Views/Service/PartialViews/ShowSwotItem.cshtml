@@ -3,7 +3,7 @@
 
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
-        if (property.PropertyName.Contains("Id") && property.PropertyName == "SwotActivities")
+        if (property.PropertyName.Contains("Id") || property.PropertyName == "SwotActivities")
         {
             continue;
         }
@@ -16,8 +16,15 @@
     <tr>
         <td class="dt-cell">Activities</td>
         <td class="dd-cell">
-            ~activities table ~
-
+            @if (Model.SwotActivities == null)
+            {
+                @Html.Action("ShowSwotActivities", Model.SwotActivities)
+            }
+            else
+            {
+                <label>no activities</label>
+            }
+            
         </td>
     </tr>
 

@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
+using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
 
@@ -17,7 +17,18 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Index(int id = 0)
         {
-            return View();
+            var services = new List<ServiceDto>
+            {
+                new ServiceDto() {Name = "Support Services", Description = "support for the masses"},
+                new ServiceDto()
+                {
+                    Name = "Communications and Messaging",
+                    Description = "send a message to that special someone"
+                }
+            }; 
+            
+
+            return View(services);
         }
 
         /// <summary>
@@ -56,38 +67,11 @@ namespace Prometheus.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult ShowNav(string section, int id = 0)
         {
-            var sections = new List<string>                     //list of sections for each service
-            {
-                "General",
-                "Goals",
-                "SWOT",
-                "SWOTActivities",
-                "Work Units",
-                "Contracts",
-                "Measures",
-                "Processes",
-                "Pricing",
-                "Documents"
-            };
 
-            string returnLinkSection = null;                    //validate that the section sent in is in the list
+            if (!ServiceSectionHelper.ValidateRoute(section))
+                section = "General";
 
-            if (section == "GeneralOnly") //this is a restrictive case for adding a new service
-            {
-                returnLinkSection = "GeneralOnly";
-            }
-            else
-            {
-
-                if (sections.Any(linkSection => section == linkSection.Replace(" ", "")))
-                {
-                    returnLinkSection = section.Replace(" ", "");
-                }
-
-                if (returnLinkSection == null) //default is the first section in the list
-                    returnLinkSection = sections[0];
-            }
-            ServiceNavModel model = new ServiceNavModel(sections, returnLinkSection, id, "Show" + returnLinkSection);
+            ServiceNavModel model = new ServiceNavModel(ServiceSectionHelper.GenerateNavLinks(), section, id, "Show" + section);
 
             return PartialView("PartialViews/_ServiceNav", model);
         }
@@ -204,10 +188,21 @@ namespace Prometheus.WebUI.Controllers
         {
             SwotTableModel model = new SwotTableModel();
 
-            model.Opportunities = new List<Common.Dto.IServiceSwotDto> { new ServiceSwotDto { Id = 1, Item = "Room for more beers" } };
+            model.Opportunities = new List<IServiceSwotDto> { new ServiceSwotDto { Id = 1, Item = "Room for more beers" } };
             model.ServiceId = 10;
 
             return PartialView("PartialViews/ShowSwotTable", model);
+        }
+
+        [ChildActionOnly]
+        public ActionResult ShowSwotActivities(ICollection<ServiceSwotDto> activities)
+        {
+            TableDataModel model = new TableDataModel();
+            model.Action = "ShowSwotActivityItem";
+            model.Titles = new List<string>{"Item"};
+            model.Data = new List<KeyValuePair<int, IEnumerable<string>>> {new KeyValuePair<int, IEnumerable<string>>(1, new List<string>{ "find love on campus"})};
+
+            return View("PartialViews/_TableViewer", model);
         }
 
 

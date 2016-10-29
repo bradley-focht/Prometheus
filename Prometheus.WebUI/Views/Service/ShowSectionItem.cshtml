@@ -1,4 +1,5 @@
 ﻿@using System.Web.Mvc.Html
+@using Common.Dto
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 @{
     ViewBag.Title = Model.Section;
@@ -14,19 +15,22 @@
 
 @section Sidebar
 {
-@Html.Action("ShowServiceList", Model.Service.Id)
+    @Html.Action("ShowServiceList", Model.Service.Id)
 }
 
 
 @section Content {
     <div class="std-div">
-        @switch (Model.Section.ToUpper())
+        @switch (Model.Section)
         {
-            case "GOALS":
-                @Html.Partial("PartialViews/ShowGoalItem", (Model.Service.ServiceGoals.First(g => g.Id == Model.SectionItemId)))
+            case "Goals":
+                @Html.Partial("PartialViews/ShowGoalItem", (ServiceGoalDto)Model.Service.ServiceGoals.First(g => g.Id == Model.SectionItemId))
                 break;
-            case "SWOT":
+            case "Swot":
                 @Html.Partial("PartialViews/ShowSwotItem", new Common.Dto.ServiceSwotDto())
+                break;
+            case "WorkUnits":
+                @Html.Partial("PartialViews/UpdateWorkUnitItem", (ServiceWorkUnitDto)Model.Service.ServiceWorkUnits.First(g => g.Id == Model.SectionItemId))
                 break;
 
         }

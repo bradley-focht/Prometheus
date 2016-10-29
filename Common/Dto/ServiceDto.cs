@@ -26,7 +26,8 @@ namespace Common.Dto
 
 		public int CreatedByUserId { get; set; }
 
-		public int UpdatedByUserId { get; set; }
+	    public ServiceTypeRole Role { get; set; }
+	    public int UpdatedByUserId { get; set; }
 
         //unique name to identify each service
 		[Required(ErrorMessage = "*required")]
@@ -60,7 +61,8 @@ namespace Common.Dto
         //service bundle indicates to which service portfolio service (i.e. the term service bundle is used)
         // this is the Gartner Service Portfolio, which is described differently than the ITIL service portfolio
 		public virtual IServiceBundleDto ServiceBundle { get; set; }
-        //the entire lifecycle object to which the service belongs
+	    public ServiceTypeProvision Provision { get; set; }
+	    //the entire lifecycle object to which the service belongs
 		public virtual ILifecycleStatusDto LifecycleStatusDto { get; set; }
        
         //what you can get when you order this service
@@ -71,5 +73,8 @@ namespace Common.Dto
         public virtual ICollection<IServiceGoalDto> ServiceGoals { get; set; }
 
         public virtual ICollection<IServiceSwotDto> ServiceSwot { get; set; }
+	    public ICollection<IServiceContractDto> ServiceContracts { get; set; }
+	    public ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
+	    public ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
 	}
 }

@@ -1,4 +1,4 @@
-﻿@using DataService.Models
+﻿@using Common.Dto
 @model Prometheus.WebUI.Models.Service.ServiceModel
 @{
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
@@ -18,7 +18,7 @@
                 @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
             </div>
             
-            @(Model.SelectedSection != "General" ? Html.Action("ShowService" + Model.SelectedSection, Model) : Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (Service) Model.Service))
+            @(Model.SelectedSection != "General" ? Html.Action("ShowService" + Model.SelectedSection, Model) : Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (ServiceDto) Model.Service))
 
             <div class="panel-footer">
                 &nbsp;

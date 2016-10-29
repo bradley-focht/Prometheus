@@ -1,8 +1,8 @@
-﻿@using DataService.Models
+﻿@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 
 @{
-    ViewBag.Title = "Update " + Model.Service.Name;
+    ViewBag.Title = "Update " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),

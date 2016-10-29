@@ -1410,7 +1410,7 @@ th {
 
 .table {
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 .table thead > tr > th,
@@ -1419,9 +1419,9 @@ th {
 .table thead > tr > td,
 .table tbody > tr > td,
 .table tfoot > tr > td {
-  padding: 8px;
+  padding: 5px;
   line-height: 1.428571429;
-  vertical-align: top;
+  vertical-align: bottom;
   border-top: 1px solid #dddddd;
 }
 

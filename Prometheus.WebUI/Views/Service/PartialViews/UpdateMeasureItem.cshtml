@@ -1,4 +1,4 @@
-﻿@model Common.Dto.ServiceGoalDto
+﻿@model Common.Dto.ServiceMeasureDto
 
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
@@ -10,22 +10,6 @@
                 @if (property.PropertyName == "Description")
                 {
                     <td class="dd-cell">@Html.TextArea(property.PropertyName, new { @class = "ckeditor" })</td>
-                }
-                else if (property.PropertyName == "Type")
-                {
-                    <td class="dd-cell">
-                        
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default">
-                                @Html.RadioButton("Type", "ShortTerm") Short Term
-                            </label>
-
-                            <label class="btn btn-default">
-                                @Html.RadioButton("Type", "LongTerm") Long Term
-                            </label>
-                        </div>
-
-                    </td>
                 }
                 else
                 {

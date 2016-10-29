@@ -6,18 +6,20 @@ namespace Prometheus.WebUI.Models.Shared
     {
         public ServiceNavModel()
         {
-            
         }
 
-        public ServiceNavModel(IEnumerable<string> sections, string selectedSection, int id, string action)
+        public ServiceNavModel(IEnumerable<KeyValuePair<string, string>> navLinks, string selectedRouteString, int id, string action)
         {
-            Sections = sections;
-            SelectedSection = selectedSection;
+            SelectedRouteString = selectedRouteString;
             Id = id;
             Action = action;
+            NavLinks = navLinks;
         }
-        public IEnumerable<string> Sections { get; set; }
-        public string SelectedSection { get; set; }
+        //key is the routeArg and value is the text
+        public IEnumerable<KeyValuePair<string, string>> NavLinks { get; set; }
+
+        //the selected route string
+        public string SelectedRouteString { get; set; }
         public int Id { get; set; }
         public string Action { get; set; }
     }

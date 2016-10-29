@@ -17,7 +17,15 @@
             <dd>@Html.Raw(service.Description)</dd>
 
             <dt>Status</dt>
-            <dd>@service.LifecycleStatusDto.Name</dd>
+            <dd>
+                @{
+                    if (service.LifecycleStatusDto != null)
+                    {
+                        @Html.Display(service.LifecycleStatusDto.Name)
+                        ;
+                    }
+                }
+            </dd>
         </dl>
     }
 

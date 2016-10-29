@@ -1,13 +1,14 @@
-﻿@using DataService.Models
+﻿@using Common.Dto
+@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 
 @{
-    ViewBag.Title = "Add " + Model.Section;
+    ViewBag.Title = "Add " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/General/" + Model.Service.Id),
+                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
 }
 
@@ -24,16 +25,16 @@
             @switch (Model.Section.ToUpper())
             {
                 case "GOALS":
-                    @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoal())
+                    @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
                     break;
                 case "SWOT":
                     @Html.Partial("PartialViews/UpdateSwotItem", new Common.Dto.ServiceSwotDto())
                     break;
                 case "CONTRACTS":
-                    @Html.Partial("PartialViews/UpdateContractItem", new ServiceContract())
+                    @Html.Partial("PartialViews/UpdateContractItem", new ServiceContractDto())
                     break;
                 case "MEASURES":
-                    @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasure())
+                    @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasureDto())
                     break;
                 case "WORKUNITS":
                     @Html.Partial("PartialViews/UpdateWorkUnitItem", new Common.Dto.ServiceWorkUnitDto())
