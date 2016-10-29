@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Common.Enums;
+using System.Collections.Generic;
 
 namespace DataService.Models
 {
@@ -11,11 +12,10 @@ namespace DataService.Models
 		string Name { get; set; }
 		int ServiceBundleId { get; set; }
 		string ServiceOwner { get; set; }
+		ServiceTypeRole ServiceTypeRole { get; set; }
+		ServiceTypeProvision ServiceTypeProvision { get; set; }
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 		ServiceBundle ServiceBundle { get; set; }
-		//TODO: make enums Brad
-		//Guid ServiceTypeProvision { get; set; }
-		//Guid ServiceTypeRole { get; set; }
 		ICollection<ServiceGoal> ServiceGoals { get; set; }
 	}
 }

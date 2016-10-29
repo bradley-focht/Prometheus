@@ -1,10 +1,9 @@
 ﻿namespace DataService.Models
 {
-	public interface IServiceWorkUnit
+	public interface IServiceWorkUnit : IUserCreatedEntity
 	{
 		int Id { get; set; }
-		//TODO: BRAD CONTACT
-		string Manager { get; set; }
+		string Contact { get; set; }
 		string Responsibilities { get; set; }
 		int ServiceId { get; set; }
 		string WorkUnit { get; set; }

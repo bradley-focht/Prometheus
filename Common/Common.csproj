@@ -62,7 +62,7 @@
     <Compile Include="Dto\LifecycleStatusDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\ServiceBundleDto.cs" />
-    <Compile Include="Dto\ServiceContract.cs" />
+    <Compile Include="Dto\ServiceContractDto.cs" />
     <Compile Include="Dto\ServiceDto.cs" />
     <Compile Include="Dto\ServiceGoalDto.cs" />
     <Compile Include="Dto\ServiceMeasureDto.cs" />

@@ -2,7 +2,7 @@
 
 namespace Common.Dto
 {
-	public interface ISwotActivityDto
+	public interface ISwotActivityDto : IUserCreatedEntityDto
 	{
 		DateTime Date { get; set; }
 		string Description { get; set; }

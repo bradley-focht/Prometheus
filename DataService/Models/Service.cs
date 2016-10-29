@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -41,11 +42,8 @@ namespace DataService.Models
 
 		public ICollection<ServiceGoal> ServiceGoals { get; set; }
 
-		//TODO: Brad fill Sean in on these
-		//[Display(Name = "Service Type Role")]
-		//public Guid ServiceTypeRole { get; set; }
-		//[Display(Name = "Service Type Provision")]
-		//public Guid ServiceTypeProvision { get; set; }
+		public ServiceTypeRole ServiceTypeRole { get; set; }
+		public ServiceTypeProvision ServiceTypeProvision { get; set; }
 
 		//Navigation Properties
 		public virtual ServiceBundle ServiceBundle { get; set; }

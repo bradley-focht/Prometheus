@@ -10,31 +10,41 @@ namespace Common.Dto
 		//PK
 		public int Id { get; set; }
 
-		//Fields
+		#region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-        //unique name must be provided
+		/// <summary>
+		/// Unique name must be provided
+		/// </summary>
 		[Required(ErrorMessage = "Service Bundle: Name is required")]
 		public string Name { get; set; }
 
-        //free text field
+		/// <summary>
+		/// Free text field
+		/// </summary>
 		[AllowHtml]
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
 
-        //extra text for those who just enjoy reading that much
+		/// <summary>
+		/// Extra text for those who just enjoy reading that much
+		/// </summary>
 		[AllowHtml]
 		[DataType(DataType.MultilineText)]
 		[Display(Name = "Business Value")]
 		public string BusinessValue { get; set; }
 
-        //list of measures, should be comma separated, but won't be enforced
+		/// <summary>
+		/// List of measures, should be comma separated, but won't be enforced
+		/// </summary>
 		public string Measures { get; set; }
+		#endregion
 
-		//Navigation properties
+		#region Navigation properties
 		public virtual ICollection<IServiceDto> Services { get; set; }
+		#endregion
 	}
 }

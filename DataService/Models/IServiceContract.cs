@@ -2,7 +2,7 @@
 
 namespace DataService.Models
 {
-	public interface IServiceContract
+	public interface IServiceContract : IUserCreatedEntity
 	{
 		string ContractNumber { get; set; }
 		DateTime ExpiryDate { get; set; }

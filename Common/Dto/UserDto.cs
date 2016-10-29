@@ -10,15 +10,17 @@ namespace Common.Dto
 		//FK
 		public int RoleId { get; set; }
 
-		//Fields
+		#region Fields
 		public string Name { get; set; }
 		public string Password { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+		#endregion
 
-		//Navigation properties
+		#region Navigation properties
 		public virtual IRoleDto Role { get; set; }
+		#endregion
 	}
 }

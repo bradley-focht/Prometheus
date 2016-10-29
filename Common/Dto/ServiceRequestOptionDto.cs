@@ -10,13 +10,14 @@ namespace Common.Dto
 		//FK
 		public int ServiceId { get; set; }
 
-		//Fields
+		#region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
-
-		//Navigation properties
+		#endregion
+		#region Navigation properties
 		public virtual IServiceDto Service { get; set; }
+		#endregion
 	}
 }

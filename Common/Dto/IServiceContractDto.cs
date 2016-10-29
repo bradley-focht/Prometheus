@@ -1,8 +1,8 @@
 ﻿using System;
 
 namespace Common.Dto
-{ 
-	public interface IServiceContractDto
+{
+	public interface IServiceContractDto : IUserCreatedEntityDto
 	{
 		string ContractNumber { get; set; }
 		DateTime ExpiryDate { get; set; }
