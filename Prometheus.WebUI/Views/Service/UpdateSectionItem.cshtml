@@ -1,50 +1,67 @@
-﻿@using Prometheus.WebUI.Helpers
+﻿@using Common.Dto
+@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 
 @{
-    ViewBag.Title = "Update " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
-    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+	ViewBag.Title = "Update " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/General/" + Model.Service.Id),
-                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+	ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+															 new KeyValuePair<string, string>("View Services", "Service/Index"),
+															 new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/General/" + Model.Service.Id),
+																new KeyValuePair<string, string>(ViewBag.Title, "#")};
 }
 
 @section Sidebar
 {
-    @Html.Action("ShowServiceList", Model.Service.Id)
+	@Html.Action("ShowServiceList", Model.Service.Id)
 }
 
 @section Content
 {
-    @using (Html.BeginForm("Save" + Model.Section, "Service", FormMethod.Post))
-    {
-        <div class="std-div">
-            @switch (Model.Section)
-            {
-                case "Goals":
-                    @Html.Action("UpdateGoalItem", Model.SectionItemId)
-                    break;
-                case "SWOT":
-                    @Html.Action("UpdateSwotItem", Model.SectionItemId)
-                    break;
-                case "General":
-                    @Html.Partial("PartialViews/UpdateGeneral", new Common.Dto.ServiceDto())
-                    break;
-            }
+	@using (Html.BeginForm("Save" + Model.Section, "Service", FormMethod.Post))
+	{
+		bool avail = true;
+		<div class="std-div">
+			@switch (Model.Section)
+			{
+				case "Goals":
+					@Html.Action("UpdateGoalItem", Model.SectionItemId)
+					break;
+				case "SWOT":
+					@Html.Action("UpdateSwotItem", Model.SectionItemId)
+					break;
+				case "General":
+					@Html.Partial("PartialViews/UpdateGeneral", new Common.Dto.ServiceDto())
+					break;
+				case "WorkUnits":
+					@Html.Partial("PartialViews/UpdateWorkUnitItem", new Common.Dto.ServiceWorkUnitDto())
+					break;
+				case "Measures":
+					if (Model.Service.ServiceWorkUnits != null && Model.Service.ServiceMeasures.Any())
+					{
+						@Html.Partial("PartialViews/UpdateMeasureItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
+						break;
+					}
+					goto default;
+				default:
+					avail = false;
+					<text>The data is no longer available</text>
+					break;
+			}
 
 
 
-            <div class="panel-footer">
-                &nbsp;
-                <div class="float-right-div">
-                    @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
-
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </div>
-
-        </div>
-    }
+			<div class="panel-footer">
+				&nbsp;
+				<div class="float-right-div">
+					@Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
+					@if (avail)
+					{
+						<input type="submit" value="Save" class="btn btn-primary" />
+					}
+				</div>
+			</div>
+		</div>
+	}
 }

@@ -2,8 +2,9 @@
 
 <table style="width:100%">
     <tr>
-        <td class="std-cell div-title" style="width:50%"><span class="font-title-initial">Strengths</span></td>
-        <td class="std-cell div-title" style="width:50%"><span class="font-title-initial">Opportunities</span></td>
+        <td class="std-cell div-title" style="width: 49%"><span class="font-title-initial">Strengths</span></td>
+        <td style="width: 100px;">&nbsp;</td>
+        <td class="std-cell div-title" style="width:49%"><span class="font-title-initial">Opportunities</span></td>
     </tr><tr>
         <td class="std-cell">
             @if (Model.Strengths != null && Model.Strengths.Any())
@@ -16,7 +17,7 @@
             }
 
         </td>
-
+             <td></td>
         
         <td class="std-cell">
             @if (Model.Opportunities != null && Model.Opportunities.Any())
@@ -32,6 +33,7 @@
 
     <tr>
         <td class="std-cell div-title"><span class="font-title-initial">Weaknesses</span></td>
+        <td></td>
         <td class="std-cell div-title"><span class="font-title-initial">Threats</span></td>
     </tr><tr>
         <td class="std-cell">
@@ -45,7 +47,7 @@
             }
         </td>
 
-        
+             <td></td>
         <td class="std-cell">
             @if (Model.Threats != null && Model.Threats.Any())
             {

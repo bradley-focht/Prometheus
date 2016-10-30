@@ -5002,7 +5002,7 @@ a.thumbnail:focus {
 }
 
 .alert {
-  padding: 15px;
+  padding: 10px;
   margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -5576,14 +5576,13 @@ a.list-group-item:focus {
 }
 
 .close {
-  float: right;
-  font-size: 21px;
+  font-size: 10px;
   font-weight: bold;
   line-height: 1;
   color: #000000;
   text-shadow: 0 1px 0 #ffffff;
-  opacity: 0.2;
-  filter: alpha(opacity=20);
+  opacity: 0.6;
+  filter: alpha(opacity=30);
 }
 
 .close:hover,
@@ -5591,8 +5590,8 @@ a.list-group-item:focus {
   color: #000000;
   text-decoration: none;
   cursor: pointer;
-  opacity: 0.5;
-  filter: alpha(opacity=50);
+  opacity: 0.9;
+  filter: alpha(opacity=10);
 }
 
 button.close {

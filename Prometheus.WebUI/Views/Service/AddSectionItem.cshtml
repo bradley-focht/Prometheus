@@ -22,21 +22,21 @@
     @using (Html.BeginForm("Save" + Model.Section, "Service", FormMethod.Post))
     {
         <div class="std-div">
-            @switch (Model.Section.ToUpper())
+            @switch (Model.Section)
             {
-                case "GOALS":
+                case "Goals":
                     @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
                     break;
                 case "SWOT":
                     @Html.Partial("PartialViews/UpdateSwotItem", new Common.Dto.ServiceSwotDto())
                     break;
-                case "CONTRACTS":
+                case "Contracts":
                     @Html.Partial("PartialViews/UpdateContractItem", new ServiceContractDto())
                     break;
-                case "MEASURES":
+                case "Measures":
                     @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasureDto())
                     break;
-                case "WORKUNITS":
+                case "WorkUnits":
                     @Html.Partial("PartialViews/UpdateWorkUnitItem", new Common.Dto.ServiceWorkUnitDto())
                     break;
 

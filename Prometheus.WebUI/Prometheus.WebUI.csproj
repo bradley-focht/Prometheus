@@ -274,6 +274,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ServiceMaintenance\ServiceModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSection.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
@@ -281,7 +282,7 @@
     <Compile Include="Models\Service\ServiceModel.cs" />
     <Compile Include="Models\Shared\ConfirmDeleteModel.cs" />
     <Compile Include="Models\Shared\LinkListModel.cs" />
-    <Compile Include="Models\Service\LifecycleModel.cs" />
+    <Compile Include="Models\ServiceMaintenance\LifecycleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
@@ -335,6 +336,10 @@
     <Content Include="Views\Service\ConfirmDeleteSection.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowSwotTable.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateMeasureItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowWorkUnitItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowContractItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowMeasureItem.cshtml" />
+    <Content Include="Views\ServiceMaintenance\PartialViews\ServiceView.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
-using Prometheus.WebUI.Models;
-using Prometheus.WebUI.Models.Service;
+using Prometheus.WebUI.Models.ServiceMaintenance;
+using Prometheus.WebUI.Models.Shared;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -17,6 +16,24 @@ namespace Prometheus.WebUI.Controllers
         {
             return View();
         }
+
+
+	    public ActionResult ShowServices(int id = 0)
+	    {
+			ServiceModel serviceModel = new ServiceModel();
+			LinkListModel model = new LinkListModel();
+		    model.AddAction = null;
+		    model.Controller = "ServiceMaintenance";
+		    model.SelectAction = "ShowServices";
+		    model.ListItems = null;
+		    model.Title = "Services";
+
+		    serviceModel.LinkListModel = model;
+		    serviceModel.Service = null;
+			
+
+		    return View(serviceModel);
+	    }
 
         /// <summary>
         /// Show details of selected lifecycle or none if no id

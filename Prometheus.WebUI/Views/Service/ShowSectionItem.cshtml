@@ -9,7 +9,7 @@
                                                                new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
-
+	bool avail = true; /*used to ensure null or empty lists are not searched */
 
 }
 
@@ -24,26 +24,59 @@
         @switch (Model.Section)
         {
             case "Goals":
-                @Html.Partial("PartialViews/ShowGoalItem", (ServiceGoalDto)Model.Service.ServiceGoals.First(g => g.Id == Model.SectionItemId))
-                break;
+                if (Model.Service.ServiceGoals != null && Model.Service.ServiceGoals.Any()) /* check for non existant lists to limit some null data going to the next view */
+                {
+                    @Html.Partial("PartialViews/ShowGoalItem", (ServiceGoalDto) Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    break;
+                }
+                goto default;
             case "Swot":
-                @Html.Partial("PartialViews/ShowSwotItem", new Common.Dto.ServiceSwotDto())
-                break;
+                if (Model.Service.ServiceSwots != null && Model.Service.ServiceSwots.Any())
+                {
+                    @Html.Partial("PartialViews/ShowSwotItem", (ServiceSwotDto)Model.Service.ServiceSwots.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    break;
+                }
+                goto default;
             case "WorkUnits":
-                @Html.Partial("PartialViews/UpdateWorkUnitItem", (ServiceWorkUnitDto)Model.Service.ServiceWorkUnits.First(g => g.Id == Model.SectionItemId))
-                break;
+                if (Model.Service.ServiceGoals != null && Model.Service.ServiceGoals.Any()) 
+                {
+                    @Html.Partial("PartialViews/ShowWorkUnitItem", (ServiceWorkUnitDto) Model.Service.ServiceWorkUnits.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    break;
+                }
+                goto default;
+            case "Contracts":
+                if (Model.Service.ServiceContracts != null && Model.Service.ServiceContracts.Any())
+                {
+                    @Html.Partial("PartialViews/ShowContractItem", (ServiceContractDto)Model.Service.ServiceContracts.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    break;
+                }
+                goto default;
+            case "Measures":
+                if (Model.Service.ServiceMeasures != null && Model.Service.ServiceMeasures.Any())
+                {
+                    @Html.Partial("Partialviews/ShowMeasureItem", (ServiceMeasureDto) Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
+					break;
+				}
+				goto default;
+			default:
+				avail = false;
+				<text>The data no longer available.</text>
+		break;
+}
 
-        }
 
-        <div class="panel-footer">
+
+	    <div class="panel-footer">
             @Html.ActionLink("Back", "Show", new { section = Model.Section, id = Model.Service.Id }, new { @class = "btn btn-primary" })
             <div class="float-right-div">
 
+	            @if (avail)
+	            {
+		            @Html.ActionLink("Update", "UpdateServiceSectionItem", new {id = Model.SectionItemId, section = Model.Section}, new {@class = "btn btn-default"})
 
-                @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = Model.SectionItemId, section = Model.Section }, new { @class = "btn btn-default" })
 
-
-                @Html.ActionLink("Delete", "Delete", new { id = 1, section = Model.Section }, new { @class = "btn btn-danger" })
+		            @Html.ActionLink("Delete", "ConfirmDeleteServiceSectionItem", new {id = 1, section = Model.Section}, new {@class = "btn btn-danger"})
+	            }
             </div>
         </div>
 

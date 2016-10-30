@@ -87,7 +87,7 @@ namespace Prometheus.WebUI.Controllers
             ServiceModel sm = new ServiceModel();
 
             if (id == 0)
-            {
+            { 
                 sm.Service = new ServiceDto() {Id = 0};
             }
             else
@@ -107,6 +107,11 @@ namespace Prometheus.WebUI.Controllers
             return View("AddService");
         }
 
+		/// <summary>
+		/// Save a new Service
+		/// </summary>
+		/// <param name="newService"></param>
+		/// <returns></returns>
         [HttpPost]
         public ActionResult Save(ServiceDto newService)
         {
@@ -114,8 +119,48 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Show");
         }
 
+		/// <summary>
+		/// Save and update work units
+		/// </summary>
+		/// <param name="workUnit"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult SaveServiceWorkUnitItem(ServiceWorkUnitDto workUnit)
+	    {
+		    return RedirectToAction("Show");
+	    }
 
-        [ChildActionOnly]
+		[HttpPost]
+	    public ActionResult SaveServiceGoalItem(ServiceGoalDto goal)
+	    {
+		    return RedirectToAction("Show");
+	    }
+
+	    [HttpPost]
+	    public ActionResult SaveServiceSwotItem(ServiceSwotDto swotItem)
+	    {
+		    return RedirectToAction("Show");
+	    }
+
+	    [HttpPost]
+	    public ActionResult SaveSwotActivityItem(SwotActivityDto activity)
+	    {
+		    return RedirectToAction("Show");
+	    }
+
+		[HttpPost]
+		public ActionResult SaveSwotServiceMeasureItem(ServiceMeasureDto activity)
+		{
+			return RedirectToAction("Show");
+		}
+
+		[HttpPost]
+		public ActionResult SaveContractItem(ServiceContractDto contract)
+		{
+			return RedirectToAction("Show");
+		}
+
+		[ChildActionOnly]
         public ActionResult ShowServiceGoals(ServiceDto service)
         {
             TableDataModel tblModel = new TableDataModel();
@@ -144,7 +189,8 @@ namespace Prometheus.WebUI.Controllers
                 new KeyValuePair<int, IEnumerable<string>>(1,
                     new List<string> {"Prometheus", "44-4507-A", "next month", "last month"})
             };
-
+            tblModel.Action = "ShowServiceSectionItem";
+            tblModel.ServiceSection = "Contracts";
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
 
@@ -154,12 +200,12 @@ namespace Prometheus.WebUI.Controllers
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Work Unit", "Manager", "Roles"};
             tblModel.Action = "ShowServiceSectionItem";
-            tblModel.ServiceSection = "Work Units";
+            tblModel.ServiceSection = "WorkUnits";
             tblModel.Controller = "Service";
+
+
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
-            {
-                new KeyValuePair<int, IEnumerable<string>>(1,
-                    new List<string> {"OCIO", "Vinay chandramohan", "Making the Service Portfolio"}),
+            {    
                 new KeyValuePair<int, IEnumerable<string>>(1,
                     new List<string> {"Executive", "Sean Boczulak", "be da boss"})
             };
@@ -174,6 +220,8 @@ namespace Prometheus.WebUI.Controllers
             TableDataModel tblModel = new TableDataModel();
             tblModel.Titles = new List<string> {"Method", "Outcome"};
             tblModel.Action = "ShowServiceSectionItem";
+            
+            tblModel.ServiceSection = "Measures";
             tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
             {
                 new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
@@ -272,17 +320,20 @@ namespace Prometheus.WebUI.Controllers
             model.Service = new ServiceDto();
             model.Service.Name = "Operations";
             model.Service.Id = 10;
+            model.SectionItemId = id;
             model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "hi" } }.ToArray();
+            model.Service.ServiceWorkUnits = new List<IServiceWorkUnitDto>(new List<IServiceWorkUnitDto> {new ServiceWorkUnitDto {Id = 1, WorkUnit = "Those \"guys\"", Contact = "Craig Gelowitz", Responsibilities = "Just keep out of trouble, ok?"} });
+            model.Service.ServiceContracts = new List<IServiceContractDto>(new List<IServiceContractDto>());
+            model.Service.ServiceMeasures = new List<IServiceMeasureDto>();
+
             return View("ShowSectionItem", model);
         }
-
-
         
 
         public ActionResult UpdateServiceSectionItem(string section, int id = 0)
         {
             ServiceSectionModel model = new ServiceSectionModel();
-            model.Section = "Goals";
+            model.Section = section;
             model.Service = new ServiceDto();
             model.Service.Name = "Operations";
             model.Service.Id = 10;

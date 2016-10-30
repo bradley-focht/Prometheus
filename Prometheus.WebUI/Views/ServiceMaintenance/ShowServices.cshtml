@@ -1,7 +1,31 @@
-﻿
+﻿@model Prometheus.WebUI.Models.ServiceMaintenance.ServiceModel
 @{
-    ViewBag.Title = "RetrieveServices";
-    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+	ViewBag.Title = "Show Services";
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+	ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+															 new KeyValuePair<string, string>("Services Maintenance", "ServiceMaintenance/Index"),
+																new KeyValuePair<string, string>(ViewBag.Title, "#")};
+}
+
+@section Content
+{
+
+
+	<div class="alert alert-info std-div">
+		select a service
+	</div>
+
+	@if (Model.Service != null)
+	{
+		
+	}
+
 }
 
 
+@section Sidebar
+	{
+	@Html.Partial("PartialViews/_LinkList", Model.LinkListModel)
+
+}

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Common.Dto;
 
-namespace Prometheus.WebUI.Models.Service
+namespace Prometheus.WebUI.Models.ServiceMaintenance
 {
 	public class LifecycleModel
 	{
