@@ -41,7 +41,7 @@ namespace DataService.DataAccessLayer
 			context.ServiceBundles.Add(new ServiceBundle
 			{
 				Name = "First Service Bundle Name",
-				Services = new List<Service>
+				Services = new List<IService>
 				{
 					new Service
 					{
@@ -51,7 +51,7 @@ namespace DataService.DataAccessLayer
 						{
 							Name = "lifeName"
 						},
-						ServiceRequestOptions = new List<ServiceRequestOption>
+						ServiceRequestOptions = new List<IServiceRequestOption>
 						{
 							new ServiceRequestOption(),
 							new ServiceRequestOption()
@@ -63,7 +63,7 @@ namespace DataService.DataAccessLayer
 						{
 							Name = "lifeName1"
 						},
-						ServiceRequestOptions = new List<ServiceRequestOption>
+						ServiceRequestOptions = new List<IServiceRequestOption>
 						{
 							new ServiceRequestOption(),
 							new ServiceRequestOption()

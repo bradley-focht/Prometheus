@@ -91,7 +91,7 @@ namespace Common.Dto
 		/// All collections below are part of the service package that goes with each service
 		/// </summary>
 		public virtual ICollection<IServiceGoalDto> ServiceGoals { get; set; }
-		public virtual ICollection<IServiceSwotDto> ServiceSwot { get; set; }
+		public virtual ICollection<IServiceSwotDto> ServiceSwots { get; set; }
 		public virtual ICollection<IServiceContractDto> ServiceContracts { get; set; }
 		public virtual ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
 		public virtual ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }

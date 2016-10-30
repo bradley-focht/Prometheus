@@ -3,8 +3,10 @@
 	public interface IServiceMeasure : IUserCreatedEntity
 	{
 		int Id { get; set; }
+		int ServiceId { get; set; }
 		string Method { get; set; }
 		string Outcome { get; set; }
-		int ServiceId { get; set; }
+
+		IService Service { get; set; }
 	}
 }

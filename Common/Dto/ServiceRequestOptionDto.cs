@@ -17,7 +17,6 @@ namespace Common.Dto
 		public int UpdatedByUserId { get; set; }
 		#endregion
 		#region Navigation properties
-		public virtual IServiceDto Service { get; set; }
 		#endregion
 	}
 }

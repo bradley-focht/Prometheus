@@ -18,7 +18,7 @@ namespace Common.Dto
 		IServiceBundleDto ServiceBundle { get; set; }
 		ILifecycleStatusDto LifecycleStatusDto { get; set; }
 		ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
-		ICollection<IServiceSwotDto> ServiceSwot { get; set; }
+		ICollection<IServiceSwotDto> ServiceSwots { get; set; }
 		ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
 		ICollection<IServiceContractDto> ServiceContracts { get; set; }
 		ICollection<IServiceGoalDto> ServiceGoals { get; set; }

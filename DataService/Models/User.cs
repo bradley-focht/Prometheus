@@ -14,15 +14,16 @@ namespace DataService.Models
 		//FK
 		public int RoleId { get; set; }
 
-		//Fields
+		#region Fields
 		public string Name { get; set; }
 		public string Password { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
-
-		//Navigation properties
-		public virtual Role Role { get; set; }
+		#endregion
+		#region Navigation properties
+		public virtual IRole Role { get; set; }
+		#endregion
 	}
 }

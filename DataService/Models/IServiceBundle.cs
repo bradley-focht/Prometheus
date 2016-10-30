@@ -9,6 +9,6 @@ namespace DataService.Models
 		int Id { get; set; }
 		string Measures { get; set; }
 		string Name { get; set; }
-		ICollection<Service> Services { get; set; }
+		ICollection<IService> Services { get; set; }
 	}
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Common.Dto
 {
@@ -17,7 +16,6 @@ namespace Common.Dto
 		#endregion
 
 		#region Navigation properties
-		public virtual ICollection<IUserDto> Users { get; set; }
 		#endregion
 	}
 }

@@ -11,6 +11,7 @@ namespace Common.Dto
 		[HiddenInput]
 		public int Id { get; set; }
 
+		public int ServiceId { get; set; }
 
 		#region Fields
 		public DateTime? DateCreated { get; set; }

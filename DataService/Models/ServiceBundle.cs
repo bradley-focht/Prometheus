@@ -12,7 +12,7 @@ namespace DataService.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		//Fields
+		#region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
@@ -20,16 +20,17 @@ namespace DataService.Models
 
 		[Required(ErrorMessage = "Service Bundle: Name is required")]
 		public string Name { get; set; }
-		
+
 		[DataType(DataType.MultilineText)]
 		public string Description { get; set; }
-		
+
 		[DataType(DataType.MultilineText)]
 		[Display(Name = "Business Value")]
 		public string BusinessValue { get; set; }
 		public string Measures { get; set; }
-
-		//Navigation properties
-		public virtual ICollection<Service> Services { get; set; }
+		#endregion
+		#region Navigation Properties
+		public virtual ICollection<IService> Services { get; set; }
+		#endregion
 	}
 }

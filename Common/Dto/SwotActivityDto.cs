@@ -8,6 +8,9 @@ namespace Common.Dto
 		[HiddenInput]
 		public int Id { get; set; }
 
+		public int ServiceId { get; set; }
+		public int ServiceSwotId { get; set; }
+
 		#region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }

@@ -19,7 +19,7 @@ namespace DataService.Models
 		[Display(Name = "Lifecycle Status")]
 		public int LifecycleStatusId { get; set; }
 
-		//Fields
+		#region Fields
 		public DateTime? DateCreated { get; set; }
 
 		public DateTime? DateUpdated { get; set; }
@@ -39,15 +39,19 @@ namespace DataService.Models
 
 		[Display(Name = "Service Owner")]
 		public string ServiceOwner { get; set; }
-
-		public ICollection<ServiceGoal> ServiceGoals { get; set; }
-
 		public ServiceTypeRole ServiceTypeRole { get; set; }
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
+		#endregion
+		#region Navigation Properties
+		public virtual IServiceBundle ServiceBundle { get; set; }
+		public virtual ILifecycleStatus LifecycleStatus { get; set; }
 
-		//Navigation Properties
-		public virtual ServiceBundle ServiceBundle { get; set; }
-		public virtual LifecycleStatus LifecycleStatus { get; set; }
-		public virtual ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
+		public virtual ICollection<IServiceRequestOption> ServiceRequestOptions { get; set; }
+		public virtual ICollection<IServiceContract> ServiceContracts { get; set; }
+		public virtual ICollection<IServiceMeasure> ServiceMeasures { get; set; }
+		public virtual ICollection<IServiceGoal> ServiceGoals { get; set; }
+		public virtual ICollection<IServiceSwot> ServiceSwots { get; set; }
+		public virtual ICollection<IServiceWorkUnit> ServiceWorkUnits { get; set; }
+		#endregion
 	}
 }

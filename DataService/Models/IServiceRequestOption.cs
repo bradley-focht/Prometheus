@@ -4,6 +4,6 @@
 	{
 		int Id { get; set; }
 		int ServiceId { get; set; }
-		//TODO: Sean Add service ID
+		IService Service { get; set; }
 	}
 }

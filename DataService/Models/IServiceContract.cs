@@ -14,5 +14,7 @@ namespace DataService.Models
 		//TODO: ask brooke
 		string Type { get; set; }
 		string Description { get; set; }
+
+		IService Service { get; set; }
 	}
 }

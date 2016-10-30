@@ -1,10 +1,14 @@
 ﻿using Common.Enums;
 using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataService.Models
 {
 	public class ServiceGoal : IServiceGoal
 	{
+		[Key]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 		public int ServiceId { get; set; }
 
@@ -18,6 +22,9 @@ namespace DataService.Models
 		public ServiceGoalType Type { get; set; }
 		public DateTime? StartDate { get; set; }
 		public DateTime? EndDate { get; set; }
+		#endregion
+		#region Navigation Properties
+		public virtual IService Service { get; set; }
 		#endregion
 	}
 }

@@ -3,12 +3,16 @@ using System.Collections.Generic;
 
 namespace DataService.Models
 {
-	interface IServiceSwot : IUserCreatedEntity
+	public interface IServiceSwot : IUserCreatedEntity
 	{
-		string Description { get; set; }
 		int Id { get; set; }
+		int ServiceId { get; set; }
+
+		string Description { get; set; }
 		string Item { get; set; }
-		ICollection<SwotActivity> SwotActivities { get; set; }
 		ServiceSwotType Type { get; set; }
+
+		IService Service { get; set; }
+		ICollection<ISwotActivity> SwotActivities { get; set; }
 	}
 }
