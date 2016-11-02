@@ -2,7 +2,7 @@
 @{
     
     <div class="btn-group">
-        @foreach (KeyValuePair<string, string> sectionItem in Model.NavLinks)
+        @foreach (var sectionItem in Model.NavLinks)
         {
             if (Model.SelectedRouteString == "GeneralOnly" && sectionItem.Key=="General")
             {
@@ -14,7 +14,7 @@
             }
             else
             {
-                <label class="btn btn-default disabled">@sectionItem.Value</label>
+                <label class="btn btn-default active">@sectionItem.Value</label>
             }
         }
     </div>

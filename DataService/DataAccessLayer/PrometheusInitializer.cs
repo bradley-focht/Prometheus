@@ -46,10 +46,9 @@ namespace DataService.DataAccessLayer
 					new Service
 					{
 						Name = "First Service",
-						//TODO: Brad please give a meaningful name for lifecycleStatus
 						LifecycleStatus = new LifecycleStatus()
 						{
-							Name = "lifeName"
+							Name = "Operational"
 						},
 						ServiceRequestOptions = new List<IServiceRequestOption>
 						{
@@ -61,7 +60,7 @@ namespace DataService.DataAccessLayer
 					{
 						Name = "Second Service",LifecycleStatus = new LifecycleStatus()
 						{
-							Name = "lifeName1"
+							Name = "Chartered"
 						},
 						ServiceRequestOptions = new List<IServiceRequestOption>
 						{

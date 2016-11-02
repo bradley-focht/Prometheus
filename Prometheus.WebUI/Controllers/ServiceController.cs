@@ -19,12 +19,13 @@ namespace Prometheus.WebUI.Controllers
         {
             var services = new List<ServiceDto>
             {
-                new ServiceDto() {Name = "Support Services", Description = "support for the masses"},
-                new ServiceDto()
+                new ServiceDto {Name = "Support Services", Description = "support for the masses"},
+                new ServiceDto
                 {
                     Name = "Communications and Messaging",
                     Description = "send a message to that special someone"
-                }
+                },
+                new ServiceDto {Name="Collaboration Services", Description = "this is really just Sharepoint... and it's an outdated version too."}
             }; 
             
 
@@ -193,6 +194,15 @@ namespace Prometheus.WebUI.Controllers
             tblModel.ServiceSection = "Contracts";
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
+
+        [ChildActionOnly]
+        public ActionResult ShowServiceDocuments(ServiceDto service)
+        {
+
+
+            return PartialView("PartialViews/ShowDocuments");
+        }
+
 
         [ChildActionOnly]
         public ActionResult ShowServiceWorkUnits(ServiceDto service)
@@ -377,7 +387,7 @@ namespace Prometheus.WebUI.Controllers
             if(id == 0)//something has gone very wrong
                 return RedirectToAction("Show");
 
-            ConfirmDeleteSection model = new ConfirmDeleteSection(0, "No, not me!", section, "DeleteSectionItem");
+            ConfirmDeleteSection model = new ConfirmDeleteSection(0, "No, not me!", section, "DeleteSectionItem", "Operations");
             
             return View("ConfirmDeleteSection", model);
         }

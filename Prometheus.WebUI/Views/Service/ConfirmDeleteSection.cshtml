@@ -5,24 +5,29 @@
     ViewBag.Links = new List< KeyValuePair < string, string>> {
                                                                 new KeyValuePair<string, string>("Home", "Home"),
                                                                 new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                                new KeyValuePair<string, string>("####", "Service/Show/General/" + "####"),
-                                                                new KeyValuePair<string, string>( "section", "link"),
+                                                                new KeyValuePair<string, string>(Model.Service, "Service/Show/General/" + Model.Serviceid),
+                                                                new KeyValuePair<string, string>( Model.Section, "Service/ShowServiceSectionItem/" + Model.Section + "/" + Model.Id),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
+@section Content
+{
+    <div class="std-div">
+        @using (Html.BeginForm("Delete" + Model.Section + "Item", "Service", FormMethod.Post))
+        {
+            <input type="hidden" name="id", id="id" value="@Model.Id"/>
 
-<div class="std-div">
-    @using (Html.BeginForm("Delete" + Model.Section + "Item", "Service", FormMethod.Post))
-    {
-        <input type="hidden" name="id", id="id" value="@Model.Id"/>
+            <div class="panel panel-footer">
+                <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+                @Html.ActionLink("Cancel", "ShowServiceSectionItem", new {id = Model.Id, section = Model.Section}, new {@class = "btn btn-default"})
+            </div>
+        }
+    </div>
+}
 
-        <div class="panel panel-footer">
-            <input type="submit" value="Confirm Delete" class="btn btn-danger" />
-            @Html.ActionLink("Cancel", "ShowServiceSectionItem", new {id = Model.Id, section = Model.Section}, new {@class="btn btn-default"})
-        </div>
-    }
+@section Sidebar
+{
 
-
-</div>
+}

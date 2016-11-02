@@ -1,62 +1,63 @@
-﻿@model DataService.Models.ILifecycleStatus
+﻿@model Common.Dto.ILifecycleStatusDto
 
 <div class="std-div">
     @using (Html.BeginForm("SaveLifecycle", "ServiceMaintenance", FormMethod.Post))
     {
         <div class="panel-body">
             @Html.HiddenFor(m => Model.Id)
-            <table class="std-table">
-                <tr>
-                    <td class="std-cell">
+            <table>
+
 
                         @foreach (var property in ViewData.ModelMetadata.Properties)
-                        {
+						{
+							if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
+							{
+								continue;
+							}
 
-                            if (property.PropertyName == "CatalogVisible")
-                            {
-                                <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                                <div class="form-group">
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label class="btn btn-default">
-                                            @Html.RadioButton("CatalogVisible", "no",
-                                        new { id = "false" }) no
-                                        </label>
+							<tr>
+								<td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+								@switch (property.PropertyName)
+								{
+									case "CatalogVisible":
 
-                                        <label class="btn btn-default">
-                                            @Html.RadioButton("CatalogVisible", "yes",
-                                        new { id = "true" }) yes
-                                        </label>
-                                    </div>
-                                </div>
-                            }
-                            else if (property.PropertyName == "Position")
-                            {
-                                <div class="form-group">
-                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label> <label class="alert-danger">@Html.ValidationMessage(property.PropertyName)</label>
-                                    <br />
-                                    @Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
-                                    
-                                </div>
-                            }
+										<td class="dd-cell">
+											<div class="form-group">
+												<div class="btn-group" data-toggle="buttons">
+													<label class="btn btn-default">
+														@Html.RadioButton("CatalogVisible", "no",
+															new {id = "false"}) no
+													</label>
 
-                            else if (property.PropertyName != "Id" && property.PropertyName != "id" && property.PropertyName != "Services")
-                            {
-                                <div class="form-group">
-                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label> <label class="alert-danger">@Html.ValidationMessage(property.PropertyName)</label>
-                                    @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
-                                    
-
-                                </div>
-                            }
+													<label class="btn btn-default">
+														@Html.RadioButton("CatalogVisible", "yes",
+															new {id = "true"}) yes
+													</label>
+												</div>
+											</div>
+										</td>
+										break;
+									case "Position":
+										<td class="dd-cell">
+											
+											@Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem {Text = i.ToString(), Value = i.ToString()}))
+											<label class="alert-danger">@Html.ValidationMessage(property.PropertyName)</label>
+										</td>
+										break;
+									default:
+											<td class="dd-cell">
+												@Html.TextBox(property.PropertyName, null, new {@class = "form-control"})
+											</td>
+										
+										break;
+								}
+							</tr>
 
 
                         }
 
-
-                    </td>
-                <tr>
-                    <td colspan="2" class="std-cell">
-
+				</table>
+			
                         <div class="panel-footer">
                             <div class="float-right-div">
                                 <input type="submit" value="Save" class="btn btn-primary"/>
@@ -66,9 +67,7 @@
 
                         </div>
 
-                    </td>
-                </tr>
-            </table>
+
         </div>
     }
 </div>

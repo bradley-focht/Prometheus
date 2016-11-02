@@ -12,13 +12,19 @@
 {
 
 
-	<div class="alert alert-info std-div">
-		select a service
+	<div class="alert alert-info close msg-div" data-dismiss="alert" aria-label="close"><div class="float-right-div">&times;</div>
+		Select a service
 	</div>
 
 	@if (Model.Service != null)
 	{
-		
+		<div class="panel-footer">
+			<div class="float-right-div">
+				@Html.ActionLink("Back", "ShowServices", null, new { @class = "btn btn-default" })
+				@Html.ActionLink("Delete", "ConfirmDeleteService", Model.Service.Id, new { @class = "btn btn-danger" })
+			</div>
+
+		</div>
 	}
 
 }
