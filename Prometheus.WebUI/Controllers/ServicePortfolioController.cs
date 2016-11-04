@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using DataService.Models;
+using Common.Dto;
 using Prometheus.WebUI.Models.ServicePortfolio;
 
 namespace Prometheus.WebUI.Controllers
@@ -15,10 +15,10 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult Index()
         {
 			//temp code please remove on implementation
-			var portfolioItems = new List<IServiceBundle>();
+			var portfolioItems = new List<IServiceBundleDto>();
 
 
-			portfolioItems.Add(new ServiceBundle() {Id = 1, Name = "Workplace Services", Description = "some new service" });
+			portfolioItems.Add(new ServiceBundleDto() {Id = 1, Name = "Workplace Services", Description = "some new service" });
 
 
             return View(portfolioItems);
@@ -29,7 +29,7 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="serviceBundle"></param>
         /// <returns></returns>
 		[HttpPost]
-		public ActionResult Save(ServiceBundle serviceBundle)           
+		public ActionResult Save(ServiceBundleDto serviceBundle)           
 		{
 
 			return RedirectToAction("Show");
@@ -41,7 +41,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Add()
 		{
-            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundle());
+            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
 
             return View(model);
 		}
@@ -55,7 +55,7 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
 		public ActionResult Show(Guid? id = null)
 		{
-            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundle());
+            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
             
 			return View(model);
 		}

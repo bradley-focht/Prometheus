@@ -19,7 +19,7 @@
 
 @section Content
 {
-    @using (Html.BeginForm("Save" + Model.Section, "Service", FormMethod.Post))
+    @using (Html.BeginForm("Save", "Service", FormMethod.Post))
     {
         <div class="std-div">
             @switch (Model.Section)
@@ -27,7 +27,7 @@
                 case "Goals":
                     @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
                     break;
-                case "SWOT":
+                case "Swot":
                     @Html.Partial("PartialViews/UpdateSwotItem", new Common.Dto.ServiceSwotDto())
                     break;
                 case "Contracts":

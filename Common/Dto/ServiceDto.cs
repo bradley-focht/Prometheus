@@ -95,6 +95,7 @@ namespace Common.Dto
 		public virtual ICollection<IServiceContractDto> ServiceContracts { get; set; }
 		public virtual ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
 		public virtual ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
-		#endregion
+	    public ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
+	    #endregion
 	}
 }

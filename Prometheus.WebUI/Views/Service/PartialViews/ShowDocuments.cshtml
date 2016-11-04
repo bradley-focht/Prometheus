@@ -1,8 +1,15 @@
-﻿
+﻿@model Common.Dto.ServiceDocumentDto
 
-<div class="panel-footer">
-    <div class="float-right-div">
-        <label class="control-label">Select File</label>
-        <input id="File" type="file" class="file">
+
+
+
+<div class="panel panel-footer">
+    <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
+        <span class="btn btn-primary btn-file">
+            <span class="fileupload-new">Select file</span>
+            <span class="fileupload-exists">Change</span>         <input type="file" />
+        </span>
+        <span class="fileupload-preview"></span>
+        <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
     </div>
 </div>

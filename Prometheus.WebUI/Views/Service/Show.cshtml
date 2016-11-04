@@ -7,6 +7,9 @@
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
+
+    bool controlAvail = Model.SelectedSection != "Documents";       /* indicates if control buttons should be visible */
+
 }
 
 @section Content
@@ -15,26 +18,30 @@
     {
         <div class="std-div">
             <div>
-                @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
+
+                    @Html.Action("ShowNav", new {id = Model.Service.Id, section = Model.SelectedSection})
+                
             </div>
             
             @(Model.SelectedSection != "General" ? Html.Action("ShowService" + Model.SelectedSection, Model) : Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (ServiceDto) Model.Service))
 
-            <div class="panel-footer">
-                &nbsp;
-                <div class="float-right-div">
+            @if (controlAvail)
+            {
+                <div class="panel-footer">
+                    &nbsp;
+                    <div class="float-right-div">
 
-                    @if (Model.SelectedSection == "General")
-                    {
-                        @Html.ActionLink("Update", "Update" + Model.SelectedSection, new { id = Model.Service.Id }, new { @class = "btn btn-primary" })
-                    }
-                    else
-                    {
-                        @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-primary" })
-                    }
+                        @if (Model.SelectedSection == "General")
+                        {
+                            @Html.ActionLink("Update", "Update" + Model.SelectedSection, new {id = Model.Service.Id}, new {@class = "btn btn-primary"})
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Add", "AddServiceSectionItem", new {id = Model.Service.Id, section = Model.SelectedSection}, new {@class = "btn btn-primary"})
+                        }
+                    </div>
                 </div>
-            </div>
-
+            }
         </div>
 
     }

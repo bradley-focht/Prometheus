@@ -3,7 +3,7 @@
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
-        if (!property.PropertyName.Contains("Id"))
+        if (!property.PropertyName.Contains("Id") && !property.PropertyName.Contains("Date"))
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
@@ -14,7 +14,7 @@
                 else if (property.PropertyName == "Type")
                 {
                     <td class="dd-cell">
-                        
+
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-default">
                                 @Html.RadioButton("Type", "ShortTerm") Short Term
@@ -27,10 +27,18 @@
 
                     </td>
                 }
+                
                 else
                 {
                     <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
                 }
+            </tr>
+        }
+        else if (property.PropertyName.Contains("Date") && (property.DisplayName != null && property.DisplayName.Contains(" Date")))
+        {
+            <tr>
+                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
             </tr>
         }
 

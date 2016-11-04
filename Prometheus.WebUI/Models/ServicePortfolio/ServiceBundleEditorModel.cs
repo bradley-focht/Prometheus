@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using DataService.Models;
+using Common.Dto;
 
 namespace Prometheus.WebUI.Models.ServicePortfolio
 {
@@ -7,7 +7,7 @@ namespace Prometheus.WebUI.Models.ServicePortfolio
 	{
 		public IEnumerable<KeyValuePair<int, string>> Services { get; set; }
 
-	    public ServiceBundleEditorModel(ServiceBundle currentServiceBundle) : base(currentServiceBundle)
+	    public ServiceBundleEditorModel(ServiceBundleDto currentServiceBundle) : base(currentServiceBundle)
 	    {
 	    }
 	}
