@@ -249,6 +249,7 @@
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Scripts\ckeditor\styles.js" />
+    <None Include="Properties\PublishProfiles\IISProfileHost.pubxml" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -261,7 +262,9 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -270,6 +273,7 @@
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\ServiceDocumentHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -344,9 +348,11 @@
     <Content Include="Views\Service\PartialViews\ShowMeasureItem.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\ServiceView.cshtml" />
     <Content Include="Views\SystemAccess\Index.cshtml" />
-    <Content Include="Views\UserAccount\LoginScreen.cshtml" />
+    <Content Include="Views\UserAccount\Index.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteService.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDocuments.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowDocumentTable.cshtml" />
+    <Content Include="Views\Service\PartialViews\RenameDocument.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -356,6 +362,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="ServiceDocs\" />
     <Folder Include="Views\Catalog\" />
   </ItemGroup>
   <ItemGroup>
@@ -366,6 +373,10 @@
     <ProjectReference Include="..\DataService\DataService.csproj">
       <Project>{7757884f-c8d9-48ac-a4d6-6238d0203431}</Project>
       <Name>DataService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServicePortfolio\ServicePortfolio.csproj">
+      <Project>{42e1113b-c696-4c66-b144-338e650254ca}</Project>
+      <Name>ServicePortfolio</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

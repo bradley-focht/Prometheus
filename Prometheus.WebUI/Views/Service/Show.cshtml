@@ -6,9 +6,9 @@
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
-    bool controlAvail = Model.SelectedSection != "Documents";       /* indicates if control buttons should be visible */
+    bool controlAvail = false;
 
 }
 
@@ -17,23 +17,41 @@
     @if (Model.Service.Id > 0)
     {
         <div class="std-div">
-            <div>
-
-                    @Html.Action("ShowNav", new {id = Model.Service.Id, section = Model.SelectedSection})
-                
+            <div class="panel-heading">
+                @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
             </div>
-            
-            @(Model.SelectedSection != "General" ? Html.Action("ShowService" + Model.SelectedSection, Model) : Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (ServiceDto) Model.Service))
+   
 
+
+                @switch (Model.SelectedSection)
+                {
+                    case null:
+                        goto case "General";
+                    case "Documents":
+                        @Html.Partial("PartialViews/ShowDocuments", (ServiceDto) Model.Service)
+                        
+                        break;
+                    case "General":
+                        @Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (ServiceDto) Model.Service)
+                        controlAvail = true;
+                        break;
+                    default:
+                        @Html.Action("ShowService" + Model.SelectedSection, Model)
+                        controlAvail = true;
+                        break;
+                }
+
+
+      
             @if (controlAvail)
             {
                 <div class="panel-footer">
                     &nbsp;
                     <div class="float-right-div">
 
-                        @if (Model.SelectedSection == "General")
+                        @if (Model.SelectedSection == "General" || Model.SelectedSection == null)
                         {
-                            @Html.ActionLink("Update", "Update" + Model.SelectedSection, new {id = Model.Service.Id}, new {@class = "btn btn-primary"})
+                            @Html.ActionLink("Update", "UpdateGeneral", new {id = Model.Service.Id}, new {@class = "btn btn-primary"})
                         }
                         else
                         {
@@ -42,8 +60,8 @@
                     </div>
                 </div>
             }
-        </div>
 
+        </div>
     }
 }
 }

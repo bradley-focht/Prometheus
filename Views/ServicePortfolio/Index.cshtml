@@ -1,0 +1,33 @@
+﻿@using Common.Dto
+@model IEnumerable<IServiceBundleDto>
+
+@{
+    ViewBag.Title = "Service Portfolio";
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"), new KeyValuePair<string, string>(ViewBag.Title, "#") };
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@foreach (var serviceBundle in Model)
+{
+    <div class="std-indent">
+        <label class="font-title2-blue">@serviceBundle.Name</label>
+        <dl class="dl-horizontal dl-section">
+            <dt class="dt-sp">Description:</dt>
+            <dd class="dd-sp">@Html.Raw(serviceBundle.Description)</dd>
+            <dt class="dt-sp">Business Value:</dt>
+            <dd class="dd-sp">@Html.Raw(serviceBundle.BusinessValue)</dd>
+            <dt class="dt-sp">Services:</dt>
+            <dd class="dd-sp">
+
+                Support Services, Messaging and Communication, Collaboration Services, Software Services
+
+            </dd>
+            <dt class="dt-sp">Measures:</dt>
+            <dd class="dd-sp">@serviceBundle.Measures</dd>
+
+            <dt></dt>
+            <dd><div class="float-right-div">@Html.ActionLink("Edit", "Show", "ServicePortfolio", new { id = serviceBundle.Id }, new { @class = "btn btn-default" })</div></dd>
+        </dl>
+    </div>
+}
+

@@ -1,0 +1,32 @@
+﻿@model ICollection<Common.Dto.ServiceDto>
+@{
+    ViewBag.Title = "View Services ";
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (Model != null && Model.Any())
+{
+    foreach (var service in Model)
+    {
+        <label class="font-title2-blue">@Html.ActionLink(service.Name, "Show", new {id = service.Id}, null)</label>
+        <dl class="dl-horizontal dl-section">
+
+            <dt>Description</dt>
+            <dd>@Html.Raw(service.Description)</dd>
+
+            <dt>Status</dt>
+            <dd>
+                @{
+                    if (service.LifecycleStatusDto != null)
+                    {
+                        @Html.Display(service.LifecycleStatusDto.Name)
+                        ;
+                    }
+                }
+            </dd>
+        </dl>
+    }
+
+}

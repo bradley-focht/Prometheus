@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Prometheus</title>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css"/>
+    <script src="~/Scripts/jquery-1.12.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    <script type="text/javascript">
+        // This will make every element with the class "date-picker" into a DatePicker element
+        $(function () {
+            $(".datefield").datepicker();
+        });
+    </script>
+</head>
+<body>
+@Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml", (List<KeyValuePair<string, string>>) ViewBag.Links)
+
+<div class="std-indent">
+    <table class="std-table" style="width: 100%">
+        <tr>
+            <td style="width: 20%; vertical-align: top;" class="std-cell">@RenderSection("Sidebar")</td>
+            <td style="width: 80%; vertical-align: top;" class="std-cell">@RenderSection("Content")</td>
+
+        </tr>
+        <tr>
+            <td colspan="2" style="border-top: 1px solid #cccccc; color: #cccccc; ">&copy;2016 Prometheus</td>
+        </tr>
+
+    </table>
+</div>
+
+</body>
+</html>
+

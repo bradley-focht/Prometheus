@@ -8,7 +8,14 @@ namespace Prometheus.WebUI.Controllers
 {
     public class UserAccountController : Controller
     {
-        public ActionResult LoginScreen()
+        public ActionResult Index()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult Login()
         {
             return View();
         }

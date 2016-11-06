@@ -1,0 +1,68 @@
+﻿@using Common.Dto
+@model Prometheus.WebUI.Models.Service.ServiceModel
+@{
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewBag.Title = Model.Service.Name;
+
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
+
+    bool controlAvail = Model.SelectedSection != "Documents";       /* indicates if control buttons should be visible */
+
+}
+
+@section Content
+    {
+    @if (Model.Service.Id > 0)
+    {
+        <div class="std-div">
+            <div>
+
+                    @Html.Action("ShowNav", new {id = Model.Service.Id, section = Model.SelectedSection})
+                
+            </div>
+            @switch (Model.SelectedSection)
+            {
+                case null:
+                    goto case "General";
+                case "Documents":
+                    @Html.Partial("PartialViews/ShowDocuments", (ServiceDto) Model.Service);
+                    break;
+                case "General":
+                    @Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (ServiceDto) Model.Service);
+                    break;
+                default:
+                    @Html.Action("ShowService" + Model.SelectedSection, Model);
+                    break;
+            }
+
+            
+
+            @if (controlAvail)
+            {
+                <div class="panel-footer">
+                    &nbsp;
+                    <div class="float-right-div">
+
+                        @if (Model.SelectedSection == "General")
+                        {
+                            @Html.ActionLink("Update", "Update" + Model.SelectedSection, new {id = Model.Service.Id}, new {@class = "btn btn-primary"})
+                        }
+                        else
+                        {
+                            @Html.ActionLink("Add", "AddServiceSectionItem", new {id = Model.Service.Id, section = Model.SelectedSection}, new {@class = "btn btn-primary"})
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+
+    }
+}
+}
+
+@section Sidebar
+{
+    @Html.Action("ShowServiceList", Model.Service.Id)
+}

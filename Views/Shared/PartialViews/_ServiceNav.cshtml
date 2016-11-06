@@ -1,0 +1,22 @@
+﻿@model Prometheus.WebUI.Models.Shared.ServiceNavModel
+@{
+    
+    <div class="btn-group">
+        @foreach (var sectionItem in Model.NavLinks)
+        {
+            if (Model.SelectedRouteString == "GeneralOnly" && sectionItem.Key=="General")
+            {
+                <label class="btn btn-default active">@sectionItem.Value</label>
+            }
+            else if (Model.SelectedRouteString != sectionItem.Key)
+            {
+                @Html.ActionLink(sectionItem.Value, "Show", "Service",  new {section = sectionItem.Key, id = Model.Id}, new {@class = "btn btn-default"})
+            }
+            else
+            {
+                <label class="btn btn-default active">@sectionItem.Value</label>
+            }
+        }
+    </div>
+}
+

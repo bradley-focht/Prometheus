@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Models.ServicePortfolio;
+using ServicePortfolio = ServicePortfolio.ServicePortfolio;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -31,8 +32,9 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult Save(ServiceBundleDto serviceBundle)           
 		{
+       //      ServicePortfolio.ServicePortfolio sp = new ServicePortfolio.ServicePortfolio(a);
 
-			return RedirectToAction("Show");
+            return RedirectToAction("Show");
 		}
 
 		/// <summary>

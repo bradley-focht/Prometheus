@@ -1,0 +1,75 @@
+﻿@using Common.Dto
+@using Prometheus.WebUI.Helpers
+@model Prometheus.WebUI.Models.Service.ServiceSectionModel
+
+@{
+    ViewBag.Title = "Update " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
+                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/General/" + Model.Service.Id),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
+    bool controlsAvail = true; /* used to enable/disable the buttons */
+}
+
+@section Sidebar
+{
+    @Html.Action("ShowServiceList", Model.Service.Id)
+}
+
+@section Content
+{
+    @using (Html.BeginForm("Save" + Model.Section + "Item", "Service", FormMethod.Post))
+    {
+
+        <div class="std-div">
+            @switch (Model.Section)
+            {
+                case "Documents":
+                    @Html.Partial("PartialViews/RenameDocument", new ServiceDocumentDto())
+                    controlsAvail = false; /* documents has own controls */
+                    break;
+                case "General":
+                    @Html.Partial("PartialViews/UpdateGeneral", new ServiceDto())
+                    break;
+
+                case "Goals":
+                    @Html.Action("UpdateGoalItem", Model.SectionItemId)
+                    break;
+                case "Swot":
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto())
+                    break;
+                case "WorkUnits":
+                    @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())
+                    break;
+                case "Measures":
+                    if (Model.Service.ServiceWorkUnits != null && Model.Service.ServiceMeasures.Any())
+                    {
+                        @Html.Partial("PartialViews/UpdateMeasureItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                        break;
+                    }
+                    goto default;
+                default:
+                    controlsAvail = false;
+                    <text>The data is no longer available</text>
+                    break;
+            }
+
+
+            @if (controlsAvail)
+            {
+                <div class="panel-footer">
+                    &nbsp;
+                    <div class="float-right-div">
+                        @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
+
+                        <input type="submit" value="Save" class="btn btn-primary" />
+
+                    </div>
+                </div>
+            }
+        </div>
+
+    }
+}

@@ -58,11 +58,6 @@
     display: inline-block;
 }
 
-.msg-div {
-	padding: 10px;
-	display: inline-block;
-	}
-
 .float-right-div {
     float: right;
     display: inline-block;
@@ -70,23 +65,33 @@
     margin-right: 5px;
 }
 
+.float-left-div {
+    float: left;
+    display: inline-block;
+    margin-right: 20px;
+    margin-left: 5px;
+}
+
 .breadcrumb-container {
     height: 30px;
     vertical-align: central;
 }
 
-.btn-small {
+.btn-empty {
     display: inline-block;
-    padding: 2px 3px;
+    text-align: center;
+    padding: 3px;
+    display: inline-block;
     margin-bottom: 0;
-    font-size: 8px;
+    font-size: 10px;
     font-weight: normal;
     line-height: 1.428571429;
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
     cursor: pointer;
-    border: 1px solid transparent;
+    background-color: white;
+    border: 1px solid #cccccc;
     border-radius: 4px;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -94,6 +99,8 @@
     -o-user-select: none;
     user-select: none;
 }
+
+
 
 .note {
     color: #333333;
@@ -106,16 +113,21 @@
 }
 
 .bg-primary {
-    color: #121212;
-    background-color: #cccccc;
-    border-color: #acacac;
+    color: #ffffff;
+    background-color: #428bca;
+    border-color: transparent;
     padding: 3px 6px;
     white-space: nowrap;
     border: 1px solid transparent;
-    border-radius: 4px;
+    border-radius: 5px;
 }
+
+.bg-primary > a {
+    color: #ffffff;
+}
+
 .bg-primary:hover {
-	background-color: #dddddd;
+	background-color: #529bda;
 }
 
 
@@ -126,6 +138,7 @@
 }
 .bg-default:hover {
 	background-color: #eeeeee;
+    border-color: #cccccc;
 }
 .dd-sp {
     padding-bottom: 10px;
@@ -137,12 +150,14 @@
 }
 
 .dt-cell {
-    vertical-align: central;
+    vertical-align: top;
+    padding-top: 10px;
     text-align: right;
     font-weight: bold;
     padding-right: 5px;
     color: #454545;
     padding-bottom: 5px;
+    color: #123579;
 }
 
 .dd-cell {
@@ -158,7 +173,13 @@
     border-bottom: 1px solid #cccccc;
 }
 
+.ul-menu {
+  list-style-type: none;
+    padding: 0;
+    margin: 5px;
+    font-size: 12px;
 
+}
 
 
 

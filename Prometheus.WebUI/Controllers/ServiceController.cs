@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
@@ -89,7 +93,7 @@ namespace Prometheus.WebUI.Controllers
 
             if (id == 0)
             { 
-                sm.Service = new ServiceDto() {Id = 0};
+                sm.Service = new ServiceDto() {Id = 10};
             }
             else
             {
@@ -196,15 +200,6 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ShowServiceDocuments(ServiceDto service)
-        {
-
-
-            return PartialView("PartialViews/ShowDocuments");
-        }
-
-
-        [ChildActionOnly]
         public ActionResult ShowServiceWorkUnits(ServiceDto service)
         {
             TableDataModel tblModel = new TableDataModel();
@@ -309,10 +304,20 @@ namespace Prometheus.WebUI.Controllers
             return View("UpdateSectionItem", model);
         }
 
-
+        /// <summary>
+        /// Save updated Service/General information or create a new one
+        ///   model is validated, redirects to the Show/General
+        /// </summary>
+        /// <param name="service"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult SaveGeneral(ServiceDto service)
+        public ActionResult SaveGeneralItem(ServiceDto service)
         {
+            if (ModelState.IsValid)
+            {
+                TempData["message"] = $"{service.Name} has been saved";
+                TempData["messageType"] = "success";
+            }
             return RedirectToAction("Show", new { section="General", id=service.Id});
         }
 
@@ -382,6 +387,14 @@ namespace Prometheus.WebUI.Controllers
             return View("AddSectionItem", model);
         }
 
+        /// <summary>
+        /// Generates the confirm deletion warning page
+        ///  function is generalized enough to handle all section items
+        ///  deletion is specialized and has specialized actions to complete
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ConfirmDeleteServiceSectionItem(string section, int id = 0)
         {
             if(id == 0)//something has gone very wrong
@@ -390,6 +403,52 @@ namespace Prometheus.WebUI.Controllers
             ConfirmDeleteSection model = new ConfirmDeleteSection(0, "No, not me!", section, "DeleteSectionItem", "Operations");
             
             return View("ConfirmDeleteSection", model);
+        }
+        
+
+        /// <summary>
+        /// Upload and save files if they are present. Always redirects to the Show action.
+        ///   File location is taken from the FilePath key in Web.config. 
+        ///   Ensure web server is running with sufficient permissions to that folder location
+        ///   Error messages are put into TempData[]
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UploadServiceDocument(HttpPostedFileBase file, int id = 0)
+        {
+            if (Request.Files.Count > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                if (fileName != null)
+                {
+                    Guid newFileName = Guid.NewGuid();
+
+                    var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());
+                
+                    file.SaveAs(Server.MapPath(path));
+                }
+            }
+            return RedirectToAction("Show", new {id, section = "Documents"});
+        }
+
+        /// <summary>
+        /// Rename the document
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult RenameDocument(int id)
+        {
+            return RedirectToAction("Show", new {section = "Documents", id = 10});
+        }
+
+        public FileResult DownloadServiceDocument(int id)
+        {
+            return File(
+                @"C:\Users\jamie\Documents\visual studio 2015\Projects\Prometheus\Prometheus.WebUI\ServiceDocs\testDoc.txt",
+                "text/plain");
         }
 
     }

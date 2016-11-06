@@ -21,8 +21,8 @@
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
                 <td class="dd-cell">
                     @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+                @Html.ValidationMessage(property.PropertyName)
                 </td>
-                <td>@Html.ValidationMessage(property.PropertyName)</td>
             </tr>
         }
         else if (property.PropertyName.Contains("StatusId"))

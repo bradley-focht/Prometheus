@@ -1,0 +1,21 @@
+﻿@model Common.Dto.ServiceDocumentDto
+
+@using (Html.BeginForm("RenameDocument", "Service", FormMethod.Post))
+{ 
+<table>
+    <tr>
+        <td class="dt-cell">Filename</td>
+        <td class="dd-cell">
+            @Html.TextBox("Filename", Model.Filename, new { @class = "form-control" })
+        </td>
+    </tr>
+</table>
+
+<div class="panel-footer">
+    <div class="float-right-div">
+        @Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Documents" }, new { @class = "btn btn-default" })
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+    &nbsp;
+</div>
+}
