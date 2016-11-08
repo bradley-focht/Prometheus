@@ -1,10 +1,9 @@
 ﻿
 @model DataService.Models.IServiceBundle
 @{
-    if (Model.Id == null)
-    {
-        ViewBag.Title = "Add new service bundle";
-    }
+
+        ViewBag.Title = "Add New Service Bundle";
+
     else
     {
         ViewBag.Title = "Edit " + Model.Name;

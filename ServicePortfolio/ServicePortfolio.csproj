@@ -85,7 +85,7 @@
     <Compile Include="Controllers\IServiceController.cs" />
     <Compile Include="IServicePortfolio.cs" />
     <Compile Include="Controllers\IServiceBundleController.cs" />
-    <Compile Include="ServicePortfolio.cs" />
+    <Compile Include="ServicePortfolioService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

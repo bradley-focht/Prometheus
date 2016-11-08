@@ -1,5 +1,17 @@
 ﻿@{
     ViewBag.Title = "System Access";
     Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>(ViewBag.Title, "SystemAccess/Index")
+    };
 }
 
+<div class="std-div std-indent">
+    @Html.ActionLink("Permissions and Roles", "PermissionsAndRoles"); 
+    <br/>
+    @Html.ActionLink("User Access", "UserAccess");
+
+</div>

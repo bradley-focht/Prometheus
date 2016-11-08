@@ -21,7 +21,7 @@
     </script>
 </head>
 <body>
-@Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml", (List<KeyValuePair<string, string>>) ViewBag.Links)
+@Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>) ViewBag.Links)
 
 <div class="std-indent">
     <table class="std-table" style="width: 100%">

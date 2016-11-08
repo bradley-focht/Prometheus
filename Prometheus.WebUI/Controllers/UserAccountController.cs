@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Prometheus.WebUI.Models.UserAccount;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -14,10 +15,25 @@ namespace Prometheus.WebUI.Controllers
         }
 
 
+        /// <summary>
+        /// Login Authorization and builds Cookie
+        /// </summary>
+        /// <param name="uAccount"></param>
+        /// <returns></returns>
         [HttpPost]
-        public ActionResult Login()
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(UserAccountModel uAccount)
         {
-            return View();
+            if (!ModelState.IsValid)
+                return View("Index");
+
+
+            return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult Logout()
+        {
+            return View("Index");
         }
     }
 }

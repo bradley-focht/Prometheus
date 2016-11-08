@@ -15,7 +15,7 @@
 }
 
 @section Sidebar {
-    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", listModel)
+    @Html.Partial("PartialViews/_LinkList", listModel)
     
     }    
 
@@ -23,7 +23,7 @@
 @section Content {
     @{if (Model.CurrentServiceBundle.Id != 0)
         {
-           @Html.Partial("/Views/ServicePortfolio/Partialviews/ServiceBundleViewer.cshtml", Model.CurrentServiceBundle)
+           @Html.Partial("Partialviews/ServiceBundleViewer", Model.CurrentServiceBundle)
         }
     }
 }

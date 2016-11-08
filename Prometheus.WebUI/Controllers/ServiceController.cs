@@ -9,6 +9,8 @@ using Common.Enums;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
+using ServicePortfolio;
+
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -120,6 +122,7 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult Save(ServiceDto newService)
         {
+          
 
             return RedirectToAction("Show");
         }
@@ -439,16 +442,19 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult RenameDocument(int id)
+        public ActionResult RenameDocument(Guid id)
         {
             return RedirectToAction("Show", new {section = "Documents", id = 10});
         }
 
-        public FileResult DownloadServiceDocument(int id)
+        public FileResult DownloadServiceDocument(Guid id)
         {
-            return File(
-                @"C:\Users\jamie\Documents\visual studio 2015\Projects\Prometheus\Prometheus.WebUI\ServiceDocs\testDoc.txt",
-                "text/plain");
+            Response.ContentType = "application/text";
+            Response.AddHeader("Content-Disposition", @"filename=""thisIsTheReportio""");
+
+            var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], id.ToString());
+
+            return new FilePathResult(path + "testDoc.txt", "text/plain");
         }
 
     }

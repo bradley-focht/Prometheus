@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Models.ServicePortfolio;
-using ServicePortfolio = ServicePortfolio.ServicePortfolio;
+using ServicePortfolio = ServicePortfolio.ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {

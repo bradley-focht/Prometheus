@@ -32,7 +32,7 @@
                         
                         break;
                     case "General":
-                        @Html.Partial("/Views/Service/PartialViews/ShowGeneral.cshtml", (ServiceDto) Model.Service)
+                        @Html.Partial("PartialViews/ShowGeneral", (ServiceDto) Model.Service)
                         controlAvail = true;
                         break;
                     default:

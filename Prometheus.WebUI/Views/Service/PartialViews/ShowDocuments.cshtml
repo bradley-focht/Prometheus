@@ -1,8 +1,7 @@
 ﻿@using Common.Dto
 @model Common.Dto.ServiceDto
 @{
-    Model.ServiceDocuments = new List<IServiceDocumentDto>();
-    Model.ServiceDocuments.Add(new ServiceDocumentDto { Id = 100, Filename = "Test File", FileExtension = "docx", StorageNameGuid = new Guid() });
+    Model.ServiceDocuments = new List<IServiceDocumentDto> {new ServiceDocumentDto {Id = 100, Filename = "Test File", FileExtension = "docx", StorageNameGuid = Guid.NewGuid()}};
 }
 <table class="table table-hover">
     <thead>
@@ -16,7 +15,7 @@
         @foreach (var document in Model.ServiceDocuments)
         {
             <tr>
-                <td>@Html.ActionLink(document.Filename + "." + document.FileExtension, "DownloadServiceDocument", new {id = document.Id})</td>
+                <td>@Html.ActionLink(document.Filename + "." + document.FileExtension, "DownloadServiceDocument", new {id = document.StorageNameGuid })</td>
                 <td>@document.UploadDate</td>
                 <td>@document.Uploader</td>
                 <td>
@@ -27,11 +26,11 @@
                         <div class="dropdown-menu">
                             <ul class="ul-menu">
                                 <li>
-                                    @Html.ActionLink("Rename", "UpdateServiceSectionItem", new { id = document.Id, section="Documents" })
+                                    @Html.ActionLink("Rename", "UpdateServiceSectionItem", new { id = document.StorageNameGuid, section="Documents" })
                                 </li>
 
                                 <li>
-                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceSectionItem", new { id = document.Id, section="Documents"})
+                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceSectionItem", new { id = document.StorageNameGuid, section="Documents"})
                                 </li>
                             </ul>
                         </div>

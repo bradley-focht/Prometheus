@@ -13,5 +13,25 @@ namespace Prometheus.WebUI.Controllers
         {
             return View();
         }
+
+        public ActionResult PermissionsAndRoles()
+        {
+            return View();
+        }
+
+        public ActionResult UserAccess()
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// Setup the partial View for searching AD accounts
+        ///    
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SearchAdAccountUtility()
+        {
+            return View();
+        }
     }
 }
