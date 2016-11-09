@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace ServicePortfolio.Controllers
 {
-	internal class ServiceController : IServiceController
+	public class ServiceController : IServiceController
 	{
 		public IServiceDto GetService(int userId, int serviceId)
 		{

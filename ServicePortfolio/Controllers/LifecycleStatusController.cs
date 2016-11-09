@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace ServicePortfolio.Controllers
 {
-	internal class LifecycleStatusController : ILifecycleStatusController
+	public class LifecycleStatusController : ILifecycleStatusController
 	{
 		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames(int userId)
 		{
