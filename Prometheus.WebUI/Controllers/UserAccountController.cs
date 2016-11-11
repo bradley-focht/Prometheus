@@ -1,14 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Prometheus.WebUI.Models.UserAccount;
 
 namespace Prometheus.WebUI.Controllers
 {
     public class UserAccountController : Controller
     {
+        /// <summary>
+        /// Index page is the login page
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
@@ -16,7 +16,7 @@ namespace Prometheus.WebUI.Controllers
 
 
         /// <summary>
-        /// Login Authorization and builds Cookie
+        /// Login Authorization and builds session cookie
         /// </summary>
         /// <param name="uAccount"></param>
         /// <returns></returns>
@@ -31,6 +31,10 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        /// <summary>
+        /// Destroys the session
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Logout()
         {
             return View("Index");

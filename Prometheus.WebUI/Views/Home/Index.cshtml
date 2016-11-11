@@ -1,25 +1,60 @@
-﻿@{ 
+﻿@{
     ViewBag.Title = "Home";
     ViewBag.Links = null;
-    Layout = "~/Views/Shared/_Layout.cshtml"; }
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div style="margin-top: -40px;">
+    <label class="font-title1">What would you like to do today?</label>
+    <div class="std-indent" style="padding-top:30px; padding-bottom:30px; border-bottom:1px solid #999999; border-top: 1px solid #999999; background-color: #eef2f7; width: 600px;">
+        
+        <table style="width:100%">
+            <tr>
+                <td style="width: 50%" class="content-cell"><img src="~/Content/Images/invest.png" alt="Service Portfolio" style="height: 72px; width: 77px;"></td>
+                <td style="width: 50%;" class="content-cell"><img src="~/Content/Images/invest.png" alt="Services" style="height: 72px; width: 77px;"></td>
+            </tr>
+            <tr>
+                <td class="content-cell">@Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio", null, new { @class = "font-home-link" })</td>
+                <td class="content-cell">@Html.ActionLink("Services", "Index", "Service", null, new { @class = "font-home-link" })</td>
 
-<div>
-            <label class="font-title1">What would you like to do today?</label>
+            </tr>
+            <tr>
+                <td>
+                    <div style="height: 10px;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="content-cell"><img src="~/Content/Images/presentation.png" alt="Services" style="height: 72px; width: 77px;"></td>
+                <td class="content-cell"><img src="~/Content/Images/presentation.png" alt="Services" style="height: 72px; width: 77px;"></td>
+            </tr>
+            <tr>
+                <td class="content-cell"><label class="font-home-link">@Html.ActionLink("Business Service Catalog", "Business", "Catalog", null, new {@class = "font-home-link"})</label></td>
+                <td class="content-cell">@Html.ActionLink("Supporting Service Catalog", "Support", "Catalog", null, new {@class = "font-home-link"})</td>
 
-
-            <div class="std-indent" style="padding-top:30px; padding-bottom:30px; border-bottom:1px solid #333333; border-top: 1px solid #333333;">
-                <p>
-                    <label class="font-title3">@Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio")</label><br />
-                    <label class="font-title3">@Html.ActionLink("Services", "Index", "Service")</label> | @Html.ActionLink("maintenance", "Index", "ServiceMaintenance") <br />
-                </p><p>
-                    <label class="font-title3">Business Service Catalog</label>  <br />
-                    <label class="font-title3">Supporting Service Catalog</label>
-                </p><p>
-                    <label class="font-title3">Submit a Service Request</label> | edit | maintenance <br />
-                    <label class="font-title3">Service Request Approvals</label>
-                </p>
-                <p>
-                    <label class="font-title3">@Html.ActionLink("System Access", "Index", "SystemAccess")</label>
-            </div>
-        </div>
- 
+            </tr>
+            <tr>
+                <td>
+                    <div style="height: 10px;"></div>
+                </td>
+            </tr>
+            <tr>
+                <td class="content-cell"><img src="~/Content/Images/people-network.png" alt="Services" style="height: 82px; width: 74px;"></td>
+                <td class="content-cell"><img src="~/Content/Images/shake.png" alt="Services" style="height: 70px; width: 88px;"></td>
+            </tr><tr>
+                <td class="content-cell"><label class="font-home-link">Submit a Service Request</label></td>
+                <td class="content-cell"><label class="font-home-link">Service Request Approvals</label></td>
+            </tr>
+        </table>      
+    </div>
+<div style="background-color: #999999;">
+    <table style="width:100%">
+        <tr>
+            <td></td>
+        </tr><tr>
+            <td style="width:25%">@Html.ActionLink("system access", "Index", "SystemAccess")</td>
+            <td>@Html.ActionLink("services maintenance", "Index", "ServiceMaintenance")</td>
+            <td style="width:25%">service request creation</td>
+            <td style="width:25%">scripts</td>
+        </tr>
+    </table>
+</div>
+</div>

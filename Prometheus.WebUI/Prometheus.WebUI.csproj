@@ -91,6 +91,8 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\people.gif" />
+    <Content Include="Content\Images\presentation.gif" />
     <Content Include="Content\PrometheusCustom.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -309,7 +311,6 @@
     <Content Include="Views\ServicePortfolio\Index.cshtml" />
     <Content Include="Views\ServicePortfolio\Show.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TitleBar.cshtml" />
-    <Content Include="Views\ServicePortfolio\Editor.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_SidebarLayout.cshtml" />
     <Content Include="Views\ServiceMaintenance\Index.cshtml" />
@@ -360,6 +361,7 @@
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
     <Content Include="Views\SystemAccess\UserAccess.cshtml" />
     <Content Include="Views\SystemAccess\SearchAdAccountUtility.cshtml" />
+    <Content Include="Views\ServicePortfolio\Edit.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

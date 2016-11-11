@@ -17,7 +17,7 @@
 }
 
 .font-title2-blue {
-    color: #2255A9;
+    color: #19A7F8;
     font-size: 18px;
     font-weight: 600;
 }
@@ -27,6 +27,12 @@
     font-weight: 600;
     font-size: 15px;
 }
+.font-home-link {
+    color:#19A7F8;    
+    font-weight: 600;
+    font-size: 15px;
+}
+
 
 .font-title-initial {
     color: #123579;
@@ -53,10 +59,18 @@
     padding: 2.5px;
 }
 
+.content-cell {
+    text-align: center;
+    vertical-align: central;
+    padding-top: 10px;
+}
+
 .std-div {
     padding: 10px;
     display: inline-block;
 }
+
+
 
 .float-right-div {
     float: right;

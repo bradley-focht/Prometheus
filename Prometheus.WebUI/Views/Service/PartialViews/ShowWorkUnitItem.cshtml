@@ -1,4 +1,4 @@
-﻿@model Common.Dto.ServiceWorkUnitDto
+﻿@model dynamic
     <table>
         @foreach (var property in ViewData.ModelMetadata.Properties)
         {
@@ -12,6 +12,4 @@
 
             </tr>
         }
-
-
     </table>

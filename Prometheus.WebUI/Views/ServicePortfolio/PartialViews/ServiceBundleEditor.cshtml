@@ -4,45 +4,44 @@
 <div class="std-div">
     @using (Html.BeginForm("Save", "ServicePortfolio", FormMethod.Post))
     {
-        <table class="std-table">
-            <tr>
-                <td class="std-cell">
+        <table>
 
-                    @foreach (var property in ViewData.ModelMetadata.Properties)
+
+
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                if (property.PropertyName == "Id" || property.PropertyName == "Services" || property.PropertyName.Contains("UserId") || property.PropertyName.Contains("Date"))
+                {
+                    continue;
+                }
+                <tr>
+                    <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+
+                    @if (property.PropertyName == "Description" || property.PropertyName == "BusinessValue")
                     {
-                        if (property.PropertyName != "Id" && property.PropertyName != "Services" &&
-                               !property.PropertyName.Contains("UserId") && !property.PropertyName.Contains("Date"))
-                        {
-                            if (property.PropertyName == "Description" || property.PropertyName == "BusinessValue")
-                            {
-                                <div class="form-group">
-                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                                   @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
-                                </div>
-                            }
-                            else
-                            {
-                                <div style="width: 400px;">
+                    <td class="dd-cell"> 
+                        @Html.TextArea(property.PropertyName, new {@class = "ckeditor"})
+                    </td>
 
-                                </div>
-                    <div class="form-group">
-                                    <label class="font-title-initial">@(property.DisplayName ?? property.PropertyName)</label>
-                                    @Html.ValidationMessage(property.PropertyName)
-                                    @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+                    }
+                    else
+                    {
 
-                                </div>
-                            }
+                    <td class="dd-cell">
 
+                        @Html.ValidationMessage(property.PropertyName)
+                        @Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control"})
 
-                        }
+                    </td>
+
                     }
 
+                </tr>
+            }
 
-                </td>
-            <tr>
-                <td colspan="2" class="std-cell">
 
-                    <div class="panel-footer">
+        </table>
+                <div class="panel-footer">
                         &nbsp;
                         <div class="float-right-div">
                             <input type="submit" value="Save" class="btn btn-primary" />
@@ -50,8 +49,6 @@
                         </div>
                     </div>
 
-                </td>
-            </tr>
-        </table>
+        
     }
 </div>

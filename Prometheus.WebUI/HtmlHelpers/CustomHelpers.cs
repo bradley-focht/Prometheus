@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 
-/// <summary>
-///	Custom HTML Helpers
-/// </summary>
+
 namespace Prometheus.WebUI.HtmlHelpers
 {
 	/// <summary>
@@ -11,15 +9,15 @@ namespace Prometheus.WebUI.HtmlHelpers
 	/// </summary>
 	public static class CustomHelpers
 	{
-		/// <summary>
-		/// Makes a breadcrumb trail of links
-		/// KVP needs to be in the form of text : link
-		/// </summary>
-		/// <param name=""></param>
-		/// <param name="links"></param>
-		/// <param name="cssClass"></param>
-		/// <returns></returns>
-		public static MvcHtmlString BreadrumbTrail(this HtmlHelper html, IList<KeyValuePair<string, string>> 
+	  /// <summary>
+      /// Creates breadcrumb trail from the KVP
+      /// </summary>
+      /// <param name="html"></param>
+      /// <param name="links"></param>
+      /// <param name="olCssClass"></param>
+      /// <param name="activeLiCssClass"></param>
+      /// <returns></returns>
+	    public static MvcHtmlString BreadrumbTrail(this HtmlHelper html, IList<KeyValuePair<string, string>> 
 			links, string olCssClass, string activeLiCssClass)
 		{
 

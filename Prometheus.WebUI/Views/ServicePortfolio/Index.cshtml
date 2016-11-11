@@ -7,9 +7,13 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<div class="panel-body">
+    The service portfolio..
+</div>
+
 @foreach (var serviceBundle in Model)
 {
-    <div class="std-indent">
+    <div class="std-indent" style="width: 600px;">
         <label class="font-title2-blue">@serviceBundle.Name</label>
         <dl class="dl-horizontal dl-section">
             <dt class="dt-sp">Description:</dt>

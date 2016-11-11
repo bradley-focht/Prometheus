@@ -21,21 +21,23 @@
     </script>
 </head>
 <body>
-@Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>) ViewBag.Links)
 
-<div class="std-indent">
-    <table class="std-table" style="width: 100%">
-        <tr>
-            <td style="width: 20%; vertical-align: top;" class="std-cell">@RenderSection("Sidebar")</td>
-            <td style="width: 80%; vertical-align: top;" class="std-cell">@RenderSection("Content")</td>
+        @Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>)ViewBag.Links)
 
-        </tr>
-        <tr>
-            <td colspan="2" style="border-top: 1px solid #cccccc; color: #cccccc; ">&copy;2016 Prometheus</td>
-        </tr>
+        <div class="std-indent">
+            <table class="std-table" style="width: 100%">
+                <tr>
+                    <td style="width: 20%; vertical-align: top;" class="std-cell">@RenderSection("Sidebar")</td>
+                    <td style="width: 80%; vertical-align: top;" class="std-cell">@RenderSection("Content")</td>
 
-    </table>
-</div>
+                </tr>
+                <tr>
+                    <td colspan="2" style="border-top: 1px solid #cccccc; color: #cccccc;">&copy;2016 Prometheus</td>
+                </tr>
+
+            </table>
+        </div>
+
 
 </body>
 </html>
