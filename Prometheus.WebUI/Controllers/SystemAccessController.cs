@@ -33,5 +33,10 @@ namespace Prometheus.WebUI.Controllers
         {
             return View("UserAccess");
         }
+
+        public ActionResult SearchAdAccountUtility()
+        {
+            return PartialView("PartialViews/SearchAdAccountUtility");
+        }
     }
 }

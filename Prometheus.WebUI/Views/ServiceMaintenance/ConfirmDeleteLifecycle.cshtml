@@ -1,27 +1,41 @@
 ﻿@using Prometheus.WebUI.Models.Shared
-@model Prometheus.WebUI.Models.ServiceMaintenance.LifecycleModel
+@model Common.Dto.LifecycleStatusDto
 @{
-    ViewBag.Title = "Delete " + Model.CurrentStatus.Name;
+    ViewBag.Title = "Delete " + Model.Name;
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Services Maintenance", "ServiceMaintenance/Index"),
-                                                             new KeyValuePair<string, string>("Lifecycle", "ServiceMaintenance/ShowLifecycle"),
-
-                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+                                                             new KeyValuePair<string, string>("Lifecycle Statuses", "ServiceMaintenance/ShowLifecycle"),
+                                                             new KeyValuePair<string, string>(Model.Name, "ServiceMaintenance/ShowLifecycle/" + Model.Id),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
-
-    LinkListModel linkListModel = new LinkListModel(Model.Statuses, Model.CurrentStatus.Id, "ShowLifecycle", "AddLifecycle", "Lifecycle Statuses");
-    ConfirmDeleteModel deleteModel = new ConfirmDeleteModel(Model.CurrentStatus.Id, Model.CurrentStatus.Name, "DeleteLifecycle", "ShowLifeCycle", "ServiceMaintenance");
 }
 
 
 @section Sidebar
 {
-    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", linkListModel)
 }
 
 @section Content
 {
-    @Html.Partial("/Views/Shared/PartialViews/_ConfirmDelete.cshtml", deleteModel)
+    @using (Html.BeginForm("DeleteLifecycle", "ServiceMaintenance", FormMethod.Post))
+    {
+        @Html.Hidden("Id", Model.Id)
+
+        <div class="panel std-div">
+            <div class="title-div">Confirm Deletion</div>
+            Are you sure you want to delete lifecycle status:
+            <section class="present-section">
+                @Model.Name
+            </section>
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Back", "ShowLifecycle", new {id = Model.Id}, new {@class = "btn btn-default"})
+                    <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+                </div>
+                &nbsp;
+            </div>
+            </div>
+    }
 }

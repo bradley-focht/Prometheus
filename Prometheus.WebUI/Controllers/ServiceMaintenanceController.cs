@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
+using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceMaintenance;
 using Prometheus.WebUI.Models.Shared;
 
@@ -18,6 +19,11 @@ namespace Prometheus.WebUI.Controllers
         }
 
 
+        /// <summary>
+        /// Basic list of services
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 	    public ActionResult ShowServices(int id = 0)
 	    {
 			ServiceModel serviceModel = new ServiceModel();
@@ -55,19 +61,29 @@ namespace Prometheus.WebUI.Controllers
             return View(lm);
         }
 
+        public ActionResult ShowLifeCycleList(int id = 0)
+        {
+           
+            LinkListModel servicesModel = new LinkListModel();
+            servicesModel.SelectedItemId = id;
+            /* I am here for the looks, remove me */
+            servicesModel.ListItems = new List<KeyValuePair<int, string>>
+            {
+                new KeyValuePair<int, string>(10, "Chartered"),
+                new KeyValuePair<int, string>(11, "Operational")
+            };
+            /* end test data injection */
+            servicesModel.AddAction = "Add";
+            servicesModel.SelectAction = "ShowLifecyle";
+            servicesModel.Controller = "ServiceMaintenance";
+            servicesModel.Title = "Lifecycle Statuses";
+
+            return PartialView("PartialViews/_LinkList", servicesModel);
+        }
+
         public ActionResult AddLifecycle()
         {
-            /*start test region*/
-            LifecycleModel lm = new LifecycleModel();
-            lm.CurrentStatus = new LifecycleStatusDto();
-            lm.CurrentStatus.Id = 0;
-            lm.Statuses = new List<KeyValuePair<int, string>>()
-            {
-                new KeyValuePair<int, string>(1, "Operational")
-            };
-            /*end test region */
-
-            return View(lm);
+            return View();
         }
 
 
@@ -81,11 +97,13 @@ namespace Prometheus.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
-                TempData["messageType"] = "success";
+                TempData["messageType"] = WebMessageType.Success;
                 TempData["message"] = "successfully saved lifecycle status";
+                return RedirectToAction("ShowLifecycle");
             }
-
-            return RedirectToAction("ShowLifecycle");
+            TempData["messageType"] = WebMessageType.Failure;
+                TempData["message"] = "failed to save lifecycle status";
+                return RedirectToAction("AddLifecycle");
         }
 
         public ActionResult UpdateLifecycle(int id=0)
@@ -105,22 +123,17 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ConfirmDeleteLifecycle(int id=0)
         {
             /*start test region*/
-            LifecycleModel lm = new LifecycleModel();
-            lm.CurrentStatus = new LifecycleStatusDto();
-            lm.CurrentStatus.Id = 1;
-            lm.Statuses = new List<KeyValuePair<int, string>>()
-            {
-                new KeyValuePair<int, string>(1, "Operations")
-            };
+            LifecycleStatusDto model = new LifecycleStatusDto {Id = 10, Name = "Operational"};
             /*end test region */
-            return View(lm);
+            return View(model);
         }
 
-     
+    
         [HttpPost]
         public ActionResult DeleteLifecycle(int id=0)
         {
-            //perform delete
+            TempData["messageType"] = WebMessageType.Success;
+            TempData["message"] = "successfully deleted lifecycle status";
 
             return RedirectToAction("ShowLifecycle");
         }
@@ -133,5 +146,11 @@ namespace Prometheus.WebUI.Controllers
 		    return View(lf);
 
 	    }
+
+        [HttpPost]
+        public ActionResult DeleteService(int id)
+        {
+            return RedirectToAction("ShowServices");
+        }
     }
 }

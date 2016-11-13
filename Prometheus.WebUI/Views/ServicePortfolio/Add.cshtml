@@ -6,7 +6,7 @@
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("View Service Bundles", "ServicePortfolio/Show/"),
+                                                             new KeyValuePair<string, string>("Service Portfolio", "ServicePortfolio/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#") };
     //item list for ItemListView partial view
     LinkListModel listModel = new LinkListModel(Model.ServiceBundles, Model.CurrentServiceBundle.Id, "Show", "Add", "Service Bundles");
@@ -17,7 +17,7 @@
 
 }
 
-  @section Content {
-      @Html.Partial("/Views/ServicePortfolio/PartialViews/ServiceBundleEditor.cshtml", Model.CurrentServiceBundle)
-  }
+@section Content {
+    @Html.Partial("/Views/ServicePortfolio/PartialViews/ServiceBundleEditor.cshtml", Model.CurrentServiceBundle)
+}
 

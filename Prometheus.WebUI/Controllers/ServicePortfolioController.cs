@@ -38,12 +38,20 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult Save(ServiceBundleDto serviceBundle)
 		{
-            var sps = new ServicePortfolioService(new ServiceBundleController(), new global::ServicePortfolio.Controllers.ServiceController(), new LifecycleStatusController());
-		    serviceBundle.Id = 0;
-		    sps.SaveServiceBundle(0, serviceBundle);
-            TempData["messageType"] = "success";
-		    TempData["message"] = "Service bundle saved successfully";
-            return RedirectToAction("Show");
+		    if (ModelState.IsValid)
+		    {
+		        var sps = new ServicePortfolioService(new ServiceBundleController(),
+		            new global::ServicePortfolio.Controllers.ServiceController(), new LifecycleStatusController());
+		        serviceBundle.Id = 0;
+		        sps.SaveServiceBundle(0, serviceBundle);
+		        TempData["messageType"] = "success";
+		        TempData["message"] = "service bundle saved successfully";
+		        return RedirectToAction("Show");
+		    }
+
+		    TempData["messageType"] = "failure";                /* invalid model state */
+		    TempData["message"] = "could not save due to invalid information";
+            return RedirectToAction("Add", serviceBundle);
 		}
 
 		/// <summary>
@@ -64,7 +72,7 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-		public ActionResult Show(Guid? id = null)
+		public ActionResult Show(int id = 0)
 		{
             ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
             
@@ -78,8 +86,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDelete(int id)
 		{
-
-			return null;
+			return View();
 		}
 
 
@@ -88,6 +95,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
+		[HttpPost]
 		public ActionResult Delete(int id)
 		{
 
