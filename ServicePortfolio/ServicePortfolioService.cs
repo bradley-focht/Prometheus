@@ -30,6 +30,7 @@ namespace ServicePortfolio
 		}
 
 		//TODO: Brad / Sean Should this be a dictionary
+        // probably not
 		public IEnumerable<Tuple<int, string>> GetServiceBundleNames(int userId)
 		{
 			return _serviceBundleController.GetServiceBundleNames(userId);

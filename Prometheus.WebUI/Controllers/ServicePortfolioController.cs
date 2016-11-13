@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Models.ServicePortfolio;
+using ServicePortfolio;
+using ServicePortfolio.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -15,9 +17,9 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult Index()
         {
             /* create interface to service portfolio */
-        //  var sps = new ServicePortfolioService(new ServiceBundleController(), new global::ServicePortfolio.Controllers.ServiceController(), new LifecycleStatusController());
-        //var portfolioBundles = sps.GetServiceBundles(0);
-        IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
+        var sps = new ServicePortfolioService(new ServiceBundleController(), new global::ServicePortfolio.Controllers.ServiceController(), new LifecycleStatusController());
+        var portfolioBundles = sps.GetServiceBundles(0);
+        /* IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
         {
             Name = "Employee Productivity Services",
             Description = "Enable secure, anytime, anywhere, stable work capabilities and access to required information to meet personal computing requirements and increase customer satisfaction",
@@ -25,7 +27,7 @@ namespace Prometheus.WebUI.Controllers
             Services = new List<IServiceDto> {new ServiceDto { Name = "Identity and Access Management"}, new ServiceDto { Name="Hardware Services"} },
             Measures = "Customer satisfaction surveys, Customer reports"
         } };
-
+        */
             return View(portfolioBundles);
         }
 		/// <summary>
@@ -36,7 +38,10 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult Save(ServiceBundleDto serviceBundle)
 		{
-		    TempData["messageType"] = "success";
+            var sps = new ServicePortfolioService(new ServiceBundleController(), new global::ServicePortfolio.Controllers.ServiceController(), new LifecycleStatusController());
+		    serviceBundle.Id = 0;
+		    sps.SaveServiceBundle(0, serviceBundle);
+            TempData["messageType"] = "success";
 		    TempData["message"] = "Service bundle saved successfully";
             return RedirectToAction("Show");
 		}

@@ -21,39 +21,38 @@
 								{
 									case "CatalogVisible":
 
-										<td class="dd-cell">
-											<div class="form-group">
-												<div class="btn-group" data-toggle="buttons">
-													<label class="btn btn-default">
-														@Html.RadioButton("CatalogVisible", "no",
-															new {id = "false"}) no
-													</label>
+								        <td class="dd-cell">
+								            @Html.ValidationMessage(property.PropertyName)
+								            <div class="form-group">
+								                <div class="btn-group" data-toggle="buttons">
+								                    <label class="btn btn-default">
+								                        @Html.RadioButton("CatalogVisible", "no",
+								                            new {id = "false"}) no
+								                    </label>
 
-													<label class="btn btn-default">
-														@Html.RadioButton("CatalogVisible", "yes",
-															new {id = "true"}) yes
-													</label>
-												</div>
-											</div>
-										</td>
+								                    <label class="btn btn-default">
+								                        @Html.RadioButton("CatalogVisible", "yes",
+								                            new {id = "true"}) yes
+								                    </label>
+								                </div>
+								            </div>
+								        </td>
 										break;
 									case "Position":
 										<td class="dd-cell">
-											
+											@Html.ValidationMessage(property.PropertyName)
 											@Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem {Text = i.ToString(), Value = i.ToString()}))
-											<label class="alert-danger">@Html.ValidationMessage(property.PropertyName)</label>
+											
 										</td>
 										break;
 									default:
-											<td class="dd-cell">
-												@Html.TextBox(property.PropertyName, null, new {@class = "form-control"})
-											</td>
-										
+								        <td class="dd-cell">
+								            @Html.ValidationMessage(property.PropertyName)
+								            @Html.TextBox(property.PropertyName, null, new {@class = "form-control"})
+								        </td>									
 										break;
 								}
 							</tr>
-
-
                         }
 
 				</table>
@@ -64,10 +63,7 @@
                                 @Html.ActionLink("Cancel", "ShowLifecycle", null, new {@class = "btn btn-default"})
                             </div>
                             &nbsp;
-
                         </div>
-
-
         </div>
     }
 </div>

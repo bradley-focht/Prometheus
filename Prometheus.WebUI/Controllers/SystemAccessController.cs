@@ -29,9 +29,9 @@ namespace Prometheus.WebUI.Controllers
         ///    
         /// </summary>
         /// <returns></returns>
-        public ActionResult SearchAdAccountUtility()
+        public ActionResult SearchAdAccount(string searchString)
         {
-            return View();
+            return View("UserAccess");
         }
     }
 }

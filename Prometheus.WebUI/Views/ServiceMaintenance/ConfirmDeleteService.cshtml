@@ -1,4 +1,4 @@
-﻿@model Prometheus.WebUI.Models.Shared.ConfirmDeleteModel
+﻿@model Common.Dto.LifecycleStatusDto
 @{
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
     ViewBag.Title = "Confirm Delete";
@@ -14,7 +14,22 @@
 }
 
 @section Content {
-@Html.Partial("PartialViews/_ConfirmDelete", Model)
+    @using (Html.BeginForm("DeleteLifecycle", "ServiceMaintenance", FormMethod.Post)) {
+        @Html.Hidden("Id", Model.Id)
+    <div class="std-div panel">
+        Are you sure you want to delete @Model.Name
+
+        <div class="panel-footer">
+            &nbsp;
+            <div class="float-right-div">
+                @Html.ActionLink("Back", "ShowLifecycle", new {id = Model.Id}, new {@class = "btn btn-default"})
+                <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+            </div>
+        </div>
+
+    </div>
+    }
+
 }
 
 @section Sidebar

@@ -2,35 +2,51 @@
 
 
 <div class="std-div">
-                <label class="font-title-initial">Name:</label><br />
-                @Model.Name
-                <p />
-                <label class="font-title-initial">Comment:</label><br />
-                @Model.Comment
-                <p />
-                <label class="font-title-initial">Position:</label><br />
-                @Model.Position
-                <p />
-                <label class="font-title-initial">Visible in Catalogs</label><br />
-                <label class="btn btn-primary disabled">
-                    @if (Model.CatalogVisible)
-                    {
-                        <text>yes</text>
-                    }
-                    else
-                    {
+    <table>
 
-                        <text>no</text>
-                    }
-                </label>
+
+        @foreach (var property in ViewData.ModelMetadata.Properties)
+        {
+            if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
+            {
+                continue;
+            }
+
+            <tr>
+                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+                @switch (property.PropertyName)
+                {
+                    case "CatalogVisible":
+
+                        <td class="dd-cell">
+                           
+                        </td>break;
+                    case "Position":
+                        <td class="dd-cell">
+
+                            @Model.Position
+
+                        </td>
+                        break;
+                    default:
+                        <td class="dd-cell">
+                            @property.Model
+                        </td>break;
+                }
+            </tr>
+
+
+        }
+
+    </table>
 
 
 
     <div class="panel-footer">
-        @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", null, new { @class = "btn btn-danger" })
+        @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", null, new {@class = "btn btn-danger"})
         <div class="float-right-div">
-            @Html.ActionLink("Edit", "UpdateLifecycle", null, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Cancel", "ShowLifecycle", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Edit", "UpdateLifecycle", null, new {@class = "btn btn-primary"})
+            @Html.ActionLink("Cancel", "ShowLifecycle", null, new {@class = "btn btn-default"})
         </div>
     </div>
 </div>
