@@ -24,5 +24,6 @@ namespace DataService.Models
 		ICollection<ServiceMeasure> ServiceMeasures { get; set; }
 		ICollection<ServiceSwot> ServiceSwots { get; set; }
 		ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
+		ICollection<ServiceDocument> ServiceDocuments { get; set; }
 	}
 }

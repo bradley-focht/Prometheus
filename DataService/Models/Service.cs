@@ -9,7 +9,8 @@ namespace DataService.Models
 	public class Service : IService
 	{
 		//PK
-		[Key, ForeignKey("LifecycleStatus")]
+		//[Key, ForeignKey("LifecycleStatus")]
+		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
@@ -52,6 +53,7 @@ namespace DataService.Models
 		public virtual ICollection<ServiceGoal> ServiceGoals { get; set; }
 		public virtual ICollection<ServiceSwot> ServiceSwots { get; set; }
 		public virtual ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
+		public virtual ICollection<ServiceDocument> ServiceDocuments { get; set; }
 		#endregion
 	}
 }
