@@ -392,9 +392,9 @@
       <Project>{7757884f-c8d9-48ac-a4d6-6238d0203431}</Project>
       <Name>DataService</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ServicePortfolio\ServicePortfolio.csproj">
-      <Project>{42e1113b-c696-4c66-b144-338e650254ca}</Project>
-      <Name>ServicePortfolio</Name>
+    <ProjectReference Include="..\ServicePortfolioService\ServicePortfolioService.csproj">
+      <Project>{280599D6-A130-4AF9-89F0-D5D36A32C330}</Project>
+      <Name>ServicePortfolioService</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

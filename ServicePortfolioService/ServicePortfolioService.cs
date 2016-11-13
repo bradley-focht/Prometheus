@@ -1,17 +1,17 @@
 ﻿using Common.Dto;
-using ServicePortfolio.Controllers;
+using ServicePortfolioService.Controllers;
 using System;
 using System.Collections.Generic;
 
-namespace ServicePortfolio
+namespace ServicePortfolioService
 {
-	public class ServicePortfolioService : IServicePortfolio
+	public class PortfolioService : IPortfolioService
 	{
 		private readonly IServiceBundleController _serviceBundleController;
 		private readonly IServiceController _serviceController;
 		private readonly ILifecycleStatusController _lifecycleStatusController;
 
-		public ServicePortfolioService(IServiceBundleController serviceBundleController, IServiceController serviceController,
+		public PortfolioService(IServiceBundleController serviceBundleController, IServiceController serviceController,
 			ILifecycleStatusController lifecycleStatusController)
 		{
 			_serviceBundleController = serviceBundleController;
@@ -30,7 +30,7 @@ namespace ServicePortfolio
 		}
 
 		//TODO: Brad / Sean Should this be a dictionary
-        // probably not
+		// probably not
 		public IEnumerable<Tuple<int, string>> GetServiceBundleNames(int userId)
 		{
 			return _serviceBundleController.GetServiceBundleNames(userId);
