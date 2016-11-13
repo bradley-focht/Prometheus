@@ -4,42 +4,39 @@ using System.Collections.Generic;
 
 namespace ServicePortfolioService.Controllers
 {
-	public interface IServiceBundleController
+	public interface IServiceBundleController : IUserController
 	{
 		/// <summary>
 		/// Finds service bundle with identifier provided and returns its DTO
 		/// </summary>
-		/// <param name="userId"></param>
 		/// <param name="serviceBundleId"></param>
 		/// <returns></returns>
-		IServiceBundleDto GetServiceBundle(int userId, int serviceBundleId);
+		IServiceBundleDto GetServiceBundle(int serviceBundleId);
 
 		/// <summary>
 		/// KVP of all service bundle IDs and names in ascending order by name
 		/// </summary>
 		/// <returns></returns>
-		IEnumerable<Tuple<int, string>> GetServiceBundleNames(int userId);
+		IEnumerable<Tuple<int, string>> GetServiceBundleNames();
 
 		/// <summary>
 		/// Returns all service bundles
 		/// </summary>
 		/// <returns></returns>
-		IEnumerable<IServiceBundleDto> GetServiceBundles(int userId);
+		IEnumerable<IServiceBundleDto> GetServiceBundles();
 
 		/// <summary>
 		/// Saves the service bundle to the database
 		/// </summary>
-		/// <param name="userId"></param>
 		/// <param name="serviceBundle"></param>
 		/// <returns>Saved entity DTO</returns>
-		IServiceBundleDto SaveServiceBundle(int userId, IServiceBundleDto serviceBundle);
+		IServiceBundleDto SaveServiceBundle(IServiceBundleDto serviceBundle);
 
 		/// <summary>
 		/// Deletes the service bundle from the database
 		/// </summary>
-		/// <param name="userId"></param>
 		/// <param name="serviceBundleId"></param>
 		/// <returns>True if successful</returns>
-		bool DeleteServiceBundle(int userId, int serviceBundleId);
+		bool DeleteServiceBundle(int serviceBundleId);
 	}
 }

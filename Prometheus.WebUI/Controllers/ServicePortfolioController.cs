@@ -9,6 +9,9 @@ namespace Prometheus.WebUI.Controllers
 {
 	public class ServicePortfolioController : Controller
 	{
+		//TODO: Brad change this to user ID
+		private const int DummyUserId = 0;
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -16,8 +19,9 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Index()
 		{
 			/* create interface to service portfolio */
-			var sps = new PortfolioService(new ServiceBundleController(), new global::ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			var portfolioBundles = sps.GetServiceBundles(0);
+			var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+
+			var portfolioBundles = sps.GetServiceBundles();
 			/* IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
 			{
 				Name = "Employee Productivity Services",
@@ -37,9 +41,9 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult Save(ServiceBundleDto serviceBundle)
 		{
-			var sps = new PortfolioService(new ServiceBundleController(), new global::ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 			serviceBundle.Id = 0;
-			sps.SaveServiceBundle(0, serviceBundle);
+			sps.SaveServiceBundle(serviceBundle);
 			TempData["messageType"] = "success";
 			TempData["message"] = "Service bundle saved successfully";
 			return RedirectToAction("Show");
