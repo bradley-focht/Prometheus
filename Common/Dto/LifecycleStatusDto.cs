@@ -11,7 +11,7 @@ namespace Common.Dto
 		public int Id { get; set; }
 
 		//FK
-		public int ServiceId { get; set; }
+		//public int ServiceId { get; set; }
 
 		#region Fields
 		public DateTime? DateCreated { get; set; }
