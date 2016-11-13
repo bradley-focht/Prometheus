@@ -7,6 +7,6 @@
 		string Method { get; set; }
 		string Outcome { get; set; }
 
-		IService Service { get; set; }
+		Service Service { get; set; }
 	}
 }

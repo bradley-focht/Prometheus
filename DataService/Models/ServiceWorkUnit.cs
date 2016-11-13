@@ -27,7 +27,7 @@ namespace DataService.Models
 		public string Responsibilities { get; set; }
 		#endregion
 		#region Navigation Propeties
-		public virtual IService Service { get; set; }
+		public virtual Service Service { get; set; }
 		#endregion
 	}
 }

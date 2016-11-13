@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataService.Models
 {
@@ -7,10 +8,12 @@ namespace DataService.Models
 	{
 		//PK
 		[Key]
+		[ForeignKey("Service")]
+		[DatabaseGenerated(DatabaseGeneratedOption.None)]
 		public int Id { get; set; }
 
 		//FK
-		public int ServiceId { get; set; }
+		//public int ServiceId { get; set; }
 
 		//TODO: Brad document what the fields in this entity do. Ideally we should have comments in the Model interfaces for ALL fields
 		#region Fields
@@ -28,7 +31,8 @@ namespace DataService.Models
 		public bool CatalogVisible { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual IService Service { get; set; }
+		[Required]
+		public virtual Service Service { get; set; }
 		#endregion
 	}
 }

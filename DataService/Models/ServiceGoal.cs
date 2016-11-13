@@ -10,6 +10,7 @@ namespace DataService.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+
 		public int ServiceId { get; set; }
 
 		#region Fields
@@ -24,7 +25,7 @@ namespace DataService.Models
 		public DateTime? EndDate { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual IService Service { get; set; }
+		public virtual Service Service { get; set; }
 		#endregion
 	}
 }

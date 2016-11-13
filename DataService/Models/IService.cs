@@ -16,14 +16,14 @@ namespace DataService.Models
 		ServiceTypeRole ServiceTypeRole { get; set; }
 		ServiceTypeProvision ServiceTypeProvision { get; set; }
 
-		IServiceBundle ServiceBundle { get; set; }
-		ILifecycleStatus LifecycleStatus { get; set; }
-		ICollection<IServiceGoal> ServiceGoals { get; set; }
-		ICollection<IServiceRequestOption> ServiceRequestOptions { get; set; }
-		ICollection<IServiceContract> ServiceContracts { get; set; }
-		ICollection<IServiceMeasure> ServiceMeasures { get; set; }
-		ICollection<IServiceSwot> ServiceSwots { get; set; }
-		ICollection<IServiceWorkUnit> ServiceWorkUnits { get; set; }
-        ICollection<IServiceDocument> ServiceDocuments { get; set; }
+		ServiceBundle ServiceBundle { get; set; }
+		LifecycleStatus LifecycleStatus { get; set; }
+		ICollection<ServiceGoal> ServiceGoals { get; set; }
+		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
+		ICollection<ServiceContract> ServiceContracts { get; set; }
+		ICollection<ServiceMeasure> ServiceMeasures { get; set; }
+		ICollection<ServiceSwot> ServiceSwots { get; set; }
+		ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
+		ICollection<ServiceDocument> ServiceDocuments { get; set; }
 	}
 }

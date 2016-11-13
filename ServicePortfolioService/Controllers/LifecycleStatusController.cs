@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace ServicePortfolio.Controllers
+namespace ServicePortfolioService.Controllers
 {
 	public class LifecycleStatusController : ILifecycleStatusController
 	{

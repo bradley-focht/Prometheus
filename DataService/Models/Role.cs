@@ -20,7 +20,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 		#endregion
 		#region Navigation properties
-		public virtual ICollection<IUser> Users { get; set; }
+		public virtual ICollection<User> Users { get; set; }
 		#endregion
 	}
 }

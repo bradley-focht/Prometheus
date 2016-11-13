@@ -9,6 +9,6 @@
 		string Responsibilities { get; set; }
 		string WorkUnit { get; set; }
 
-		IService Service { get; set; }
+		Service Service { get; set; }
 	}
 }

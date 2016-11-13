@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
-namespace ServicePortfolio.Controllers
+namespace ServicePortfolioService.Controllers
 {
 	public class ServiceController : IServiceController
 	{

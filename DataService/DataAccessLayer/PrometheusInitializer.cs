@@ -5,7 +5,7 @@ namespace DataService.DataAccessLayer
 {
 	//Adjust the inherited object to match desired database behavior
 	//https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application
-	public class PrometheusInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<PrometheusContext>
+	public class PrometheusInitializer : System.Data.Entity.DropCreateDatabaseAlways<PrometheusContext>
 	{
 		protected override void Seed(PrometheusContext context)
 		{
@@ -41,7 +41,7 @@ namespace DataService.DataAccessLayer
 			context.ServiceBundles.Add(new ServiceBundle
 			{
 				Name = "First Service Bundle Name",
-				Services = new List<IService>
+				Services = new List<Service>
 				{
 					new Service
 					{
@@ -50,7 +50,7 @@ namespace DataService.DataAccessLayer
 						{
 							Name = "Operational"
 						},
-						ServiceRequestOptions = new List<IServiceRequestOption>
+						ServiceRequestOptions = new List<ServiceRequestOption>
 						{
 							new ServiceRequestOption(),
 							new ServiceRequestOption()
@@ -62,7 +62,7 @@ namespace DataService.DataAccessLayer
 						{
 							Name = "Chartered"
 						},
-						ServiceRequestOptions = new List<IServiceRequestOption>
+						ServiceRequestOptions = new List<ServiceRequestOption>
 						{
 							new ServiceRequestOption(),
 							new ServiceRequestOption()

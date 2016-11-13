@@ -5,7 +5,6 @@ namespace Common.Dto
 	public interface ISwotActivityDto : IUserCreatedEntityDto
 	{
 		int Id { get; set; }
-		int ServiceId { get; set; }
 		int ServiceSwotId { get; set; }
 
 		DateTime Date { get; set; }

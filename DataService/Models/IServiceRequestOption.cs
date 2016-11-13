@@ -4,6 +4,6 @@
 	{
 		int Id { get; set; }
 		int ServiceId { get; set; }
-		IService Service { get; set; }
+		Service Service { get; set; }
 	}
 }
