@@ -1,23 +1,35 @@
 ﻿
-
-@using Prometheus.WebUI.Models
-@model Prometheus.WebUI.Models.ServiceBundleModel
-
+@model Common.Dto.ServiceBundleDto
 @{
     ViewBag.Title = "Confirm Delete";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-    DeleteConfirmationModel deleteModel = new DeleteConfirmationModel();
-    deleteModel.CancelArgs = "0";
-
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("View Service Bundles", "ServicePortfolio/Retrieve/" + Model.CurrentServiceBundle.Id),
+                                                             new KeyValuePair<string, string>("Service Portfolio", "ServicePortfolio/Index"),
+                                                             new KeyValuePair<string, string>(Model.Name, "ServicePortfolio/Show/" + Model.Id),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#") };
 }
 @section Content {
-@Html.Partial("/Views/Shared/PartialViews/_DeleteConf.cshtml", deleteModel)
-
+    @using (Html.BeginForm("Delete", "ServicePortfolio", FormMethod.Post))
+    {
+        @Html.Hidden("Id", Model.Id)
+        <div class="panel std-div">
+            <div class="title-div">Confirm Deletion</div>
+            Are you sure you want to delete Service Bundle
+            <section class="present-section">
+                @Model.Name
+            </section>
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Back", "Show", new {id = Model.Id}, new {@class = "btn btn-default"})
+                    <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+                </div>
+                &nbsp;
+            </div>
+        </div>
+    }
 }
+
 @section Sidebar { }
 
 

@@ -4,10 +4,11 @@
     font-weight: 300;
 }
 
-.div-title {
+.title-div {
     border-bottom: 1px solid #dddddd;
     white-space: nowrap;
     font-weight: 600;
+    padding: 10px 10px;
 }
 
 .font-title2 {
@@ -35,14 +36,14 @@
 
 
 .font-title-initial {
-    color: #123579;
+    color: #0C537C;
     font-size: 10px;
     font-weight: 600;
 }
 
 .font-small-inverse-dull {
     font-size: x-small;
-    color: #cccccc;
+    color: #dddddd;
 }
 
 .std-indent {
@@ -66,7 +67,7 @@
 }
 
 .std-div {
-    padding: 10px;
+    padding: 5px;
     display: inline-block;
 }
 
@@ -115,21 +116,13 @@
     user-select: none;
 }
 
-
-
-.note {
-    color: #333333;
-    font-size: 10px;
-    font-weight: 200;
-}
-
 .cke_toolbar {
     zoom: 0.84;
 }
 
 .bg-primary {
     color: #ffffff;
-    background-color: #428bca;
+    background-color: #127CBA;
     border-color: transparent;
     padding: 3px 6px;
     white-space: nowrap;
@@ -142,7 +135,7 @@
 }
 
 .bg-primary:hover {
-	background-color: #529bda;
+	background-color: #19A7F8;
 }
 
 
@@ -166,13 +159,11 @@
 
 .dt-cell {
     vertical-align: top;
-    padding-top: 10px;
+    padding-top: 5px;
     text-align: right;
     font-weight: bold;
     padding-right: 5px;
-    color: #454545;
-    padding-bottom: 5px;
-    color: #333333;
+    color: #666666;
 }
 
 .dd-cell {
@@ -190,13 +181,28 @@
 
 .ul-menu {
   list-style-type: none;
-    padding: 0;
-    margin: 5px;
-    font-size: 12px;
+  padding: 0;
+  margin: 5px;
+  font-size: 12px;
 
 }
 
+.field-validation-error {
+    color: #ff1100;
+    font-size: 10px;
+}
 
+.input-validation-error {
+    background-color: #FFCCCC;
+    border-color: #ff1100;
+}
+
+.present-section {
+    text-align: center;
+    margin: 10px 10px;
+    padding: 5px 5px;
+    background-color: #f5f5f5;
+}
 
 .clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
 .clearfix:after{clear:both;}

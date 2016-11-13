@@ -7,8 +7,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="panel-body">
-    The service portfolio..
+<div class="title-div">
+    &nbsp;
+    <div class="float-right-div">
+        @Html.ActionLink("Add", "Add", null, new {@class = "btn btn-default"})
+    </div>
 </div>
 @if (Model != null)
 {
@@ -32,9 +35,13 @@
 
                 <dt></dt>
                 <dd>
-                    <div class="float-right-div">@Html.ActionLink("Edit", "Show", "ServicePortfolio", new { id = serviceBundle.Id }, new { @class = "btn btn-default" })</div>
+                    <div class="float-right-div">@Html.ActionLink("Edit", "Show", "ServicePortfolio", new {id = serviceBundle.Id}, new {@class = "btn btn-default"})</div>
                 </dd>
             </dl>
         </div>
     }
+}
+else
+{
+    <text>There are currently no Service Bundles</text>
 }

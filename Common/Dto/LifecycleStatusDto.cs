@@ -22,7 +22,7 @@ namespace Common.Dto
 		/// <summary>
 		/// Unique name of each status
 		/// </summary>
-		[Required(ErrorMessage = "Lifecycle Status: Name required")]
+		[Required(ErrorMessage = "status name required")]
 		public string Name { get; set; }
 
 		/// <summary>
@@ -33,7 +33,7 @@ namespace Common.Dto
 		/// <summary>
 		/// Used for the sort order when displaying statuses
 		/// </summary>
-		[Required(ErrorMessage = "Lifecycle position is required")]
+		[Required(ErrorMessage = "lifecycle position is required")]
 		public int Position { get; set; }
 
 		/// <summary>
@@ -41,7 +41,7 @@ namespace Common.Dto
 		/// visible in business / support catalog
 		/// </summary>
 		[Display(Name = "Catalog Visible")]
-		[Required(ErrorMessage = "Catalog Visibility selection required")]
+		[Required(ErrorMessage = "catalog visibility selection required")]
 		public bool CatalogVisible { get; set; }
 		#endregion
 

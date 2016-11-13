@@ -1,13 +1,13 @@
 ﻿@model Common.Dto.ILifecycleStatusDto
 
-<div class="std-div">
+<div class="std-div panel">
     @using (Html.BeginForm("SaveLifecycle", "ServiceMaintenance", FormMethod.Post))
     {
+        <div class="title-div">@ViewBag.Title</div>
+
         <div class="panel-body">
             @Html.HiddenFor(m => Model.Id)
             <table>
-
-
                         @foreach (var property in ViewData.ModelMetadata.Properties)
 						{
 							if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
@@ -22,33 +22,31 @@
 									case "CatalogVisible":
 
 								        <td class="dd-cell">
-								            @Html.ValidationMessage(property.PropertyName)
+
 								            <div class="form-group">
 								                <div class="btn-group" data-toggle="buttons">
 								                    <label class="btn btn-default">
-								                        @Html.RadioButton("CatalogVisible", "no",
-								                            new {id = "false"}) no
+								                        @Html.RadioButton(property.PropertyName, "false", new {id = "false"}) no
 								                    </label>
 
 								                    <label class="btn btn-default">
-								                        @Html.RadioButton("CatalogVisible", "yes",
-								                            new {id = "true"}) yes
+								                        @Html.RadioButton(property.PropertyName, "true", new {id = "true"}) yes
 								                    </label>
 								                </div>
 								            </div>
+                                            @Html.ValidationMessage(property.PropertyName)
 								        </td>
 										break;
 									case "Position":
 										<td class="dd-cell">
-											@Html.ValidationMessage(property.PropertyName)
 											@Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem {Text = i.ToString(), Value = i.ToString()}))
-											
+                                            @Html.ValidationMessage(property.PropertyName)										
 										</td>
 										break;
 									default:
 								        <td class="dd-cell">
-								            @Html.ValidationMessage(property.PropertyName)
 								            @Html.TextBox(property.PropertyName, null, new {@class = "form-control"})
+                                            @Html.ValidationMessage(property.PropertyName)
 								        </td>									
 										break;
 								}
