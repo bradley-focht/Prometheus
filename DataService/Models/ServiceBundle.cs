@@ -30,7 +30,7 @@ namespace DataService.Models
 		public string Measures { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual ICollection<IService> Services { get; set; }
+		public virtual ICollection<Service> Services { get; set; }
 		#endregion
 	}
 }

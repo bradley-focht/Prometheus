@@ -12,6 +12,8 @@ namespace TestConsoleApp
 				{
 					Console.WriteLine(option.Id);
 				}
+
+				Console.WriteLine("Donezo");
 				Console.ReadLine();
 			}
 		}

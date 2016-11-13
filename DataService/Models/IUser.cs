@@ -8,6 +8,6 @@
 		string Name { get; set; }
 		string Password { get; set; }
 
-		IRole Role { get; set; }
+		Role Role { get; set; }
 	}
 }

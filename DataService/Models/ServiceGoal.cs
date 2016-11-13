@@ -24,7 +24,7 @@ namespace DataService.Models
 		public DateTime? EndDate { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual IService Service { get; set; }
+		public virtual Service Service { get; set; }
 		#endregion
 	}
 }

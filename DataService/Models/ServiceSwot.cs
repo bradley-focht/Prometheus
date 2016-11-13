@@ -28,8 +28,8 @@ namespace DataService.Models
 		public string Description { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual IService Service { get; set; }
-		public virtual ICollection<ISwotActivity> SwotActivities { get; set; }
+		public virtual Service Service { get; set; }
+		public virtual ICollection<SwotActivity> SwotActivities { get; set; }
 		#endregion
 	}
 }

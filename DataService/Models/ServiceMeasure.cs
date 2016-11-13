@@ -23,7 +23,7 @@ namespace DataService.Models
 		public string Outcome { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual IService Service { get; set; }
+		public virtual Service Service { get; set; }
 		#endregion
 	}
 }

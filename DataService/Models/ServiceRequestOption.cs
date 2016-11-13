@@ -21,7 +21,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 		#endregion
 		#region Navigation properties
-		public virtual IService Service { get; set; }
+		public virtual Service Service { get; set; }
 		#endregion
 	}
 }

@@ -23,7 +23,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 		#endregion
 		#region Navigation properties
-		public virtual IRole Role { get; set; }
+		public virtual Role Role { get; set; }
 		#endregion
 	}
 }

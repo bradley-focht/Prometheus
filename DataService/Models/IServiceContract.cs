@@ -15,6 +15,6 @@ namespace DataService.Models
 		string Type { get; set; }
 		string Description { get; set; }
 
-		IService Service { get; set; }
+		Service Service { get; set; }
 	}
 }

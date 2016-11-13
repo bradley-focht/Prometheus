@@ -12,7 +12,7 @@ namespace DataService.Models
 		string Item { get; set; }
 		ServiceSwotType Type { get; set; }
 
-		IService Service { get; set; }
-		ICollection<ISwotActivity> SwotActivities { get; set; }
+		Service Service { get; set; }
+		ICollection<SwotActivity> SwotActivities { get; set; }
 	}
 }

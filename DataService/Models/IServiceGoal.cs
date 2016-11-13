@@ -14,6 +14,6 @@ namespace DataService.Models
 		ServiceGoalType Type { get; set; }
 		DateTime? StartDate { get; set; }
 
-		IService Service { get; set; }
+		Service Service { get; set; }
 	}
 }

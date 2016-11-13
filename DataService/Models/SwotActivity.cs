@@ -12,7 +12,6 @@ namespace DataService.Models
 		public int Id { get; set; }
 
 		//FK
-		public int ServiceId { get; set; }
 		public int ServiceSwotId { get; set; }
 
 		#region Fields
@@ -25,8 +24,7 @@ namespace DataService.Models
 		public DateTime Date { get; set; }
 		#endregion
 		#region Navigation Propeties
-		public virtual IService Service { get; set; }
-		public virtual IServiceSwot ServiceSwot { get; set; }
+		public virtual ServiceSwot ServiceSwot { get; set; }
 		#endregion
 	}
 }

@@ -6,6 +6,6 @@ namespace DataService.Models
 	{
 		int Id { get; set; }
 		string Name { get; set; }
-		ICollection<IUser> Users { get; set; }
+		ICollection<User> Users { get; set; }
 	}
 }
