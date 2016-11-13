@@ -1,19 +1,28 @@
-﻿@model Common.Dto.ServiceGoalDto
-<table>
-
-    @foreach (var property in ViewData.ModelMetadata.Properties)
+﻿@using System.Configuration
+@model dynamic
+    @if (Model != null)
     {
-        if (!property.PropertyName.Contains("Id"))
-        {
-            <tr>
-                <td class="dt-cell">
-                    @(property.DisplayName ?? property.PropertyName)
-                </td>
-                <td class="dd-cell">@Html.Raw(property.Model)</td>
-            </tr>
+        <table>
 
-        }
+            @foreach (var property in ViewData.ModelMetadata.Properties)
+            {
+                if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("DateC") || property.PropertyName.Contains("DateU"))
+                {
+                    continue;
+                }
+
+                <tr>
+                    <td class="dt-cell">
+                        @(property.DisplayName ?? property.PropertyName)
+                    </td>
+                    <td class="dd-cell">@Html.Raw(property.Model)</td>
+                </tr>
+            }
+
+
+        </table>
     }
-
-
-</table>
+    else
+    {
+        <text>the item no longer exists</text>
+    }

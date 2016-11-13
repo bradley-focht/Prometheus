@@ -1,0 +1,73 @@
+﻿@model Common.Dto.ILifecycleStatusDto
+
+<div class="std-div">
+    @using (Html.BeginForm("SaveLifecycle", "ServiceMaintenance", FormMethod.Post))
+    {
+        <div class="panel-body">
+            @Html.HiddenFor(m => Model.Id)
+            <table>
+
+
+                        @foreach (var property in ViewData.ModelMetadata.Properties)
+						{
+							if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
+							{
+								continue;
+							}
+
+							<tr>
+								<td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+								@switch (property.PropertyName)
+								{
+									case "CatalogVisible":
+
+										<td class="dd-cell">
+											<div class="form-group">
+												<div class="btn-group" data-toggle="buttons">
+													<label class="btn btn-default">
+														@Html.RadioButton("CatalogVisible", "no",
+															new {id = "false"}) no
+													</label>
+
+													<label class="btn btn-default">
+														@Html.RadioButton("CatalogVisible", "yes",
+															new {id = "true"}) yes
+													</label>
+												</div>
+											</div>
+										</td>
+										break;
+									case "Position":
+										<td class="dd-cell">
+											
+											@Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem {Text = i.ToString(), Value = i.ToString()}))
+											<label class="alert-danger">@Html.ValidationMessage(property.PropertyName)</label>
+										</td>
+										break;
+									default:
+											<td class="dd-cell">
+												@Html.TextBox(property.PropertyName, null, new {@class = "form-control"})
+											</td>
+										
+										break;
+								}
+							</tr>
+
+
+                        }
+
+				</table>
+			
+                        <div class="panel-footer">
+                            <div class="float-right-div">
+                                <input type="submit" value="Save" class="btn btn-primary"/>
+                                @Html.ActionLink("Cancel", "ShowLifecycle", null, new {@class = "btn btn-default"})
+                            </div>
+                            &nbsp;
+
+                        </div>
+
+
+        </div>
+    }
+</div>

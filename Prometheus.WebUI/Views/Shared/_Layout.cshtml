@@ -7,11 +7,11 @@
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css"/>
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/aes-min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
 </head>
 <body>
-    @Html.Partial("/Views/Shared/PartialViews/_TitleBar.cshtml", (List<KeyValuePair<string, string>>)ViewBag.Links)
+    @Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>)ViewBag.Links)
 
 
    <div class="std-indent std-div">

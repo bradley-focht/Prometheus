@@ -1,16 +1,15 @@
-﻿using DataService.Models;
-using System;
+﻿using Common.Dto;
 using System.Collections.Generic;
 
 namespace Prometheus.WebUI.Models.ServicePortfolio
 {
 	public class ServiceBundleModel
 	{
-        public ServiceBundleModel(ServiceBundle currentServiceBundle)
+        public ServiceBundleModel(ServiceBundleDto currentServiceBundle)
         {
             CurrentServiceBundle = currentServiceBundle;
         }
-		public ServiceBundle CurrentServiceBundle { get; set; }
+		public ServiceBundleDto CurrentServiceBundle { get; set; }
 		public IEnumerable<KeyValuePair<int, string>> ServiceBundles { get; set; }
 	}
 }

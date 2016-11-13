@@ -50,6 +50,7 @@
     <Compile Include="Dto\IRoleDto.cs" />
     <Compile Include="Dto\IServiceBundleDto.cs" />
     <Compile Include="Dto\IServiceContractDto.cs" />
+    <Compile Include="Dto\IServiceDocumentDto.cs" />
     <Compile Include="Dto\IServiceDto.cs" />
     <Compile Include="Dto\IServiceGoalDto.cs" />
     <Compile Include="Dto\IServiceMeasureDto.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\ServiceBundleDto.cs" />
     <Compile Include="Dto\ServiceContractDto.cs" />
+    <Compile Include="Dto\ServiceDocumentDto.cs" />
     <Compile Include="Dto\ServiceDto.cs" />
     <Compile Include="Dto\ServiceGoalDto.cs" />
     <Compile Include="Dto\ServiceMeasureDto.cs" />

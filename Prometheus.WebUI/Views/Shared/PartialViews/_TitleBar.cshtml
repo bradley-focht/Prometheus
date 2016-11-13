@@ -1,16 +1,42 @@
 ﻿@model List<KeyValuePair<string, string>>
 @using Prometheus.WebUI.HtmlHelpers
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top" style="height: 45px;">
     <div style="width:60%; float:left;"><label class="navbar-brand">@ViewBag.Title</label></div>
-    <div style="width:40%; float:right;">
-        <label class="font-small-inverse-dull">Logged in as </label><label style="color: #ffffff;">&nbsp; guest</label> <br /> 
-        @Html.ActionLink("Logout", "Logout", "Login", null, new { @class = "btn-small btn-default" })
-    </div>
+
+
+    <table><tr><td><span class="font-small-inverse-dull">Contact us: 306-777-7777</span></td>
+        <td style="width: 50px;"></td>
+        <td>
+            <label class="font-small-inverse-dull">Logged in as </label><label style="color: #ffffff;">&nbsp; guest</label> <br />
+            @Html.ActionLink("Logout", "Logout", "UserAccount", null, new { @class = "btn-default" })
+            </td></tr></table>
+   
 </div>
 <div class="breadcrumb-container">
     @if (ViewBag.Links != null)
     {
-        @Html.BreadrumbTrail(Model, "breadcrumb", "active");
+        @Html.BreadrumbTrail(Model, "breadcrumb", "active")
     }
 </div>
+
+@if (TempData["message"] != null)       /* display error or success messages */
+{
+    string cssClass = null;
+    if (TempData["messageType"] != null)
+    {
+        if (TempData["messageType"].ToString() == "success")
+        {
+            cssClass = "alert-success";
+        }
+        else if (TempData["messageType"].ToString() == "failure")
+        {
+            cssClass = "alert-warning";
+        }
+    }
+
+    <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
+        <span class="float-left-div;">&times;</span>
+        @TempData["message"]
+    </div>
+}

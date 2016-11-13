@@ -42,15 +42,15 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult ShowLifecycle(int id=0)
         {
-            /* test region */
-            LifecycleModel lm = new LifecycleModel();
-           lm.CurrentStatus = new LifecycleStatusDto();
-            lm.CurrentStatus.Id = id;
-            lm.Statuses = new List<KeyValuePair<int, string>>()
+            LifecycleModel lm = new LifecycleModel
             {
-                new KeyValuePair<int, string>(10, "Operations")
+                CurrentStatus = new LifecycleStatusDto {Id = id},
+                Statuses = new List<KeyValuePair<int, string>>()
+                {
+                    new KeyValuePair<int, string>(10, "Operational")
+                }
             };
-            /*end test region */
+         
 
             return View(lm);
         }
@@ -63,7 +63,7 @@ namespace Prometheus.WebUI.Controllers
             lm.CurrentStatus.Id = 0;
             lm.Statuses = new List<KeyValuePair<int, string>>()
             {
-                new KeyValuePair<int, string>(1, "Operations")
+                new KeyValuePair<int, string>(1, "Operational")
             };
             /*end test region */
 
@@ -71,12 +71,18 @@ namespace Prometheus.WebUI.Controllers
         }
 
 
+        /// <summary>
+        /// Save or update Lifecycle Statuses
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult SaveLifecycle(LifecycleStatusDto model)
         {
             if (ModelState.IsValid)
             {
-                //do some saving 
+                TempData["messageType"] = "success";
+                TempData["message"] = "successfully saved lifecycle status";
             }
 
             return RedirectToAction("ShowLifecycle");
@@ -118,5 +124,14 @@ namespace Prometheus.WebUI.Controllers
 
             return RedirectToAction("ShowLifecycle");
         }
+
+	    public ActionResult ConfirmDeleteService(int id = 0)
+	    {
+            LifecycleStatusDto lf = new LifecycleStatusDto();
+	        lf.Name = "Operational";
+	        lf.Id = 5;
+		    return View(lf);
+
+	    }
     }
 }

@@ -5,13 +5,13 @@ using System.Collections.Generic;
 
 namespace ServicePortfolio
 {
-	public class ServicePortfolio : IServicePortfolio
+	public class ServicePortfolioService : IServicePortfolio
 	{
 		private readonly IServiceBundleController _serviceBundleController;
 		private readonly IServiceController _serviceController;
 		private readonly ILifecycleStatusController _lifecycleStatusController;
 
-		public ServicePortfolio(IServiceBundleController serviceBundleController, IServiceController serviceController,
+		public ServicePortfolioService(IServiceBundleController serviceBundleController, IServiceController serviceController,
 			ILifecycleStatusController lifecycleStatusController)
 		{
 			_serviceBundleController = serviceBundleController;
@@ -30,6 +30,7 @@ namespace ServicePortfolio
 		}
 
 		//TODO: Brad / Sean Should this be a dictionary
+        // probably not
 		public IEnumerable<Tuple<int, string>> GetServiceBundleNames(int userId)
 		{
 			return _serviceBundleController.GetServiceBundleNames(userId);

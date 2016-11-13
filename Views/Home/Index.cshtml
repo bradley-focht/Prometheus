@@ -1,0 +1,27 @@
+﻿@{ 
+    ViewBag.Title = "Home";
+    ViewBag.Links = null;
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<div style="margin-top: -35px; margin-bottom: 10px; height: 150px;">
+    @Html.Action("LoginScreen", "UserAccount", null)
+</div>
+<div>
+            <label class="font-title1">What would you like to do today?</label>
+
+
+            <div class="std-indent" style="padding-top:30px; padding-bottom:30px; border-bottom:1px solid #333333; border-top: 1px solid #333333;">
+                <p>
+                    <label class="font-title3">@Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio")</label><br />
+                    <label class="font-title3">@Html.ActionLink("Services", "Index", "Service")</label> | @Html.ActionLink("maintenance", "Index", "ServiceMaintenance") <br />
+                </p><p>
+                    <label class="font-title3">Business Service Catalog</label>  <br />
+                    <label class="font-title3">Supporting Service Catalog</label>
+                </p><p>
+                    <label class="font-title3">Submit a Service Request</label> | edit | maintenance <br />
+                    <label class="font-title3">Service Request Approvals</label>
+                </p>
+                <p>
+                    <label class="font-title3">@Html.ActionLink("System Access", "Index", "SystemAccess")</label>
+            </div>
+        </div>
+ 

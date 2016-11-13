@@ -81,6 +81,7 @@
     <Compile Include="Models\IService.cs" />
     <Compile Include="Models\IServiceBundle.cs" />
     <Compile Include="Models\IServiceContract.cs" />
+    <Compile Include="Models\IServiceDocument.cs" />
     <Compile Include="Models\IServiceGoal.cs" />
     <Compile Include="Models\IServiceMeasure.cs" />
     <Compile Include="Models\IServiceRequestOption.cs" />
@@ -93,6 +94,7 @@
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ServiceBundle.cs" />
     <Compile Include="Models\ServiceContract.cs" />
+    <Compile Include="Models\ServiceDocument.cs" />
     <Compile Include="Models\ServiceGoal.cs" />
     <Compile Include="Models\ServiceMeasure.cs" />
     <Compile Include="Models\ServiceRequestOption.cs" />

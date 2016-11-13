@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
-using DataService.Models;
+using Common.Dto;
 using Prometheus.WebUI.Models.ServicePortfolio;
+using ServicePortfolio;
+using ServicePortfolio.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -14,14 +16,19 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
         public ActionResult Index()
         {
-			//temp code please remove on implementation
-			var portfolioItems = new List<IServiceBundle>();
-
-
-			portfolioItems.Add(new ServiceBundle() {Id = 1, Name = "Workplace Services", Description = "some new service" });
-
-
-            return View(portfolioItems);
+            /* create interface to service portfolio */
+        var sps = new ServicePortfolioService(new ServiceBundleController(), new global::ServicePortfolio.Controllers.ServiceController(), new LifecycleStatusController());
+        var portfolioBundles = sps.GetServiceBundles(0);
+        /* IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
+        {
+            Name = "Employee Productivity Services",
+            Description = "Enable secure, anytime, anywhere, stable work capabilities and access to required information to meet personal computing requirements and increase customer satisfaction",
+            BusinessValue = "This service will provide you with <ul><li>Increased employee productivity</li><li>Value created through enterprise procurement with standard offerings in order to reduce cost</li></ul>",
+            Services = new List<IServiceDto> {new ServiceDto { Name = "Identity and Access Management"}, new ServiceDto { Name="Hardware Services"} },
+            Measures = "Customer satisfaction surveys, Customer reports"
+        } };
+        */
+            return View(portfolioBundles);
         }
 		/// <summary>
         /// 
@@ -29,10 +36,14 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="serviceBundle"></param>
         /// <returns></returns>
 		[HttpPost]
-		public ActionResult Save(ServiceBundle serviceBundle)           
+		public ActionResult Save(ServiceBundleDto serviceBundle)
 		{
-
-			return RedirectToAction("Show");
+            var sps = new ServicePortfolioService(new ServiceBundleController(), new global::ServicePortfolio.Controllers.ServiceController(), new LifecycleStatusController());
+		    serviceBundle.Id = 0;
+		    sps.SaveServiceBundle(0, serviceBundle);
+            TempData["messageType"] = "success";
+		    TempData["message"] = "Service bundle saved successfully";
+            return RedirectToAction("Show");
 		}
 
 		/// <summary>
@@ -41,7 +52,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Add()
 		{
-            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundle());
+            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
 
             return View(model);
 		}
@@ -55,7 +66,7 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
 		public ActionResult Show(Guid? id = null)
 		{
-            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundle());
+            ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
             
 			return View(model);
 		}

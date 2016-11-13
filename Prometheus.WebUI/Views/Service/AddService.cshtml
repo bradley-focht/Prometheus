@@ -1,8 +1,8 @@
 ﻿@{
     ViewBag.Title = "Add New Service ";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("View Services", "ServiceEdit/Index"),
-                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
@@ -12,8 +12,10 @@
 }
 
 @section Content {
-    <div class="std-div">
-        @Html.Action("ShowNav", new { id = 0, section = "GeneralOnly" })
+    <div class="panel std-div">
+        <div class="panel-heading">
+
+        </div>
 
         @using (Html.BeginForm("Save", "Service", FormMethod.Post))
     {

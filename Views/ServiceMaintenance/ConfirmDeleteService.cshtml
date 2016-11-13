@@ -1,0 +1,23 @@
+﻿@model Prometheus.WebUI.Models.Shared.ConfirmDeleteModel
+@{
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewBag.Title = "Confirm Delete";
+
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("Services Maintenance", "ServiceMainenance/Index"),
+        new KeyValuePair<string, string>("View Services", "ServiceMainenance/Index")
+
+    };
+}
+
+@section Content {
+@Html.Partial("PartialViews/_ConfirmDelete", Model)
+}
+
+@section Sidebar
+{
+
+}

@@ -1,0 +1,16 @@
+﻿@model List<KeyValuePair<string, string>>
+@using Prometheus.WebUI.HtmlHelpers
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div style="width:60%; float:left;"><label class="navbar-brand">@ViewBag.Title</label></div>
+    <div style="width:40%; float:right;">
+        <label class="font-small-inverse-dull">Logged in as </label><label style="color: #ffffff;">&nbsp; guest</label> <br /> 
+        @Html.ActionLink("Logout", "Logout", "Login", null, new { @class = "btn-small btn-default" })
+    </div>
+</div>
+<div class="breadcrumb-container">
+    @if (ViewBag.Links != null)
+    {
+        @Html.BreadrumbTrail(Model, "breadcrumb", "active");
+    }
+</div>

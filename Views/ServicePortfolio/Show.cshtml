@@ -1,0 +1,29 @@
+﻿@using Prometheus.WebUI.Models.ServicePortfolio
+@using Prometheus.WebUI.Models.Shared
+@model  ServiceBundleModel
+
+
+@{
+    ViewBag.Title = "View Service Bundles";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    //Breadcrumb navigation links
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#") };
+
+    //item list for ItemListView partial view
+    LinkListModel listModel = new LinkListModel(Model.ServiceBundles, Model.CurrentServiceBundle.Id, "Show", "Add", "Service Bundles");
+}
+
+@section Sidebar {
+    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", listModel)
+    
+    }    
+
+
+@section Content {
+    @{if (Model.CurrentServiceBundle.Id != 0)
+        {
+           @Html.Partial("/Views/ServicePortfolio/Partialviews/ServiceBundleViewer.cshtml", Model.CurrentServiceBundle)
+        }
+    }
+}

@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
+
+
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -19,12 +25,14 @@ namespace Prometheus.WebUI.Controllers
         {
             var services = new List<ServiceDto>
             {
-                new ServiceDto() {Name = "Support Services", Description = "support for the masses"},
-                new ServiceDto()
+                new ServiceDto {Name = "Support Services", Description = "support for the masses"},
+                new ServiceDto
                 {
+                    Id = 10,
                     Name = "Communications and Messaging",
                     Description = "send a message to that special someone"
-                }
+                },
+                new ServiceDto {Id = 10, Name="Collaboration Services", Description = "this is really just Sharepoint... and it's an outdated version too."}
             }; 
             
 
@@ -45,7 +53,7 @@ namespace Prometheus.WebUI.Controllers
             servicesModel.SelectedItemId = id;
             servicesModel.ListItems = new List<KeyValuePair<int, string>>
             {
-                new KeyValuePair<int, string>(10, "Operations")
+                new KeyValuePair<int, string>(10, "Support Services")
             };
             servicesModel.AddAction = "Add";
             servicesModel.SelectAction = "Show/General";
@@ -92,7 +100,12 @@ namespace Prometheus.WebUI.Controllers
             }
             else
             {
-                sm = new ServiceModel(new ServiceDto() {Id = 10, Name = "Operations"}, section.Replace(" ", ""));
+                sm = new ServiceModel(new ServiceDto() {Id = id, Name = "Support Services"}, section.Replace(" ", ""));
+                sm.Service.Name = "Support Services";
+                sm.Service.Id = 10;
+                sm.Service.ServiceOwner = "Donald Trump";
+                sm.Service.Description = "This service will build a great, great wall. Mark my words, it will be a great wall. <ul><li>tall</li><li>long<li><ul>";
+
             }
 
             return View(sm);
@@ -115,6 +128,7 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult Save(ServiceDto newService)
         {
+          
 
             return RedirectToAction("Show");
         }
@@ -293,17 +307,36 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Index");
             }
             ServiceSectionModel model = new ServiceSectionModel();
-            model.Service = new ServiceDto {Id = 10, Name = "Operations", Description = "this is where we operate"};
+            model.Service = new ServiceDto {Id = 10, Name = "Support Services", Description = "this is where we operate"};
             model.Section = "General";
 
             return View("UpdateSectionItem", model);
         }
 
+        /// <summary>
+        /// Save updated Service/General information or create a new one
+        ///   model is validated, redirects to the Show/General
+        /// </summary>
+        /// <param name="service"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveGeneralItem(ServiceDto service)
+        {
+            if (ModelState.IsValid)
+            {
+                TempData["message"] = $"{service.Name} has been saved";
+                TempData["messageType"] = "success";
+            }
+            return RedirectToAction("Show", new { section="General", id=service.Id});
+        }
 
         [HttpPost]
-        public ActionResult SaveGeneral(ServiceDto service)
+        public ActionResult SaveGoalsItem(ServiceGoalDto goal)
         {
-            return RedirectToAction("Show", new { section="General", id=service.Id});
+            TempData["messageType"] = "success";
+            TempData["message"] = "sucessfully saved goal";
+
+            return RedirectToAction("show", new {section = "Goals", id = 10});
         }
 
         /// <summary>
@@ -318,10 +351,10 @@ namespace Prometheus.WebUI.Controllers
             ServiceSectionModel model = new ServiceSectionModel();
             model.Section = section;
             model.Service = new ServiceDto();
-            model.Service.Name = "Operations";
-            model.Service.Id = 10;
+            model.Service.Name = "Support Services";
+            model.Service.Id = id;
             model.SectionItemId = id;
-            model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "hi" } }.ToArray();
+            model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() {Id=1, ServiceId = 10, Description = "some new goal goes here", Name = "hi" } }.ToArray();
             model.Service.ServiceWorkUnits = new List<IServiceWorkUnitDto>(new List<IServiceWorkUnitDto> {new ServiceWorkUnitDto {Id = 1, WorkUnit = "Those \"guys\"", Contact = "Craig Gelowitz", Responsibilities = "Just keep out of trouble, ok?"} });
             model.Service.ServiceContracts = new List<IServiceContractDto>(new List<IServiceContractDto>());
             model.Service.ServiceMeasures = new List<IServiceMeasureDto>();
@@ -335,7 +368,7 @@ namespace Prometheus.WebUI.Controllers
             ServiceSectionModel model = new ServiceSectionModel();
             model.Section = section;
             model.Service = new ServiceDto();
-            model.Service.Name = "Operations";
+            model.Service.Name = "Support Services";
             model.Service.Id = 10;
             model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "hi" } }.ToArray();
             return View("UpdateSectionItem", model);
@@ -366,20 +399,86 @@ namespace Prometheus.WebUI.Controllers
             var model = new ServiceSectionModel();
             model.Section = section;
             model.Service = new ServiceDto();
-            model.Service.Name = "Operations";
+            model.Service.Name = "Support Services";
             model.Service.Id = 10;
+            model.Service.ServiceOwner = "Donald Trump";
+            model.Service.Description = "This service will build a great, great wall. Mark my words, it will be a great wall. <ul><li>tall</li><li>long<li><ul>";
 
             return View("AddSectionItem", model);
         }
 
-        public ActionResult ConfirmDeleteServiceSectionItem(string section, int id = 0)
+        /// <summary>
+        /// Generates the confirm deletion warning page
+        ///  function is generalized enough to handle all section items
+        ///  deletion is specialized and has specialized actions to complete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ConfirmDeleteServiceGoalsItem(int id = 0)
         {
             if(id == 0)//something has gone very wrong
                 return RedirectToAction("Show");
 
-            ConfirmDeleteSection model = new ConfirmDeleteSection(0, "No, not me!", section, "DeleteSectionItem");
+            ConfirmDeleteSectionItemModel cdModel = new ConfirmDeleteSectionItemModel(0, "some Item", "DeleteServiceGoalsItem", "Support Services", "Goals");
             
-            return View("ConfirmDeleteSection", model);
+            return View("ConfirmDeleteSection", cdModel);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteServiceGoalsItem(DeleteSectionItemModel model)
+        {
+            TempData["messageType"] = "success";
+            TempData["message"] = "successfully deleted " + model.FriendlyName;
+
+            return RedirectToAction("Show", new {id = model.Serviceid, section = model.Section});
+        }
+
+        /// <summary>
+        /// Upload and save files if they are present. Always redirects to the Show action.
+        ///   File location is taken from the FilePath key in Web.config. 
+        ///   Ensure web server is running with sufficient permissions to that folder location
+        ///   Error messages are put into TempData[]
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UploadServiceDocument(HttpPostedFileBase file, int id = 0)
+        {
+            if (Request.Files.Count > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                if (fileName != null)
+                {
+                    Guid newFileName = Guid.NewGuid();
+
+                    var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());
+                
+                    file.SaveAs(Server.MapPath(path));
+                }
+            }
+            return RedirectToAction("Show", new {id, section = "Documents"});
+        }
+
+        /// <summary>
+        /// Rename the document
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult RenameDocument(Guid id)
+        {
+            return RedirectToAction("Show", new {section = "Documents", id = 10});
+        }
+
+        public FileResult DownloadServiceDocument(Guid id)
+        {
+            Response.ContentType = "application/text";
+            Response.AddHeader("Content-Disposition", @"filename=""thisIsTheReportio""");
+
+            var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], id.ToString());
+
+            return new FilePathResult(path + "testDoc.txt", "text/plain");
         }
 
     }

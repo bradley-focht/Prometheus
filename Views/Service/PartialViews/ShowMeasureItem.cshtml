@@ -1,0 +1,21 @@
+﻿@model Common.Dto.ServiceMeasureDto
+<table>
+
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+	    if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
+	    {
+		    continue;
+	    }
+	    <tr>
+		    <td class="dt-cell">
+			    @(property.DisplayName ?? property.PropertyName)
+		    </td>
+		    <td class="dd-cell">@Html.Raw(property.Model)</td>
+	    </tr>
+    }
+
+
+</table>
+
+

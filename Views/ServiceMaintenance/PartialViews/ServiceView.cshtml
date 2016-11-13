@@ -1,0 +1,20 @@
+﻿@model Common.Dto.ServiceDto
+
+<table>
+	<tr>
+		<td class="dt-cell">Name</td>
+		<td class="dd-cell">@Model.Name</td>
+	</tr><tr>
+		<td class="dt-cell">Description</td>
+		<td class="dd-cell">@Model.Description</td>
+	</tr><tr>
+		<td class="dt-cell">Status</td>
+		<td class="dd-cell">@Model.LifecycleStatusDto.Name</td>
+	</tr><tr>
+		<td class="dt-cell">Business Owner</td>
+		<td class="dd-cell">@Model.BusinessOwner</td>
+	</tr><tr>
+		<td class="dt-cell">Service Owner</td>
+		<td class="dd-cell">@Model.ServiceOwner</td>
+	</tr>
+</table>

@@ -19,7 +19,7 @@ namespace Common.Dto
 		/// <summary>
 		/// Unique name must be provided
 		/// </summary>
-		[Required(ErrorMessage = "Service Bundle: Name is required")]
+		[Required(ErrorMessage = "name is required")]
 		public string Name { get; set; }
 
 		/// <summary>

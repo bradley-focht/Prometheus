@@ -1,0 +1,62 @@
+﻿@model Prometheus.WebUI.Models.Service.SwotTableModel
+
+<table style="width:100%">
+    <tr>
+        <td class="std-cell div-title" style="width: 49%"><span class="font-title-initial">Strengths</span></td>
+        <td style="width: 100px;">&nbsp;</td>
+        <td class="std-cell div-title" style="width:49%"><span class="font-title-initial">Opportunities</span></td>
+    </tr><tr>
+        <td class="std-cell">
+            @if (Model.Strengths != null && Model.Strengths.Any())
+            {
+                
+                foreach (var item in Model.Strengths)
+                 {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new {id = item.Id, section="Swot"}, null)
+                 }
+            }
+
+        </td>
+             <td></td>
+        
+        <td class="std-cell">
+            @if (Model.Opportunities != null && Model.Opportunities.Any())
+            {
+
+                foreach (var item in Model.Opportunities)
+                {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
+                }
+            }
+        </td>
+    </tr>
+
+    <tr>
+        <td class="std-cell div-title"><span class="font-title-initial">Weaknesses</span></td>
+        <td></td>
+        <td class="std-cell div-title"><span class="font-title-initial">Threats</span></td>
+    </tr><tr>
+        <td class="std-cell">
+            @if (Model.Weaknesses != null && Model.Weaknesses.Any())
+            {
+
+                foreach (var item in Model.Weaknesses)
+                {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
+                }
+            }
+        </td>
+
+             <td></td>
+        <td class="std-cell">
+            @if (Model.Threats != null && Model.Threats.Any())
+            {
+
+                foreach (var item in Model.Threats)
+                {
+                    @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
+                }
+            }
+        </td>
+    </tr>
+</table>

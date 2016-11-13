@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "User Access";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
+        new KeyValuePair<string, string>(ViewBag.Title, "#")
+    };
+}
+
+
+
+@Html.Action("SearchAdAccountUtility")
+

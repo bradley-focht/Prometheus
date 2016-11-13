@@ -1,5 +1,5 @@
-﻿@using DataService.Models
-@model IEnumerable<IServiceBundle>
+﻿@using Common.Dto
+@model IEnumerable<IServiceBundleDto>
 
 @{
     ViewBag.Title = "Service Portfolio";
@@ -7,24 +7,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@foreach (var serviceBundle in Model)
+<div class="panel-body">
+    The service portfolio..
+</div>
+@if (Model != null)
 {
-    <div class="std-indent">
-        <label class="font-title2-blue">@serviceBundle.Name</label>
-        <dl class="dl-horizontal dl-section">
-            <dt class="dt-sp">Description:</dt>
-            <dd class="dd-sp">@Html.Raw(serviceBundle.Description)</dd>
-            <dt class="dt-sp">Business Value:</dt>
-            <dd class="dd-sp">@Html.Raw(serviceBundle.BusinessValue)</dd>
-            <dt class="dt-sp">Services:</dt>
-            <dd class="dd-sp">
+    foreach (var serviceBundle in Model)
+    {
+        <div class="std-indent" style="width: 600px;">
+            <label class="font-title2-blue">@serviceBundle.Name</label>
+            <dl class="dl-horizontal dl-section">
+                <dt class="dt-sp">Description:</dt>
+                <dd class="dd-sp">@Html.Raw(serviceBundle.Description)</dd>
+                <dt class="dt-sp">Business Value:</dt>
+                <dd class="dd-sp">@Html.Raw(serviceBundle.BusinessValue)</dd>
+                <dt class="dt-sp">Services:</dt>
+                <dd class="dd-sp">
 
-                Support Services, Messaging and Communication, Collaboration Services, Software Services
+                    Support Services, Messaging and Communication, Collaboration Services, Software Services
 
-            </dd>
-            <dt class="dt-sp">Measures:</dt>
-            <dd class="dd-sp">@serviceBundle.Measures</dd>
-        </dl>
-    </div>
+                </dd>
+                <dt class="dt-sp">Measures:</dt>
+                <dd class="dd-sp">@serviceBundle.Measures</dd>
+
+                <dt></dt>
+                <dd>
+                    <div class="float-right-div">@Html.ActionLink("Edit", "Show", "ServicePortfolio", new { id = serviceBundle.Id }, new { @class = "btn btn-default" })</div>
+                </dd>
+            </dl>
+        </div>
+    }
 }
-

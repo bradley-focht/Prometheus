@@ -1,0 +1,33 @@
+﻿@using System.Configuration
+@model Common.Dto.ServiceGoalDto
+<table>
+
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        if (!property.PropertyName.Contains("Id"))
+        {
+            if (property.PropertyName.Contains("Date"))
+            {
+                if (property.DisplayName.Contains(" Date"))
+                {
+                    <tr>
+                        <td class="dt-cell">
+                            @(property.DisplayName ?? property.PropertyName)
+                        </td>
+                        <td class="dd-cell">@Html.Raw(property.Model)</td>
+                    </tr>
+                }
+            }
+
+            <tr>
+                <td class="dt-cell">
+                    @(property.DisplayName ?? property.PropertyName)
+                </td>
+                <td class="dd-cell">@Html.Raw(property.Model)</td>
+            </tr>
+
+        }
+    }
+
+
+</table>

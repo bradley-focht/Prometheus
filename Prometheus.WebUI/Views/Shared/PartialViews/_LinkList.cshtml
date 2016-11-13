@@ -10,7 +10,7 @@
 
         </div>
     </div>
-    <div style="padding-top: 5px; padding-bottom: 5px;">
+    <div style="padding-top: 5px; padding-bottom: 5px; min-height: 200px;">
         @{
             if (Model.ListItems != null && Model.ListItems.Any())
             {
@@ -20,7 +20,7 @@
                     if (Model.SelectedItemId == item.Key) //highlight selected item
                     {
                         <div class="bg-primary">
-                            @Html.ActionLink(item.Value, Model.SelectAction, Model.Controller, new { id = item.Key }, new { @class = "bg-primary" })
+                            <a href="#">@item.Value</a>
                         </div>
                     }
                     else //don't highlight others
@@ -34,7 +34,7 @@
             }
             else //no results found
             {
-	            <div class="alert alert-warning close" data-dismiss="alert" aria-label="close"><div style="float:right">&times;</div>No @Model.Title exist.
+	            <div class="alert alert-warning">No @Model.Title exist
 		            
 		</div>
             }

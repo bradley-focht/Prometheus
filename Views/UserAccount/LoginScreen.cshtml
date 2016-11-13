@@ -1,0 +1,33 @@
+﻿@using (Html.BeginForm("Login", "UserAccount", FormMethod.Post))
+{
+
+    <div class="alert alert-info" style="height: 150px; width: 800px;">
+
+        <div style="float: left; width: 40%;">
+            <table>
+                <tr>
+                    <td colspan="2"><b>Login</b></td>
+                </tr><tr>
+                    <td class="dt-cell">Username</td>
+                    <td class="dd-cell">@Html.TextBox("Username", null, new {@class = "form-control"})</td>
+
+                </tr><tr>
+                    <td class="dt-cell">Password</td>
+                    <td class="dd-cell">@Html.Password("Password", null, new {@class = "form-control"})</td>
+                </tr><tr>
+                    <td></td>
+                    <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary"/></td>
+
+                </tr>
+
+            </table>
+
+        </div>
+        <div style="width: 50%; float: right;"> Continue as a @Html.ActionLink("guest", "LoginGuest")</div>
+    <div style="width: 10%; float: right;"><b>Or</b></div>
+        
+    </div>
+
+ 
+
+}

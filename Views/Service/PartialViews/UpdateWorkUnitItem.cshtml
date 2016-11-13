@@ -1,0 +1,24 @@
+﻿@model Common.Dto.ServiceWorkUnitDto
+    <table>
+        @foreach (var property in ViewData.ModelMetadata.Properties)
+        {
+            if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
+            {
+                continue;
+            }
+            <tr>
+	            <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+				@if (property.PropertyName == "Responsibilities")
+				{
+					<td class="dd-cell">@Html.TextArea(property.PropertyName, new { @class = "ckeditor" })</td>
+				}
+				else
+				{
+					<td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
+				}
+
+            </tr>
+        }
+
+
+    </table>

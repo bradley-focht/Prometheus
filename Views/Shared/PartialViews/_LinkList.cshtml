@@ -1,0 +1,53 @@
+﻿@model Prometheus.WebUI.Models.Shared.LinkListModel
+
+<div class="std-div" style="width: 250px;">
+
+    <div class="div-title">
+        <div style="padding: 1px;">
+
+            @Model.Title
+
+
+        </div>
+    </div>
+    <div style="padding-top: 5px; padding-bottom: 5px; min-height: 200px;">
+        @{
+            if (Model.ListItems != null && Model.ListItems.Any())
+            {
+                foreach (var item in Model.ListItems)
+                {
+
+                    if (Model.SelectedItemId == item.Key) //highlight selected item
+                    {
+                        <div class="bg-primary">
+                            @Html.ActionLink(item.Value, Model.SelectAction, Model.Controller, new { id = item.Key }, null)
+                        </div>
+                    }
+                    else //don't highlight others
+                    {
+                        <div class="bg-default">
+                            @Html.ActionLink(item.Value, Model.SelectAction, Model.Controller, new { id = item.Key }, null)
+                        </div>
+                    }
+
+                }
+            }
+            else //no results found
+            {
+	            <div class="alert alert-warning">No @Model.Title exist
+		            
+		</div>
+            }
+        }
+    </div>
+    <div class="panel-footer">
+        &nbsp;
+        @if (Model.AddAction != null)
+        {
+            <div class="float-right-div">
+
+                @Html.ActionLink("Add", Model.AddAction, Model.SelectedItemId, new {@class = "btn btn-default"})
+            </div>
+        }
+    </div>
+</div>

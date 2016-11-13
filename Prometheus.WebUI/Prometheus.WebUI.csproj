@@ -91,6 +91,15 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\invest.png" />
+    <Content Include="Content\Images\people-network.png" />
+    <Content Include="Content\Images\people.gif" />
+    <Content Include="Content\Images\people.png" />
+    <Content Include="Content\Images\pie.png" />
+    <Content Include="Content\Images\presentation.gif" />
+    <Content Include="Content\Images\presentation.png" />
+    <Content Include="Content\Images\shake.png" />
+    <Content Include="Content\Images\target.png" />
     <Content Include="Content\PrometheusCustom.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -136,6 +145,7 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
+    <Content Include="Scripts\aes-min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\ckeditor\adapters\jquery.js" />
@@ -249,6 +259,8 @@
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Scripts\ckeditor\styles.js" />
+    <None Include="Properties\PublishProfiles\IISProfileHost.pubxml" />
+    <None Include="Properties\PublishProfiles\PromIIS.pubxml" />
     <None Include="Scripts\jquery-1.12.4.intellisense.js" />
     <Content Include="Scripts\jquery-1.12.4.js" />
     <Content Include="Scripts\jquery-1.12.4.min.js" />
@@ -261,12 +273,18 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
+    <Compile Include="Controllers\SystemAccessController.cs" />
+    <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\ServiceDocumentHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -275,7 +293,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ServiceMaintenance\ServiceModel.cs" />
-    <Compile Include="Models\Service\ConfirmDeleteSection.cs" />
+    <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
+    <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
@@ -286,6 +305,7 @@
     <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
+    <Compile Include="Models\UserAccount\UserAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -299,7 +319,6 @@
     <Content Include="Views\ServicePortfolio\Index.cshtml" />
     <Content Include="Views\ServicePortfolio\Show.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TitleBar.cshtml" />
-    <Content Include="Views\ServicePortfolio\Editor.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Shared\_SidebarLayout.cshtml" />
     <Content Include="Views\ServiceMaintenance\Index.cshtml" />
@@ -319,7 +338,7 @@
     <Content Include="Views\Service\AddService.cshtml" />
     <Content Include="Views\Shared\PartialViews\_ServiceNav.cshtml" />
     <Content Include="Views\Service\Show.cshtml" />
-    <Content Include="Views\Service\ConfirmDelete.cshtml" />
+    <Content Include="Views\ServiceMaintenance\ConfirmDelete.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteLifecycle.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TableViewer.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGeneral.cshtml" />
@@ -340,6 +359,18 @@
     <Content Include="Views\Service\PartialViews\ShowContractItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowMeasureItem.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\ServiceView.cshtml" />
+    <Content Include="Views\SystemAccess\Index.cshtml" />
+    <Content Include="Views\UserAccount\Index.cshtml" />
+    <Content Include="Views\ServiceMaintenance\ConfirmDeleteService.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowDocuments.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowDocumentTable.cshtml" />
+    <Content Include="Views\Service\PartialViews\RenameDocument.cshtml" />
+    <Content Include="Views\Shared\_LoginLayout.cshtml" />
+    <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
+    <Content Include="Views\SystemAccess\UserAccess.cshtml" />
+    <Content Include="Views\SystemAccess\SearchAdAccountUtility.cshtml" />
+    <Content Include="Views\ServicePortfolio\Edit.cshtml" />
+    <Content Include="Views\Catalog\BusinessCatalog.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -349,6 +380,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\SystemAccess\" />
+    <Folder Include="ServiceDocs\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -358,6 +391,10 @@
     <ProjectReference Include="..\DataService\DataService.csproj">
       <Project>{7757884f-c8d9-48ac-a4d6-6238d0203431}</Project>
       <Name>DataService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServicePortfolio\ServicePortfolio.csproj">
+      <Project>{42e1113b-c696-4c66-b144-338e650254ca}</Project>
+      <Name>ServicePortfolio</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

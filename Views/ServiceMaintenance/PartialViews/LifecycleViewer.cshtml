@@ -1,0 +1,37 @@
+﻿@model Common.Dto.ILifecycleStatusDto
+
+
+<div class="std-div">
+                <label class="font-title-initial">Name:</label><br />
+                @Model.Name
+                <p />
+                <label class="font-title-initial">Comment:</label><br />
+                @Model.Comment
+                <p />
+                <label class="font-title-initial">Position:</label><br />
+                @Model.Position
+                <p />
+                <label class="font-title-initial">Visible in Catalogs</label><br />
+                <label class="btn btn-primary disabled">
+                    @if (Model.CatalogVisible)
+                    {
+                        <text>yes</text>
+                    }
+                    else
+                    {
+
+                        <text>no</text>
+                    }
+                </label>
+
+
+
+    <div class="panel-footer">
+        @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", null, new { @class = "btn btn-danger" })
+        <div class="float-right-div">
+            @Html.ActionLink("Edit", "UpdateLifecycle", null, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Cancel", "ShowLifecycle", null, new { @class = "btn btn-default" })
+        </div>
+    </div>
+</div>
+
