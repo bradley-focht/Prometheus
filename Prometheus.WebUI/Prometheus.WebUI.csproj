@@ -91,8 +91,15 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Images\invest.png" />
+    <Content Include="Content\Images\people-network.png" />
     <Content Include="Content\Images\people.gif" />
+    <Content Include="Content\Images\people.png" />
+    <Content Include="Content\Images\pie.png" />
     <Content Include="Content\Images\presentation.gif" />
+    <Content Include="Content\Images\presentation.png" />
+    <Content Include="Content\Images\shake.png" />
+    <Content Include="Content\Images\target.png" />
     <Content Include="Content\PrometheusCustom.css" />
     <Content Include="Content\Site.css" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -286,7 +293,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\ServiceMaintenance\ServiceModel.cs" />
-    <Compile Include="Models\Service\ConfirmDeleteSection.cs" />
+    <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
+    <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
@@ -330,7 +338,7 @@
     <Content Include="Views\Service\AddService.cshtml" />
     <Content Include="Views\Shared\PartialViews\_ServiceNav.cshtml" />
     <Content Include="Views\Service\Show.cshtml" />
-    <Content Include="Views\Service\ConfirmDelete.cshtml" />
+    <Content Include="Views\ServiceMaintenance\ConfirmDelete.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteLifecycle.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TableViewer.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGeneral.cshtml" />
@@ -362,6 +370,7 @@
     <Content Include="Views\SystemAccess\UserAccess.cshtml" />
     <Content Include="Views\SystemAccess\SearchAdAccountUtility.cshtml" />
     <Content Include="Views\ServicePortfolio\Edit.cshtml" />
+    <Content Include="Views\Catalog\BusinessCatalog.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -373,7 +382,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Models\SystemAccess\" />
     <Folder Include="ServiceDocs\" />
-    <Folder Include="Views\Catalog\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

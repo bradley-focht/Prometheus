@@ -1,5 +1,6 @@
 ﻿@using System.Web.Mvc.Html
 @using Common.Dto
+@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 @{
     ViewBag.Title = Model.Section;
@@ -75,7 +76,7 @@
                     @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = Model.SectionItemId, section = Model.Section }, new { @class = "btn btn-default" })
 
 
-                    @Html.ActionLink("Delete", "ConfirmDeleteServiceSectionItem", new { id = 1, section = Model.Section }, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", new { id = Model.SectionItemId }, new { @class = "btn btn-danger", style="margin-left:5px;"})
                 }
             </div>
         </div>

@@ -88,6 +88,7 @@
 
 .breadcrumb-container {
     height: 30px;
+    margin-left: -20px;
     vertical-align: central;
 }
 
@@ -171,7 +172,7 @@
     padding-right: 5px;
     color: #454545;
     padding-bottom: 5px;
-    color: #123579;
+    color: #333333;
 }
 
 .dd-cell {

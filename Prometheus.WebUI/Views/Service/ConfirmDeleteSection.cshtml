@@ -1,11 +1,11 @@
-﻿@model Prometheus.WebUI.Models.Service.ConfirmDeleteSection
+﻿@model Prometheus.WebUI.Models.Service.ConfirmDeleteSectionItemModel
 
 @{
     ViewBag.Title = "Confirm Deletion";
     ViewBag.Links = new List< KeyValuePair < string, string>> {
                                                                 new KeyValuePair<string, string>("Home", "Home"),
                                                                 new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                                new KeyValuePair<string, string>(Model.Service, "Service/Show/General/" + Model.Serviceid),
+                                                                new KeyValuePair<string, string>(Model.Service, "Service/Show/General/" + Model.ServiceId),
                                                                 new KeyValuePair<string, string>( Model.Section, "Service/ShowServiceSectionItem/" + Model.Section + "/" + Model.Id),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
@@ -15,13 +15,22 @@
 @section Content
 {
     <div class="std-div">
-        @using (Html.BeginForm("Delete" + Model.Section + "Item", "Service", FormMethod.Post))
+        @using (Html.BeginForm(Model.DeleteAction, "Service", FormMethod.Post))
         {
-            <input type="hidden" name="id", id="id" value="@Model.Id"/>
-
-            <div class="panel panel-footer">
-                <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
-                @Html.ActionLink("Cancel", "ShowServiceSectionItem", new {id = Model.Id, section = Model.Section}, new {@class = "btn btn-default"})
+            <input type="hidden" name="Id" value="@Model.Id"/>
+            <input type="hidden" name="ServiceId" value="@Model.ServiceId"/>
+            <input type="hidden" name="FriendlyName" value="@Model.FriendlyName"/>
+            <input type="hidden" name="Section" value="@Model.Section"/>
+            <div class="panel">
+                <div class="panel-body">
+                    Are you sure you want to delete @Model.FriendlyName from @Model.Service?
+                </div>
+                <div class="panel panel-footer">
+                    <div class="float-right-div">
+                        <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+                        @Html.ActionLink("Cancel", "ShowServiceSectionItem", new {id = Model.Id,}, new {@class = "btn btn-default"})
+                    </div>
+                </div>
             </div>
         }
     </div>
