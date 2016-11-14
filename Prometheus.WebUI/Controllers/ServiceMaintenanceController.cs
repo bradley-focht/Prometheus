@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceMaintenance;
 using Prometheus.WebUI.Models.Shared;
+using ServicePortfolioService;
+using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -51,9 +54,9 @@ namespace Prometheus.WebUI.Controllers
             LifecycleModel lm = new LifecycleModel
             {
                 CurrentStatus = new LifecycleStatusDto {Id = id},
-                Statuses = new List<KeyValuePair<int, string>>()
+                Statuses = new List<Tuple<int, string>>()
                 {
-                    new KeyValuePair<int, string>(10, "Operational")
+                    new Tuple<int, string>(10, "Operational")
                 }
             };
          
@@ -97,6 +100,10 @@ namespace Prometheus.WebUI.Controllers
         {
             if (ModelState.IsValid)
             {
+                IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+
+                sps.SaveLifecycleStatus(model);
+
                 TempData["messageType"] = WebMessageType.Success;
                 TempData["message"] = "successfully saved lifecycle status";
                 return RedirectToAction("ShowLifecycle");
@@ -107,25 +114,15 @@ namespace Prometheus.WebUI.Controllers
         }
 
         public ActionResult UpdateLifecycle(int id=0)
-        {                    
-            /*start test region*/
-            LifecycleModel lm = new LifecycleModel();
-            lm.CurrentStatus = new LifecycleStatusDto();
-            lm.CurrentStatus.Id = 0;
-            lm.Statuses = new List<KeyValuePair<int, string>>()
-            {
-                new KeyValuePair<int, string>(1, "Operations")
-            };
-            /*end test region */
-            return View(lm);
+        {
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            return View((LifecycleStatusDto)sps.GetLifecycleStatus(id));
         }
 
         public ActionResult ConfirmDeleteLifecycle(int id=0)
         {
-            /*start test region*/
-            LifecycleStatusDto model = new LifecycleStatusDto {Id = 10, Name = "Operational"};
-            /*end test region */
-            return View(model);
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            return View((LifecycleStatusDto)sps.GetLifecycleStatus(id));
         }
 
     
