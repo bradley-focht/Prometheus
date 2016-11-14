@@ -4,12 +4,14 @@ using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 using System;
 using System.Web.Mvc;
-using Prometheus.WebUI.Helpers;
 
 namespace Prometheus.WebUI.Controllers
 {
 	public class ServicePortfolioController : Controller
 	{
+		//TODO: Brad change this to user ID
+		private const int DummyUserId = 0;
+
 		/// <summary>
 		/// 
 		/// </summary>
@@ -17,8 +19,9 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Index()
 		{
 			/* create interface to service portfolio */
-			var sps = new PortfolioService(new ServiceBundleController(), new global::ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			var portfolioBundles = sps.GetServiceBundles(0);
+			var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+
+			var portfolioBundles = sps.GetServiceBundles();
 			/* IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
 			{
 				Name = "Employee Productivity Services",
@@ -38,14 +41,13 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult Save(ServiceBundleDto serviceBundle)
 		{
-			var sps = new PortfolioService(new ServiceBundleController(), new global::ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 			serviceBundle.Id = 0;
-			sps.SaveServiceBundle(0, serviceBundle);
-			TempData["messageType"] = WebMessageType.Success;
+			sps.SaveServiceBundle(serviceBundle);
+			TempData["messageType"] = "success";
 			TempData["message"] = "Service bundle saved successfully";
 			return RedirectToAction("Show");
 		}
-
 
 		/// <summary>
 		/// Returns the Service Portfolio Editor with a model with id = 0;
@@ -65,7 +67,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Show(int id = 0)
+		public ActionResult Show(Guid? id = null)
 		{
 			ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
 
@@ -80,7 +82,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ConfirmDelete(int id)
 		{
 
-			return View();
+			return null;
 		}
 
 

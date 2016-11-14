@@ -11,7 +11,24 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceController : IServiceController
 	{
-		public IServiceDto GetService(int userId, int serviceId)
+		private int _userId;
+		public int UserId
+		{
+			get { return _userId; }
+			set { _userId = value; }
+		}
+
+		public ServiceController()
+		{
+			_userId = PortfolioService.GuestUserId;
+		}
+
+		public ServiceController(int userId)
+		{
+			_userId = userId;
+		}
+
+		public IServiceDto GetService(int serviceId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -20,7 +37,7 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IEnumerable<IServiceDto> GetServicesForServiceBundle(int userId, int serviceBundleId)
+		public IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -29,15 +46,15 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int userId, int serviceBundleId)
+		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
-			var services = this.GetServicesForServiceBundle(userId, serviceBundleId);
+			var services = this.GetServicesForServiceBundle(serviceBundleId);
 			var nameList = new List<Tuple<int, string>>();
 			nameList.AddRange(services.Select(x => new Tuple<int, string>(x.Id, x.Name)));
 			return nameList.OrderBy(x => x.Item2);
 		}
 
-		public IServiceDto SaveService(int userId, IServiceDto service)
+		public IServiceDto SaveService(IServiceDto service)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -45,17 +62,17 @@ namespace ServicePortfolioService.Controllers
 				if (existingService == null)
 				{
 					var savedService = context.Services.Add(Mapper.Map<Service>(service));
-					context.SaveChanges();
+					context.SaveChanges(_userId);
 					return Mapper.Map<ServiceDto>(savedService);
 				}
 				else
 				{
-					return UpdateService(userId, service);
+					return UpdateService(service);
 				}
 			}
 		}
 
-		private IServiceDto UpdateService(int userId, IServiceDto service)
+		private IServiceDto UpdateService(IServiceDto service)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -69,19 +86,19 @@ namespace ServicePortfolioService.Controllers
 					var updatedService = Mapper.Map<Service>(service);
 					context.Services.Attach(updatedService);
 					context.Entry(updatedService).State = EntityState.Modified;
-					context.SaveChanges();
+					context.SaveChanges(_userId);
 					return Mapper.Map<ServiceDto>(updatedService);
 				}
 			}
 		}
 
-		public bool DeleteService(int userId, int serviceId)
+		public bool DeleteService(int serviceId)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.Services.Find(serviceId);
 				context.Services.Remove(toDelete);
-				context.SaveChanges();
+				context.SaveChanges(_userId);
 			}
 			return true;
 		}

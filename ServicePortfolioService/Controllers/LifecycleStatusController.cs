@@ -1,29 +1,106 @@
-﻿using Common.Dto;
+﻿using AutoMapper;
+using Common.Dto;
+using DataService.DataAccessLayer;
+using DataService.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Linq;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class LifecycleStatusController : ILifecycleStatusController
 	{
-		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames(int userId)
+		private int _userId;
+		public int UserId
 		{
-			throw new NotImplementedException();
+			get { return _userId; }
+			set { _userId = value; }
 		}
 
-		public ILifecycleStatusDto GetLifecycleStatus(int userId, int lifecycleStatusId)
+		public LifecycleStatusController()
 		{
-			throw new NotImplementedException();
+			_userId = PortfolioService.GuestUserId;
 		}
 
-		public ILifecycleStatusDto SaveLifecycleStatus(int userId, ILifecycleStatusDto lifecycleStatus)
+		public LifecycleStatusController(int userId)
 		{
-			throw new NotImplementedException();
+			_userId = userId;
 		}
 
-		public bool DeleteLifecycleStatus(int userId, int lifecycleStatusId)
+		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames()
 		{
-			throw new NotImplementedException();
+			using (var context = new PrometheusContext())
+			{
+				var lifecycleStatusRecords = context.LifecycleStatuses;
+
+				//Empty list
+				if (!lifecycleStatusRecords.Any())
+					return new List<Tuple<int, string>>();
+
+				var statuses = lifecycleStatusRecords.Select(x => Mapper.Map<LifecycleStatusDto>(x));
+				var nameList = new List<Tuple<int, string>>();
+				nameList.AddRange(statuses.Select(x => new Tuple<int, string>(x.Id, x.Name)));
+				return nameList.OrderBy(x => x.Item2);
+			}
+		}
+
+		public ILifecycleStatusDto GetLifecycleStatus(int lifecycleStatusId)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var lifecycleStatus = context.LifecycleStatuses.Find(lifecycleStatusId);
+				return Mapper.Map<LifecycleStatusDto>(lifecycleStatus);
+			}
+		}
+
+		public ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var existingStatus = context.LifecycleStatuses.Find(lifecycleStatus.Id);
+				if (existingStatus == null)
+				{
+					var savedStatus = context.LifecycleStatuses.Add(Mapper.Map<LifecycleStatus>(lifecycleStatus));
+					context.SaveChanges(_userId);
+					return Mapper.Map<LifecycleStatusDto>(savedStatus);
+				}
+				else
+				{
+					return UpdateLifecycleStatus(lifecycleStatus);
+				}
+			}
+		}
+
+		private ILifecycleStatusDto UpdateLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var existingStatus = context.LifecycleStatuses.Find(lifecycleStatus.Id);
+				if (existingStatus == null)
+				{
+					throw new InvalidOperationException("Serivce record must exist in order to be updated.");
+				}
+				else
+				{
+					var updatedStatus = Mapper.Map<LifecycleStatus>(lifecycleStatus);
+					context.LifecycleStatuses.Attach(updatedStatus);
+					context.Entry(updatedStatus).State = EntityState.Modified;
+					context.SaveChanges(_userId);
+					return Mapper.Map<LifecycleStatusDto>(updatedStatus);
+				}
+			}
+		}
+
+		public bool DeleteLifecycleStatus(int lifecycleStatusId)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var toDelete = context.LifecycleStatuses.Find(lifecycleStatusId);
+				context.LifecycleStatuses.Remove(toDelete);
+				context.SaveChanges(_userId);
+			}
+			return true;
 		}
 	}
 }
