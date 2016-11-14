@@ -325,7 +325,7 @@ namespace Prometheus.WebUI.Controllers
 			if (ModelState.IsValid)
 			{
 				TempData["message"] = $"{service.Name} has been saved";
-				TempData["messageType"] = "success";
+				TempData["messageType"] = WebMessageType.Success;
 			}
 			return RedirectToAction("Show", new { section = "General", id = service.Id });
 		}
@@ -333,7 +333,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveGoalsItem(ServiceGoalDto goal)
 		{
-			TempData["messageType"] = "success";
+			TempData["messageType"] = WebMessageType.Success;
 			TempData["message"] = "sucessfully saved goal";
 
 			return RedirectToAction("show", new { section = "Goals", id = 10 });
@@ -427,7 +427,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceGoalsItem(DeleteSectionItemModel model)
 		{
-			TempData["messageType"] = "success";
+			TempData["messageType"] = WebMessageType.Success;
 			TempData["message"] = "successfully deleted " + model.FriendlyName;
 
 			return RedirectToAction("Show", new { id = model.Serviceid, section = model.Section });

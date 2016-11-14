@@ -4,6 +4,7 @@ using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 using System;
 using System.Web.Mvc;
+using Prometheus.WebUI.Helpers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -40,10 +41,11 @@ namespace Prometheus.WebUI.Controllers
 			var sps = new PortfolioService(new ServiceBundleController(), new global::ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 			serviceBundle.Id = 0;
 			sps.SaveServiceBundle(0, serviceBundle);
-			TempData["messageType"] = "success";
+			TempData["messageType"] = WebMessageType.Success;
 			TempData["message"] = "Service bundle saved successfully";
 			return RedirectToAction("Show");
 		}
+
 
 		/// <summary>
 		/// Returns the Service Portfolio Editor with a model with id = 0;
@@ -63,7 +65,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Show(Guid? id = null)
+		public ActionResult Show(int id = 0)
 		{
 			ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
 
@@ -78,7 +80,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ConfirmDelete(int id)
 		{
 
-			return null;
+			return View();
 		}
 
 
