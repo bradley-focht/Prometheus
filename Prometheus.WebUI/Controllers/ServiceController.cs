@@ -51,9 +51,9 @@ namespace Prometheus.WebUI.Controllers
 			/* I am here for the looks, remove me */
 			LinkListModel servicesModel = new LinkListModel();
 			servicesModel.SelectedItemId = id;
-			servicesModel.ListItems = new List<KeyValuePair<int, string>>
+			servicesModel.ListItems = new List<Tuple<int, string>>
 			{
-				new KeyValuePair<int, string>(10, "Support Services")
+				new Tuple<int, string>(10, "Support Services")
 			};
 			servicesModel.AddAction = "Add";
 			servicesModel.SelectAction = "Show/General";
@@ -179,11 +179,11 @@ namespace Prometheus.WebUI.Controllers
 		{
 			TableDataModel tblModel = new TableDataModel();
 			tblModel.Titles = new List<string> { "Goal", "Duration", "Start Date", "End Date" };
-			tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+			tblModel.Data = new List<Tuple<int, IEnumerable<string>>>
 			{
-				new KeyValuePair<int, IEnumerable<string>>(1,
+				new Tuple<int, IEnumerable<string>>(1,
 					new List<string> {"test the system", "short term", "september", "october"}),
-				new KeyValuePair<int, IEnumerable<string>>(1,
+				new Tuple<int, IEnumerable<string>>(1,
 					new List<string> {"add actual data", "short term", "october", "march"})
 			};
 			tblModel.Action = "ShowServiceSectionItem";
@@ -198,9 +198,9 @@ namespace Prometheus.WebUI.Controllers
 		{
 			TableDataModel tblModel = new TableDataModel();
 			tblModel.Titles = new List<string> { "Vendor", "Contract Number", "Start Date", "End Date" };
-			tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+			tblModel.Data = new List<Tuple<int, IEnumerable<string>>>
 			{
-				new KeyValuePair<int, IEnumerable<string>>(1,
+				new Tuple<int, IEnumerable<string>>(1,
 					new List<string> {"Prometheus", "44-4507-A", "next month", "last month"})
 			};
 			tblModel.Action = "ShowServiceSectionItem";
@@ -218,9 +218,9 @@ namespace Prometheus.WebUI.Controllers
 			tblModel.Controller = "Service";
 
 
-			tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+			tblModel.Data = new List<Tuple<int, IEnumerable<string>>>
 			{
-				new KeyValuePair<int, IEnumerable<string>>(1,
+				new Tuple<int, IEnumerable<string>>(1,
 					new List<string> {"Executive", "Sean Boczulak", "be da boss"})
 			};
 
@@ -236,9 +236,9 @@ namespace Prometheus.WebUI.Controllers
 			tblModel.Action = "ShowServiceSectionItem";
 
 			tblModel.ServiceSection = "Measures";
-			tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+			tblModel.Data = new List<Tuple<int, IEnumerable<string>>>
 			{
-				new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+				new Tuple<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
 			};
 
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
@@ -262,7 +262,7 @@ namespace Prometheus.WebUI.Controllers
 			TableDataModel model = new TableDataModel();
 			model.Action = "ShowSwotActivityItem";
 			model.Titles = new List<string> { "Item" };
-			model.Data = new List<KeyValuePair<int, IEnumerable<string>>> { new KeyValuePair<int, IEnumerable<string>>(1, new List<string> { "find love on campus" }) };
+			model.Data = new List<Tuple<int, IEnumerable<string>>> { new Tuple<int, IEnumerable<string>>(1, new List<string> { "find love on campus" }) };
 
 			return View("PartialViews/_TableViewer", model);
 		}
@@ -273,9 +273,9 @@ namespace Prometheus.WebUI.Controllers
 		{
 			TableDataModel tblModel = new TableDataModel();
 			tblModel.Titles = new List<string> { "Method", "Outcome" };
-			tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+			tblModel.Data = new List<Tuple<int, IEnumerable<string>>>
 			{
-				new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+				new Tuple<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
 			};
 
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
@@ -287,9 +287,9 @@ namespace Prometheus.WebUI.Controllers
 		{
 			TableDataModel tblModel = new TableDataModel();
 			tblModel.Titles = new List<string> { "Method", "Outcome" };
-			tblModel.Data = new List<KeyValuePair<int, IEnumerable<string>>>
+			tblModel.Data = new List<Tuple<int, IEnumerable<string>>>
 			{
-				new KeyValuePair<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
+				new Tuple<int, IEnumerable<string>>(1, new List<string> {"divide by 0", "exception"})
 			};
 
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);

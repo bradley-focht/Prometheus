@@ -11,20 +11,20 @@ namespace Prometheus.WebUI.Models.Shared
 	{
 		public LinkListModel() { }
 
-	    public LinkListModel(IEnumerable<KeyValuePair<int, string>> listItems, string selectAction, string title)
+	    public LinkListModel(IEnumerable<Tuple<int, string>> listItems, string selectAction, string title)
 	    {
             SelectAction = selectAction;
             ListItems = listItems;
             Title = title;
         }
 
-		public LinkListModel(IEnumerable<KeyValuePair<int, string>> listItems, int selectedItemId, string selectAction, string addAction, string title):this(listItems, selectAction, title)
+		public LinkListModel(IEnumerable<Tuple<int, string>> listItems, int selectedItemId, string selectAction, string addAction, string title):this(listItems, selectAction, title)
 		{
 			SelectedItemId = selectedItemId;
 		    AddAction = addAction;
 		}
 
-		public IEnumerable<KeyValuePair<int, string>> ListItems { get; set; }
+		public IEnumerable<Tuple<int, string>> ListItems { get; set; }
 		public int SelectedItemId { get; set; }
 		public string SelectAction { get; set; }
         public string AddAction { get; set; }

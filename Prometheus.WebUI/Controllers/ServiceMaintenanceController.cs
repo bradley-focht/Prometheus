@@ -29,21 +29,11 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
 	    public ActionResult ShowServices(int id = 0)
 	    {
-			ServiceModel serviceModel = new ServiceModel();
-			LinkListModel model = new LinkListModel();
-		    model.AddAction = null;
-		    model.Controller = "ServiceMaintenance";
-		    model.SelectAction = "ShowServices";
-		    model.ListItems = null;
-		    model.Title = "Services";
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            
 
-		    serviceModel.LinkListModel = model;
-		    serviceModel.Service = null;
-			
-
-		    return View(serviceModel);
+		    return View((ServiceDto)sps.GetService(id));
 	    }
-
         /// <summary>
         /// Show details of selected lifecycle or none if no id
         /// </summary>
@@ -51,31 +41,20 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult ShowLifecycle(int id=0)
         {
-            LifecycleModel lm = new LifecycleModel
-            {
-                CurrentStatus = new LifecycleStatusDto {Id = id},
-                Statuses = new List<Tuple<int, string>>()
-                {
-                    new Tuple<int, string>(10, "Operational")
-                }
-            };
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
          
-
-            return View(lm);
+            return View((LifecycleStatusDto)sps.GetLifecycleStatus(id));
         }
 
         public ActionResult ShowLifeCycleList(int id = 0)
         {
-           
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            
             LinkListModel servicesModel = new LinkListModel();
             servicesModel.SelectedItemId = id;
-            /* I am here for the looks, remove me */
-            servicesModel.ListItems = new List<KeyValuePair<int, string>>
-            {
-                new KeyValuePair<int, string>(10, "Chartered"),
-                new KeyValuePair<int, string>(11, "Operational")
-            };
-            /* end test data injection */
+
+            servicesModel.ListItems = sps.GetLifecycleStatusNames();
+
             servicesModel.AddAction = "Add";
             servicesModel.SelectAction = "ShowLifecyle";
             servicesModel.Controller = "ServiceMaintenance";
@@ -129,6 +108,8 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult DeleteLifecycle(int id=0)
         {
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            
             TempData["messageType"] = WebMessageType.Success;
             TempData["message"] = "successfully deleted lifecycle status";
 
@@ -137,6 +118,8 @@ namespace Prometheus.WebUI.Controllers
 
 	    public ActionResult ConfirmDeleteService(int id = 0)
 	    {
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            
             LifecycleStatusDto lf = new LifecycleStatusDto();
 	        lf.Name = "Operational";
 	        lf.Id = 5;
@@ -147,6 +130,12 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult DeleteService(int id)
         {
+            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            sps.DeleteService(id);
+
+            TempData["messageType"] = WebMessageType.Success;
+            TempData["message"] = "Successfully deleted Service";
+
             return RedirectToAction("ShowServices");
         }
     }

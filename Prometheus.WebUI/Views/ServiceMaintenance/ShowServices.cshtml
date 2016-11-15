@@ -1,4 +1,4 @@
-﻿@model Prometheus.WebUI.Models.ServiceMaintenance.ServiceModel
+﻿@model Common.Dto.ServiceDto
 @{
 	ViewBag.Title = "Show Services";
 	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
@@ -11,9 +11,9 @@
 @section Content
 {
 
-	@if (Model.Service != null)
+	@if (Model != null)
     {
-        <div class="panel">
+        <div class="panel std-div">
             <div class="panel panel-heading">
 
 
@@ -26,7 +26,7 @@
             <div class="panel-footer">
                 <div class="float-right-div">
                     @Html.ActionLink("Back", "ShowServices", null, new { @class = "btn btn-default" })
-                    @Html.ActionLink("Delete", "ConfirmDeleteService", Model.Service.Id, new { @class = "btn btn-danger" })
+                    @Html.ActionLink("Delete", "ConfirmDeleteService", Model.Id, new { @class = "btn btn-danger" })
                 </div>
 
             </div>
@@ -39,6 +39,6 @@
 
 @section Sidebar
 	{
-	@Html.Partial("PartialViews/_LinkList", Model.LinkListModel)
+	@Html.Action("ShowServices", Model.Id)
 
 }
