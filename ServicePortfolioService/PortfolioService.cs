@@ -1,4 +1,5 @@
 ﻿using Common.Dto;
+using Common.Utilities;
 using ServicePortfolioService.Controllers;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,8 @@ namespace ServicePortfolioService
 
 			_lifecycleStatusController = lifecycleStatusController;
 			_lifecycleStatusController.UserId = _userId;
+
+			AutoMapperInitializer.Initialize();
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
