@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DataService.DataAccessLayer
 {
-	public class PrometheusContext : DbContext
+	public class PrometheusContext : DbContext, IPrometheusContext
 	{
 		private const int NullUserId = 0;
 		public PrometheusContext() : base("PrometheusContext")

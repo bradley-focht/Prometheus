@@ -73,6 +73,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataAccessLayer\IPrometheusContext.cs" />
     <Compile Include="DataAccessLayer\PrometheusContext.cs" />
     <Compile Include="DataAccessLayer\PrometheusInitializer.cs" />
     <Compile Include="Models\ICreatedEntity.cs" />
