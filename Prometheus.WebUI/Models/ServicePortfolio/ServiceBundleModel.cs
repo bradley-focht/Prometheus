@@ -1,4 +1,5 @@
-﻿using Common.Dto;
+﻿using System;
+using Common.Dto;
 using System.Collections.Generic;
 
 namespace Prometheus.WebUI.Models.ServicePortfolio
@@ -10,6 +11,6 @@ namespace Prometheus.WebUI.Models.ServicePortfolio
             CurrentServiceBundle = currentServiceBundle;
         }
 		public ServiceBundleDto CurrentServiceBundle { get; set; }
-		public IEnumerable<KeyValuePair<int, string>> ServiceBundles { get; set; }
+	    public IEnumerable<Tuple<int, string>> ServiceBundles { get; set; }
 	}
 }

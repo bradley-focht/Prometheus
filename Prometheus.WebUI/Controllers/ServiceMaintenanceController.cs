@@ -29,10 +29,12 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
 	    public ActionResult ShowServices(int id = 0)
 	    {
-            IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-            
+            //IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            //var model = (ServiceDto) sps.GetService(id);
+            //if (model == null)
+              var  model = new ServiceDto {Id = 0};
 
-		    return View((ServiceDto)sps.GetService(id));
+            return View(model);
 	    }
         /// <summary>
         /// Show details of selected lifecycle or none if no id
@@ -42,8 +44,10 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowLifecycle(int id=0)
         {
             IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-         
-            return View((LifecycleStatusDto)sps.GetLifecycleStatus(id));
+            var model = (LifecycleStatusDto) sps.GetLifecycleStatus(id);
+            if (model == null)
+                model = new LifecycleStatusDto {Id = 0};
+            return View(model);
         }
 
         public ActionResult ShowLifeCycleList(int id = 0)
@@ -55,7 +59,7 @@ namespace Prometheus.WebUI.Controllers
 
             servicesModel.ListItems = sps.GetLifecycleStatusNames();
 
-            servicesModel.AddAction = "Add";
+            servicesModel.AddAction = "AddLifecycle";
             servicesModel.SelectAction = "ShowLifecyle";
             servicesModel.Controller = "ServiceMaintenance";
             servicesModel.Title = "Lifecycle Statuses";

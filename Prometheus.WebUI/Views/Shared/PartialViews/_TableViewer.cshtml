@@ -33,12 +33,12 @@
                 {
                     bool firstCol = true;
                     <tr>
-                        @foreach (string data in row.Value)
+                        @foreach (string data in row.Item2)
                     {
                             <td>
                                 @if (firstCol)
                                 {
-                                    @Html.ActionLink(data, Model.Action,  "Service", new {section = Model.ServiceSection, id = row.Key }, null)
+                                    @Html.ActionLink(data, Model.Action,  "Service", new {section = Model.ServiceSection, id = row.Item1 }, null)
                                     firstCol = false;
                                 }
                                 else

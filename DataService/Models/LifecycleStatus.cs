@@ -21,13 +21,10 @@ namespace DataService.Models
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
-		[Required(ErrorMessage = "Lifecycle Status: Name required")]
 		public string Name { get; set; }
 		public string Comment { get; set; }
 		public int Position { get; set; }
 
-		[Display(Name = "Catalog Visible")]
-		[Required(ErrorMessage = "Catalog Visible: Selection required")]
 		public bool CatalogVisible { get; set; }
 		#endregion
 		#region Navigation Properties
