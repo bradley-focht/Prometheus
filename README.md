@@ -52,9 +52,11 @@ The components in this project are organized in the following structure:
 The Common assembly is used to provide DTOs, `Enums` for entities, and `Utilities` that are to be used across the application
 
 Data Transport Objects (DTOs):
+
 DTOs for all `Models` in the [Data Service](#data-service).
 
 Enumerations: 
+
 Enumeration types for `Models` and `Dto` entities.
 
 Utilities:
