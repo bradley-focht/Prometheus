@@ -2,7 +2,7 @@
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 
-namespace DependencyResolver
+namespace DependencyResolver.Modules
 {
 	public class ServicePortfolioServiceModule : NinjectModule
 	{

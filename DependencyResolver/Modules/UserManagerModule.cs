@@ -1,7 +1,7 @@
 ﻿using Common.Dto;
 using Ninject.Modules;
 
-namespace DependencyResolver
+namespace DependencyResolver.Modules
 {
 	public class DtoModule : NinjectModule
 	{
