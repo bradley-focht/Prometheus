@@ -8,13 +8,17 @@ Specifically, this project will:
 
 ## Table Of Contents
 * [Getting Started](#getting-started)
-	* [Have a big company](#have-a-big-company)
+  * [Have a big company](#have-a-big-company)
 * [How it Works](#how-it-works)
   * [Cool Table](#cool-table)
 * [Limitations](#limitations)
 * [Project Structure](#project-structure)
-	* [Data Service](#data-service)
-  * [Service Portfolio](#service-portfolio)
+  * [Common](#common)
+  * [Data Service](#data-service)
+  * [Dependency Resolver](#dependency-resolver)
+  * [Service Portfolio Service](#service-portfolio-service)
+  * [User Manager](#user-manager)
+  * [Web UI](#web-ui)
 * [Configuration](#configuration)
 
 ## Getting Started
@@ -24,22 +28,12 @@ Setup information or link to setup documentation file
 You should start by having a big company to manage to utilize this tool (this is a joke placeholder for formatting example)
 
 ## How it Works
- * This thing has a super cool MVC website 
- * backed by some Services for business logic 
- * and EF to connect the whole damn thing to a database. 
- 
-That list ^^ is some example sections maybe?
-
-### Cool Table
-| Ecosystem | Resource      | Field          | Defaulted Value |
-|:----------|:--------------|:---------------|:----------------|
-| iQmetrix | [Pricing](http://developers.iqmetrix.com/api/pricing/#pricing)      | PricingTerm    | `null`          |
-| iQmetrix | [Pricing](http://developers.iqmetrix.com/api/pricing/#pricing)      | OverridePrice  | `null`          |
-| iQmetrix | [Pricing](http://developers.iqmetrix.com/api/pricing/#pricing)      | IsDiscountable | `false`         |
-| iQmetrix | [Pricing](http://developers.iqmetrix.com/api/pricing/#pricing)      | FloorPrice     | `null`          |
-| iQmetrix | [Availability](http://developers.iqmetrix.com/api/availability/#availability) | IsSerialized   | `false`         |
-| iQmetrix | [Customer](http://developers.iqmetrix.com/api/crm/#customer)     | DoNotContact   | `true`          |
-| iQmetrix | [Address](http://developers.iqmetrix.com/api/crm/#address)     | DoNotContact   | `true`          |
+ * Use a .NET MVC website to interface with users on all platforms
+ * Integrate with the company's Active Directory system to handle access to the application
+ * Use a series of microservices to handle the business logic for sections the application
+ * Use Entity Framework in the Data Service as a single touchpoint with the database.
+ * Provide a REST API for viewing or adjusting Service Requests for the company
+ * A separate engine interfaces with this REST API to execute the service requests or handle them in any way the company sees fit
 
 ## Limitations
 This project is done by some serious noobs with some serious time restrictions
@@ -47,22 +41,61 @@ This project is done by some serious noobs with some serious time restrictions
 ## Project Structure
 The components in this project are organized in the following structure:
 
-* **DataService** - iQmetrix Resources and their callsClasses that deal specifically with sending API requests
-* **ServicePortfolio** - Classes with business logic for the app
+* **Common** - DTOs, enumerations for entities, and utility classes
+* **DataService** - Component responsible for interfacing with the database and the rest of the components
+* **DependencyResolver** - Provides Ninject Modules that allow the project to use dependency injection throughout the application
+* **ServicePortfolioService** - Service responsible for all business logic for the application related to the service tree structure (Services, Portfolio, Catalog, etc.)
+* **UserManager** - Component responsible for interfacing with Active Directory and managing permissions for users
+* **WebUI** - Cool MVC stuff
+
+### Common
+The Common assembly is used to provide DTOs, `Enums` for entities, and `Utilities` that are to be used across the application
+
+Data Transport Objects (DTOs):
+DTOs for all `Models` in the [Data Service](#data-service).
+
+Enumerations: 
+Enumeration types for `Models` and `Dto` entities.
+
+Utilities:
+* **AutoMapperInitializer** - Utility used to initialize AutoMapper to be able to map `Models` to their corresponding `Dto`s and vice versa.
 
 ### Data Service
 The Data Service is responsible for all calls to the Database and managing its entities or `Models`.
 
 Models:
-* **Service** - Class that makes requests related to the [Asset](http://developers.iqmetrix.com/api/assets/) resource.
-* **Service Bundle** - Allows you to create inventory availability, see [Inventory Availability](http://developers.iqmetrix.com/api/availability/)
+* **Lifecycle Status** - 
+* **Role** - 
+* **Service** - 
+* **Service Bundle** - 
+* **Service Contract** - 
+* **Service Document** - 
+* **Service Goal** - 
+* **Service Measure** - 
+* **Service Request Option** - 
+* **Service SWOT** - 
+* **Service Work Unit** - 
+* **Swot Activity** - 
+* **User** - 
 
+### Dependency Resolver
+Provides Ninject `Modules` that allow the project to use dependency injection throughout the application.
 
-### Service Portfolio 
-The Service Portfolio handles all logic between the website and database for all things related to the Service Portfolio. This is done through a number of `Controllers`
+Modules:
+* **ServicePortfolioServiceModule** - Module that Loads bindings to the classes used in the `ServicePortfolioService`
+* **UserManagerModule** - Module that Loads bindings to the classes used in `UserManager`
+
+### Service Portfolio Service
+The Portfolio Service handles all logic between the website and database for all things related to the Service Portfolio. This is done through a number of `Controllers`
 
 Controllers:
- * **First Controller**
+* **Lifecycle Status Controller** - Provides operations related to the `LifecycleStatus` entity
+* **Service Controller** - Provides operations related to the `Service` entity
+* **Service Bundle Controller** - Provides operations related to the `ServiceBundle` entity
+
+### User Manager
+
+### Web UI
 
 ## Configuration
 Here is an explanation of the config file.
