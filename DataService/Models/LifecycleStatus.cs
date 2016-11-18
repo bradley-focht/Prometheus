@@ -8,7 +8,6 @@ namespace DataService.Models
 	{
 		//PK
 		[Key]
-		[ForeignKey("Service")]
 		[DatabaseGenerated(DatabaseGeneratedOption.None)]
 		public int Id { get; set; }
 
@@ -28,8 +27,7 @@ namespace DataService.Models
 		public bool CatalogVisible { get; set; }
 		#endregion
 		#region Navigation Properties
-		[Required]
-		public virtual Service Service { get; set; }
+
 		#endregion
 	}
 }

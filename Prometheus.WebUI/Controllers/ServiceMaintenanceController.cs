@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.UI.WebControls.WebParts;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
-using Prometheus.WebUI.Models.ServiceMaintenance;
 using Prometheus.WebUI.Models.Shared;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
@@ -36,6 +36,21 @@ namespace Prometheus.WebUI.Controllers
 
             return View(model);
 	    }
+
+        public ActionResult ShowServiceList(int id = 0)
+        {
+            var model = new LinkListModel
+            {
+                Title = "Services",
+                ListItems = new List<Tuple<int, string>>(),
+                SelectAction = "ShowServices",
+                Controller = "ServiceMaintenance"
+            };
+
+            return PartialView("PartialViews/_LinkList", model);
+        }
+
+
         /// <summary>
         /// Show details of selected lifecycle or none if no id
         /// </summary>

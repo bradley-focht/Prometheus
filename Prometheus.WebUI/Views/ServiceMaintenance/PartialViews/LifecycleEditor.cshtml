@@ -5,7 +5,7 @@
     {
         <div class="title-div">@ViewBag.Title</div>
 
-        <div class="panel-body">
+        <div class="panel-body form-group">
             @Html.HiddenFor(m => Model.Id)
             <table>
                         @foreach (var property in ViewData.ModelMetadata.Properties)
@@ -26,14 +26,15 @@
 								            <div class="form-group">
 								                <div class="btn-group" data-toggle="buttons">
 								                    <label class="btn btn-default">
-								                        @Html.RadioButton(property.PropertyName, "false", new {id = "false"}) no
+								                        @Html.RadioButton(property.PropertyName, "false", false) no
 								                    </label>
 
 								                    <label class="btn btn-default">
-								                        @Html.RadioButton(property.PropertyName, "true", new {id = "true"}) yes
+								                        @Html.RadioButton(property.PropertyName, "true", false) yes
 								                    </label>
 								                </div>
 								            </div>
+
                                             @Html.ValidationMessage(property.PropertyName)
 								        </td>
 										break;
@@ -52,9 +53,7 @@
 								}
 							</tr>
                         }
-
 				</table>
-			
                         <div class="panel-footer">
                             <div class="float-right-div">
                                 <input type="submit" value="Save" class="btn btn-primary"/>

@@ -61,6 +61,7 @@ namespace ServicePortfolioService.Controllers
 		{
 
             //TODO: Brad - why is this here when the lifecycle controller initializes with a profile that has this line in it?
+            //this doesn't even work anyways. 
             Mapper.Initialize(config => { config.CreateMap<LifecycleStatusDto, LifecycleStatus>(); }); //this is in the  profile
            
 
