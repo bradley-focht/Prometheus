@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Prometheus.WebUI.Models.SystemAccess;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -21,7 +22,7 @@ namespace Prometheus.WebUI.Controllers
 
         public ActionResult UserAccess()
         {
-            return View();
+            return View(new AdSearchResultsModel());
         }
 
         /// <summary>
@@ -29,14 +30,14 @@ namespace Prometheus.WebUI.Controllers
         ///    
         /// </summary>
         /// <returns></returns>
+        [HttpPost]
         public ActionResult SearchAdAccount(string searchString)
         {
-            return View("UserAccess");
+            AdSearchResultsModel model = new AdSearchResultsModel();
+
+            model.SearchResults = new List<Tuple<string, string>> { new Tuple<string, string>("abc", "John Doe")};
+            return View("UserAccess", model);
         }
 
-        public ActionResult SearchAdAccountUtility()
-        {
-            return PartialView("PartialViews/SearchAdAccountUtility");
-        }
     }
 }

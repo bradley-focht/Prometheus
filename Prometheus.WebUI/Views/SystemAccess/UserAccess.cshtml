@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Prometheus.WebUI.Models.SystemAccess.AdSearchResultsModel
+
+@{
     ViewBag.Title = "User Access";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
@@ -12,5 +14,41 @@
 
 
 
-@Html.Action("SearchAdAccountUtility")
+<div class="std-div std-indent">
+    @using (Html.BeginForm("SearchAdAccount", "SystemAccess", FormMethod.Post))
+    {
+        <div class="row" style="width: 300px;">
 
+            <div class="input-group" style="margin-left: 20px;">
+
+                <input name="searchString" type="text" class="form-control" placeholder="Search for...">
+                <span class="input-group-btn">
+                    <input class="btn btn-primary" type="submit" value="Search">
+                </span>
+            </div>
+
+        </div>
+
+    }
+        @if (Model != null & Model.SearchResults != null)
+        {
+            <div class="funkyradio">
+                @foreach (var user in Model.SearchResults)
+                {
+
+
+                <div class="funkyradio-primary">
+                    <input type="checkbox" name="selectedUser" value="@user.Item1" id="checkbox1" />
+                    <label for="checkbox1">@user.Item2</label>
+                </div>
+
+                }
+
+                <div class="panel-footer">
+                    &nbsp;
+                    <div class="float-right-div">@Html.ActionLink("Clear", "ClearSearch", null, new {@class="btn btn-default"})</div>
+                </div>
+            </div>
+        }
+
+    </div>

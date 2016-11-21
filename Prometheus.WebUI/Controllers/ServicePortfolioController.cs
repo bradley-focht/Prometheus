@@ -3,6 +3,7 @@ using Prometheus.WebUI.Models.ServicePortfolio;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 namespace Prometheus.WebUI.Controllers
@@ -22,15 +23,15 @@ namespace Prometheus.WebUI.Controllers
 			var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
 			var portfolioBundles = sps.GetServiceBundles();
-			/* IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
+			/*IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
 			{
 				Name = "Employee Productivity Services",
 				Description = "Enable secure, anytime, anywhere, stable work capabilities and access to required information to meet personal computing requirements and increase customer satisfaction",
 				BusinessValue = "This service will provide you with <ul><li>Increased employee productivity</li><li>Value created through enterprise procurement with standard offerings in order to reduce cost</li></ul>",
 				Services = new List<IServiceDto> {new ServiceDto { Name = "Identity and Access Management"}, new ServiceDto { Name="Hardware Services"} },
 				Measures = "Customer satisfaction surveys, Customer reports"
-			} };
-			*/
+			} };*/
+			
 			return View(portfolioBundles);
 		}
 		/// <summary>
