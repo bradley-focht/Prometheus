@@ -38,7 +38,11 @@
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
+                <td class="dd-cell">
+         
+                        @Html.TextBox(property.PropertyName, property.Model, null, new {@class="form-control"})
+ 
+                </td>
             </tr>
         }
 

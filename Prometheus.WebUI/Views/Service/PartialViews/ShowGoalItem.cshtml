@@ -14,7 +14,15 @@
                     <td class="dt-cell">
                         @(property.DisplayName ?? property.PropertyName)
                     </td>
-                    <td class="dd-cell">@Html.Raw(property.Model)</td>
+                    @if (property.PropertyName.Contains("Date"))
+                    {
+                        <td class="dd-cell">@{@Html.Raw(((DateTime) property.Model).ToString("MMMM dd, yyyy")) }</td>
+                    }
+                    else
+                    {
+                        <td class="dd-cell">@Html.Raw(property.Model)</td>
+                    }
+                    
                 </tr>
             }
 

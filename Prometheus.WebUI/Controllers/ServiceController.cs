@@ -354,8 +354,8 @@ namespace Prometheus.WebUI.Controllers
 			model.Service.Name = "Support Services";
 			model.Service.Id = id;
 			model.SectionItemId = id;
-			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Id = 1, ServiceId = 10, Description = "some new goal goes here", Name = "hi" } }.ToArray();
-			model.Service.ServiceWorkUnits = new List<IServiceWorkUnitDto>(new List<IServiceWorkUnitDto> { new ServiceWorkUnitDto { Id = 1, WorkUnit = "Those \"guys\"", Contact = "Craig Gelowitz", Responsibilities = "Just keep out of trouble, ok?" } });
+			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Id = 1, ServiceId = 10, Description = "some new goal goes here", Name = "new goal to acheive", StartDate = DateTime.Now, EndDate = DateTime.Now} }.ToArray();
+			model.Service.ServiceWorkUnits = new List<IServiceWorkUnitDto>(new List<IServiceWorkUnitDto> { new ServiceWorkUnitDto { Id = 1, WorkUnit = "some team", Contact = "a manager", Responsibilities = "keep out of trouble" } });
 			model.Service.ServiceContracts = new List<IServiceContractDto>(new List<IServiceContractDto>());
 			model.Service.ServiceMeasures = new List<IServiceMeasureDto>();
 
@@ -370,7 +370,7 @@ namespace Prometheus.WebUI.Controllers
 			model.Service = new ServiceDto();
 			model.Service.Name = "Support Services";
 			model.Service.Id = 10;
-			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "hi" } }.ToArray();
+			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "new goal" } }.ToArray();
 			return View("UpdateSectionItem", model);
 		}
 
