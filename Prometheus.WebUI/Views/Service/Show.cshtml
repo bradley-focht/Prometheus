@@ -1,8 +1,9 @@
 ﻿@using Common.Dto
+@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceModel
 @{
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
-    ViewBag.Title = Model.Service.Name;
+    ViewBag.Title = ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.SelectedSection);
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
@@ -16,55 +17,55 @@
     {
     @if (Model.Service.Id > 0)
     {
-        <div class="std-div">
-            <div class="panel-heading">
-                @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
-            </div>
-   
+
+        <div class="panel-heading">
+            @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
+        </div>
 
 
-                @switch (Model.SelectedSection)
-                {
-                    case null:
-                        goto case "General";
-                    case "Documents":
-                        @Html.Partial("PartialViews/ShowDocuments", (ServiceDto) Model.Service)
-                        
-                        break;
-                    case "General":
-                        @Html.Partial("PartialViews/ShowGeneral", (ServiceDto) Model.Service)
-                        controlAvail = true;
-                        break;
-                    default:
-                        @Html.Action("ShowService" + Model.SelectedSection, Model)
-                        controlAvail = true;
-                        break;
-                }
+
+        switch (Model.SelectedSection)
+        {
+            case null:
+                goto case "General";
+            case "Documents":
+                @Html.Partial("PartialViews/ShowDocuments", (ServiceDto)Model.Service)
+
+                break;
+            case "General":
+                @Html.Partial("PartialViews/ShowGeneral", (ServiceDto)Model.Service)
+                controlAvail = true;
+                break;
+            default:
+                @Html.Action("ShowService" + Model.SelectedSection, Model)
+                controlAvail = true;
+                break;
+        }
 
 
-      
-            @if (controlAvail)
-            {
+
+        if (controlAvail)
+        {
+            <div style="display: flex; min-height: 100%; flex-direction: column;">
                 <div class="panel-footer">
-                    &nbsp;
                     <div class="float-right-div">
 
                         @if (Model.SelectedSection == "General" || Model.SelectedSection == null)
                         {
-                            @Html.ActionLink("Update", "UpdateGeneral", new {id = Model.Service.Id}, new {@class = "btn btn-primary"})
+                            @Html.ActionLink("Update", "UpdateGeneral", new { id = Model.Service.Id }, new { @class = "btn btn-primary" })
                         }
                         else
                         {
-                            @Html.ActionLink("Add", "AddServiceSectionItem", new {id = Model.Service.Id, section = Model.SelectedSection}, new {@class = "btn btn-primary"})
+                            @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-primary" })
                         }
                     </div>
                 </div>
-            }
+            </div>
+        }
 
-        </div>
     }
 }
-}
+                    }
 
 @section Sidebar
 {

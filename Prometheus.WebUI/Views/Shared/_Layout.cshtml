@@ -14,11 +14,15 @@
     @Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>)ViewBag.Links)
 
 
-   <div class="std-indent std-div">
-
-        @RenderBody()
+    <div class="content-body">
+      
+        <div class="panel-body" style="margin-top: -10px;">
+            @RenderBody()
+        </div>
+        <div class="panel-footer">
+            <span class="copyright-notice">&copy;2017 Prometheus</span>
+        </div>
 
     </div>
-
 </body>
 </html>

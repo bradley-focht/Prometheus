@@ -306,13 +306,6 @@ html {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  line-height: 1.428571429;
-  color: #333333;
-  background-color: #ffffff;
-}
-
 input,
 button,
 select,
@@ -4513,7 +4506,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .navbar-inverse {
   background-color: #404040;
-  border-color: #AAAAAA;
+  border-color: #262626;
 }
 
 .navbar-inverse .navbar-brand {
@@ -4631,10 +4624,10 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .breadcrumb {
-
+  text-align: left; 
   list-style: none;
-  background-color: #f5f5f5;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 3px;
+  padding-left: 10px;
 }
 
 .breadcrumb > li {
@@ -5012,9 +5005,12 @@ a.thumbnail:focus {
 
 .alert {
   padding: 10px;
-  margin-bottom: 20px;
   border: 1px solid transparent;
   border-radius: 4px;
+    position: relative;
+    z-index: 101;
+    width: 50%;
+
 }
 
 .alert h4 {
@@ -5336,7 +5332,6 @@ a.list-group-item:focus {
 }
 
 .panel {
-
   background-color: #ffffff;
   border: 1px solid transparent;
   border-radius: 4px;
@@ -5346,7 +5341,8 @@ a.list-group-item:focus {
 }
 
 .panel-body {
-  padding: 5px;
+  padding: 10px 5px;
+  background-color: #fff;
 }
 
 .panel-body:before,
@@ -5399,7 +5395,7 @@ a.list-group-item:focus {
 }
 
 .panel-heading {
-  padding: 5px 5px;
+  padding: 5px 10px;
   border-bottom: 1px solid transparent;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
@@ -5416,10 +5412,9 @@ a.list-group-item:focus {
 }
 
 .panel-footer {
-  margin-top: 10px;
-  margin-bottom: 2px;
+
   border-top: 1px solid #cccccc;
-  padding: 10px 10px;
+  padding: 5px 15px;
   background-color: #f5f5f5;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
@@ -5429,6 +5424,7 @@ a.list-group-item:focus {
   margin-bottom: 0;
   overflow: hidden;
   border-radius: 4px;
+    position: relative;
 }
 
 .panel-group .panel + .panel {

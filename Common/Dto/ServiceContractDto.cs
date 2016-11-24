@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Dto
 {
@@ -13,12 +14,17 @@ namespace Common.Dto
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+        [Display(Name="Contract Number")]
 		public string ContractNumber { get; set; }
+        [Display(Name="Service Provider")]
 		public string ServiceProvider { get; set; }
-		//TODO: enum?
-		public string Type { get; set; }
+		
+        //I don't really know what this is supposed to be....
+		public string ContractType { get; set; }
 		public string Description { get; set; }
+        [Display(Name="Start Date")]
 		public DateTime StartDate { get; set; }
+        [Display(Name="Expiry Date")]
 		public DateTime ExpiryDate { get; set; }
 		#endregion
 

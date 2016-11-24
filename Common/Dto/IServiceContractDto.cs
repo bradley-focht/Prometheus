@@ -12,7 +12,7 @@ namespace Common.Dto
 		DateTime StartDate { get; set; }
 
 		//TODO: ask brooke
-		string Type { get; set; }
+		string ContractType { get; set; }
 		string Description { get; set; }
 	}
 }

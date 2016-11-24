@@ -9,7 +9,7 @@
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
                                                              new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
-                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
 }
 
 @section Sidebar
@@ -21,35 +21,39 @@
 {
     @using (Html.BeginForm("Save", "Service" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section), FormMethod.Post))
     {
-        <div class="std-div">
-            @switch (Model.Section)
-            {
-                case "Goals":
-                    @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
-                    break;
-                case "Swot":
-                    @Html.Partial("PartialViews/UpdateSwotItem", new Common.Dto.ServiceSwotDto())
-                    break;
-                case "Contracts":
-                    @Html.Partial("PartialViews/UpdateContractItem", new ServiceContractDto())
-                    break;
-                case "Measures":
-                    @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasureDto())
-                    break;
-                case "WorkUnits":
-                    @Html.Partial("PartialViews/UpdateWorkUnitItem", new Common.Dto.ServiceWorkUnitDto())
-                    break;
+        <div class="panel">
+            <div class="title-div">
+                @ViewBag.Title
+            </div>
+            <div class="panel-body">
 
-            }
-            <div class="panel-footer">
-                &nbsp;
-                <div class="float-right-div">
-                    @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
-
-                    <input type="submit" value="Save" class="btn btn-primary" />
+                @switch (Model.Section)
+                {
+                    case "Goals":
+                        @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
+                        break;
+                    case "Swot":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto())
+                        break;
+                    case "Contracts":
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto())
+                        break;
+                    case "Measures":
+                        @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasureDto())
+                        break;
+                    case "WorkUnits":
+                        @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())
+                        break;
+                }
+            </div>
+            <div class="flex-container">
+                <div class="panel-footer">
+                    <div class="float-right-div">
+                        @Html.ActionLink("Back", "Show", new {id = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default"})
+                        <input type="submit" value="Save" class="btn btn-primary"/>
+                    </div>
                 </div>
             </div>
-
         </div>
     }
 }

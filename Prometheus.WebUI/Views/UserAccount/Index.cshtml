@@ -1,51 +1,65 @@
 ﻿@model Prometheus.WebUI.Models.UserAccount.UserAccountModel
 @{
-    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+    Layout = "~/Views/Shared/_BasicLayout.cshtml";
     ViewBag.Title = "Login";
 }
 
 @using (Html.BeginForm("Login", "UserAccount", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
+    <div class="content-body">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title"><strong>Prometheus ITSM Login</strong></h3>
+                <section style="margin-top: 10px;">
+                    <ul>
+                        <li>Login using your Windows login credentials</li>
+                        <li>If you are not able to login, you will need to contact your IT Service Desk at 306-123-4567</li>
+                    </ul>
 
-    <div class="alert alert-info">
+                    <p>
+                </section>
+            </div>
+            <div class="panel-body">
 
-        <div>
-            <table>
-                <tr>
-                    <td colspan="2"><b>Login</b></td>
-                </tr>
-                <tr>
-                    <td class="dt-cell">Username</td>
-                    <td class="dd-cell">
-                        @Html.TextBox("Username", null, new {@class = "form-control"})
-                        @Html.ValidationMessageFor(model => model.Username)
-                    </td>
 
-                </tr>
-                <tr>
-                    <td class="dt-cell">Password</td>
-                    <td class="dd-cell">
-                        @Html.Password("Password", null, new {@class = "form-control"})
-                        @Html.ValidationMessageFor(model => model.Password)
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary"/></td>
 
-                </tr>
+                <div>
+                    <table>
+                        <tr>
+                            <td colspan="2" style="padding-bottom: 10px;"><span class="font-title3">Login</span></td>
+                        </tr>
+                        <tr>
+                            <td class="dt-cell">Username</td>
+                            <td class="dd-cell">
+                                @Html.TextBox("Username", null, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Username)
+                            </td>
 
-            </table>
+                        </tr>
+                        <tr>
+                            <td class="dt-cell">Password</td>
+                            <td class="dd-cell">
+                                @Html.Password("Password", null, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Password)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary" /></td>
 
-        </div>
-        <div><b>Or</b></div>
-        <div>
-            <div> Continue as a @Html.ActionLink("guest", "LoginGuest")</div>
-            
+                        </tr>
+
+                    </table>
+
+                </div>
+                <div><span class="font-title3">Or Continue as a @Html.ActionLink("Guest", "LoginGuest")</span></div>
+
+            </div>
+            <div class="panel-footer">
+                <span class="copyright-notice">&copy;2017 Prometheus</span>
+            </div>
         </div>
     </div>
-
-
 
 }

@@ -2,53 +2,47 @@
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.HtmlHelpers
 
-<div class="navbar navbar-inverse navbar-fixed-top" style="height: 45px;">
-    <div style="width:60%; float:left;"><label class="navbar-brand">@ViewBag.Title</label></div>
+<div style="background-color: white;" class="content-body">
+    <div class="navbar-inverse navbar-fixed-top" style="min-height: 40px;">
+        <label class="navbar-brand">@ViewBag.Title</label>
+        <span style="color: white;">Contact us: 306-777-7777</span>
+
+        <label class="font-small-inverse-dull">name &equiv;</label>
+
+    </div>
+    <div class="breadcrumb-container content-body">
+        @if (ViewBag.Links != null)
+        {
+            @Html.BreadrumbTrail(Model, "breadcrumb", "active")
+        }
+    </div>
 
 
-    <table>
-        <tr>
-            <td><span class="font-small-inverse-dull">Contact us: 306-777-7777</span></td>
-            <td style="width: 50px;"></td>
-            <td>
-                <label class="font-small-inverse-dull">Logged in as </label><label style="color: #ffffff;">&nbsp; guest</label> <br />
-                @Html.ActionLink("Logout", "Logout", "UserAccount", null, new { @class = "btn-default" })
-            </td>
-        </tr>
-    </table>
-
-</div>
-<div class="breadcrumb-container">
-    @if (ViewBag.Links != null)
-    {
-        @Html.BreadrumbTrail(Model, "breadcrumb", "active")
-    }
-</div>
-
-
-@{
-            if (TempData["messageType"] != null && TempData["message"] != null)     /* display error or success messages */
+    @{
+        if (TempData["messageType"] != null && TempData["message"] != null)     /* display error or success messages */
+        {
+            string cssClass;
+            switch (TempData["messageType"] as WebMessageType?)
             {
-                string cssClass;
-                switch (TempData["messageType"] as WebMessageType?)
-                {
-                    case WebMessageType.Success:
-                        cssClass = "alert-success";
-                        break;
-                    case WebMessageType.Failure:
-                        cssClass = "alert-waring";
-                        break;
-                    case WebMessageType.Info:
-                        cssClass = "alert-info";
-                        break;
-                    default:
-                        cssClass = null;
-                        break;
-                }
+                case WebMessageType.Success:
+                    cssClass = "alert-success";
+                    break;
+                case WebMessageType.Failure:
+                    cssClass = "alert-waring";
+                    break;
+                case WebMessageType.Info:
+                    cssClass = "alert-info";
+                    break;
+                default:
+                    cssClass = null;
+                    break;
+            }
 
-        <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
-            <span class="float-left-div;">&times;</span>
-            @TempData["message"]
-        </div>
+            <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
+                <span class="float-left-div;">&times;</span>
+                @TempData["message"]
+            </div>
+        }
     }
-}
+
+</div>

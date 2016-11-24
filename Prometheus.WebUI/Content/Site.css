@@ -1,6 +1,14 @@
 ﻿body {
-    background-color: #121212;
     font: normal 12px Verdana, Arial, sans-serif;
     margin-top: 44px;
+    background-color: #333333;
+}
+
+.content-body {
+    max-width: 960px;
+    margin-right: auto;
+    margin-left: auto;
+    float: none;
+
 }
 

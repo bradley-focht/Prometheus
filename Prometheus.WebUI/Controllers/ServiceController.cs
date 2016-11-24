@@ -10,8 +10,6 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 
-
-
 namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceController : Controller
@@ -103,9 +101,9 @@ namespace Prometheus.WebUI.Controllers
 				sm = new ServiceModel(new ServiceDto() { Id = id, Name = "Support Services" }, section.Replace(" ", ""));
 				sm.Service.Name = "Support Services";
 				sm.Service.Id = 10;
-				sm.Service.ServiceOwner = "Donald Trump";
-				sm.Service.Description = "This service will build a great, great wall. Mark my words, it will be a great wall. <ul><li>tall</li><li>long<li><ul>";
-
+				sm.Service.ServiceOwner = "A person";
+				sm.Service.Description = "This is quite the service. It lets you do a lot of things. <ul><li>it functions</li><li>it sometimes stop functioning</li></ul>";
+                sm.Service.ServiceTypeRole = ServiceTypeRole.Business;
 			}
 
 			return View(sm);
@@ -374,20 +372,7 @@ namespace Prometheus.WebUI.Controllers
 			return View("UpdateSectionItem", model);
 		}
 
-		/// <summary>
-		/// Return the specific goal item to view
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public ActionResult UpdateGoalItem(int id)
-		{
-			ServiceGoalDto sg = new ServiceGoalDto();
-			sg.Id = 5;
-			sg.Name = "new goal to acheive";
-			sg.Type = ServiceGoalType.LongTerm;
 
-			return View("PartialViews/UpdateGoalItem", sg);
-		}
 
 		public ActionResult UpdateSwotItem(int id)
 		{

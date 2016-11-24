@@ -27,8 +27,15 @@ namespace Prometheus.WebUI.Controllers
             if (!ModelState.IsValid)
                 return View("Index");
 
+            //validate login, create session cookie
 
             return RedirectToAction("Index", "Home");
+        }
+
+        [ValidateAntiForgeryToken]
+        public ActionResult LoginGuest()
+        {
+            return RedirectToAction("Index", "Home");    
         }
 
         /// <summary>

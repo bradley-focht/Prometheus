@@ -1,61 +1,50 @@
-﻿@model Common.Dto.ServiceDto
+﻿@using Common.Enums
+@model Common.Dto.ServiceDto
 
 <input type="hidden" name="Id" value="@Model.Id" />
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
-        if (property.PropertyName == "Description")
+        if (property.PropertyName.Contains("Description"))
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
                 <td class="dd-cell">
-
                     @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
-                </td>
-                <td>@Html.ValidationMessage(property.PropertyName)</td>
-            </tr>
-        }
-        else if (property.PropertyName == "Name" || property.PropertyName.Contains("Owner"))
-        {
-            <tr>
-                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                <td class="dd-cell">
-                    @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
-                @Html.ValidationMessage(property.PropertyName)
+                    @Html.ValidationMessage(property.PropertyName)
                 </td>
             </tr>
+        
         }
         else if (property.PropertyName.Contains("StatusId"))
         {
             <tr>
-                <td class="dt-cell">Lifecycle Status</td>
+                <td class="dt-cell">@property.DisplayName</td>
 
                 <td class="dd-cell">
                     <div class="btn-group" data-toggle="buttons">
                         <label class="btn btn-default">
                             @Html.RadioButton("Chartered", "Chartered",
-                                new { id = "false" }) Chartered
+                                new {id = "false"}) Chartered
                         </label>
 
                         <label class="btn btn-default">
                             @Html.RadioButton("Operational", "Operational",
-                                new { id = "true" }) Operational
+                                new {id = "true"}) Operational
                         </label>
 
                         <label class="btn btn-default">
                             @Html.RadioButton("Retired", "Retired",
-                                new { id = "true" }) Retired
+                                new {id = "true"}) Retired
                         </label>
 
                         <label class="btn btn-default">
                             @Html.RadioButton("Operational", "Cancelled",
-                                new { id = "true" }) Cancelled
+                                new {id = "true"}) Cancelled
                         </label>
-
-
                     </div>
+                    @Html.ValidationMessage(property.PropertyName)
                 </td>
-                <td>@Html.ValidationMessage(property.PropertyName)</td>
             </tr>
         }
 
@@ -72,13 +61,11 @@
                             <td class="dd-cell">
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-default">
-                                        @Html.RadioButton("Chartered", "Chartered",
-                                            new {id = "false"}) Customer-facing
+                                        @Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Business, false) Customer-facing
                                     </label>
 
                                     <label class="btn btn-default">
-                                        @Html.RadioButton("Operational", "Operational",
-                                            new {id = "true"}) Supporting
+                                        @Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Supporting, false) Supporting
                                     </label>
                                 </div>
                             </td>
@@ -91,11 +78,11 @@
                                 <div class="btn-group" data-toggle="buttons">
                                     <label class="btn btn-default">
                                         @Html.RadioButton("Chartered", "Chartered",
-                                            new {id = "false"}) Internal
+                                            new { id = "false" }) Internal
                                     </label>
                                     <label class="btn btn-default">
                                         @Html.RadioButton("Chartered", "Chartered",
-                                            new {id = "false"}) External
+                                            new { id = "false" }) External
                                     </label>
                                 </div>
 
@@ -103,9 +90,9 @@
                         </tr>
                     </table>
                 </td>
-                <td>@Html.ValidationMessage(property.PropertyName)</td>
             </tr>
         }
+
     }
 
 </table>

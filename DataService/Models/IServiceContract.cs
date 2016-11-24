@@ -11,8 +11,8 @@ namespace DataService.Models
 		string ServiceProvider { get; set; }
 		DateTime StartDate { get; set; }
 
-		//TODO: ask brooke
-		string Type { get; set; }
+		//TODO: ask brooke :: I forgot to ask 
+		string ContractType { get; set; }
 		string Description { get; set; }
 
 		Service Service { get; set; }

@@ -20,20 +20,18 @@
 
     @Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>)ViewBag.Links)
 
-    <div class="std-indent">
-        <table class="std-table" style="width: 100%">
-            <tr>
-                <td style="width: 20%; vertical-align: top;" class="std-cell">@RenderSection("Sidebar")</td>
-                <td style="width: 80%; vertical-align: top;" class="std-cell">@RenderSection("Content")</td>
-
-            </tr>
-            <tr>
-                <td colspan="2" style="border-top: 1px solid #cccccc; color: #cccccc;">&copy;2016 Prometheus</td>
-            </tr>
-
-        </table>
+<div class="content-body" style="margin-top: -12px;">
+    <div class="panel-body" style="position: relative; z-index: 1">
+        <div style="display: flex;">
+            <div style="flex: 1; min-width: 150px; max-width: 200px; margin-right: 10px;">@RenderSection("Sidebar")</div>
+            <div style="flex: 1;">@RenderSection("Content")</div>
+        </div>
     </div>
-
+    <div class="panel-footer">
+        <span class="copyright-notice">&copy;2017 Prometheus</span>
+    </div>
+</div>
+    
     <script language="javascript" type="text/javascript">
         $(function () {
             $('#StartDate').datepicker();

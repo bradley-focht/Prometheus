@@ -1,13 +1,15 @@
 ﻿@{
     ViewBag.Title = "Home";
     ViewBag.Links = null;
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_BasicLayout.cshtml";
 }
-<div>
-    <label class="font-title1">What would you like to do today?</label>
-    <div class="std-indent" style="padding-top:30px; padding-bottom:30px; border-top: 1px solid #dddddd; background-color: #eef2f7; width: 600px;">
-
-        <table style="width:100%">
+@Html.Partial("PartialViews/_TitleBar", null)
+<div class="panel panel-primary" style="margin-top: -15px;">
+    <div class="panel-heading">
+        <h1>Prometheus IT Service Management</h1>
+    </div>
+    <div class="panel-body" style="background-color: #eef2f7;">
+        <table>
             <tr>
                 <td style="width: 50%" class="content-cell">
                     <a href="@Url.Action("Index", "ServicePortfolio")">
@@ -57,17 +59,23 @@
             </tr>
         </table>
     </div>
-    <div style="background-color: #dddddd; padding: 10px;">
-        <table style="width:100%">
+    <div class="panel-footer" style="padding-top: 10px; margin-top: -10px;">
+        <table style="width: 100%">
             <tr>
                 <td></td>
             </tr>
             <tr>
-                <td style="width:25%">@Html.ActionLink("System Access", "Index", "SystemAccess")</td>
-                <td style="width:25%">@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance")</td>
-                <td>service request creation</td>
-                <td style="width:19%">scripts</td>
-            </tr>
-        </table>
+                <td style="width: 33%">
+                    @Html.ActionLink("System Access", "Index", "SystemAccess")
+                <br />@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance")
+            </td>
+            <td style="width: 33%; vertical-align: top;">Service request templates</td>
+            <td></td>
+                <td style="width: 33%">Scripts <br/>Fullfilment Queue</td>
+        </tr>
+    </table>
+</div>
+    <div class="panel-footer">
+        <span class="copyright-notice">&copy;2017 Prometheus</span>
     </div>
 </div>
