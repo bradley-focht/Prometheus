@@ -8,22 +8,29 @@ namespace DataService.Models
 	{
 		//PK
 		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.None)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
 		//FK
 		//public int ServiceId { get; set; }
-
-		//TODO: Brad document what the fields in this entity do. Ideally we should have comments in the Model interfaces for ALL fields
 		#region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+
+        /// <summary>
+        /// Unique name
+        /// </summary>
 		public string Name { get; set; }
-		public string Comment { get; set; }
+        /// <summary>
+        /// Used to order the display, this does not have any actual function other than display
+        /// </summary>
 		public int Position { get; set; }
 
+        /// <summary>
+        /// Used to determine whether this should be visible in business/service catalog
+        /// </summary>
 		public bool CatalogVisible { get; set; }
 		#endregion
 		#region Navigation Properties

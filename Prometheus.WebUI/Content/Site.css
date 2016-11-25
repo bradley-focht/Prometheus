@@ -1,5 +1,5 @@
 ﻿body {
-    font: normal 12px Verdana, Arial, sans-serif;
+    font: normal 1.5em Verdana, Arial, sans-serif;
     margin-top: 44px;
     background-color: #333333;
 }
@@ -9,6 +9,17 @@
     margin-right: auto;
     margin-left: auto;
     float: none;
-
 }
 
+.conent-sidebar {
+    flex: 1;
+    min-width: 150px;
+    max-width: 200px;
+    margin-right: 10px;
+    min-height: 400px;
+}
+
+.content-main {
+    flex: 1;
+    min-height: 400px;
+}

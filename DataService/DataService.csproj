@@ -76,6 +76,7 @@
     <Compile Include="DataAccessLayer\IPrometheusContext.cs" />
     <Compile Include="DataAccessLayer\PrometheusContext.cs" />
     <Compile Include="DataAccessLayer\PrometheusInitializer.cs" />
+    <Compile Include="ManualMapper.cs" />
     <Compile Include="Models\ICreatedEntity.cs" />
     <Compile Include="Models\ILifecycleStatus.cs" />
     <Compile Include="Models\IRole.cs" />

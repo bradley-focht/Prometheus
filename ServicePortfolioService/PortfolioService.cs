@@ -87,8 +87,13 @@ namespace ServicePortfolioService
 			return _lifecycleStatusController.DeleteLifecycleStatus(lifecycleStatusId);
 		}
 
+	    public int CountLifecycleStatuses()
+	    {
+	        return _lifecycleStatusController.CountLifecycleStatuses();
+	    }
 
-		public IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId)
+
+	    public IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId)
 		{
 			return _serviceController.GetServicesForServiceBundle(serviceBundleId);
 		}

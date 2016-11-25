@@ -4,12 +4,19 @@
 
 <div style="background-color: white;" class="content-body">
     <div class="navbar-inverse navbar-fixed-top" style="min-height: 40px;">
-        <label class="navbar-brand">@ViewBag.Title</label>
-        <span style="color: white;">Contact us: 306-777-7777</span>
+        <div class="content-body">
+            <div style="display:flex">
+                <div class="float-right-div">
+                    <span class="hamburger-menu btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+                </div>
+                <div class="float-left-div">
+                    <label class="navbar-brand">@ViewBag.Title</label>
+                    <span style="color: white;">Contact us: 306-777-7777</span>
+                </div>
 
-        <label class="font-small-inverse-dull">name &equiv;</label>
-
-    </div>
+                </div>
+            </div>
+        </div>
     <div class="breadcrumb-container content-body">
         @if (ViewBag.Links != null)
         {

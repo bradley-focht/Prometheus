@@ -342,6 +342,7 @@
     <Content Include="Views\Service\PartialViews\ShowDynamicServiceItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateDynamicServiceItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowLifeCycleStatuses.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

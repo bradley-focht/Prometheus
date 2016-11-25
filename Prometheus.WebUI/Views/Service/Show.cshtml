@@ -3,7 +3,13 @@
 @model Prometheus.WebUI.Models.Service.ServiceModel
 @{
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
-    ViewBag.Title = ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.SelectedSection);
+    if (Model.SelectedSection != null)
+    {
+        ViewBag.SubTitle = ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.SelectedSection);
+    }
+
+    ViewBag.Title = "Services";
+
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("View Services", "Service/Index"),
@@ -21,28 +27,28 @@
         <div class="panel-heading">
             @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
         </div>
+        <div class="panel-body">
 
 
+            @switch (Model.SelectedSection)
+            {
+                case null:
+                    goto case "General";
+                case "Documents":
+                    @Html.Partial("PartialViews/ShowDocuments", (ServiceDto)Model.Service)
 
-        switch (Model.SelectedSection)
-        {
-            case null:
-                goto case "General";
-            case "Documents":
-                @Html.Partial("PartialViews/ShowDocuments", (ServiceDto)Model.Service)
+                    break;
+                case "General":
+                    @Html.Partial("PartialViews/ShowGeneral", (ServiceDto)Model.Service)
+                    controlAvail = true;
+                    break;
+                default:
+                    @Html.Action("ShowService" + Model.SelectedSection, Model)
+                    controlAvail = true;
+                    break;
+            }
 
-                break;
-            case "General":
-                @Html.Partial("PartialViews/ShowGeneral", (ServiceDto)Model.Service)
-                controlAvail = true;
-                break;
-            default:
-                @Html.Action("ShowService" + Model.SelectedSection, Model)
-                controlAvail = true;
-                break;
-        }
-
-
+        </div>
 
         if (controlAvail)
         {
@@ -65,7 +71,7 @@
 
     }
 }
-                    }
+            }
 
 @section Sidebar
 {

@@ -1,4 +1,4 @@
-﻿@model Common.Dto.LifecycleStatusDto
+﻿@model Common.Dto.IServiceDto
 @{
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
     ViewBag.Title = "Confirm Delete";
@@ -22,7 +22,7 @@
         <div class="panel-footer">
             &nbsp;
             <div class="float-right-div">
-                @Html.ActionLink("Back", "ShowLifecycle", new {id = Model.Id}, new {@class = "btn btn-default"})
+                @Html.ActionLink("Back", "ShowService", new {id = Model.Id}, new {@class = "btn btn-default"})
                 <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
             </div>
         </div>

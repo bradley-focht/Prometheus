@@ -1,53 +1,55 @@
 ﻿@model Common.Dto.ILifecycleStatusDto
 
-
-<div class="std-div">
+<div class="title-div">@ViewBag.Title</div>
+<div class="panel-body">
     <table>
-
-
         @foreach (var property in ViewData.ModelMetadata.Properties)
         {
             if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
             {
                 continue;
             }
-
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
                 @switch (property.PropertyName)
                 {
                     case "CatalogVisible":
-
                         <td class="dd-cell">
-                           
-                        </td>break;
+                            @if (property.Model.Equals(true))
+                            {
+                                <text>Yes</text>
+                            }
+                            else
+                            {
+                                <text>No</text>
+                            }
+                        </td>
+                        break;
                     case "Position":
                         <td class="dd-cell">
-
                             @Model.Position
-
                         </td>
                         break;
                     default:
                         <td class="dd-cell">
                             @property.Model
-                        </td>break;
+                        </td>
+                        break;
                 }
             </tr>
-
-
         }
-
     </table>
-
-
-
-    <div class="panel-footer">
-        @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", null, new {@class = "btn btn-danger"})
-        <div class="float-right-div">
-            @Html.ActionLink("Edit", "UpdateLifecycle", null, new {@class = "btn btn-primary"})
-            @Html.ActionLink("Cancel", "ShowLifecycle", null, new {@class = "btn btn-default"})
-        </div>
-    </div>
 </div>
 
+<div class="flex-container">
+    <div class="panel-footer">
+        <div class="float-right-div">
+            @Html.ActionLink("Update", "UpdateLifecycle", new { id = Model.Id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", new {id = Model.Id}, new { @class = "btn btn-danger" })
+        </div>
+        <div class="float-left-div">
+            @Html.ActionLink("Back", "ShowLifecycle", new {id = 0}, new { @class = "btn btn-default" })
+        </div>
+
+    </div>
+</div>

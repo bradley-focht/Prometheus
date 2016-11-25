@@ -9,11 +9,14 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using ServicePortfolioService;
+using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceController : Controller
 	{
+	    private int dummId = 0;
 		/// <summary>
 		/// Default page 
 		/// </summary>
@@ -466,5 +469,13 @@ namespace Prometheus.WebUI.Controllers
 			return new FilePathResult(path + "testDoc.txt", "text/plain");
 		}
 
-	}
+	    [ChildActionOnly]
+	    public ActionResult ShowLifecycleStatuses()
+	    {
+            IPortfolioService sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+	        
+            return View("PartialViews/ShowLifeCycleStatuses", sps.GetLifecycleStatusNames());
+	    }
+
+    }
 }
