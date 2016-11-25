@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using DataService;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -54,6 +55,7 @@ namespace ServicePortfolioService.Controllers
 			return nameList.OrderBy(x => x.Item2);
 		}
 
+        //TODO: man mapper is in here too
 		public IServiceDto SaveService(IServiceDto service)
 		{
 			using (var context = new PrometheusContext())
@@ -61,9 +63,11 @@ namespace ServicePortfolioService.Controllers
 				var existingService = context.Services.Find(service.Id);
 				if (existingService == null)
 				{
-					var savedService = context.Services.Add(Mapper.Map<Service>(service));
+					//var savedService = context.Services.Add(Mapper.Map<Service>(service));
+				    var savedService = context.Services.Add(ManualMapper.MapDtoToService(service));
 					context.SaveChanges(_userId);
-					return Mapper.Map<ServiceDto>(savedService);
+				    return ManualMapper.MapServiceToDto(savedService);
+				    //return Mapper.Map<ServiceDto>(savedService);
 				}
 				else
 				{

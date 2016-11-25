@@ -122,16 +122,28 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// Save a new Service
+		/// Save a new Service and then redirect to show the full SDP of the service for data entry
 		/// </summary>
 		/// <param name="newService"></param>
 		/// <returns></returns>
 		[HttpPost]
 		public ActionResult Save(ServiceDto newService)
 		{
+		    if (!ModelState.IsValid)                    /* Server side validation */
+		    {
+                TempData["messageType"] = WebMessageType.Failure;
+                TempData["message"] = "Failed to save service due to invalid data";
+                return RedirectToAction("Add");
+            }
+            //save service
+            PortfolioService ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+		    int newId = ps.SaveService(newService).Id;
 
+            TempData["messageType"] = WebMessageType.Success;
+            TempData["message"] = $"New service {newService.Name} saved successfully";
 
-			return RedirectToAction("Show");
+            //return to a vew that will let the user now add to the SDP of the service
+            return RedirectToAction("Show", new { section = "General", id = newId});
 		}
 
 		/// <summary>

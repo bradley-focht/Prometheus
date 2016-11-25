@@ -29,5 +29,35 @@ namespace DataService
                 Position = src.Position
             };
         }
+
+        public static Service MapDtoToService(IServiceDto src)
+        {
+            return new Service
+            {
+                Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                BusinessOwner = src.BusinessOwner,
+                ServiceOwner = src.ServiceOwner,
+                LifecycleStatusId = src.LifecycleStatusId,
+                ServiceTypeProvision = src.ServiceTypeProvision,
+                ServiceTypeRole = src.ServiceTypeRole
+            };
+        }
+
+        public static ServiceDto MapServiceToDto(IService src)
+        {
+            return new ServiceDto
+            {
+                Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                BusinessOwner = src.BusinessOwner,
+                ServiceOwner = src.ServiceOwner,
+                LifecycleStatusId = src.LifecycleStatusId,
+                ServiceTypeProvision = src.ServiceTypeProvision,
+                ServiceTypeRole = src.ServiceTypeRole
+            };
+        }
     }
 }

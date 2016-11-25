@@ -97,22 +97,27 @@ namespace ServicePortfolioService.Controllers
         {
             using (var context = new PrometheusContext())
             {
-                var existingStatus = context.LifecycleStatuses.Find(lifecycleStatus.Id);
+              //TODO: Sean - ef messes up below because it is tracking the record from here
+              // then when it gets to the else, it gets messed up with the attach
+              // code works fine with this commented out so i don't think it is needed 
+              /*  var existingStatus = context.LifecycleStatuses.Find(lifecycleStatus.Id);
                 if (existingStatus == null)
                 {
                     throw new InvalidOperationException("Serivce record must exist in order to be updated.");
                 }
                 else
-                {
+                { */
                     //var updatedStatus = Mapper.Map<LifecycleStatus>(lifecycleStatus);
                     var updatedStatus = ManualMapper.MapDtoToLifecycleStatus(lifecycleStatus);
-                    context.Entry(updatedStatus).State = EntityState.Modified;
                     context.LifecycleStatuses.Attach(updatedStatus);
+                    context.Entry(updatedStatus).State = EntityState.Modified;
+                    
+                    
 
                     context.SaveChanges(_userId);
                     //return Mapper.Map<LifecycleStatusDto>(updatedStatus);
                     return ManualMapper.MapLifecycleStatusToDto(updatedStatus);
-                }
+           //     }
             }
         }
 

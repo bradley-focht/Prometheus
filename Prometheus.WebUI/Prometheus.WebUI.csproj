@@ -269,6 +269,7 @@
     <Compile Include="Models\ServiceMaintenance\ServiceModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
+    <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />

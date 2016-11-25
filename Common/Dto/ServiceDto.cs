@@ -17,6 +17,7 @@ namespace Common.Dto
 
 		//Id to service status to reduce calls to db
 		[Display(Name = "Lifecycle Status", Order = 7)]
+        [Required(ErrorMessage = "Lifecycle status selection is required")]
 		public int LifecycleStatusId { get; set; }
 
 		#region Fields
@@ -31,7 +32,7 @@ namespace Common.Dto
 		/// <summary>
 		/// Unique name to identify each service
 		/// </summary>
-		[Required(ErrorMessage = "*required")]
+		[Required(ErrorMessage = "Name is required")]
 		[Display(Order = 1)]
 		public string Name { get; set; }
 

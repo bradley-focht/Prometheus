@@ -1956,7 +1956,7 @@ textarea.input-lg {
   display: inline-block;
   padding: 2px 6px;
   margin-bottom: 0;
-  font-size: 12px;
+  font-size: 1em;
   font-weight: normal;
   line-height: 1.428571429;
   text-align: center;
@@ -4599,7 +4599,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 
 .breadcrumb > li {
   display: inline-block;
-  font-size:10px;
+  font-size:0.9em;
 }
 
 .breadcrumb > li + li:before {
@@ -5051,7 +5051,6 @@ a.thumbnail:focus {
 
 .alert-danger {
   color: #b94a48;
-    font-size: 10px;
 }
 
 .alert-danger hr {
@@ -5308,7 +5307,7 @@ a.list-group-item:focus {
 .panel-body {
   padding: 10px 5px;
   background-color: #fff;
-    min-height: 400px;
+    min-height: 200px;
 }
 
 .panel-body:before,
