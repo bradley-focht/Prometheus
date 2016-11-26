@@ -5,18 +5,41 @@
 <div style="background-color: white;" class="content-body">
     <div class="navbar-inverse navbar-fixed-top" style="min-height: 40px;">
         <div class="content-body">
-            <div style="display:flex">
-                <div class="float-right-div">
-                    <span class="hamburger-menu btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
-                </div>
+            <div style="display: flex">
+
                 <div class="float-left-div">
                     <label class="navbar-brand">@ViewBag.Title</label>
                     <span style="color: white;">Contact us: 306-777-7777</span>
                 </div>
+                <div class="float-right-div" style="position: relative">
 
+                    @{
+                        Session["DisplayName"]?.ToString();
+                    }
+
+                    <div class="dropdown" style="z-index: 500; position: relative">
+                        <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <ul class="list-unstyled">
+                                <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
+                                <li><span class="dropdown-item">Sean's special hamburger menu</span></li>
+
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                            <span class="dropdown-header" style="font-size: 1em;">Roles</span>
+                            <ul class="list-unstyled">
+                                <li>God Mode</li>
+                                <li>Human</li>
+                                <li>Infidel</li>
+                                <li>Deadbeat</li>
+                                <li>Guest</li>
+                            </ul>
+</div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
     <div class="breadcrumb-container content-body">
         @if (ViewBag.Links != null)
         {
@@ -26,7 +49,7 @@
 
 
     @{
-        if (TempData["messageType"] != null && TempData["message"] != null)     /* display error or success messages */
+        if (TempData["messageType"] != null && TempData["message"] != null) /* display error or success messages */
         {
             string cssClass;
             switch (TempData["messageType"] as WebMessageType?)

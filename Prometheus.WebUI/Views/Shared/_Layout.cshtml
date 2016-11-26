@@ -4,11 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Prometheus</title>
+    <script src="~/Scripts/jquery-3.1.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.validate.js"></script>
+    <script src="~/Scripts/ckeditor/ckeditor.js"></script>
+    <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css"/>
-    <script src="~/Scripts/aes-min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    <link href="~/Content/bootstrap-datepicker3.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
     @Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>)ViewBag.Links)

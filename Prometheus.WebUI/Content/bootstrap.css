@@ -3202,7 +3202,7 @@ input[type="button"].btn-block {
   z-index: 1000;
   display: none;
   float: left;
-  padding: 5px 0;
+  padding: 5px 5px;
   margin: 2px 0 0;
   font-size: 14px;
   list-style: none;
@@ -3213,6 +3213,7 @@ input[type="button"].btn-block {
   -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
           box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
   background-clip: padding-box;
+    white-space: nowrap;
 }
 
 .dropdown-menu.pull-right {

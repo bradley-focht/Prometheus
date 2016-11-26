@@ -369,6 +369,10 @@
       <Project>{280599D6-A130-4AF9-89F0-D5D36A32C330}</Project>
       <Name>ServicePortfolioService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UserManager\UserManager.csproj">
+      <Project>{1a415a6a-0658-40d7-9ba2-938ef6e3210e}</Project>
+      <Name>UserManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
