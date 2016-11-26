@@ -9,13 +9,14 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-
-
+using ServicePortfolioService;
+using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceController : Controller
 	{
+	    private int dummId = 0;
 		/// <summary>
 		/// Default page 
 		/// </summary>
@@ -103,9 +104,9 @@ namespace Prometheus.WebUI.Controllers
 				sm = new ServiceModel(new ServiceDto() { Id = id, Name = "Support Services" }, section.Replace(" ", ""));
 				sm.Service.Name = "Support Services";
 				sm.Service.Id = 10;
-				sm.Service.ServiceOwner = "Donald Trump";
-				sm.Service.Description = "This service will build a great, great wall. Mark my words, it will be a great wall. <ul><li>tall</li><li>long<li><ul>";
-
+				sm.Service.ServiceOwner = "A person";
+				sm.Service.Description = "This is quite the service. It lets you do a lot of things. <ul><li>it functions</li><li>it sometimes stop functioning</li></ul>";
+                sm.Service.ServiceTypeRole = ServiceTypeRole.Business;
 			}
 
 			return View(sm);
@@ -121,16 +122,28 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// Save a new Service
+		/// Save a new Service and then redirect to show the full SDP of the service for data entry
 		/// </summary>
 		/// <param name="newService"></param>
 		/// <returns></returns>
 		[HttpPost]
 		public ActionResult Save(ServiceDto newService)
 		{
+		    if (!ModelState.IsValid)                    /* Server side validation */
+		    {
+                TempData["messageType"] = WebMessageType.Failure;
+                TempData["message"] = "Failed to save service due to invalid data";
+                return RedirectToAction("Add");
+            }
+            //save service
+            PortfolioService ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+		    int newId = ps.SaveService(newService).Id;
 
+            TempData["messageType"] = WebMessageType.Success;
+            TempData["message"] = $"New service {newService.Name} saved successfully";
 
-			return RedirectToAction("Show");
+            //return to a vew that will let the user now add to the SDP of the service
+            return RedirectToAction("Show", new { section = "General", id = newId});
 		}
 
 		/// <summary>
@@ -374,20 +387,7 @@ namespace Prometheus.WebUI.Controllers
 			return View("UpdateSectionItem", model);
 		}
 
-		/// <summary>
-		/// Return the specific goal item to view
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public ActionResult UpdateGoalItem(int id)
-		{
-			ServiceGoalDto sg = new ServiceGoalDto();
-			sg.Id = 5;
-			sg.Name = "new goal to acheive";
-			sg.Type = ServiceGoalType.LongTerm;
 
-			return View("PartialViews/UpdateGoalItem", sg);
-		}
 
 		public ActionResult UpdateSwotItem(int id)
 		{
@@ -481,5 +481,13 @@ namespace Prometheus.WebUI.Controllers
 			return new FilePathResult(path + "testDoc.txt", "text/plain");
 		}
 
-	}
+	    [ChildActionOnly]
+	    public ActionResult ShowLifecycleStatuses()
+	    {
+            IPortfolioService sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+	        
+            return View("PartialViews/ShowLifeCycleStatuses", sps.GetLifecycleStatusNames());
+	    }
+
+    }
 }

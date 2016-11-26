@@ -1,48 +1,42 @@
 ﻿@model Prometheus.WebUI.Models.Shared.LinkListModel
-
-<div class="std-div" style="width: 250px;">
-
+<div style="display: flex; min-height: 100%; flex-direction: column;">
     <div class="title-div">
-            @Model.Title
+        @Model.Title
     </div>
-    <div style="padding-top: 5px; padding-bottom: 5px; min-height: 200px;">
+    <div style="padding-top: 5px; padding-bottom: 5px; flex: 1;">
         @{
             if (Model.ListItems != null && Model.ListItems.Any())
             {
                 foreach (var item in Model.ListItems)
                 {
-
                     if (Model.SelectedItemId == item.Item1) //highlight selected item
                     {
-                        <div class="bg-primary">
+                        <section class="bg-primary">
                             <a href="#">@item.Item2</a>
-                        </div>
+                        </section>
                     }
                     else                                    //don't highlight others
                     {
-                        <div class="bg-default">
+                        <section class="bg-default">
                             @Html.ActionLink(item.Item2, Model.SelectAction, Model.Controller, new { id = item.Item1 }, null)
-                        </div>
+                        </section>
                     }
-
                 }
             }
             else                                            //no results found
             {
-	            <div class="alert alert-warning">No @Model.Title exist
-		            
-		</div>
+                <section class="alert alert-warning">
+                    No @Model.Title exist
+                </section>
             }
         }
     </div>
     <div class="panel-footer">
-        &nbsp;
-        @if (Model.AddAction != null)
-        {
-            <div class="float-right-div">
-
-                @Html.ActionLink("Add", Model.AddAction, Model.SelectedItemId, new {@class = "btn btn-default"})
-            </div>
-        }
+        <div class="float-right-div">
+            @if (Model.AddAction != null)
+            {
+                @Html.ActionLink("Add", Model.AddAction, Model.SelectedItemId, new { @class = "btn btn-default" })
+            }
+        </div>
     </div>
 </div>

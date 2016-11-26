@@ -1,0 +1,27 @@
+﻿@model IEnumerable<Tuple<int, string>>
+
+
+@if (Model != null && Model.Any())
+{
+    int rowLength = 0;
+
+    <div class="btn-group" data-toggle="buttons">
+        @foreach (var status in Model)
+        {
+            if (rowLength > 5)
+            {
+                <br/>
+                rowLength = 0;
+            }
+
+            <label class="btn btn-default" id="@status.Item2">
+                @Html.RadioButton("LifecycleStatusId", @status.Item1, false) @status.Item2
+            </label>
+            rowLength++;
+        }
+</div>
+}
+else
+{
+    <div class="alert alert-warning">No statuses exist</div>
+}

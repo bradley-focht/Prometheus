@@ -2,53 +2,77 @@
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.HtmlHelpers
 
-<div class="navbar navbar-inverse navbar-fixed-top" style="height: 45px;">
-    <div style="width:60%; float:left;"><label class="navbar-brand">@ViewBag.Title</label></div>
+<div style="background-color: white;" class="content-body">
+    <div class="navbar-inverse navbar-fixed-top" style="min-height: 40px;">
+        <div class="content-body">
+            <div style="display: flex">
 
+                <div class="float-left-div">
+                    <label class="navbar-brand">@ViewBag.Title</label>
+                    <span style="color: white;">Contact us: 306-777-7777</span>
+                </div>
+                <div class="float-right-div" style="position: relative">
 
-    <table>
-        <tr>
-            <td><span class="font-small-inverse-dull">Contact us: 306-777-7777</span></td>
-            <td style="width: 50px;"></td>
-            <td>
-                <label class="font-small-inverse-dull">Logged in as </label><label style="color: #ffffff;">&nbsp; guest</label> <br />
-                @Html.ActionLink("Logout", "Logout", "UserAccount", null, new { @class = "btn-default" })
-            </td>
-        </tr>
-    </table>
+                    @{
+                        Session["DisplayName"]?.ToString();
+                    }
 
+                    <div class="dropdown" style="z-index: 500; position: relative">
+                        <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <ul class="list-unstyled">
+                                <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
+                                <li><span class="dropdown-item">Sean's special hamburger menu</span></li>
+
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                            <span class="dropdown-header" style="font-size: 1em;">Roles</span>
+                            <ul class="list-unstyled">
+                                <li>God Mode</li>
+                                <li>Human</li>
+                                <li>Infidel</li>
+                                <li>Deadbeat</li>
+                                <li>Guest</li>
+                            </ul>
 </div>
-<div class="breadcrumb-container">
-    @if (ViewBag.Links != null)
-    {
-        @Html.BreadrumbTrail(Model, "breadcrumb", "active")
-    }
-</div>
-
-
-@{
-            if (TempData["messageType"] != null && TempData["message"] != null)     /* display error or success messages */
-            {
-                string cssClass;
-                switch (TempData["messageType"] as WebMessageType?)
-                {
-                    case WebMessageType.Success:
-                        cssClass = "alert-success";
-                        break;
-                    case WebMessageType.Failure:
-                        cssClass = "alert-waring";
-                        break;
-                    case WebMessageType.Info:
-                        cssClass = "alert-info";
-                        break;
-                    default:
-                        cssClass = null;
-                        break;
-                }
-
-        <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
-            <span class="float-left-div;">&times;</span>
-            @TempData["message"]
+                    </div>
+                </div>
+            </div>
         </div>
+    </div>
+    <div class="breadcrumb-container content-body">
+        @if (ViewBag.Links != null)
+        {
+            @Html.BreadrumbTrail(Model, "breadcrumb", "active")
+        }
+    </div>
+
+
+    @{
+        if (TempData["messageType"] != null && TempData["message"] != null) /* display error or success messages */
+        {
+            string cssClass;
+            switch (TempData["messageType"] as WebMessageType?)
+            {
+                case WebMessageType.Success:
+                    cssClass = "alert-success";
+                    break;
+                case WebMessageType.Failure:
+                    cssClass = "alert-waring";
+                    break;
+                case WebMessageType.Info:
+                    cssClass = "alert-info";
+                    break;
+                default:
+                    cssClass = null;
+                    break;
+            }
+
+            <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
+                <span class="float-left-div;">&times;</span>
+                @TempData["message"]
+            </div>
+        }
     }
-}
+
+</div>

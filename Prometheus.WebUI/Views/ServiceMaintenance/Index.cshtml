@@ -5,8 +5,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="std-div std-indent">
+
     <div class="title-div">Maintenance Tasks</div>
-    @Html.ActionLink("Manage Lifecycle Statuses", "ShowLifecycle", "ServiceMaintenance")
-    <br/> @Html.ActionLink("Delete Service", "ShowServices", "ServiceMaintenance")
-</div>
+    <div class="panel-body">
+        @Html.ActionLink("Manage Lifecycle Statuses", "ShowLifecycle", "ServiceMaintenance")
+        <br /> @Html.ActionLink("Delete Service", "ShowServices", "ServiceMaintenance")
+    </div>

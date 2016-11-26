@@ -4,36 +4,33 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Prometheus</title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/bootstrap-datepicker3.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/jquery-3.1.1.min.js"></script>
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
     <script src="~/Scripts/ckeditor/ckeditor.js"></script>
     <script src="~/Scripts/bootstrap-datepicker.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/bootstrap-datepicker3.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/PrometheusCustom.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 
     @Html.Partial("PartialViews/_TitleBar", (List<KeyValuePair<string, string>>)ViewBag.Links)
 
-    <div class="std-indent">
-        <table class="std-table" style="width: 100%">
-            <tr>
-                <td style="width: 20%; vertical-align: top;" class="std-cell">@RenderSection("Sidebar")</td>
-                <td style="width: 80%; vertical-align: top;" class="std-cell">@RenderSection("Content")</td>
-
-            </tr>
-            <tr>
-                <td colspan="2" style="border-top: 1px solid #cccccc; color: #cccccc;">&copy;2016 Prometheus</td>
-            </tr>
-
-        </table>
+<div class="content-body" style="margin-top: -12px;">
+    <div class="panel-body" style="position: relative; z-index: 1">
+        <div style="display: flex;">
+            <div class="conent-sidebar">@RenderSection("Sidebar")</div>
+            <div class="content-main">@RenderSection("Content")</div>
+        </div>
     </div>
-
+    <div class="panel-footer">
+        <span class="copyright-notice">&copy;2017 Prometheus</span>
+    </div>
+</div>
+    
     <script language="javascript" type="text/javascript">
         $(function () {
             $('#StartDate').datepicker();

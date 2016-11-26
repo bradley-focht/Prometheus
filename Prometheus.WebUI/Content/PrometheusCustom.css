@@ -8,7 +8,12 @@
     border-bottom: 1px solid #dddddd;
     white-space: nowrap;
     font-weight: 600;
-    padding: 10px 10px;
+    padding: 10px 10px;    
+}
+
+.copyright-notice {
+    font-size: 11px;
+    color: #aaaaaa;
 }
 
 .font-title2 {
@@ -28,12 +33,22 @@
     font-weight: 600;
     font-size: 15px;
 }
+
+.font-inverse {
+    color: white;
+}
+
+.hamburger-menu {
+    font-size: 2em;
+    color: white;
+    margin-left: 10px;
+}
+
 .font-home-link {
     color:#19A7F8;    
     font-weight: 600;
     font-size: 15px;
 }
-
 
 .font-title-initial {
     color: #0C537C;
@@ -41,13 +56,10 @@
     font-weight: 600;
 }
 
-.font-small-inverse-dull {
-    font-size: x-small;
-    color: #dddddd;
-}
-
-.std-indent {
-    padding-left: 3%;
+.flex-container {
+    display: flex; 
+    min-height: 100%; 
+    flex-direction: column;
 }
 
 .std-table {
@@ -67,17 +79,14 @@
 }
 
 .std-div {
-    padding: 5px;
     display: inline-block;
+    background-color: #fff;
+
 }
-
-
 
 .float-right-div {
     float: right;
-    display: inline-block;
-    margin-left: 20px;
-    margin-right: 5px;
+    clear: both;
 }
 
 .float-left-div {
@@ -88,9 +97,12 @@
 }
 
 .breadcrumb-container {
-    height: 30px;
-    margin-left: -20px;
     vertical-align: central;
+    z-index: 100;
+    position: relative;
+    background-color: #f5f5f5;
+    
+
 }
 
 .btn-empty {
@@ -99,7 +111,7 @@
     padding: 3px;
     display: inline-block;
     margin-bottom: 0;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: normal;
     line-height: 1.428571429;
     text-align: center;
@@ -160,17 +172,17 @@
 .dt-cell {
     vertical-align: top;
     text-align: right;
-    font-weight: bold;
+    font-weight: 600;
     padding-right: 5px;
-    color: #666666;
-
+    color: #127CBA;
+    padding-bottom: 10px;
 }
 
 .dd-cell {
     vertical-align: bottom;
     text-align: left;
     padding-left: 5px;
-    padding-bottom: 20px;
+    padding-bottom: 10px;
 }
 
 .dl-section {
@@ -189,7 +201,7 @@
 
 .field-validation-error {
     color: #ff1100;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .input-validation-error {

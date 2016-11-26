@@ -229,7 +229,7 @@
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Scripts\ckeditor\styles.js" />
-    <None Include="Properties\PublishProfiles\IISProfileHost.pubxml" />
+    <None Include="Properties\PublishProfiles\LocalHost.pubxml" />
     <None Include="Properties\PublishProfiles\PROM Server.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.1.1.js" />
@@ -269,6 +269,7 @@
     <Compile Include="Models\ServiceMaintenance\ServiceModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
+    <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
@@ -317,22 +318,16 @@
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteLifecycle.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TableViewer.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGeneral.cshtml" />
-    <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
     <Content Include="Views\Service\UpdateSectionItem.cshtml" />
     <Content Include="Views\Service\ShowSectionItem.cshtml" />
-    <Content Include="Views\Service\PartialViews\ShowGoalItem.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGoalItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowSwotItem.cshtml" />
     <Content Include="Views\Service\AddSectionItem.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateSwotItem.cshtml" />
-    <Content Include="Views\Service\PartialViews\UpdateContractItem.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateWorkUnitItem.cshtml" />
     <Content Include="Views\Service\ConfirmDeleteSection.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowSwotTable.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateMeasureItem.cshtml" />
-    <Content Include="Views\Service\PartialViews\ShowWorkUnitItem.cshtml" />
-    <Content Include="Views\Service\PartialViews\ShowContractItem.cshtml" />
-    <Content Include="Views\Service\PartialViews\ShowMeasureItem.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\ServiceView.cshtml" />
     <Content Include="Views\SystemAccess\Index.cshtml" />
     <Content Include="Views\UserAccount\Index.cshtml" />
@@ -340,11 +335,15 @@
     <Content Include="Views\Service\PartialViews\ShowDocuments.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDocumentTable.cshtml" />
     <Content Include="Views\Service\PartialViews\RenameDocument.cshtml" />
-    <Content Include="Views\Shared\_LoginLayout.cshtml" />
+    <Content Include="Views\Shared\_BasicLayout.cshtml" />
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
     <Content Include="Views\SystemAccess\UserAccess.cshtml" />
     <Content Include="Views\ServicePortfolio\Edit.cshtml" />
     <Content Include="Views\Catalog\BusinessCatalog.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowDynamicServiceItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateDynamicServiceItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowLifeCycleStatuses.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -369,6 +368,10 @@
     <ProjectReference Include="..\ServicePortfolioService\ServicePortfolioService.csproj">
       <Project>{280599D6-A130-4AF9-89F0-D5D36A32C330}</Project>
       <Name>ServicePortfolioService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserManager\UserManager.csproj">
+      <Project>{1a415a6a-0658-40d7-9ba2-938ef6e3210e}</Project>
+      <Name>UserManager</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

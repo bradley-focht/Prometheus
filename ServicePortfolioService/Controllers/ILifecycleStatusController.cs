@@ -32,5 +32,11 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="lifecycleStatusId"></param>
 		/// <returns>True if successful</returns>
 		bool DeleteLifecycleStatus(int lifecycleStatusId);
+
+	    /// <summary>
+	    /// returns a count of the number of Lifecycle statuses found
+	    /// </summary>
+	    /// <returns></returns>
+	    int CountLifecycleStatuses();
 	}
 }
