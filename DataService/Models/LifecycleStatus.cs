@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,7 @@ namespace DataService.Models
 	{
 		//PK
 		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.None)]
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
 		//FK
@@ -27,7 +28,7 @@ namespace DataService.Models
 		public bool CatalogVisible { get; set; }
 		#endregion
 		#region Navigation Properties
-
+		public virtual ICollection<Service> Services { get; set; }
 		#endregion
 	}
 }

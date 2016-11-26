@@ -1,4 +1,6 @@
-﻿namespace DataService.Models
+﻿using System.Collections.Generic;
+
+namespace DataService.Models
 {
 	public interface ILifecycleStatus : IUserCreatedEntity
 	{
@@ -7,5 +9,6 @@
 		int Id { get; set; }
 		string Name { get; set; }
 		int Position { get; set; }
+		ICollection<Service> Services { get; set; }
 	}
 }

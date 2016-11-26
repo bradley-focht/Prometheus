@@ -5,7 +5,7 @@ namespace DataService.DataAccessLayer
 {
 	//Adjust the inherited object to match desired database behavior
 	//https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application
-	public class PrometheusInitializer : System.Data.Entity.DropCreateDatabaseAlways<PrometheusContext>
+	public class PrometheusInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<PrometheusContext>
 	{
 		protected override void Seed(PrometheusContext context)
 		{

@@ -6,8 +6,6 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Common.Utilities;
-using ServicePortfolioService.AutoMapperConfig;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -40,7 +38,7 @@ namespace ServicePortfolioService.Controllers
 				if (!lifecycleStatusRecords.Any())
 					return new List<Tuple<int, string>>();
 
-               
+
 				var statuses = lifecycleStatusRecords.Select(x => Mapper.Map<LifecycleStatusDto>(x));
 				var nameList = new List<Tuple<int, string>>();
 				nameList.AddRange(statuses.Select(x => new Tuple<int, string>(x.Id, x.Name)));
@@ -60,12 +58,12 @@ namespace ServicePortfolioService.Controllers
 		public ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
 		{
 
-            //TODO: Brad - why is this here when the lifecycle controller initializes with a profile that has this line in it?
-            //this doesn't even work anyways. 
-            Mapper.Initialize(config => { config.CreateMap<LifecycleStatusDto, LifecycleStatus>(); }); //this is in the  profile
-           
+			//TODO: Brad - why is this here when the lifecycle controller initializes with a profile that has this line in it?
+			//this doesn't even work anyways. 
+			Mapper.Initialize(config => { config.CreateMap<LifecycleStatusDto, LifecycleStatus>(); }); //this is in the  profile
 
-            using (var context = new PrometheusContext())
+
+			using (var context = new PrometheusContext())
 			{
 				var existingStatus = context.LifecycleStatuses.Find(lifecycleStatus.Id);
 				if (existingStatus == null)

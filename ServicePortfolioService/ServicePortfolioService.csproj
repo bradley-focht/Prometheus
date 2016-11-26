@@ -61,7 +61,7 @@
     <Compile Include="Controllers\ServiceBundleController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="IPortfolioService.cs" />
-    <Compile Include="AutoMapperConfig\ServiceProfile.cs" />
+    <Compile Include="AutoMapperConfig\ServicePortfolioProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PortfolioService.cs" />
   </ItemGroup>
