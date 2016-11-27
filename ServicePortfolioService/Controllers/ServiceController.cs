@@ -34,7 +34,8 @@ namespace ServicePortfolioService.Controllers
 			using (var context = new PrometheusContext())
 			{
 				var service = context.Services.Find(serviceId);
-				return Mapper.Map<ServiceDto>(service);
+
+				return ManualMapper.MapServiceToDto(service);
 			}
 		}
 
@@ -55,7 +56,6 @@ namespace ServicePortfolioService.Controllers
 			return nameList.OrderBy(x => x.Item2);
 		}
 
-        //TODO: man mapper is in here too
 		public IServiceDto SaveService(IServiceDto service)
 		{
 			using (var context = new PrometheusContext())
@@ -106,5 +106,47 @@ namespace ServicePortfolioService.Controllers
 			}
 			return true;
 		}
+
+	    public IEnumerable<Tuple<int, string>> GetServiceNames()
+	    {
+            using (var context = new PrometheusContext())
+            {
+                var serviceNames = context.Services;
+
+                //Empty list
+                if (!serviceNames.Any())                    //return an empty list instead of null
+                    return new List<Tuple<int, string>>();
+
+                var statuses = new List<ServiceDto>();
+                foreach (var status in serviceNames)        //Maping and Linq don't seem to work together
+                    statuses.Add(ManualMapper.MapServiceToDto(status));
+
+                var nameList = new List<Tuple<int, string>>();
+
+                nameList.AddRange(statuses.Select(x => new Tuple<int, string>(x.Id, x.Name)));
+                return nameList.OrderBy(x => x.Item2);
+            }
+        }
+
+	    public IEnumerable<IServiceDto> GetServices()
+	    {
+            using (var context = new PrometheusContext())
+            {
+                var serviceNames = context.Services;
+                var serviceList = new List<ServiceDto>();
+
+                //Empty list
+                if (!serviceNames.Any())
+                    return serviceList;
+
+
+
+
+                foreach (var status in serviceNames)        //seem to need to do this without LINQ
+                    serviceList.Add(ManualMapper.MapServiceToDto(status));
+
+                return serviceList.OrderBy(s => s.Name);
+            }
+        }
 	}
 }

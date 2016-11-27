@@ -40,5 +40,17 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="serviceId"></param>
 		/// <returns>True if successful</returns>
 		bool DeleteService(int serviceId);
+
+        /// <summary>
+        /// Gets a list of services and names for making lists
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<Tuple<int, string>> GetServiceNames();
+
+        /// <summary>
+        /// Get a full list of services 
+        /// </summary>
+        /// <returns></returns>
+	    IEnumerable<IServiceDto> GetServices();
 	}
 }

@@ -1,5 +1,4 @@
-﻿@using Prometheus.WebUI.Models.Shared
-@model Common.Dto.LifecycleStatusDto
+﻿@model Common.Dto.LifecycleStatusDto
 @{
     ViewBag.Title = "Delete " + Model.Name;
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
@@ -21,21 +20,19 @@
 {
     @using (Html.BeginForm("DeleteLifecycle", "ServiceMaintenance", FormMethod.Post))
     {
-        @Html.Hidden("Id", Model.Id)
+        @Html.Partial("PartialViews/ConfirmDelete", Model)
 
-        <div class="panel std-div">
-            <div class="title-div">Confirm Deletion</div>
-            Are you sure you want to delete lifecycle status:
-            <section class="present-section">
-                @Model.Name
-            </section>
+        <div class="flex-container">
             <div class="panel-footer">
-                <div class="float-right-div">
+                <div class="float-left-div">
                     @Html.ActionLink("Back", "ShowLifecycle", new {id = Model.Id}, new {@class = "btn btn-default"})
-                    <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+
                 </div>
-                &nbsp;
+                <div class="float-right-div">
+                    <input type="submit" value="Confirm Delete" class="btn btn-danger" />
+                </div>
+
             </div>
-            </div>
+        </div>
     }
 }

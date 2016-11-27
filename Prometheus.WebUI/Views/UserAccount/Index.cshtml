@@ -20,12 +20,18 @@
                 </section>
             </div>
             <div class="panel-body">
-
-
+                @if (TempData["MessageType"] != null && TempData["Message"] != null)
+                {
+                    <div class="flex-container alert alert-dismissable alert-danger close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px; font-size: 1em;">
+                        <div class="float-left-div;">&times;</div>
+                        <div class="float-right-div">@TempData["Message"]</div>
+                    </div>
+                }
 
                 <div>
                     @using (Html.BeginForm("Login", "UserAccount", FormMethod.Post))
                     {
+                        @Html.AntiForgeryToken()
                         <table>
                             <tr>
                                 <td colspan="2" style="padding-bottom: 10px;"><span class="font-title3">Login</span></td>

@@ -10,6 +10,8 @@ namespace DataService
     {
         public static LifecycleStatusDto MapLifecycleStatusToDto(ILifecycleStatus src)
         {
+            if (src == null) return null;
+
             return new LifecycleStatusDto
             {
                 Id = src.Id,
@@ -21,6 +23,8 @@ namespace DataService
 
         public static LifecycleStatus MapDtoToLifecycleStatus(ILifecycleStatusDto src)
         {
+            if (src == null) return null;
+
             return new LifecycleStatus
             {
                 Id = src.Id,
@@ -32,6 +36,8 @@ namespace DataService
 
         public static Service MapDtoToService(IServiceDto src)
         {
+            if (src == null) return null;
+
             return new Service
             {
                 Id = src.Id,
@@ -41,12 +47,15 @@ namespace DataService
                 ServiceOwner = src.ServiceOwner,
                 LifecycleStatusId = src.LifecycleStatusId,
                 ServiceTypeProvision = src.ServiceTypeProvision,
-                ServiceTypeRole = src.ServiceTypeRole
+                ServiceTypeRole = src.ServiceTypeRole,
+                ServiceBundleId = src.ServiceBundleId
             };
         }
-
+        
         public static ServiceDto MapServiceToDto(IService src)
         {
+            if (src == null) return null;
+
             return new ServiceDto
             {
                 Id = src.Id,
@@ -56,8 +65,44 @@ namespace DataService
                 ServiceOwner = src.ServiceOwner,
                 LifecycleStatusId = src.LifecycleStatusId,
                 ServiceTypeProvision = src.ServiceTypeProvision,
-                ServiceTypeRole = src.ServiceTypeRole
+                ServiceTypeRole = src.ServiceTypeRole,
+                ServiceBundleId = src.ServiceBundleId,
+
+                LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
             };
         }
+
+        public static ServiceBundleDto MapServiceBundleToDto(IServiceBundle src)
+        {
+            if (src == null) return null;
+
+            return new ServiceBundleDto
+            {
+                Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                BusinessValue = src.BusinessValue,
+                Measures = src.Measures,
+                
+            };
+        }
+
+
+        public static ServiceBundle MapDtoToServiceBundle (IServiceBundleDto src)
+            {
+            if (src == null) return null;
+
+            return new ServiceBundle
+                {
+                    Id = src.Id,
+                    Name = src.Name,
+                    Description = src.Description,
+                    BusinessValue = src.BusinessValue,
+                    Measures = src.Measures,
+
+                };
+
+
+            }
+        }
     }
-}

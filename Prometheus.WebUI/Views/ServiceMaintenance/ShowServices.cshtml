@@ -1,36 +1,37 @@
 ﻿@model Common.Dto.ServiceDto
 @{
-	ViewBag.Title = "Show Services";
-	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewBag.Title = "Services";
+    ViewBag.SubTitle = "View Service ";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-	ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-															 new KeyValuePair<string, string>("Services Maintenance", "ServiceMaintenance/Index"),
-														     new KeyValuePair<string, string>(ViewBag.Title, "#")};
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("Services Maintenance", "ServiceMaintenance/Index"),
+                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
 }
 
 @section Content
 {
 
-	@if (Model != null && Model.Id > 0)
+    @if (Model != null && Model.Id > 0)
     {
-        <div class="panel std-div">
-            <div class="panel panel-heading">
 
-
-            </div>
-            <div class="panel-body">
-                    @Html.Partial("PartialViews/ServiceView", Model)
-            </div>
-            <div class="panel-footer">
-                &nbsp;
-                <div class="float-right-div">
-                    @Html.ActionLink("Back", "ShowServices", null, new {@class = "btn btn-default"})
-                    @Html.ActionLink("Delete", "ConfirmDeleteService", Model.Id, new {@class = "btn btn-danger"})
-                </div>
-
-            </div>
-
+        <div class="title-div">
+            @ViewBag.SubTitle
         </div>
+            <div class="panel-body">
+                @Html.Partial("PartialViews/ServiceView", Model)
+            </div>
+            <div class="flex-container">
+                <div class="panel-footer">
+                  
+                    <div class="float-right-div">
+                        @Html.ActionLink("Delete", "ConfirmDeleteService", new {id = Model.Id}, new {@class = "btn btn-danger"})
+                    </div>
+
+                    <div class="float-left-div">@Html.ActionLink("Back", "ShowServices", null, new { @class = "btn btn-default" })</div>
+                </div>
+            </div>
+
     }
 
 }
@@ -38,6 +39,6 @@
 
 @section Sidebar
 	{
-	@Html.Action("ShowServiceList", Model.Id)
+    @Html.Action("ShowServiceList", Model.Id)
 
 }

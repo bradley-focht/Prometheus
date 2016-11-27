@@ -266,15 +266,14 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\ServiceMaintenance\ServiceModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
+    <Compile Include="Models\Shared\DeleteModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
     <Compile Include="Models\Service\ServiceModel.cs" />
-    <Compile Include="Models\Shared\ConfirmDeleteModel.cs" />
     <Compile Include="Models\Shared\LinkListModel.cs" />
     <Compile Include="Models\ServiceMaintenance\LifecycleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
@@ -344,6 +343,8 @@
     <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateDynamicServiceItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowLifeCycleStatuses.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowServiceBundles.cshtml" />
+    <Content Include="Views\ServiceMaintenance\PartialViews\ConfirmDelete.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

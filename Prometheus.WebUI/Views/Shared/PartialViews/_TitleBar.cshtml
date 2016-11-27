@@ -11,30 +11,35 @@
                     <label class="navbar-brand">@ViewBag.Title</label>
                     <span style="color: white;">Contact us: 306-777-7777</span>
                 </div>
-                <div class="float-right-div" style="position: relative">
+                <div class="flex-container">
+                    <div class="float-right-div" style="position: relative">
 
-                    @{
-                        Session["DisplayName"]?.ToString();
-                    }
+                        @{
+                            if (Session["DisplayName"] != null)
+                            {
+                                Session["DisplayName"].ToString();
+                            }
+                        }
 
-                    <div class="dropdown" style="z-index: 500; position: relative">
-                        <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <ul class="list-unstyled">
-                                <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
-                                <li><span class="dropdown-item">Sean's special hamburger menu</span></li>
+                        <div class="dropdown float-right-div" style="z-index: 500; position: relative">
+                            <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <ul class="list-unstyled">
+                                    <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
+                                    <li><span class="dropdown-item">Sean's special hamburger menu</span></li>
 
-                            </ul>
-                            <div class="dropdown-divider"></div>
-                            <span class="dropdown-header" style="font-size: 1em;">Roles</span>
-                            <ul class="list-unstyled">
-                                <li>God Mode</li>
-                                <li>Human</li>
-                                <li>Infidel</li>
-                                <li>Deadbeat</li>
-                                <li>Guest</li>
-                            </ul>
-</div>
+                                </ul>
+                                <div class="dropdown-divider"></div>
+                                <span class="dropdown-header" style="font-size: 1em;">Roles</span>
+                                <ul class="list-unstyled">
+                                    <li>God Mode</li>
+                                    <li>Human</li>
+                                    <li>Infidel</li>
+                                    <li>Deadbeat</li>
+                                    <li>Guest</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -49,10 +54,10 @@
 
 
     @{
-        if (TempData["messageType"] != null && TempData["message"] != null) /* display error or success messages */
+        if (TempData["MessageType"] != null && TempData["Message"] != null) /* display error or success messages */
         {
             string cssClass;
-            switch (TempData["messageType"] as WebMessageType?)
+            switch (TempData["MessageType"] as WebMessageType?)
             {
                 case WebMessageType.Success:
                     cssClass = "alert-success";
@@ -70,7 +75,7 @@
 
             <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
                 <span class="float-left-div;">&times;</span>
-                @TempData["message"]
+                @TempData["Message"]
             </div>
         }
     }

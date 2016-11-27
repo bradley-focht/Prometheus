@@ -5051,7 +5051,8 @@ a.thumbnail:focus {
 }
 
 .alert-danger {
-  color: #b94a48;
+  color: #b92a28;
+    background-color: #f8bebe;
 }
 
 .alert-danger hr {
@@ -5551,15 +5552,12 @@ a.list-group-item:focus {
   font-size: 10px;
   font-weight: bold;
   line-height: 1;
-  color: #000000;
-  text-shadow: 0 1px 0 #ffffff;
-  opacity: 0.6;
+  opacity: 0.8;
   filter: alpha(opacity=30);
 }
 
 .close:hover,
 .close:focus {
-  color: #000000;
   text-decoration: none;
   cursor: pointer;
   opacity: 0.9;

@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Prometheus.WebUI.Helpers
+@{
     ViewBag.Title = "Home";
     ViewBag.Links = null;
     Layout = "~/Views/Shared/_BasicLayout.cshtml";
@@ -8,7 +9,7 @@
     <div class="panel-heading">
         <h1>Prometheus IT Service Management</h1>
     </div>
-    <div class="panel-body" style="background-color: #eef2f7;" >
+    <div class="panel-body" style="background-color: #eef2f7;">
         <table class="content-body">
             <tr>
                 <td style="width: 50%" class="content-cell">
@@ -67,14 +68,14 @@
             <tr>
                 <td style="width: 33%">
                     @Html.ActionLink("System Access", "Index", "SystemAccess")
-                <br />@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance")
-            </td>
-            <td style="width: 33%; vertical-align: top;">Service request templates</td>
-            <td></td>
-                <td style="width: 33%">Scripts <br/>Fullfilment Queue</td>
-        </tr>
-    </table>
-</div>
+                    <br />@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance")
+                </td>
+                <td style="width: 33%; vertical-align: top;">Service request templates</td>
+                <td></td>
+                <td style="width: 33%">Scripts <br />Fullfilment Queue</td>
+            </tr>
+        </table>
+    </div>
     <div class="panel-footer">
         <span class="copyright-notice">&copy;2017 Prometheus</span>
     </div>

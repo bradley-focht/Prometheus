@@ -106,11 +106,16 @@ namespace ServicePortfolioService
 			return _serviceController.GetService(serviceId);
 		}
 
-		//TODO: Brad / Sean Should this be a dictionary
+		
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
 			return _serviceController.GetServiceNamesForServiceBundle(serviceBundleId);
 		}
+
+	    public IEnumerable<Tuple<int, string>> GetServiceNames()
+	    {
+	        return _serviceController.GetServiceNames();
+	    }
 
 		public IServiceDto SaveService(IServiceDto service)
 		{
@@ -121,5 +126,11 @@ namespace ServicePortfolioService
 		{
 			return _serviceController.DeleteService(serviceId);
 		}
-	}
+
+	    public IEnumerable<IServiceDto> GetServices()
+	    {
+	        return _serviceController.GetServices();
+	    }
+
+    }
 }

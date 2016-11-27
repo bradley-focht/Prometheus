@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using System.Web.Security;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.UserAccount;
@@ -34,7 +35,9 @@ namespace Prometheus.WebUI.Controllers
             var user = (UserDto)um.Login(userLogin.Username, userLogin.Password);
             if (user != null)
             {
-                Session["Displayname"] = user.Name;
+                FormsAuthentication.SetAuthCookie(user.Name, true);
+     
+                Session["DisplayName"] = user.Name;
                 Session["Id"] = user.Id;
                 Session["Roles"] = user.Role;
 
@@ -42,9 +45,10 @@ namespace Prometheus.WebUI.Controllers
             }
 
             TempData["MessageType"] = WebMessageType.Failure;
-            TempData["Message"] = "Login failed. If you do not know your username or password then contact your IT Service Desk";
+            TempData["Message"] =
+                "Failed to login, please check username and password. If you are unable to login then contact your IT Service Desk at 5639-309-1984-22.5";
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "UserAccount");
         }
 
         /// <summary>
@@ -55,6 +59,7 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult LoginGuest()
         {
+            FormsAuthentication.SetAuthCookie("Guest", true);
             Session["DisplayName"] = "Guest";
             Session["Id"] = 0;
             return RedirectToAction("Index", "Home");
@@ -66,7 +71,9 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Logout()
         {
-            return View("Index");
+            FormsAuthentication.SignOut();
+            
+            return RedirectToAction("Index", "UserAccount");
         }
     }
 }

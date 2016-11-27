@@ -23,7 +23,9 @@ namespace UserManager.AdService
         /// <returns></returns>
         public bool AuthenticateUser(string samAccountName, string password)
         {
-            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain))
+
+            //TODO: Brad using "PROM" here is a workaround to the 'unloaded' exception
+            using (PrincipalContext pc = new PrincipalContext(ContextType.Domain, "PROM"))
             {
                 // validate the credentials
                 if (!pc.ValidateCredentials(samAccountName, password))

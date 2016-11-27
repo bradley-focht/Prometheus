@@ -24,20 +24,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(int id = 0)
 		{
-			var services = new List<ServiceDto>
-			{
-				new ServiceDto {Name = "Support Services", Description = "support for the masses"},
-				new ServiceDto
-				{
-					Id = 10,
-					Name = "Communications and Messaging",
-					Description = "send a message to that special someone"
-				},
-				new ServiceDto {Id = 10, Name="Collaboration Services", Description = "this is really just Sharepoint... and it's an outdated version too."}
-			};
+            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
 
-			return View(services);
+            return View(ps.GetServices());
 		}
 
 		/// <summary>
@@ -49,19 +39,20 @@ namespace Prometheus.WebUI.Controllers
 		[ChildActionOnly]
 		public ActionResult ShowServiceList(int id = 0)
 		{
-			/* I am here for the looks, remove me */
-			LinkListModel servicesModel = new LinkListModel();
-			servicesModel.SelectedItemId = id;
-			servicesModel.ListItems = new List<Tuple<int, string>>
-			{
-				new Tuple<int, string>(10, "Support Services")
-			};
-			servicesModel.AddAction = "Add";
-			servicesModel.SelectAction = "Show/General";
-			servicesModel.Controller = "Service";
-			servicesModel.Title = "Services";
+            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
-			return PartialView("PartialViews/_LinkList", servicesModel);
+            //create the model 
+		    LinkListModel servicesModel = new LinkListModel
+		    {
+		        AddAction = "Add",
+		        SelectAction = "Show/General",
+		        Controller = "Service",
+		        Title = "Services",
+		        SelectedItemId = id,
+		        ListItems = ps.GetServiceNames()
+		    };
+
+		    return PartialView("PartialViews/_LinkList", servicesModel);
 		}
 
 		/// <summary>
@@ -131,16 +122,16 @@ namespace Prometheus.WebUI.Controllers
 		{
 		    if (!ModelState.IsValid)                    /* Server side validation */
 		    {
-                TempData["messageType"] = WebMessageType.Failure;
-                TempData["message"] = "Failed to save service due to invalid data";
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to save service due to invalid data";
                 return RedirectToAction("Add");
             }
             //save service
             PortfolioService ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 		    int newId = ps.SaveService(newService).Id;
 
-            TempData["messageType"] = WebMessageType.Success;
-            TempData["message"] = $"New service {newService.Name} saved successfully";
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"New service {newService.Name} saved successfully";
 
             //return to a vew that will let the user now add to the SDP of the service
             return RedirectToAction("Show", new { section = "General", id = newId});
@@ -337,8 +328,8 @@ namespace Prometheus.WebUI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				TempData["message"] = $"{service.Name} has been saved";
-				TempData["messageType"] = WebMessageType.Success;
+				TempData["Message"] = $"{service.Name} has been saved";
+				TempData["MessageType"] = WebMessageType.Success;
 			}
 			return RedirectToAction("Show", new { section = "General", id = service.Id });
 		}
@@ -346,8 +337,8 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveGoalsItem(ServiceGoalDto goal)
 		{
-			TempData["messageType"] = WebMessageType.Success;
-			TempData["message"] = "sucessfully saved goal";
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Sucessfully saved goal";
 
 			return RedirectToAction("show", new { section = "Goals", id = 10 });
 		}
@@ -481,6 +472,10 @@ namespace Prometheus.WebUI.Controllers
 			return new FilePathResult(path + "testDoc.txt", "text/plain");
 		}
 
+        /// <summary>
+        /// Return a few for Lifecycle Statuses
+        /// </summary>
+        /// <returns></returns>
 	    [ChildActionOnly]
 	    public ActionResult ShowLifecycleStatuses()
 	    {
@@ -489,5 +484,16 @@ namespace Prometheus.WebUI.Controllers
             return View("PartialViews/ShowLifeCycleStatuses", sps.GetLifecycleStatusNames());
 	    }
 
+        /// <summary>
+        /// Return a view for a list of Service Bundles
+        /// </summary>
+        /// <returns></returns>
+        [ChildActionOnly]
+	    public ActionResult ShowServiceBundles()
+	    {
+	        IPortfolioService sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+
+	        return View("PartialViews/ShowServiceBundles", sps.GetServiceBundleNames());
+	    }
     }
 }

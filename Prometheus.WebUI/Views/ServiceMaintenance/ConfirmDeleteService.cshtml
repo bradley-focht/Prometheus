@@ -1,32 +1,46 @@
 ﻿@model Common.Dto.IServiceDto
 @{
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
-    ViewBag.Title = "Confirm Delete";
+    ViewBag.Title = "Services";
+    ViewBag.SubTitle = "Confirm Delete";
 
 
     ViewBag.Links = new List<KeyValuePair<string, string>>
     {
         new KeyValuePair<string, string>("Home", "Home"),
         new KeyValuePair<string, string>("Services Maintenance", "ServiceMainenance/Index"),
-        new KeyValuePair<string, string>("View Services", "ServiceMainenance/Index")
+        new KeyValuePair<string, string>("View Services", "ServiceMainenance/Index"),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 
     };
 }
 
 @section Content {
-    @using (Html.BeginForm("DeleteLifecycle", "ServiceMaintenance", FormMethod.Post)) {
+    @using (Html.BeginForm("DeleteService", "ServiceMaintenance", FormMethod.Post)) {
         @Html.Hidden("Id", Model.Id)
-    <div class="std-div panel">
-        Are you sure you want to delete @Model.Name
+        @Html.Hidden("Name", Model.Name)
 
-        <div class="panel-footer">
-            &nbsp;
-            <div class="float-right-div">
-                @Html.ActionLink("Back", "ShowService", new {id = Model.Id}, new {@class = "btn btn-default"})
-                <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
-            </div>
+        <div class="title-div">
+            @ViewBag.SubTitle
         </div>
+        
+        <div class="panel">
+        Are you sure you want to delete
+        <section class="present-section">
+            @Model.Name
+        </section>
+        
+            <div class="flex-container">
+                <div class="panel-footer">
+                    <div class="float-left-div">
+                        @Html.ActionLink("Back", "ShowServices", new { id = Model.Id }, new { @class = "btn btn-default" })
+                    </div>
 
+                    <div class="float-right-div">
+                        <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+                    </div>
+                </div>
+            </div>
     </div>
     }
 
@@ -34,5 +48,4 @@
 
 @section Sidebar
 {
-
 }

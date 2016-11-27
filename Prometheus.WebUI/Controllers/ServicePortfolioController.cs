@@ -11,6 +11,7 @@ namespace Prometheus.WebUI.Controllers
 	public class ServicePortfolioController : Controller
 	{
 		//TODO: Brad change this to user ID
+        //TODO: Sean make user Ids Guids
 		private const int DummyUserId = 0;
 
 		/// <summary>
@@ -43,11 +44,14 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Save(ServiceBundleDto serviceBundle)
 		{
 			var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			serviceBundle.Id = 0;
+
+            serviceBundle.Id = 0;
 			sps.SaveServiceBundle(serviceBundle);
-			TempData["messageType"] = "success";
-			TempData["message"] = "Service bundle saved successfully";
-			return RedirectToAction("Show");
+
+			TempData["MessageType"] = "success";
+			TempData["Message"] = $"{serviceBundle.Name} saved successfully";
+
+            return RedirectToAction("Show");
 		}
 
 		/// <summary>
