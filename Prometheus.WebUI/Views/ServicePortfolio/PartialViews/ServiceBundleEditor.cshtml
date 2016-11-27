@@ -2,13 +2,12 @@
 @model ServiceBundleDto
 
 <div class="std-div">
-    @using (Html.BeginForm("Save", "ServicePortfolio", FormMethod.Post))
-    {
-        <table>
 
+    <table>
 
+        @Html.Hidden("Id", Model.Id)
 
-            @foreach (var property in ViewData.ModelMetadata.Properties)
+        @foreach (var property in ViewData.ModelMetadata.Properties)
             {
                 if (property.PropertyName == "Id" || property.PropertyName == "Services" || property.PropertyName.Contains("UserId") || property.PropertyName.Contains("Date"))
                 {
@@ -19,36 +18,27 @@
 
                     @if (property.PropertyName == "Description" || property.PropertyName == "BusinessValue")
                     {
-                    <td class="dd-cell"> 
-                        @Html.TextArea(property.PropertyName, new {@class = "ckeditor"})
-                    </td>
+                        <td class="dd-cell">
+                            @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
+                        </td>
 
                     }
                     else
                     {
 
-                    <td class="dd-cell">
+                        <td class="dd-cell">
 
-                        @Html.ValidationMessage(property.PropertyName)
-                        @Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control"})
+                            @Html.ValidationMessage(property.PropertyName)
+                            @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
 
-                    </td>
+                        </td>
 
                     }
 
                 </tr>
-            }
+        }
 
 
-        </table>
-                <div class="panel-footer">
-                        &nbsp;
-                        <div class="float-right-div">
-                            <input type="submit" value="Save" class="btn btn-primary" />
-                            @Html.ActionLink("Cancel", "Show", null, new { @class = "btn btn-default" })
-                        </div>
-                    </div>
+    </table>
 
-        
-    }
 </div>

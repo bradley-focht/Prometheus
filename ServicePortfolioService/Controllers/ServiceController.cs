@@ -148,5 +148,24 @@ namespace ServicePortfolioService.Controllers
                 return serviceList.OrderBy(s => s.Name);
             }
         }
-	}
+
+        public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
+        {
+                var service = GetService(serviceId);
+                return service.ServiceDocuments;
+        }
+
+        public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
+        {
+            using (var context = new PrometheusContext())
+            {
+                var service = context.Services.Find(document.ServiceId);
+                service.ServiceDocuments.Add(ManualMapper.MapDtoToServiceDocument(document));
+                context.SaveChanges(_userId);
+
+                return new ServiceDocumentDto();
+            }
+
+        }
+    }
 }

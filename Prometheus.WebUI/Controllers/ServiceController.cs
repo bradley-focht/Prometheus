@@ -92,12 +92,9 @@ namespace Prometheus.WebUI.Controllers
 			}
 			else
 			{
-				sm = new ServiceModel(new ServiceDto() { Id = id, Name = "Support Services" }, section.Replace(" ", ""));
-				sm.Service.Name = "Support Services";
-				sm.Service.Id = 10;
-				sm.Service.ServiceOwner = "A person";
-				sm.Service.Description = "This is quite the service. It lets you do a lot of things. <ul><li>it functions</li><li>it sometimes stop functioning</li></ul>";
-                sm.Service.ServiceTypeRole = ServiceTypeRole.Business;
+                var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+                sm = new ServiceModel(new ServiceDto() { Id = id, Name = "Support Services" }, section.Replace(" ", ""));
+			    sm.Service = ps.GetService(id);
 			}
 
 			return View(sm);
@@ -441,11 +438,13 @@ namespace Prometheus.WebUI.Controllers
 				var fileName = Path.GetFileName(file.FileName);
 				if (fileName != null)
 				{
-					Guid newFileName = Guid.NewGuid();
+					Guid newFileName = Guid.NewGuid();                              //to rename document
 
-					var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());
+                    var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());  //file path location comes from the Web.config file
 
 					file.SaveAs(Server.MapPath(path));
+                    var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+				    ps.SaveServiceDocument(new ServiceDocumentDto {ServiceId = id, Filename =  file.FileName, StorageNameGuid = newFileName});
 				}
 			}
 			return RedirectToAction("Show", new { id, section = "Documents" });

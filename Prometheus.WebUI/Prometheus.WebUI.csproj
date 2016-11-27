@@ -337,7 +337,7 @@
     <Content Include="Views\Shared\_BasicLayout.cshtml" />
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
     <Content Include="Views\SystemAccess\UserAccess.cshtml" />
-    <Content Include="Views\ServicePortfolio\Edit.cshtml" />
+    <Content Include="Views\ServicePortfolio\Update.cshtml" />
     <Content Include="Views\Catalog\BusinessCatalog.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDynamicServiceItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />

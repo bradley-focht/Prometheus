@@ -132,5 +132,14 @@ namespace ServicePortfolioService
 	        return _serviceController.GetServices();
 	    }
 
+	    public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
+	    {
+	        return _serviceController.GetServiceDocuments(serviceId);
+        }
+
+	    public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
+	    {
+	        return _serviceController.SaveServiceDocument(document);
+	    }
     }
 }

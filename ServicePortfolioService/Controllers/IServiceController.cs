@@ -52,5 +52,21 @@ namespace ServicePortfolioService.Controllers
         /// </summary>
         /// <returns></returns>
 	    IEnumerable<IServiceDto> GetServices();
+
+        /// <summary>
+        /// Get all documents associated with a service
+        /// </summary>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
+	    IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId);
+
+
+        /// <summary>
+        /// Save or add a new document
+        /// </summary>
+        /// <param name="document"></param>
+        /// <returns></returns>
+	    IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document);
+
 	}
 }

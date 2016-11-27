@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Common.Dto.ServiceDto>
+﻿@model IEnumerable<Common.Dto.IServiceDto>
 @{
     ViewBag.Title = "View Services ";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
@@ -10,7 +10,7 @@
 {
     foreach (var service in Model)
     {
-        <label class="font-title2-blue">@Html.ActionLink(service.Name, "Show", new {id = service.Id}, null)</label>
+        <label class="font-title2-blue">@Html.ActionLink(service.Name, "Show", new {id = service.Id, section = "General"}, null)</label>
         <dl class="dl-horizontal dl-section">
 
             <dt>Description</dt>

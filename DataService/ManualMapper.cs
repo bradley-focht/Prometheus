@@ -51,7 +51,7 @@ namespace DataService
                 ServiceBundleId = src.ServiceBundleId
             };
         }
-        
+
         public static ServiceDto MapServiceToDto(IService src)
         {
             if (src == null) return null;
@@ -83,26 +83,58 @@ namespace DataService
                 Description = src.Description,
                 BusinessValue = src.BusinessValue,
                 Measures = src.Measures,
-                
+
             };
         }
 
 
-        public static ServiceBundle MapDtoToServiceBundle (IServiceBundleDto src)
-            {
+        public static ServiceBundle MapDtoToServiceBundle(IServiceBundleDto src)
+        {
             if (src == null) return null;
 
             return new ServiceBundle
-                {
-                    Id = src.Id,
-                    Name = src.Name,
-                    Description = src.Description,
-                    BusinessValue = src.BusinessValue,
-                    Measures = src.Measures,
+            {
+                Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                BusinessValue = src.BusinessValue,
+                Measures = src.Measures,
 
-                };
+            };
 
 
-            }
         }
+
+
+        public static ServiceDocument MapDtoToServiceDocument(IServiceDocumentDto src)
+        {
+            if (src == null) return null;
+
+            return new ServiceDocument
+            {
+                Id = src.Id,
+                ServiceId = src.ServiceId,
+                StorageNameGuid = src.StorageNameGuid,
+                Filename = src.Filename,
+                FileExtension = src.FileExtension
+
+            };
+        }
+
+        public static ServiceDocumentDto MapServiceDocumentToDto(IServiceDocumentDto src)
+        {
+            if (src == null) return null;
+
+            return new ServiceDocumentDto
+            {
+                Id = src.Id,
+                ServiceId = src.ServiceId,
+                StorageNameGuid = src.StorageNameGuid,
+                Filename = src.Filename,
+                FileExtension = src.FileExtension
+
+            };
+        }
+
     }
+}

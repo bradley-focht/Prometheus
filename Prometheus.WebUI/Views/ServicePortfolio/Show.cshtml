@@ -1,29 +1,47 @@
-﻿@using Prometheus.WebUI.Models.ServicePortfolio
-@using Prometheus.WebUI.Models.Shared
-@model  ServiceBundleModel
+﻿@model  Common.Dto.ServiceBundleDto
 
 
 @{
-    ViewBag.Title = "View Service Bundles";
+    ViewBag.Title = "Service Bundles";
+    ViewBag.SubTitle = Model.Name;
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
     //Breadcrumb navigation links
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("Service Bundles", "~/ServicePortfolio/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#") };
 
-    //item list for ItemListView partial view
-    LinkListModel listModel = new LinkListModel(Model.ServiceBundles, Model.CurrentServiceBundle.Id, "Show", "Add", "Service Bundles");
 }
 
 @section Sidebar {
-    @Html.Partial("PartialViews/_LinkList", listModel)
-    
+    @Html.Action("ShowServiceBundleList", Model.Id)   
     }    
 
 
 @section Content {
-    @{if (Model.CurrentServiceBundle.Id != 0)
+    @{if (Model.Id > 0)
         {
-           @Html.Partial("Partialviews/ServiceBundleViewer", Model.CurrentServiceBundle)
+            <div class="title-div">
+                @ViewBag.SubTitle
+            </div>
+            <div class="panel">
+                @Html.Partial("Partialviews/ServiceBundleViewer", Model)
+
+            </div>
+            <div class="flex-container">
+                <div class="panel-footer">
+
+                    <div class="float-right-div">
+                        @Html.ActionLink("Delete", "ConfirmDelete", new { id = Model.Id }, new { @class = "btn btn-danger" })
+                        @Html.ActionLink("Update", "Update", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                    </div>
+
+                    <div class="float-left-div">
+                       
+                        @Html.ActionLink("Back", "Show", new {id = Model.Id}, new {@class = "btn btn-default"})
+                    </div>
+                </div>
+            </div>
+
         }
     }
 }
