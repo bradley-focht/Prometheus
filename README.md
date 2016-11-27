@@ -100,6 +100,5 @@ Controllers:
 ### Web UI
 
 ## Configuration
-Here is an explanation of the config file.
+* **FilePath** - in Web.config, configure this path to the location to store service documents. Ensure that the IIS application thread pools will have adequate permissions to read/write/delete at this location.  
 
-Here are some sample values for the config file
