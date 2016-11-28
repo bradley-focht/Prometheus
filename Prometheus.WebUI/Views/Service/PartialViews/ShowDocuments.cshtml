@@ -1,21 +1,23 @@
-﻿@using Common.Dto
-@model Common.Dto.ServiceDto
-@{
-    Model.ServiceDocuments = new List<IServiceDocumentDto> {new ServiceDocumentDto {Id = 100, Filename = "Test File", FileExtension = "docx", StorageNameGuid = Guid.NewGuid()}};
-}
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th style="min-width: 160px;"><label class="font-title-initial">File</label></th>
-        <th style="width: 100px;"><label class="font-title-initial">Date</label></th>
-        <th><label class="font-title-initial">Uploader</label></th>
-        <th></th>
-    </tr>
+﻿@model Common.Dto.ServiceDto
+
+
+
+@if (Model.ServiceDocuments != null && Model.ServiceDocuments.Any())
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th style="min-width: 160px;"><label class="font-title-initial">File</label></th>
+                <th style="width: 100px;"><label class="font-title-initial">Date</label></th>
+                <th><label class="font-title-initial">Uploader</label></th>
+                <th></th>
+            </tr>
         </thead>
+
         @foreach (var document in Model.ServiceDocuments)
         {
             <tr>
-                <td>@Html.ActionLink(document.Filename + "." + document.FileExtension, "DownloadServiceDocument", new {id = document.StorageNameGuid })</td>
+                <td>@Html.ActionLink(document.Filename, "DownloadServiceDocument", new { id = document.StorageNameGuid })</td>
                 <td>@document.UploadDate</td>
                 <td>@document.Uploader</td>
                 <td>
@@ -26,11 +28,11 @@
                         <div class="dropdown-menu">
                             <ul class="ul-menu">
                                 <li>
-                                    @Html.ActionLink("Rename", "UpdateServiceSectionItem", new { id = document.StorageNameGuid, section="Documents" })
+                                    @Html.ActionLink("Rename", "UpdateServiceSectionItem", new { id = document.StorageNameGuid, section = "Documents" })
                                 </li>
 
                                 <li>
-                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceSectionItem", new { id = document.StorageNameGuid, section="Documents"})
+                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceDocument", new { id = document.StorageNameGuid, section = "Documents" })
                                 </li>
                             </ul>
                         </div>
@@ -41,28 +43,29 @@
 
         }
 
-    <tr></tr>
-</table>
 
+    </table>
+}
 
 
 @using (Html.BeginForm("UploadServiceDocument", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.Hidden("id", Model.Id)
-    <div class="panel-footer">
-        &nbsp;
-        <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
-            <span class="fileupload-preview"></span>
-            <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-            <span class="btn btn-primary btn-file">
-                <span class="fileupload-new">Select file</span>
-                <span class="fileupload-exists">Change</span>         <input type="file" name="file" />
+    <div class="flex-container">
+        <div class="panel-footer">
 
-            </span>
-            <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
+            <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
+                <span class="fileupload-preview"></span>
+                <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                <span class="btn btn-primary btn-file">
+                    <span class="fileupload-new">Select file</span>
+                    <span class="fileupload-exists">Change</span>         <input type="file" name="file" />
+
+                </span>
+                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
 
 
+            </div>
         </div>
     </div>
-
 }

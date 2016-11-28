@@ -1,3 +1,0 @@
-This has been a test document.
-
-Had this been a real file, there might be something useful in it. 

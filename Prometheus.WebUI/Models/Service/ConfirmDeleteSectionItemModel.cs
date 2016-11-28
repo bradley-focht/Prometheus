@@ -2,22 +2,10 @@
 {
     public class ConfirmDeleteSectionItemModel
     {
-        public ConfirmDeleteSectionItemModel()
-        {
-        }
-
-        public ConfirmDeleteSectionItemModel(int id, string friendlyName, string deleteAction, string service, string section)
-        {
-            Id = id;
-            DeleteAction = deleteAction;
-            FriendlyName = friendlyName;
-            Service = service;
-        }
-
         /// <summary>
         /// Item's name to be displayed in delete confirmation message
         /// </summary>
-        public string FriendlyName { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// Item's id to be used for delete action 
         /// </summary>

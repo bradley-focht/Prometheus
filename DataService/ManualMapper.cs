@@ -1,4 +1,5 @@
-﻿using Common.Dto;
+﻿using System.Collections.Generic;
+using Common.Dto;
 using DataService.Models;
 
 namespace DataService
@@ -52,11 +53,16 @@ namespace DataService
             };
         }
 
+        /// <summary>
+        /// Contains all information about the service, all sections
+        /// </summary>
+        /// <param name="src"></param>
+        /// <returns></returns>
         public static ServiceDto MapServiceToDto(IService src)
         {
             if (src == null) return null;
 
-            return new ServiceDto
+            var serviceDto = new ServiceDto
             {
                 Id = src.Id,
                 Name = src.Name,
@@ -70,6 +76,15 @@ namespace DataService
 
                 LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
             };
+
+            serviceDto.ServiceDocuments = new List<IServiceDocumentDto>();
+            foreach (var doc in src.ServiceDocuments)
+            {
+                serviceDto.ServiceDocuments.Add(MapServiceDocumentToDto(doc));
+            }
+
+
+            return serviceDto;
         }
 
         public static ServiceBundleDto MapServiceBundleToDto(IServiceBundle src)
@@ -121,7 +136,7 @@ namespace DataService
             };
         }
 
-        public static ServiceDocumentDto MapServiceDocumentToDto(IServiceDocumentDto src)
+        public static ServiceDocumentDto MapServiceDocumentToDto(IServiceDocument src)
         {
             if (src == null) return null;
 

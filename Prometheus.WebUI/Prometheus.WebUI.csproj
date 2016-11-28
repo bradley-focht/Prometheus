@@ -332,7 +332,6 @@
     <Content Include="Views\UserAccount\Index.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteService.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDocuments.cshtml" />
-    <Content Include="Views\Service\PartialViews\ShowDocumentTable.cshtml" />
     <Content Include="Views\Service\PartialViews\RenameDocument.cshtml" />
     <Content Include="Views\Shared\_BasicLayout.cshtml" />
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />

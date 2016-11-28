@@ -68,5 +68,11 @@ namespace ServicePortfolioService.Controllers
         /// <returns></returns>
 	    IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document);
 
+        /// <summary>
+        /// Retrieve a Document based on the the Guid (Storage Name)
+        /// </summary>
+        /// <param name="documentGuid"></param>
+        /// <returns></returns>
+	    IServiceDocumentDto GetServiceDocument(Guid documentGuid);
 	}
 }

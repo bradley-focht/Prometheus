@@ -42,11 +42,7 @@ namespace Prometheus.WebUI
                 name: "ConfirmDeleteServiceSectionItem",
                 url: "Service/ConfirmDeleteServiceSectionItem/{section}/{id}",
                 defaults: new { controller = "Service", action = "ConfirmDeleteServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
-            );
-
-
-            
-
+            );        
 
             routes.MapRoute(
                 name: "Default",

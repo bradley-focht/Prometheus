@@ -50,7 +50,7 @@ namespace ServicePortfolioService.Controllers
 
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
-			var services = this.GetServicesForServiceBundle(serviceBundleId);
+			var services = GetServicesForServiceBundle(serviceBundleId);
 			var nameList = new List<Tuple<int, string>>();
 			nameList.AddRange(services.Select(x => new Tuple<int, string>(x.Id, x.Name)));
 			return nameList.OrderBy(x => x.Item2);
@@ -167,5 +167,21 @@ namespace ServicePortfolioService.Controllers
             }
 
         }
-    }
+
+	    public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
+	    {
+            using (var context = new PrometheusContext())
+            {
+                var service = (from s in context.Services
+                    where s.ServiceDocuments.Contains(s.ServiceDocuments.Where(g=>g.StorageNameGuid == documentGuid).FirstOrDefault())
+                    select s).FirstOrDefault();
+                //Empty list
+               var doc = (from d in service.ServiceDocuments
+                         where d.StorageNameGuid == documentGuid
+                         select d).FirstOrDefault();
+
+                return ManualMapper.MapServiceDocumentToDto(doc);
+            }
+        }
+	}
 }

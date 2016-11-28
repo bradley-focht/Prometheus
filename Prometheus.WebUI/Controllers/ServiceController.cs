@@ -1,5 +1,4 @@
 ﻿using Common.Dto;
-using Common.Enums;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
@@ -14,19 +13,17 @@ using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
+    //[Authorize]
 	public class ServiceController : Controller
 	{
 	    private int dummId = 0;
 		/// <summary>
 		/// Default page 
 		/// </summary>
-		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Index(int id = 0)
+		public ActionResult Index()
 		{
             var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-
-
             return View(ps.GetServices());
 		}
 
@@ -407,9 +404,9 @@ namespace Prometheus.WebUI.Controllers
 			if (id == 0)//something has gone very wrong
 				return RedirectToAction("Show");
 
-			ConfirmDeleteSectionItemModel cdModel = new ConfirmDeleteSectionItemModel(0, "some Item", "DeleteServiceGoalsItem", "Support Services", "Goals");
+			
 
-			return View("ConfirmDeleteSection", cdModel);
+			return View("ConfirmDeleteSection", null);
 		}
 
 		[HttpPost]
@@ -463,12 +460,16 @@ namespace Prometheus.WebUI.Controllers
 
 		public FileResult DownloadServiceDocument(Guid id)
 		{
-			Response.ContentType = "application/text";
-			Response.AddHeader("Content-Disposition", @"filename=""thisIsTheReportio""");
+
+            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+		    var doc = ps.GetServiceDocument(id);
+
+            Response.ContentType = "application/text";
+			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename);
 
 			var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], id.ToString());
 
-			return new FilePathResult(path + "testDoc.txt", "text/plain");
+			return new FilePathResult(path, "text/plain");
 		}
 
         /// <summary>
@@ -494,5 +495,11 @@ namespace Prometheus.WebUI.Controllers
 
 	        return View("PartialViews/ShowServiceBundles", sps.GetServiceBundleNames());
 	    }
+
+	    public ActionResult ConfirmDeleteServiceDocument(Guid? id)
+	    {
+	        return View("ConfirmDeleteSection");
+	    }
+
     }
 }

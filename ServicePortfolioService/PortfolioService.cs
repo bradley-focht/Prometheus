@@ -141,5 +141,10 @@ namespace ServicePortfolioService
 	    {
 	        return _serviceController.SaveServiceDocument(document);
 	    }
+
+        public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
+        {
+            return _serviceController.GetServiceDocument(documentGuid);
+        }
     }
 }
