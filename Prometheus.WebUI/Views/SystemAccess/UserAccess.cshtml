@@ -14,7 +14,7 @@
 
 
 
-<div class="std-div std-indent">
+<div class="panel-div">
     @using (Html.BeginForm("SearchAdAccount", "SystemAccess", FormMethod.Post))
     {
         <div class="row" style="width: 300px;">
@@ -30,25 +30,33 @@
         </div>
 
     }
+    <div class="panel-div" style="padding: 10px;">
         @if (Model != null & Model.SearchResults != null)
         {
             <div class="funkyradio">
                 @foreach (var user in Model.SearchResults)
                 {
-
-
-                <div class="funkyradio-primary">
-                    <input type="checkbox" name="selectedUser" value="@user.Item1" id="checkbox1" />
-                    <label for="checkbox1">@user.Item2</label>
-                </div>
+                    <div class="funkyradio-primary">
+                        <input type="checkbox" name="selectedUsers" value="@user.Item1" id="selectedUsers"/>
+                        <label for="selectedUsers">@user.Item2</label>
+                    </div>
 
                 }
+                <div class="flex-container">
+                    <div class="panel-footer">
 
-                <div class="panel-footer">
-                    &nbsp;
-                    <div class="float-right-div">@Html.ActionLink("Clear", "ClearSearch", null, new {@class="btn btn-default"})</div>
+                        <div class="float-right-div">@Html.ActionLink("Clear", "UserAccess", null, new {@class = "btn btn-default"})</div>
+                    </div>
                 </div>
             </div>
+
+
+        if (!Model.SearchResults.Any())
+        {
+            //check conditions that a search was actually performed
+            <div class="alert alert-warning">No results</div>
+        }
         }
 
     </div>
+</div>

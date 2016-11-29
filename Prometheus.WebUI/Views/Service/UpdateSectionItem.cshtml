@@ -19,17 +19,18 @@
 
 @section Content
 {
-    @using (Html.BeginForm("Save" + Model.Section + "Item", "Service", FormMethod.Post))
+    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
     {
         <div class="title-div">
             @ViewBag.Title
         </div>
-        <div class="panel-body">
+        <div class="panel">
             @switch (Model.Section)
             {
                 case "Documents":
-                    @Html.Partial("PartialViews/RenameDocument", new ServiceDocumentDto())
-                    controlsAvail = false; /* documents has own controls */
+
+                    @Html.Partial("PartialViews/RenameDocument", (ServiceDocumentDto)Model.Service.ServiceDocuments.FirstOrDefault((d => d.StorageNameGuid == Model.SectionItemGuid)))
+                    controlsAvail = false;
                     break;
                 case "General":
                     @Html.Partial("PartialViews/UpdateGeneral", new ServiceDto())
@@ -60,20 +61,17 @@
             }
         </div>
 
+        if (controlsAvail)
+        {
 
-        <div class="flex-container">
-            <div class="panel-footer">
-                @if (controlsAvail)
-                {
+            <div class="flex-container">
+                <div class="panel-footer">
                     <div class="float-right-div">
                         @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
-
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
-                }
-
+                </div>
             </div>
-        </div>
-
+        }
     }
 }

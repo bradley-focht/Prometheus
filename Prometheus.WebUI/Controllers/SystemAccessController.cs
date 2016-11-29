@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using Prometheus.WebUI.Models.SystemAccess;
+
 
 namespace Prometheus.WebUI.Controllers
 {
+    //[Authorize]
     public class SystemAccessController : Controller
     {
         // GET: SystemAccess
@@ -26,16 +24,16 @@ namespace Prometheus.WebUI.Controllers
         }
 
         /// <summary>
-        /// Setup the partial View for searching AD accounts
-        ///    
+        /// Setup the partial View for searching AD accounts   
         /// </summary>
         /// <returns></returns>
         [HttpPost]
         public ActionResult SearchAdAccount(string searchString)
         {
             AdSearchResultsModel model = new AdSearchResultsModel();
-
-            model.SearchResults = new List<Tuple<string, string>> { new Tuple<string, string>("abc", "John Doe")};
+            UserManager.UserManager um = new UserManager.UserManager();
+            model.SearchResults = um.SearchUsers(searchString);
+            
             return View("UserAccess", model);
         }
 

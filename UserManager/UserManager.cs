@@ -1,4 +1,6 @@
-﻿using Common.Dto;
+﻿using System;
+using System.Collections.Generic;
+using Common.Dto;
 using UserManager.AdService;
 
 namespace UserManager
@@ -25,5 +27,11 @@ namespace UserManager
 		    }
 		    return null;
 		}
-	}
+
+	    public ICollection<Tuple<Guid, string>> SearchUsers(string searchString)
+	    {
+            IAdSearch userSearch = new AdSearch();   
+	        return userSearch.SearchDirectoryUsers(searchString);
+        }
+	} 
 }

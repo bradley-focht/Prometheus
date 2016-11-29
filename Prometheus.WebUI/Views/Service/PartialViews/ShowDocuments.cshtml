@@ -23,12 +23,12 @@
                 <td>
                     <div class="btn-group">
                         <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                            <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true">&#x25BC;</span>
+                            <span aria-hidden="true">&#x25BC;</span>
                         </div>
                         <div class="dropdown-menu">
                             <ul class="ul-menu">
                                 <li>
-                                    @Html.ActionLink("Rename", "UpdateServiceSectionItem", new { id = document.StorageNameGuid, section = "Documents" })
+                                    @Html.ActionLink("Rename", "UpdateServiceDocument", new { id = document.StorageNameGuid })
                                 </li>
 
                                 <li>

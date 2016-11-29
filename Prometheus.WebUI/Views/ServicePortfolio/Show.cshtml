@@ -1,6 +1,4 @@
 ﻿@model  Common.Dto.ServiceBundleDto
-
-
 @{
     ViewBag.Title = "Service Bundles";
     ViewBag.SubTitle = Model.Name;
@@ -9,7 +7,6 @@
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Service Bundles", "~/ServicePortfolio/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#") };
-
 }
 
 @section Sidebar {
@@ -29,14 +26,11 @@
             </div>
             <div class="flex-container">
                 <div class="panel-footer">
-
                     <div class="float-right-div">
                         @Html.ActionLink("Delete", "ConfirmDelete", new { id = Model.Id }, new { @class = "btn btn-danger" })
                         @Html.ActionLink("Update", "Update", new { id = Model.Id }, new { @class = "btn btn-primary" })
                     </div>
-
-                    <div class="float-left-div">
-                       
+                    <div class="float-left-div">                       
                         @Html.ActionLink("Back", "Show", new {id = Model.Id}, new {@class = "btn btn-default"})
                     </div>
                 </div>

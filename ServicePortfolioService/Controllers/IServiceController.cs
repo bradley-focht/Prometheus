@@ -74,5 +74,6 @@ namespace ServicePortfolioService.Controllers
         /// <param name="documentGuid"></param>
         /// <returns></returns>
 	    IServiceDocumentDto GetServiceDocument(Guid documentGuid);
+
 	}
 }

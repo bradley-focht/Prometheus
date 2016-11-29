@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.Security.Principal;
 using System.Web.Mvc;
 
 namespace Common.Dto
@@ -14,7 +13,7 @@ namespace Common.Dto
         /// <summary>
         /// Original file name that was used when file was uploaded
         /// </summary>
-        [Required(ErrorMessage = "*required")]
+        [Required(ErrorMessage = "Filename is required")]
         public string Filename { get; set; }
         /// <summary>
         /// original extension 

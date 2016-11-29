@@ -159,7 +159,7 @@ namespace ServicePortfolioService.Controllers
         {
             using (var context = new PrometheusContext())
             {
-                var service = context.Services.Find(document.ServiceId);
+                var service = context.Services.Find(document.ServiceId);            //this is going to add only, it isn't going to update existing records 
                 service.ServiceDocuments.Add(ManualMapper.MapDtoToServiceDocument(document));
                 context.SaveChanges(_userId);
 
