@@ -77,12 +77,16 @@ namespace DataService
                 LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
             };
 
-            serviceDto.ServiceDocuments = new List<IServiceDocumentDto>();
-            foreach (var doc in src.ServiceDocuments)
+            if (src.ServiceDocuments != null)
             {
-                serviceDto.ServiceDocuments.Add(MapServiceDocumentToDto(doc));
+                serviceDto.ServiceDocuments = new List<IServiceDocumentDto>();
+                foreach (var doc in src.ServiceDocuments)
+                {
+                    serviceDto.ServiceDocuments.Add(MapServiceDocumentToDto(doc));
+                }
             }
 
+            serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
 
             return serviceDto;
         }

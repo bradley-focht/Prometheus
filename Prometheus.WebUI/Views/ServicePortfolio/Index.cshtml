@@ -7,10 +7,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="title-div">
-    &nbsp;
-    <div class="float-right-div">
-        @Html.ActionLink("Add", "Add", null, new {@class = "btn btn-default"})
+<div class="flex-container">
+    <div class="title-div">
+        <div class="float-right-div">
+            @Html.ActionLink("Add", "Add", null, new { @class = "btn btn-default" })
+        </div>
     </div>
 </div>
 @if (Model != null)
@@ -27,7 +28,7 @@
                 <dt class="dt-sp">Services:</dt>
                 <dd class="dd-sp">
 
-                    Support Services, Messaging and Communication, Collaboration Services, Software Services
+                   
 
                 </dd>
                 <dt class="dt-sp">Measures:</dt>

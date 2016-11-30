@@ -88,23 +88,23 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		private IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
+		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
 			{
-				var existingServiceBundle = context.ServiceBundles.Find(serviceBundle.Id);
-				if (existingServiceBundle == null)
-				{
-					throw new InvalidOperationException("Service record must exist in order to be updated.");
-				}
-				else
-				{
-					var updatedServiceBundle = Mapper.Map<ServiceBundle>(serviceBundle);
+				//var existingServiceBundle = context.ServiceBundles.Find(serviceBundle.Id);
+				//if (existingServiceBundle == null)
+				//{
+				//	throw new InvalidOperationException("Service record must exist in order to be updated.");
+				//}
+				//else
+				//{
+					var updatedServiceBundle = ManualMapper.MapDtoToServiceBundle(serviceBundle);
 					context.ServiceBundles.Attach(updatedServiceBundle);
 					context.Entry(updatedServiceBundle).State = EntityState.Modified;
 					context.SaveChanges(_userId);
-					return Mapper.Map<ServiceBundleDto>(updatedServiceBundle);
-				}
+					return ManualMapper.MapServiceBundleToDto(updatedServiceBundle);
+				//}
 			}
 		}
 

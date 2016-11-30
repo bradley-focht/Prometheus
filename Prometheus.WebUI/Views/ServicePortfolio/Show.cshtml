@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
     //Breadcrumb navigation links
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("Service Bundles", "~/ServicePortfolio/Index"),
+                                                             new KeyValuePair<string, string>("Service Bundles", "ServicePortfolio/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#") };
 }
 
@@ -31,7 +31,7 @@
                         @Html.ActionLink("Update", "Update", new { id = Model.Id }, new { @class = "btn btn-primary" })
                     </div>
                     <div class="float-left-div">                       
-                        @Html.ActionLink("Back", "Show", new {id = Model.Id}, new {@class = "btn btn-default"})
+                        @Html.ActionLink("Back", "Show", null, new {@class = "btn btn-default"})
                     </div>
                 </div>
             </div>

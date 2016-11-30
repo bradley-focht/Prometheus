@@ -38,5 +38,13 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="serviceBundleId"></param>
 		/// <returns>True if successful</returns>
 		bool DeleteServiceBundle(int serviceBundleId);
+
+        /// <summary>
+        /// Update a service bundle
+        /// </summary>
+        /// <param name="serviceBundle"></param>
+        /// <returns></returns>
+	    IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle);
+
 	}
 }

@@ -1,4 +1,5 @@
-﻿@using Prometheus.WebUI.Models.Shared
+﻿@using Common.Dto
+@using Prometheus.WebUI.Models.Shared
 @model Prometheus.WebUI.Models.ServicePortfolio.ServiceBundleModel
 @{
     ViewBag.Title = "Add Service Bundle";
@@ -8,16 +9,30 @@
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Service Portfolio", "ServicePortfolio/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#") };
-    //item list for ItemListView partial view
-    LinkListModel listModel = new LinkListModel(Model.ServiceBundles, Model.CurrentServiceBundle.Id, "Show", "Add", "Service Bundles");
 }
 
 @section Sidebar {
-    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", listModel)
-
+    @Html.Action("ShowServiceBundleList")
 }
 
 @section Content {
-    @Html.Partial("/Views/ServicePortfolio/PartialViews/ServiceBundleEditor.cshtml", Model.CurrentServiceBundle)
-}
+    <div class="title-div">
+        @ViewBag.SubTitle
+    </div>
 
+    @using (Html.BeginForm("Save", "ServicePortfolio", FormMethod.Post))
+    {
+        <div class="panel">
+            @Html.Partial("/Views/ServicePortfolio/PartialViews/ServiceBundleEditor.cshtml", new ServiceBundleDto())
+        </div>
+
+        <div class="flex-container">
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    <input type="submit" value="Save" class="btn btn-primary"/>
+                    @Html.ActionLink("Back", "Show", null, new {@class = "btn btn-default"})
+                </div>
+            </div>
+        </div>
+    }
+}

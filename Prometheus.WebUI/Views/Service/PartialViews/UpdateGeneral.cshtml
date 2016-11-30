@@ -1,5 +1,5 @@
 ﻿@using Common.Enums
-@model Common.Dto.ServiceDto
+@model Common.Dto.IServiceDto
 
 <input type="hidden" name="Id" value="@Model.Id" />
 <table>
@@ -83,13 +83,15 @@
     <tr>
         <td class="dt-cell">Lifecycle Status</td>
         <td class="dd-cell">
-            @Html.Action("ShowLifecycleStatuses")
+            @Html.Action("ShowLifecycleStatuses", new { selectedId = Model.LifecycleStatusId})
+            @Html.ValidationMessageFor(model => model.LifecycleStatusId)
         </td>
     </tr>
     <tr>
         <td class="dt-cell">Service Bundle</td>
         <td class="dd-cell">
-            @Html.Action("ShowServiceBundles")
+            @Html.Action("ShowServiceBundles", new { selectedId = Model.ServiceBundleId})
+            @Html.ValidationMessageFor(model => model.ServiceBundleId)
         </td>
     </tr>
 </table>

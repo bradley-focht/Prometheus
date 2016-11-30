@@ -13,6 +13,7 @@ namespace Common.Dto
 		public int Id { get; set; }
 
 		//FK
+        [Required(ErrorMessage = "Service bundle must be selected")]
 		public int ServiceBundleId { get; set; }
 
 		//Id to service status to reduce calls to db

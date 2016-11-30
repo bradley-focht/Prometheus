@@ -1,12 +1,11 @@
-﻿@model IEnumerable<Tuple<int, string>>
+﻿@model Prometheus.WebUI.Models.Service.LifecycleStatusesModel
 
-
-@if (Model != null && Model.Any())
+@if (Model != null && Model.LifecycleStatuses.Any())
 {
     int rowLength = 0;
 
     <div class="btn-group" data-toggle="buttons">
-        @foreach (var status in Model)
+        @foreach (var status in Model.LifecycleStatuses)
         {
             if (rowLength > 5)
             {
@@ -15,7 +14,16 @@
             }
 
             <label class="btn btn-default" id="@status.Item2">
-                @Html.RadioButton("LifecycleStatusId", @status.Item1, false) @status.Item2
+                @if (Model.SelectedStatus != status.Item1)
+                {
+                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" data-val-required="Service bundle is required"/>
+
+                }
+                else
+                {
+                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" data-val-required="Service bundle is required" checked="checked" />
+                }
+                @status.Item2
             </label>
             rowLength++;
         }
@@ -24,4 +32,5 @@
 else
 {
     <div class="alert alert-warning">No statuses exist</div>
+
 }

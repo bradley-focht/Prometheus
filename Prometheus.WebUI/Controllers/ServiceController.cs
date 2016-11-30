@@ -27,30 +27,7 @@ namespace Prometheus.WebUI.Controllers
             return View(ps.GetServices());
 		}
 
-		/// <summary>
-		/// Builds the partial view with selected item
-		///    actions are assumed to follow Add - Show - Update - Delete
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[ChildActionOnly]
-		public ActionResult ShowServiceList(int id = 0)
-		{
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
-            //create the model 
-		    LinkListModel servicesModel = new LinkListModel
-		    {
-		        AddAction = "Add",
-		        SelectAction = "Show/General",
-		        Controller = "Service",
-		        Title = "Services",
-		        SelectedItemId = id,
-		        ListItems = ps.GetServiceNames()
-		    };
-
-		    return PartialView("PartialViews/_LinkList", servicesModel);
-		}
 
 		/// <summary>
 		/// Navigation Control, entity names are coded here
@@ -302,10 +279,12 @@ namespace Prometheus.WebUI.Controllers
 		{
 			if (id == 0)
 			{
-				return RedirectToAction("Index");
+				return RedirectToAction("Show");
 			}
-			ServiceSectionModel model = new ServiceSectionModel();
-			model.Service = new ServiceDto { Id = 10, Name = "Support Services", Description = "this is where we operate" };
+
+            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            ServiceSectionModel model = new ServiceSectionModel();
+		    model.Service = ps.GetService(id);
 			model.Section = "General";
 
 			return View("UpdateSectionItem", model);
@@ -322,10 +301,18 @@ namespace Prometheus.WebUI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				TempData["Message"] = $"{service.Name} has been saved";
-				TempData["MessageType"] = WebMessageType.Success;
-			}
-			return RedirectToAction("Show", new { section = "General", id = service.Id });
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"{service.Name} has not been failed due to invalid data";
+
+            }
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"{service.Name} has been saved";
+
+            //perform the save
+            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+		    ps.SaveService(service);
+
+            return RedirectToAction("Show", new { section = "General", id = service.Id });
 		}
 
 		[HttpPost]
@@ -522,18 +509,24 @@ namespace Prometheus.WebUI.Controllers
 	        return RedirectToAction("Show");
 	    }
 
-#endregion
+        #endregion
 
+        #region Lists
         /// <summary>
         /// Return a few for Lifecycle Statuses
         /// </summary>
         /// <returns></returns>
         [ChildActionOnly]
-	    public ActionResult ShowLifecycleStatuses()
+	    public ActionResult ShowLifecycleStatuses(int selectedId = 0)
 	    {
+            LifecycleStatusesModel model = new LifecycleStatusesModel();
+            model.SelectedStatus = selectedId;
+            
             IPortfolioService sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-	        
-            return View("PartialViews/ShowLifeCycleStatuses", sps.GetLifecycleStatusNames());
+
+            model.LifecycleStatuses = sps.GetLifecycleStatusNames();
+
+            return View("PartialViews/ShowLifeCycleStatuses", model);
 	    }
 
         /// <summary>
@@ -541,14 +534,44 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <returns></returns>
         [ChildActionOnly]
-	    public ActionResult ShowServiceBundles()
-	    {
-	        var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+	    public ActionResult ShowServiceBundles(int selectedId = 0)
+        {
+            ServiceBundleModel model = new ServiceBundleModel();
+            model.SelectedServiceBundle = selectedId;
 
-	        return View("PartialViews/ShowServiceBundles", sps.GetServiceBundleNames());
+	        var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            model.ServiceBundles = sps.GetServiceBundleNames();
+
+	        return View("PartialViews/ShowServiceBundles", model);
 	    }
 
-	    public ActionResult ConfirmDeleteServiceDocument(Guid id)
+        /// <summary>
+        /// Builds the partial view with selected item
+        ///    actions are assumed to follow Add - Show - Update - Delete
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ChildActionOnly]
+        public ActionResult ShowServiceList(int id = 0)
+        {
+            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+
+            //create the model 
+            LinkListModel servicesModel = new LinkListModel
+            {
+                AddAction = "Add",
+                SelectAction = "Show/General",
+                Controller = "Service",
+                Title = "Services",
+                SelectedItemId = id,
+                ListItems = ps.GetServiceNames()
+            };
+
+            return PartialView("PartialViews/_LinkList", servicesModel);
+        }
+        #endregion
+
+        public ActionResult ConfirmDeleteServiceDocument(Guid id)
 	    {
             var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 	        var document = sps.GetServiceDocument(id);

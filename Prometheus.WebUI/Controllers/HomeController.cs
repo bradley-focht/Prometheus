@@ -2,7 +2,7 @@
 
 namespace Prometheus.WebUI.Controllers
 {
-   //[Authorize]
+   [Authorize]
     public class HomeController : Controller
     {
         /// <summary>

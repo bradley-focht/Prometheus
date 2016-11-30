@@ -2,8 +2,6 @@
 using Prometheus.WebUI.Models.ServicePortfolio;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
-using System;
-using System.Collections.Generic;
 using System.Web.Mvc;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Shared;
@@ -17,25 +15,14 @@ namespace Prometheus.WebUI.Controllers
         private const int DummyUserId = 0;
 
         /// <summary>
-        /// 
+        /// Main page to display all Service Bundles
         /// </summary>
         /// <returns></returns>
         public ActionResult Index()
-        {
-            /* create interface to service portfolio */
-            //var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+        {            
+            var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
-            //var portfolioBundles = sps.GetServiceBundles();
-            IEnumerable<IServiceBundleDto> portfolioBundles = new List<IServiceBundleDto> {new ServiceBundleDto
-            {
-                Name = "Employee Productivity Services",
-                Description = "Enable secure, anytime, anywhere, stable work capabilities and access to required information to meet personal computing requirements and increase customer satisfaction",
-                BusinessValue = "This service will provide you with <ul><li>Increased employee productivity</li><li>Value created through enterprise procurement with standard offerings in order to reduce cost</li></ul>",
-                Services = new List<IServiceDto> {new ServiceDto { Name = "Identity and Access Management"}, new ServiceDto { Name="Hardware Services"} },
-                Measures = "Customer satisfaction surveys, Customer reports"
-            } };
-
-            return View(portfolioBundles);
+            return View(sps.GetServiceBundles());
         }
         /// <summary>
         /// 
@@ -47,7 +34,7 @@ namespace Prometheus.WebUI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                TempData["MessageType"] = WebMessageType.Success;
+                TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = $"{serviceBundle.Name} saved successfully";
 
                 return RedirectToAction("Show");
@@ -55,10 +42,12 @@ namespace Prometheus.WebUI.Controllers
 
             var sps = new PortfolioService(DummyUserId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
-            serviceBundle.Id = 0;
-            sps.SaveServiceBundle(serviceBundle);
+            if (serviceBundle.Id == 0)
+                sps.SaveServiceBundle(serviceBundle);
+            else
+                sps.UpdateServiceBundle(serviceBundle);
 
-            TempData["MessageType"] = WebMessageType.Failure;
+            TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"{serviceBundle.Name} saved successfully";
 
             return RedirectToAction("Show");
@@ -135,7 +124,7 @@ namespace Prometheus.WebUI.Controllers
             {
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = $"Failed to delete {item.Name}";
-                return View("Show");
+                return RedirectToAction("Show");
             }
 
             var sps = new PortfolioService(DummyUserId, new ServiceBundleController(),
@@ -143,7 +132,7 @@ new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatus
             sps.DeleteServiceBundle(item.Id);
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"Successfully deleted {item.Name}";
-            return View("Show");
+            return RedirectToAction("Show");
         }
 
         [ChildActionOnly]

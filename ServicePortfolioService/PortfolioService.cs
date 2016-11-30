@@ -146,5 +146,10 @@ namespace ServicePortfolioService
         {
             return _serviceController.GetServiceDocument(documentGuid);
         }
+
+        public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
+        {
+            return _serviceBundleController.UpdateServiceBundle(serviceBundle);
+        }
     }
 }
