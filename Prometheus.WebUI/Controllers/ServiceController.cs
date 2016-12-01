@@ -378,21 +378,20 @@ namespace Prometheus.WebUI.Controllers
 			return View("AddSectionItem", model);
 		}
 
-		/// <summary>
-		/// Generates the confirm deletion warning page
-		///  function is generalized enough to handle all section items
-		///  deletion is specialized and has specialized actions to complete
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public ActionResult ConfirmDeleteServiceGoalsItem(int id = 0)
+	    /// <summary>
+	    /// Generates the confirm deletion warning page
+	    ///  function is generalized enough to handle all section items
+	    ///  deletion is specialized and has specialized actions to complete
+	    /// </summary>
+	    /// <param name="section"></param>
+	    /// <param name="id"></param>
+	    /// <returns></returns>
+	    public ActionResult ConfirmDeleteServiceGoalsItem(int id = 0)
 		{
-			if (id == 0)//something has gone very wrong
-				return RedirectToAction("Show");
-
+            var model = new ConfirmDeleteSectionItemModel();
 			
 
-			return View("ConfirmDeleteSection", null);
+			return View("ConfirmDeleteSection", model);
 		}
 
 		[HttpPost]

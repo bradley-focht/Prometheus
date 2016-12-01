@@ -35,19 +35,39 @@
                     <tr>
                         @foreach (string data in row.Item2)
                     {
-                            <td>
-                                @if (firstCol)
-                                {
-                                    @Html.ActionLink(data, Model.Action,  "Service", new {section = Model.ServiceSection, id = row.Item1 }, null)
-                                    firstCol = false;
-                                }
-                                else
-                                {
-                                    @Html.Raw(data)
-                                }
-                            </td>
+                        <td>
+                            @if (firstCol)
+                            {
+                                @Html.ActionLink(data, Model.Action, "Service", new {section = Model.ServiceSection, id = row.Item1}, null)
+                                firstCol = false;
+                            }
+                            else
+                            {
+                                @Html.Raw(data)
+                            }
+                        </td>
+  
                         }
+                        <td>
 
+                            <div class="btn-group">
+                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                    <span aria-hidden="true">&#x25BC;</span>
+                                </div>
+                                <div class="dropdown-menu">
+                                    <ul class="ul-menu">
+                                        <li>
+                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = row.Item1, section = Model.ServiceSection })
+                                        </li>
+
+                                        <li>
+                                            @Html.ActionLink("Delete", "ConfirmDeleteService" + Model.ServiceSection + "Item", new { id = row.Item1 })
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                        </td>
                     </tr>
                 }
             </tbody>

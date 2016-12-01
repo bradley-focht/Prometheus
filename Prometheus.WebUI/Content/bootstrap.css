@@ -4976,6 +4976,7 @@ a.thumbnail:focus {
   border-radius: 4px;
   position: relative;
   z-index: 101;
+    margin: 10px 0px;
 }
 
 .alert h4 {
@@ -5550,8 +5551,8 @@ a.list-group-item:focus {
   font-size: 10px;
   font-weight: bold;
   line-height: 1;
-  opacity: 0.8;
-  filter: alpha(opacity=30);
+ /* opacity: 0.8;
+  filter: alpha(opacity=30); */
 }
 
 .close:hover,

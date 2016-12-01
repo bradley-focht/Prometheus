@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Common.Dto;
 using DataService.Models;
 
@@ -151,7 +152,82 @@ namespace DataService
                 StorageNameGuid = src.StorageNameGuid,
                 Filename = src.Filename,
                 FileExtension = src.FileExtension
+            };
+        }
 
+        public static ServiceSwotDto MapServiceSwotToDto(IServiceSwot src)
+        {
+            if (src == null) return null;
+
+            ServiceSwotDto serviceSwotDto = new ServiceSwotDto
+            {
+                Id = src.Id,
+                Description = src.Description,
+                Type = src.Type,
+                Item = src.Item,
+                ServiceId =  src.ServiceId
+            };
+
+            if (src.SwotActivities != null && src.SwotActivities.Any())
+            {
+                serviceSwotDto.SwotActivities = new List<ISwotActivityDto>();
+                foreach (var activity in src.SwotActivities)
+                {
+                    serviceSwotDto.SwotActivities.Add(MapSwotActivityToDto(activity));
+                }
+            }
+            return serviceSwotDto;           
+        }
+
+        public static SwotActivityDto MapSwotActivityToDto(ISwotActivity src)
+        {
+            if (src == null) { return null; }
+
+            return new SwotActivityDto
+            {
+                Id = src.Id,
+                Description = src.Description,
+                Date = src.Date,
+                Name = src.Name,
+                ServiceSwotId = src.ServiceSwotId
+            };
+        }
+
+        public static ServiceSwot MapDtoToServiceSwot(IServiceSwotDto src)
+        {
+            if (src == null) return null;
+
+            ServiceSwot serviceSwot = new ServiceSwot
+            {
+                Id = src.Id,
+                Description = src.Description,
+                Type = src.Type,
+                Item = src.Item,
+                ServiceId = src.ServiceId
+            };
+
+            if (src.SwotActivities != null && src.SwotActivities.Any())
+            {
+                serviceSwot.SwotActivities = new List<SwotActivity>();
+                foreach (var activity in src.SwotActivities)
+                {
+                    serviceSwot.SwotActivities.Add(MapDtoToSwotActivity(activity));
+                }
+            }
+            return serviceSwot;
+        }
+
+        public static SwotActivity MapDtoToSwotActivity(ISwotActivityDto src)
+        {
+            if (src == null) { return null; }
+
+            return new SwotActivity
+            {
+                Id = src.Id,
+                Description = src.Description,
+                Date = src.Date,
+                Name = src.Name,
+                ServiceSwotId = src.ServiceSwotId
             };
         }
 

@@ -2,26 +2,24 @@
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.HtmlHelpers
 
-<div style="background-color: white;" class="content-body">
-    <div class="navbar-inverse navbar-fixed-top" style="min-height: 40px;">
-        <div class="content-body">
-            <div style="display: flex">
+<div class="navbar-inverse navbar-fixed-top">
 
-                <div class="float-left-div">
-                    <label class="navbar-brand">@ViewBag.Title</label>
-                    <span style="color: white;">Contact us: 306-777-7777</span>
-                </div>
-                <div class="flex-container">
-                    <div class="float-right-div" style="position: relative">
+    <div class="flex-container content-body">
 
-                        @{
-                            if (Session["DisplayName"] != null)
-                            {
-                                Session["DisplayName"].ToString();
-                            }
-                        }
+        <table style="width: 100%">
 
-                        <div class="dropdown float-right-div" style="z-index: 500; position: relative">
+            <tr>
+                <td style="width: 80%">
+                    <div class="float-left-div">
+                        <label class="navbar-brand">@ViewBag.Title</label>
+                    </div>
+                </td>
+                <td style="vertical-align: central">
+                    <span class="font-inverse">@Session["DisplayName"]</span>
+                    <div class="float-right-div" style="width: 50%;">
+
+                        <div class="dropdown">
+
                             <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <ul class="list-unstyled">
@@ -41,43 +39,44 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </td>
+            </tr>
+        </table>
     </div>
-    <div class="breadcrumb-container content-body">
-        @if (ViewBag.Links != null)
+
+</div>
+
+<div class="breadcrumb-container content-body">
+    @if (ViewBag.Links != null)
+    {
+        @Html.BreadrumbTrail(Model, "breadcrumb", "active")
+    }
+</div>
+
+@{
+    if (TempData["MessageType"] != null && TempData["Message"] != null) /* display messages */
+    {
+        string cssClass;
+        switch (TempData["MessageType"] as WebMessageType?)
         {
-            @Html.BreadrumbTrail(Model, "breadcrumb", "active")
+            case WebMessageType.Success:
+                cssClass = "alert-success";
+                break;
+            case WebMessageType.Failure:
+                cssClass = "alert-danger";
+                break;
+            case WebMessageType.Info:
+                cssClass = "alert-info";
+                break;
+            default:
+                cssClass = null;
+                break;
         }
-    </div>
-
-
-    @{
-        if (TempData["MessageType"] != null && TempData["Message"] != null) /* display error or success messages */
-        {
-            string cssClass;
-            switch (TempData["MessageType"] as WebMessageType?)
-            {
-                case WebMessageType.Success:
-                    cssClass = "alert-success";
-                    break;
-                case WebMessageType.Failure:
-                    cssClass = "alert-danger";
-                    break;
-                case WebMessageType.Info:
-                    cssClass = "alert-info";
-                    break;
-                default:
-                    cssClass = null;
-                    break;
-            }
-
+        <div class="content-body" style="background-color: #fff;">
             <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
                 <span class="float-left-div;">&times;</span>
                 @TempData["Message"]
             </div>
-        }
+        </div>
     }
-
-</div>
+}

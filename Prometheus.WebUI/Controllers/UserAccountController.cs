@@ -36,7 +36,7 @@ namespace Prometheus.WebUI.Controllers
             if (user != null)
             {
                 FormsAuthentication.SetAuthCookie(user.Name, true);
-     
+               
                 Session["DisplayName"] = user.Name;
                 Session["Id"] = user.Id;
                 Session["Roles"] = user.Role;

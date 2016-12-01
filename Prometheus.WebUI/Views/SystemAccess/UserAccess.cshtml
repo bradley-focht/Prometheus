@@ -10,9 +10,13 @@
         new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
         new KeyValuePair<string, string>(ViewBag.Title, "#")
     };
+
+
 }
 
-<div class="panel-div">
+
+<div class="panel-div float-left-div">
+    <div class="title-div">Users</div>
     @using (Html.BeginForm("SearchAdAccount", "SystemAccess", FormMethod.Post))
     {
         <div class="row" style="width: 300px;">
@@ -31,21 +35,19 @@
     <div class="panel-div" style="padding: 10px;">
         @if (Model != null & Model.SearchResults != null)
         {
+            int i = 0; //counter to uniquely name the checkbox results
+
             <div class="funkyradio">
                 @foreach (var user in Model.SearchResults)
                 {
+                    i++;
                     <div class="funkyradio-primary">
-                        <input type="checkbox" name="selectedUsers" value="@user.Item1" id="selectedUsers" />
-                        <label for="selectedUsers">@user.Item2</label>
+                        <input type="checkbox" name="selectedUsers" value="@user.Item1" id="selectedUsers@(i)"/>
+                        <label for="selectedUsers@(i)">@user.Item2</label>
                     </div>
 
                 }
-                <div class="flex-container">
-                    <div class="panel-footer">
 
-                        <div class="float-right-div">@Html.ActionLink("Clear", "UserAccess", null, new { @class = "btn btn-default" })</div>
-                    </div>
-                </div>
             </div>
 
 
@@ -57,4 +59,14 @@
         }
 
     </div>
+
+    <div class="flex-container">
+        <div class="panel-footer">
+
+            <div class="float-right-div">@Html.ActionLink("Clear", "UserAccess", null, new {@class = "btn btn-default"})</div>
+        </div>
+    </div>
+</div>
+<div class="panel-div float-right-div">
+    <div class="title-div">Roles</div>
 </div>
