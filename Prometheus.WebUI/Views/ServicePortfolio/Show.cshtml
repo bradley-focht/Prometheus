@@ -11,8 +11,8 @@
 }
 
 @section Sidebar {
-    @Html.Action("ShowServiceBundleList", Model.Id)   
-    }    
+    @Html.Action("ShowServiceBundleList", Model.Id)
+}
 
 
 @section Content {
@@ -21,7 +21,7 @@
             <div class="title-div">
                 @ViewBag.SubTitle
             </div>
-            <div class="panel">
+            <div class="panel-div">
                 @Html.Partial("Partialviews/ServiceBundleViewer", Model)
 
             </div>
@@ -31,8 +31,8 @@
                         @Html.ActionLink("Delete", "ConfirmDelete", new { id = Model.Id }, new { @class = "btn btn-danger" })
                         @Html.ActionLink("Update", "Update", new { id = Model.Id }, new { @class = "btn btn-primary" })
                     </div>
-                    <div class="float-left-div">                       
-                        @Html.ActionLink("Back", "Show", null, new {@class = "btn btn-default"})
+                    <div class="float-left-div">
+                        @Html.ActionLink("Back", "Show", null, new { @class = "btn btn-default" })
                     </div>
                 </div>
             </div>

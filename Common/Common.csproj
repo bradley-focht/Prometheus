@@ -58,6 +58,7 @@
     <Compile Include="Dto\IServiceDto.cs" />
     <Compile Include="Dto\IServiceGoalDto.cs" />
     <Compile Include="Dto\IServiceMeasureDto.cs" />
+    <Compile Include="Dto\IServiceProcessDto.cs" />
     <Compile Include="Dto\IServiceRequestOptionDto.cs" />
     <Compile Include="Dto\IServiceSwotDto.cs" />
     <Compile Include="Dto\IServiceWorkUnitDto.cs" />
@@ -72,11 +73,13 @@
     <Compile Include="Dto\ServiceDto.cs" />
     <Compile Include="Dto\ServiceGoalDto.cs" />
     <Compile Include="Dto\ServiceMeasureDto.cs" />
+    <Compile Include="Dto\ServiceProcessDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Enums\Pricing.cs" />
     <Compile Include="Enums\ServiceGoalType.cs" />
     <Compile Include="Enums\ServiceSections.cs" />
     <Compile Include="Enums\ServiceSwotType.cs" />

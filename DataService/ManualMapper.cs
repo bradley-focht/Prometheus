@@ -231,5 +231,36 @@ namespace DataService
             };
         }
 
+        public static ServiceProcessDto MapServiceProcessToDto(IServiceProcess src)
+        {
+            if (src == null) { return null; }
+
+            return new ServiceProcessDto
+            {
+                Id = src.Id,
+                Description = src.Description,
+                ServiceId = src.ServiceId,
+                Name = src.Name,
+                Improvements = src.Improvements,
+                Benefits = src.Benefits
+            };
+        }
+
+        public static ServiceProcess MapDtoToServiceProcess(IServiceProcessDto src)
+        {
+            if (src == null) { return null; }
+
+            return new ServiceProcess
+            {
+                Id = src.Id,
+                Description = src.Description,
+                ServiceId = src.ServiceId,
+                Name = src.Name,
+                Improvements = src.Improvements,
+                Benefits = src.Benefits
+            };
+        }
+
+
     }
 }

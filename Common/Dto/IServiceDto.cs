@@ -14,7 +14,6 @@ namespace Common.Dto
 		string ServiceOwner { get; set; }
 		ServiceTypeProvision ServiceTypeProvision { get; set; }
 		ServiceTypeRole ServiceTypeRole { get; set; }
-
 		IServiceBundleDto ServiceBundle { get; set; }
 		ILifecycleStatusDto LifecycleStatusDto { get; set; }
 		ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
@@ -24,5 +23,6 @@ namespace Common.Dto
 		ICollection<IServiceGoalDto> ServiceGoals { get; set; }
 		ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
 		ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
+        ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
 	}
 }

@@ -54,6 +54,7 @@ namespace DataService.Models
 		public virtual ICollection<ServiceSwot> ServiceSwots { get; set; }
 		public virtual ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		public virtual ICollection<ServiceDocument> ServiceDocuments { get; set; }
+        public virtual ICollection<ServiceProcess> ServiceProcesses { get; set; }
 		#endregion
 	}
 }

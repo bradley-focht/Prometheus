@@ -351,6 +351,10 @@
       <Project>{0f03baa4-ec68-446d-bdf4-64c689784dc1}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataService\DataService.csproj">
+      <Project>{7757884f-c8d9-48ac-a4d6-6238d0203431}</Project>
+      <Name>DataService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServicePortfolioService\ServicePortfolioService.csproj">
       <Project>{280599D6-A130-4AF9-89F0-D5D36A32C330}</Project>
       <Name>ServicePortfolioService</Name>

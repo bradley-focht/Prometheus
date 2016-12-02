@@ -3,7 +3,7 @@
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
-        if (!property.PropertyName.Contains("Id") && !property.PropertyName.Contains("Date"))
+        if (!property.PropertyName.Contains("Id") && !property.PropertyName.Contains("Date") && !property.PropertyName.Contains("Activ")) //remove Ids and SWOT activities
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>

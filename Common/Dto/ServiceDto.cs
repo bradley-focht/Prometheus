@@ -98,6 +98,8 @@ namespace Common.Dto
 		public virtual ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
 		public virtual ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
 	    public ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
-	    #endregion
-	}
+	    public ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
+	
+        #endregion
+    }
 }

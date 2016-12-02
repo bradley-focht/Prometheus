@@ -383,7 +383,6 @@ namespace Prometheus.WebUI.Controllers
 	    ///  function is generalized enough to handle all section items
 	    ///  deletion is specialized and has specialized actions to complete
 	    /// </summary>
-	    /// <param name="section"></param>
 	    /// <param name="id"></param>
 	    /// <returns></returns>
 	    public ActionResult ConfirmDeleteServiceGoalsItem(int id = 0)
@@ -402,7 +401,6 @@ namespace Prometheus.WebUI.Controllers
 
 			return RedirectToAction("Show", new { id = model.Serviceid, section = model.Section });
 		}
-
 
         #region Service Documents
 
@@ -508,6 +506,25 @@ namespace Prometheus.WebUI.Controllers
 	        return RedirectToAction("Show");
 	    }
 
+        public ActionResult ConfirmDeleteServiceDocument(Guid id)
+        {
+            var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            var document = sps.GetServiceDocument(id);
+            var service = sps.GetService(document.ServiceId);
+
+            var model = new ConfirmDeleteSectionItemModel
+            {
+                DeleteAction = "DeleteServiceDocument",
+                Id = document.Id,
+                ServiceId = document.ServiceId,
+                Section = "Documents",
+                Service = service.Name,
+                Name = document.Filename
+            };
+
+            return View("ConfirmDeleteSection", model);
+        }
+
         #endregion
 
         #region Lists
@@ -569,25 +586,5 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("PartialViews/_LinkList", servicesModel);
         }
         #endregion
-
-        public ActionResult ConfirmDeleteServiceDocument(Guid id)
-	    {
-            var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-	        var document = sps.GetServiceDocument(id);
-	        var service = sps.GetService(document.ServiceId);
-
-            var model = new ConfirmDeleteSectionItemModel
-            {
-                DeleteAction = "DeleteServiceDocument",
-                Id = document.Id, 
-                ServiceId = document.ServiceId,
-                Section = "Documents",
-                Service = service.Name,
-                Name = document.Filename
-            };
-
-	        return View("ConfirmDeleteSection", model);
-	    }
-
     }
 }

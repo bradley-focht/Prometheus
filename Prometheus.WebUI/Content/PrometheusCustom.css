@@ -9,7 +9,7 @@
     white-space: nowrap;
     font-weight: 600;
     padding: 5px 5px;
-    margin-bottom: 10px; 
+    margin-bottom: 10px;
 }
 
 .copyright-notice {
@@ -45,18 +45,19 @@
     margin-left: 10px;
     display: inline-block;
 }
-.hamburger-menu:hover {
-    color: #fff;
-}
 
-.hamburger-menu:active{
-    outline: 0;
-  -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-          box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-}
+    .hamburger-menu:hover {
+        color: #fff;
+    }
+
+    .hamburger-menu:active {
+        outline: 0;
+        -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+        box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    }
 
 .font-home-link {
-    color:#19A7F8;    
+    color: #19A7F8;
     font-weight: 600;
     font-size: 15px;
 }
@@ -68,8 +69,8 @@
 }
 
 .flex-container {
-    display: flex; 
-    min-height: 100%; 
+    display: flex;
+    min-height: 100%;
     flex-direction: column;
 }
 
@@ -92,7 +93,6 @@
 .std-div {
     display: inline-block;
     background-color: #fff;
-
 }
 
 .float-right-div {
@@ -151,24 +151,26 @@
     border-radius: 5px;
 }
 
-.bg-primary > a {
-    color: #ffffff;
-}
+    .bg-primary > a {
+        color: #ffffff;
+    }
 
-.bg-primary:hover {
-	background-color: #19A7F8;
-}
+    .bg-primary:hover {
+        background-color: #19A7F8;
+    }
 
 
 .bg-default {
     padding: 3px 6px;
-	border-radius: 4px;
-	border: 1px solid transparent;
+    border-radius: 4px;
+    border: 1px solid transparent;
 }
-.bg-default:hover {
-	background-color: #eeeeee;
-    border-color: #cccccc;
-}
+
+    .bg-default:hover {
+        background-color: #eeeeee;
+        border-color: #cccccc;
+    }
+
 .dd-sp {
     padding-bottom: 10px;
 }
@@ -201,11 +203,10 @@
 }
 
 .ul-menu {
-  list-style-type: none;
-  padding: 0;
-  margin: 5px;
-  font-size: 12px;
-
+    list-style-type: none;
+    padding: 0;
+    margin: 5px;
+    font-size: 12px;
 }
 
 .field-validation-error {
@@ -228,138 +229,264 @@
 }
 
 .panel-div {
-    padding: 10px 10px;
+    display: flex;
+    min-height: 100%;
+    flex-direction: column;
 }
 
 /* file upload */
-.clearfix{*zoom:1;}.clearfix:before,.clearfix:after{display:table;content:"";line-height:0;}
-.clearfix:after{clear:both;}
-.hide-text{font:0/0 a;color:transparent;text-shadow:none;background-color:transparent;border:0;}
-.input-block-level{display:block;width:100%;min-height:30px;-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box;}
-.btn-file{overflow:hidden;position:relative;vertical-align:middle;}.btn-file>input{position:absolute;top:0;right:0;margin:0;opacity:0;filter:alpha(opacity=0);transform:translate(-300px, 0) scale(4);font-size:23px;direction:ltr;cursor:pointer;}
-.fileupload{margin-bottom:9px;}.fileupload .uneditable-input{display:inline-block;margin-bottom:0px;vertical-align:middle;cursor:text;}
-.fileupload .thumbnail{overflow:hidden;display:inline-block;margin-bottom:5px;vertical-align:middle;text-align:center;}.fileupload .thumbnail>img{display:inline-block;vertical-align:middle;max-height:100%;}
-.fileupload .btn{vertical-align:middle;}
-.fileupload-exists .fileupload-new,.fileupload-new .fileupload-exists{display:none;}
-.fileupload-inline .fileupload-controls{display:inline;}
-.fileupload-new .input-append .btn-file{-webkit-border-radius:0 3px 3px 0;-moz-border-radius:0 3px 3px 0;border-radius:0 3px 3px 0;}
-.thumbnail-borderless .thumbnail{border:none;padding:0;-webkit-border-radius:0;-moz-border-radius:0;border-radius:0;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none;}
-.fileupload-new.thumbnail-borderless .thumbnail{border:1px solid #ddd;}
-.control-group.warning .fileupload .uneditable-input{color:#a47e3c;border-color:#a47e3c;}
-.control-group.warning .fileupload .fileupload-preview{color:#a47e3c;}
-.control-group.warning .fileupload .thumbnail{border-color:#a47e3c;}
-.control-group.error .fileupload .uneditable-input{color:#b94a48;border-color:#b94a48;}
-.control-group.error .fileupload .fileupload-preview{color:#b94a48;}
-.control-group.error .fileupload .thumbnail{border-color:#b94a48;}
-.control-group.success .fileupload .uneditable-input{color:#468847;border-color:#468847;}
-.control-group.success .fileupload .fileupload-preview{color:#468847;}
-.control-group.success .fileupload .thumbnail{border-color:#468847;}
+.clearfix {
+    *zoom: 1;
+}
+
+    .clearfix:before, .clearfix:after {
+        display: table;
+        content: "";
+        line-height: 0;
+    }
+
+    .clearfix:after {
+        clear: both;
+    }
+
+.hide-text {
+    font: 0/0 a;
+    color: transparent;
+    text-shadow: none;
+    background-color: transparent;
+    border: 0;
+}
+
+.input-block-level {
+    display: block;
+    width: 100%;
+    min-height: 30px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.btn-file {
+    overflow: hidden;
+    position: relative;
+    vertical-align: middle;
+}
+
+    .btn-file > input {
+        position: absolute;
+        top: 0;
+        right: 0;
+        margin: 0;
+        opacity: 0;
+        filter: alpha(opacity=0);
+        transform: translate(-300px, 0) scale(4);
+        font-size: 23px;
+        direction: ltr;
+        cursor: pointer;
+    }
+
+.fileupload {
+    margin-bottom: 9px;
+}
+
+    .fileupload .uneditable-input {
+        display: inline-block;
+        margin-bottom: 0px;
+        vertical-align: middle;
+        cursor: text;
+    }
+
+    .fileupload .thumbnail {
+        overflow: hidden;
+        display: inline-block;
+        margin-bottom: 5px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+        .fileupload .thumbnail > img {
+            display: inline-block;
+            vertical-align: middle;
+            max-height: 100%;
+        }
+
+    .fileupload .btn {
+        vertical-align: middle;
+    }
+
+.fileupload-exists .fileupload-new, .fileupload-new .fileupload-exists {
+    display: none;
+}
+
+.fileupload-inline .fileupload-controls {
+    display: inline;
+}
+
+.fileupload-new .input-append .btn-file {
+    -webkit-border-radius: 0 3px 3px 0;
+    -moz-border-radius: 0 3px 3px 0;
+    border-radius: 0 3px 3px 0;
+}
+
+.thumbnail-borderless .thumbnail {
+    border: none;
+    padding: 0;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    border-radius: 0;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+.fileupload-new.thumbnail-borderless .thumbnail {
+    border: 1px solid #ddd;
+}
+
+.control-group.warning .fileupload .uneditable-input {
+    color: #a47e3c;
+    border-color: #a47e3c;
+}
+
+.control-group.warning .fileupload .fileupload-preview {
+    color: #a47e3c;
+}
+
+.control-group.warning .fileupload .thumbnail {
+    border-color: #a47e3c;
+}
+
+.control-group.error .fileupload .uneditable-input {
+    color: #b94a48;
+    border-color: #b94a48;
+}
+
+.control-group.error .fileupload .fileupload-preview {
+    color: #b94a48;
+}
+
+.control-group.error .fileupload .thumbnail {
+    border-color: #b94a48;
+}
+
+.control-group.success .fileupload .uneditable-input {
+    color: #468847;
+    border-color: #468847;
+}
+
+.control-group.success .fileupload .fileupload-preview {
+    color: #468847;
+}
+
+.control-group.success .fileupload .thumbnail {
+    border-color: #468847;
+}
 
 /* check boxes by momodinium */
 .funkyradio div {
-  clear: both;
-  overflow: hidden;
+    clear: both;
+    overflow: hidden;
 }
 
 .funkyradio label {
-  width: 100%;
-  font-weight: normal;
+    width: 100%;
+    font-weight: normal;
     font-style: italic;
 }
 
 .funkyradio input[type="radio"]:empty,
 .funkyradio input[type="checkbox"]:empty {
-  display: none;
+    display: none;
 }
 
-.funkyradio input[type="radio"]:empty ~ label,
-.funkyradio input[type="checkbox"]:empty ~ label {
-  position: relative;
-  line-height: 25px;
-  text-indent: 3.25em;
-  margin-top: 2em;
-  cursor: pointer;
-  -webkit-user-select: none;
-     -moz-user-select: none;
-      -ms-user-select: none;
-          user-select: none;
-}
+    .funkyradio input[type="radio"]:empty ~ label,
+    .funkyradio input[type="checkbox"]:empty ~ label {
+        position: relative;
+        line-height: 25px;
+        text-indent: 3.25em;
+        margin-top: 2em;
+        cursor: pointer;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
 
-.funkyradio input[type="radio"]:empty ~ label:before,
-.funkyradio input[type="checkbox"]:empty ~ label:before {
-  position: absolute;
-  display: block;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  content: '';
-  width: 2.5em;
-  background: #D1D3D4;
-  border-radius: 3px 0 0 3px;
-}
+        .funkyradio input[type="radio"]:empty ~ label:before,
+        .funkyradio input[type="checkbox"]:empty ~ label:before {
+            position: absolute;
+            display: block;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            content: '';
+            width: 2.5em;
+            background: #D1D3D4;
+            border-radius: 3px 0 0 3px;
+        }
 
 .funkyradio input[type="radio"]:hover:not(:checked) ~ label,
 .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label {
-  color: #888;
+    color: #888;
 }
 
-.funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
-.funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
-  content: '\2714';
-  text-indent: .9em;
-  color: #C2C2C2;
-}
+    .funkyradio input[type="radio"]:hover:not(:checked) ~ label:before,
+    .funkyradio input[type="checkbox"]:hover:not(:checked) ~ label:before {
+        content: '\2714';
+        text-indent: .9em;
+        color: #C2C2C2;
+    }
 
 .funkyradio input[type="radio"]:checked ~ label,
 .funkyradio input[type="checkbox"]:checked ~ label {
-  color: #777;
+    color: #777;
 }
 
-.funkyradio input[type="radio"]:checked ~ label:before,
-.funkyradio input[type="checkbox"]:checked ~ label:before {
-  content: '\2714';
-  text-indent: .9em;
-  color: #333;
-  background-color: #ccc;
-}
+    .funkyradio input[type="radio"]:checked ~ label:before,
+    .funkyradio input[type="checkbox"]:checked ~ label:before {
+        content: '\2714';
+        text-indent: .9em;
+        color: #333;
+        background-color: #ccc;
+    }
 
 .funkyradio input[type="radio"]:focus ~ label:before,
 .funkyradio input[type="checkbox"]:focus ~ label:before {
-  box-shadow: 0 0 0 3px #999;
+    box-shadow: 0 0 0 3px #999;
 }
 
 .funkyradio-default input[type="radio"]:checked ~ label:before,
 .funkyradio-default input[type="checkbox"]:checked ~ label:before {
-  color: #333;
-  background-color: #ccc;
+    color: #333;
+    background-color: #ccc;
 }
 
 .funkyradio-primary input[type="radio"]:checked ~ label:before,
 .funkyradio-primary input[type="checkbox"]:checked ~ label:before {
-  color: #fff;
-  background-color: #337ab7;
+    color: #fff;
+    background-color: #337ab7;
 }
 
 .funkyradio-success input[type="radio"]:checked ~ label:before,
 .funkyradio-success input[type="checkbox"]:checked ~ label:before {
-  color: #fff;
-  background-color: #5cb85c;
+    color: #fff;
+    background-color: #5cb85c;
 }
 
 .funkyradio-danger input[type="radio"]:checked ~ label:before,
 .funkyradio-danger input[type="checkbox"]:checked ~ label:before {
-  color: #fff;
-  background-color: #d9534f;
+    color: #fff;
+    background-color: #d9534f;
 }
 
 .funkyradio-warning input[type="radio"]:checked ~ label:before,
 .funkyradio-warning input[type="checkbox"]:checked ~ label:before {
-  color: #fff;
-  background-color: #f0ad4e;
+    color: #fff;
+    background-color: #f0ad4e;
 }
 
 .funkyradio-info input[type="radio"]:checked ~ label:before,
 .funkyradio-info input[type="checkbox"]:checked ~ label:before {
-  color: #fff;
-  background-color: #5bc0de;
+    color: #fff;
+    background-color: #5bc0de;
 }
