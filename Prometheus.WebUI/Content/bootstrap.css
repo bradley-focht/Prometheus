@@ -4473,6 +4473,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
 .navbar-inverse {
   background-color: #224b6a;
   border-color: #262626;
+    height: 45px;
 }
 
 .navbar-inverse .navbar-brand {
@@ -4971,7 +4972,7 @@ a.thumbnail:focus {
 }
 
 .alert {
-  padding: 10px;
+  padding: 5px;
   border: 1px solid transparent;
   border-radius: 4px;
   position: relative;
@@ -4981,10 +4982,6 @@ a.thumbnail:focus {
 .alert h4 {
   margin-top: 0;
   color: inherit;
-}
-
-.alert .alert-link {
-  font-weight: bold;
 }
 
 .alert > p,
@@ -5051,7 +5048,7 @@ a.thumbnail:focus {
 
 .alert-danger {
   color: #b92a28;
-    background-color: #f8bebe;
+  background-color: #f8bebe;
 }
 
 .alert-danger hr {
@@ -5300,8 +5297,7 @@ a.list-group-item:focus {
   background-color: #ffffff;
   border: 1px solid transparent;
   border-radius: 4px;
-  -webkit-box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
-          box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
+    padding: 10px 0;
     display:inline-block;
 }
 

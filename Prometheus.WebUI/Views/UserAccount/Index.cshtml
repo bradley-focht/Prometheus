@@ -7,7 +7,7 @@
 
     @Html.AntiForgeryToken()
     <div class="content-body">
-        <div class="panel panel-primary">
+        <div class="panel-primary" style="width: 600px;">
             <div class="panel-heading">
                 <h3 class="panel-title"><strong>Prometheus ITSM Login</strong></h3>
                 <section style="margin-top: 10px;">
@@ -22,9 +22,19 @@
             <div class="panel-body">
                 @if (TempData["MessageType"] != null && TempData["Message"] != null)
                 {
-                    <div class="flex-container alert alert-dismissable alert-danger close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px; font-size: 1em;">
-                        <div class="float-left-div;">&times;</div>
-                        <div class="float-right-div">@TempData["Message"]</div>
+                    <div class="alert alert-dismissable alert-danger close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
+                        <table>
+                            <tr>
+                            <td>
+
+
+                                <div class="float-left-div;">&times;</div>
+                            </td><td>
+                                    @TempData["Message"]
+
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 }
 

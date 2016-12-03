@@ -21,11 +21,10 @@
     {
     @if (Model.Service.Id > 0)
     {
-
         <div class="panel-heading">
             @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
         </div>
-        <div class="panel-body">
+        <div class="panel">
 
 
             @switch (Model.SelectedSection)

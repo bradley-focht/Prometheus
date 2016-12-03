@@ -7,7 +7,7 @@
     <tr>
         <td class="dt-cell">Name</td>
         <td class="dd-cell">
-            @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+            @Html.TextBox("Name", Model.Name, new {@class = "form-control"})
             @Html.ValidationMessageFor(model => model.Name)
         </td>
     </tr>
@@ -16,7 +16,7 @@
     <tr>
         <td class="dt-cell">Description</td>
         <td class="dd-cell">
-            @Html.TextArea("Description", Model.Description, new { @class = "ckeditor" })
+            @Html.TextArea("Description", Model.Description, new {@class = "ckeditor"})
 
         </td>
     </tr>
@@ -24,7 +24,7 @@
     <tr>
         <td class="dt-cell">Business Owner</td>
         <td class="dd-cell">
-            @Html.TextBox("Service Owner", Model.BusinessOwner, new { @class = "form-control" })
+            @Html.TextBox("Service Owner", Model.BusinessOwner, new {@class = "form-control"})
 
         </td>
     </tr>
@@ -33,7 +33,7 @@
     <tr>
         <td class="dt-cell">Business Owner</td>
         <td class="dd-cell">
-            @Html.TextBox("Business Owner", Model.BusinessOwner, new { @class = "form-control" })
+            @Html.TextBox("Business Owner", Model.BusinessOwner, new {@class = "form-control"})
 
         </td>
     </tr>
@@ -49,11 +49,11 @@
                     </td>
                     <td class="dd-cell">
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default">
+                            <label class="btn btn-default" id="@ServiceTypeRole.Business">
                                 @Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Business, false) Customer-facing
                             </label>
 
-                            <label class="btn btn-default">
+                            <label class="btn btn-default" id="@ServiceTypeRole.Supporting">
                                 @Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Supporting, false) Supporting
                             </label>
                         </div>
@@ -65,10 +65,10 @@
                     </td>
                     <td class="dd-cell">
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default">
+                            <label class="btn btn-default" id="@ServiceTypeProvision.Internal">
                                 @Html.RadioButton("ServiceTypeProvision", ServiceTypeProvision.Internal, false) Internal
                             </label>
-                            <label class="btn btn-default">
+                            <label class="btn btn-default" id="@ServiceTypeProvision.External">
                                 @Html.RadioButton("ServiceTypeProvision", ServiceTypeProvision.External, false) External
                             </label>
                         </div>
@@ -83,15 +83,22 @@
     <tr>
         <td class="dt-cell">Lifecycle Status</td>
         <td class="dd-cell">
-            @Html.Action("ShowLifecycleStatuses", new { selectedId = Model.LifecycleStatusId})
+            @Html.Action("ShowLifecycleStatuses", new {selectedId = Model.LifecycleStatusId})
             @Html.ValidationMessageFor(model => model.LifecycleStatusId)
         </td>
     </tr>
     <tr>
         <td class="dt-cell">Service Bundle</td>
         <td class="dd-cell">
-            @Html.Action("ShowServiceBundles", new { selectedId = Model.ServiceBundleId})
+            @Html.Action("ShowServiceBundles", new {selectedId = Model.ServiceBundleId})
             @Html.ValidationMessageFor(model => model.ServiceBundleId)
         </td>
     </tr>
 </table>
+
+
+
+<script type="text/javascript" language="javascript">
+    $('#@(Model.ServiceTypeProvision)').button('toggle');
+    $('#@(Model.ServiceTypeRole)').button('toggle');
+</script>

@@ -2,7 +2,8 @@
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 @{
-    ViewBag.Title = "Update " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
+    ViewBag.Title = "Services";
+    ViewBag.SubTitle = "Update " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
@@ -22,7 +23,7 @@
     @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
     {
         <div class="title-div">
-            @ViewBag.Title
+            @ViewBag.SubTitle
         </div>
         <div class="panel">
             @switch (Model.Section)
@@ -35,12 +36,11 @@
                 case "General":
                     @Html.Partial("PartialViews/UpdateGeneral", Model.Service)
                     break;
-
                 case "Goals":
                     @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                     break;
                 case "Swot":
-                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceSwotDto())
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto())
                     break;
                 case "WorkUnits":
                     @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())

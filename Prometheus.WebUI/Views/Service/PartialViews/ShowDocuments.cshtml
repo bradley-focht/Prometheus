@@ -1,52 +1,53 @@
 ﻿@model Common.Dto.ServiceDto
 
+<div class="panel">
 
+    @if (Model.ServiceDocuments != null && Model.ServiceDocuments.Any())
+    {
 
-@if (Model.ServiceDocuments != null && Model.ServiceDocuments.Any())
-{
-    <table class="table table-hover">
-        <thead>
-            <tr>
-                <th style="min-width: 160px;"><label class="font-title-initial">File</label></th>
-                <th style="width: 100px;"><label class="font-title-initial">Date</label></th>
-                <th><label class="font-title-initial">Uploader</label></th>
-                <th></th>
-            </tr>
-        </thead>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th style="min-width: 160px;"><label class="table-title">File</label></th>
+                    <th style="width: 100px;"><label class="font-title-initial">Date</label></th>
+                    <th><label class="font-title-initial">Uploader</label></th>
+                    <th></th>
+                </tr>
+            </thead>
 
-        @foreach (var document in Model.ServiceDocuments)
-        {
-            <tr>
-                <td>@Html.ActionLink(document.Filename, "DownloadServiceDocument", new { id = document.StorageNameGuid })</td>
-                <td>@document.UploadDate</td>
-                <td>@document.Uploader</td>
-                <td>
-                    <div class="btn-group">
-                        <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                            <span aria-hidden="true">&#x25BC;</span>
+            @foreach (var document in Model.ServiceDocuments)
+            {
+                <tr>
+                    <td>@Html.ActionLink(document.Filename, "DownloadServiceDocument", new { id = document.StorageNameGuid })</td>
+                    <td>@document.UploadDate</td>
+                    <td>@document.Uploader</td>
+                    <td>
+                        <div class="btn-group">
+                            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                <span aria-hidden="true">&#x25BC;</span>
+                            </div>
+                            <div class="dropdown-menu">
+                                <ul class="ul-menu">
+                                    <li>
+                                        @Html.ActionLink("Rename", "UpdateServiceDocument", new { id = document.StorageNameGuid })
+                                    </li>
+
+                                    <li>
+                                        @Html.ActionLink("Delete", "ConfirmDeleteServiceDocument", new { id = document.StorageNameGuid, section = "Documents" })
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                        <div class="dropdown-menu">
-                            <ul class="ul-menu">
-                                <li>
-                                    @Html.ActionLink("Rename", "UpdateServiceDocument", new { id = document.StorageNameGuid })
-                                </li>
-
-                                <li>
-                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceDocument", new { id = document.StorageNameGuid, section = "Documents" })
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        }
-    </table>
-}
-else
-{
-  <div class="alert alert-warning">No files exist</div>
-}
-
+                    </td>
+                </tr>
+            }
+        </table>
+    }
+    else
+    {
+        <div class="alert alert-warning">No files exist</div>
+    }
+</div>
 
 @using (Html.BeginForm("UploadServiceDocument", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {

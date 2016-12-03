@@ -8,6 +8,7 @@ using System.Configuration;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
+using Common.Enums;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 
@@ -26,8 +27,6 @@ namespace Prometheus.WebUI.Controllers
             var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
             return View(ps.GetServices());
 		}
-
-
 
 		/// <summary>
 		/// Navigation Control, entity names are coded here
@@ -107,6 +106,14 @@ namespace Prometheus.WebUI.Controllers
             //return to a vew that will let the user now add to the SDP of the service
             return RedirectToAction("Show", new { section = "General", id = newId});
 		}
+
+
+	    [HttpPost]
+	    public ActionResult SaveSwotItem(ServiceSwotDto swotItem)
+	    {
+	        return RedirectToAction("Show", new {section = "Swot", id = swotItem.ServiceId});
+	    }
+
 
 		/// <summary>
 		/// Save and update work units
@@ -202,7 +209,6 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
 		}
 
-
 		[ChildActionOnly]
 		public ActionResult ShowServiceMeasures(ServiceDto service)
 		{
@@ -226,7 +232,7 @@ namespace Prometheus.WebUI.Controllers
 			SwotTableModel model = new SwotTableModel();
 
 			model.Opportunities = new List<IServiceSwotDto> { new ServiceSwotDto { Id = 1, Item = "Room for more beers" } };
-			model.ServiceId = 10;
+			model.ServiceId = 1;
 
 			return PartialView("PartialViews/ShowSwotTable", model);
 		}
@@ -235,8 +241,9 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowSwotActivities(ICollection<ServiceSwotDto> activities)
 		{
 			TableDataModel model = new TableDataModel();
-			model.Action = "ShowSwotActivityItem";
-			model.Titles = new List<string> { "Item" };
+			model.Action = "ShowServiceSectionItem";
+		    model.ServiceSection = "SwotActivity";
+			model.Titles = new List<string> { "Item", "Date" };
 			model.Data = new List<Tuple<int, IEnumerable<string>>> { new Tuple<int, IEnumerable<string>>(1, new List<string> { "find love on campus" }) };
 
 			return View("PartialViews/_TableViewer", model);
@@ -334,7 +341,9 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceSectionItem(string section, int id = 0)
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
-			model.Section = section;
+		    SwotActivityDto activity = new SwotActivityDto {Id = 10, Name = "Test item", Date = DateTime.Now};
+
+            model.Section = section;
 			model.Service = new ServiceDto();
 			model.Service.Name = "Support Services";
 			model.Service.Id = id;
@@ -342,6 +351,12 @@ namespace Prometheus.WebUI.Controllers
 			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Id = 1, ServiceId = 10, Description = "some new goal goes here", Name = "new goal to acheive", StartDate = DateTime.Now, EndDate = DateTime.Now} }.ToArray();
 			model.Service.ServiceWorkUnits = new List<IServiceWorkUnitDto>(new List<IServiceWorkUnitDto> { new ServiceWorkUnitDto { Id = 1, WorkUnit = "some team", Contact = "a manager", Responsibilities = "keep out of trouble" } });
 			model.Service.ServiceContracts = new List<IServiceContractDto>(new List<IServiceContractDto>());
+		    model.Service.ServiceSwots = new List<IServiceSwotDto>();
+            model.Service.ServiceSwots.Add(new ServiceSwotDto {Id = 1, Description = "new test", Item = "new test", SwotActivities = new List<ISwotActivityDto>(
+                new List<ISwotActivityDto>(new List<ISwotActivityDto> {new SwotActivityDto {Id = 1, Name = "Test activity", ServiceSwotId = 1, Date = DateTime.Now} }))});
+            
+		       
+            
 			model.Service.ServiceMeasures = new List<IServiceMeasureDto>();
 
 			return View("ShowSectionItem", model);
@@ -359,7 +374,6 @@ namespace Prometheus.WebUI.Controllers
 			return View("UpdateSectionItem", model);
 		}
 
-
 		public ActionResult UpdateSwotItem(int id)
 		{
 			return View("PartialViews/UpdateSwotItem");
@@ -367,13 +381,15 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult AddServiceSectionItem(string section, int id = 0)
 		{
-			var model = new ServiceSectionModel();
-			model.Section = section;
-			model.Service = new ServiceDto();
-			model.Service.Name = "Support Services";
-			model.Service.Id = 10;
-			model.Service.ServiceOwner = "Donald Trump";
-			model.Service.Description = "This service will build a great, great wall. Mark my words, it will be a great wall. <ul><li>tall</li><li>long<li><ul>";
+		    if (id == 0)
+		        return RedirectToAction("Show");
+
+            var model = new ServiceSectionModel();
+            model.Section = section;
+
+            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+
+		    model.Service = ps.GetService(id);
 
 			return View("AddSectionItem", model);
 		}

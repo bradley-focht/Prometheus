@@ -4,7 +4,10 @@
 @Html.Hidden("Name", (string)Model.Name)
 
 
-<div class="title-div">Confirm Deletion</div><text>Are you sure you want to delete lifecycle status:</text>
-<section class="present-section">
-    @Model.Name
-</section>
+<div class="title-div">Confirm Deletion</div>
+<div class="panel-body">
+    Are you sure you want to delete lifecycle status:
+    <section class="present-section">
+        @Model.Name
+    </section>
+</div>

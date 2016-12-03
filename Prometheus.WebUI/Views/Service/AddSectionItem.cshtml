@@ -21,11 +21,10 @@
 {
     @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
     {
-        <div class="panel">
             <div class="title-div">
                 @ViewBag.Title
             </div>
-            <div class="panel-body">
+            <div class="panel">
 
                 @switch (Model.Section)
                 {
@@ -33,7 +32,7 @@
                         @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
                         break;
                     case "Swot":
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceSwotDto())
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto {ServiceId = Model.Service.Id})
                         break;
                     case "Contracts":
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto())
@@ -54,7 +53,6 @@
                     </div>
                 </div>
             </div>
-        </div>
     }
 }
 

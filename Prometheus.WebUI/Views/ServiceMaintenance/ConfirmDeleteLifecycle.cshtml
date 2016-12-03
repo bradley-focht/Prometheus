@@ -12,9 +12,7 @@
 }
 
 
-@section Sidebar
-{
-}
+@section Sidebar { }
 
 @section Content
 {
@@ -24,14 +22,14 @@
 
         <div class="flex-container">
             <div class="panel-footer">
+
+                <div class="float-right-div">
+                    <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+                </div>
+
                 <div class="float-left-div">
                     @Html.ActionLink("Back", "ShowLifecycle", new {id = Model.Id}, new {@class = "btn btn-default"})
-
                 </div>
-                <div class="float-right-div">
-                    <input type="submit" value="Confirm Delete" class="btn btn-danger" />
-                </div>
-
             </div>
         </div>
     }

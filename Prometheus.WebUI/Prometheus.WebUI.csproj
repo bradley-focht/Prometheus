@@ -246,8 +246,11 @@
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\ITile.cs" />
     <Compile Include="Helpers\ServiceDocumentHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
+    <Compile Include="Helpers\Tile.cs" />
+    <Compile Include="Helpers\TileSets.cs" />
     <Compile Include="Helpers\WebMessageType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />

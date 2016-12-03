@@ -2,46 +2,47 @@
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.HtmlHelpers
 
-<div class="navbar-inverse navbar-fixed-top" style="height: 44px;">
+<div class="navbar-inverse navbar-fixed-top">
 
-    <div class="flex-container content-body">
+    <div class="content-body">
 
-        <table style="width: 100%">
+        <div class="row">
 
-            <tr>
-                <td style="width: 80%">
+            
+                <div class="col-md-9">
                     <div class="float-left-div">
                         <label class="navbar-brand">@ViewBag.Title</label>
                     </div>
-                </td>
-                <td style="vertical-align: central">
+                </div>
+            <div class="col-md-2">
+                <div style="padding-top: 15px; text-align: right;">
                     <span class="font-inverse">@Session["DisplayName"]</span>
-                    <div class="float-right-div" style="width: 50%;">
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="dropdown">
 
-                        <div class="dropdown">
+                        <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <ul class="list-unstyled">
+                                <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
+                                <li><span class="dropdown-item">Sean's special hamburger menu</span></li>
 
-                            <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
-                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <ul class="list-unstyled">
-                                    <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
-                                    <li><span class="dropdown-item">Sean's special hamburger menu</span></li>
-
-                                </ul>
-                                <div class="dropdown-divider"></div>
-                                <span class="dropdown-header" style="font-size: 1em;">Roles</span>
-                                <ul class="list-unstyled">
-                                    <li>God Mode</li>
-                                    <li>Human</li>
-                                    <li>Infidel</li>
-                                    <li>Deadbeat</li>
-                                    <li>Guest</li>
-                                </ul>
-                            </div>
+                            </ul>
+                            <div class="dropdown-divider"></div>
+                            <span class="dropdown-header" style="font-size: 1em;">Roles</span>
+                            <ul class="list-unstyled">
+                                <li>God Mode</li>
+                                <li>Human</li>
+                                <li>Infidel</li>
+                                <li>Deadbeat</li>
+                                <li>Guest</li>
+                            </ul>
                         </div>
                     </div>
-                </td>
-            </tr>
-        </table>
+
+                </div>
+        </div>
     </div>
 
 </div>

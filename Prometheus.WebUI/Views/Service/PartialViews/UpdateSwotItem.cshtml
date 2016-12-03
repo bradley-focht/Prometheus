@@ -1,43 +1,39 @@
 ﻿@using Common.Enums
 @model Common.Dto.ServiceSwotDto
+
+@Html.Hidden("ServiceId", Model.ServiceId)
+
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
-        if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Activities"))
+        if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Activities") || property.PropertyName.Contains("Date"))
         {
             continue;
         }
+
         <tr>
             <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-            @if (property.PropertyName != null && property.PropertyName == "Type")
-            {
 
+            @if (property.PropertyName == "Type")
+            {
                 <td class="dd-cell">
                     <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default">
-                            @Html.RadioButton("SwotType", "Strength",
-                                new { id = "SwotType" }) Strength
-                        </label>
+                        @foreach (var type in Enum.GetValues(typeof(ServiceSwotType)))
+                        {
 
-                        <label class="btn btn-default">
-                            @Html.RadioButton("SwotType", "Weakness",
-                                new { id = "SwotType" }) Weakness
+                        <label class="btn btn-default" id="type">
+                            @Html.RadioButton("Type", type) type
                         </label>
-                        <label class="btn btn-default">
-                            @Html.RadioButton("SwotType", "Opportunity",
-                                new { id = "SwotType" }) Opportunity
-                        </label>
-                        <label class="btn btn-default">
-                            @Html.RadioButton("SwotType", "Threat",
-                                new { id = "SwotType" }) Threat
-                        </label>
+                        }
 
+   
                     </div>
-
                 </td>
             }
-            else {if (property.PropertyName == "Description")
+            else if (property.PropertyName == "Description")
             {
+
+
                 <td class="dd-cell">
                     @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
                 </td>
@@ -47,9 +43,7 @@
                 <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
 
             }
-            }
+
         </tr>
     }
-
-
 </table>

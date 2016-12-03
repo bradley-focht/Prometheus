@@ -1,11 +1,10 @@
 ﻿@model Common.Dto.ILifecycleStatusDto
 
-<div class="std-div panel">
     @using (Html.BeginForm("SaveLifecycle", "ServiceMaintenance", FormMethod.Post))
     {
         <div class="title-div">@ViewBag.Title</div>
 
-        <div class="panel-body form-group">
+        <div class="panel-body">
             @Html.HiddenFor(m => Model.Id)
             <table>
                 @foreach (var property in ViewData.ModelMetadata.Properties)
@@ -18,9 +17,9 @@
                     <tr>
                         <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
                         @switch (property.PropertyName)
-                        {
-                            case "CatalogVisible":
-         
+                    {
+                        case "CatalogVisible":
+
 
                                 <td class="dd-cell">
 
@@ -36,11 +35,11 @@
                                         </div>
                                     </div>
                                     <script language="javascript" type="text/javascript">
-                                    @if ((bool)property.Model && Model.Id > 0 )
+                                    @if ((bool) property.Model && Model.Id > 0)
                                     {
                                         <text>$('#catalogVisibleTrue').button('toggle');</text>
                                     }
-                                    else if (!(bool)property.Model && Model.Id > 0)
+                                    else if (!(bool) property.Model && Model.Id > 0)
                                     {
                                         <text>$('#catalogVisibleFalse').button('toggle');</text>
                                     }
@@ -51,13 +50,13 @@
                                 break;
                             case "Position":
                                 <td class="dd-cell">
-                                    @Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem {Text = i.ToString(), Value = i.ToString()}))
+                                    @Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
                                     @Html.ValidationMessage(property.PropertyName)
                                 </td>
                                 break;
                             default:
                                 <td class="dd-cell">
-                                    @Html.TextBox(property.PropertyName, null, new {@class = "form-control"})
+                                    @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
                                     @Html.ValidationMessage(property.PropertyName)
                                 </td>
                                 break;
@@ -65,6 +64,7 @@
                     </tr>
                 }
             </table>
+        </div>
             <div class="flex-container">
                 <div class="panel-footer">
                     <div class="float-right-div">
@@ -72,11 +72,10 @@
                     </div>
 
                     <div class="float-left-div">
-                        @Html.ActionLink("Cancel", "ShowLifecycle", null, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Back", "ShowLifecycle", null, new { @class = "btn btn-default" })
                     </div>
 
                 </div>
             </div>
-        </div>
+
     }
-</div>

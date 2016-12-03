@@ -7,13 +7,12 @@
     }
     else
     {
-        pixels = (Model.Titles.Count()*120)%501;
+        pixels = (Model.Titles.Count() * 120) % 501;
     }
 
     string width = pixels + "px";
 }
 
-<div class="std-div">
     @if (Model.Titles != null)
     {
 
@@ -21,11 +20,10 @@
             <thead>
                 <tr>
                     @foreach (string title in Model.Titles)
-                {
-
-                        <th><label class="font-title-initial">@title</label></th>
-
+                    {
+                        <th><span class="table-title">@title</span></th>
                     }
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -35,18 +33,18 @@
                     <tr>
                         @foreach (string data in row.Item2)
                     {
-                        <td>
-                            @if (firstCol)
-                            {
-                                @Html.ActionLink(data, Model.Action, "Service", new {section = Model.ServiceSection, id = row.Item1}, null)
-                                firstCol = false;
-                            }
-                            else
-                            {
-                                @Html.Raw(data)
-                            }
-                        </td>
-  
+                            <td>
+                                @if (firstCol)
+                                {
+                                    @Html.ActionLink(data, Model.Action, "Service", new { section = Model.ServiceSection, id = row.Item1 }, null)
+                                    firstCol = false;
+                                }
+                                else
+                                {
+                                    @Html.Raw(data)
+                                }
+                            </td>
+
                         }
                         <td>
 
@@ -75,7 +73,6 @@
     }
     else
     {
-        <text>gots no data yo</text>
+        <div class="alert alert-warning"> data available</div>
 
     }
-</div>

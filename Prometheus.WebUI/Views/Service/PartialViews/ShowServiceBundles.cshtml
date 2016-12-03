@@ -14,7 +14,7 @@
                 rowLength = 0;
             }
 
-            <label class="btn btn-default" id="@status.Item2">
+            <label class="btn btn-default" id="ServiceBundle@(status.Item1)">
                 @if (Model.SelectedServiceBundle == status.Item1)
                 {
                     @Html.RadioButton("ServiceBundleId", @status.Item1, true)
@@ -32,4 +32,11 @@
 else
 {
     <div class="alert alert-warning">No service bundles exist</div>
+}
+
+@if (Model != null)
+{
+    <script type="text/javascript" language="javascript">
+        $('#ServiceBundle@(Model.SelectedServiceBundle)').button('toggle');
+    </script>
 }

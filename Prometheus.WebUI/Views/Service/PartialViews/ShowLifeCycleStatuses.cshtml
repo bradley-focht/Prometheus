@@ -9,28 +9,34 @@
         {
             if (rowLength > 5)
             {
-                <br/>
+                <br />
                 rowLength = 0;
             }
 
-            <label class="btn btn-default" id="@status.Item2">
+            <label class="btn btn-default" id="LifecycleStatus@(status.Item1)">
                 @if (Model.SelectedStatus != status.Item1)
                 {
-                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" data-val-required="Service bundle is required"/>
+                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" />
 
                 }
                 else
                 {
-                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" data-val-required="Service bundle is required" checked="checked" />
+                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" checked="checked" />
                 }
                 @status.Item2
             </label>
             rowLength++;
         }
-</div>
+    </div>
 }
 else
 {
     <div class="alert alert-warning">No statuses exist</div>
+}
 
+@if (Model != null)
+{
+    <script type="text/javascript" language="javascript">
+        $('#LifecycleStatus@(Model.SelectedStatus)').button('toggle');
+    </script>
 }
