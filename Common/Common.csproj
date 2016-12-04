@@ -79,6 +79,7 @@
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Enums\ModifyState.cs" />
     <Compile Include="Enums\Pricing.cs" />
     <Compile Include="Enums\ServiceGoalType.cs" />
     <Compile Include="Enums\ServiceSections.cs" />

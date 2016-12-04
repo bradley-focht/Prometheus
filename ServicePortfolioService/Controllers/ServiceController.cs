@@ -1,12 +1,11 @@
 ﻿using AutoMapper;
 using Common.Dto;
+using DataService;
 using DataService.DataAccessLayer;
-using DataService.Models;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using DataService;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -64,10 +63,10 @@ namespace ServicePortfolioService.Controllers
 				if (existingService == null)
 				{
 					//var savedService = context.Services.Add(Mapper.Map<Service>(service));
-				    var savedService = context.Services.Add(ManualMapper.MapDtoToService(service));
+					var savedService = context.Services.Add(ManualMapper.MapDtoToService(service));
 					context.SaveChanges(_userId);
-				    return ManualMapper.MapServiceToDto(savedService);
-				    //return Mapper.Map<ServiceDto>(savedService);
+					return ManualMapper.MapServiceToDto(savedService);
+					//return Mapper.Map<ServiceDto>(savedService);
 				}
 				else
 				{
@@ -87,11 +86,11 @@ namespace ServicePortfolioService.Controllers
 				//}
 				//else
 				//{
-					var updatedService = ManualMapper.MapDtoToService(service);
-					//context.Services.Attach(updatedService);
-					context.Entry(updatedService).State = EntityState.Modified;
-					context.SaveChanges(_userId);
-					return ManualMapper.MapServiceToDto(updatedService);
+				var updatedService = ManualMapper.MapDtoToService(service);
+				//context.Services.Attach(updatedService);
+				context.Entry(updatedService).State = EntityState.Modified;
+				context.SaveChanges(_userId);
+				return ManualMapper.MapServiceToDto(updatedService);
 				//}
 			}
 		}
@@ -107,81 +106,87 @@ namespace ServicePortfolioService.Controllers
 			return true;
 		}
 
-	    public IEnumerable<Tuple<int, string>> GetServiceNames()
-	    {
-            using (var context = new PrometheusContext())
-            {
-                var serviceNames = context.Services;
+		public IEnumerable<Tuple<int, string>> GetServiceNames()
+		{
+			using (var context = new PrometheusContext())
+			{
+				var serviceNames = context.Services;
 
-                //Empty list
-                if (!serviceNames.Any())                    //return an empty list instead of null
-                    return new List<Tuple<int, string>>();
+				//Empty list
+				if (!serviceNames.Any())                    //return an empty list instead of null
+					return new List<Tuple<int, string>>();
 
-                var statuses = new List<ServiceDto>();
-                foreach (var status in serviceNames)        //Maping and Linq don't seem to work together
-                    statuses.Add(ManualMapper.MapServiceToDto(status));
+				var statuses = new List<ServiceDto>();
+				foreach (var status in serviceNames)        //Maping and Linq don't seem to work together
+					statuses.Add(ManualMapper.MapServiceToDto(status));
 
-                var nameList = new List<Tuple<int, string>>();
+				var nameList = new List<Tuple<int, string>>();
 
-                nameList.AddRange(statuses.Select(x => new Tuple<int, string>(x.Id, x.Name)));
-                return nameList.OrderBy(x => x.Item2);
-            }
-        }
+				nameList.AddRange(statuses.Select(x => new Tuple<int, string>(x.Id, x.Name)));
+				return nameList.OrderBy(x => x.Item2);
+			}
+		}
 
-	    public IEnumerable<IServiceDto> GetServices()
-	    {
-            using (var context = new PrometheusContext())
-            {
-                var serviceNames = context.Services;
-                var serviceList = new List<ServiceDto>();
+		public IEnumerable<IServiceDto> GetServices()
+		{
+			using (var context = new PrometheusContext())
+			{
+				var serviceNames = context.Services;
+				var serviceList = new List<ServiceDto>();
 
-                //Empty list
-                if (!serviceNames.Any())
-                    return serviceList;
-
-
+				//Empty list
+				if (!serviceNames.Any())
+					return serviceList;
 
 
-                foreach (var status in serviceNames)        //seem to need to do this without LINQ
-                    serviceList.Add(ManualMapper.MapServiceToDto(status));
 
-                return serviceList.OrderBy(s => s.Name);
-            }
-        }
 
-        public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
-        {
-                var service = GetService(serviceId);
-                return service.ServiceDocuments;
-        }
+				foreach (var status in serviceNames)        //seem to need to do this without LINQ
+					serviceList.Add(ManualMapper.MapServiceToDto(status));
 
-        public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
-        {
-            using (var context = new PrometheusContext())
-            {
-                var service = context.Services.Find(document.ServiceId);            //this is going to add only, it isn't going to update existing records 
-                service.ServiceDocuments.Add(ManualMapper.MapDtoToServiceDocument(document));
-                context.SaveChanges(_userId);
+				return serviceList.OrderBy(s => s.Name);
+			}
+		}
 
-                return new ServiceDocumentDto();
-            }
+		public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
+		{
+			var service = GetService(serviceId);
+			return service.ServiceDocuments;
+		}
 
-        }
+		public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var service = context.Services.Find(document.ServiceId);            //this is going to add only, it isn't going to update existing records 
+				service.ServiceDocuments.Add(ManualMapper.MapDtoToServiceDocument(document));
+				context.SaveChanges(_userId);
 
-	    public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
-	    {
-            using (var context = new PrometheusContext())
-            {
-                var service = (from s in context.Services
-                    where s.ServiceDocuments.Contains(s.ServiceDocuments.Where(g=>g.StorageNameGuid == documentGuid).FirstOrDefault())
-                    select s).FirstOrDefault();
-                //Empty list
-               var doc = (from d in service.ServiceDocuments
-                         where d.StorageNameGuid == documentGuid
-                         select d).FirstOrDefault();
+				return new ServiceDocumentDto();
+			}
 
-                return ManualMapper.MapServiceDocumentToDto(doc);
-            }
-        }
+		}
+
+		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
+		{
+			using (var context = new PrometheusContext())
+			{
+				//var service = cont
+				var document = context.Services.ToList().FirstOrDefault(x => x.ServiceDocuments
+					.Any(y => y.StorageNameGuid == documentGuid))?.ServiceDocuments
+					.FirstOrDefault(x => x.StorageNameGuid == documentGuid);
+
+				//var service = (from s in context.Services
+				//			   where s.ServiceDocuments.Contains(s.ServiceDocuments.Where(g => g.StorageNameGuid == documentGuid).FirstOrDefault())
+				//			   select s).FirstOrDefault();
+				////Empty list
+				//var doc = (from d in service.ServiceDocuments
+				//		   where d.StorageNameGuid == documentGuid
+				//		   select d).FirstOrDefault();
+
+
+				return ManualMapper.MapServiceDocumentToDto(document);
+			}
+		}
 	}
 }

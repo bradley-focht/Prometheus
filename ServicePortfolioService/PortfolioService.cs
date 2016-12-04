@@ -90,13 +90,13 @@ namespace ServicePortfolioService
 			return _lifecycleStatusController.DeleteLifecycleStatus(lifecycleStatusId);
 		}
 
-	    public int CountLifecycleStatuses()
-	    {
-	        return _lifecycleStatusController.CountLifecycleStatuses();
-	    }
+		public int CountLifecycleStatuses()
+		{
+			return _lifecycleStatusController.CountLifecycleStatuses();
+		}
 
 
-	    public IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId)
+		public IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId)
 		{
 			return _serviceController.GetServicesForServiceBundle(serviceBundleId);
 		}
@@ -106,16 +106,16 @@ namespace ServicePortfolioService
 			return _serviceController.GetService(serviceId);
 		}
 
-		
+
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
 			return _serviceController.GetServiceNamesForServiceBundle(serviceBundleId);
 		}
 
-	    public IEnumerable<Tuple<int, string>> GetServiceNames()
-	    {
-	        return _serviceController.GetServiceNames();
-	    }
+		public IEnumerable<Tuple<int, string>> GetServiceNames()
+		{
+			return _serviceController.GetServiceNames();
+		}
 
 		public IServiceDto SaveService(IServiceDto service)
 		{
@@ -127,29 +127,29 @@ namespace ServicePortfolioService
 			return _serviceController.DeleteService(serviceId);
 		}
 
-	    public IEnumerable<IServiceDto> GetServices()
-	    {
-	        return _serviceController.GetServices();
-	    }
+		public IEnumerable<IServiceDto> GetServices()
+		{
+			return _serviceController.GetServices();
+		}
 
-	    public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
-	    {
-	        return _serviceController.GetServiceDocuments(serviceId);
-        }
+		public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
+		{
+			return _serviceController.GetServiceDocuments(serviceId);
+		}
 
-	    public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
-	    {
-	        return _serviceController.SaveServiceDocument(document);
-	    }
+		public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
+		{
+			return _serviceController.SaveServiceDocument(document);
+		}
 
-        public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
-        {
-            return _serviceController.GetServiceDocument(documentGuid);
-        }
+		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
+		{
+			return _serviceController.GetServiceDocument(documentGuid);
+		}
 
-        public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
-        {
-            return _serviceBundleController.UpdateServiceBundle(serviceBundle);
-        }
-    }
+		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
+		{
+			return _serviceBundleController.UpdateServiceBundle(serviceBundle);
+		}
+	}
 }

@@ -2,30 +2,29 @@
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
+using ServicePortfolioService;
+using ServicePortfolioService.Controllers;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Web;
 using System.Web.Mvc;
-using Common.Enums;
-using ServicePortfolioService;
-using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
-    //[Authorize]
+	//[Authorize]
 	public class ServiceController : Controller
 	{
-	    private int dummId = 0;
+		private int dummId = 0;
 		/// <summary>
 		/// Default page 
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-            return View(ps.GetServices());
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			return View(ps.GetServices());
 		}
 
 		/// <summary>
@@ -65,9 +64,9 @@ namespace Prometheus.WebUI.Controllers
 			}
 			else
 			{
-                var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-                sm = new ServiceModel(new ServiceDto() { Id = id, Name = "Support Services" }, section.Replace(" ", ""));
-			    sm.Service = ps.GetService(id);
+				var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+				sm = new ServiceModel(new ServiceDto() { Id = id, Name = "Support Services" }, section.Replace(" ", ""));
+				sm.Service = ps.GetService(id);
 			}
 
 			return View(sm);
@@ -90,29 +89,29 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult Save(ServiceDto newService)
 		{
-		    if (!ModelState.IsValid)                    /* Server side validation */
-		    {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = "Failed to save service due to invalid data";
-                return RedirectToAction("Add");
-            }
-            //save service
-            PortfolioService ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-		    int newId = ps.SaveService(newService).Id;
+			if (!ModelState.IsValid)                    /* Server side validation */
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to save service due to invalid data";
+				return RedirectToAction("Add");
+			}
+			//save service
+			PortfolioService ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			int newId = ps.SaveService(newService).Id;
 
-            TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"New service {newService.Name} saved successfully";
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = $"New service {newService.Name} saved successfully";
 
-            //return to a vew that will let the user now add to the SDP of the service
-            return RedirectToAction("Show", new { section = "General", id = newId});
+			//return to a vew that will let the user now add to the SDP of the service
+			return RedirectToAction("Show", new { section = "General", id = newId });
 		}
 
 
-	    [HttpPost]
-	    public ActionResult SaveSwotItem(ServiceSwotDto swotItem)
-	    {
-	        return RedirectToAction("Show", new {section = "Swot", id = swotItem.ServiceId});
-	    }
+		[HttpPost]
+		public ActionResult SaveSwotItem(ServiceSwotDto swotItem)
+		{
+			return RedirectToAction("Show", new { section = "Swot", id = swotItem.ServiceId });
+		}
 
 
 		/// <summary>
@@ -242,7 +241,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			TableDataModel model = new TableDataModel();
 			model.Action = "ShowServiceSectionItem";
-		    model.ServiceSection = "SwotActivity";
+			model.ServiceSection = "SwotActivity";
 			model.Titles = new List<string> { "Item", "Date" };
 			model.Data = new List<Tuple<int, IEnumerable<string>>> { new Tuple<int, IEnumerable<string>>(1, new List<string> { "find love on campus" }) };
 
@@ -289,9 +288,9 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("Show");
 			}
 
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-            ServiceSectionModel model = new ServiceSectionModel();
-		    model.Service = ps.GetService(id);
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			ServiceSectionModel model = new ServiceSectionModel();
+			model.Service = ps.GetService(id);
 			model.Section = "General";
 
 			return View("UpdateSectionItem", model);
@@ -308,18 +307,18 @@ namespace Prometheus.WebUI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"{service.Name} has not been failed due to invalid data";
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"{service.Name} has not been failed due to invalid data";
 
-            }
-            TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"{service.Name} has been saved";
+			}
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = $"{service.Name} has been saved";
 
-            //perform the save
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-		    ps.SaveService(service);
+			//perform the save
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			ps.SaveService(service);
 
-            return RedirectToAction("Show", new { section = "General", id = service.Id });
+			return RedirectToAction("Show", new { section = "General", id = service.Id });
 		}
 
 		[HttpPost]
@@ -341,22 +340,28 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceSectionItem(string section, int id = 0)
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
-		    SwotActivityDto activity = new SwotActivityDto {Id = 10, Name = "Test item", Date = DateTime.Now};
+			SwotActivityDto activity = new SwotActivityDto { Id = 10, Name = "Test item", Date = DateTime.Now };
 
-            model.Section = section;
+			model.Section = section;
 			model.Service = new ServiceDto();
 			model.Service.Name = "Support Services";
 			model.Service.Id = id;
 			model.SectionItemId = id;
-			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Id = 1, ServiceId = 10, Description = "some new goal goes here", Name = "new goal to acheive", StartDate = DateTime.Now, EndDate = DateTime.Now} }.ToArray();
+			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Id = 1, ServiceId = 10, Description = "some new goal goes here", Name = "new goal to acheive", StartDate = DateTime.Now, EndDate = DateTime.Now } }.ToArray();
 			model.Service.ServiceWorkUnits = new List<IServiceWorkUnitDto>(new List<IServiceWorkUnitDto> { new ServiceWorkUnitDto { Id = 1, WorkUnit = "some team", Contact = "a manager", Responsibilities = "keep out of trouble" } });
 			model.Service.ServiceContracts = new List<IServiceContractDto>(new List<IServiceContractDto>());
-		    model.Service.ServiceSwots = new List<IServiceSwotDto>();
-            model.Service.ServiceSwots.Add(new ServiceSwotDto {Id = 1, Description = "new test", Item = "new test", SwotActivities = new List<ISwotActivityDto>(
-                new List<ISwotActivityDto>(new List<ISwotActivityDto> {new SwotActivityDto {Id = 1, Name = "Test activity", ServiceSwotId = 1, Date = DateTime.Now} }))});
-            
-		       
-            
+			model.Service.ServiceSwots = new List<IServiceSwotDto>();
+			model.Service.ServiceSwots.Add(new ServiceSwotDto
+			{
+				Id = 1,
+				Description = "new test",
+				Item = "new test",
+				SwotActivities = new List<ISwotActivityDto>(
+				new List<ISwotActivityDto>(new List<ISwotActivityDto> { new SwotActivityDto { Id = 1, Name = "Test activity", ServiceSwotId = 1, Date = DateTime.Now } }))
+			});
+
+
+
 			model.Service.ServiceMeasures = new List<IServiceMeasureDto>();
 
 			return View("ShowSectionItem", model);
@@ -381,30 +386,30 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult AddServiceSectionItem(string section, int id = 0)
 		{
-		    if (id == 0)
-		        return RedirectToAction("Show");
+			if (id == 0)
+				return RedirectToAction("Show");
 
-            var model = new ServiceSectionModel();
-            model.Section = section;
+			var model = new ServiceSectionModel();
+			model.Section = section;
 
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
-		    model.Service = ps.GetService(id);
+			model.Service = ps.GetService(id);
 
 			return View("AddSectionItem", model);
 		}
 
-	    /// <summary>
-	    /// Generates the confirm deletion warning page
-	    ///  function is generalized enough to handle all section items
-	    ///  deletion is specialized and has specialized actions to complete
-	    /// </summary>
-	    /// <param name="id"></param>
-	    /// <returns></returns>
-	    public ActionResult ConfirmDeleteServiceGoalsItem(int id = 0)
+		/// <summary>
+		/// Generates the confirm deletion warning page
+		///  function is generalized enough to handle all section items
+		///  deletion is specialized and has specialized actions to complete
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult ConfirmDeleteServiceGoalsItem(int id = 0)
 		{
-            var model = new ConfirmDeleteSectionItemModel();
-			
+			var model = new ConfirmDeleteSectionItemModel();
+
 
 			return View("ConfirmDeleteSection", model);
 		}
@@ -418,18 +423,18 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Show", new { id = model.Serviceid, section = model.Section });
 		}
 
-        #region Service Documents
+		#region Service Documents
 
-        /// <summary>
-        /// Upload and save files if they are present. Always redirects to the Show action.
-        ///   File location is taken from the FilePath key in Web.config. 
-        ///   Ensure web server is running with sufficient permissions to that folder location
-        ///   Error messages are put into TempData[]
-        /// </summary>
-        /// <param name="file"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [HttpPost]
+		/// <summary>
+		/// Upload and save files if they are present. Always redirects to the Show action.
+		///   File location is taken from the FilePath key in Web.config. 
+		///   Ensure web server is running with sufficient permissions to that folder location
+		///   Error messages are put into TempData[]
+		/// </summary>
+		/// <param name="file"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpPost]
 		public ActionResult UploadServiceDocument(HttpPostedFileBase file, int id = 0)
 		{
 			if (Request.Files.Count > 0)
@@ -439,73 +444,73 @@ namespace Prometheus.WebUI.Controllers
 				{
 					Guid newFileName = Guid.NewGuid();                              //to rename document
 
-                    var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());  //file path location comes from the Web.config file
+					var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());  //file path location comes from the Web.config file
 
 					file.SaveAs(Server.MapPath(path));
-                    var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-				    ps.SaveServiceDocument(new ServiceDocumentDto
-				    {
-				        ServiceId = id,
-                        Filename =  Path.GetFileNameWithoutExtension(fileName),
-                        StorageNameGuid = newFileName,
-                        FileExtension = Path.GetExtension(fileName)
-				    });
+					var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+					ps.SaveServiceDocument(new ServiceDocumentDto
+					{
+						ServiceId = id,
+						Filename = Path.GetFileNameWithoutExtension(fileName),
+						StorageNameGuid = newFileName,
+						FileExtension = Path.GetExtension(fileName)
+					});
 				}
 			}
 			return RedirectToAction("Show", new { id, section = "Documents" });
 		}
 
-        /// <summary>
-        /// Rename the document
-        /// </summary>
-        /// <param name="document">Storage name of documentId</param>
-        /// <returns></returns>
-        [HttpPost]
+		/// <summary>
+		/// Rename the document
+		/// </summary>
+		/// <param name="document">Storage name of documentId</param>
+		/// <returns></returns>
+		[HttpPost]
 		public ActionResult SaveDocumentsItem(ServiceDocumentDto document)
 		{
-		    if (!ModelState.IsValid)
-		    {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to save document {document.Filename}";
-                return RedirectToAction("UpdateServiceDocument", new {id = document.StorageNameGuid});
-		    }
-            //perform the save
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-            ps.SaveServiceDocument(document);
+			if (!ModelState.IsValid)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to save document {document.Filename}";
+				return RedirectToAction("UpdateServiceDocument", new { id = document.StorageNameGuid });
+			}
+			//perform the save
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			ps.SaveServiceDocument(document);
 
-            TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"Successfully saved document {document.Filename}";
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = $"Successfully saved document {document.Filename}";
 
-            return RedirectToAction("Show", new { section = "Documents", id = document.ServiceId });
+			return RedirectToAction("Show", new { section = "Documents", id = document.ServiceId });
 		}
 
-        /// <summary>
-        /// Update (Rename) Service Documents
-        ///  They do not follow convention
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-	    public ActionResult UpdateServiceDocument(Guid id)
-	    {
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-            var doc = ps.GetServiceDocument(id);
-	        var service = ps.GetService(doc.ServiceId);
+		/// <summary>
+		/// Update (Rename) Service Documents
+		///  They do not follow convention
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult UpdateServiceDocument(Guid id)
+		{
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			var doc = ps.GetServiceDocument(id);
+			var service = ps.GetService(doc.ServiceId);
 
-	        ServiceSectionModel md = new ServiceSectionModel {Service = service, SectionItemId = doc.Id, SectionItemGuid = doc.StorageNameGuid, Section = "Documents"};
+			ServiceSectionModel md = new ServiceSectionModel { Service = service, SectionItemId = doc.Id, SectionItemGuid = doc.StorageNameGuid, Section = "Documents" };
 
-            return View("UpdateSectionItem", md);
-	    }
+			return View("UpdateSectionItem", md);
+		}
 
-        /// <summary>
-        /// Serves the file with its Filename, FileExtension and MIME type to the browser
-        /// </summary>
-        /// <param name="id">Use file's storage name</param>
-        /// <returns></returns>
-        public FileResult DownloadServiceDocument(Guid id)
+		/// <summary>
+		/// Serves the file with its Filename, FileExtension and MIME type to the browser
+		/// </summary>
+		/// <param name="id">Use file's storage name</param>
+		/// <returns></returns>
+		public FileResult DownloadServiceDocument(Guid id)
 		{
 
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-		    var doc = ps.GetServiceDocument(id);
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			var doc = ps.GetServiceDocument(id);
 
 			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename + doc.FileExtension);
 
@@ -514,93 +519,93 @@ namespace Prometheus.WebUI.Controllers
 			return new FilePathResult(path, MimeMapping.GetMimeMapping(path));
 		}
 
-        [HttpPost]
-	    public ActionResult DeleteServiceDocument(Guid id)
-	    {
-            //don't forget to delete the document in the file system
+		[HttpPost]
+		public ActionResult DeleteServiceDocument(Guid id)
+		{
+			//don't forget to delete the document in the file system
 
-	        return RedirectToAction("Show");
-	    }
+			return RedirectToAction("Show");
+		}
 
-        public ActionResult ConfirmDeleteServiceDocument(Guid id)
-        {
-            var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-            var document = sps.GetServiceDocument(id);
-            var service = sps.GetService(document.ServiceId);
+		public ActionResult ConfirmDeleteServiceDocument(Guid id)
+		{
+			var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			var document = sps.GetServiceDocument(id);
+			var service = sps.GetService(document.ServiceId);
 
-            var model = new ConfirmDeleteSectionItemModel
-            {
-                DeleteAction = "DeleteServiceDocument",
-                Id = document.Id,
-                ServiceId = document.ServiceId,
-                Section = "Documents",
-                Service = service.Name,
-                Name = document.Filename
-            };
+			var model = new ConfirmDeleteSectionItemModel
+			{
+				DeleteAction = "DeleteServiceDocument",
+				Id = document.Id,
+				ServiceId = document.ServiceId,
+				Section = "Documents",
+				Service = service.Name,
+				Name = document.Filename
+			};
 
-            return View("ConfirmDeleteSection", model);
-        }
+			return View("ConfirmDeleteSection", model);
+		}
 
-        #endregion
+		#endregion
 
-        #region Lists
-        /// <summary>
-        /// Return a few for Lifecycle Statuses
-        /// </summary>
-        /// <returns></returns>
-        [ChildActionOnly]
-	    public ActionResult ShowLifecycleStatuses(int selectedId = 0)
-	    {
-            LifecycleStatusesModel model = new LifecycleStatusesModel();
-            model.SelectedStatus = selectedId;
-            
-            IPortfolioService sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+		#region Lists
+		/// <summary>
+		/// Return a few for Lifecycle Statuses
+		/// </summary>
+		/// <returns></returns>
+		[ChildActionOnly]
+		public ActionResult ShowLifecycleStatuses(int selectedId = 0)
+		{
+			LifecycleStatusesModel model = new LifecycleStatusesModel();
+			model.SelectedStatus = selectedId;
 
-            model.LifecycleStatuses = sps.GetLifecycleStatusNames();
+			IPortfolioService sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
-            return View("PartialViews/ShowLifeCycleStatuses", model);
-	    }
+			model.LifecycleStatuses = sps.GetLifecycleStatusNames();
 
-        /// <summary>
-        /// Return a view for a list of Service Bundles
-        /// </summary>
-        /// <returns></returns>
-        [ChildActionOnly]
-	    public ActionResult ShowServiceBundles(int selectedId = 0)
-        {
-            ServiceBundleModel model = new ServiceBundleModel();
-            model.SelectedServiceBundle = selectedId;
+			return View("PartialViews/ShowLifeCycleStatuses", model);
+		}
 
-	        var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-            model.ServiceBundles = sps.GetServiceBundleNames();
+		/// <summary>
+		/// Return a view for a list of Service Bundles
+		/// </summary>
+		/// <returns></returns>
+		[ChildActionOnly]
+		public ActionResult ShowServiceBundles(int selectedId = 0)
+		{
+			ServiceBundleModel model = new ServiceBundleModel();
+			model.SelectedServiceBundle = selectedId;
 
-	        return View("PartialViews/ShowServiceBundles", model);
-	    }
+			var sps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			model.ServiceBundles = sps.GetServiceBundleNames();
 
-        /// <summary>
-        /// Builds the partial view with selected item
-        ///    actions are assumed to follow Add - Show - Update - Delete
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [ChildActionOnly]
-        public ActionResult ShowServiceList(int id = 0)
-        {
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+			return View("PartialViews/ShowServiceBundles", model);
+		}
 
-            //create the model 
-            LinkListModel servicesModel = new LinkListModel
-            {
-                AddAction = "Add",
-                SelectAction = "Show/General",
-                Controller = "Service",
-                Title = "Services",
-                SelectedItemId = id,
-                ListItems = ps.GetServiceNames()
-            };
+		/// <summary>
+		/// Builds the partial view with selected item
+		///    actions are assumed to follow Add - Show - Update - Delete
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[ChildActionOnly]
+		public ActionResult ShowServiceList(int id = 0)
+		{
+			var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
 
-            return PartialView("PartialViews/_LinkList", servicesModel);
-        }
-        #endregion
-    }
+			//create the model 
+			LinkListModel servicesModel = new LinkListModel
+			{
+				AddAction = "Add",
+				SelectAction = "Show/General",
+				Controller = "Service",
+				Title = "Services",
+				SelectedItemId = id,
+				ListItems = ps.GetServiceNames()
+			};
+
+			return PartialView("PartialViews/_LinkList", servicesModel);
+		}
+		#endregion
+	}
 }
