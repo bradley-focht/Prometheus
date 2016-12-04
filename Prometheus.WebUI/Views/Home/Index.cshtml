@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_BasicLayout.cshtml";
 }
 @Html.Partial("PartialViews/_TitleBar", null)
-<div class="panel panel-primary" style="margin-top: -10px; width: 100%;">
+<div class="panel-primary" style="margin-top: -10px; width: 100%;">
     <div class="panel-heading">
         <h1>Prometheus IT Service Management</h1>
     </div>
@@ -60,18 +60,14 @@
             </tr>
         </table>
     </div>
-    <div class="panel-footer" style="padding-top: 10px; margin-top: -10px;">
+    <div class="panel-div content-body" style="background-color: #fff; border-top: 1px solid #ddd; padding: 10px;">
         <table style="width: 100%">
-            <tr>
-                <td></td>
-            </tr>
             <tr>
                 <td style="width: 33%">
                     @Html.ActionLink("System Access", "Index", "SystemAccess")
                     <br />@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance")
                 </td>
                 <td style="width: 33%; vertical-align: top;">Service request templates</td>
-                <td></td>
                 <td style="width: 33%">Scripts <br />Fullfilment Queue</td>
             </tr>
         </table>

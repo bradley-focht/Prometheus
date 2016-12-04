@@ -409,6 +409,16 @@ namespace Prometheus.WebUI.Controllers
 			return View("ConfirmDeleteSection", model);
 		}
 
+
+	    public ActionResult ConfirmDeleteServiceSwotItem(int id = 0)
+	    {
+	        var model = new ConfirmDeleteSectionItemModel();
+            
+
+	        return View("ConfirmDeleteSection", model);
+	    }
+
+
 		[HttpPost]
 		public ActionResult DeleteServiceGoalsItem(DeleteSectionItemModel model)
 		{
