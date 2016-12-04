@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Common.Dto;
+using Common.Enums;
+using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 using System;
@@ -47,6 +49,20 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		public IServiceDto ModifyService(IServiceDto service, EntityModification modification)
+		{
+			switch (modification)
+			{
+				case EntityModification.Create:
+					return SaveService(service);
+				case EntityModification.Update:
+					return UpdateService(service);
+				case EntityModification.Delete:
+					return DeleteService(service.Id) ? null : service;
+			}
+			throw new ModificationException(string.Format("Modification {0} was not performed on entity {1}", modification, service));
+		}
+
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
 			var services = GetServicesForServiceBundle(serviceBundleId);
@@ -55,7 +71,7 @@ namespace ServicePortfolioService.Controllers
 			return nameList.OrderBy(x => x.Item2);
 		}
 
-		public IServiceDto SaveService(IServiceDto service)
+		private IServiceDto SaveService(IServiceDto service)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -95,7 +111,7 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public bool DeleteService(int serviceId)
+		private bool DeleteService(int serviceId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -138,9 +154,6 @@ namespace ServicePortfolioService.Controllers
 				if (!serviceNames.Any())
 					return serviceList;
 
-
-
-
 				foreach (var status in serviceNames)        //seem to need to do this without LINQ
 					serviceList.Add(ManualMapper.MapServiceToDto(status));
 
@@ -154,6 +167,36 @@ namespace ServicePortfolioService.Controllers
 			return service.ServiceDocuments;
 		}
 
+		public IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification)
+		{
+			switch (modification)
+			{
+				case EntityModification.Create:
+					return SaveServiceDocument(document);
+				case EntityModification.Update:
+					return UpdateServiceDocument(document);
+				case EntityModification.Delete:
+					return DeleteServiceDocument(document.StorageNameGuid) ? null : document;
+			}
+			throw new ModificationException(string.Format("Modification {0} was not performed on entity {1}", modification, document));
+		}
+
+		private bool DeleteServiceDocument(Guid documentGuid)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var toDelete = context.ServiceDocuments.ToList().FirstOrDefault(x => x.StorageNameGuid == documentGuid);
+				context.ServiceDocuments.Remove(toDelete);
+				context.SaveChanges(_userId);
+			}
+			return true;
+		}
+
+		private IServiceDocumentDto UpdateServiceDocument(IServiceDocumentDto document)
+		{
+			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Documents.", EntityModification.Update));
+		}
+
 		public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
 		{
 			using (var context = new PrometheusContext())
@@ -164,27 +207,13 @@ namespace ServicePortfolioService.Controllers
 
 				return new ServiceDocumentDto();
 			}
-
 		}
 
 		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
 		{
 			using (var context = new PrometheusContext())
 			{
-				//var service = cont
-				var document = context.Services.ToList().FirstOrDefault(x => x.ServiceDocuments
-					.Any(y => y.StorageNameGuid == documentGuid))?.ServiceDocuments
-					.FirstOrDefault(x => x.StorageNameGuid == documentGuid);
-
-				//var service = (from s in context.Services
-				//			   where s.ServiceDocuments.Contains(s.ServiceDocuments.Where(g => g.StorageNameGuid == documentGuid).FirstOrDefault())
-				//			   select s).FirstOrDefault();
-				////Empty list
-				//var doc = (from d in service.ServiceDocuments
-				//		   where d.StorageNameGuid == documentGuid
-				//		   select d).FirstOrDefault();
-
-
+				var document = context.ServiceDocuments.ToList().FirstOrDefault(x => x.StorageNameGuid == documentGuid);
 				return ManualMapper.MapServiceDocumentToDto(document);
 			}
 		}

@@ -1,6 +1,6 @@
 ﻿namespace Common.Enums
 {
-	public enum ModifyState
+	public enum EntityModification
 	{
 		Create,
 		Update,

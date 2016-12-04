@@ -17,8 +17,11 @@ namespace DataService.DataAccessLayer
 
 		public DbSet<ServiceBundle> ServiceBundles { get; set; }
 		public DbSet<Service> Services { get; set; }
+		public DbSet<ServiceDocument> ServiceDocuments { get; set; }
 		public DbSet<ServiceRequestOption> ServiceRequestOptions { get; set; }
 		public DbSet<LifecycleStatus> LifecycleStatuses { get; set; }
+		public DbSet<ServiceSwot> ServiceSwots { get; set; }
+		public DbSet<SwotActivity> SwotActivities { get; set; }
 
 		public DbSet<User> Users { get; set; }
 		public DbSet<Role> Roles { get; set; }

@@ -1,4 +1,5 @@
 ﻿using Common.Dto;
+using Common.Enums;
 using System;
 using System.Collections.Generic;
 
@@ -28,52 +29,46 @@ namespace ServicePortfolioService.Controllers
 		IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId);
 
 		/// <summary>
-		/// Saves the service to the database
+		/// Modifies the service in the database
 		/// </summary>
 		/// <param name="service"></param>
-		/// <returns>Saved entity DTO</returns>
-		IServiceDto SaveService(IServiceDto service);
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified entity DTO</returns>
+		IServiceDto ModifyService(IServiceDto service, EntityModification modification);
 
 		/// <summary>
-		/// Deletes the service from the database
+		/// Gets a list of services and names for making lists
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<Tuple<int, string>> GetServiceNames();
+
+		/// <summary>
+		/// Get a full list of services 
+		/// </summary>
+		/// <returns></returns>
+		IEnumerable<IServiceDto> GetServices();
+
+		/// <summary>
+		/// Get all documents associated with a service
 		/// </summary>
 		/// <param name="serviceId"></param>
-		/// <returns>True if successful</returns>
-		bool DeleteService(int serviceId);
+		/// <returns></returns>
+		IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId);
 
-        /// <summary>
-        /// Gets a list of services and names for making lists
-        /// </summary>
-        /// <returns></returns>
-        IEnumerable<Tuple<int, string>> GetServiceNames();
+		/// <summary>
+		/// Modifies a service document
+		/// </summary>
+		/// <param name="document">Document to modify</param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns></returns>
+		IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification);
 
-        /// <summary>
-        /// Get a full list of services 
-        /// </summary>
-        /// <returns></returns>
-	    IEnumerable<IServiceDto> GetServices();
-
-        /// <summary>
-        /// Get all documents associated with a service
-        /// </summary>
-        /// <param name="serviceId"></param>
-        /// <returns></returns>
-	    IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId);
-
-
-        /// <summary>
-        /// Save or add a new document
-        /// </summary>
-        /// <param name="document"></param>
-        /// <returns></returns>
-	    IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document);
-
-        /// <summary>
-        /// Retrieve a Document based on the the Guid (Storage Name)
-        /// </summary>
-        /// <param name="documentGuid"></param>
-        /// <returns></returns>
-	    IServiceDocumentDto GetServiceDocument(Guid documentGuid);
+		/// <summary>
+		/// Retrieve a Document based on the the Guid (Storage Name)
+		/// </summary>
+		/// <param name="documentGuid"></param>
+		/// <returns></returns>
+		IServiceDocumentDto GetServiceDocument(Guid documentGuid);
 
 	}
 }

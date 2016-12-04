@@ -1,7 +1,5 @@
-﻿using AutoMapper;
-using Common.Dto;
-using Common.Utilities;
-using ServicePortfolioService.AutoMapperConfig;
+﻿using Common.Dto;
+using Common.Enums;
 using ServicePortfolioService.Controllers;
 using System;
 using System.Collections.Generic;
@@ -16,31 +14,41 @@ namespace ServicePortfolioService
 		private readonly IServiceBundleController _serviceBundleController;
 		private readonly IServiceController _serviceController;
 		private readonly ILifecycleStatusController _lifecycleStatusController;
+		private readonly IServiceSwotController _serviceSwotController;
+		private readonly ISwotActivityController _swotActivityController;
 
 		//TODO: Add check for valid user being set
 		private int _userId;
+
 		public int UserId
 		{
 			get { return _userId; }
-			set { _userId = value; }
+			set
+			{
+				_userId = value;
+				SetControllerUsers(_userId);
+			}
 		}
 
 		public PortfolioService(int userId, IServiceBundleController serviceBundleController, IServiceController serviceController,
-			ILifecycleStatusController lifecycleStatusController)
+			ILifecycleStatusController lifecycleStatusController, IServiceSwotController serviceSwotController, ISwotActivityController swotActivityController)
 		{
-			_userId = userId;
-
 			_serviceBundleController = serviceBundleController;
-			_serviceBundleController.UserId = _userId;
-
 			_serviceController = serviceController;
-			_serviceController.UserId = _userId;
-
 			_lifecycleStatusController = lifecycleStatusController;
-			_lifecycleStatusController.UserId = _userId;
+			_serviceSwotController = serviceSwotController;
+			_swotActivityController = swotActivityController;
 
-			AutoMapperInitializer.Initialize();
-			Mapper.Initialize(cfg => cfg.AddProfile<ServicePortfolioProfile>());
+			UserId = userId;
+		}
+
+		private void SetControllerUsers(int userId)
+		{
+			_serviceBundleController.UserId = userId;
+			_serviceController.UserId = userId;
+			_lifecycleStatusController.UserId = userId;
+			_serviceSwotController.UserId = userId;
+			_swotActivityController.UserId = userId;
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
@@ -53,8 +61,6 @@ namespace ServicePortfolioService
 			return _serviceBundleController.GetServiceBundle(serviceBundleId);
 		}
 
-		//TODO: Brad / Sean Should this be a dictionary
-		// probably not
 		public IEnumerable<Tuple<int, string>> GetServiceBundleNames()
 		{
 			return _serviceBundleController.GetServiceBundleNames();
@@ -101,11 +107,15 @@ namespace ServicePortfolioService
 			return _serviceController.GetServicesForServiceBundle(serviceBundleId);
 		}
 
+		public IServiceDto ModifyService(IServiceDto service, EntityModification modification)
+		{
+			return _serviceController.ModifyService(service, modification);
+		}
+
 		public IServiceDto GetService(int serviceId)
 		{
 			return _serviceController.GetService(serviceId);
 		}
-
 
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
@@ -115,16 +125,6 @@ namespace ServicePortfolioService
 		public IEnumerable<Tuple<int, string>> GetServiceNames()
 		{
 			return _serviceController.GetServiceNames();
-		}
-
-		public IServiceDto SaveService(IServiceDto service)
-		{
-			return _serviceController.SaveService(service);
-		}
-
-		public bool DeleteService(int serviceId)
-		{
-			return _serviceController.DeleteService(serviceId);
 		}
 
 		public IEnumerable<IServiceDto> GetServices()
@@ -137,9 +137,9 @@ namespace ServicePortfolioService
 			return _serviceController.GetServiceDocuments(serviceId);
 		}
 
-		public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
+		public IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification)
 		{
-			return _serviceController.SaveServiceDocument(document);
+			return _serviceController.ModifyServiceDocument(document, modification);
 		}
 
 		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
@@ -150,6 +150,26 @@ namespace ServicePortfolioService
 		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
 		{
 			return _serviceBundleController.UpdateServiceBundle(serviceBundle);
+		}
+
+		public IServiceSwotDto GetServiceSwot(int serviceSwotId)
+		{
+			return _serviceSwotController.GetServiceSwot(serviceSwotId);
+		}
+
+		public IServiceSwotDto ModifyServiceSwot(IServiceSwotDto serviceSwot, EntityModification modification)
+		{
+			return _serviceSwotController.ModifyServiceSwot(serviceSwot, modification);
+		}
+
+		public ISwotActivityDto GetSwotActivity(int swotActivityId)
+		{
+			return _swotActivityController.GetSwotActivity(swotActivityId);
+		}
+
+		public ISwotActivityDto ModifySwotActivity(ISwotActivityDto swotActivity, EntityModification modification)
+		{
+			return _swotActivityController.ModifySwotActivity(swotActivity, modification);
 		}
 	}
 }

@@ -2,7 +2,8 @@
 
 namespace ServicePortfolioService
 {
-	public interface IPortfolioService : IServiceController, IServiceBundleController, ILifecycleStatusController
+	public interface IPortfolioService : IServiceController, IServiceBundleController, ILifecycleStatusController,
+		IServiceSwotController, ISwotActivityController
 	{
 	}
 }

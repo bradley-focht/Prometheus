@@ -23,6 +23,6 @@ namespace Common.Dto
 		ICollection<IServiceGoalDto> ServiceGoals { get; set; }
 		ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
 		ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
-        ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
+		ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
 	}
 }
