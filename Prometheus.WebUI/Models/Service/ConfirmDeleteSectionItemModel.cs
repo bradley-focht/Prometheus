@@ -10,6 +10,11 @@
         /// Item's id to be used for delete action 
         /// </summary>
         public int Id { get; set; }
+
+        /// <summary>
+        /// Items with a deeper hierarchy may need a second level of Id
+        /// </summary>
+        public int AltId { get; set; }
         /// <summary>
         /// Controller action method that will be called
         /// </summary>
