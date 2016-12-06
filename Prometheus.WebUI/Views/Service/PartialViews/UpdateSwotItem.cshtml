@@ -21,11 +21,12 @@
                         @foreach (var type in Enum.GetValues(typeof(ServiceSwotType)))
                         {
 
-                            <label class="btn btn-default" id="type">
-                                @Html.RadioButton("Type", type) @type
-                            </label>
+                        <label class="btn btn-default" id="type">
+                            @Html.RadioButton("Type", type.ToString()) @type
+                        </label>
                         }
 
+   
                     </div>
                 </td>
             }
@@ -34,20 +35,15 @@
 
 
                 <td class="dd-cell">
-                    @Html.TextArea(property.PropertyName, new {@class = "ckeditor"})
+                    @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
                 </td>
             }
             else
             {
-                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new {@class = "form-control"})</td>
+                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })</td>
 
             }
 
         </tr>
     }
 </table>
-
-<script language="javascript" type="text/javascript">
-   
-    $('#LifecycleStatus@(Model.Type)').button('toggle');
-</script>

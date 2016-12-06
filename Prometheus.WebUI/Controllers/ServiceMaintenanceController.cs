@@ -4,6 +4,7 @@ using Prometheus.WebUI.Models.Shared;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 using System.Web.Mvc;
+using Common.Enums;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -31,9 +32,9 @@ namespace Prometheus.WebUI.Controllers
 			ServiceDto model = null;
 			if (id != 0)
 			{
-				IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(),
-					new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-				model = (ServiceDto)sps.GetService(id);
+				var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+					
+				model = (ServiceDto)ps.GetService(id);
 			}
 			if (model == null)
 				model = new ServiceDto { Id = 0 };
@@ -48,10 +49,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowServiceList(int id = 0)
 		{
-			PortfolioService ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
 
-			//create the model 
-			LinkListModel servicesModel = new LinkListModel
+            //create the model 
+            LinkListModel servicesModel = new LinkListModel
 			{
 				SelectAction = "ShowServices",
 				Controller = "ServiceMaintenance",
@@ -71,8 +72,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowLifecycle(int id = 0)
 		{
-			IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			var model = (LifecycleStatusDto)sps.GetLifecycleStatus(id);
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            var model = (LifecycleStatusDto)ps.GetLifecycleStatus(id);
 			if (model == null)
 				model = new LifecycleStatusDto { Id = 0 };
 			return View(model);
@@ -80,12 +81,12 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult ShowLifeCycleList(int id = 0)
 		{
-			IPortfolioService sps = new PortfolioService(0, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
 
-			LinkListModel servicesModel = new LinkListModel();
+            LinkListModel servicesModel = new LinkListModel();
 			servicesModel.SelectedItemId = id;
 
-			servicesModel.ListItems = sps.GetLifecycleStatusNames();
+			servicesModel.ListItems = ps.GetLifecycleStatusNames();
 
 			servicesModel.AddAction = "AddLifecycle";
 			servicesModel.SelectAction = "ShowLifecycle";
@@ -111,9 +112,9 @@ namespace Prometheus.WebUI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+                var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
 
-				sps.SaveLifecycleStatus(model);
+                ps.SaveLifecycleStatus(model);
 
 				TempData["messageType"] = WebMessageType.Success;
 				TempData["message"] = "successfully saved lifecycle status";
@@ -126,8 +127,8 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult UpdateLifecycle(int id = 0)
 		{
-			IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			return View((LifecycleStatusDto)sps.GetLifecycleStatus(id));
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            return View((LifecycleStatusDto)ps.GetLifecycleStatus(id));
 		}
 
 		/// <summary>
@@ -137,12 +138,12 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteLifecycle(int id = 0)
 		{
-			IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			if (id == 0)
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            if (id == 0)
 				return RedirectToAction("ShowLifecycle");
 
 
-			return View((LifecycleStatusDto)sps.GetLifecycleStatus(id));
+			return View((LifecycleStatusDto)ps.GetLifecycleStatus(id));
 		}
 
 
@@ -154,8 +155,8 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteLifecycle(DeleteModel item)
 		{
-			IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			if (sps.DeleteLifecycleStatus(item.Id))
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            if (ps.DeleteLifecycleStatus(item.Id))
 			{
 				TempData["messageType"] = WebMessageType.Success;
 				TempData["message"] = $"Successfully deleted lifecycle status {item.Name}";
@@ -175,9 +176,9 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteService(int id = 0)
 		{
-			IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
 
-			return View(sps.GetService(id));
+            return View(ps.GetService(id));
 		}
 
 		/// <summary>
@@ -188,14 +189,9 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteService(DeleteModel item)
 		{
-			IPortfolioService sps = new PortfolioService(dummyId, new ServiceBundleController(),
-				new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController());
-			if (sps.DeleteService(item.Id))
-			{
-				TempData["messageType"] = WebMessageType.Success;
-				TempData["message"] = $"Successfully deleted {item.Name}";
-				return RedirectToAction("ShowServices");
-			}
+            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+		    ps.ModifyService(new ServiceDto {Id = item.Id}, EntityModification.Delete);
+			
 			TempData["messageType"] = WebMessageType.Failure;
 			TempData["message"] = $"Failed to delete {item.Name}";
 			return RedirectToAction("ShowServices");
