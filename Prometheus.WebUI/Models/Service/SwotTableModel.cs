@@ -9,10 +9,10 @@ namespace Prometheus.WebUI.Models.Service
         public int ServiceId { get; set; }
 
 
-        public ICollection<IServiceSwotDto> Strengths { get; set; }
-        public ICollection<IServiceSwotDto> Weaknesses { get; set; }
-        public ICollection<IServiceSwotDto> Opportunities { get; set; }
-        public ICollection<IServiceSwotDto> Threats { get; set; }
+        public IEnumerable<IServiceSwotDto> Strengths { get; set; }
+        public IEnumerable<IServiceSwotDto> Weaknesses { get; set; }
+        public IEnumerable<IServiceSwotDto> Opportunities { get; set; }
+        public IEnumerable<IServiceSwotDto> Threats { get; set; }
         
 
     }

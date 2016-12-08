@@ -40,7 +40,7 @@
                     @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                     break;
                 case "Swot":
-                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto())
+                    @Html.Partial("PartialViews/UpdateSwotItem", (ServiceSwotDto)Model.Service.ServiceSwots.FirstOrDefault(s=>s.Id == Model.SectionItemId))
                     break;
                 case "WorkUnits":
                     @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())
@@ -65,11 +65,14 @@
         {
 
             <div class="flex-container">
+
                 <div class="panel-footer">
+
                     <div class="float-right-div">
-                        @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        @Html.ActionLink("Back", "Show", new {id = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default"})
+                        <input type="submit" value="Save" class="btn btn-primary"/>
                     </div>
+
                 </div>
             </div>
         }

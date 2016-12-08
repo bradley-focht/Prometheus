@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Common.Enums;
@@ -240,16 +241,24 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
 		}
 
-
+        /// <summary>
+        /// Build the model for displaying types of SWOT items
+        /// </summary>
+        /// <param name="service"></param>
+        /// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowServiceSwot(ServiceDto service)
 		{
 			SwotTableModel model = new SwotTableModel();
-
-			model.Opportunities = new List<IServiceSwotDto> { new ServiceSwotDto { Id = 1, Item = "Room for more beers" } };
-			model.ServiceId = 1;
-
-			return PartialView("PartialViews/ShowSwotTable", model);
+            if (service.ServiceSwots != null)
+            {
+                model.Opportunities = service.ServiceSwots.Where(s => s.Type == ServiceSwotType.Opportunity);
+             
+                model.Strengths = service.ServiceSwots.Where(s => s.Type == ServiceSwotType.Strength);
+                model.Threats = service.ServiceSwots.Where(s => s.Type == ServiceSwotType.Threat);
+                model.Weaknesses = service.ServiceSwots.Where(s => s.Type == ServiceSwotType.Weakness);
+            }
+            return PartialView("PartialViews/ShowSwotTable", model);
 		}
 
 		[ChildActionOnly]
@@ -346,36 +355,23 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("show", new { section = "Goals", id = 10 });
 		}
 
-		/// <summary>
-		/// Action used to show the SectionItem view that will load the specific partial view for the item required
-		///    the affiliated child actions for their corresponding partial views must follow the convention ShowService***Item
-		/// </summary>
-		/// <param name="section"></param>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public ActionResult ShowServiceSectionItem(string section, int id = 0)
+	    /// <summary>
+	    /// Action used to show the SectionItem view that will load the specific partial view for the item required
+	    ///    the affiliated child actions for their corresponding partial views must follow the convention ShowService***Item
+	    /// </summary>
+	    /// <param name="section"></param>
+	    /// <param name="id">id of item serviceItem</param>
+	    /// <param name="serviceId">id of service</param>
+	    /// <returns></returns>
+	    public ActionResult ShowServiceSectionItem(int serviceId, string section, int id)
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
+		    IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+
+		    model.Service = ps.GetService(serviceId);
 
 			model.Section = section;
-			model.Service = new ServiceDto();
-			model.Service.Name = "Support Services";
-			model.Service.Id = id;
 			model.SectionItemId = id;
-			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Id = 1, ServiceId = 10, Description = "some new goal goes here", Name = "new goal to acheive", StartDate = DateTime.Now, EndDate = DateTime.Now } }.ToArray();
-			model.Service.ServiceWorkUnits = new List<IServiceWorkUnitDto>(new List<IServiceWorkUnitDto> { new ServiceWorkUnitDto { Id = 1, WorkUnit = "some team", Contact = "a manager", Responsibilities = "keep out of trouble" } });
-			model.Service.ServiceContracts = new List<IServiceContractDto>(new List<IServiceContractDto>());
-			model.Service.ServiceSwots = new List<IServiceSwotDto>();
-			model.Service.ServiceSwots.Add(new ServiceSwotDto
-			{
-				Id = 1,
-				Description = "new test",
-				Item = "new test",
-				SwotActivities = new List<ISwotActivityDto>(
-				new List<ISwotActivityDto>(new List<ISwotActivityDto> { new SwotActivityDto { Id = 1, Name = "Test activity", ServiceSwotId = 1, Date = DateTime.Now } }))
-			});
-
-
 
 			model.Service.ServiceMeasures = new List<IServiceMeasureDto>();
 

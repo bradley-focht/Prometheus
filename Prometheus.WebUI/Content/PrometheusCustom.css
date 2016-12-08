@@ -70,9 +70,39 @@
 
 .flex-container {
     display: flex;
-    min-height: 100%;
     flex-direction: column;
 }
+
+
+
+.flex-square-container {
+  position: relative;
+  width: 100%;
+  /* desired width */
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+
+.flex-square-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-row {
+  flex: 1;
+  display: flex;
+}
+.flex-row .flex-col {
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+    min-width: 300px;
+}
+
+
 
 .std-table {
     padding: 10px;
@@ -489,4 +519,9 @@
 .funkyradio-info input[type="checkbox"]:checked ~ label:before {
     color: #fff;
     background-color: #5bc0de;
+}
+
+
+.action-holder {
+    width: 20px;
 }

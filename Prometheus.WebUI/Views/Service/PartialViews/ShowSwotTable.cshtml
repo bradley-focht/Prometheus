@@ -1,216 +1,224 @@
 ﻿@using Common.Enums
 @model Prometheus.WebUI.Models.Service.SwotTableModel
 <div class="panel">
-    <table style="width:100%">
-        <tr>
-            <td class="std-cell" style="width: 49%">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th><span class="table-title">@ServiceSwotType.Strength</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
 
-                        @if (Model.Strengths != null && Model.Strengths.Any())
-                        {
+    <div class="flex-square-container">
 
-                            foreach (var item in Model.Strengths)
+        <div class="flex-square-content">
+
+            <div class="flex-row">
+
+                <div class="flex-col">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><span class="table-title">@ServiceSwotType.Strength</span></th>
+                                <th class="action-holder"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.Strengths != null && Model.Strengths.Any())
                             {
-                                <tr>
-                                    <td>
-                                        @Html.ActionLink(item.Item, "ShowServiceSectionItem", new {id = item.Id, section = "Swot"}, null)
-                                    </td>
-                                    <td>
 
+                                foreach (var item in Model.Strengths)
+                                {
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot", serviceId = item.ServiceId }, null)
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                                    <span aria-hidden="true">&#x25BC;</span>
+                                                </div>
+                                                <div class="dropdown-menu">
+                                                    <ul class="ul-menu">
+                                                        <li>
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                        </li>
 
-                                        <div class="btn-group">
-                                            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                                <span aria-hidden="true">&#x25BC;</span>
+                                                        <li>
+                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                            <div class="dropdown-menu">
-                                                <ul class="ul-menu">
-                                                    <li>
-                                                        @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
-                                                    </li>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
 
-                                                    <li>
-                                                        @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
-                                                    </li>
-                                                </ul>
+                    @if (Model.Strengths == null || !Model.Strengths.Any())
+                    {
+                        <section class="alert alert-warning">No strengths exist</section>
+
+                    }
+                </div>
+                <div class="flex-col">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><span class="table-title">Opportunities</span></th>
+                                <th class="action-holder"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.Opportunities != null && Model.Opportunities.Any())
+            {
+
+                foreach (var item in Model.Opportunities)
+                {
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot", serviceId = item.ServiceId }, null)
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                                    <span aria-hidden="true">&#x25BC;</span>
+                                                </div>
+                                                <div class="dropdown-menu">
+                                                    <ul class="ul-menu">
+                                                        <li>
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                        </li>
+
+                                                        <li>
+                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </div>
-                                        </div>
-
-
-
-                                    </td>
-                                </tr>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                @if (Model.Strengths == null || !Model.Strengths.Any())
+                    @if (Model.Opportunities == null || !Model.Opportunities.Any())
             {
-                    <div class="alert alert-warning">No strengths exist</div>
+                        <div class="alert alert-warning">No opportunities exist</div>
 
-                }
-            </td>
-            <td>&nbsp;</td>
-            <td class="std-cell" style="width:49%">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th><span class="table-title">Opportunities</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                    }
+                </div>
+            </div>
+            <div class="flex-row">
+                <div class="flex-col">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><span class="table-title">Weaknesses</span></th>
+                                <th class="action-holder"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                        @if (Model.Opportunities != null && Model.Opportunities.Any())
-                        {
+                            @if (Model.Weaknesses != null && Model.Weaknesses.Any())
+            {
 
-                            foreach (var item in Model.Opportunities)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
-                                    </td><td>
+                foreach (var item in Model.Weaknesses)
+                {
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot", serviceId = item.ServiceId }, null)
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                                    <span aria-hidden="true">&#x25BC;</span>
+                                                </div>
+                                                <div class="dropdown-menu">
+                                                    <ul class="ul-menu">
+                                                        <li>
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                        </li>
 
-                                             <div class="btn-group">
-                                                 <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                                     <span aria-hidden="true">&#x25BC;</span>
-                                                 </div>
-                                                 <div class="dropdown-menu">
-                                                     <ul class="ul-menu">
-                                                         <li>
-                                                             @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
-                                                         </li>
-
-                                                         <li>
-                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
-                                                         </li>
-                                                     </ul>
-                                                 </div>
-                                             </div>
-
-                                    </td>
-                                </tr>
+                                                        <li>
+                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                @if (Model.Opportunities == null || !Model.Opportunities.Any())
+                    @if (Model.Weaknesses == null || !Model.Weaknesses.Any())
+                    {
+                        <div class="alert alert-warning">No weaknesses exist</div>
+
+                    }
+                </div>
+                <div class="flex-col">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th><span class="table-title">Threats</span></th>
+                                <th class="action-holder"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            @if (Model.Threats != null && Model.Threats.Any())
             {
-                    <div class="alert alert-warning">No opportunities exist</div>
 
-                }
-            </td>
-        </tr>
+                foreach (var item in Model.Threats)
+                {
+                                    <tr>
+                                        <td>
+                                            @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot", serviceId = item.ServiceId }, null)
+                                        </td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                                    <span aria-hidden="true">&#x25BC;</span>
+                                                </div>
+                                                <div class="dropdown-menu">
+                                                    <ul class="ul-menu">
+                                                        <li>
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                        </li>
 
-        <tr>
-            <td class="std-cell">
-
-
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th><span class="table-title">Weaknesses</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        @if (Model.Weaknesses != null && Model.Weaknesses.Any())
-                        {
-
-                            foreach (var item in Model.Weaknesses)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
-                                    </td><td>
-
-                                             <div class="btn-group">
-                                                 <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                                     <span aria-hidden="true">&#x25BC;</span>
-                                                 </div>
-                                                 <div class="dropdown-menu">
-                                                     <ul class="ul-menu">
-                                                         <li>
-                                                             @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
-                                                         </li>
-
-                                                         <li>
-                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
-                                                         </li>
-                                                     </ul>
-                                                 </div>
-                                             </div>
-
-                                    </td>
-                                </tr>
+                                                        <li>
+                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
                             }
-                        }
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table>
 
-                @if (Model.Strengths == null || !Model.Strengths.Any())
+                    @if (Model.Threats == null || !Model.Threats.Any())
             {
-                    <div class="alert alert-warning">No weaknesses exist</div>
+                        <div class="alert alert-warning">No threats exist</div>
 
-                }
+                    }
+                </div>
+            </div>
 
-            </td>
-            <td></td>
-            <td class="std-cell">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th><span class="table-title">Threats</span></th>
-                        </tr>
-                    </thead>
-                    <tbody>
+        </div>
+    </div>
 
-                        @if (Model.Threats != null && Model.Threats.Any())
-                        {
 
-                            foreach (var item in Model.Threats)
-                            {
-                                <tr>
-                                    <td>
-                                        @Html.ActionLink(item.Item, "ShowServiceSectionItem", new { id = item.Id, section = "Swot" }, null)
-                                    </td><td>
 
-                                             <div class="btn-group">
-                                                 <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                                     <span aria-hidden="true">&#x25BC;</span>
-                                                 </div>
-                                                 <div class="dropdown-menu">
-                                                     <ul class="ul-menu">
-                                                         <li>
-                                                             @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
-                                                         </li>
 
-                                                         <li>
-                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
-                                                         </li>
-                                                     </ul>
-                                                 </div>
-                                             </div>
 
-                                    </td>
-                                </tr>
-                            }
-                        }
-                    </tbody>
-                </table>
 
-                @if (Model.Threats == null || !Model.Threats.Any())
-            {
-                    <div class="alert alert-warning">No threats exist</div>
 
-                }
-            </td>
-        </tr>
-    </table>
+
+
+
+
 </div>
