@@ -78,6 +78,7 @@ namespace DataService
                 LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
             };
 
+            //Documents
             if (src.ServiceDocuments != null)
             {
                 serviceDto.ServiceDocuments = new List<IServiceDocumentDto>();
@@ -86,6 +87,17 @@ namespace DataService
                     serviceDto.ServiceDocuments.Add(MapServiceDocumentToDto(doc));
                 }
             }
+
+            //Swot
+            if (src.ServiceSwots != null)
+            {
+                serviceDto.ServiceSwots = new List<IServiceSwotDto>();
+                foreach (var doc in src.ServiceSwots)
+                {
+                    serviceDto.ServiceSwots.Add(MapServiceSwotToDto(doc));
+                }
+            }
+
 
             serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
 

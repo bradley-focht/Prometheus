@@ -246,6 +246,7 @@
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\InterfaceFactory.cs" />
     <Compile Include="Helpers\ITile.cs" />
     <Compile Include="Helpers\ServiceDocumentHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
