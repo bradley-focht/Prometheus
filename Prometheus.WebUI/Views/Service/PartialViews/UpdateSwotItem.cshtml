@@ -1,7 +1,8 @@
 ﻿@using Common.Enums
-@model Common.Dto.ServiceSwotDto
+@model Common.Dto.IServiceSwotDto
 
 @Html.Hidden("ServiceId", Model.ServiceId)
+@Html.Hidden("Id", Model.Id)
 
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
@@ -20,20 +21,17 @@
                     <div class="btn-group" data-toggle="buttons">
                         @foreach (var type in Enum.GetValues(typeof(ServiceSwotType)))
                         {
-
-                        <label class="btn btn-default" id="type">
-                            @Html.RadioButton("Type", type.ToString()) @type
-                        </label>
+                            <label class="btn btn-default" id="@type">
+                                @(Model.Type != (ServiceSwotType) type ? Html.RadioButton("Type", type.ToString(), false) : Html.RadioButton("Type", type.ToString(), true))
+                                @type
+                            </label>
                         }
 
-   
                     </div>
                 </td>
             }
             else if (property.PropertyName == "Description")
             {
-
-
                 <td class="dd-cell">
                     @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
                 </td>
@@ -43,7 +41,10 @@
                 <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })</td>
 
             }
-
         </tr>
     }
 </table>
+
+<script type="text/javascript" language="javascript">
+    $('#@(Model.Type)').button('toggle');
+</script>

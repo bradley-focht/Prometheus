@@ -1,4 +1,5 @@
 ﻿@using Common.Enums
+@using Prometheus.WebUI.HtmlHelpers
 @model Prometheus.WebUI.Models.Service.SwotTableModel
 <div class="panel">
 
@@ -35,7 +36,7 @@
                                                 <div class="dropdown-menu">
                                                     <ul class="ul-menu">
                                                         <li>
-                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { serviceId = item.ServiceId, id = item.Id, section = "Swot" })
                                                         </li>
 
                                                         <li>

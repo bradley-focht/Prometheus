@@ -12,7 +12,6 @@
                                                                new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
                                                                 new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
     bool controlAvail = true; /*used to indicate if add/edit buttons should be visible */
-
 }
 
 @section Sidebar
@@ -73,8 +72,6 @@
 
 </div>
 
-
-
     <div class="flex-container">
         <div class="panel-footer">
 
@@ -82,7 +79,7 @@
 
                 @if (controlAvail)
                 {
-                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new {id = Model.SectionItemId, section = Model.Section}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new {id = Model.SectionItemId, serviceId = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default"})
 
                     @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", new {id = Model.SectionItemId}, new {@class = "btn btn-danger", style = "margin-left:5px;"})
                 }

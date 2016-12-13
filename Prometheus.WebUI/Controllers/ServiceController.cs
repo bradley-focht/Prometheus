@@ -124,8 +124,9 @@ namespace Prometheus.WebUI.Controllers
 		        return View("AddSectionItem");
 		    }
 
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
-		    ps.ModifyServiceSwot(swotItem, EntityModification.Create);
+            IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+
+            ps.ModifyServiceSwot(swotItem, swotItem.Id == 0 ? EntityModification.Create : EntityModification.Update);
 
             return RedirectToAction("Show", new { section = "Swot", id = swotItem.ServiceId });
 		}
@@ -144,12 +145,6 @@ namespace Prometheus.WebUI.Controllers
 
 		[HttpPost]
 		public ActionResult SaveServiceGoalItem(ServiceGoalDto goal)
-		{
-			return RedirectToAction("Show");
-		}
-
-		[HttpPost]
-		public ActionResult SaveServiceSwotItem(ServiceSwotDto swotItem)
 		{
 			return RedirectToAction("Show");
 		}
@@ -379,14 +374,19 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 
-		public ActionResult UpdateServiceSectionItem(string section, int id = 0)
+        /// <summary>
+        /// Show the service section and other service data is availalbe
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="id">service id</param>
+        /// <returns></returns>
+		public ActionResult UpdateServiceSectionItem(string section, int serviceId, int id)
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
-			model.Section = section;
-			model.Service = new ServiceDto();
-			model.Service.Name = "Support Services";
-			model.Service.Id = 10;
-			model.Service.ServiceGoals = new List<ServiceGoalDto> { new ServiceGoalDto() { Description = "some new goal goes here", Name = "new goal" } }.ToArray();
+            IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+            model.Section = section;
+            model.SectionItemId = id;
+            model.Service = ps.GetService(serviceId);
 			return View("UpdateSectionItem", model);
 		}
 
@@ -397,8 +397,10 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         [ChildActionOnly]
         public ActionResult UpdateSwotItem(int id)
-		{
-			return View("PartialViews/UpdateSwotItem");
+        {
+            IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+
+			return View("PartialViews/UpdateSwotItem", ps.GetServiceSwot(id));
 		}
 
 		public ActionResult AddServiceSectionItem(string section, int id = 0)
@@ -409,7 +411,7 @@ namespace Prometheus.WebUI.Controllers
 			var model = new ServiceSectionModel();
 			model.Section = section;
 
-            var ps = new PortfolioService(dummId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
 
             model.Service = ps.GetService(id);
 

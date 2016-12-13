@@ -9,9 +9,6 @@ namespace Prometheus.WebUI
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-
-
-
             /* routes for updating Service portfolio */
             routes.MapRoute(
                 name: "ShowServiceSection",
@@ -22,14 +19,14 @@ namespace Prometheus.WebUI
 
             routes.MapRoute(
                 name: "ShowServiceSectionItem",
-                url: "Service/ShowServiceSectionItem/{serviceid}/{section}/{id}",
+                url: "Service/ShowServiceSectionItem/{serviceId}/{section}/{id}",
                 defaults: new { controller = "Service", action = "ShowServiceSectionItem"}
             );
 
             routes.MapRoute(
                 name: "UpdateServiceSectionItem",
-                url: "Service/UpdateServiceSectionItem/{section}/{id}",
-                defaults: new { controller = "Service", action = "UpdateServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
+                url: "Service/UpdateServiceSectionItem/{serviceId}/{section}/{id}",
+                defaults: new { controller = "Service", action = "UpdateServiceSectionItem"}
             );
 
             routes.MapRoute(

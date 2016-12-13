@@ -137,14 +137,17 @@ namespace ServicePortfolioService
 			return _serviceController.GetServiceDocuments(serviceId);
 		}
 
+        //TODO: Sean - not sure what is going on here
 		public IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification)
 		{
-			return _serviceController.ModifyServiceDocument(document, modification);
+			//return _serviceController.ModifyServiceDocument(document, modification);
+		    return null;
 		}
 
 		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
 		{
-			return _serviceController.GetServiceDocument(documentGuid);
+			//return _serviceController.GetServiceDocument(documentGuid);
+		    return null;
 		}
 
 		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
