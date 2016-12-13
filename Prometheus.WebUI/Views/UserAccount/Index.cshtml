@@ -7,81 +7,86 @@
 
     @Html.AntiForgeryToken()
     <div class="content-body">
-        <div class="panel-primary" style="width: 600px;">
-            <div class="panel-heading" style="padding-top: 20px;">
-                <h3 class="panel-title"><strong>Prometheus ITSM Login</strong></h3>
-                <section style="margin-top: 10px;">
-                    <ul>
-                        <li>Login using your Windows login credentials</li>
-                        <li>If you are not able to login, you will need to contact your IT Service Desk at 306-123-4567</li>
-                    </ul>
+    <div class="panel-primary" style="width: 600px;">
+        <div class="panel-heading" style="padding-top: 20px;">
+            <h3 class="panel-title">
+                <strong>Prometheus ITSM Login</strong>
+            </h3>
+            <section style="margin-top: 10px;">
+                <ul>
+                    <li>Login using your Windows login credentials</li>
+                    <li>If you are not able to login, you will need to contact your IT Service Desk at 306-123-4567</li>
+                </ul>
 
-                    <p>
-                </section>
-            </div>
-            <div class="panel-body">
-                @if (TempData["MessageType"] != null && TempData["Message"] != null)
-                {
-                    <div class="alert alert-dismissable alert-danger close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
-                        <table>
-                            <tr>
+                <p>
+            </section>
+        </div>
+        <div class="panel-body">
+            @if (TempData["MessageType"] != null && TempData["Message"] != null)
+            {
+                <div class="alert alert-dismissable alert-danger close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
+                    <table>
+                        <tr>
                             <td>
 
 
                                 <div class="float-left-div;">&times;</div>
-                            </td><td>
-                                    @TempData["Message"]
+                            </td>
+                            <td>
+                                @TempData["Message"]
 
-                                </td>
-                            </tr>
-                        </table>
-                    </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            }
+
+            <div>
+                @using (Html.BeginForm("Login", "UserAccount", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <table>
+                        <tr>
+                            <td colspan="2" style="padding-bottom: 10px;"><span class="font-title3">Login</span></td>
+                        </tr>
+                        <tr>
+                            <td class="dt-cell">Username</td>
+                            <td class="dd-cell">
+                                @Html.TextBox("Username", null, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Username)
+                            </td>
+
+                        </tr>
+                        <tr>
+                            <td class="dt-cell">Password</td>
+                            <td class="dd-cell">
+                                @Html.Password("Password", null, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Password)
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary" /></td>
+
+                        </tr>
+
+                    </table>
                 }
-
-                <div>
-                    @using (Html.BeginForm("Login", "UserAccount", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <table>
-                            <tr>
-                                <td colspan="2" style="padding-bottom: 10px;"><span class="font-title3">Login</span></td>
-                            </tr>
-                            <tr>
-                                <td class="dt-cell">Username</td>
-                                <td class="dd-cell">
-                                    @Html.TextBox("Username", null, new {@class = "form-control"})
-                                    @Html.ValidationMessageFor(model => model.Username)
-                                </td>
-
-                            </tr>
-                            <tr>
-                                <td class="dt-cell">Password</td>
-                                <td class="dd-cell">
-                                    @Html.Password("Password", null, new {@class = "form-control"})
-                                    @Html.ValidationMessageFor(model => model.Password)
-                                </td>
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary"/></td>
-
-                            </tr>
-
-                        </table>
-                    }
-                </div>
-                <div>
-                    @using (Html.BeginForm("LoginGuest", "UserAccount", FormMethod.Post))
-                    {
-                        @Html.AntiForgeryToken()
-                        <span class="font-title3">Or Continue as a <input type="submit" value="Guest" class="btn-link"/></span>
-                    }
-                </div>
-
             </div>
+            <div>
+                @using (Html.BeginForm("LoginGuest", "UserAccount", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <span class="font-title3">Or Continue as a <input type="submit" value="Guest" class="btn-link" /></span>
+                }
+            </div>
+
+        </div>
+    </div>
+
+</div>
             <div class="panel-footer">
                 <span class="copyright-notice">&copy;2017 Prometheus</span>
             </div>
-        </div>
-    </div>
+    
 

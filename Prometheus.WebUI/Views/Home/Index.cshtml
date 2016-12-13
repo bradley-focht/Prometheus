@@ -1,11 +1,10 @@
-﻿@using Prometheus.WebUI.Helpers
-@{
+﻿@{
     ViewBag.Title = "Home";
     ViewBag.Links = null;
     Layout = "~/Views/Shared/_BasicLayout.cshtml";
 }
 @Html.Partial("PartialViews/_TitleBar", null)
-<div class="panel panel-primary" style="margin-top: -20px; width: 100%;">
+<div class="panel-primary" style="margin-top: -20px; width: 100%;">
     <div class="panel-heading">
         <h1>Prometheus IT Service Management</h1>
     </div>
@@ -26,9 +25,9 @@
             <tr>
                 <td class="content-cell">
 
-                    @Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio", null, new { @class = "font-home-link" })
+                    @Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio", null, new {@class = "font-home-link"})
                 </td>
-                <td class="content-cell">@Html.ActionLink("Services", "Index", "Service", null, new { @class = "font-home-link" })</td>
+                <td class="content-cell">@Html.ActionLink("Services", "Index", "Service", null, new {@class = "font-home-link"})</td>
 
             </tr>
             <tr>
@@ -41,8 +40,8 @@
                 <td class="content-cell"><img src="~/Content/Images/presentation.png" alt="Services" style="height: 72px; width: 77px;"></td>
             </tr>
             <tr>
-                <td class="content-cell"><label class="font-home-link">@Html.ActionLink("Business Service Catalog", "BusinessCatalog", "Catalog", null, new { @class = "font-home-link" })</label></td>
-                <td class="content-cell">@Html.ActionLink("Supporting Service Catalog", "SupportCatalog", "Catalog", null, new { @class = "font-home-link" })</td>
+                <td class="content-cell"><label class="font-home-link">@Html.ActionLink("Business Service Catalog", "BusinessCatalog", "Catalog", null, new {@class = "font-home-link"})</label></td>
+                <td class="content-cell">@Html.ActionLink("Supporting Service Catalog", "SupportCatalog", "Catalog", null, new {@class = "font-home-link"})</td>
 
             </tr>
             <tr>
@@ -60,7 +59,7 @@
             </tr>
         </table>
     </div>
-    <div class="panel-footer" style="padding-top: 10px; margin-top: -10px;">
+    <div style="padding: 10px; background-color: white; border-top: 1px solid #ccc;">
         <table style="width: 100%">
             <tr>
                 <td></td>
@@ -68,11 +67,11 @@
             <tr>
                 <td style="width: 33%">
                     @Html.ActionLink("System Access", "Index", "SystemAccess")
-                    <br />@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance")
+                    <br/>@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance")
                 </td>
                 <td style="width: 33%; vertical-align: top;">Service request templates</td>
                 <td></td>
-                <td style="width: 33%">Scripts <br />Fullfilment Queue</td>
+                <td style="width: 33%">Scripts <br/>Fullfilment Queue</td>
             </tr>
         </table>
     </div>
@@ -80,3 +79,4 @@
         <span class="copyright-notice">&copy;2017 Prometheus</span>
     </div>
 </div>
+
