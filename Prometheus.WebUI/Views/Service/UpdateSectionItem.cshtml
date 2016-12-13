@@ -40,7 +40,7 @@
                     @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                     break;
                 case "Swot":
-                    @Html.Partial("PartialViews/UpdateSwotItem", (ServiceSwotDto)Model.Service.ServiceSwots.FirstOrDefault(s=>s.Id == Model.SectionItemId))
+                    @Html.Action("UpdateSwotItem", Model.SectionItemId)
                     break;
                 case "WorkUnits":
                     @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())

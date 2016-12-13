@@ -390,7 +390,13 @@ namespace Prometheus.WebUI.Controllers
 			return View("UpdateSectionItem", model);
 		}
 
-		public ActionResult UpdateSwotItem(int id)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ChildActionOnly]
+        public ActionResult UpdateSwotItem(int id)
 		{
 			return View("PartialViews/UpdateSwotItem");
 		}
