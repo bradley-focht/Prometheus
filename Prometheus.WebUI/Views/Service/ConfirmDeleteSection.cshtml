@@ -21,14 +21,18 @@
 
 
                 <div class="panel">
-                    Are you sure you want to delete @Model.Name
+                    Are you sure you want to delete
+                    <section class="present-section">
+                        @Model.Name
+                    </section>
                 </div>
 
                 <div class="flex-container">
                     <div class="panel panel-footer">
                         <div class="float-right-div">
-                            <input type="submit" value="Confirm Delete" class="btn btn-danger" />
                             @Html.ActionLink("Cancel", "ShowServiceSectionItem", new { id = Model.Id, }, new { @class = "btn btn-default" })
+                            <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+
                         </div>
                     </div>
                 </div>

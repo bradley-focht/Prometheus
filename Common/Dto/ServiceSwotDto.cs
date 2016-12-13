@@ -23,12 +23,14 @@ namespace Common.Dto
 		/// This is a title of the item
 		/// </summary>
 		[Display(Order = 1)]
+        [Required(ErrorMessage = "Item name is required")]
 		public string Item { get; set; }
 
 		/// <summary>
 		/// Either strength, weakness, opportunity, threat
 		/// </summary>
 		[Display(Order = 2)]
+        [Required(ErrorMessage = "Item type must be selected")]
 		public ServiceSwotType Type { get; set; }
 
 		/// <summary>

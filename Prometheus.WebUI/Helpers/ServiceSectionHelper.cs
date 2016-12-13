@@ -12,7 +12,7 @@ namespace Prometheus.WebUI.Helpers
     /// </summary>
     public static class ServiceSectionHelper
     {
-        public static List<string> RouteStrings => new List<string> {"General", "GeneralOnly", "Goals", "Swot", "SwotActivities", "WorkUnits", "Contracts", "Measures", "Processes", "Pricing", "Documents"};
+        public static List<string> RouteStrings => new List<string> {"General", "GeneralOnly", "Goals", "Swot", "SwotStrength", "SwotWeakness", "SwotOpportunity", "SwotThreat", "SwotActivities", "WorkUnits", "Contracts", "Measures", "Processes", "Pricing", "Documents"};
         public static List<string> NavStrings => new List<string> { "General", "Goals", "SWOT", "Work Units", "Contracts", "Measures", "Processes", "Pricing", "Documents" };
         public static List<string> NavStringRoutes => new List<string> { "General", "Goals", "Swot", "WorkUnits", "Contracts", "Measures", "Processes", "Pricing", "Documents" };
         public static List<string> FriendlyNavName => new List<string> {"General", "Goal", "SWOT Item", "Work Unit", "SWOT Activity", "Contract", "Measure", "Process", "Pricing Option", "Document"};
@@ -38,7 +38,8 @@ namespace Prometheus.WebUI.Helpers
             //special case is SWOT
             if (routeArg.Contains("Acti"))
                 return FriendlyNavName.Find(s => s.Contains("Acti"));
-            else if (routeArg.Contains("Swot"))
+
+            if (routeArg.Contains("Swot"))
             {
                 return FriendlyNavName.Find(s => s.Contains("SWOT I"));
             }
@@ -55,7 +56,7 @@ namespace Prometheus.WebUI.Helpers
         /// <returns></returns>
         public static string ConvertNavStringToRouteString(string navArg)
         {
-            if (navArg == "SWOT")
+            if (navArg.Contains("Swot"))
                 return "Swot";
             
             return navArg.Replace(" ", "");

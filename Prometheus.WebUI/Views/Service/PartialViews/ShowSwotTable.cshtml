@@ -1,5 +1,4 @@
 ﻿@using Common.Enums
-@using Prometheus.WebUI.HtmlHelpers
 @model Prometheus.WebUI.Models.Service.SwotTableModel
 <div class="panel">
 
@@ -38,10 +37,12 @@
                                                         <li>
                                                             @Html.ActionLink("Update", "UpdateServiceSectionItem", new { serviceId = item.ServiceId, id = item.Id, section = "Swot" })
                                                         </li>
-
                                                         <li>
-                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
+                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new {id = item.Id})
                                                         </li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotStrength"}) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -54,8 +55,10 @@
 
                     @if (Model.Strengths == null || !Model.Strengths.Any())
                     {
-                        <section class="alert alert-warning">No strengths exist</section>
-
+                        <section class="alert alert-warning">
+                            No strengths exist.
+                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotStrength" })</div>
+                        </section>
                     }
                 </div>
                 <div class="flex-col">
@@ -154,7 +157,10 @@
 
                     @if (Model.Weaknesses == null || !Model.Weaknesses.Any())
                     {
-                        <div class="alert alert-warning">No weaknesses exist</div>
+                        <section class="alert alert-warning">
+                            No weaknesses exist.
+                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotWeakness" })</div>
+                        </section>
 
                     }
                 </div>

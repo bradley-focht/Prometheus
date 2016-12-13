@@ -2,7 +2,7 @@
 @model Common.Dto.IServiceSwotDto
 
 @Html.Hidden("ServiceId", Model.ServiceId)
-@Html.Hidden("Id", Model.Id)
+@Html.Hidden("Id", Model.Id < 0 ? 0 : Model.Id)
 
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
@@ -22,29 +22,41 @@
                         @foreach (var type in Enum.GetValues(typeof(ServiceSwotType)))
                         {
                             <label class="btn btn-default" id="@type">
-                                @(Model.Type != (ServiceSwotType) type ? Html.RadioButton("Type", type.ToString(), false) : Html.RadioButton("Type", type.ToString(), true))
+                                @(Model.Type != (ServiceSwotType) type || Model.Id >= 0 ? Html.RadioButton("Type", type.ToString(), false) : Html.RadioButton("Type", type.ToString(), true))
                                 @type
                             </label>
                         }
 
                     </div>
+                    @Html.ValidationMessage(property.PropertyName)
+
                 </td>
             }
             else if (property.PropertyName == "Description")
             {
                 <td class="dd-cell">
-                    @Html.TextArea(property.PropertyName, new { @class = "ckeditor" })
+                    @Html.TextArea(property.PropertyName, new {@class = "ckeditor"})
                 </td>
             }
             else
             {
-                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })</td>
-
+                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control"})
+                    @Html.ValidationMessage(property.PropertyName)
+                </td>
             }
+
         </tr>
     }
 </table>
 
-<script type="text/javascript" language="javascript">
+
+@if (Model.Id >= 0)
+{
+    <script type="text/javascript" language="javascript">
     $('#@(Model.Type)').button('toggle');
-</script>
+    </script>
+
+}
+
+
+

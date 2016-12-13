@@ -1,4 +1,5 @@
 ﻿@using Common.Dto
+@using Common.Enums
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 
@@ -32,7 +33,19 @@
                         @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
                         break;
                     case "Swot":
-                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto {ServiceId = Model.Service.Id})
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto {ServiceId = Model.Service.Id, Id = -1})
+                        break;
+                    case "SwotStrength":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Strength})
+                        break;
+                    case "SwotThreat":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Threat })
+                        break;
+                    case "SwotOpportunity":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Opportunity })
+                        break;
+                    case "SwotWeakness":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Weakness })
                         break;
                     case "Contracts":
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto())
