@@ -31,8 +31,8 @@ namespace Prometheus.WebUI
 
             routes.MapRoute(
                 name: "AddServiceSectionItem",
-                url: "Service/AddServiceSectionItem/{section}/{id}",
-                defaults: new { controller = "Service", action = "AddServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
+                url: "Service/AddServiceSectionItem/{section}/{id}/{parentId}",
+                defaults: new { controller = "Service", action = "AddServiceSectionItem", parentId = UrlParameter.Optional }
             );
 
             routes.MapRoute(

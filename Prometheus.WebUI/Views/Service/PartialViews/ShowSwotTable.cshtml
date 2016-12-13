@@ -38,11 +38,11 @@
                                                             @Html.ActionLink("Update", "UpdateServiceSectionItem", new { serviceId = item.ServiceId, id = item.Id, section = "Swot" })
                                                         </li>
                                                         <li>
-                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new {id = item.Id})
+                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
                                                         <li role="separator" class="divider"></li>
-                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotStrength"}) </li>
-                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotActivity" }) </li>
+                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotStrength" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId=item.Id, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -88,12 +88,14 @@
                                                 <div class="dropdown-menu">
                                                     <ul class="ul-menu">
                                                         <li>
-                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { serviceId = item.ServiceId, section = "Swot", id = item.Id })
                                                         </li>
-
                                                         <li>
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li>@Html.ActionLink("Add Opportunity", "AddServiceSectionItem", new {id = item.ServiceId, section = "SwotOpportunity" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -191,12 +193,14 @@
                                                 <div class="dropdown-menu">
                                                     <ul class="ul-menu">
                                                         <li>
-                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { serviceId = item.ServiceId, section = "Swot", id = item.Id })
                                                         </li>
-
                                                         <li>
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotOpportunity" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
                                             </div>

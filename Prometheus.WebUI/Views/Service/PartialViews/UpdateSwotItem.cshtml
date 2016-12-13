@@ -2,7 +2,7 @@
 @model Common.Dto.IServiceSwotDto
 
 @Html.Hidden("ServiceId", Model.ServiceId)
-@Html.Hidden("Id", Model.Id < 0 ? 0 : Model.Id)
+<input type="hidden" name="Id" value="@Model.Id"/>
 
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
