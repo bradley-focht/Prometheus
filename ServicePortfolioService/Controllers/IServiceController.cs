@@ -54,21 +54,5 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="serviceId"></param>
 		/// <returns></returns>
 		IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId);
-
-		/// <summary>
-		/// Modifies a service document
-		/// </summary>
-		/// <param name="document">Document to modify</param>
-		/// <param name="modification">Type of modification to make</param>
-		/// <returns></returns>
-		IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification);
-
-		/// <summary>
-		/// Retrieve a Document based on the the Guid (Storage Name)
-		/// </summary>
-		/// <param name="documentGuid"></param>
-		/// <returns></returns>
-		IServiceDocumentDto GetServiceDocument(Guid documentGuid);
-
 	}
 }

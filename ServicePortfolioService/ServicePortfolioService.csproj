@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ILifecycleStatusController.cs" />
+    <Compile Include="Controllers\IServiceDocumentController.cs" />
     <Compile Include="Controllers\ISwotActivityController.cs" />
     <Compile Include="Controllers\IServiceSwotController.cs" />
     <Compile Include="Controllers\IServiceBundleController.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Controllers\LifecycleStatusController.cs" />
     <Compile Include="Controllers\ServiceBundleController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Controllers\ServiceDocumentController.cs" />
     <Compile Include="Controllers\ServiceSwotController.cs" />
     <Compile Include="Controllers\SwotActivityController.cs" />
     <Compile Include="IPortfolioService.cs" />

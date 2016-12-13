@@ -166,56 +166,5 @@ namespace ServicePortfolioService.Controllers
 			var service = GetService(serviceId);
 			return service.ServiceDocuments;
 		}
-
-		public IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification)
-		{
-			switch (modification)
-			{
-				case EntityModification.Create:
-					return SaveServiceDocument(document);
-				case EntityModification.Update:
-					return UpdateServiceDocument(document);
-				case EntityModification.Delete:
-					return DeleteServiceDocument(document.StorageNameGuid) ? null : document;
-			}
-			throw new ModificationException(string.Format("Modification {0} was not performed on entity {1}", modification, document));
-		}
-
-		private bool DeleteServiceDocument(Guid documentGuid)
-		{
-			using (var context = new PrometheusContext())
-			{
-				var toDelete = context.ServiceDocuments.ToList().FirstOrDefault(x => x.StorageNameGuid == documentGuid);
-				context.ServiceDocuments.Remove(toDelete);
-				context.SaveChanges(_userId);
-			}
-			return true;
-		}
-
-		private IServiceDocumentDto UpdateServiceDocument(IServiceDocumentDto document)
-		{
-			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Documents.", EntityModification.Update));
-		}
-
-		public IServiceDocumentDto SaveServiceDocument(IServiceDocumentDto document)
-		{
-			using (var context = new PrometheusContext())
-			{
-				var service = context.Services.Find(document.ServiceId);            //this is going to add only, it isn't going to update existing records 
-				service.ServiceDocuments.Add(ManualMapper.MapDtoToServiceDocument(document));
-				context.SaveChanges(_userId);
-
-				return new ServiceDocumentDto();
-			}
-		}
-
-		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
-		{
-			using (var context = new PrometheusContext())
-			{
-				var document = context.ServiceDocuments.ToList().FirstOrDefault(x => x.StorageNameGuid == documentGuid);
-				return ManualMapper.MapServiceDocumentToDto(document);
-			}
-		}
 	}
 }
