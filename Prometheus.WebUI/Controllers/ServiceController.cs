@@ -150,13 +150,32 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Show");
 		}
 
+        /// <summary>
+        /// Save a new Swot Activity
+        /// </summary>
+        /// <param name="activity"></param>
+        /// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveSwotActivityItem(SwotActivityDto activity)
-		{
-			return RedirectToAction("Show");
-		}
+        public ActionResult SaveSwotActivityItem(SwotActivityDto activity)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to save SWOT item due to invalid data";
+                return View("AddSectionItem");
+            }
 
-		[HttpPost]
+            IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+            ps.ModifySwotActivity(activity, activity.Id <= 0 ? EntityModification.Create : EntityModification.Update);
+            var activityParent = ps.GetServiceSwot(activity.ServiceSwotId);
+
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"Successfully saved {activity.Name}";
+
+            return RedirectToAction("ShowServiceSectionItem", new { section = "Swot", serviceId = activityParent.ServiceId, id=activity.ServiceSwotId });
+        }
+
+        [HttpPost]
 		public ActionResult SaveSwotServiceMeasureItem(ServiceMeasureDto activity)
 		{
 			return RedirectToAction("Show");
@@ -405,7 +424,7 @@ namespace Prometheus.WebUI.Controllers
 			return View("PartialViews/UpdateSwotItem", ps.GetServiceSwot(id));
 		}
 
-		public ActionResult AddServiceSectionItem(string section, int id)
+		public ActionResult AddServiceSectionItem(string section, int id, int parentId = 0)
 		{
 			var model = new ServiceSectionModel();
 			model.Section = section;
@@ -413,7 +432,22 @@ namespace Prometheus.WebUI.Controllers
             IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
             model.Service = ps.GetService(id);
 
-			return View("AddSectionItem", model);
+		    if (parentId > 0 && section == "SwotActivity")      //deal with this special case
+		    {
+		        var item = model.Service.ServiceSwots.FirstOrDefault(s => s.Id == parentId);
+		        if (item != null)
+		        {
+		            model.SectionItemParentId = item.Id;
+		            model.ParentName = item.Item;
+		        }
+		        else
+		        {
+		            TempData["MessageType"] = WebMessageType.Failure;
+		            TempData["Message"] = "Failed to find SWOT item, possible orphan";
+                    return RedirectToAction("ShowServiceSectionItem", id);
+                }
+		    }
+		    return View("AddSectionItem", model);
 		}
 
 		/// <summary>

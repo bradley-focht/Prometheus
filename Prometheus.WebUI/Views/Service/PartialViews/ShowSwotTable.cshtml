@@ -141,12 +141,14 @@
                                                 <div class="dropdown-menu">
                                                     <ul class="ul-menu">
                                                         <li>
-                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.Id, section = "Swot" })
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { serviceId = item.ServiceId, id = item.Id, section = "Swot" })
                                                         </li>
-
                                                         <li>
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
+                                                        <li role="separator" class="divider"></li>
+                                                        <li>@Html.ActionLink("Add Weakness", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotWeakness" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
