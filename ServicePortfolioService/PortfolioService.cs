@@ -16,6 +16,12 @@ namespace ServicePortfolioService
 		private readonly ILifecycleStatusController _lifecycleStatusController;
 		private readonly IServiceSwotController _serviceSwotController;
 		private readonly ISwotActivityController _swotActivityController;
+		private readonly IServiceDocumentController _serviceDocumentController;
+		private readonly IServiceGoalController _serviceGoalController;
+		private readonly IServiceContractController _serviceContractController;
+		private readonly IServiceWorkUnitController _serviceWorkUnitController;
+		private readonly IServiceMeasureController _serviceMeasureController;
+
 
 		//TODO: Add check for valid user being set
 		private int _userId;
@@ -30,14 +36,24 @@ namespace ServicePortfolioService
 			}
 		}
 
-		public PortfolioService(int userId, IServiceBundleController serviceBundleController, IServiceController serviceController,
-			ILifecycleStatusController lifecycleStatusController, IServiceSwotController serviceSwotController, ISwotActivityController swotActivityController)
+		//Lol I'll make a factory for constructing this
+		public PortfolioService(int userId, IServiceBundleController serviceBundleController,
+			IServiceController serviceController, ILifecycleStatusController lifecycleStatusController,
+			IServiceSwotController serviceSwotController, ISwotActivityController swotActivityController,
+			IServiceDocumentController serviceDocumentController, IServiceGoalController serviceGoalController,
+			IServiceContractController serviceContractController, IServiceWorkUnitController serviceWorkUnitController,
+			IServiceMeasureController serviceMeasureController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
 			_lifecycleStatusController = lifecycleStatusController;
 			_serviceSwotController = serviceSwotController;
 			_swotActivityController = swotActivityController;
+			_serviceDocumentController = serviceDocumentController;
+			_serviceGoalController = serviceGoalController;
+			_serviceContractController = serviceContractController;
+			_serviceWorkUnitController = serviceWorkUnitController;
+			_serviceMeasureController = serviceMeasureController;
 
 			UserId = userId;
 		}
@@ -49,6 +65,11 @@ namespace ServicePortfolioService
 			_lifecycleStatusController.UserId = userId;
 			_serviceSwotController.UserId = userId;
 			_swotActivityController.UserId = userId;
+			_serviceDocumentController.UserId = userId;
+			_serviceGoalController.UserId = userId;
+			_serviceContractController.UserId = userId;
+			_serviceWorkUnitController.UserId = userId;
+			_serviceMeasureController.UserId = userId;
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
@@ -139,12 +160,12 @@ namespace ServicePortfolioService
 
 		public IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification)
 		{
-			return _serviceController.ModifyServiceDocument(document, modification);
+			return _serviceDocumentController.ModifyServiceDocument(document, modification);
 		}
 
 		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
 		{
-			return _serviceController.GetServiceDocument(documentGuid);
+			return _serviceDocumentController.GetServiceDocument(documentGuid);
 		}
 
 		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
@@ -170,6 +191,46 @@ namespace ServicePortfolioService
 		public ISwotActivityDto ModifySwotActivity(ISwotActivityDto swotActivity, EntityModification modification)
 		{
 			return _swotActivityController.ModifySwotActivity(swotActivity, modification);
+		}
+
+		public IServiceGoalDto GetServiceGoal(int serviceGoalId)
+		{
+			return _serviceGoalController.GetServiceGoal(serviceGoalId);
+		}
+
+		public IServiceGoalDto ModifyServiceGoal(IServiceGoalDto serviceGoal, EntityModification modification)
+		{
+			return _serviceGoalController.ModifyServiceGoal(serviceGoal, modification);
+		}
+
+		public IServiceContractDto GetServiceContract(int serviceContractId)
+		{
+			return _serviceContractController.GetServiceContract(serviceContractId);
+		}
+
+		public IServiceContractDto ModifyServiceContract(IServiceContractDto serviceContract, EntityModification modification)
+		{
+			return _serviceContractController.ModifyServiceContract(serviceContract, modification);
+		}
+
+		public IServiceWorkUnitDto GetServiceWorkUnit(int serviceWorkUnitId)
+		{
+			return _serviceWorkUnitController.GetServiceWorkUnit(serviceWorkUnitId);
+		}
+
+		public IServiceWorkUnitDto ModifyServiceWorkUnit(IServiceWorkUnitDto serviceWorkUnit, EntityModification modification)
+		{
+			return _serviceWorkUnitController.ModifyServiceWorkUnit(serviceWorkUnit, modification);
+		}
+
+		public IServiceMeasureDto GetServiceMeasure(int serviceMeasureId)
+		{
+			return _serviceMeasureController.GetServiceMeasure(serviceMeasureId);
+		}
+
+		public IServiceMeasureDto ModifyServiceMeasure(IServiceMeasureDto serviceMeasure, EntityModification modification)
+		{
+			return _serviceMeasureController.ModifyServiceMeasure(serviceMeasure, modification);
 		}
 	}
 }

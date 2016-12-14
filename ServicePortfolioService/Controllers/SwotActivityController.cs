@@ -4,6 +4,7 @@ using DataService;
 using DataService.DataAccessLayer;
 using System;
 using System.Data.Entity;
+using System.Linq;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -59,11 +60,11 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				var updatedActivity = ManualMapper.MapDtoToSwotActivity(activityDto);
-				if (updatedActivity == null)
+				if (!context.SwotActivities.Any(x => x.Id == activityDto.Id))
 				{
 					throw new InvalidOperationException(string.Format("SWOT Activity with ID {0} cannot be updated since it does not exist.", activityDto.Id));
 				}
+				var updatedActivity = ManualMapper.MapDtoToSwotActivity(activityDto);
 				context.SwotActivities.Attach(updatedActivity);
 				context.Entry(updatedActivity).State = EntityState.Modified;
 				context.SaveChanges(_userId);

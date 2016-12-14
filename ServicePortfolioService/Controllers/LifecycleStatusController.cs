@@ -95,24 +95,17 @@ namespace ServicePortfolioService.Controllers
 				//TODO: Sean - ef messes up below because it is tracking the record from here
 				// then when it gets to the else, it gets messed up with the attach
 				// code works fine with this commented out so i don't think it is needed 
-				/*  var existingStatus = context.LifecycleStatuses.Find(lifecycleStatus.Id);
-				  if (existingStatus == null)
-				  {
-					  throw new InvalidOperationException("Serivce record must exist in order to be updated.");
-				  }
-				  else
-				  { */
-				//var updatedStatus = Mapper.Map<LifecycleStatus>(lifecycleStatus);
+				// TODO: Brad please say if this breaks things for you
+				if (!context.LifecycleStatuses.Any(x => x.Id == lifecycleStatus.Id))
+				{
+					throw new InvalidOperationException("Lifecycle Status record must exist in order to be updated.");
+				}
 				var updatedStatus = ManualMapper.MapDtoToLifecycleStatus(lifecycleStatus);
 				context.LifecycleStatuses.Attach(updatedStatus);
 				context.Entry(updatedStatus).State = EntityState.Modified;
 
-
-
 				context.SaveChanges(_userId);
-				//return Mapper.Map<LifecycleStatusDto>(updatedStatus);
 				return ManualMapper.MapLifecycleStatusToDto(updatedStatus);
-				//     }
 			}
 		}
 

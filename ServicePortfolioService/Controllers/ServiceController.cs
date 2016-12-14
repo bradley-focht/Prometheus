@@ -95,19 +95,15 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				//var existingService = context.Services.Find(service.Id);
-				//if (existingService == null)
-				//{
-				//	throw new InvalidOperationException("Serivce record must exist in order to be updated.");
-				//}
-				//else
-				//{
+				if (!context.Services.Any(x => x.Id == service.Id))
+				{
+					throw new InvalidOperationException("Service record must exist in order to be updated.");
+				}
 				var updatedService = ManualMapper.MapDtoToService(service);
-				//context.Services.Attach(updatedService);
+				context.Services.Attach(updatedService);
 				context.Entry(updatedService).State = EntityState.Modified;
 				context.SaveChanges(_userId);
 				return ManualMapper.MapServiceToDto(updatedService);
-				//}
 			}
 		}
 
