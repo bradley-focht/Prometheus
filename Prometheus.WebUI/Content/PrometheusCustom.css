@@ -73,8 +73,6 @@
     flex-direction: column;
 }
 
-
-
 .flex-square-container {
   position: relative;
   width: 100%;
@@ -302,7 +300,12 @@
     vertical-align: middle;
 }
 
-    .btn-file > input {
+.btn-back {
+    margin-right: 20px;
+    margin-left: 5px;
+}
+
+.btn-file > input {
         position: absolute;
         top: 0;
         right: 0;
@@ -313,7 +316,7 @@
         font-size: 23px;
         direction: ltr;
         cursor: pointer;
-    }
+ }
 
 .fileupload {
     margin-bottom: 9px;

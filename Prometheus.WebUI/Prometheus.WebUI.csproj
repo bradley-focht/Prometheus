@@ -264,6 +264,7 @@
     <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
     <Compile Include="Models\Service\ServiceBundleModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
+    <Compile Include="Models\Service\SwotActivityItemModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\DeleteModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
@@ -338,6 +339,7 @@
     <Content Include="Views\Service\PartialViews\ShowLifeCycleStatuses.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowServiceBundles.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\ConfirmDelete.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateSwotActivityItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

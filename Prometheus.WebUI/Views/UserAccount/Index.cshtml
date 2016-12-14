@@ -52,7 +52,7 @@
                         <tr>
                             <td class="dt-cell">Username</td>
                             <td class="dd-cell">
-                                @Html.TextBox("Username", null, new { @class = "form-control" })
+                                @Html.TextBox("Username", null, new {@class = "form-control"})
                                 @Html.ValidationMessageFor(model => model.Username)
                             </td>
 
@@ -60,13 +60,13 @@
                         <tr>
                             <td class="dt-cell">Password</td>
                             <td class="dd-cell">
-                                @Html.Password("Password", null, new { @class = "form-control" })
+                                @Html.Password("Password", null, new {@class = "form-control"})
                                 @Html.ValidationMessageFor(model => model.Password)
                             </td>
                         </tr>
                         <tr>
                             <td></td>
-                            <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary" /></td>
+                            <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary"/></td>
 
                         </tr>
 
@@ -82,11 +82,12 @@
             </div>
 
         </div>
+        <div class="panel-footer">
+            <span class="copyright-notice">&copy;2017 Prometheus</span>
+        </div>
     </div>
 
 </div>
-            <div class="panel-footer">
-                <span class="copyright-notice">&copy;2017 Prometheus</span>
-            </div>
+
     
 

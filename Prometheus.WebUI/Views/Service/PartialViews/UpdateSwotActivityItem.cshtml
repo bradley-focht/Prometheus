@@ -1,0 +1,38 @@
+﻿@model Prometheus.WebUI.Models.Service.SwotActivityItemModel
+
+<input type="hidden" name="Id" value="@Model.SwotActivity.Id"/>
+@Html.Hidden("ServiceSwotId", Model.SwotActivity.ServiceSwotId)
+
+<table>
+    <tr>
+        <td class="dt-cell">Name</td>
+        <td class="dd-cell">
+            @Html.TextBox("Name", Model.SwotActivity.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+</tr>
+<tr>
+    <td class="dt-cell">Description</td>
+    <td class="dd-cell">@Html.TextArea("Description", Model.SwotActivity.Description, new { @class = "ckeditor" })</td>
+</tr>
+<tr>
+    <td class="dt-cell">Date</td>
+    <td class="dd-cell">
+        <div class="input-group date">
+            @Html.TextBox("Date", Model.SwotActivity.Name, null, new { @class = "form-control" })
+            <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+        </div>
+    </td>
+</tr>
+
+</table>
+
+<script language="javascript" type="text/javascript">
+    $(function () {
+        $('#Date').datepicker();
+    });
+
+    $('#Date').datepicker({
+        autoclose: true
+    });
+</script>

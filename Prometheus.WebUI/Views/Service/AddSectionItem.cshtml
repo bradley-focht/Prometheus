@@ -1,15 +1,26 @@
 ﻿@using Common.Dto
+@using Common.Enums
+@using DataService.Models
 @using Prometheus.WebUI.Helpers
-@model Prometheus.WebUI.Models.Service.ServiceSectionModel
+@using Prometheus.WebUI.Models.Service
+@model ServiceSectionModel
 
 @{
     ViewBag.Title = "Add " + ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
-                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
+    List<KeyValuePair<string, string>> linkList = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("Services", "Service/Index"),
+                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "/" + Model.Service.Id)};
+
+    if (Model.Section == "SwotActivity")
+    {
+        linkList.Add(new KeyValuePair<string, string>(Model.ParentName, "Service/ShowServiceSectionItem/"+ Model.Service.Id + "/Swot/" + Model.SectionItemParentId));
+    }
+
+    linkList.Add(new KeyValuePair<string, string>(ViewBag.Title, "#"));
+    ViewBag.Links = linkList;
+
 }
 
 @section Sidebar
@@ -19,7 +30,7 @@
 
 @section Content
 {
-    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
+    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section, true) + "Item", "Service", FormMethod.Post))
     {
             <div class="title-div">
                 @ViewBag.Title
@@ -32,7 +43,22 @@
                         @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
                         break;
                     case "Swot":
-                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto {ServiceId = Model.Service.Id})
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto {ServiceId = Model.Service.Id, Id = -1})
+                        break;
+                    case "SwotStrength":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Strength})
+                        break;
+                    case "SwotThreat":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Threat })
+                        break;
+                    case "SwotOpportunity":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Opportunity })
+                        break;
+                    case "SwotWeakness":
+                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Weakness })
+                        break;
+                    case "SwotActivity":
+                        @Html.Partial("PartialViews/UpdateSwotActivityItem", new SwotActivityItemModel { ServiceId = Model.Service.Id, SwotActivity = new SwotActivity {ServiceSwotId = Model.SectionItemParentId} })
                         break;
                     case "Contracts":
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto())

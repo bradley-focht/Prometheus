@@ -8,11 +8,10 @@
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("View Services", "Service/Index"),
+                                                             new KeyValuePair<string, string>("Services", "Service/Index"),
                                                                new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
                                                                 new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
     bool controlAvail = true; /*used to indicate if add/edit buttons should be visible */
-
 }
 
 @section Sidebar
@@ -73,23 +72,22 @@
 
 </div>
 
-
-
     <div class="flex-container">
         <div class="panel-footer">
 
             <div class="float-right-div">
+                @Html.ActionLink("Back", "Show", new { section = Model.Section, id = Model.Service.Id }, new { @class = "btn-back btn btn-default" })
 
                 @if (controlAvail)
                 {
-                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new {id = Model.SectionItemId, section = Model.Section}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new {id = Model.SectionItemId, serviceId = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default"})
 
                     @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", new {id = Model.SectionItemId}, new {@class = "btn btn-danger", style = "margin-left:5px;"})
                 }
             </div>
-            <div class="float-left-div">
-                @Html.ActionLink("Back", "Show", new { section = Model.Section, id = Model.Service.Id }, new { @class = "btn btn-default" })
-            </div>
+
+                
+
         </div>
     </div>
 

@@ -10,8 +10,11 @@ namespace Prometheus.WebUI.Models.Service
 
         /// <summary>
         /// Use either the Id for an int or Guid, whichever is relavent to the section item
+        /// parentId if a second level of hierarchy
         /// </summary>
         public int SectionItemId { get; set; }
+        public int SectionItemParentId { get; set; }
+        public string ParentName { get; set; }
         public Guid SectionItemGuid { get; set; }
     }
 }

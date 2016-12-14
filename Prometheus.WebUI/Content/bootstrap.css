@@ -3675,8 +3675,8 @@ textarea.input-group-sm > .input-group-btn > .btn {
 }
 
 .input-group-addon {
-  padding: 6px 12px;
-  font-size: 14px;
+  padding: 0px 6px;
+  font-size: 12px;
   font-weight: normal;
   line-height: 1;
   text-align: center;
