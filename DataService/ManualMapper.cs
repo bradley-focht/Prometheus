@@ -97,6 +97,16 @@ namespace DataService
 					serviceDto.ServiceSwots.Add(MapServiceSwotToDto(doc));
 				}
 			}
+            
+            //Goals
+		    if (src.ServiceGoals != null)
+		    {
+		        serviceDto.ServiceGoals = new List<IServiceGoalDto>();
+                foreach (var goal in src.ServiceGoals)
+                {
+                    serviceDto.ServiceGoals.Add(MapServiceGoalToDto(goal));
+                }
+            }
 
 
 			serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);

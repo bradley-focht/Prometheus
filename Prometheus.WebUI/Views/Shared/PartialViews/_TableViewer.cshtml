@@ -1,78 +1,86 @@
 ﻿@model Prometheus.WebUI.Models.Shared.TableDataModel
-@{
-    int pixels; //determine the size of the table
-    if (Model.Titles.Count() == 1)
-    {
-        pixels = 175;
-    }
-    else
-    {
-        pixels = (Model.Titles.Count() * 120) % 501;
-    }
 
-    string width = pixels + "px";
-}
+@if (Model.Titles != null && Model.Data != null)
+{
 
-    @if (Model.Titles != null)
-    {
 
-        <table class="table table-hover" style="width:@width">
-            <thead>
-                <tr>
-                    @foreach (string title in Model.Titles)
-                    {
-                        <th><span class="table-title">@title</span></th>
-                    }
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var row in Model.Data)
+
+    <table class="table table-hover" style="display: inline-block;">
+        <thead>
+            <tr>
+                @foreach (string title in Model.Titles) //begin creating the table
+                {
+                    <th><span class="table-title">@title</span></th>
+                }
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Data)
                 {
                     bool firstCol = true;
-                    <tr>
-                        @foreach (string data in row.Item2)
+                <tr>
+                    @foreach (string data in row.Item2)
                     {
-                            <td>
-                                @if (firstCol)
+                        <td>
+                            @if (firstCol)
+                            {
+                                if (Model.ServiceSection == null)
                                 {
-                                    @Html.ActionLink(data, Model.Action, Model.Controller, new { section = Model.ServiceSection, id = row.Item1 }, null)
-                                    firstCol = false;
+                                    @Html.ActionLink(data, Model.Action, new { id = row.Item1 })
                                 }
                                 else
                                 {
-                                    @Html.Raw(data)
+                                    @Html.ActionLink(data, Model.Action, new { id = row.Item1, section = Model.ServiceSection, serviceId = Model.ServiceId })
                                 }
-                            </td>
-
-                        }
-                        <td>
-
-                            <div class="btn-group">
-                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                    <span aria-hidden="true">&#x25BC;</span>
-                                </div>
-                                <div class="dropdown-menu">
-                                    <ul class="ul-menu">
-                                        <li>
-                                            @Html.ActionLink("Update", Model.UpdateAction, new { id = row.Item1, section = Model.ServiceSection })
-                                        </li>
-
-                                        <li>
-                                            @Html.ActionLink("Delete", Model.ConfirmDeleteAction, new { id = row.Item1 })
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-
+                                firstCol = false;
+                            }
+                            else
+                            {
+                                @Html.Raw(data)
+                            }
                         </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-warning"> data available</div>
 
-    }
+                    }
+                    <td>
+
+                        <div class="btn-group">
+                            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                <span aria-hidden="true">&#x25BC;</span>
+                            </div>
+                            <div class="dropdown-menu">
+                                <ul class="ul-menu">
+                                    <li>
+                                        @if (Model.ServiceSection == null)
+                                        {
+                                            @Html.ActionLink("Update", Model.UpdateAction, new { id = row.Item1 })
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Update", Model.UpdateAction, new { id = row.Item1, section = Model.ServiceSection, serviceId = Model.ServiceId })
+                                        }
+                                    </li>
+
+                                    <li>
+                                        @Html.ActionLink("Delete", Model.ConfirmDeleteAction, new { id = row.Item1 })
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning">
+        No @Model.ServiceSection available.
+        <div class="float-right-div">
+            @Html.ActionLink("Add", Model.AddAction, new { section = Model.ServiceSection, id = Model.ServiceId })
+        </div>
+    </div>
+
+}

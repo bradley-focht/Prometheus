@@ -1,4 +1,5 @@
-﻿@model Prometheus.WebUI.Models.Service.ConfirmDeleteSectionItemModel
+﻿
+@model Prometheus.WebUI.Models.Service.ConfirmDeleteSectionItemModel
 
 @{
     ViewBag.Title = "Services";
@@ -6,8 +7,9 @@
     ViewBag.Links = new List< KeyValuePair < string, string>> {
                                                                 new KeyValuePair<string, string>("Home", "Home"),
                                                                 new KeyValuePair<string, string>("Services", "Service/Index"),
-                                                                new KeyValuePair<string, string>(Model.Service, "Service/Show/" + Model.Section + "/" + Model.ServiceId),
-                                                                new KeyValuePair<string, string>(Model.Name, "Service/ShowServiceSectionItem/" + Model.ServiceId + "/" + Model.Section + "/" + Model.Id),
+                                                                new KeyValuePair<string, string>(Model.Service, "Service/Show/Swot/" + Model.ServiceId),
+                                                                new KeyValuePair<string, string>(Model.AltName, "Service/ShowServiceSectionItem/" + Model.ServiceId + "/Swot/" + Model.AltId),
+                                                                new KeyValuePair<string, string>(Model.Name, $"Service/ShowSwotActivity/{Model.Id}"),
                                                                 new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";

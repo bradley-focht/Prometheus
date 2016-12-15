@@ -41,7 +41,7 @@
                                                         </li>
                                                         <li role="separator" class="divider"></li>
                                                         <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotStrength" }) </li>
-                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddSwotActivityItem", new { id = item.Id }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -94,7 +94,7 @@
                                                         </li>
                                                         <li role="separator" class="divider"></li>
                                                         <li>@Html.ActionLink("Add Opportunity", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotOpportunity" }) </li>
-                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddSwotActivityItem", new { id = item.Id }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -150,7 +150,7 @@
                                                         </li>
                                                         <li role="separator" class="divider"></li>
                                                         <li>@Html.ActionLink("Add Weakness", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotWeakness" }) </li>
-                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddSwotActivityItem", new { id = item.Id }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -204,7 +204,7 @@
                                                         </li>
                                                         <li role="separator" class="divider"></li>
                                                         <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotOpportunity" }) </li>
-                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotActivity" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddSwotActivityItem", new { id = item.Id }) </li>
                                                     </ul>
                                                 </div>
                                             </div>

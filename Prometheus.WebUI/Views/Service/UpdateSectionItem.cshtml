@@ -20,7 +20,7 @@
 
 @section Content
 {
-    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section, true) + "Item", "Service", FormMethod.Post))
+    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
     {
         <div class="title-div">
             @ViewBag.SubTitle
@@ -37,7 +37,7 @@
                     @Html.Partial("PartialViews/UpdateGeneral", Model.Service)
                     break;
                 case "Goals":
-                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    @Html.Partial("PartialViews/UpdateServiceGoalItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                     break;
                 case "Swot":
                     @Html.Action("Update" + Model.Section + "Item", Model.SectionItemId)

@@ -1,4 +1,7 @@
-﻿@model dynamic
+﻿@using Common.Enums
+@model dynamic
+
+
 
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
@@ -14,14 +17,13 @@
                 else if (property.PropertyName == "Type")
                 {
                     <td class="dd-cell">
-
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-default">
-                                @Html.RadioButton("Type", "ShortTerm") Short Term
+                                @(Model.Type == ServiceGoalType.ShortTerm ? Html.RadioButton("Type", "ShortTerm", true) : Html.RadioButton("Type", "ShortTerm", false))
                             </label>
 
                             <label class="btn btn-default">
-                                @Html.RadioButton("Type", "LongTerm") Long Term
+                                @(Model.Type == ServiceGoalType.LongTerm ? Html.RadioButton("Type", "LongTerm", true) : Html.RadioButton("Type", "LongTerm", false))
                             </label>
                         </div>
 
@@ -48,6 +50,22 @@
                 </td>
             </tr>
         }
+        else if (property.PropertyName == "Id") //this is kind of silly.... 
+        {
+            <tr>
+                <td>
+                    <input type="hidden" name="Id" value="@property.Model" />
+                </td>
+            </tr>
+        }
+        else if (property.PropertyName == "ServiceId")
+        {
+            <tr>
+                <td>
+                    <input type="hidden" name="ServiceId" value="@property.Model" />
+                </td>
+            </tr>
+        }
 
     }
 
@@ -56,8 +74,14 @@
 
 <script language="javascript" type="text/javascript">
     $(function () {
-        $('#StartDate').datepicker();
-        $('#EndDate').datepicker();
-        $('#Date').datepicker();
+        $('#Date').datepicker({
+            autoclose: true
+        });
+        $('#EndDate').datepicker({
+            autoclose: true
+        });
+        $('#StartDate').datepicker({
+            autoclose: true
+        });
     })
 </script>

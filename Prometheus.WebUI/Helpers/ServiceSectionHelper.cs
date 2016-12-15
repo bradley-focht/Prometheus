@@ -66,13 +66,12 @@ namespace Prometheus.WebUI.Helpers
         /// returns the route-friendly equivalent of what is put in the navigation title bar
         /// </summary>
         /// <param name="navArg"></param>
-        /// <param name="formPostNav">if conversion is being used in a form = true, otherwise routing for back-link navigation</param>
         /// <returns></returns>
-        public static string ConvertNavStringToRouteString(string navArg, bool formPostNav = false)
+        public static string ConvertNavStringToRouteString(string navArg)
         {
             if (navArg.Contains("Swot"))
             {
-                return navArg.Contains("Activ") && formPostNav? "SwotActivity" : "Swot";
+                return "Swot";
             }
             return navArg.Replace(" ", "");
         }

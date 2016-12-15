@@ -1,0 +1,39 @@
+﻿@model Prometheus.WebUI.Models.Service.SwotActivityItemModel
+@{
+    ViewBag.Title = "Services";
+
+    ViewBag.SubTitle = "SWOT Activity";
+    ViewBag.Links = new List<KeyValuePair<string, string>> {
+                                                                new KeyValuePair<string, string>("Home", "Home"),
+                                                                new KeyValuePair<string, string>("Services", "Service/Index"),
+                                                                new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Swot/{Model.ServiceId}"),
+                                                                new KeyValuePair<string, string>(Model.SwotName, $"Service/ShowServiceSectionItem/{Model.ServiceId}/Swot/{Model.SwotId}"),
+                                                                new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
+
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+@section Content
+{
+    <div class="title-div">SWOT Activity</div>
+    <div class="panel">
+        @Html.Partial("PartialViews/ShowDynamicServiceItem", Model.SwotActivity)
+    </div>
+
+<div class="flex-container">
+    <div class="panel-footer">
+        <div class="float-right-div">
+            @Html.ActionLink("Back", "ShowServiceSectionItem", new { serviceId = Model.ServiceId, section = "Swot", id = Model.SwotId }, new { @class = "btn btn-default btn-back" })
+            @Html.ActionLink("Update", "UpdateSwotActivityItem", new { id = Model.SwotActivity.Id}, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Delete", "ConfirmDeleteSwotActivityItem", new { id = Model.SwotActivity.Id }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+</div>
+}
+
+
+@section Sidebar
+{
+    
+}
+

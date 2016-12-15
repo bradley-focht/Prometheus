@@ -20,7 +20,17 @@ namespace Prometheus.WebUI.Models.Shared
         /// Update Item
         /// </summary>
         public string UpdateAction { get; set; }
-
+        /// <summary>
+        /// Add new data if no data
+        /// </summary>
+        public string AddAction { get; set; }
+        /// <summary>
+        /// Section that is being rendered
+        /// </summary>
         public string ServiceSection { get; set; }
+        /// <summary>
+        /// Id for actions and back links if any
+        /// </summary>
+        public int ServiceId { get; set; }
     }
 }

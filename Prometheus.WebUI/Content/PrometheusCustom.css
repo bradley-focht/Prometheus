@@ -130,6 +130,7 @@
 
 .float-right-div {
     float: right;
+    margin-left: 5px;
     clear: both;
 }
 

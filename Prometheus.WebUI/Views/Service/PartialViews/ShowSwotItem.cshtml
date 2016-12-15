@@ -20,15 +20,14 @@
                 @Html.Action("ShowSwotActivities", Model.Id)
                 <div>
                 <div class="float-right-div">
-                    @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, parentId = Model.Id, section = "SwotActivity" })
+                    @Html.ActionLink("Add Activity", "AddSwotActivityItem", new { id = Model.Id })
                 </div>
                 </div>
             }
             else
             {
                 <div class="alert alert-warning">
-                    No activities. 
-                    <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, parentId = Model.Id, section = "SwotActivity" }) </div>
+                    No activities. @Html.ActionLink("Add", "AddSwotActivityItem", new { id = Model.Id })
 
                 </div>
             }

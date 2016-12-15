@@ -314,7 +314,6 @@
     <Content Include="Views\Service\PartialViews\UpdateGeneral.cshtml" />
     <Content Include="Views\Service\UpdateSectionItem.cshtml" />
     <Content Include="Views\Service\ShowSectionItem.cshtml" />
-    <Content Include="Views\Service\PartialViews\UpdateGoalItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowSwotItem.cshtml" />
     <Content Include="Views\Service\AddSectionItem.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateSwotItem.cshtml" />
@@ -340,6 +339,10 @@
     <Content Include="Views\Service\PartialViews\ShowServiceBundles.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\ConfirmDelete.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateSwotActivityItem.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateServiceGoalItem.cshtml" />
+    <Content Include="Views\Service\UpdateSwotActivityItem.cshtml" />
+    <Content Include="Views\Service\ShowSwotActivityItem.cshtml" />
+    <Content Include="Views\Service\ConfirmDeleteSwotActivityItem.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

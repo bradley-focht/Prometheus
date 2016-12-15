@@ -15,6 +15,7 @@
         /// Items with a deeper hierarchy may need a second level of Id
         /// </summary>
         public int AltId { get; set; }
+        public string AltName { get; set; }
         /// <summary>
         /// Controller action method that will be called
         /// </summary>

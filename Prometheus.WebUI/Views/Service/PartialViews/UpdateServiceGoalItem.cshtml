@@ -1,0 +1,85 @@
+﻿@model Common.Dto.IServiceGoalDto
+
+@using Common.Enums
+
+<input type="hidden" name="Id" value="@Model.Id" />
+<input type="hidden" name="ServiceId" value="@Model.ServiceId" />
+
+<table>
+
+    <tr>
+        <td class="dt-cell">Name</td>
+        <td class="dd-cell">
+            @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+
+    <tr>
+        <td class="dt-cell">Description</td>
+        <td class="dd-cell">@Html.TextArea("Description", Model.Description, new { @class = "ckeditor" })</td>
+    </tr>
+    <tr>
+        <td class="dt-cell">Type</td>
+        <td class="dd-cell">
+            <div class="btn-group" data-toggle="buttons">
+                <label class="btn btn-default" id="@ServiceGoalType.ShortTerm">
+                    @(Model.Id > 0 && Model.Type == ServiceGoalType.ShortTerm ? Html.RadioButton("Type", ServiceGoalType.ShortTerm, true) : Html.RadioButton("Type", ServiceGoalType.ShortTerm, false))
+                    Short Term
+                </label>
+
+                <label class="btn btn-default" id="@ServiceGoalType.LongTerm">
+                    @(Model.Id > 0 && Model.Type == ServiceGoalType.LongTerm ? Html.RadioButton("Type", ServiceGoalType.LongTerm, true) : Html.RadioButton("Type", ServiceGoalType.LongTerm, false))
+                    Long Term
+                </label>
+            </div>
+            @Html.ValidationMessageFor(model => model.Type)
+        </td>
+
+    </tr>
+    <tr>
+        <td class="dt-cell">Start Date</td>
+        <td class="dd-cell">
+            <div class="input-group date">
+                @Html.TextBox("StartDate", Model.StartDate?.ToString("MM/dd/yyyy") ?? "", new { @class = "form-control" })
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            </div>
+
+        </td>
+    </tr>
+    <tr>
+        <td class="dt-cell">End Date</td>
+        <td class="dd-cell">
+            <div class="input-group date">
+                @Html.TextBox("EndDate", Model.StartDate?.ToString("d") ?? "", new { @class = "form-control" })
+                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            </div>
+        </td>
+    </tr>
+</table>
+
+
+<script language="javascript" type="text/javascript">
+
+    $(function () {
+        $('#EndDate')
+            .datepicker({
+                format: "mm-dd-yyyy",
+                autoclose: true
+            });
+        $('#StartDate')
+            .datepicker({
+                format: "mm-dd-yyyy",
+                autoclose: true
+            });
+        @if (Model.Id > 0)
+        {
+            <text>
+        $('#@(Model.Type)').button('toggle');
+        </text>
+
+        }
+    });
+
+
+</script>

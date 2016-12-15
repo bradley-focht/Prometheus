@@ -6,21 +6,26 @@ namespace Prometheus.WebUI.Models.Service
 {
     public class SwotActivityItemModel
     {
-        public int ServiceId { get; set; }
+        public SwotActivityItemModel(SwotActivityDto activity)
+        {
+            SwotActivity = activity;
+        }
         public ISwotActivityDto SwotActivity { get; set; }
 
-        [Required(ErrorMessage = "Name is required")]
-        public string Name
+        //used for title / backlinks
+        public string Action { get; set; }
+
+        public int ServiceId { get; set; }
+
+        public string ServiceName { get; set; }
+
+        public int SwotId
         {
-            get { return SwotActivity.Name; }
-            set { SwotActivity.Name = Name; }
+            get { return SwotActivity.ServiceSwotId;  }
+            set { SwotActivity.ServiceSwotId = SwotId; }
         }
-        [Required(ErrorMessage = "Date is required")]
-        public DateTime Date
-        {
-            get { return SwotActivity.Date;  }
-            set { SwotActivity.Date = Date; }
-        }
+        public string SwotName { get; set; }
+
 
     }
 }

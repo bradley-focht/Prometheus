@@ -1,0 +1,41 @@
+﻿@model Prometheus.WebUI.Models.Service.SwotActivityItemModel
+
+@{
+    ViewBag.Title = "Services";
+    ViewBag.SubTitle = Model.Action + "Swot Activity";
+    ViewBag.Links = new List<KeyValuePair<string, string>> {
+                                                                new KeyValuePair<string, string>("Home", "Home"),
+                                                               new KeyValuePair<string, string>("Services", "Service/Index"),
+                                                                new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Swot/{Model.ServiceId}"),
+                                                                new KeyValuePair<string, string>(Model.SwotName, $"Service/ShowServiceSectionItem/{Model.ServiceId}/Swot/{Model.SwotId}"),
+                                                                  new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
+
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+@section Content
+{
+    <div class="title-div">@ViewBag.SubTitle</div>
+
+    <div class="panel">
+        @using (Html.BeginForm("SaveSwotActivityItem", "Service", FormMethod.Post))
+    {
+            @Html.Partial("PartialViews/UpdateSwotActivityItem", Model.SwotActivity)
+
+
+
+            <div class="flex-container">
+                <div class="panel-footer">
+                    <div class="float-right-div">
+                        @Html.ActionLink("Back", "ShowServiceSectionItem", new { serviceId = Model.ServiceId, section = "Swot", id = Model.SwotActivity.ServiceSwotId }, new { @class = "btn btn-default btn-back" })
+                        <input type="submit" value="Save" id="Save" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+@section Sidebar
+{
+
+}

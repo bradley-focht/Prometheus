@@ -167,8 +167,8 @@ namespace Prometheus.WebUI.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = "Failed to save SWOT item due to invalid data";
-                return View("PartialViews/UpdateSwotActivityItem", new SwotActivityItemModel { SwotActivity = activity});
+                TempData["Message"] = "Failed to save SWOT activity due to invalid data";
+                return View("UpdateSwotActivityItem", new SwotActivityItemModel(activity));
             }
 
             IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
@@ -194,21 +194,33 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		[ChildActionOnly]
-		public ActionResult ShowServiceGoals(ServiceDto service)
+		public ActionResult ShowServiceGoals(int id)
 		{
-			TableDataModel tblModel = new TableDataModel();
-			tblModel.Titles = new List<string> { "Goal", "Duration", "Start Date", "End Date" };
-			tblModel.Data = new List<Tuple<int, ICollection<string>>>
-			{
-				new Tuple<int, ICollection<string>>(1,
-					new List<string> {"test the system", "short term", "september", "october"}),
-				new Tuple<int, ICollection<string>>(1,
-					new List<string> {"add actual data", "short term", "october", "march"})
-			};
-			tblModel.Action = "ShowServiceSectionItem";
-			tblModel.ServiceSection = "Goals";
-			tblModel.Controller = "Service";
+		    TableDataModel tblModel = new TableDataModel {ServiceSection = "Goals", Controller = "Service", AddAction = "AddServiceSectionItem", ServiceId = id};
 
+		    var ps = InterfaceFactory.CreatePortfolioService(dummId);
+		    var service = ps.GetService(id);
+
+		    if (service.ServiceGoals != null && service.ServiceGoals.Any())
+		    {
+		        tblModel.Titles = new List<string> {"Goal", "Duration", "Start Date", "End Date"};
+		        List<Tuple<int, ICollection<string>>> data = new List<Tuple<int, ICollection<string>>>();
+
+                foreach (var goal in service.ServiceGoals)      //check for data before doing anything, if no data a "add new" message will be displayed
+		        {
+		            data.Add(new Tuple<int, ICollection<string>>(goal.Id, new List<string>
+		            {
+		                goal.Name,
+		                goal.Type.ToString(),
+		                goal.StartDate?.ToString("d") ?? "n/a",
+		                goal.EndDate?.ToString("d") ?? "n/a"
+		            }));
+		        }
+		        tblModel.Data = data;
+                tblModel.Action = "ShowServiceSectionItem";         //add rest of functionality if needed
+                tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceGoalsItem";
+                tblModel.UpdateAction = "UpdateServiceSectionItem";
+            }
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
 		}
 
@@ -294,13 +306,12 @@ namespace Prometheus.WebUI.Controllers
 		{
 			TableDataModel model = new TableDataModel();
 
-            model.Action = "ShowServiceSectionItem";
+            model.Action = "ShowSwotActivity";
             
-            model.ServiceSection = "SwotActivity";
 			model.Titles = new List<string> { "Activity", "Date" };
 	        model.Data = new List<Tuple<int, ICollection<string>>>();
-            model.UpdateAction = "UpdateServiceSectionItem";
-            model.ConfirmDeleteAction = "ConfirmDeleteSwotActivity";
+            model.UpdateAction = "UpdateSwotActivityItem";
+            model.ConfirmDeleteAction = "ConfirmDeleteSwotActivityItem";
 
 	        var ps = InterfaceFactory.CreatePortfolioService(dummId);
 	        var swot = ps.GetServiceSwot(id);
@@ -313,8 +324,44 @@ namespace Prometheus.WebUI.Controllers
 			return View("PartialViews/_TableViewer", model);
 		}
 
+	    public ActionResult ConfirmDeleteSwotActivityItem(int id)
+	    {
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var activity = ps.GetSwotActivity(id);
+	        var swot = ps.GetServiceSwot(activity.ServiceSwotId);
+            var model = new ConfirmDeleteSectionItemModel
+            {
+                Id = id,
+                ServiceId = swot.ServiceId,
+                DeleteAction = "DeleteSwotActivity",
+                Name = activity.Name,
+                AltId = swot.Id,
+                AltName =  swot.Item
+                
+            };
+            model.Service = ps.GetService(swot.ServiceId).Name;
+            model.ServiceId = swot.ServiceId;
 
-		[ChildActionOnly]
+            return View("ConfirmDeleteSwotActivityItem", model);
+        }
+
+        [HttpPost]
+	    public ActionResult DeleteSwotActivity(DeleteSectionItemModel model)
+        {
+            TempData["messageType"] = WebMessageType.Success;
+            TempData["message"] = "Successfully deleted " + model.FriendlyName;
+
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            int swotId = ps.GetSwotActivity(model.Id).ServiceSwotId;
+            ps.ModifySwotActivity(new SwotActivityDto { Id = model.Id }, EntityModification.Delete);
+         
+
+            return RedirectToAction("ShowServiceSectionItem", new { id = swotId, serviceId = model.ServiceId, section = "Swot" });
+        }
+
+
+
+        [ChildActionOnly]
 		public ActionResult ShowServiceProcesses(ServiceDto service)
 		{
 			TableDataModel tblModel = new TableDataModel();
@@ -369,7 +416,6 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"{service.Name} has not been failed due to invalid data";
-
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"{service.Name} has been saved";
@@ -384,10 +430,19 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveGoalsItem(ServiceGoalDto goal)
 		{
+		    if (!ModelState.IsValid)
+		    {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Unable to save {goal.Name}";
+		        RedirectToAction("Show", new {section = "Goals", id = goal.ServiceId});
+		    }
+
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Sucessfully saved goal";
+		    var ps = InterfaceFactory.CreatePortfolioService(dummId);
+		    ps.ModifyServiceGoal(goal, goal.Id < 1 ? EntityModification.Create : EntityModification.Update);
 
-			return RedirectToAction("show", new { section = "Goals", id = 10 });
+			return RedirectToAction("show", new { section = "Goals", id = goal.ServiceId });
 		}
 
 	    /// <summary>
@@ -448,19 +503,42 @@ namespace Prometheus.WebUI.Controllers
 			return View("PartialViews/UpdateSwotItem", ps.GetServiceSwot(id));
 		}
 
-        [ChildActionOnly]
         public ActionResult UpdateSwotActivityItem(int id)
         {
             IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
-            var model = new SwotActivityItemModel();
+            var model = new SwotActivityItemModel(new SwotActivityDto {ServiceSwotId = id});
             ISwotActivityDto swotActivity = ps.GetSwotActivity(id);
             var swotItem = ps.GetServiceSwot(swotActivity.ServiceSwotId);
+            model.SwotName = swotItem.Item;
             model.ServiceId = swotItem.ServiceId;
+            model.ServiceName = ps.GetService(swotItem.ServiceId).Name;
             model.SwotActivity = swotActivity;
 
-            return View("PartialViews/UpdateSwotActivityItem", model);
+            return View("UpdateSwotActivityItem", model);
         }
 
+	    public ActionResult AddSwotActivityItem(int id)
+	    {
+
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+	        var swot = ps.GetServiceSwot(id);
+
+            var model = new SwotActivityItemModel(new SwotActivityDto {ServiceSwotId = id});
+            model.ServiceName = ps.GetService(swot.ServiceId).Name;
+	        model.ServiceId = swot.ServiceId;
+	        model.Action = "Add";
+	        model.SwotName = swot.Item;
+            
+            return View("UpdateSwotActivityItem", model);
+	    }
+
+        /// <summary>
+        /// General Add new ServiceSectionItem
+        /// </summary>
+        /// <param name="section"></param>
+        /// <param name="id"></param>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
         public ActionResult AddServiceSectionItem(string section, int id, int parentId = 0)
 		{
 			var model = new ServiceSectionModel();
@@ -469,37 +547,32 @@ namespace Prometheus.WebUI.Controllers
             IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
             model.Service = ps.GetService(id);
 
-		    if (parentId > 0 && section == "SwotActivity")      //deal with this special case
-		    {
-		        var item = model.Service.ServiceSwots.FirstOrDefault(s => s.Id == parentId);
-		        if (item != null)
-		        {
-		            model.SectionItemParentId = item.Id;
-		            model.ParentName = item.Item;
-		        }
-		        else
-		        {
-		            TempData["MessageType"] = WebMessageType.Failure;
-		            TempData["Message"] = "Failed to find SWOT item, possible orphan";
-                    return RedirectToAction("ShowServiceSectionItem", id);
-                }
-		    }
+
 		    return View("AddSectionItem", model);
 		}
 
 		/// <summary>
 		/// Generates the confirm deletion warning page
-		///  function is generalized enough to handle all section items
-		///  deletion is specialized and has specialized actions to complete
 		/// </summary>
-		/// <param name="id"></param>
+		/// <param name="id">Id of ServiceGoal</param>
 		/// <returns></returns>
-		public ActionResult ConfirmDeleteServiceGoalsItem(int id = 0)
+		public ActionResult ConfirmDeleteServiceGoalsItem(int id)
 		{
-			var model = new ConfirmDeleteSectionItemModel();
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+		    var goal = ps.GetServiceGoal(id);
+            var model = new ConfirmDeleteSectionItemModel
+            {
+                Id = id,
+                ServiceId = goal.ServiceId,
+                DeleteAction = "DeleteServiceGoal",
+                Name = goal.Name,
+                Section = "Goals"
+                
+            };
+		    model.Service = ps.GetService(goal.ServiceId).Name;
+		    model.ServiceId = goal.ServiceId;
 
-
-			return View("ConfirmDeleteSection", model);
+            return View("ConfirmDeleteSection", model);
 		}
 
         /// <summary>
@@ -534,14 +607,20 @@ namespace Prometheus.WebUI.Controllers
         }
            
 
-
+        /// <summary>
+        /// Complete deletion of a ServiceGoal
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
 		[HttpPost]
-		public ActionResult DeleteServiceGoalsItem(DeleteSectionItemModel model)
+		public ActionResult DeleteServiceGoal(DeleteSectionItemModel model)
 		{
 			TempData["messageType"] = WebMessageType.Success;
 			TempData["message"] = "Successfully deleted " + model.FriendlyName;
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            ps.ModifyServiceGoal(new ServiceGoalDto { Id = model.Id }, EntityModification.Delete);
 
-			return RedirectToAction("Show", new { id = model.ServiceId, section = model.Section });
+            return RedirectToAction("Show", new { id = model.ServiceId, section = "Goals" });
 		}
 
 		#region Service Documents
@@ -742,12 +821,22 @@ namespace Prometheus.WebUI.Controllers
 		}
 		#endregion
 
-	    [ChildActionOnly]
+        /// <summary>
+        /// Create the model to show the Swot Activity
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 	    public ActionResult ShowSwotActivity(int id)
 	    {
 	        var ps = InterfaceFactory.CreatePortfolioService(id);
-
-	        return PartialView("PartialViews/ShowDynamicServiceItem", ps.GetSwotActivity(id));
+            var model = new SwotActivityItemModel((SwotActivityDto)ps.GetSwotActivity(id));
+	        var swot = ps.GetServiceSwot(model.SwotId);
+	        model.SwotName = swot.Item;
+	        model.SwotId = swot.Id;
+	        model.ServiceId = swot.ServiceId;
+	        model.ServiceName = ps.GetService(swot.ServiceId).Name;
+             
+	        return PartialView("ShowSwotActivityItem", model);
 	    }
 	}
 }
