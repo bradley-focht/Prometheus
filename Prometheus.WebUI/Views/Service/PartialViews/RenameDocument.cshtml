@@ -9,8 +9,11 @@
         <tr>
             <td class="dt-cell">Filename</td>
             <td class="dd-cell">
-                @Html.TextBox("Filename", Model.Filename, new { @class = "form-control" })
-            </td>
+                <div class="input-group">
+                    @Html.TextBox("Filename", Model.Filename, new { @class = "form-control" })
+                    <span class="input-group-addon">@Model.FileExtension</span>
+</div>
+</td>
         </tr>
     </table>
 

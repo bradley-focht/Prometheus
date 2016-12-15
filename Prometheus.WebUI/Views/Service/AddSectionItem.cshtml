@@ -60,7 +60,7 @@
                         @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasureDto())
                         break;
                     case "WorkUnits":
-                        @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceWorkUnitDto {ServiceId = Model.Service.Id})
                         break;
                 }
             </div>

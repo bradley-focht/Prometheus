@@ -21,6 +21,7 @@ namespace Common.Dto
 		/// The title of a team in the company
 		/// </summary>
 		[Display(Name = "Work Unit")]
+        [Required(ErrorMessage = "Work Unit name is required")]
 		public string WorkUnit { get; set; }
 
 		/// <summary>

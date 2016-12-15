@@ -126,15 +126,29 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 
+
 		/// <summary>
 		/// Save and update work units
 		/// </summary>
 		/// <param name="workUnit"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveServiceWorkUnitItem(ServiceWorkUnitDto workUnit)
+		public ActionResult SaveWorkUnitsItem(ServiceWorkUnitDto workUnit)
 		{
-			return RedirectToAction("Show");
+            if (!ModelState.IsValid)                    /* Server side validation */
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to save Work Unit due to invalid data";
+                return RedirectToAction("UpdateServiceSectionItem", new {section="WorkUnits", id=workUnit.ServiceId});
+            }
+
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+		    ps.ModifyServiceWorkUnit(workUnit, EntityModification.Create);
+
+		    TempData["MessageType"] = WebMessageType.Success;
+		    TempData["Message"] = $"Successfully saved {workUnit.WorkUnit}";
+
+            return RedirectToAction("Show", new {section = "WorkUnits", id = workUnit.ServiceId});
 		}
 
 		[HttpPost]
@@ -677,7 +691,9 @@ namespace Prometheus.WebUI.Controllers
 			}
             //perform the save
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
-            ps.ModifyServiceDocument(document, EntityModification.Update);
+		    var doc = ps.GetServiceDocument(document.StorageNameGuid);
+		    doc.Filename = document.Filename;
+            ps.ModifyServiceDocument(doc, EntityModification.Update);
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully saved document {document.Filename}";

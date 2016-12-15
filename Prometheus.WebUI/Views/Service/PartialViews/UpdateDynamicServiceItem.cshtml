@@ -10,7 +10,7 @@
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                @if (property.PropertyName == "Description")
+                @if (property.PropertyName == "Description" || property.PropertyName == "Responsibilities")
                 {
                     <td class="dd-cell">@Html.TextArea(property.PropertyName, new { @class = "ckeditor" })</td>
                 }

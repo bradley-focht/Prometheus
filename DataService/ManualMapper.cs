@@ -108,7 +108,17 @@ namespace DataService
                 }
             }
 
+            //Work Units
+		    if (src.ServiceWorkUnits != null)
+		    {
+                serviceDto.ServiceWorkUnits = new List<IServiceWorkUnitDto>();
+                foreach (var unit in src.ServiceWorkUnits)
+                {
+                    serviceDto.ServiceWorkUnits.Add(MapServiceWorkUnitToDto(unit));
+                }
+            }
 
+            //Status
 			serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
 
 			return serviceDto;
