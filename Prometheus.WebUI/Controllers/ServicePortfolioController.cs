@@ -20,7 +20,7 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            var ps = InterfaceFactory.CreatePortfolioService(dummyId);
 
             return View(ps.GetServiceBundles());
         }
@@ -40,7 +40,7 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Show");
             }
 
-            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            var ps = InterfaceFactory.CreatePortfolioService(dummyId);
 
             if (serviceBundle.Id == 0)
                 ps.SaveServiceBundle(serviceBundle);
@@ -77,7 +77,7 @@ namespace Prometheus.WebUI.Controllers
 
             if (id > 0)
             {
-                var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+                var ps = InterfaceFactory.CreatePortfolioService(dummyId);
                 serviceBundle = (ServiceBundleDto)ps.GetServiceBundle(id);
             }
             else
@@ -90,7 +90,7 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult Update(int id = 0)
         {
 
-            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            var ps = InterfaceFactory.CreatePortfolioService(dummyId);
             ServiceBundleDto serviceBundle = (ServiceBundleDto)ps.GetServiceBundle(id);
             return View("Update", serviceBundle);
         }
@@ -102,7 +102,7 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult ConfirmDelete(int id)
         {
-            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            var ps = InterfaceFactory.CreatePortfolioService(dummyId);
             ServiceBundleDto serviceBundle = (ServiceBundleDto)ps.GetServiceBundle(id);
 
             return View(serviceBundle);
@@ -124,7 +124,7 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Show");
             }
 
-            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            var ps = InterfaceFactory.CreatePortfolioService(dummyId);
             ps.DeleteServiceBundle(item.Id);
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"Successfully deleted {item.Name}";
@@ -134,7 +134,7 @@ namespace Prometheus.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult ShowServiceBundleList(int id = 0)
         {
-            var ps = new PortfolioService(dummyId, new ServiceBundleController(), new ServicePortfolioService.Controllers.ServiceController(), new LifecycleStatusController(), new ServiceSwotController(), new SwotActivityController());
+            var ps = InterfaceFactory.CreatePortfolioService(dummyId);
 
             LinkListModel serviceBundleModel = new LinkListModel
             {

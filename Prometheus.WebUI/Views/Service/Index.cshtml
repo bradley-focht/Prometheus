@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<Common.Dto.IServiceDto>
 @{
-    ViewBag.Title = "View Services ";
+    ViewBag.Title = "Services ";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                                 new KeyValuePair<string, string>(ViewBag.Title, "#")};
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="flex-container">
-    <div class="title-div">
+    <div>
         <div class="float-right-div">
-            @Html.ActionLink("Add", "Add", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Add Service", "AddService", null, null)
         </div>
     </div>
 </div>

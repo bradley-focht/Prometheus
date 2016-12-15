@@ -1,6 +1,5 @@
 ﻿@using Common.Dto
 @using Common.Enums
-@using DataService.Models
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Models.Service
 @model ServiceSectionModel
@@ -40,7 +39,7 @@
                 @switch (Model.Section)
                 {
                     case "Goals":
-                        @Html.Partial("PartialViews/UpdateGoalItem", new ServiceGoalDto())
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceGoalDto())
                         break;
                     case "Swot":
                         @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto {ServiceId = Model.Service.Id, Id = -1})
@@ -58,7 +57,7 @@
                         @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Weakness })
                         break;
                     case "SwotActivity":
-                        @Html.Partial("PartialViews/UpdateSwotActivityItem", new SwotActivityItemModel { ServiceId = Model.Service.Id, SwotActivity = new SwotActivity {ServiceSwotId = Model.SectionItemParentId} })
+                        @Html.Partial("PartialViews/UpdateSwotActivityItem", new SwotActivityItemModel { ServiceId = Model.Service.Id, SwotActivity = new SwotActivityDto {ServiceSwotId = Model.SectionItemParentId} })
                         break;
                     case "Contracts":
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto())

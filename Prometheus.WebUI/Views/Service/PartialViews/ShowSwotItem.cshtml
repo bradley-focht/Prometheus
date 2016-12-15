@@ -17,11 +17,20 @@
         <td class="dd-cell">
             @if (Model.SwotActivities != null)
             {
-                @Html.Action("ShowSwotActivities", Model.SwotActivities)
+                @Html.Action("ShowSwotActivities", Model.Id)
+                <div>
+                <div class="float-right-div">
+                    @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, parentId = Model.Id, section = "SwotActivity" })
+                </div>
+                </div>
             }
             else
             {
-                <div class="alert alert-warning">no activities</div>
+                <div class="alert alert-warning">
+                    No activities. 
+                    <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, parentId = Model.Id, section = "SwotActivity" }) </div>
+
+                </div>
             }
         </td>
     </tr>

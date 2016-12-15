@@ -36,7 +36,7 @@
                             <td>
                                 @if (firstCol)
                                 {
-                                    @Html.ActionLink(data, Model.Action, "Service", new { section = Model.ServiceSection, id = row.Item1 }, null)
+                                    @Html.ActionLink(data, Model.Action, Model.Controller, new { section = Model.ServiceSection, id = row.Item1 }, null)
                                     firstCol = false;
                                 }
                                 else
@@ -55,11 +55,11 @@
                                 <div class="dropdown-menu">
                                     <ul class="ul-menu">
                                         <li>
-                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = row.Item1, section = Model.ServiceSection })
+                                            @Html.ActionLink("Update", Model.UpdateAction, new { id = row.Item1, section = Model.ServiceSection })
                                         </li>
 
                                         <li>
-                                            @Html.ActionLink("Delete", "ConfirmDeleteService" + Model.ServiceSection + "Item", new { id = row.Item1 })
+                                            @Html.ActionLink("Delete", Model.ConfirmDeleteAction, new { id = row.Item1 })
                                         </li>
                                     </ul>
                                 </div>

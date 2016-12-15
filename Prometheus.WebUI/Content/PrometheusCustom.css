@@ -30,9 +30,14 @@
 }
 
 .font-title3 {
-    color: #232323;
+    color: #333333;
     font-weight: 600;
     font-size: 15px;
+}
+
+.instructions-div {
+    color: #333333;
+    font-size: 0.8em;
 }
 
 .font-inverse {

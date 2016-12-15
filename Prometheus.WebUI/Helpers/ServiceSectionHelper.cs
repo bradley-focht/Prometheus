@@ -23,6 +23,19 @@ namespace Prometheus.WebUI.Helpers
             return NavStringRoutes.Select((t, i) => new KeyValuePair<string, string>(NavStringRoutes.ElementAt(i), NavStrings.ElementAt(i))).ToList();
         }
 
+        /// <summary>
+        /// Intended purpose is to build back links
+        /// </summary>
+        /// <param name="navString"></param>
+        /// <returns></returns>
+        public static string ParentSection(string navString)
+        {
+            if (navString == "SwotActivity")            //this is currently the only hierarchical one
+                return "Swot";
+
+            return null;
+        }
+
         public static bool ValidateRoute(string routeArg)
         {
             return RouteStrings.Any(s => s == routeArg);
@@ -35,7 +48,7 @@ namespace Prometheus.WebUI.Helpers
         /// <returns></returns>
         public static string ConvertRouteStringToFriendlyName(string routeArg)
         {
-            //special case is SWOT
+            //special case is SWOT - which is a major pain to deal with. 
             if (routeArg.Contains("Acti"))
                 return FriendlyNavName.Find(s => s.Contains("Acti"));
 

@@ -1,13 +1,14 @@
 ﻿@model Prometheus.WebUI.Models.Service.ConfirmDeleteSectionItemModel
 
 @{
-    ViewBag.Title = "Confirm Deletion";
+    ViewBag.Title = "Services";
+    ViewBag.SubTitle = "Confirm Deletion";
     ViewBag.Links = new List< KeyValuePair < string, string>> {
                                                                 new KeyValuePair<string, string>("Home", "Home"),
-                                                                new KeyValuePair<string, string>("View Services", "Service/Index"),
-                                                                new KeyValuePair<string, string>(Model.Service, "Service/Show/General/" + Model.ServiceId),
-                                                                new KeyValuePair<string, string>(Model.Section, "Service/ShowServiceSectionItem/" + Model.Section + "/" + Model.Id),
-                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
+                                                                new KeyValuePair<string, string>("Services", "Service/Index"),
+                                                                new KeyValuePair<string, string>(Model.Service, "Service/Show/" + Model.Section + "/" + Model.ServiceId),
+                                                                new KeyValuePair<string, string>(Model.Name, "Service/ShowServiceSectionItem/" + Model.ServiceId + "/" + Model.Section + "/" + Model.Id),
+                                                                new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
@@ -18,7 +19,7 @@
         @using (Html.BeginForm(Model.DeleteAction, "Service", FormMethod.Post))
         {
             <input type="hidden" name="Id" value="@Model.Id"/>
-
+            <input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
                 <div class="panel">
                     Are you sure you want to delete

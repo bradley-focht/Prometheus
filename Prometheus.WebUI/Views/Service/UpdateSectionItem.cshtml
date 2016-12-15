@@ -20,7 +20,7 @@
 
 @section Content
 {
-    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
+    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section, true) + "Item", "Service", FormMethod.Post))
     {
         <div class="title-div">
             @ViewBag.SubTitle
@@ -40,8 +40,10 @@
                     @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                     break;
                 case "Swot":
-                case "SwotStrength":
                     @Html.Action("Update" + Model.Section + "Item", Model.SectionItemId)
+                    break;
+                case "SwotActivity":
+                    @Html.Action("UpdateSwotActivityItem", Model.SectionItemId)
                     break;
                 case "WorkUnits":
                     @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())

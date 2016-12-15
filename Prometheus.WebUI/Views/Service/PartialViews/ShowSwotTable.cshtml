@@ -20,7 +20,6 @@
 
                             @if (Model.Strengths != null && Model.Strengths.Any())
                             {
-
                                 foreach (var item in Model.Strengths)
                                 {
                                     <tr>
@@ -35,14 +34,14 @@
                                                 <div class="dropdown-menu">
                                                     <ul class="ul-menu">
                                                         <li>
-                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { serviceId = item.ServiceId, id = item.Id, section = "Swot" })
+                                                            @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = item.ServiceId, serviceId = item.ServiceId, section = "Swot" })
                                                         </li>
                                                         <li>
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
                                                         <li role="separator" class="divider"></li>
-                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotStrength" }) </li>
-                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId=item.Id, section = "SwotActivity" }) </li>
+                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotStrength" }) </li>
+                                                        <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
                                             </div>
@@ -94,7 +93,7 @@
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
                                                         <li role="separator" class="divider"></li>
-                                                        <li>@Html.ActionLink("Add Opportunity", "AddServiceSectionItem", new {id = item.ServiceId, section = "SwotOpportunity" }) </li>
+                                                        <li>@Html.ActionLink("Add Opportunity", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotOpportunity" }) </li>
                                                         <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
@@ -108,7 +107,10 @@
 
                     @if (Model.Opportunities == null || !Model.Opportunities.Any())
             {
-                        <div class="alert alert-warning">No opportunities exist</div>
+                        <div class="alert alert-warning">
+                            No opportunities exist
+                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotOpportunity" })</div>
+                        </div>
 
                     }
                 </div>
@@ -147,7 +149,7 @@
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
                                                         <li role="separator" class="divider"></li>
-                                                        <li>@Html.ActionLink("Add Weakness", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotWeakness" }) </li>
+                                                        <li>@Html.ActionLink("Add Weakness", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotWeakness" }) </li>
                                                         <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { id = item.ServiceId, parentId = item.Id, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
@@ -201,7 +203,7 @@
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem", new { id = item.Id })
                                                         </li>
                                                         <li role="separator" class="divider"></li>
-                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotOpportunity" }) </li>
+                                                        <li>@Html.ActionLink("Add Strength", "AddServiceSectionItem", new { id = item.ServiceId, section = "SwotOpportunity" }) </li>
                                                         <li>@Html.ActionLink("Add Activity", "AddServiceSectionItem", new { serviceId = item.ServiceId, section = "SwotActivity" }) </li>
                                                     </ul>
                                                 </div>
@@ -215,8 +217,11 @@
 
                     @if (Model.Threats == null || !Model.Threats.Any())
             {
-                        <div class="alert alert-warning">No threats exist</div>
+                        <div class="alert alert-warning">
+                            No threats exist.
 
+                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotThreat" })</div>
+                        </div>
                     }
                 </div>
             </div>

@@ -19,8 +19,9 @@
     <td class="dt-cell">Date</td>
     <td class="dd-cell">
         <div class="input-group date">
-            @Html.TextBox("Date", Model.SwotActivity.Name, null, new { @class = "form-control" })
+            @Html.TextBox("Date", Model.Date, new { @class = "form-control" })
             <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+            @Html.ValidationMessageFor(model=>model.Date)
         </div>
     </td>
 </tr>

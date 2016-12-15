@@ -20,7 +20,7 @@ namespace Common.Dto
 		/// <summary>
 		/// This is a title for the item
 		/// </summary>
-		[Required(ErrorMessage = "Name is reqired")]
+		[Required(ErrorMessage = "Name is required")]
 		public string Name { get; set; }
 
 		/// <summary>
@@ -32,7 +32,8 @@ namespace Common.Dto
 		/// <summary>
 		/// Date the activity took place on, or start date for multi-day events
 		/// </summary>
-		public DateTime? Date { get; set; }
+		[Required(ErrorMessage =  "Date is required")]
+		public DateTime Date { get; set; }
 		#endregion
 	}
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Prometheus.WebUI.Models.Service
+﻿namespace Prometheus.WebUI.Models.Service
 {
     public class DeleteSectionItemModel
     {
@@ -12,7 +7,7 @@ namespace Prometheus.WebUI.Models.Service
         /// <summary>
         /// Used for redirection after deletion
         /// </summary>
-        public int Serviceid { get; set; }
+        public int ServiceId { get; set; }
         /// <summary>
         /// Section to return to after deletion
         /// </summary>

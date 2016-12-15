@@ -7,10 +7,23 @@
     ViewBag.SubTitle = ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.Section);
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
-    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("Services", "Service/Index"),
-                                                               new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
-                                                                new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
+    List<KeyValuePair<string, string>> linkList = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("Services", "Service/Index"),
+        new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id)
+    };
+
+    if (ServiceSectionHelper.ParentSection(Model.Section) != null)
+    {
+        linkList.Add(new KeyValuePair<string, string>(Model.ParentName, "Service/ShowServiceSectionItem/"  + Model.Section + "/" + Model.Service.Id));
+    }
+
+    linkList.Add(new KeyValuePair<string, string>(ViewBag.SubTitle, "#"));
+
+
+    ViewBag.Links = linkList;
+
     bool controlAvail = true; /*used to indicate if add/edit buttons should be visible */
 }
 
@@ -21,56 +34,51 @@
 
 @section Content {
 
-<div class="title-div">
-    @ViewBag.SubTitle
-</div>
+    <div class="title-div">
+        @ViewBag.SubTitle
+    </div>
 
     <div class="panel">
 
-    @switch (Model.Section)
-    {
-        case "Goals":
-            if (Model.Service.ServiceGoals != null && Model.Service.ServiceGoals.Any()) /* check for non existant lists to limit some null data going to the next view */
-            {
+        @switch (Model.Section)
+        {
+            case "Goals":
                 @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                 break;
-            }
-            goto default;
-        case "Swot":
-            if (Model.Service.ServiceSwots != null && Model.Service.ServiceSwots.Any())
-            {
+            case "Swot":
                 @Html.Partial("PartialViews/ShowSwotItem", (ServiceSwotDto)Model.Service.ServiceSwots.FirstOrDefault(g => g.Id == Model.SectionItemId))
                 break;
-            }
-            goto default;
-        case "WorkUnits":
-            if (Model.Service.ServiceGoals != null && Model.Service.ServiceGoals.Any())
-            {
-                @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceWorkUnitDto)Model.Service.ServiceWorkUnits.FirstOrDefault(g => g.Id == Model.SectionItemId))
+            case "SwotActivity":
+                @Html.Action("ShowSwotActivity", Model.SectionItemId)
                 break;
-            }
-            goto default;
-        case "Contracts":
-            if (Model.Service.ServiceContracts != null && Model.Service.ServiceContracts.Any())
-            {
-                @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceContractDto)Model.Service.ServiceContracts.FirstOrDefault(g => g.Id == Model.SectionItemId))
+            case "WorkUnits":
+                if (Model.Service.ServiceGoals != null && Model.Service.ServiceGoals.Any())
+                {
+                    @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceWorkUnitDto)Model.Service.ServiceWorkUnits.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    break;
+                }
+                goto default;
+            case "Contracts":
+                if (Model.Service.ServiceContracts != null && Model.Service.ServiceContracts.Any())
+                {
+                    @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceContractDto)Model.Service.ServiceContracts.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    break;
+                }
+                goto default;
+            case "Measures":
+                if (Model.Service.ServiceMeasures != null && Model.Service.ServiceMeasures.Any())
+                {
+                    @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    break;
+                }
+                goto default;
+            default:
+                controlAvail = false;
+                <div class="alert alert-danger">The data no is longer available.</div>
                 break;
-            }
-            goto default;
-        case "Measures":
-            if (Model.Service.ServiceMeasures != null && Model.Service.ServiceMeasures.Any())
-            {
-                @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
-                break;
-            }
-            goto default;
-        default:
-            controlAvail = false;
-            <div class="alert alert-danger">The data no is longer available.</div>
-            break;
-    }
+        }
 
-</div>
+    </div>
 
     <div class="flex-container">
         <div class="panel-footer">
@@ -80,13 +88,13 @@
 
                 @if (controlAvail)
                 {
-                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new {id = Model.SectionItemId, serviceId = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default"})
+                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = Model.SectionItemId, serviceId = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
 
-                    @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", new {id = Model.SectionItemId}, new {@class = "btn btn-danger", style = "margin-left:5px;"})
+                    @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", new { id = Model.SectionItemId }, new { @class = "btn btn-danger", style = "margin-left:5px;" })
                 }
             </div>
 
-                
+
 
         </div>
     </div>

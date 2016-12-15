@@ -21,7 +21,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 		public string Name { get; set; }
 		public string Description { get; set; }
-		public DateTime? Date { get; set; }
+		public DateTime Date { get; set; }
 		#endregion
 		#region Navigation Propeties
 		public virtual ServiceSwot ServiceSwot { get; set; }

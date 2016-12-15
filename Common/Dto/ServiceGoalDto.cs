@@ -23,6 +23,7 @@ namespace Common.Dto
 		/// Unique descriptive name
 		/// </summary>
 		[Display(Order = 1)]
+        [Required(ErrorMessage = "Name is required")]
 		public string Name { get; set; }
 
 		/// <summary>
