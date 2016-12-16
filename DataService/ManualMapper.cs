@@ -395,7 +395,7 @@ namespace DataService
 				ServiceId = src.ServiceId,
 				Contact = src.Contact,
 				Responsibilities = src.Responsibilities,
-				WorkUnit = src.WorkUnit
+				Name = src.Name
 			};
 		}
 
@@ -409,7 +409,7 @@ namespace DataService
 				ServiceId = src.ServiceId,
 				Contact = src.Contact,
 				Responsibilities = src.Responsibilities,
-				WorkUnit = src.WorkUnit
+				Name = src.Name
 			};
 		}
 	}

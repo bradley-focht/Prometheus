@@ -20,8 +20,7 @@ namespace DataService.Models
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-		[Display(Name = "Work Unit")]
-		public string WorkUnit { get; set; }
+		public string Name { get; set; }
 
 		public string Contact { get; set; }
 		public string Responsibilities { get; set; }

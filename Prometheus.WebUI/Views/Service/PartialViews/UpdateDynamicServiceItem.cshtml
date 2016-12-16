@@ -6,28 +6,13 @@
 <table>
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
-        if (!property.PropertyName.Contains("Id") && !property.PropertyName.Contains("Date") && !property.PropertyName.Contains("Activ")) //remove Ids and SWOT activities
+        if (!property.PropertyName.Contains("Id") && !property.PropertyName.Contains("Date")) //remove Ids and SWOT activities
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
                 @if (property.PropertyName == "Description" || property.PropertyName == "Responsibilities")
                 {
                     <td class="dd-cell">@Html.TextArea(property.PropertyName, new { @class = "ckeditor" })</td>
-                }
-                else if (property.PropertyName == "Type")
-                {
-                    <td class="dd-cell">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default">
-                                @(Model.Type == ServiceGoalType.ShortTerm ? Html.RadioButton("Type", "ShortTerm", true) : Html.RadioButton("Type", "ShortTerm", false))
-                            </label>
-
-                            <label class="btn btn-default">
-                                @(Model.Type == ServiceGoalType.LongTerm ? Html.RadioButton("Type", "LongTerm", true) : Html.RadioButton("Type", "LongTerm", false))
-                            </label>
-                        </div>
-
-                    </td>
                 }
 
                 else

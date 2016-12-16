@@ -15,7 +15,7 @@
 
 @section Sidebar
 {
-   
+
 }
 
 @section Content
@@ -46,7 +46,15 @@
                     @Html.Action("UpdateSwotActivityItem", Model.SectionItemId)
                     break;
                 case "WorkUnits":
-                    @Html.Partial("PartialViews/UpdateWorkUnitItem", new ServiceWorkUnitDto())
+                    var workUnit = (ServiceWorkUnitDto)Model.Service.ServiceWorkUnits.FirstOrDefault(g => g.Id == Model.SectionItemId);
+                    if (workUnit != null)
+                    {
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", workUnit)
+                    }
+                    else
+                    {
+                        goto default;
+                    }
                     break;
                 case "Measures":
                     if (Model.Service.ServiceWorkUnits != null && Model.Service.ServiceMeasures.Any())
@@ -58,24 +66,26 @@
                 default:
                     controlsAvail = false;
                     <section class="alert alert-warning">
-                        Data no longer exists.
+                        The data no longer exists.
                     </section>
                     break;
             }
         </div>
 
-        if (controlsAvail)
-        {
-            <div class="flex-container">
-                <div class="panel-footer">
-                    <div class="float-right-div">
-                        @Html.ActionLink("Back", "Show", new {id = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default"})
-                        <input type="submit" value="Save" id="Save" class="btn btn-primary"/>
-                    </div>
+
+        <div class="flex-container">
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default btn-back" })
+                    @if (controlsAvail)
+                    {
+                        <input type="submit" value="Save" id="Save" class="btn btn-primary" />
+                    }
                 </div>
             </div>
-        }
+        </div>
     }
+
 }
 
 

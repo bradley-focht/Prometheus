@@ -6,6 +6,6 @@
 		int Id { get; set; }
 		string Responsibilities { get; set; }
 		int ServiceId { get; set; }
-		string WorkUnit { get; set; }
+		string Name { get; set; }
 	}
 }

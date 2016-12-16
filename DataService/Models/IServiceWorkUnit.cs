@@ -7,7 +7,7 @@
 
 		string Contact { get; set; }
 		string Responsibilities { get; set; }
-		string WorkUnit { get; set; }
+		string Name { get; set; }
 
 		Service Service { get; set; }
 	}
