@@ -10,7 +10,6 @@
         ViewBag.SubTitle = ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.SelectedSection);
     }
 
-
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Services", "Service/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#")};
@@ -47,13 +46,13 @@
 
         </div>
 
-        if (controlAvail)
-        {
-            <div class="flex-container">
-                <div class="panel-footer">
-                    <div class="float-right-div">
 
-                        @if (Model.SelectedSection == "General" || Model.SelectedSection == null)
+        <div class="flex-container">
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @if (controlAvail)
+                    {
+                        if (Model.SelectedSection == "General" || Model.SelectedSection == null)
                         {
                             @Html.ActionLink("Update", "UpdateGeneral", new { id = Model.Service.Id }, new { @class = "btn btn-primary" })
                         }
@@ -61,10 +60,11 @@
                         {
                             @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-primary" })
                         }
-                    </div>
+                    }
                 </div>
             </div>
-        }
+        </div>
+
 
     }
 }

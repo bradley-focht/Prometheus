@@ -54,10 +54,10 @@
                         @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Weakness })
                         break;
                     case "Contracts":
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto())
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto {ServiceId = Model.Service.Id })
                         break;
                     case "Measures":
-                        @Html.Partial("PartialViews/UpdateMeasureItem", new ServiceMeasureDto())
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceMeasureDto {ServiceId = Model.Service.Id})
                         break;
                     case "WorkUnits":
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceWorkUnitDto {ServiceId = Model.Service.Id})
@@ -67,7 +67,7 @@
             <div class="flex-container">
                 <div class="panel-footer">
                     <div class="float-right-div">
-                        @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
+                        @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default btn-back" })
                         <input type="submit" value="Save" class="btn btn-primary" />
                     </div>
                 </div>

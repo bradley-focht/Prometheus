@@ -317,10 +317,8 @@
     <Content Include="Views\Service\PartialViews\ShowSwotItem.cshtml" />
     <Content Include="Views\Service\AddSectionItem.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateSwotItem.cshtml" />
-    <Content Include="Views\Service\PartialViews\UpdateWorkUnitItem.cshtml" />
     <Content Include="Views\Service\ConfirmDeleteSection.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowSwotTable.cshtml" />
-    <Content Include="Views\Service\PartialViews\UpdateMeasureItem.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\ServiceView.cshtml" />
     <Content Include="Views\SystemAccess\Index.cshtml" />
     <Content Include="Views\UserAccount\Index.cshtml" />

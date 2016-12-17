@@ -54,9 +54,8 @@
 
                     @if (Model.Strengths == null || !Model.Strengths.Any())
                     {
-                        <section class="alert alert-warning">
-                            No strengths exist.
-                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotStrength" })</div>
+                        <section class="alert alert-warning alert-mess">
+                            No strengths exist. @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotStrength" })
                         </section>
                     }
                 </div>
@@ -107,10 +106,9 @@
 
                     @if (Model.Opportunities == null || !Model.Opportunities.Any())
             {
-                        <div class="alert alert-warning">
-                            No opportunities exist
-                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotOpportunity" })</div>
-                        </div>
+                        <section class="alert alert-warning alert-message">
+                            No opportunities exist. @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotOpportunity" })
+                        </section>
 
                     }
                 </div>
@@ -163,9 +161,9 @@
 
                     @if (Model.Weaknesses == null || !Model.Weaknesses.Any())
                     {
-                        <section class="alert alert-warning">
+                        <section class="alert alert-warning alert-message">
                             No weaknesses exist.
-                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotWeakness" })</div>
+                            @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotWeakness" })
                         </section>
 
                     }
@@ -217,11 +215,9 @@
 
                     @if (Model.Threats == null || !Model.Threats.Any())
             {
-                        <div class="alert alert-warning">
-                            No threats exist.
-
-                            <div class="float-right-div">@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotThreat" })</div>
-                        </div>
+                        <section class="alert alert-warning alert-message">
+                            No threats exist. @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotThreat" })
+                        </section>
                     }
                 </div>
             </div>

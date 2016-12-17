@@ -116,11 +116,20 @@ namespace Prometheus.WebUI.Controllers
             {
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = "Failed to save SWOT item due to invalid data";
-                return View("AddSectionItem");
+                return RedirectToAction("UpdateServiceSectionItem", new {id = swotItem.ServiceId, section = "Swot"});
             }
 
             IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
-            ps.ModifyServiceSwot(swotItem, swotItem.Id <= 0 ? EntityModification.Create : EntityModification.Update);
+            try
+            {
+                ps.ModifyServiceSwot(swotItem, swotItem.Id <= 0 ? EntityModification.Create : EntityModification.Update);
+            }
+            catch (Exception e)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save SWOT, error: {e.Message}";
+                return RedirectToAction("Show", new { section = "Swot", id = swotItem.ServiceId });
+            }
 
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"Successfully saved {swotItem.Item}";
@@ -172,6 +181,25 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Show", new {id = goal.ServiceId, section = "Goals"});
         }
 
+        [HttpPost]
+        public ActionResult SaveMeasuresItem(ServiceMeasureDto measure)
+        {
+            if (!ModelState.IsValid) /* Server side validation */
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to save measure due to invalid data";
+                return RedirectToAction("AddService");
+            }
+            //save service
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            ps.ModifyServiceMeasure(measure, EntityModification.Create);
+
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"{measure.Method} saved successfully";
+
+            return RedirectToAction("Show", new { id = measure.ServiceId, section = "Measures" });
+        }
+
         /// <summary>
         /// Save a new Swot Activity
         /// </summary>
@@ -205,9 +233,22 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveContractItem(ServiceContractDto contract)
+        public ActionResult SaveContractsItem(ServiceContractDto contract)
         {
-            return RedirectToAction("Show");
+            if (!ModelState.IsValid) /* Server side validation */
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to save contract due to invalid data";
+                return RedirectToAction("UpdateServiceSectionItem", new { id = contract.ServiceId, section = "Contracts" });
+            }
+            //save service
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            ps.ModifyServiceContract(contract, contract.Id > 0 ? EntityModification.Update : EntityModification.Create);
+
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"Contract {contract.ContractNumber} saved successfully";
+
+            return RedirectToAction("Show", new { id = contract.ServiceId, section = "Contracts" });
         }
 
         [ChildActionOnly]
@@ -249,17 +290,40 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ShowServiceContracts(ServiceDto service)
+        public ActionResult ShowServiceContracts(int id)
         {
-            TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> {"Vendor", "Contract Number", "Start Date", "End Date"};
-            tblModel.Data = new List<Tuple<int, ICollection<string>>>
+            TableDataModel tblModel = new TableDataModel
             {
-                new Tuple<int, ICollection<string>>(1,
-                    new List<string> {"Prometheus", "44-4507-A", "next month", "last month"})
+                ServiceSection = "Contracts",
+                Controller = "Service",
+                AddAction = "AddServiceSectionItem",
+                ServiceId = id
             };
-            tblModel.Action = "ShowServiceSectionItem";
-            tblModel.ServiceSection = "Contracts";
+
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var service = ps.GetService(id);
+
+            if (service.ServiceContracts != null && service.ServiceContracts.Any())
+            {
+                tblModel.Titles = new List<string> { "Provider", "Contract", "Start Date", "Expiry Date" };
+                List<Tuple<int, ICollection<string>>> data = new List<Tuple<int, ICollection<string>>>();
+
+                foreach (var contract in service.ServiceContracts)
+                //check for data before doing anything, if no data a "add new" message will be displayed
+                {
+                    data.Add(new Tuple<int, ICollection<string>>(contract.Id, new List<string>
+                    {
+                        contract.ServiceProvider,
+                        contract.ContractNumber,
+                        contract.StartDate.ToString("d"),
+                        contract.ExpiryDate.ToString("d") 
+                    }));
+                }
+                tblModel.Data = data;
+                tblModel.Action = "ShowServiceSectionItem"; //add rest of functionality if needed
+                tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceContractsItem";
+                tblModel.UpdateAction = "UpdateServiceSectionItem";
+            }
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
 
@@ -274,7 +338,7 @@ namespace Prometheus.WebUI.Controllers
             };
 
             tblModel.AddAction = "AddServiceSectionItem";
-            tblModel.ConfirmDeleteAction = "ConfirmDeleteWorkUnitsItem";
+            tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceWorkUnitsItem";
             tblModel.UpdateAction = "UpdateServiceSectionItem";
 
 
@@ -283,7 +347,7 @@ namespace Prometheus.WebUI.Controllers
             var workUnits = service.ServiceWorkUnits;
             tblModel.ServiceId = service.Id;
 
-            if (workUnits != null)
+            if (workUnits != null && workUnits.Any())
             {
                 tblModel.Titles = new List<string> {"Name", "Contact"};
                 tblModel.Data = new List<Tuple<int, ICollection<string>>>();
@@ -298,17 +362,35 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [ChildActionOnly]
-        public ActionResult ShowServiceMeasures(ServiceDto service)
+        public ActionResult ShowServiceMeasures(int id)
         {
-            TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> {"Method", "Outcome"};
-            tblModel.Action = "ShowServiceSectionItem";
-
-            tblModel.ServiceSection = "Measures";
-            tblModel.Data = new List<Tuple<int, ICollection<string>>>
+            TableDataModel tblModel = new TableDataModel
             {
-                new Tuple<int, ICollection<string>>(1, new List<string> {"divide by 0", "exception"})
+                Action = "ShowServiceSectionItem",
+                ServiceSection = "Measures",
+                Controller = "Service"
             };
+
+            tblModel.AddAction = "AddServiceSectionItem";
+            tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceMeasuresItem";
+            tblModel.UpdateAction = "UpdateServiceSectionItem";
+
+
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var service = ps.GetService(id);
+            var measures = service.ServiceMeasures;
+            tblModel.ServiceId = service.Id;
+
+            if (measures != null && measures.Any())
+            {
+                tblModel.Titles = new List<string> { "Method" };
+                tblModel.Data = new List<Tuple<int, ICollection<string>>>();
+                foreach (var measure in measures)
+                {
+                    tblModel.Data.Add(new Tuple<int, ICollection<string>>(measure.Id,
+                        new List<string> { measure.Method }));
+                }
+            }
 
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
         }
@@ -616,6 +698,26 @@ namespace Prometheus.WebUI.Controllers
             return View("ConfirmDeleteSection", model);
         }
 
+
+        public ActionResult ConfirmDeleteServiceMeasuresItem(int id)
+        {
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var measure = ps.GetServiceMeasure(id);
+            var model = new ConfirmDeleteSectionItemModel
+            {
+                Id = id,
+                ServiceId = measure.ServiceId,
+                DeleteAction = "DeleteServiceMeasure",
+                Name = measure.Method,
+                Section = "Measures"
+
+            };
+            model.Service = ps.GetService(measure.ServiceId).Name;
+            model.ServiceId = measure.ServiceId;
+
+            return View("ConfirmDeleteSection", model);
+        }
+
         /// <summary>
         /// Confirmation before deleting a SWOT item
         /// </summary>
@@ -632,6 +734,27 @@ namespace Prometheus.WebUI.Controllers
                 DeleteAction = "DeleteServiceSwotItem",
                 Name = item.Item,
                 Section = "Swot"
+            };
+            model.Service = ps.GetService(item.ServiceId).Name;
+            return View("ConfirmDeleteSection", model);
+        }
+
+        /// <summary>
+        /// Delete a contract
+        /// </summary>
+        /// <param name="id">Contract id</param>
+        /// <returns></returns>
+        public ActionResult ConfirmDeleteServiceContractsItem(int id)
+        {
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var item = ps.GetServiceContract(id);
+            var model = new ConfirmDeleteSectionItemModel
+            {
+                Id = id,
+                ServiceId = item.ServiceId,
+                DeleteAction = "DeleteServiceContract",
+                Name = $"{item.ServiceProvider}: {item.ContractNumber}",
+                Section = "Contracts"
             };
             model.Service = ps.GetService(item.ServiceId).Name;
             return View("ConfirmDeleteSection", model);
@@ -677,7 +800,7 @@ namespace Prometheus.WebUI.Controllers
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             try
             {
-                ps.ModifyServiceGoal(new ServiceGoalDto {Id = model.Id}, EntityModification.Delete);
+                ps.ModifyServiceWorkUnit(new ServiceWorkUnitDto() {Id = model.Id}, EntityModification.Delete);
             }
             catch (Exception e)
             {
@@ -693,6 +816,55 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Show", new { id = model.ServiceId, section = "WorkUnits" });
         }
 
+        [HttpPost]
+        public ActionResult DeleteServiceContract(DeleteSectionItemModel model)
+        {
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            try
+            {
+                ps.ModifyServiceContract(new ServiceContractDto() { Id = model.Id }, EntityModification.Delete);
+            }
+            catch (Exception e)
+            {
+                TempData["messageType"] = WebMessageType.Failure;
+                TempData["message"] = $"Failed to delete {model.FriendlyName}: {e.Message}";
+
+                return RedirectToAction("Show", new { id = model.ServiceId, section = "Contracts" });
+            }
+
+            TempData["messageType"] = WebMessageType.Success;
+            TempData["message"] = "Successfully deleted " + model.FriendlyName;
+
+            return RedirectToAction("Show", new { id = model.ServiceId, section = "Contracts" });
+        }
+
+
+        /// <summary>
+        /// Complete the deltion of a Service Measure
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult DeleteServiceMeasure(DeleteSectionItemModel model)
+        {
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            try
+            {
+                ps.ModifyServiceMeasure(new ServiceMeasureDto() { Id = model.Id }, EntityModification.Delete);
+            }
+            catch (Exception e)
+            {
+                TempData["messageType"] = WebMessageType.Failure;
+                TempData["message"] = $"Failed to delete {model.FriendlyName}: {e.Message}";
+
+                return RedirectToAction("Show", new { id = model.ServiceId, section = "Measures" });
+            }
+
+            TempData["messageType"] = WebMessageType.Success;
+            TempData["message"] = "Successfully deleted " + model.FriendlyName;
+
+            return RedirectToAction("Show", new { id = model.ServiceId, section = "Measures" });
+        }
 
 
         #region Service Documents
@@ -940,7 +1112,7 @@ namespace Prometheus.WebUI.Controllers
         }
 
 
-        public ActionResult ConfirmDeleteWorkUnitsItem(int id)
+        public ActionResult ConfirmDeleteServiceWorkUnitsItem(int id)
         {
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             var item = ps.GetServiceWorkUnit(id);

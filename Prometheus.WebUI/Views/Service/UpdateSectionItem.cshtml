@@ -42,9 +42,6 @@
                 case "Swot":
                     @Html.Action("Update" + Model.Section + "Item", Model.SectionItemId)
                     break;
-                case "SwotActivity":
-                    @Html.Action("UpdateSwotActivityItem", Model.SectionItemId)
-                    break;
                 case "WorkUnits":
                     var workUnit = (ServiceWorkUnitDto)Model.Service.ServiceWorkUnits.FirstOrDefault(g => g.Id == Model.SectionItemId);
                     if (workUnit != null)
@@ -56,13 +53,28 @@
                         goto default;
                     }
                     break;
-                case "Measures":
-                    if (Model.Service.ServiceWorkUnits != null && Model.Service.ServiceMeasures.Any())
+                case "Contracts":
+                    var contract = (ServiceContractDto)Model.Service.ServiceContracts.FirstOrDefault(g => g.Id == Model.SectionItemId);
+                    if (contract != null)
                     {
-                        @Html.Partial("PartialViews/UpdateMeasureItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
-                        break;
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", contract)
                     }
-                    goto default;
+                    else
+                    {
+                        goto default;
+                    }
+                    break;
+                case "Measures":
+                    var measure = (ServiceContractDto)Model.Service.ServiceContracts.FirstOrDefault(g => g.Id == Model.SectionItemId);
+                    if (measure != null)
+                    {
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                    }
+                    else
+                    {
+                        goto default;
+                    }
+                    break;
                 default:
                     controlsAvail = false;
                     <section class="alert alert-warning">

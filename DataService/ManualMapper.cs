@@ -118,8 +118,28 @@ namespace DataService
 				}
 			}
 
-			//Status
-			serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
+            //Contracts
+            if (src.ServiceContracts != null)
+            {
+                serviceDto.ServiceContracts = new List<IServiceContractDto>();
+                foreach (var contra in src.ServiceContracts)
+                {
+                    serviceDto.ServiceContracts.Add(MapServiceContractToDto(contra));
+                }
+            }
+
+            //Measures
+		    if (src.ServiceMeasures != null)
+		    {
+                serviceDto.ServiceMeasures = new List<IServiceMeasureDto>();
+                foreach (var measure in src.ServiceMeasures)
+                {
+                    serviceDto.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
+                }
+            }
+
+            //Status
+            serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
 
 			return serviceDto;
 		}

@@ -10,7 +10,7 @@
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                @if (property.PropertyName == "Description" || property.PropertyName == "Responsibilities")
+                @if (property.PropertyName == "Description" || property.PropertyName == "Responsibilities" || property.PropertyName == "Outcome")
                 {
                     <td class="dd-cell">@Html.TextArea(property.PropertyName, new { @class = "ckeditor" })</td>
                 }
@@ -31,7 +31,12 @@
                     @(property.DisplayName ?? property.PropertyName)
                 </td>
                 <td class="dd-cell">
-                    @Html.TextBox(property.PropertyName, property.Model, null, new { @class = "form-control" })
+                    <div class="input-group date">
+                        @Html.TextBox(property.PropertyName, (DateTime) property.Model > DateTime.MinValue ? ((DateTime) property.Model).ToString("MM/dd/yyyy") : "", new {@class = "form-control"})
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        
+                    </div>
+                    @Html.ValidationMessage(property.PropertyName)
                 </td>
             </tr>
         }
@@ -60,13 +65,21 @@
 <script language="javascript" type="text/javascript">
     $(function () {
         $('#Date').datepicker({
-            autoclose: true
+            autoclose: true,
+            format: "mm-dd-yyyy"
         });
         $('#EndDate').datepicker({
-            autoclose: true
-        });
+                format: "mm-dd-yyyy",
+                autoclose: true
+            });
         $('#StartDate').datepicker({
+            format: "mm-dd-yyyy",
             autoclose: true
         });
+        $('#ExpiryDate').datepicker({
+            autoclose: true,
+            format: "mm-dd-yyyy"
+        });
+
     })
 </script>

@@ -46,12 +46,16 @@
                 @Html.Action("ShowSwotActivity", Model.SectionItemId)
                 break;
             case "WorkUnits":
-                if (Model.Service.ServiceGoals != null && Model.Service.ServiceGoals.Any())
+                var workUnit = (ServiceWorkUnitDto) Model.Service.ServiceWorkUnits.FirstOrDefault(g => g.Id == Model.SectionItemId);
+                if (workUnit != null)
                 {
-                    @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceWorkUnitDto)Model.Service.ServiceWorkUnits.FirstOrDefault(g => g.Id == Model.SectionItemId))
-                    break;
+                    @Html.Partial("PartialViews/ShowDynamicServiceItem", workUnit)
                 }
-                goto default;
+                else
+                {
+                    goto default;
+                }
+                break;
             case "Contracts":
                 if (Model.Service.ServiceContracts != null && Model.Service.ServiceContracts.Any())
                 {

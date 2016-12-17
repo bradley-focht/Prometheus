@@ -1,4 +1,7 @@
-﻿.font-title1 {
+﻿.alert-message {
+    display: inline-block;
+}
+.font-title1 {
     color: #151515;
     font-size: 25px;
     font-weight: 300;
