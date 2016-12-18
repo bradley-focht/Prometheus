@@ -56,11 +56,27 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Ninject, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.3.2.2.0\lib\net45-full\Ninject.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Common, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.Web.Common.3.2.0.0\lib\net45-full\Ninject.Web.Common.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Ninject.Web.Mvc, Version=3.2.0.0, Culture=neutral, PublicKeyToken=c7192dc5380945e7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ninject.MVC5.3.2.1.0\lib\net45-full\Ninject.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Web.Razor">
@@ -101,7 +117,9 @@
     <Content Include="Content\Images\target.png" />
     <Content Include="Content\PrometheusCustom.css" />
     <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="css\font-awesome.css" />
+    <Content Include="css\font-awesome.min.css" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\aes-min.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
@@ -218,6 +236,11 @@
     <Content Include="Scripts\ckeditor\LICENSE.md" />
     <Content Include="Scripts\ckeditor\CHANGES.md" />
     <Content Include="Scripts\ckeditor\styles.js" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
     <None Include="Properties\PublishProfiles\LocalHost.pubxml" />
     <None Include="Properties\PublishProfiles\PROM Server.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -240,6 +263,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
@@ -259,6 +283,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
@@ -283,9 +308,6 @@
     <Content Include="packages.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Views\ServicePortfolio\Index.cshtml" />
     <Content Include="Views\ServicePortfolio\Show.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TitleBar.cshtml" />
@@ -341,6 +363,9 @@
     <Content Include="Views\Service\UpdateSwotActivityItem.cshtml" />
     <Content Include="Views\Service\ShowSwotActivityItem.cshtml" />
     <Content Include="Views\Service\ConfirmDeleteSwotActivityItem.cshtml" />
+    <Content Include="Views\SystemAccess\PartialViews\SystemRoles.cshtml" />
+    <Content Include="Views\SystemAccess\AddRole.cshtml" />
+    <Content Include="Views\SystemAccess\UpdateRole.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -351,7 +376,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="ServiceDocs\" />
-    <Folder Include="Views\SystemAccess\PartialViews\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
@@ -361,6 +385,10 @@
     <ProjectReference Include="..\DataService\DataService.csproj">
       <Project>{7757884f-c8d9-48ac-a4d6-6238d0203431}</Project>
       <Name>DataService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DependencyResolver\DependencyResolver.csproj">
+      <Project>{e4cab67d-b6ff-49d5-aa40-554f4ebcb7cb}</Project>
+      <Name>DependencyResolver</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServicePortfolioService\ServicePortfolioService.csproj">
       <Project>{280599D6-A130-4AF9-89F0-D5D36A32C330}</Project>

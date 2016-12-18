@@ -46,8 +46,7 @@ namespace Prometheus.WebUI.Controllers
             if (!ServiceSectionHelper.ValidateRoute(section))
                 section = "General";
 
-            ServiceNavModel model = new ServiceNavModel(ServiceSectionHelper.GenerateNavLinks(), section, id,
-                "Show" + section);
+            ServiceNavModel model = new ServiceNavModel(ServiceSectionHelper.GenerateNavLinks(), section, id, $"Show{section}");
 
             return PartialView("PartialViews/_ServiceNav", model);
         }
@@ -94,8 +93,17 @@ namespace Prometheus.WebUI.Controllers
             }
             //save service
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
-            int newId = ps.ModifyService(newService, EntityModification.Create).Id;
-
+            int newId;
+            try
+            {
+                newId = ps.ModifyService(newService, EntityModification.Create).Id;
+            }
+            catch(Exception e)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save service {newService.Name}, error: {e}";
+                return RedirectToAction("AddService");
+            }
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"New service {newService.Name} saved successfully";
 
@@ -128,15 +136,13 @@ namespace Prometheus.WebUI.Controllers
             {
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = $"Failed to save SWOT, error: {e.Message}";
-                return RedirectToAction("Show", new { section = "Swot", id = swotItem.ServiceId });
+                return RedirectToAction("AddServiceSectionItem", new { section = "Swot", id = swotItem.ServiceId });
             }
 
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"Successfully saved {swotItem.Item}";
             return RedirectToAction("Show", new {section = "Swot", id = swotItem.ServiceId});
         }
-
-
 
         /// <summary>
         /// Save and update work units
@@ -154,7 +160,18 @@ namespace Prometheus.WebUI.Controllers
             }
 
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
-            ps.ModifyServiceWorkUnit(workUnit, workUnit.Id < 1 ? EntityModification.Create : EntityModification.Update);
+            try
+            {
+                ps.ModifyServiceWorkUnit(workUnit, workUnit.Id < 1 ? EntityModification.Create : EntityModification.Update);
+            }
+            catch (Exception exception)
+            {
+
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save Work Unit, error: {exception}";
+                return RedirectToAction("UpdateServiceSectionItem", new { section = "WorkUnits", id = workUnit.ServiceId });
+            }
+           
 
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"Successfully saved {workUnit.Name}";
@@ -660,9 +677,8 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <param name="section"></param>
         /// <param name="id"></param>
-        /// <param name="parentId"></param>
         /// <returns></returns>
-        public ActionResult AddServiceSectionItem(string section, int id, int parentId = 0)
+        public ActionResult AddServiceSectionItem(string section, int id)
         {
             var model = new ServiceSectionModel();
             model.Section = section;
@@ -694,7 +710,7 @@ namespace Prometheus.WebUI.Controllers
             };
             model.Service = ps.GetService(goal.ServiceId).Name;
             model.ServiceId = goal.ServiceId;
-
+            
             return View("ConfirmDeleteSection", model);
         }
 
@@ -805,7 +821,7 @@ namespace Prometheus.WebUI.Controllers
             catch (Exception e)
             {
                 TempData["messageType"] = WebMessageType.Failure;
-                TempData["message"] = $"Failed to delete {model.FriendlyName}: {e.Message}";
+                TempData["message"] = $"Failed to delete {model.FriendlyName}, error: {e.Message}";
 
                 return RedirectToAction("Show", new { id = model.ServiceId, section = "WorkUnits" });
             }
@@ -827,7 +843,7 @@ namespace Prometheus.WebUI.Controllers
             catch (Exception e)
             {
                 TempData["messageType"] = WebMessageType.Failure;
-                TempData["message"] = $"Failed to delete {model.FriendlyName}: {e.Message}";
+                TempData["message"] = $"Failed to delete {model.FriendlyName}, error: {e.Message}";
 
                 return RedirectToAction("Show", new { id = model.ServiceId, section = "Contracts" });
             }
@@ -855,7 +871,7 @@ namespace Prometheus.WebUI.Controllers
             catch (Exception e)
             {
                 TempData["messageType"] = WebMessageType.Failure;
-                TempData["message"] = $"Failed to delete {model.FriendlyName}: {e.Message}";
+                TempData["message"] = $"Failed to delete {model.FriendlyName}, error: {e.Message}";
 
                 return RedirectToAction("Show", new { id = model.ServiceId, section = "Measures" });
             }
@@ -890,8 +906,16 @@ namespace Prometheus.WebUI.Controllers
 
                     var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());
                         //file path location comes from the Web.config file
-
-                    file.SaveAs(Server.MapPath(path));
+                    try
+                    {
+                        file.SaveAs(Server.MapPath(path));
+                    }
+                    catch (Exception e)
+                    {
+                        TempData["MessageType"] = WebMessageType.Failure;
+                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
+                        return RedirectToAction("Show", new { id, section = "Documents" });
+                    }
                     var ps = InterfaceFactory.CreatePortfolioService(dummId);
 
                     ps.ModifyServiceDocument(new ServiceDocumentDto
@@ -924,7 +948,17 @@ namespace Prometheus.WebUI.Controllers
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             var doc = ps.GetServiceDocument(document.StorageNameGuid);
             doc.Filename = document.Filename;
-            ps.ModifyServiceDocument(doc, EntityModification.Update);
+            try
+            {
+                ps.ModifyServiceDocument(doc, EntityModification.Update);
+            }
+            catch (Exception e)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save document {document.Filename}, error: {e.Message}";
+
+                return RedirectToAction("Show", new { section = "Documents", id = document.ServiceId });
+            }
 
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"Successfully saved document {document.Filename}";
@@ -995,7 +1029,7 @@ namespace Prometheus.WebUI.Controllers
             catch (Exception e)
             {
                 TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to delete: {e.Message}";
+                TempData["Message"] = $"Failed to delete {file.Filename}, error: {e.Message}";
                 return RedirectToAction("Show", new {id = file.ServiceId});
             }
 

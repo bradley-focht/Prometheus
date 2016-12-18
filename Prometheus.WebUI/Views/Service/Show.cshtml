@@ -14,6 +14,7 @@
                                                              new KeyValuePair<string, string>("Services", "Service/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#")};
     bool controlAvail = false;
+    bool footerAvail = true;
 }
 
 @section Content
@@ -32,7 +33,7 @@
                     goto case "General";
                 case "Documents":
                     @Html.Partial("PartialViews/ShowDocuments", (ServiceDto)Model.Service)
-
+                    footerAvail = false;
                     break;
                 case "General":
                     @Html.Partial("PartialViews/ShowGeneral", (ServiceDto)Model.Service)
@@ -46,25 +47,26 @@
 
         </div>
 
-
-        <div class="flex-container">
-            <div class="panel-footer">
-                <div class="float-right-div">
-                    @if (controlAvail)
-                    {
-                        if (Model.SelectedSection == "General" || Model.SelectedSection == null)
+        if (footerAvail)
+        {
+            <div class="flex-container">
+                <div class="panel-footer">
+                    <div class="float-right-div">
+                        @if (controlAvail)
                         {
-                            @Html.ActionLink("Update", "UpdateGeneral", new { id = Model.Service.Id }, new { @class = "btn btn-primary" })
+                            if (Model.SelectedSection == "General" || Model.SelectedSection == null)
+                            {
+                                @Html.ActionLink("Update", "UpdateGeneral", new {id = Model.Service.Id}, new {@class = "btn btn-primary"})
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add", "AddServiceSectionItem", new {id = Model.Service.Id, section = Model.SelectedSection}, new {@class = "btn btn-primary"})
+                            }
                         }
-                        else
-                        {
-                            @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-primary" })
-                        }
-                    }
+                    </div>
                 </div>
             </div>
-        </div>
-
+        }
 
     }
 }
