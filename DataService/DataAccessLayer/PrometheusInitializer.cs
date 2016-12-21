@@ -50,10 +50,10 @@ namespace DataService.DataAccessLayer
 						{
 							Name = "Operational"
 						},
-						ServiceRequestOptions = new List<ServiceRequestOption>
+						ServiceRequestOptions = new List<ServiceOption>
 						{
-							new ServiceRequestOption(),
-							new ServiceRequestOption()
+							new ServiceOption(),
+							new ServiceOption()
 						}
 					},
 					new Service
@@ -62,10 +62,10 @@ namespace DataService.DataAccessLayer
 						{
 							Name = "Chartered"
 						},
-						ServiceRequestOptions = new List<ServiceRequestOption>
+						ServiceRequestOptions = new List<ServiceOption>
 						{
-							new ServiceRequestOption(),
-							new ServiceRequestOption()
+							new ServiceOption(),
+							new ServiceOption()
 						}
 					}
 				}

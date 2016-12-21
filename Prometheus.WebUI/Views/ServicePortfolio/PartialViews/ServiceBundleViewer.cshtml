@@ -1,4 +1,6 @@
-﻿@model dynamic
+﻿@using System.Collections
+@using Common.Dto
+@model dynamic
 
 
 
@@ -11,9 +13,38 @@
         }
         <tr>
             <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-            <td class="dd-cell">@Html.Raw(@property.Model)</td>
+            <td class="dd-cell">
+
+                @if (property.PropertyName == "Services")
+                {
+                    int i = 1;
+                    var services = (ICollection<IServiceDto>)property.Model;
+
+                    foreach (var service in services)
+                    {
+                        
+                        if (i < services.Count)
+                        {
+                            @service.Name<text>,</text>
+                            i++;
+                        }
+                        else
+                        {
+                            @service.Name
+
+                        }
+
+                    }
+                }
+                else
+                {
+                    @Html.Raw(@property.Model)
+                }
+            </td>
 
         </tr>
+
+
+
     }
 </table>
-

@@ -1,7 +1,7 @@
 ﻿@model  Common.Dto.ServiceBundleDto
 @{
     ViewBag.Title = "Service Portfolio";
-    ViewBag.SubTitle = Model.Name;
+    ViewBag.SubTitle = "Service Bundle";
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
     //Breadcrumb navigation links
@@ -30,9 +30,6 @@
                         <div class="float-right-div">
                             @Html.ActionLink("Delete", "ConfirmDelete", new { id = Model.Id }, new { @class = "btn btn-danger" })
                             @Html.ActionLink("Update", "Update", new { id = Model.Id }, new { @class = "btn btn-primary" })
-                        </div>
-                        <div class="float-left-div">
-                            @Html.ActionLink("Back", "Show", null, new { @class = "btn btn-default" })
                         </div>
                     </div>
                 </div>

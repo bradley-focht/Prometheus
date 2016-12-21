@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Ninject;
+using RequestService;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
+using CatalogController = RequestService.CatalogController;
+using ServiceController = ServicePortfolioService.Controllers.ServiceController;
 
 namespace Prometheus.WebUI.Infrastructure
 {
@@ -16,7 +17,7 @@ namespace Prometheus.WebUI.Infrastructure
         public NinjectDependencyResolver(IKernel kernel)
         {
             this.kernel = kernel;
-            AddBindings();
+            //AddBindings();
         }
         public object GetService(Type serviceType)
         {
@@ -43,6 +44,8 @@ namespace Prometheus.WebUI.Infrastructure
             kernel.Bind<IServiceSwotController>().To<ServiceSwotController>();
             kernel.Bind<IServiceWorkUnitController>().To<ServiceWorkUnitController>();
             kernel.Bind<ISwotActivityController>().To<SwotActivityController>();
+
+            kernel.Bind<ICatalogController>().To<CatalogController>();
 
         }
     }

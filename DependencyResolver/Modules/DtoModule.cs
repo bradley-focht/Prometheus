@@ -15,7 +15,7 @@ namespace DependencyResolver.Modules
 			Bind<IServiceDto>().To<ServiceDto>();
 			Bind<IServiceGoalDto>().To<ServiceGoalDto>();
 			Bind<IServiceMeasureDto>().To<ServiceMeasureDto>();
-			Bind<IServiceRequestOptionDto>().To<ServiceRequestOptionDto>();
+			Bind<IServiceOptionDto>().To<ServiceOptionDto>();
 			Bind<IServiceSwotDto>().To<ServiceSwotDto>();
 			Bind<IServiceWorkUnitDto>().To<ServiceWorkUnitDto>();
 			Bind<ISwotActivityDto>().To<SwotActivityDto>();

@@ -16,7 +16,7 @@ namespace Common.Dto
 		ServiceTypeRole ServiceTypeRole { get; set; }
 		IServiceBundleDto ServiceBundle { get; set; }
 		ILifecycleStatusDto LifecycleStatusDto { get; set; }
-		ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
+		ICollection<IServiceOptionDto> ServiceOptions { get; set; }
 		ICollection<IServiceSwotDto> ServiceSwots { get; set; }
 		ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
 		ICollection<IServiceContractDto> ServiceContracts { get; set; }

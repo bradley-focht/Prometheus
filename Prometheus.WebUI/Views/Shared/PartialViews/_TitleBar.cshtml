@@ -4,44 +4,36 @@
 
 <div class="navbar-inverse navbar-fixed-top">
 
-    <div class="content-body">
+    <div class="content-body flex-container">
 
-        <div class="row">
+        <div>
 
-            
-                <div class="col-md-7">
-                    <div class="float-left-div">
-                        <label class="navbar-brand">@ViewBag.Title</label>
-                    </div>
-                </div>
-            <div class="col-md-2">
-                <div style="padding-top: 15px; text-align: right;">
+            <div class="float-right-div" style="padding-right: 10px; display: inline-block;">
+
+
+
+                <div class="dropdown">
                     <span class="font-inverse">@Session["DisplayName"]</span>
+                    <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+                    <div class="dropdown-menu pull-right" aria-labelledby="dropdownMenuButton">
+                        <ul class="list-unstyled">
+                            <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="~/Home/Index">Home</a></li>
+                        </ul>
+                        <div class="dropdown-divider"></div>
+                        <ul class="list-unstyled">
+                            <li class="dropdown-item">Roles</li>
+
+                        </ul>
                     </div>
                 </div>
-                <div class="col-md-1">
-                    <div class="dropdown">
 
-                        <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <ul class="list-unstyled">
-                                <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
-                                <li><span class="dropdown-item">Sean's special hamburger menu</span></li>
-
-                            </ul>
-                            <div class="dropdown-divider"></div>
-                            <span class="dropdown-header" style="font-size: 1em;">Roles</span>
-                            <ul class="list-unstyled">
-                                <li>God Mode</li>
-                                <li>Human</li>
-                                <li>Infidel</li>
-                                <li>Deadbeat</li>
-                                <li>Guest</li>
-                            </ul>
-                        </div>
-                    </div>
-
+            </div>
+              <div class="float-left-div">
+                        <label class="navbar-brand">@ViewBag.Title</label>
                 </div>
+
+
         </div>
     </div>
 

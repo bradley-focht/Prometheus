@@ -1,7 +1,5 @@
 ﻿using Common.Dto;
 using Prometheus.WebUI.Models.ServicePortfolio;
-using ServicePortfolioService;
-using ServicePortfolioService.Controllers;
 using System.Web.Mvc;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Shared;
@@ -35,9 +33,9 @@ namespace Prometheus.WebUI.Controllers
             if (!ModelState.IsValid)
             {
                 TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"{serviceBundle.Name} saved successfully";
+                TempData["Message"] = $"Failed to save service bundle due to invalid data";
 
-                return RedirectToAction("Show");
+                return RedirectToAction("Update", serviceBundle.Id);
             }
 
             var ps = InterfaceFactory.CreatePortfolioService(dummyId);
@@ -50,7 +48,7 @@ namespace Prometheus.WebUI.Controllers
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"{serviceBundle.Name} saved successfully";
 
-            return RedirectToAction("Show");
+            return RedirectToAction("Show", new { id = serviceBundle.Id });
         }
 
         /// <summary>

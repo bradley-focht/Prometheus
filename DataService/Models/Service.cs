@@ -47,7 +47,7 @@ namespace DataService.Models
 		public virtual ServiceBundle ServiceBundle { get; set; }
 		public virtual LifecycleStatus LifecycleStatus { get; set; }
 
-		public virtual ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
+		public virtual ICollection<ServiceOption> ServiceRequestOptions { get; set; }
 		public virtual ICollection<ServiceContract> ServiceContracts { get; set; }
 		public virtual ICollection<ServiceMeasure> ServiceMeasures { get; set; }
 		public virtual ICollection<ServiceGoal> ServiceGoals { get; set; }

@@ -13,8 +13,8 @@ namespace Prometheus.WebUI.Helpers
     public static class ServiceSectionHelper
     {
         public static List<string> RouteStrings => new List<string> {"General", "GeneralOnly", "Goals", "Swot", "SwotStrength", "SwotWeakness", "SwotOpportunity", "SwotThreat", "SwotActivities", "WorkUnits", "Contracts", "Measures", "Processes", "Options", "Documents"};
-        public static List<string> NavStrings => new List<string> { "General", "Goals", "SWOT", "Work Units", "Contracts", "Measures", "Processes", "Options", "Documents" };
-        public static List<string> NavStringRoutes => new List<string> { "General", "Goals", "Swot", "WorkUnits", "Contracts", "Measures", "Processes", "Options", "Documents" };
+        public static List<string> NavStrings => new List<string> { "General", "Contracts", "Documents", "Goals", "Measures", "Options", "Processes", "SWOT", "Work Units"  };
+        public static List<string> NavStringRoutes => new List<string> { "General", "Contracts", "Documents", "Goals",  "Measures",  "Options", "Processes", "Swot", "WorkUnits" };
         public static List<string> FriendlyNavName => new List<string> {"General", "Goal", "SWOT Item", "Work Unit", "SWOT Activity", "Contract", "Measure", "Process", "Option", "Document"};
 
         public static List<KeyValuePair<string, string>> GenerateNavLinks()

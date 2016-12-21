@@ -30,8 +30,9 @@
         <div class="flex-container">
             <div class="panel-footer">
                 <div class="float-right-div">
+                    @Html.ActionLink("Back", "Show", null, new { @class = "btn btn-default btn-back" })
                     <input type="submit" value="Save" class="btn btn-primary"/>
-                    @Html.ActionLink("Back", "Show", null, new {@class = "btn btn-default"})
+
                 </div>
             </div>
         </div>

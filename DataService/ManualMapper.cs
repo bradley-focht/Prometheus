@@ -148,15 +148,26 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-			return new ServiceBundleDto
+			var serviceBundle = new ServiceBundleDto
 			{
 				Id = src.Id,
 				Name = src.Name,
 				Description = src.Description,
 				BusinessValue = src.BusinessValue,
 				Measures = src.Measures,
-
+                Services =  new List<IServiceDto>()
 			};
+
+            //just copy the minimum needed at this time
+		    if (src.Services != null && src.Services.Any())
+		    {
+		        foreach (var service in src.Services)
+		        {
+		            serviceBundle.Services.Add(new ServiceDto {Id = service.Id, Name = service.Name});
+		        }
+		    }
+            
+            return serviceBundle;
 		}
 
 

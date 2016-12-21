@@ -13,8 +13,8 @@
 
 .conent-sidebar {
     flex: 1;
-    min-width: 150px;
-    max-width: 200px;
+    min-width: 160px;
+    max-width: 210px;
     margin-right: 10px;
     min-height: 400px;
 }

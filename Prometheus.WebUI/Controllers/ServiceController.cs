@@ -14,6 +14,8 @@ using Common.Enums;
 
 namespace Prometheus.WebUI.Controllers
 {
+   
+
     //[Authorize]
     public class ServiceController : Controller
     {
@@ -25,7 +27,6 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             return View(ps.GetServices());
         }
@@ -64,7 +65,7 @@ namespace Prometheus.WebUI.Controllers
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             sm.Service = ps.GetService(id);
             sm.SelectedSection = section;
-
+            
             return View(sm);
         }
 
@@ -516,16 +517,38 @@ namespace Prometheus.WebUI.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult ShowServicePricing(ServiceDto service)
+        public ActionResult ShowServiceOptions(ServiceDto service)
         {
-            TableDataModel tblModel = new TableDataModel();
-            tblModel.Titles = new List<string> {"Method", "Outcome"};
-            tblModel.Data = new List<Tuple<int, ICollection<string>>>
+            var tblModel = new TableDataModel
             {
-                new Tuple<int, ICollection<string>>(1, new List<string> {"divide by 0", "exception"})
+                Titles = new List<string> {"Method", "Outcome"},
+                Data = new List<Tuple<int, ICollection<string>>>
+                {
+                    new Tuple<int, ICollection<string>>(1, new List<string> {"divide by 0", "exception"})
+                }
             };
 
             return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+        }
+
+        [HttpPost]
+        public ActionResult SaveServiceOption(ServiceOptionDto option)
+        {
+            
+            if (!ModelState.IsValid) /* Server side validation */
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to save option due to invalid data";
+                return RedirectToAction("AddServiceSectionItem");
+            }
+            //save service
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+       //     ps.ModifyServiceRequestOption(option, EntityModification.Create);
+
+            TempData["MessageType"] = WebMessageType.Success;
+       //     TempData["Message"] = $"New option {option.Name} saved successfully";
+
+            return RedirectToAction("Show", new { id = option.ServiceId, section = "Options" });
         }
 
         /// <summary>

@@ -26,7 +26,7 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult ShowRolePermissions(int id)
         {
 
-            return View("PermissionsAndRoles");
+            return View("PermissionsAndRoles", new RoleDto { Id = id});
         }
 
 
@@ -36,7 +36,7 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <returns></returns>
         [ChildActionOnly]
-        public ActionResult ShowRoles()
+        public ActionResult ShowRoles(int id)
         {
             var model = new LinkListModel
             {
@@ -47,7 +47,7 @@ namespace Prometheus.WebUI.Controllers
             };
 
             model.ListItems = new List<Tuple<int, string>> {new Tuple<int, string>(5, "Approver"), new Tuple<int, string>(1, "Service Owner"), new Tuple<int, string>(2, "Service Manager")};
-
+            model.SelectedItemId = id;
             return View("PartialViews/_LinkList", model);
         }
 

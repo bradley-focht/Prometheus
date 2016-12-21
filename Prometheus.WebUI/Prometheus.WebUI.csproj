@@ -116,6 +116,15 @@
     <Content Include="Content\Images\shake.png" />
     <Content Include="Content\Images\target.png" />
     <Content Include="Content\PrometheusCustom.css" />
+    <Content Include="Content\Selectize\css\selectize.bootstrap2.css" />
+    <Content Include="Content\selectize.bootstrap3.css" />
+    <Content Include="Content\selectize.css" />
+    <Content Include="Content\Selectize\css\selectize.default.css" />
+    <Content Include="Content\Selectize\css\selectize.legacy.css" />
+    <Content Include="Content\Selectize\js\selectize.js" />
+    <Content Include="Content\Selectize\js\selectize.min.js" />
+    <Content Include="Scripts\selectize.js" />
+    <Content Include="Scripts\selectize.min.js" />
     <Content Include="Content\Site.css" />
     <Content Include="css\font-awesome.css" />
     <Content Include="css\font-awesome.min.css" />
@@ -375,6 +384,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Selectize\js\standalone\" />
     <Folder Include="ServiceDocs\" />
   </ItemGroup>
   <ItemGroup>
@@ -389,6 +399,10 @@
     <ProjectReference Include="..\DependencyResolver\DependencyResolver.csproj">
       <Project>{e4cab67d-b6ff-49d5-aa40-554f4ebcb7cb}</Project>
       <Name>DependencyResolver</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RequestService\RequestService.csproj">
+      <Project>{F30F2BCA-BF2C-4AE9-8960-C07CC395F09C}</Project>
+      <Name>RequestService</Name>
     </ProjectReference>
     <ProjectReference Include="..\ServicePortfolioService\ServicePortfolioService.csproj">
       <Project>{280599D6-A130-4AF9-89F0-D5D36A32C330}</Project>

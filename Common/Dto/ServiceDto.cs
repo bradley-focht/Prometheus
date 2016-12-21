@@ -87,7 +87,7 @@ namespace Common.Dto
 		/// <summary>
 		/// What you can get when you order this service
 		/// </summary>
-		public virtual ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
+		public virtual ICollection<IServiceOptionDto> ServiceOptions { get; set; }
 
 		/// <summary>
 		/// All collections below are part of the service package that goes with each service

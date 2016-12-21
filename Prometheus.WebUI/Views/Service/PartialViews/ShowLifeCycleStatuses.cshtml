@@ -2,41 +2,39 @@
 
 @if (Model != null && Model.LifecycleStatuses.Any())
 {
-    int rowLength = 0;
+    
 
-    <div class="btn-group" data-toggle="buttons">
-        @foreach (var status in Model.LifecycleStatuses)
-        {
-            if (rowLength > 5)
+
+        <select id="LifecycleStatusId" name="LifecycleStatusId" placeholder="Lifecycle Status" style="width: 200px;" >
+            <option value="">Status</option>
+            @foreach (var status in Model.LifecycleStatuses)
             {
-                <br />
-                rowLength = 0;
-            }
-
-            <label class="btn btn-default" id="LifecycleStatus@(status.Item1)">
-                @if (Model.SelectedStatus != status.Item1)
+                if (Model.SelectedStatus == status.Item1)
                 {
-                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" />
-
+                    <option selected="selected" value="@status.Item1">@status.Item2</option>
                 }
                 else
                 {
-                    <input type="radio" name="LifecycleStatusId" value="@status.Item1" data-val="true" checked="checked" />
+                    <option value="@status.Item1">@status.Item2</option>
                 }
-                @status.Item2
-            </label>
-            rowLength++;
-        }
-    </div>
+            }
+        </select>
+
+
 }
 else
 {
     <div class="alert alert-warning">No statuses exist</div>
 }
 
-@if (Model != null)
-{
-    <script type="text/javascript" language="javascript">
-        $('#LifecycleStatus@(Model.SelectedStatus)').button('toggle');
-    </script>
-}
+
+<script type="text/javascript" language="javascript">
+    $(document)
+        .ready(function() {
+            $('#LifecycleStatusId')
+                .selectize({
+                maxItems: 1
+                });
+        });
+
+</script>

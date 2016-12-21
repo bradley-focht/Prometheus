@@ -12,7 +12,7 @@
 
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Services", "Service/Index"),
-                                                             new KeyValuePair<string, string>(ViewBag.Title, "#")};
+                                                             new KeyValuePair<string, string>(Model.Service.Name, "#")};
     bool controlAvail = false;
     bool footerAvail = true;
 }
@@ -22,8 +22,9 @@
     @if (Model.Service.Id > 0)
     {
         <div class="panel-heading">
-            @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
+            @Html.Action("ShowNav", new {id = Model.Service.Id, section = Model.SelectedSection})
         </div>
+
         <div class="panel">
 
 

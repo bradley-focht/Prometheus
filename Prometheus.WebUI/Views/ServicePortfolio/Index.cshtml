@@ -8,18 +8,20 @@
 }
 
 <div class="flex-container">
-    <div class="title-div">
+    <div>
         <div class="float-right-div">
-            @Html.ActionLink("Add", "Add", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Add", "Add")
         </div>
     </div>
 </div>
+
 @if (Model != null)
 {
     foreach (var serviceBundle in Model)
     {
-        <div class="std-indent" style="width: 600px;">
-            <label class="font-title2-blue">@serviceBundle.Name</label>
+
+        <label class="font-title2-blue">@serviceBundle.Name</label>
+        <div class="std-div">
             <dl class="dl-horizontal dl-section">
                 <dt class="dt-sp">Description:</dt>
                 <dd class="dd-sp">@Html.Raw(serviceBundle.Description)</dd>
@@ -27,8 +29,26 @@
                 <dd class="dd-sp">@Html.Raw(serviceBundle.BusinessValue)</dd>
                 <dt class="dt-sp">Services:</dt>
                 <dd class="dd-sp">
+                    @{
+                        int i = 1;
 
-                   
+                        foreach (var service in serviceBundle.Services)
+                        {
+
+                            if (i < serviceBundle.Services.Count)
+                            {
+                                @service.Name<text>,</text>
+                                i++;
+                            }
+                            else
+                            {
+                                @service.Name
+
+                            }
+
+                        }
+                    }
+
 
                 </dd>
                 <dt class="dt-sp">Measures:</dt>
@@ -36,7 +56,7 @@
 
                 <dt></dt>
                 <dd>
-                    <div class="float-right-div">@Html.ActionLink("Edit", "Show", "ServicePortfolio", new {id = serviceBundle.Id}, new {@class = "btn btn-default"})</div>
+                    <div class="float-right-div">@Html.ActionLink("Edit", "Update", new { id = serviceBundle.Id })</div>
                 </dd>
             </dl>
         </div>
@@ -44,5 +64,5 @@
 }
 else
 {
-    <text>There are currently no Service Bundles</text>
+    <div class="alert alert-warning alert-message">There are currently no Service Bundles</div>
 }
