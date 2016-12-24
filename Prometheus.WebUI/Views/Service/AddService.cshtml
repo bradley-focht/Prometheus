@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Prometheus.WebUI.Models.Service.ServiceSectionModel
+@{
     ViewBag.Title = "Services";
     ViewBag.SubTitle = "Add New Service";
 
@@ -41,7 +42,7 @@
         @using (Html.BeginForm("SaveService", "Service", FormMethod.Post))
     {
             <div class="panel-body">
-                @Html.Partial("PartialViews/UpdateGeneral", new Common.Dto.ServiceDto())
+                @Html.Partial("PartialViews/UpdateGeneral", Model)
             </div>
                 <div class="flex-container">
                     <div class="panel-footer">

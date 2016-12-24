@@ -34,7 +34,7 @@
                     controlsAvail = false;
                     break;
                 case "General":
-                    @Html.Partial("PartialViews/UpdateGeneral", Model.Service)
+                    @Html.Partial("PartialViews/UpdateGeneral", Model)
                     break;
                 case "Goals":
                     @Html.Partial("PartialViews/UpdateServiceGoalItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
@@ -65,7 +65,7 @@
                     }
                     break;
                 case "Measures":
-                    var measure = (ServiceContractDto)Model.Service.ServiceContracts.FirstOrDefault(g => g.Id == Model.SectionItemId);
+                    var measure = (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId);
                     if (measure != null)
                     {
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
@@ -99,5 +99,6 @@
     }
 
 }
+
 
 

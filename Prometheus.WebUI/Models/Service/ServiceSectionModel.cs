@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using Common.Dto;
 
 namespace Prometheus.WebUI.Models.Service
@@ -16,5 +19,13 @@ namespace Prometheus.WebUI.Models.Service
         public int SectionItemParentId { get; set; }
         public string ParentName { get; set; }
         public Guid SectionItemGuid { get; set; }
+        public IEnumerable<SelectListItem> ServiceBundleNames { get; set; }
+        public IEnumerable<SelectListItem> StatusNames { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        public string Name => Service.Name;
+        [Required(ErrorMessage = "Lifecycle status is required")]
+        public int LifecycStatusId => Service.LifecycleStatusId;
+        [Required(ErrorMessage = "Service Bundle is required")]
+        public int ServiceBundleId => Service.ServiceBundleId;
     }
 }

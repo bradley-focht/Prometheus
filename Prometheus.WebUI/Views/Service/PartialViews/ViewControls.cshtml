@@ -1,0 +1,83 @@
+﻿@model Prometheus.WebUI.Models.Service.ServiceViewControlsModel
+
+<div class="panel panel-default">
+    <div class="flex-col">
+        <div class="panel-body flex-row">
+
+            @if (Model.FilterMenu != null)
+            {
+                <div class="dropdown">
+                    <span class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</span>
+
+
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                        <li>@Html.ActionLink("All", "Index", "Service", new {filterBy = "All", filterArg = "All", pageId = 0}, new {@class = "dropdown-item"})</li>
+                        <li class="divider"></li>
+                        @foreach (Tuple<string, string, IEnumerable<Tuple<int, string>>> item in Model.FilterMenu)
+                        {
+                            <li class="dropdown-submenu dropdown-item">
+                                <div style="display: flex;">
+                                    <div style="order: 1; flex: 2 0 0; margin-right: 5px;">@item.Item1</div>
+                                    <div style="order: 2; flex: 1 0 0; text-align: right;">
+                                        <i class="fa fa-caret-right" aria-hidden="true"></i>
+                                    </div>
+                                </div>
+                                <ul class="dropdown-menu">
+                                    @foreach (Tuple<int, string> subItem in item.Item3)
+                                    {
+                                        <li>@Html.ActionLink(subItem.Item2, "Index", new {filterBy = item.Item2, filterArg = subItem.Item1})</li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+
+                </div>
+            }
+
+            <div style="margin-right: 20px;">
+                @using (Html.BeginForm("ServiceSearch", "Service", FormMethod.Post))
+                {
+                    <div class="input-group" style="margin-left: 20px; max-width: 250px">
+
+                        <input name="searchString" type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <input class="btn btn-primary" type="submit" value="Search">
+                        </span>
+                    </div>
+                }
+
+            </div>
+
+            <div style="margin-right: 20px">
+                <div class="btn-group">
+                    @for (int i = 0; i < Model.TotalPages; i++)
+                    {
+                        if (Model.PageNumber == i)
+                        {
+                            <span class="btn btn-default active">@(i + 1)</span>
+                        }
+                        else
+                        {
+                            @Html.ActionLink((i + 1).ToString(), "Index", "Service", new {filterBy = Model.FilterBy, filterArg = Model.FilterArg, pageId = i}, new {@class = "btn btn-default"})
+                        }
+                    }
+                </div>
+            </div>
+
+            <div class="pull-right">
+                @Html.ActionLink("Add Service", "AddService")
+            </div>
+
+        </div>
+
+    </div>
+    <div style="margin: 0 20px">
+        <div class="pull-left">
+            @if (Model.AppliedFilter != null)
+            {
+                @Model.AppliedFilter
+            }
+        </div>
+    </div>
+</div>

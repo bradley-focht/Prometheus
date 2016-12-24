@@ -1,14 +1,14 @@
 ﻿@using Common.Enums
-@model Common.Dto.IServiceDto
+@model Prometheus.WebUI.Models.Service.ServiceSectionModel
 
-<input type="hidden" name="Id" value="@Model.Id" />
+<input type="hidden" name="Id" value="@Model.Service.Id" />
 <table>
 
     <tr>
         <td class="dt-cell">Name</td>
         <td class="dd-cell">
-            @Html.TextBox("Name", Model.Name, new {@class = "form-control"})
-            @Html.ValidationMessageFor(model => model.Name)
+            @Html.TextBox("Name", Model.Service.Name, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.Name )
         </td>
     </tr>
 
@@ -16,30 +16,20 @@
     <tr>
         <td class="dt-cell">Description</td>
         <td class="dd-cell">
-            @Html.TextArea("Description", Model.Description, new {@class = "ckeditor"})
+            @Html.TextArea("Description", Model.Service.Description, new {@class = "ckeditor"})
 
         </td>
     </tr>
 
     <tr>
-        <td class="dt-cell">Business Owner</td>
+        <td class="dt-cell">Service Owner</td>
         <td class="dd-cell">
-            @Html.TextBox("ServiceOwner", Model.BusinessOwner, new {@class = "form-control"})
+            @Html.TextBox("ServiceOwner", Model.Service.ServiceOwner, new {@class = "form-control"})
 
         </td>
     </tr>
 
-
-    <tr>
-        <td class="dt-cell">Business Owner</td>
-        <td class="dd-cell">
-            @Html.TextBox("BusinessOwner", Model.BusinessOwner, new {@class = "form-control"})
-
-        </td>
-    </tr>
-
-
-    <tr>
+     <tr>
         <td class="dt-cell">Service Type</td>
         <td class="dd-cell">
             <table style="margin-top: 10px; margin-bottom: 10px;">
@@ -81,24 +71,34 @@
     <tr>
         <td class="dt-cell">Lifecycle Status</td>
         <td class="dd-cell">
-            @Html.Action("ShowLifecycleStatuses", new {selectedId = Model.LifecycleStatusId})
-            @Html.ValidationMessageFor(model => model.LifecycleStatusId)
+            @Html.DropDownList("LifecycleStatusId", Model.StatusNames, new { placeholder = "Lifecycle Status", style = "max-width: 300px;" })
+            @Html.ValidationMessageFor(model => model.LifecycStatusId)
         </td>
     </tr>
     <tr>
         <td class="dt-cell">Service Bundle</td>
         <td class="dd-cell">
-            @Html.Action("ShowServiceBundles", new {selectedId = Model.ServiceBundleId})
+            @Html.DropDownList("ServiceBundleId", Model.ServiceBundleNames, new { placeholder="Service Bundle", style="max-width: 300px;"})
             @Html.ValidationMessageFor(model => model.ServiceBundleId)
         </td>
     </tr>
 </table>
 
-
-@if (Model.Id > 0)
+<script type="text/javascript" language="javascript">
+@if (Model.Service.Id > 0)
 {
-    <script type="text/javascript" language="javascript">
-        $('#@(Model.ServiceTypeProvision)').button('toggle');
-        $('#@(Model.ServiceTypeRole)').button('toggle');
-    </script>
+    <text>
+        $('#@(Model.Service.ServiceTypeProvision)').button('toggle');
+        $('#@(Model.Service.ServiceTypeRole)').button('toggle');
+    </text>
+
 }
+    $('#LifecycleStatusId')
+                .selectize({
+                    maxItems: 1
+                });
+    $('#ServiceBundleId')
+                .selectize({
+                    maxItems: 1
+                });
+</script>

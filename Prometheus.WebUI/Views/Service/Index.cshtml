@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Common.Dto.IServiceDto>
+﻿@model Prometheus.WebUI.Models.Service.ServiceViewModel
 @{
     ViewBag.Title = "Services ";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
@@ -6,34 +6,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="flex-container">
-    <div>
-        <div class="float-right-div">
-            @Html.ActionLink("Add Service", "AddService", null, null)
-        </div>
-    </div>
-</div>
-
-@if (Model != null && Model.Any())
+@Html.Partial("PartialViews/ViewControls", Model.ControlsModel)
+@if (Model.Services != null && Model.Services.Any())
 {
-    foreach (var service in Model)
-    {
-        <label class="font-title2-blue">@Html.ActionLink(service.Name, "Show", new {id = service.Id, section = "General"}, null)</label>
-        <dl class="dl-horizontal dl-section">
+    
+        foreach (var service in Model.Services)
+        {
+            <div style="display: flex; flex-direction: row; margin-top: 10px;">
+                <div class="color-bar"></div>
+                <div style="display: flex; flex-direction: column">
+                    <div>
+                        @Html.ActionLink(service.Name, "Show", new {section = "General", id = service.Id}, new {@class = "font-title1"})
+                    </div>
+                    <div style="max-width: 500px;">
+                        @Html.Raw(service.Description)
+                    </div>
+                    <div>
+                        <div class="flex-row">
+                            <div class="dt-cell">
+                                Service Owner
+                            </div>
+                            <div>
+                                @service.ServiceOwner
+                            </div>
+                        </div>
+                        <div class="flex-row">
+                            <div class="dt-cell">
+                                Status
+                            </div>
+                            <div>
+                                @service.LifecycleStatusDto.Name
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-            <dt>Description</dt>
-            <dd>@Html.Raw(service.Description)</dd>
-
-            <dt>Status</dt>
-            <dd>
-                @{
-                    if (service.LifecycleStatusDto != null)
-                    {
-                        @Html.Display(service.LifecycleStatusDto.Name)
-                    }
-                }
-            </dd>
-        </dl>
-    }
+            </div>
+        }
 
 }

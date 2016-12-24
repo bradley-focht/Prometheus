@@ -1,5 +1,6 @@
 ﻿using Common.Enums;
 using System.Collections.Generic;
+using Common.Dto;
 
 namespace DataService.Models
 {
@@ -25,5 +26,6 @@ namespace DataService.Models
 		ICollection<ServiceSwot> ServiceSwots { get; set; }
 		ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		ICollection<ServiceDocument> ServiceDocuments { get; set; }
+        ICollection<Service> Dependents { get; set; }
 	}
 }

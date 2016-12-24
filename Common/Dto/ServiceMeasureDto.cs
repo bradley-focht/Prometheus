@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Common.Dto
 {
@@ -22,6 +23,7 @@ namespace Common.Dto
         /// <summary>
         /// Results of the measurement method used
         /// </summary>
+        [AllowHtml]
 		public string Outcome { get; set; }
 		#endregion
 	}

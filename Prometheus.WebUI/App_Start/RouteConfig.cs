@@ -8,8 +8,16 @@ namespace Prometheus.WebUI
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+            /* routes for showing service and filtering */
+            routes.MapRoute(
+                name: "Show",
+                url: "Service/Index/{filterBy}/{filterArg}/{pageId}",
+                defaults: new { controller = "Service", action = "Index", pageId = UrlParameter.Optional }
+                );
 
             /* routes for updating Service portfolio */
+
+
             routes.MapRoute(
                 name: "ShowServiceSection",
                 url: "Service/Show/{section}/{id}",
