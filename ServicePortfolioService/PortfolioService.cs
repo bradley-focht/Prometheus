@@ -3,6 +3,7 @@ using Common.Enums;
 using ServicePortfolioService.Controllers;
 using System;
 using System.Collections.Generic;
+using Common.Enums.Entities;
 
 namespace ServicePortfolioService
 {

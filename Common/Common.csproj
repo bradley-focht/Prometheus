@@ -82,18 +82,21 @@
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
-    <Compile Include="Enums\EntityModification.cs" />
-    <Compile Include="Enums\Pricing.cs" />
-    <Compile Include="Enums\ServiceGoalType.cs" />
-    <Compile Include="Enums\ServiceSwotType.cs" />
-    <Compile Include="Enums\ServiceTypeProvision.cs" />
-    <Compile Include="Enums\ServiceTypeRole.cs" />
+    <Compile Include="Enums\Entities\EntityModification.cs" />
+    <Compile Include="Enums\Entities\Pricing.cs" />
+    <Compile Include="Enums\Entities\ServiceGoalType.cs" />
+    <Compile Include="Enums\Entities\ServiceSwotType.cs" />
+    <Compile Include="Enums\Entities\ServiceTypeProvision.cs" />
+    <Compile Include="Enums\Entities\ServiceTypeRole.cs" />
     <Compile Include="Exceptions\ModificationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AutoMapperInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Enums\Permissions\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

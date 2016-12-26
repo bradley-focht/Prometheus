@@ -11,6 +11,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Common.Enums;
+using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Controllers

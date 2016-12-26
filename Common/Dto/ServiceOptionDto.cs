@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Common.Enums;
+using Common.Enums.Entities;
 
 namespace Common.Dto
 {

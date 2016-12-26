@@ -4,6 +4,7 @@ using DataService;
 using DataService.DataAccessLayer;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Enums.Entities;
 
 namespace RequestService
 {

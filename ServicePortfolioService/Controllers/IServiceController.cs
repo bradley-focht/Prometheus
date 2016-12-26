@@ -2,6 +2,7 @@
 using Common.Enums;
 using System;
 using System.Collections.Generic;
+using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {

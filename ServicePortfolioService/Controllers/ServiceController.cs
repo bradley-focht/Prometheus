@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {

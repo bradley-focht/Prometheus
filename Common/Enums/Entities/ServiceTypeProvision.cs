@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Common.Enums
+﻿namespace Common.Enums.Entities
 {
     public enum ServiceTypeProvision
     {
