@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Common.Dto;
 using Common.Enums;
+using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Helpers

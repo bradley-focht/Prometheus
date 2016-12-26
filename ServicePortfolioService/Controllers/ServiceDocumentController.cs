@@ -5,6 +5,7 @@ using DataService;
 using DataService.DataAccessLayer;
 using System;
 using System.Linq;
+using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {

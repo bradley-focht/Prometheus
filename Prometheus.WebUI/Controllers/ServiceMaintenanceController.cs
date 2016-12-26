@@ -5,6 +5,7 @@ using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 using System.Web.Mvc;
 using Common.Enums;
+using Common.Enums.Entities;
 
 namespace Prometheus.WebUI.Controllers
 {

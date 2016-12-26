@@ -1,5 +1,6 @@
 ﻿using Common.Enums;
 using System;
+using Common.Enums.Entities;
 
 namespace DataService.Models
 {

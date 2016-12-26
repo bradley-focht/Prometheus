@@ -1,5 +1,6 @@
 ﻿using Common.Enums;
 using System.Collections.Generic;
+using Common.Enums.Entities;
 
 namespace Common.Dto
 {

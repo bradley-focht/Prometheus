@@ -1,6 +1,7 @@
 ﻿using Common.Dto;
 using Common.Enums;
 using System;
+using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {

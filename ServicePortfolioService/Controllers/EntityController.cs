@@ -1,4 +1,5 @@
 ﻿using Common.Enums;
+using Common.Enums.Entities;
 using Common.Exceptions;
 
 namespace ServicePortfolioService.Controllers
