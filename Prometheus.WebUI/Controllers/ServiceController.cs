@@ -117,10 +117,6 @@ namespace Prometheus.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult ShowNav(string section, int id = 0)
         {
-
-            if (!ServiceSectionHelper.ValidateRoute(section))
-                section = "General";
-
             ServiceNavModel model = new ServiceNavModel(ServiceSectionHelper.GenerateNavLinks(), section, id, $"Show{section}");
 
             return PartialView("PartialViews/_ServiceNav", model);
@@ -156,8 +152,7 @@ namespace Prometheus.WebUI.Controllers
                         {
                             Value = b.Item1.ToString(),
                             Text = b.Item2
-                        });
-
+                        }); 
             
             ps.GetServiceBundleNames();
             model.StatusNames = ps.GetLifecycleStatusNames().Select(l =>
@@ -303,7 +298,7 @@ namespace Prometheus.WebUI.Controllers
             }
             //save service
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
-            ps.ModifyServiceMeasure(measure, EntityModification.Create);
+            ps.ModifyServiceMeasure(measure, measure.Id < 1 ? EntityModification.Create : EntityModification.Update);
 
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"{measure.Method} saved successfully";
@@ -527,7 +522,6 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("PartialViews/ShowSwotTable", model);
         }
 
-
         /// <summary>
         /// Returns table view for SWOT activities for a SWOT item
         /// </summary>
@@ -570,7 +564,6 @@ namespace Prometheus.WebUI.Controllers
                 Name = activity.Name,
                 AltId = swot.Id,
                 AltName = swot.Item
-
             };
             model.Service = ps.GetService(swot.ServiceId).Name;
             model.ServiceId = swot.ServiceId;
@@ -587,7 +580,6 @@ namespace Prometheus.WebUI.Controllers
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             int swotId = ps.GetSwotActivity(model.Id).ServiceSwotId;
             ps.ModifySwotActivity(new SwotActivityDto { Id = model.Id }, EntityModification.Delete);
-
 
             return RedirectToAction("ShowServiceSectionItem",
                 new { id = swotId, serviceId = model.ServiceId, section = "Swot" });
@@ -610,22 +602,24 @@ namespace Prometheus.WebUI.Controllers
 
 
         [ChildActionOnly]
-        public ActionResult ShowServiceOptions(ServiceDto service)
+        public ActionResult ShowServiceOptions(int id)
         {
-            var tblModel = new TableDataModel
+            
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var items = ps.GetService(id).ServiceOptions;
+            ICollection<ICatalogable> model = new List<ICatalogable>();
+            if (items.Any())
             {
-                Titles = new List<string> { "Method", "Outcome" },
-                Data = new List<Tuple<int, ICollection<string>>>
+                foreach (var item in items)
                 {
-                    new Tuple<int, ICollection<string>>(1, new List<string> {"divide by 0", "exception"})
+                    model.Add((ICatalogable) item);
                 }
-            };
-
-            return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+            }
+            return PartialView("PartialViews/ShowOptionsTable", model);
         }
 
         [HttpPost]
-        public ActionResult SaveServiceOption(ServiceOptionDto option)
+        public ActionResult SaveOptionsItem(ServiceOptionDto option)
         {
 
             if (!ModelState.IsValid) /* Server side validation */
@@ -636,10 +630,10 @@ namespace Prometheus.WebUI.Controllers
             }
             //save service
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
-            //     ps.ModifyServiceRequestOption(option, EntityModification.Create);
+            ps.ModifyServiceOption(option, EntityModification.Create);
 
             TempData["MessageType"] = WebMessageType.Success;
-            //     TempData["Message"] = $"New option {option.Name} saved successfully";
+            TempData["Message"] = $"New option {option.Name} saved successfully";
 
             return RedirectToAction("Show", new { id = option.ServiceId, section = "Options" });
         }
@@ -743,7 +737,6 @@ namespace Prometheus.WebUI.Controllers
             return View("ShowSectionItem", model);
         }
 
-
         /// <summary>
         /// Show the service section and other service data is availalbe
         /// </summary>
@@ -845,7 +838,6 @@ namespace Prometheus.WebUI.Controllers
             return View("ConfirmDeleteSection", model);
         }
 
-
         public ActionResult ConfirmDeleteServiceMeasuresItem(int id)
         {
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
@@ -923,7 +915,6 @@ namespace Prometheus.WebUI.Controllers
 
             return RedirectToAction("Show", new { id = model.ServiceId, section = "Swot" });
         }
-
 
         /// <summary>
         /// Complete deletion of a ServiceGoal
@@ -1242,7 +1233,11 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("ShowSwotActivityItem", model);
         }
 
-
+        /// <summary>
+        /// Confirm deletion of work unit
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ConfirmDeleteServiceWorkUnitsItem(int id)
         {
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
@@ -1258,7 +1253,5 @@ namespace Prometheus.WebUI.Controllers
             model.Service = ps.GetService(item.ServiceId).Name;
             return View("ConfirmDeleteSection", model);
         }
-
-
     }
 }

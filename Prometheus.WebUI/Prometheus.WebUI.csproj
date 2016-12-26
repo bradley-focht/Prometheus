@@ -421,6 +421,8 @@
     <Content Include="Views\SystemAccess\AddRole.cshtml" />
     <Content Include="Views\SystemAccess\UpdateRole.cshtml" />
     <Content Include="Views\Service\PartialViews\ViewControls.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowOptionsTable.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateServiceOption.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

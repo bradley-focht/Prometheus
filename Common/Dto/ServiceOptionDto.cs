@@ -1,17 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using Common.Enums;
 
 namespace Common.Dto
 {
-	public class ServiceOptionDto : IServiceOptionDto
+	public class ServiceOptionDto : IServiceOptionDto, ICatalogable, IRequestable
 	{
 		//PK
 		public int Id { get; set; }
 
 		//FK
 		public int ServiceId { get; set; }
+        [Required(ErrorMessage = "Name is required")]
+        public string Name { get; set; }
+        [AllowHtml]
 	    public string Description { get; set; }
+        [Display(Name = "Business Value")]
+        [AllowHtml]
 	    public string BusinessValue { get; set; }
 	    public string Picture { get; set; }
 	    public ICollection<Tuple<PriceType, double>> Prices { get; set; }

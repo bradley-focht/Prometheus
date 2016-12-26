@@ -19,7 +19,7 @@ namespace DataService.DataAccessLayer
 		public DbSet<ServiceBundle> ServiceBundles { get; set; }
 		public DbSet<Service> Services { get; set; }
 		public DbSet<ServiceDocument> ServiceDocuments { get; set; }
-		public DbSet<ServiceOption> ServiceRequestOptions { get; set; }
+		//public DbSet<ServiceOption> ServiceRequestOptions { get; set; }
 		public DbSet<LifecycleStatus> LifecycleStatuses { get; set; }
 		public DbSet<ServiceSwot> ServiceSwots { get; set; }
 		public DbSet<SwotActivity> SwotActivities { get; set; }
@@ -27,6 +27,10 @@ namespace DataService.DataAccessLayer
 		public DbSet<ServiceMeasure> ServiceMeasures { get; set; }
 		public DbSet<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		public DbSet<ServiceContract> ServiceContracts { get; set; }
+        public DbSet<ServiceOption> ServiceOptions { get; set; }
+	    public DbSet<OptionCategory> OptionCategories { get; set; }
+
+
 
 		//User Manager Entities
 		public DbSet<User> Users { get; set; }

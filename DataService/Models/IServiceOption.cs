@@ -8,6 +8,7 @@ namespace DataService.Models
 	{
 		int Id { get; set; }
 		int ServiceId { get; set; }
+        string Name { get; set; }
         string Description { get; set; }
         string BusinessValue { get; set; }
         string Picture { get; set; }

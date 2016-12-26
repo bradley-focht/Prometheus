@@ -40,6 +40,10 @@
                     @Html.Partial("PartialViews/ShowGeneral", (ServiceDto)Model.Service)
                     controlAvail = true;
                     break;
+                case "Options":
+                    @Html.Action("ShowServiceOptions", (ServiceDto)Model.Service)
+                    footerAvail = false;
+                    break;
                 default:
                     @Html.Action("ShowService" + Model.SelectedSection, Model)
                     controlAvail = true;

@@ -88,7 +88,6 @@ namespace Common.Dto
 		/// What you can get when you order this service
 		/// </summary>
 		public virtual ICollection<IServiceOptionDto> ServiceOptions { get; set; }
-
 		/// <summary>
 		/// All collections below are part of the service package that goes with each service
 		/// </summary>
@@ -99,7 +98,8 @@ namespace Common.Dto
 		public virtual ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
 	    public ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
 	    public ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
-	
-        #endregion
+	    public ICollection<IServiceDto> Dpendents { get; set; }
+
+	    #endregion
     }
 }
