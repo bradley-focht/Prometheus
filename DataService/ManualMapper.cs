@@ -487,17 +487,33 @@ namespace DataService
 			};
 		}
 
-	    public static OptionCategoryDto MapServiceCategoryToDto(IOptionCategoryDto src)
+	    public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
 	    {
 	        if (src == null) { return null;}
 
 	        return new OptionCategoryDto
 	        {
                 Id = src.Id,
+                Popularity = src.Popularity,
                 ServiceId = src.Id,
                 Name = src.Name,
                 Description = src.Description
 	        };
+
 	    }
+
+	    public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
+	    {
+            if (src == null) { return null; }
+
+            return new OptionCategory
+            {
+                Id = src.Id,
+                Popularity = src.Popularity,
+                ServiceId = src.Id,
+                Name = src.Name,
+                Description = src.Description
+            };
+        }
 	}
 }

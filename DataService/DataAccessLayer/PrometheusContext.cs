@@ -29,7 +29,7 @@ namespace DataService.DataAccessLayer
 		public DbSet<ServiceContract> ServiceContracts { get; set; }
         public DbSet<ServiceOption> ServiceOptions { get; set; }
 	    public DbSet<OptionCategory> OptionCategories { get; set; }
-
+        public DbSet<ServiceProcess> ServiceProcesses { get; set; }
 
 
 		//User Manager Entities
