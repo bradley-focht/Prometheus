@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common.Enums;
 using Common.Enums.Entities;
 
 namespace DataService.Models
@@ -14,7 +13,9 @@ namespace DataService.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		//FK
+	    public int Popularity { get; set; }
+
+	    //FK
 		public int ServiceId { get; set; }
 	    public string Description { get; set; }
         public string Name { get; set; }

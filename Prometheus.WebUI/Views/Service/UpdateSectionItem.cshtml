@@ -47,34 +47,33 @@
                     if (workUnit != null)
                     {
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", workUnit)
+                        break;
                     }
-                    else
-                    {
                         goto default;
-                    }
-                    break;
                 case "Contracts":
                     var contract = (ServiceContractDto)Model.Service.ServiceContracts.FirstOrDefault(g => g.Id == Model.SectionItemId);
                     if (contract != null)
                     {
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", contract)
+                        break;
                     }
-                    else
-                    {
                         goto default;
-                    }
-                    break;
                 case "Measures":
                     var measure = (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId);
                     if (measure != null)
                     {
                         @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
+                        break;
                     }
-                    else
+                    goto default;
+                case "Options":
+                    var option = (ServiceOptionDto) Model.Service.ServiceOptions.FirstOrDefault(o => o.Id == Model.SectionItemId);
+                    if (option != null)
                     {
-                        goto default;
+                        @Html.Partial("PartialViews/UpdateServiceOption", option)
+                        break;
                     }
-                    break;
+                    goto default;
                 default:
                     controlsAvail = false;
                     <section class="alert alert-warning">

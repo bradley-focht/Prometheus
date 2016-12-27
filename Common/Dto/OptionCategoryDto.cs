@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
 
 namespace Common.Dto 
 {
-    public class OptionCategoryDto : ICatalogable
+    public class OptionCategoryDto : IOptionCategoryDto, ICatalogable
     {
         public int Id { get; set; }
+        public int Popularity { get; set; }
         public int ServiceId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }

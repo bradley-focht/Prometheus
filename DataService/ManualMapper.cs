@@ -42,6 +42,7 @@ namespace DataService
             return new ServiceOptionDto
             {
                 Id = src.Id,
+                Popularity = src.Popularity,
                 Description = src.Description,
                 ServiceId = src.ServiceId,
                 Name = src.Name,
@@ -58,6 +59,7 @@ namespace DataService
             return new ServiceOption
             {
                 Id = src.Id,
+                Popularity = src.Popularity,
                 Description = src.Description,
                 ServiceId = src.ServiceId,
                 Name = src.Name,
@@ -485,7 +487,7 @@ namespace DataService
 			};
 		}
 
-	    public static OptionCategoryDto MapServiceCategoryToDto(IOptionCategory src)
+	    public static OptionCategoryDto MapServiceCategoryToDto(IOptionCategoryDto src)
 	    {
 	        if (src == null) { return null;}
 

@@ -59,6 +59,10 @@
         -webkit-box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
         box-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
     }
+.form-money {
+    max-width:100px;
+    margin-bottom: 10px;
+}
 
 .font-home-link {
     color: #19A7F8;
@@ -68,8 +72,9 @@
 
 .table-title {
     color: #0C537C;
-    font-size: 0.8em;
+    font-size: 0.9em;
     font-weight: 600;
+    padding-right: 10px;
 }
 
 .flex-container {

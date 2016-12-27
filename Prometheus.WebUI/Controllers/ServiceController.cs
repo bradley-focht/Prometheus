@@ -12,6 +12,7 @@ using System.Web;
 using System.Web.Mvc;
 using Common.Enums;
 using Common.Enums.Entities;
+using DataService.Models;
 using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Controllers
@@ -604,16 +605,17 @@ namespace Prometheus.WebUI.Controllers
 
         [ChildActionOnly]
         public ActionResult ShowServiceOptions(int id)
-        {
-            
+        {         
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            OptionsTableModel model = new OptionsTableModel {Options = new List<ICatalogable>(), ServiceId = id};
             var items = ps.GetService(id).ServiceOptions;
-            ICollection<ICatalogable> model = new List<ICatalogable>();
+
+            
             if (items.Any())
             {
                 foreach (var item in items)
                 {
-                    model.Add((ICatalogable) item);
+                    model.Options.Add((ICatalogable) item);
                 }
             }
             return PartialView("PartialViews/ShowOptionsTable", model);
@@ -622,7 +624,8 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult SaveOptionsItem(ServiceOptionDto option)
         {
-
+            
+            
             if (!ModelState.IsValid) /* Server side validation */
             {
                 TempData["MessageType"] = WebMessageType.Failure;
@@ -631,7 +634,7 @@ namespace Prometheus.WebUI.Controllers
             }
             //save service
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
-            ps.ModifyServiceOption(option, EntityModification.Create);
+            ps.ModifyServiceOption(option, option.Id < 1 ? EntityModification.Create : EntityModification.Update);
 
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"New option {option.Name} saved successfully";
@@ -668,6 +671,8 @@ namespace Prometheus.WebUI.Controllers
 
             return View("UpdateSectionItem", model);
         }
+
+
 
         /// <summary>
         /// Save updated Service/General information or create a new one
@@ -768,6 +773,24 @@ namespace Prometheus.WebUI.Controllers
             return View("PartialViews/UpdateSwotItem", ps.GetServiceSwot(id));
         }
 
+        public ActionResult UpdateOptionCategoryItem(int id)
+        {
+            IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var model = new ServiceSectionModel {Section = "Options", SectionItemId = id};
+            model.Service = ps.GetService(id);
+
+            return View("UpdateSectionItem", model);
+        }
+
+        public ActionResult UpdateServiceOption(int id)
+        {
+            IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var model = new ServiceSectionModel { Section = "Options", SectionItemId = id };
+            model.Service = ps.GetService(ps.GetServiceOption(id).ServiceId);
+
+            return View("UpdateSectionItem", model);
+        }
+
         public ActionResult UpdateSwotActivityItem(int id)
         {
             IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
@@ -795,6 +818,18 @@ namespace Prometheus.WebUI.Controllers
             model.SwotName = swot.Item;
 
             return View("UpdateSwotActivityItem", model);
+        }
+
+        public ActionResult AddOptionCategory(int id)
+        {
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            
+            OptionCategoryModel model = new OptionCategoryModel {Action = "Add"};
+            model.ServiceId = id;
+            model.ServiceName = ps.GetService(id).Name;
+            model.OptionCategory = new OptionCategoryDto{ServiceId =  id};
+
+            return View("UpdateOptionCategory", model);
         }
 
         /// <summary>
@@ -901,6 +936,71 @@ namespace Prometheus.WebUI.Controllers
         }
 
         /// <summary>
+        /// Confirm deletion of work unit
+        /// </summary>
+        /// <param name="id">Work Unit Id</param>
+        /// <returns></returns>
+        public ActionResult ConfirmDeleteServiceWorkUnitsItem(int id)
+        {
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var item = ps.GetServiceWorkUnit(id);
+            var model = new ConfirmDeleteSectionItemModel
+            {
+                Id = id,
+                ServiceId = item.ServiceId,
+                DeleteAction = "DeleteServiceWorkUnit",
+                Name = item.Name,
+                Section = "WorkUnits"
+            };
+            model.Service = ps.GetService(item.ServiceId).Name;
+            return View("ConfirmDeleteSection", model);
+        }
+
+        /// <summary>
+        /// Confirm deleting a service option
+        /// </summary>
+        /// <param name="id">Service Option Id</param>
+        /// <returns></returns>
+        public ActionResult ConfirmDeleteServiceOption(int id)
+        {
+
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            var item = ps.GetServiceOption(id);
+            var model = new ConfirmDeleteSectionItemModel
+            {
+                Id = id,
+                ServiceId = item.ServiceId,
+                DeleteAction = "DeleteServiceOption",
+                Name = item.Name,
+                Section = "Options"
+            };
+            model.Service = ps.GetService(item.ServiceId).Name;
+            return View("ConfirmDeleteSection", model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteServiceOption(DeleteSectionItemModel model)
+        {
+            
+            var ps = InterfaceFactory.CreatePortfolioService(dummId);
+            try
+            {
+                ps.ModifyServiceOption(new ServiceOptionDto {Id = model.Id}, EntityModification.Delete);
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to delete {model.FriendlyName}, error: {exception.Message}";
+
+                return RedirectToAction("Show", new { id = model.ServiceId, section = "Options" });
+            }
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"Successfully deleted {model.FriendlyName}";
+
+            return RedirectToAction("Show", new {id = model.ServiceId, section = "Options"});
+        }
+
+        /// <summary>
         /// Completes the deletion from ConfirmDeleteServiceSwotItem
         /// </summary>
         /// <param name="model">item to delete plus information for redirection</param>
@@ -908,14 +1008,15 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult DeleteServiceSwotItem(DeleteSectionItemModel model)
         {
-            TempData["messageType"] = WebMessageType.Success;
-            TempData["message"] = "Successfully deleted " + model.FriendlyName;
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = "Successfully deleted " + model.FriendlyName;
 
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             ps.ModifyServiceSwot(new ServiceSwotDto { Id = model.Id }, EntityModification.Delete);
 
             return RedirectToAction("Show", new { id = model.ServiceId, section = "Swot" });
         }
+
 
         /// <summary>
         /// Complete deletion of a ServiceGoal
@@ -925,14 +1026,19 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult DeleteServiceGoal(DeleteSectionItemModel model)
         {
-            TempData["messageType"] = WebMessageType.Success;
-            TempData["message"] = "Successfully deleted " + model.FriendlyName;
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = "Successfully deleted " + model.FriendlyName;
             var ps = InterfaceFactory.CreatePortfolioService(dummId);
             ps.ModifyServiceGoal(new ServiceGoalDto { Id = model.Id }, EntityModification.Delete);
 
             return RedirectToAction("Show", new { id = model.ServiceId, section = "Goals" });
         }
 
+        /// <summary>
+        /// Delete a Work Unit
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult DeleteServiceWorkUnit(DeleteSectionItemModel model)
         {
@@ -955,6 +1061,11 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Show", new { id = model.ServiceId, section = "WorkUnits" });
         }
 
+        /// <summary>
+        /// Delete a  contract
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult DeleteServiceContract(DeleteSectionItemModel model)
         {
@@ -1185,7 +1296,6 @@ namespace Prometheus.WebUI.Controllers
 
             return View("ConfirmDeleteSection", model);
         }
-
         #endregion
 
         #region Lists
@@ -1235,24 +1345,21 @@ namespace Prometheus.WebUI.Controllers
         }
 
         /// <summary>
-        /// Confirm deletion of work unit
+        /// Shows one Service Option
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult ConfirmDeleteServiceWorkUnitsItem(int id)
+        public ActionResult ShowServiceOption(int id)
         {
-            var ps = InterfaceFactory.CreatePortfolioService(dummId);
-            var item = ps.GetServiceWorkUnit(id);
-            var model = new ConfirmDeleteSectionItemModel
-            {
-                Id = id,
-                ServiceId = item.ServiceId,
-                DeleteAction = "DeleteServiceWorkUnit",
-                Name = item.Name,
-                Section = "WorkUnits"
-            };
-            model.Service = ps.GetService(item.ServiceId).Name;
-            return View("ConfirmDeleteSection", model);
+            var ps = InterfaceFactory.CreatePortfolioService(id);
+            var model = new ServiceOptionModel();
+            var option = ps.GetServiceOption(id);
+
+            model.Option = (ServiceOptionDto)option;
+            model.ServiceName = ps.GetService(option.ServiceId).Name;
+
+            return View(model);
         }
+
     }
 }

@@ -1,0 +1,100 @@
+﻿@model Prometheus.WebUI.Models.Service.ServiceOptionModel
+    @{
+        Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+        ViewBag.Title = "Services";
+
+            ViewBag.SubTitle = "Option";
+
+        ViewBag.Links = new List<KeyValuePair<string, string>>
+        {
+            new KeyValuePair<string, string>("Home", "Home"),
+            new KeyValuePair<string, string>("Services", "Service/Index"),
+            new KeyValuePair<string, string>(Model.ServiceName, "Service/Show/Options/" + Model.Option.ServiceId),
+            new KeyValuePair<string, string>("Option", "#")
+        };
+    }
+
+@section Sidebar
+{}
+
+
+@section Content
+{
+    <div class="title-div">@ViewBag.SubTitle</div>
+    <div class="panel">
+        @if (Model.Option != null)
+        {
+            <table>
+                <tr>
+                    <td class="dt-cell">
+                        Name
+                    </td>
+                    <td class="dd-cell">
+                        @Model.Option.Name
+                    </td>
+
+                </tr>
+                <tr>
+                    <td class="dt-cell">
+                        Popularity
+                    </td>
+                    <td class="dd-cell">
+                        @Model.Option.Popularity
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="dt-cell">
+                        Description
+                    </td>
+                    <td class="dd-cell">
+                        @Html.Raw(Model.Option.Description)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="dt-cell">
+                        Business Value
+                    </td>
+                    <td class="dd-cell">
+                        @Html.Raw(Model.Option.BusinessValue)
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="dt-cell">Cost</td>
+                    <td class="dd-cell">
+                        @if (Model.Option.Cost > 0)
+                        {
+                            <text>$</text>@Model.Option.Cost
+                        }
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="dt-cell">Price</td>
+                    <td class="dd-cell">
+                        not sure how to do this yet...
+                    </td>
+                </tr>
+            </table>
+        }
+        else
+        {
+            <section class="alert alert-warning">
+                Data no longer exists.
+            </section>
+        }
+    </div>
+
+<div class="flex-container">
+    <div class="panel-footer">
+        <div class="float-right-div">
+            @Html.ActionLink("Back", "Show", new {id=Model.Option.ServiceId , section = "Options"}, new { @class = "btn btn-default btn-back" })
+            @Html.ActionLink("Update", "UpdateServiceOption", new { id = Model.Option.Id }, new { @class = "btn btn-primary" })
+            @Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = Model.Option.Id }, new { @class = "btn btn-danger" })
+        </div>
+    </div>
+</div>
+}

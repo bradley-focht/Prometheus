@@ -338,10 +338,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
+    <Compile Include="Models\Service\OptionCategoryModel.cs" />
     <Compile Include="Models\Service\ServiceBundleModel.cs" />
+    <Compile Include="Models\Service\ServiceOptionModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
     <Compile Include="Models\Service\ServiceViewControlsModel.cs" />
     <Compile Include="Models\Service\ServiceViewModel.cs" />
@@ -423,6 +426,9 @@
     <Content Include="Views\Service\PartialViews\ViewControls.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOptionsTable.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateServiceOption.cshtml" />
+    <Content Include="Views\Service\UpdateOptionCategory.cshtml" />
+    <Content Include="Views\Service\PartialViews\UpdateOptionCategory.cshtml" />
+    <Content Include="Views\Service\ShowServiceOption.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

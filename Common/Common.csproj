@@ -52,6 +52,8 @@
     <Compile Include="Dto\ICreatedEntityDto.cs" />
     <Compile Include="Dto\ICatalogable.cs" />
     <Compile Include="Dto\ILifecycleStatusDto.cs" />
+    <Compile Include="Dto\IOptionCategoryDto.cs" />
+    <Compile Include="Dto\IOptionCategory.cs" />
     <Compile Include="Dto\IRequestable.cs" />
     <Compile Include="Dto\IRoleDto.cs" />
     <Compile Include="Dto\IServiceBundleDto.cs" />
