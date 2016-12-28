@@ -1,5 +1,6 @@
 ﻿using DataService.Models;
 using System.Collections.Generic;
+using Common.Enums.Permissions;
 
 namespace DataService.DataAccessLayer
 {
@@ -71,6 +72,35 @@ namespace DataService.DataAccessLayer
 				}
 			});
 			context.SaveChanges();
+		}
+
+		public void SeedDefaultPermissions(PrometheusContext context)
+		{
+			context.Roles.AddRange(new List<Role>()
+			{
+				new Role()
+				{
+					Name = "Administrator",
+					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveAnyRequests,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.CanAdustRolePermissions,
+					ServiceDetailsAccess = ServiceDetails.CanEditServiceDetails,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanAssignRoles
+				},
+				new Role()
+				{
+					Name = "Service Manager",
+					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanAssignRoles,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceDetailsAccess = ServiceDetails.CanEditServiceDetails
+				}
+			});
 		}
 	}
 }
