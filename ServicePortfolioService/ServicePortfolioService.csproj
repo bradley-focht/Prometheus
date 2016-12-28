@@ -58,10 +58,13 @@
   <ItemGroup>
     <Compile Include="Controllers\ILifecycleStatusController.cs" />
     <Compile Include="Controllers\IServiceMeasureController.cs" />
+    <Compile Include="Controllers\IOptionCategoryController.cs" />
+    <Compile Include="Controllers\IServiceProcessController.cs" />
     <Compile Include="Controllers\IServiceWorkUnitController.cs" />
     <Compile Include="Controllers\IServiceContractController.cs" />
     <Compile Include="Controllers\IServiceDocumentController.cs" />
     <Compile Include="Controllers\IServiceGoalController.cs" />
+    <Compile Include="Controllers\IServiceOptionController.cs" />
     <Compile Include="Controllers\ISwotActivityController.cs" />
     <Compile Include="Controllers\IServiceSwotController.cs" />
     <Compile Include="Controllers\IServiceBundleController.cs" />
@@ -73,6 +76,9 @@
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceDocumentController.cs" />
     <Compile Include="Controllers\ServiceMeasureController.cs" />
+    <Compile Include="Controllers\OptionCategoryController.cs" />
+    <Compile Include="Controllers\ServiceProcessController.cs" />
+    <Compile Include="Controllers\ServiceOptionController.cs" />
     <Compile Include="Controllers\ServiceSwotController.cs" />
     <Compile Include="Controllers\ServiceWorkUnitController.cs" />
     <Compile Include="Controllers\SwotActivityController.cs" />

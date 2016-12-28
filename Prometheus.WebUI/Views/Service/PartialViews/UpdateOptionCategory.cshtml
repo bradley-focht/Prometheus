@@ -1,0 +1,30 @@
+﻿@model Common.Dto.OptionCategoryDto
+
+<input type="hidden" name="Id" value="@Model.Id" />
+@Html.Hidden("ServiceId", Model.ServiceId)
+@Html.Hidden("Id", Model.Id)
+
+<table>
+    <tr>
+        <td class="dt-cell">Name</td>
+        <td class="dd-cell">
+            @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Name)
+        </td>
+    </tr>
+    <tr>
+        <td class="dt-cell">Popularity</td>
+        <td class="dd-cell">
+            @Html.DropDownList("Popularity", Enumerable.Range(1, 5).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+            </td>
+    </tr>
+    <tr>
+        <td class="dt-cell">Description</td>
+        <td class="dd-cell">@Html.TextArea("Description", Model.Description, new { @class = "ckeditor" })</td>
+    </tr>
+    <tr>
+        <td class="dt-cell">Options</td>
+        <td class="dd-cell"></td>
+    </tr>
+
+</table>

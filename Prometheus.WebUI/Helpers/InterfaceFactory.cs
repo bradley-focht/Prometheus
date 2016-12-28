@@ -17,7 +17,8 @@ namespace Prometheus.WebUI.Helpers
                 new ServiceGoalController(),
                 new ServiceContractController(),
                 new ServiceWorkUnitController(),
-                new ServiceMeasureController());
+                new ServiceMeasureController(),
+                new ServiceOptionController());
         }
     }
 }

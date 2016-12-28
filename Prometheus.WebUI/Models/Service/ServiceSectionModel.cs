@@ -16,7 +16,6 @@ namespace Prometheus.WebUI.Models.Service
         /// parentId if a second level of hierarchy
         /// </summary>
         public int SectionItemId { get; set; }
-        public int SectionItemParentId { get; set; }
         public string ParentName { get; set; }
         public Guid SectionItemGuid { get; set; }
         public IEnumerable<SelectListItem> ServiceBundleNames { get; set; }

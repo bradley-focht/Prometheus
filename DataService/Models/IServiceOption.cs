@@ -8,7 +8,9 @@ namespace DataService.Models
 	public interface IServiceOption : IUserCreatedEntity
 	{
 		int Id { get; set; }
+        int Popularity { get; set; }
 		int ServiceId { get; set; }
+        string Name { get; set; }
         string Description { get; set; }
         string BusinessValue { get; set; }
         string Picture { get; set; }

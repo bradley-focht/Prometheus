@@ -50,7 +50,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\ICreatedEntityDto.cs" />
+    <Compile Include="Dto\ICatalogable.cs" />
     <Compile Include="Dto\ILifecycleStatusDto.cs" />
+    <Compile Include="Dto\IOptionCategoryDto.cs" />
+    <Compile Include="Dto\IRequestable.cs" />
     <Compile Include="Dto\IRoleDto.cs" />
     <Compile Include="Dto\IServiceBundleDto.cs" />
     <Compile Include="Dto\IServiceContractDto.cs" />
@@ -66,6 +69,7 @@
     <Compile Include="Dto\IUserCreatedEntityDto.cs" />
     <Compile Include="Dto\IUserDto.cs" />
     <Compile Include="Dto\LifecycleStatusDto.cs" />
+    <Compile Include="Dto\OptionCategoryDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\ServiceBundleDto.cs" />
     <Compile Include="Dto\ServiceContractDto.cs" />

@@ -1,0 +1,71 @@
+﻿@using Common.Dto
+@model Prometheus.WebUI.Models.Service.OptionsTableModel
+@if (Model.Options != null && Model.Options.Any())
+{
+    <table>
+        <thead>
+        <tr>
+            <th class="table-title">
+                Category
+            </th>
+            <th class="table-title">Option</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        @foreach (ICatalogable item in Model.Options)
+        {
+            <tr>
+                <td>
+                    @if (item is IServiceOptionDto)
+                    {
+                        <text> in reflection, this is not a category</text>
+                    }
+                </td>
+
+                <td>
+                    @Html.ActionLink(item.Name, "ShowServiceOption", new {id = item.Id})
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                            <span aria-hidden="true">&#x25BC;</span>
+                        </div>
+                        <div class="dropdown-menu">
+                            <ul class="ul-menu">
+                                <li>
+                                    @Html.ActionLink("Update", "UpdateServiceOption", new {id = item.Id})
+                                </li>
+                                <li>
+                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem")
+                                </li>
+                                <li role="separator" class="divider"></li>
+                                <li>@Html.ActionLink("Move to", "AddServiceSectionItem") </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+        </tbody>
+
+    </table>
+
+}
+else
+{
+    <div class="alert-message alert alert-warning" style="margin-bottom: 10px;">No options exist. @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId })</div>
+}
+
+<div class="flex-container">
+    <div class="panel-footer">
+        <div class="float-right-div">
+
+
+            @Html.ActionLink("Add Option", "AddServiceSectionItem", new { id = Model.ServiceId }, new { @class = "btn btn-primary" })
+
+            @Html.ActionLink("Add Cateogory", "AddOptionCategory", new { id =Model.ServiceId }, new { @class = "btn btn-primary" })
+
+        </div>
+    </div>
+</div>

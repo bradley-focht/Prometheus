@@ -12,10 +12,9 @@ namespace Prometheus.WebUI.Helpers
     /// </summary>
     public static class ServiceSectionHelper
     {
-        public static List<string> RouteStrings => new List<string> {"General", "GeneralOnly", "Goals", "Swot", "SwotStrength", "SwotWeakness", "SwotOpportunity", "SwotThreat", "SwotActivities", "WorkUnits", "Contracts", "Measures", "Processes", "Options", "Documents"};
-        public static List<string> NavStrings => new List<string> { "General", "Contracts", "Documents", "Goals", "Measures", "Options", "Processes", "SWOT", "Work Units"  };
-        public static List<string> NavStringRoutes => new List<string> { "General", "Contracts", "Documents", "Goals",  "Measures",  "Options", "Processes", "Swot", "WorkUnits" };
-        public static List<string> FriendlyNavName => new List<string> {"General", "Goal", "SWOT Item", "Work Unit", "SWOT Activity", "Contract", "Measure", "Process", "Option", "Document"};
+        private static List<string> NavStrings => new List<string> { "General", "Contracts", "Documents", "Goals", "Measures", "Options", "Processes", "SWOT", "Work Units"  };
+        private static List<string> NavStringRoutes => new List<string> { "General", "Contracts", "Documents", "Goals",  "Measures",  "Options", "Processes", "Swot", "WorkUnits" };
+        private static List<string> FriendlyNavName => new List<string> {"General", "Goal", "SWOT Item", "Work Unit", "SWOT Activity", "Contract", "Measure", "Process", "Option", "Document"};
 
         public static List<KeyValuePair<string, string>> GenerateNavLinks()
         {
@@ -34,11 +33,6 @@ namespace Prometheus.WebUI.Helpers
                 return "Swot";
 
             return null;
-        }
-
-        public static bool ValidateRoute(string routeArg)
-        {
-            return RouteStrings.Any(s => s == routeArg);
         }
 
         /// <summary>
@@ -63,6 +57,7 @@ namespace Prometheus.WebUI.Helpers
         }
 
         /// <summary>
+        /// Deprecated
         /// returns the route-friendly equivalent of what is put in the navigation title bar
         /// </summary>
         /// <param name="navArg"></param>
@@ -73,6 +68,20 @@ namespace Prometheus.WebUI.Helpers
             {
                 return "Swot";
             }
+            return navArg.Replace(" ", "");
+        }
+
+        public static string ConvertToRouteString(string navArg)
+        {
+            if (navArg.Contains("Swot"))
+            {
+                return "Swot";
+            }
+            if (navArg.Contains("Option"))
+            {
+                return "Options";
+            }
+
             return navArg.Replace(" ", "");
         }
 

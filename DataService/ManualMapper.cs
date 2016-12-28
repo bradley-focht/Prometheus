@@ -36,7 +36,40 @@ namespace DataService
 			};
 		}
 
-		public static Service MapDtoToService(IServiceDto src)
+        public static ServiceOptionDto MapServiceOptionToDto(IServiceOption src)
+        {
+            if (src == null) return null;
+            return new ServiceOptionDto
+            {
+                Id = src.Id,
+                Popularity = src.Popularity,
+                Description = src.Description,
+                ServiceId = src.ServiceId,
+                Name = src.Name,
+                BusinessValue = src.BusinessValue,
+                Prices = src.Prices,
+                Cost = src.Cost,
+                Picture = src.Picture            
+            };
+        }
+
+        public static ServiceOption MapDtoToServiceOption(IServiceOptionDto src)
+        {
+            if (src == null) return null;
+            return new ServiceOption
+            {
+                Id = src.Id,
+                Popularity = src.Popularity,
+                Description = src.Description,
+                ServiceId = src.ServiceId,
+                Name = src.Name,
+                Prices = src.Prices,
+                Cost = src.Cost,
+                BusinessValue = src.BusinessValue,
+                Picture = src.Picture
+            };
+        }
+        public static Service MapDtoToService(IServiceDto src)
 		{
 			if (src == null) return null;
 
@@ -135,6 +168,16 @@ namespace DataService
                 foreach (var measure in src.ServiceMeasures)
                 {
                     serviceDto.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
+                }
+            }
+
+            //Options
+            if (src.ServiceRequestOptions != null)
+            {
+                serviceDto.ServiceOptions = new List<IServiceOptionDto>();
+                foreach (var option in src.ServiceRequestOptions)
+                {
+                    serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
                 }
             }
 
@@ -356,7 +399,7 @@ namespace DataService
 			};
 		}
 
-		public static IServiceContractDto MapServiceContractToDto(ServiceContract src)
+		public static ServiceContractDto MapServiceContractToDto(IServiceContract src)
 		{
 			if (src == null) { return null; }
 
@@ -390,7 +433,7 @@ namespace DataService
 			};
 		}
 
-		public static IServiceMeasureDto MapServiceMeasureToDto(ServiceMeasure src)
+		public static ServiceMeasureDto MapServiceMeasureToDto(IServiceMeasure src)
 		{
 			if (src == null) { return null; }
 
@@ -416,7 +459,7 @@ namespace DataService
 			};
 		}
 
-		public static IServiceWorkUnitDto MapServiceWorkUnitToDto(ServiceWorkUnit src)
+		public static ServiceWorkUnitDto MapServiceWorkUnitToDto(IServiceWorkUnit src)
 		{
 			if (src == null) { return null; }
 
@@ -443,5 +486,34 @@ namespace DataService
 				Name = src.Name
 			};
 		}
+
+	    public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
+	    {
+	        if (src == null) { return null;}
+
+	        return new OptionCategoryDto
+	        {
+                Id = src.Id,
+                Popularity = src.Popularity,
+                ServiceId = src.Id,
+                Name = src.Name,
+                Description = src.Description
+	        };
+
+	    }
+
+	    public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
+	    {
+            if (src == null) { return null; }
+
+            return new OptionCategory
+            {
+                Id = src.Id,
+                Popularity = src.Popularity,
+                ServiceId = src.Id,
+                Name = src.Name,
+                Description = src.Description
+            };
+        }
 	}
 }

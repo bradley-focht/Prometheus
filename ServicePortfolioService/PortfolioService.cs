@@ -22,6 +22,7 @@ namespace ServicePortfolioService
 		private readonly IServiceContractController _serviceContractController;
 		private readonly IServiceWorkUnitController _serviceWorkUnitController;
 		private readonly IServiceMeasureController _serviceMeasureController;
+	    private readonly IServiceOptionController _serviceOptionController;
 
 
 		//TODO: Add check for valid user being set
@@ -43,7 +44,7 @@ namespace ServicePortfolioService
 			IServiceSwotController serviceSwotController, ISwotActivityController swotActivityController,
 			IServiceDocumentController serviceDocumentController, IServiceGoalController serviceGoalController,
 			IServiceContractController serviceContractController, IServiceWorkUnitController serviceWorkUnitController,
-			IServiceMeasureController serviceMeasureController)
+			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
@@ -55,6 +56,7 @@ namespace ServicePortfolioService
 			_serviceContractController = serviceContractController;
 			_serviceWorkUnitController = serviceWorkUnitController;
 			_serviceMeasureController = serviceMeasureController;
+		    _serviceOptionController = serviceOptionController;
 
 			UserId = userId;
 		}
@@ -71,6 +73,7 @@ namespace ServicePortfolioService
 			_serviceContractController.UserId = userId;
 			_serviceWorkUnitController.UserId = userId;
 			_serviceMeasureController.UserId = userId;
+		    _serviceOptionController.UserId = userId;
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
@@ -233,5 +236,15 @@ namespace ServicePortfolioService
 		{
 			return _serviceMeasureController.ModifyServiceMeasure(serviceMeasure, modification);
 		}
+
+	    public IServiceOptionDto GetServiceOption(int serviceOptionId)
+	    {
+            return _serviceOptionController.GetServiceOption(serviceOptionId);
+        }
+
+	    public IServiceOptionDto ModifyServiceOption(IServiceOptionDto serviceOption, EntityModification modification)
+	    {
+            return _serviceOptionController.ModifyServiceOption(serviceOption, modification);
+        }
 	}
 }

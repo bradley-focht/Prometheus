@@ -11,7 +11,7 @@
     {
         new KeyValuePair<string, string>("Home", "Home"),
         new KeyValuePair<string, string>("Services", "Service/Index"),
-        new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + Model.Section + "/" + Model.Service.Id),
+        new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "/" + Model.Service.Id),
         new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
     };
 
@@ -34,9 +34,15 @@
 
         @switch (Model.Section)
         {
-
+            case "Options":
+                var option = (ServiceOptionDto) Model.Service.ServiceOptions.FirstOrDefault(o => o.Id == Model.SectionItemId);
+                if (option != null)
+                {
+                    @Html.Partial("PartialViews/ShowDynamicServiceItem", option)
+                    break;
+                }
+                goto default;
             case "Goals":
-
                 @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                 break;
             case "Swot":
@@ -50,12 +56,9 @@
                 if (workUnit != null)
                 {
                     @Html.Partial("PartialViews/ShowDynamicServiceItem", workUnit)
+                    break;
                 }
-                else
-                {
                     goto default;
-                }
-                break;
             case "Contracts":
                 if (Model.Service.ServiceContracts != null && Model.Service.ServiceContracts.Any())
                 {
@@ -88,7 +91,7 @@
                 {
                     @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = Model.SectionItemId, serviceId = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
 
-                    @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", new { id = Model.SectionItemId }, new { @class = "btn btn-danger", style = "margin-left:5px;" })
+                    @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertToRouteString(Model.Section) + "Item", new { id = Model.SectionItemId }, new { @class = "btn btn-danger", style = "margin-left:5px;" })
                 }
             </div>
 

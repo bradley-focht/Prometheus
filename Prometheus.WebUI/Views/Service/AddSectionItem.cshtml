@@ -11,7 +11,7 @@
 
     List<KeyValuePair<string, string>> linkList = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Services", "Service/Index"),
-                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "/" + Model.Service.Id),
+                                                             new KeyValuePair<string, string>(Model.Service.Name, "Service/Show/" + ServiceSectionHelper.ConvertToRouteString(Model.Section) + "/" + Model.Service.Id),
     new KeyValuePair<string, string>(ViewBag.Title, "#")};
 
 
@@ -22,57 +22,63 @@
 
 @section Sidebar
 {
-    @Html.Action("ShowServiceList", Model.Service.Id)
+
 }
 
 @section Content
 {
-    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
+    @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
     {
         <div class="title-div">
             @ViewBag.Title
         </div>
-            <div class="panel">
+        <div class="panel">
 
-                @switch (Model.Section)
-                {
-                    case "Goals":
-                        @Html.Partial("PartialViews/UpdateServiceGoalItem", new ServiceGoalDto { ServiceId = Model.Service.Id, Id = -1 })
-                        break;
-                    case "Swot":
-                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Id = -1 })
-                        break;
-                    case "SwotStrength":
-                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Strength })
-                        break;
-                    case "SwotThreat":
-                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Threat })
-                        break;
-                    case "SwotOpportunity":
-                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Opportunity })
-                        break;
-                    case "SwotWeakness":
-                        @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Weakness })
-                        break;
-                    case "Contracts":
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto {ServiceId = Model.Service.Id })
-                        break;
-                    case "Measures":
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceMeasureDto {ServiceId = Model.Service.Id})
-                        break;
-                    case "WorkUnits":
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceWorkUnitDto {ServiceId = Model.Service.Id})
-                        break;
-                }
-            </div>
-            <div class="flex-container">
-                <div class="panel-footer">
-                    <div class="float-right-div">
-                        @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = ServiceSectionHelper.ConvertNavStringToRouteString((Model.Section)) }, new { @class = "btn btn-default btn-back" })
-                        <input type="submit" value="Save" class="btn btn-primary" />
-                    </div>
+            @switch (Model.Section)
+            {
+                case "Goals":
+                    @Html.Partial("PartialViews/UpdateServiceGoalItem", new ServiceGoalDto { ServiceId = Model.Service.Id, Id = -1 })
+                    break;
+                case "Swot":
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Id = -1 })
+                    break;
+                case "SwotStrength":
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Strength })
+                    break;
+                case "SwotThreat":
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Threat })
+                    break;
+                case "SwotOpportunity":
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Opportunity })
+                    break;
+                case "SwotWeakness":
+                    @Html.Partial("PartialViews/UpdateSwotItem", new ServiceSwotDto { ServiceId = Model.Service.Id, Type = ServiceSwotType.Weakness })
+                    break;
+                case "Contracts":
+                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceContractDto { ServiceId = Model.Service.Id })
+                    break;
+                case "Measures":
+                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceMeasureDto { ServiceId = Model.Service.Id })
+                    break;
+                case "WorkUnits":
+                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceWorkUnitDto { ServiceId = Model.Service.Id })
+                    break;
+                case "Options":
+                    @Html.Partial("PartialViews/UpdateServiceOption", new ServiceOptionDto { ServiceId = Model.Service.Id })
+                    break;
+                case "OptionCategories":
+                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", new OptionCategoryDto { ServiceId = Model.Service.Id })
+                    break;
+            }
+        </div>
+        <div class="flex-container">
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = ServiceSectionHelper.ConvertNavStringToRouteString((Model.Section)) }, new { @class = "btn btn-default btn-back" })
+                    <input type="submit" value="Save" class="btn btn-primary" />
                 </div>
             </div>
+        </div>
     }
 }
 
