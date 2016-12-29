@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Common.Enums.Permissions;
 
 namespace DataService.Models
 {
@@ -14,6 +15,13 @@ namespace DataService.Models
 
 		#region Fields
 		public string Name { get; set; }
+		public ApproveServiceRequest ApproveServiceRequestAccess { get; set; }
+		public BusinessCatalog BusinessCatalogAccess { get; set; }
+		public SupportCatalog SupportCatalogAccess { get; set; }
+		public RolePermissionAdustment RolePermissionAdjustmentAccess { get; set; }
+		public ServiceDetails ServiceDetailsAccess { get; set; }
+		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
+		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
@@ -21,6 +29,7 @@ namespace DataService.Models
 		#endregion
 		#region Navigation properties
 		public virtual ICollection<User> Users { get; set; }
+
 		#endregion
 	}
 }
