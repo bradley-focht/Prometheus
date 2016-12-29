@@ -426,7 +426,7 @@
     <Content Include="Views\SystemAccess\UpdateRole.cshtml" />
     <Content Include="Views\Service\PartialViews\ViewControls.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOptionsTable.cshtml" />
-    <Content Include="Views\Service\PartialViews\UpdateServiceOption.cshtml" />
+    <Content Include="Views\Service\UpdateServiceOption.cshtml" />
     <Content Include="Views\Service\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\ShowServiceOption.cshtml" />

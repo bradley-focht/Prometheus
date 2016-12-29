@@ -15,6 +15,6 @@ namespace Common.Dto
         public string Name { get; set; }
         [AllowHtml]
         public string Description { get; set; }
-        public virtual ICollection<int> ServiceOptionIds { get; set; }
+        public virtual ICollection<ServiceOptionDto> ServiceOptions { get; set; }
     }
 }

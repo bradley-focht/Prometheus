@@ -66,14 +66,6 @@
                         break;
                     }
                     goto default;
-                case "Options":
-                    var option = (ServiceOptionDto) Model.Service.ServiceOptions.FirstOrDefault(o => o.Id == Model.SectionItemId);
-                    if (option != null)
-                    {
-                        @Html.Partial("PartialViews/UpdateServiceOption", option)
-                        break;
-                    }
-                    goto default;
                 default:
                     controlsAvail = false;
                     <section class="alert alert-warning">

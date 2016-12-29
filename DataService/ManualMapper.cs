@@ -36,40 +36,44 @@ namespace DataService
 			};
 		}
 
-        public static ServiceOptionDto MapServiceOptionToDto(IServiceOption src)
-        {
-            if (src == null) return null;
-            return new ServiceOptionDto
-            {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                Description = src.Description,
-                ServiceId = src.ServiceId,
-                Name = src.Name,
-                BusinessValue = src.BusinessValue,
-                Prices = src.Prices,
-                Cost = src.Cost,
-                Picture = src.Picture            
-            };
-        }
+		public static ServiceOptionDto MapServiceOptionToDto(IServiceOption src)
+		{
+			if (src == null) return null;
+			return new ServiceOptionDto
+			{
+				Id = src.Id,
+				CategoryId = src.OptionCategoryId,
+				Popularity = src.Popularity,
+				Description = src.Description,
+				ServiceId = src.ServiceId,
+				Name = src.Name,
+				BusinessValue = src.BusinessValue,
+				PriceMonthly = src.PriceMonthly,
+				PriceUpFront = src.PriceUpFront,
+				Cost = src.Cost,
+				Picture = src.Picture            
+			};
+		}
 
-        public static ServiceOption MapDtoToServiceOption(IServiceOptionDto src)
-        {
-            if (src == null) return null;
-            return new ServiceOption
-            {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                Description = src.Description,
-                ServiceId = src.ServiceId,
-                Name = src.Name,
-                Prices = src.Prices,
-                Cost = src.Cost,
-                BusinessValue = src.BusinessValue,
-                Picture = src.Picture
-            };
-        }
-        public static Service MapDtoToService(IServiceDto src)
+		public static ServiceOption MapDtoToServiceOption(IServiceOptionDto src)
+		{
+			if (src == null) return null;
+			return new ServiceOption
+			{
+				Id = src.Id,
+				OptionCategoryId = src.CategoryId,
+				Popularity = src.Popularity,
+				Description = src.Description,
+				ServiceId = src.ServiceId,
+				Name = src.Name,
+				PriceMonthly = src.PriceMonthly,
+				PriceUpFront = src.PriceUpFront,
+				Cost = src.Cost,
+				BusinessValue = src.BusinessValue,
+				Picture = src.Picture
+			};
+		}
+		public static Service MapDtoToService(IServiceDto src)
 		{
 			if (src == null) return null;
 
@@ -151,27 +155,27 @@ namespace DataService
 				}
 			}
 
-            //Contracts
-            if (src.ServiceContracts != null)
-            {
-                serviceDto.ServiceContracts = new List<IServiceContractDto>();
-                foreach (var contra in src.ServiceContracts)
-                {
-                    serviceDto.ServiceContracts.Add(MapServiceContractToDto(contra));
-                }
-            }
+			//Contracts
+			if (src.ServiceContracts != null)
+			{
+				serviceDto.ServiceContracts = new List<IServiceContractDto>();
+				foreach (var contra in src.ServiceContracts)
+				{
+					serviceDto.ServiceContracts.Add(MapServiceContractToDto(contra));
+				}
+			}
 
-            //Measures
-		    if (src.ServiceMeasures != null)
-		    {
-                serviceDto.ServiceMeasures = new List<IServiceMeasureDto>();
-                foreach (var measure in src.ServiceMeasures)
-                {
-                    serviceDto.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
-                }
-            }
+			//Measures
+			if (src.ServiceMeasures != null)
+			{
+				serviceDto.ServiceMeasures = new List<IServiceMeasureDto>();
+				foreach (var measure in src.ServiceMeasures)
+				{
+					serviceDto.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
+				}
+			}
 
-            //Options
+			//Options
 			if (src.ServiceOptions != null)
 			{
 				serviceDto.ServiceOptions = new List<IServiceOptionDto>();
@@ -179,7 +183,7 @@ namespace DataService
 				{
 					serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
 				}
-            }
+			}
 			//Categories
 			if (src.OptionCategories != null)
 			{
@@ -193,16 +197,16 @@ namespace DataService
 
 			//Processes
 				if (src.ServiceProcesses != null)
-		    {
-		        serviceDto.ServiceProcesses = new List<IServiceProcessDto>();
-		        foreach (var process in src.ServiceProcesses)
-		        {
-		            serviceDto.ServiceProcesses.Add(MapServiceProcessToDto(process));
-		        }
-		    }
+			{
+				serviceDto.ServiceProcesses = new List<IServiceProcessDto>();
+				foreach (var process in src.ServiceProcesses)
+				{
+					serviceDto.ServiceProcesses.Add(MapServiceProcessToDto(process));
+				}
+			}
 
-            //Status
-            serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
+			//Status
+			serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
 
 			return serviceDto;
 		}
@@ -218,19 +222,19 @@ namespace DataService
 				Description = src.Description,
 				BusinessValue = src.BusinessValue,
 				Measures = src.Measures,
-                Services =  new List<IServiceDto>()
+				Services =  new List<IServiceDto>()
 			};
 
-            //just copy the minimum needed at this time
-		    if (src.Services != null && src.Services.Any())
-		    {
-		        foreach (var service in src.Services)
-		        {
-		            serviceBundle.Services.Add(new ServiceDto {Id = service.Id, Name = service.Name});
-		        }
-		    }
-            
-            return serviceBundle;
+			//just copy the minimum needed at this time
+			if (src.Services != null && src.Services.Any())
+			{
+				foreach (var service in src.Services)
+				{
+					serviceBundle.Services.Add(new ServiceDto {Id = service.Id, Name = service.Name});
+				}
+			}
+			
+			return serviceBundle;
 		}
 
 
@@ -507,45 +511,43 @@ namespace DataService
 			};
 		}
 
-	    public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
-	    {
-	        if (src == null) { return null;}
+		public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
+		{
+			if (src == null) { return null;}
 
-	        return new OptionCategoryDto
-	        {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                ServiceId = src.ServiceId,
-                Name = src.Name,
-                Description = src.Description,
-				
-				//ServiceOptionIds = src.ServiceOptions.
-	        };
-
-	    }
-
-	    public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
-	    {
-            if (src == null) { return null; }
-
-            OptionCategory categoryDto = new OptionCategory
-            {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                ServiceId = src.ServiceId,
-                Name = src.Name,
-                Description = src.Description
+			var categoryDto = new OptionCategoryDto
+			{
+				Id = src.Id,
+				Popularity = src.Popularity,
+				ServiceId = src.ServiceId,
+				Name = src.Name,
+				Description = src.Description
 			};
-		    if (src.ServiceOptionIds != null)
-		    {
-				categoryDto.ServiceOptions = new List<IServiceOption>();
-			    foreach (var i in src.ServiceOptionIds)
-			    {
-					categoryDto.ServiceOptions.Add(new ServiceOption {Id = i});
-			    }
-		    }
+			if (src.ServiceOptions != null)
+			{
+				categoryDto.ServiceOptions = new List<ServiceOptionDto>();
+				foreach (var option in src.ServiceOptions)
+				{
+					categoryDto.ServiceOptions.Add(MapServiceOptionToDto(option));
+				}
+			}
+			return categoryDto;
 
-		    return categoryDto;
-	    }
+		}
+
+		public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
+		{
+			if (src == null) { return null; }
+
+			OptionCategory category = new OptionCategory
+			{
+				Id = src.Id,
+				Popularity = src.Popularity,
+				ServiceId = src.ServiceId,
+				Name = src.Name,
+				Description = src.Description
+			};
+			return category;
+		}
 	}
 }

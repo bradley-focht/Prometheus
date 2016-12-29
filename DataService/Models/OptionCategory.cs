@@ -9,6 +9,6 @@ namespace DataService.Models
         public int ServiceId { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<IServiceOption> ServiceOptions { get; set; }
+        public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
     }
 }

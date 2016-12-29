@@ -621,8 +621,10 @@ namespace Prometheus.WebUI.Controllers
 			OptionsTableModel model = new OptionsTableModel { Options = new List<ICatalogable>(), ServiceId = id };
 			var service = ps.GetService(id);
 
-			model.Options.AddRange((from o in service.ServiceOptions select (ICatalogable)o).ToList());
 			model.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());
+			model.Options.AddRange((from o in service.ServiceOptions
+									where o.CategoryId == null
+									select (ICatalogable)o).ToList());
 
 			return PartialView("PartialViews/ShowOptionsTable", model);
 		}
@@ -844,26 +846,48 @@ namespace Prometheus.WebUI.Controllers
 				OptionCategory = (OptionCategoryDto)cat
 			};
 
-			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Select options..." } }; //add placeholder followed by actual items
-			optionsList.AddRange(ps.GetService(model.ServiceId).ServiceOptions.Select(l =>
-		   new SelectListItem
-		   {
-			   Value = l.Id.ToString(),
-			   Text = l.Name.ToString(),
-			   Selected = model.OptionCategory.ServiceOptionIds == null ? false : model.OptionCategory.ServiceOptionIds.Contains(l.Id)	//selected or not
-		   }));
-			model.Options = optionsList;										//add all items to the list
+												//add all items to the list
 
 			return View("UpdateOptionCategory", model);
+		}
+
+		public ActionResult AddServiceOption(int id)
+		{
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
+			var model = new ServiceOptionModel { Option = new ServiceOptionDto {ServiceId = id, Id = 0} };
+			model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
+			model.Action = "Add";
+
+			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Category..." } };
+			optionsList.AddRange(ps.GetService(id).OptionCategories.Select(l =>
+					   new SelectListItem
+					   {
+						   Value = l.Id.ToString(),
+						   Text = l.Name.ToString()
+					   }).ToList());
+			model.OptionCategories = optionsList;
+
+			return View("UpdateServiceOption", model);
 		}
 
 		public ActionResult UpdateServiceOption(int id)
 		{
 			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
-			var model = new ServiceSectionModel { Section = "Options", SectionItemId = id };
-			model.Service = ps.GetService(ps.GetServiceOption(id).ServiceId);
+			var model = new ServiceOptionModel { Option = (ServiceOptionDto)ps.GetServiceOption(id) };
+			model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
+			model.Action = "Update";
 
-			return View("UpdateSectionItem", model);
+			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Category..." } };
+			optionsList.AddRange(ps.GetService(model.Option.ServiceId).OptionCategories.Select(l =>
+					   new SelectListItem
+					   {
+						   Value = l.Id.ToString(),
+						   Text = l.Name.ToString(),
+						   Selected = model.Option.CategoryId != null && l.Id == model.Option.CategoryId
+					   }).ToList());
+			model.OptionCategories = optionsList;
+			
+			return View("UpdateServiceOption", model);
 		}
 
 		public ActionResult UpdateSwotActivityItem(int id)
@@ -913,14 +937,7 @@ namespace Prometheus.WebUI.Controllers
 			model.ServiceId = id;
 			model.ServiceName = ps.GetService(id).Name;
 			model.OptionCategory = new OptionCategoryDto { ServiceId = id };
-			var optionsList = new List<SelectListItem> {new SelectListItem {Value = "", Text = "Select options..."}};
-			optionsList.AddRange(ps.GetService(model.ServiceId).ServiceOptions.Select(l =>
-					   new SelectListItem
-					   {
-						   Value = l.Id.ToString(),
-						   Text = l.Name.ToString()
-					   }).ToList());
-			model.Options = optionsList;
+
 			return View("UpdateOptionCategory", model);
 		}
 
@@ -1152,24 +1169,33 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
+		[HttpPost]
 		public ActionResult DeleteOptionCategory(DeleteSectionItemModel model)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
+			var options = ps.GetOptionCategory(model.Id).ServiceOptions;
+
 			try
 			{
-				ps.ModifyOptionCategory(new OptionCategoryDto{ Id = model.Id }, EntityModification.Delete);
+				if (options != null)						//delete service options in the category prior to deleting category
+					foreach (var option in options)
+					{
+						option.CategoryId = null;
+						ps.ModifyServiceOption(option, EntityModification.Delete);
+					}										//delete the category
+				ps.ModifyOptionCategory(new OptionCategoryDto {Id = model.Id}, EntityModification.Delete);
 			}
-			catch (Exception exception)
+			catch (Exception exception)						//may fail on fk
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to delete {model.FriendlyName}, error: {exception.Message}";
 
-				return RedirectToAction("Show", new { id = model.ServiceId, section = "Options" });
+				return RedirectToAction("Show", new {id = model.ServiceId, section = "Options"});
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully deleted {model.FriendlyName}";
 
-			return RedirectToAction("Show", new { id = model.ServiceId, section = "Processes" });
+			return RedirectToAction("Show", new { id = model.ServiceId, section = "Options" });
 		}
 
 
@@ -1551,10 +1577,14 @@ namespace Prometheus.WebUI.Controllers
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(id);
 			var model = new ServiceOptionModel();
-			var option = ps.GetServiceOption(id);
 
-			model.Option = (ServiceOptionDto)option;
-			model.ServiceName = ps.GetService(option.ServiceId).Name;
+			model.Option = (ServiceOptionDto)ps.GetServiceOption(id);
+			var service = ps.GetService(model.Option.ServiceId);
+
+			model.ServiceName = service.Name;
+			model.CategoryName = (from c in service.OptionCategories
+								  where model.Option.CategoryId == c.Id
+								  select c.Name).FirstOrDefault();
 
 			return View(model);
 		}

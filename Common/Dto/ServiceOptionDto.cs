@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Common.Enums.Entities;
 
 namespace Common.Dto
 {
 	public class ServiceOptionDto : IServiceOptionDto, ICatalogable, IRequestable
 	{
-		//PK
+		[HiddenInput]
 		public int Id { get; set; }
-        [Display(Order = 2)]
+		
+		public int? CategoryId { get; set; }
+		[Display(Order = 2)]
 	    public int Popularity { get; set; }
-
 	    //FK
+		[HiddenInput]
 		public int ServiceId { get; set; }
         [Required(ErrorMessage = "Name is required")]
         [Display(Order = 1)]
@@ -25,11 +25,14 @@ namespace Common.Dto
         [AllowHtml]
 	    public string BusinessValue { get; set; }
         [Display(Order = 5)]
-        public string Picture { get; set; }
-        [Display(Order = 7)]
-        public ICollection<Tuple<PriceType, double>> Prices { get; set; }
-        [Display(Order = 6)]
-        public double Cost { get; set; }
+		public string Picture { get; set; }
+
+		[Display(Order = 6)]
+		public double Cost { get; set; }
+		[Display(Name= "Up Front Price", Order = 7)]
+		public double PriceUpFront { get; set; }
+		[Display(Name="Monthly Price", Order = 8)]
+		public double PriceMonthly { get; set; }
 
 	    #region Fields
 		public DateTime? DateCreated { get; set; }

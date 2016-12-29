@@ -36,15 +36,6 @@
                 </tr>
                 <tr>
                     <td class="dt-cell">
-                        Popularity
-                    </td>
-                    <td class="dd-cell">
-                        @Model.Option.Popularity
-                    </td>
-                </tr>
-
-                <tr>
-                    <td class="dt-cell">
                         Description
                     </td>
                     <td class="dd-cell">
@@ -64,20 +55,31 @@
                 <tr>
                     <td class="dt-cell">Cost</td>
                     <td class="dd-cell">
-                        @if (Model.Option.Cost > 0)
-                        {
-                            <text>$</text>@Model.Option.Cost
-                        }
-
+                       @string.Format("{0:C}",Model.Option.Cost)
                     </td>
                 </tr>
 
-                <tr>
-                    <td class="dt-cell">Price</td>
-                    <td class="dd-cell">
-                        not sure how to do this yet...
-                    </td>
-                </tr>
+	            <tr>
+		            <td class="dt-cell">Up Front Price</td>
+		            <td class="dd-cell">
+			            @string.Format("{0:C}", Model.Option.PriceUpFront)
+		            </td>
+	            </tr>
+
+	            <tr>
+		            <td class="dt-cell">Up Front Price</td>
+		            <td class="dd-cell">
+			            @string.Format("{0:C}", Model.Option.PriceMonthly)
+		            </td>
+	            </tr>
+	            <tr>
+		            <td class="dt-cell">Picture</td>
+		            <td class="dd-cell"></td>
+	            </tr>
+	            <tr>
+		            <td class="dt-cell">Category</td>
+					<td class="dd-cell">@Model.CategoryName</td>
+	            </tr>
             </table>
         }
         else

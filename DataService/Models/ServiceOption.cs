@@ -21,8 +21,9 @@ namespace DataService.Models
         public string Name { get; set; }
 	    public string BusinessValue { get; set; }
 	    public string Picture { get; set; }
-	    public ICollection<Tuple<PriceType, double>> Prices { get; set; }
-	    public double Cost { get; set; }
+		public double PriceUpFront { get; set; }
+		public double PriceMonthly { get; set; }
+		public double Cost { get; set; }
 
 	    #region Fields
 		public DateTime? DateCreated { get; set; }
@@ -32,6 +33,7 @@ namespace DataService.Models
 		#endregion
 		#region Navigation properties
 		public virtual Service Service { get; set; }
+		public int? OptionCategoryId { get; set; }
 		#endregion
 	}
 }

@@ -2,67 +2,77 @@
 @model IEnumerable<IServiceBundleDto>
 
 @{
-    ViewBag.Title = "Service Portfolio";
-    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"), new KeyValuePair<string, string>(ViewBag.Title, "#") };
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Service Portfolio";
+	ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"), new KeyValuePair<string, string>(ViewBag.Title, "#") };
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="flex-container">
-    <div>
-        <div class="float-right-div">
-            @Html.ActionLink("Add", "Add")
-        </div>
-    </div>
+	<div>
+		<div class="float-right-div" style="margin-right: 10px;">
+			@Html.ActionLink("Add", "Add")
+		</div>
+	</div>
 </div>
 
-@if (Model != null)
-{
-    foreach (var serviceBundle in Model)
-    {
-
-        <label class="font-title2-blue">@serviceBundle.Name</label>
-        <div class="std-div">
-            <dl class="dl-horizontal dl-section">
-                <dt class="dt-sp">Description:</dt>
-                <dd class="dd-sp">@Html.Raw(serviceBundle.Description)</dd>
-                <dt class="dt-sp">Business Value:</dt>
-                <dd class="dd-sp">@Html.Raw(serviceBundle.BusinessValue)</dd>
-                <dt class="dt-sp">Services:</dt>
-                <dd class="dd-sp">
-                    @{
-                        int i = 1;
-
-                        foreach (var service in serviceBundle.Services)
-                        {
-
-                            if (i < serviceBundle.Services.Count)
-                            {
-                                @service.Name<text>,</text>
-                                i++;
-                            }
-                            else
-                            {
-                                @service.Name
-
-                            }
-
-                        }
-                    }
+<div class="flex-row" style="flex-wrap: wrap">
 
 
-                </dd>
-                <dt class="dt-sp">Measures:</dt>
-                <dd class="dd-sp">@serviceBundle.Measures</dd>
+	@if (Model != null)
+	{
+		foreach (var serviceBundle in Model)
+		{
+			<div class="flex-row" style="margin-top: 10px; margin-right: 10px; flex: 1;">
+				<div class="color-bar"></div>
 
-                <dt></dt>
-                <dd>
-                    <div class="float-right-div">@Html.ActionLink("Edit", "Update", new { id = serviceBundle.Id })</div>
-                </dd>
-            </dl>
-        </div>
-    }
-}
-else
-{
-    <div class="alert alert-warning alert-message">There are currently no Service Bundles</div>
-}
+				<div class="flex-col">
+					<div>
+						<label class="font-title1">@serviceBundle.Name</label>
+
+					</div>
+					<div>
+						@Html.ActionLink("Edit", "Update", new { id = serviceBundle.Id })
+					</div>
+					<div>
+						<div class="font-title3">Description</div>
+						<div>@Html.Raw(serviceBundle.Description)</div>
+					</div>
+					<div>
+						<div class="font-title3">Business Value</div>
+						<div>@Html.Raw(serviceBundle.BusinessValue)</div>
+					</div>
+
+					<div>
+						<div class="font-title3">Services</div>
+						<div>
+							@{
+								int i = 1;
+								foreach (var service in serviceBundle.Services)
+								{
+
+									if (i < serviceBundle.Services.Count)
+									{
+										@service.Name<text>,</text>
+										i++;
+									}
+									else
+									{
+										@service.Name
+
+									}
+								}
+							}
+						</div>
+					</div>
+					<div>
+						<div class="font-title3">Measures</div>
+						<div>@serviceBundle.Measures</div>
+					</div>
+				</div>
+
+	
+			</div>
+
+									}
+								}
+</div>

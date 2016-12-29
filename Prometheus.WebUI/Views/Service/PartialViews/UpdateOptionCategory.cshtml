@@ -21,13 +21,6 @@
 		<td class="dt-cell">Description</td>
 		<td class="dd-cell">@Html.TextArea("Description", Model.OptionCategory.Description, new {@class = "ckeditor"})</td>
 	</tr>
-	<tr>
-		<td class="dt-cell">Options</td>
-		<td class="dd-cell">
-			@Html.DropDownList("ServiceOptionIds", Model.Options, new { placeholder = "Select options..." })
-		</td>
-	</tr>
-
 </table>
 
 <script type="text/javascript" language="javascript">
