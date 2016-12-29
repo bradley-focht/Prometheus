@@ -91,11 +91,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult ServiceSearch(string searchString)
 		{
-			if (searchString == "")
-			{
-				return RedirectToAction("Index");
-			}
-			return RedirectToAction("Index", "Service", new { filterBy = "Search", filterArg = searchString });
+			return searchString == "" ? RedirectToAction("Index") : RedirectToAction("Index", "Service", new { filterBy = "Search", filterArg = searchString });
 		}
 
 		/// <summary>
@@ -626,6 +622,19 @@ namespace Prometheus.WebUI.Controllers
 									where o.CategoryId == null
 									select (ICatalogable)o).ToList());
 
+			model.Options.OrderBy(o => o.Name);
+
+			try
+			{
+				model.i = double.Parse(ConfigurationManager.AppSettings["DefaultPwMarr"]);
+				model.n = int.Parse(ConfigurationManager.AppSettings["DefaultPwPeriods"]);
+			}
+			catch (Exception exception)		//leave it to default values
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to read from configuration file, error: {exception.Message}";
+			}
+
 			return PartialView("PartialViews/ShowOptionsTable", model);
 		}
 
@@ -837,7 +846,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult UpdateOptionCategoryItem(int id)
 		{
 			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
-			var cat = ps.GetOptionCategory(id);									//temp category for referencing
+			var cat = ps.GetOptionCategory(id);                                 //temp category for referencing
 			var model = new UpdateOptionCategoryModel
 			{
 				ServiceName = ps.GetService(cat.ServiceId).Name,
@@ -846,7 +855,7 @@ namespace Prometheus.WebUI.Controllers
 				OptionCategory = (OptionCategoryDto)cat
 			};
 
-												//add all items to the list
+			//add all items to the list
 
 			return View("UpdateOptionCategory", model);
 		}
@@ -854,7 +863,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult AddServiceOption(int id)
 		{
 			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(dummId);
-			var model = new ServiceOptionModel { Option = new ServiceOptionDto {ServiceId = id, Id = 0} };
+			var model = new ServiceOptionModel { Option = new ServiceOptionDto { ServiceId = id, Id = 0 } };
 			model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
 			model.Action = "Add";
 
@@ -886,7 +895,7 @@ namespace Prometheus.WebUI.Controllers
 						   Selected = model.Option.CategoryId != null && l.Id == model.Option.CategoryId
 					   }).ToList());
 			model.OptionCategories = optionsList;
-			
+
 			return View("UpdateServiceOption", model);
 		}
 
@@ -945,7 +954,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 
-			ShowOptionCategoryModel model = new ShowOptionCategoryModel {OptionCategory = ps.GetOptionCategory(id)};
+			ShowOptionCategoryModel model = new ShowOptionCategoryModel { OptionCategory = ps.GetOptionCategory(id) };
 			model.ServiceId = model.OptionCategory.ServiceId;
 			model.ServiceName = ps.GetService(model.OptionCategory.ServiceId).Name;
 
@@ -1177,20 +1186,20 @@ namespace Prometheus.WebUI.Controllers
 
 			try
 			{
-				if (options != null)						//delete service options in the category prior to deleting category
+				if (options != null)                        //delete service options in the category prior to deleting category
 					foreach (var option in options)
 					{
 						option.CategoryId = null;
 						ps.ModifyServiceOption(option, EntityModification.Delete);
-					}										//delete the category
-				ps.ModifyOptionCategory(new OptionCategoryDto {Id = model.Id}, EntityModification.Delete);
+					}                                       //delete the category
+				ps.ModifyOptionCategory(new OptionCategoryDto { Id = model.Id }, EntityModification.Delete);
 			}
-			catch (Exception exception)						//may fail on fk
+			catch (Exception exception)                     //may fail on fk
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to delete {model.FriendlyName}, error: {exception.Message}";
 
-				return RedirectToAction("Show", new {id = model.ServiceId, section = "Options"});
+				return RedirectToAction("Show", new { id = model.ServiceId, section = "Options" });
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully deleted {model.FriendlyName}";

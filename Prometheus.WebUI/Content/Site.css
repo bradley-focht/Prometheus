@@ -12,14 +12,11 @@
 }
 
 .conent-sidebar {
-    flex: 1;
     min-width: 160px;
     max-width: 210px;
     margin-right: 10px;
-    min-height: 400px;
 }
 
 .content-main {
-    flex: 1;
     min-height: 400px;
 }
