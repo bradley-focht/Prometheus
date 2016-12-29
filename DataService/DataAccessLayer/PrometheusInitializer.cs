@@ -1,6 +1,6 @@
-﻿using DataService.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Common.Enums.Permissions;
+using DataService.Models;
 
 namespace DataService.DataAccessLayer
 {
@@ -36,7 +36,7 @@ namespace DataService.DataAccessLayer
 			{
 				context.Users.Add(user);
 			}
-			context.SaveChanges(1);
+			context.SaveChanges();
 
 			//Add a sample service bundle with services and service request options
 			context.ServiceBundles.Add(new ServiceBundle
@@ -72,6 +72,8 @@ namespace DataService.DataAccessLayer
 				}
 			});
 			context.SaveChanges();
+
+			SeedDefaultPermissions(context);
 		}
 
 		public void SeedDefaultPermissions(PrometheusContext context)
@@ -99,8 +101,91 @@ namespace DataService.DataAccessLayer
 					UserRoleAssignmentAccess = UserRoleAssignment.CanAssignRoles,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceDetailsAccess = ServiceDetails.CanEditServiceDetails
-				}
+				},
+				new Role()
+				{
+					Name = "Account Executive",
+					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveAnyRequests,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.NoAccess,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.NoAccess,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+				},
+				new Role()
+				{
+					Name = "Service Owner",
+					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.CanViewServiceDetails,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+				},new Role()
+				{
+					Name = "External Executive",
+					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.NoAccess,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.NoAccess,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+				},new Role()
+				{
+					Name = "Internal Executive",
+					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.CanViewServiceDetails,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.NoAccess,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+				},new Role()
+				{
+					Name = "Support Staff",
+					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.NoAccess,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+				},new Role()
+				{
+					Name = "Approver",
+					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveMinistryRequests,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.NoAccess,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.NoAccess,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+				},new Role()
+				{
+					Name = "Authorized User",
+					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveBasicRequests,
+					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.NoAccess,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.NoAccess,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+				},new Role()
+				{
+					Name = "Guest",
+					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
+					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
+					ServiceDetailsAccess = ServiceDetails.NoAccess,
+					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
+					SupportCatalogAccess = SupportCatalog.NoAccess,
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.NoAccess
+				},
 			});
+			context.SaveChanges();
 		}
 	}
 }

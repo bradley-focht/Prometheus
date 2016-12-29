@@ -59,7 +59,7 @@ namespace DataService
 			};
 		}
 
-		public static IServiceOption MapDtoToServiceOption(IServiceOptionDto src)
+		public static ServiceOption MapDtoToServiceOption(IServiceOptionDto src)
 		{
 			if (src == null) return null;
 
