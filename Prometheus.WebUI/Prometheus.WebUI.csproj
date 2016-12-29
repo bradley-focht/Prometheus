@@ -342,7 +342,8 @@
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
-    <Compile Include="Models\Service\OptionCategoryModel.cs" />
+    <Compile Include="Models\Service\UpdateOptionCategoryModel.cs" />
+    <Compile Include="Models\Service\ShowOptionCategoryModel.cs" />
     <Compile Include="Models\Service\ServiceBundleModel.cs" />
     <Compile Include="Models\Service\ServiceOptionModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
@@ -429,6 +430,8 @@
     <Content Include="Views\Service\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\ShowServiceOption.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowOptionCategory.cshtml" />
+    <Content Include="Views\Service\ShowOptionCategory.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

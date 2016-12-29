@@ -172,14 +172,34 @@ namespace DataService
             }
 
             //Options
-            if (src.ServiceRequestOptions != null)
-            {
-                serviceDto.ServiceOptions = new List<IServiceOptionDto>();
-                foreach (var option in src.ServiceRequestOptions)
-                {
-                    serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
-                }
+			if (src.ServiceOptions != null)
+			{
+				serviceDto.ServiceOptions = new List<IServiceOptionDto>();
+				foreach (var option in src.ServiceOptions)
+				{
+					serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
+				}
             }
+			//Categories
+			if (src.OptionCategories != null)
+			{
+				serviceDto.OptionCategories = new List<IOptionCategoryDto>();
+
+				foreach (var category in src.OptionCategories)
+				{
+					serviceDto.OptionCategories.Add(MapOptionCategoryToDto(category));
+				}
+			}
+
+			//Processes
+				if (src.ServiceProcesses != null)
+		    {
+		        serviceDto.ServiceProcesses = new List<IServiceProcessDto>();
+		        foreach (var process in src.ServiceProcesses)
+		        {
+		            serviceDto.ServiceProcesses.Add(MapServiceProcessToDto(process));
+		        }
+		    }
 
             //Status
             serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
@@ -495,9 +515,11 @@ namespace DataService
 	        {
                 Id = src.Id,
                 Popularity = src.Popularity,
-                ServiceId = src.Id,
+                ServiceId = src.ServiceId,
                 Name = src.Name,
-                Description = src.Description
+                Description = src.Description,
+				
+				//ServiceOptionIds = src.ServiceOptions.
 	        };
 
 	    }
@@ -506,14 +528,24 @@ namespace DataService
 	    {
             if (src == null) { return null; }
 
-            return new OptionCategory
+            OptionCategory categoryDto = new OptionCategory
             {
                 Id = src.Id,
                 Popularity = src.Popularity,
-                ServiceId = src.Id,
+                ServiceId = src.ServiceId,
                 Name = src.Name,
                 Description = src.Description
-            };
-        }
+			};
+		    if (src.ServiceOptionIds != null)
+		    {
+				categoryDto.ServiceOptions = new List<IServiceOption>();
+			    foreach (var i in src.ServiceOptionIds)
+			    {
+					categoryDto.ServiceOptions.Add(new ServiceOption {Id = i});
+			    }
+		    }
+
+		    return categoryDto;
+	    }
 	}
 }

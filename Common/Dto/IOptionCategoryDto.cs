@@ -10,6 +10,6 @@ namespace Common.Dto
         int ServiceId { get; set; }
         string Name { get; set; }
         string Description { get; set; }
-        ICollection<IServiceOptionDto> Options { get; set; }
+        ICollection<int> ServiceOptionIds { get; set; }
     }
 }

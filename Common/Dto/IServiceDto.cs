@@ -1,5 +1,4 @@
-﻿using Common.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Common.Enums.Entities;
 
 namespace Common.Dto
@@ -17,7 +16,6 @@ namespace Common.Dto
 		ServiceTypeRole ServiceTypeRole { get; set; }
 		IServiceBundleDto ServiceBundle { get; set; }
 		ILifecycleStatusDto LifecycleStatusDto { get; set; }
-		ICollection<IServiceOptionDto> ServiceOptions { get; set; }
 		ICollection<IServiceSwotDto> ServiceSwots { get; set; }
 		ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
 		ICollection<IServiceContractDto> ServiceContracts { get; set; }
@@ -25,6 +23,8 @@ namespace Common.Dto
 		ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
 		ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
 		ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
-        ICollection<IServiceDto> Dpendents { get; set;  }
-	}
+        ICollection<IServiceOptionDto> ServiceOptions { get; set; }
+		ICollection<IOptionCategoryDto> OptionCategories { get; set; }
+        ICollection<IServiceDto> Dependencies { get; set; }
+    }
 }

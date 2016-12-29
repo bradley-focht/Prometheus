@@ -39,10 +39,10 @@
                 if (option != null)
                 {
                     @Html.Partial("PartialViews/ShowDynamicServiceItem", option)
-                    break;
-                }
-                goto default;
-            case "Goals":
+					break;
+				}
+				goto default;
+			case "Goals":
                 @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceGoalDto)Model.Service.ServiceGoals.FirstOrDefault(g => g.Id == Model.SectionItemId))
                 break;
             case "Swot":
@@ -70,11 +70,19 @@
                 if (Model.Service.ServiceMeasures != null && Model.Service.ServiceMeasures.Any())
                 {
                     @Html.Partial("PartialViews/ShowDynamicServiceItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
-                    break;
-                }
-                goto default;
-            default:
-                controlAvail = false;
+					break;
+				}
+				goto default;
+			case "Processes":
+				var process = (ServiceProcessDto)Model.Service.ServiceProcesses.FirstOrDefault(p => p.Id == Model.SectionItemId);
+				if (process != null)
+				{
+					@Html.Partial("PartialViews/ShowDynamicServiceItem", process)
+					break;
+				}
+				goto default;
+			default:
+				controlAvail = false;
                 <div class="alert alert-danger">The data no is longer available.</div>
                 break;
         }

@@ -1,5 +1,4 @@
-﻿using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -47,8 +46,6 @@ namespace DataService.Models
 		#region Navigation Properties
 		public virtual ServiceBundle ServiceBundle { get; set; }
 		public virtual LifecycleStatus LifecycleStatus { get; set; }
-
-		public virtual ICollection<ServiceOption> ServiceRequestOptions { get; set; }
 		public virtual ICollection<ServiceContract> ServiceContracts { get; set; }
 		public virtual ICollection<ServiceMeasure> ServiceMeasures { get; set; }
 		public virtual ICollection<ServiceGoal> ServiceGoals { get; set; }
@@ -56,7 +53,9 @@ namespace DataService.Models
 		public virtual ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		public virtual ICollection<ServiceDocument> ServiceDocuments { get; set; }
         public virtual ICollection<ServiceProcess> ServiceProcesses { get; set; }
-		public virtual ICollection<Service> Dependents { get; set; }
+        public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
+        public virtual ICollection<OptionCategory> OptionCategories { get; set; }
+        public virtual ICollection<Service> Dependencies { get; set; }
         #endregion
 	}
 }

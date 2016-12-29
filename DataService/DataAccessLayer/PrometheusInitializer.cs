@@ -49,24 +49,24 @@ namespace DataService.DataAccessLayer
 						LifecycleStatus = new LifecycleStatus()
 						{
 							Name = "Operational"
-						},
+                        }/*, TODO: Sean - sorry but the null references these create are a bit of an issue
 						ServiceRequestOptions = new List<ServiceOption>
 						{
 							new ServiceOption(),
 							new ServiceOption()
-						}
+						} */
 					},
 					new Service
 					{
 						Name = "Second Service",LifecycleStatus = new LifecycleStatus()
 						{
 							Name = "Chartered"
-						},
+						}/*,
 						ServiceRequestOptions = new List<ServiceOption>
 						{
 							new ServiceOption(),
 							new ServiceOption()
-						}
+						} */
 					}
 				}
 			});

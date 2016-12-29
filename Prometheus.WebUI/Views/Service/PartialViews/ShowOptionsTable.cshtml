@@ -2,13 +2,15 @@
 @model Prometheus.WebUI.Models.Service.OptionsTableModel
 @if (Model.Options != null && Model.Options.Any())
 {
-    <table>
+    <table class="table table-hover" style="display: inline-block;"> 
         <thead>
         <tr>
-            <th class="table-title">
-                Category
-            </th>
-            <th class="table-title">Option</th>
+	        <th class="table-title">
+		        Category
+	        </th>
+	        <th></th>
+	        <th class="table-title">Option</th>
+	        <th></th>
         </tr>
         </thead>
         <tbody>
@@ -16,35 +18,63 @@
         @foreach (ICatalogable item in Model.Options)
         {
             <tr>
-                <td>
-                    @if (item is IServiceOptionDto)
-                    {
-                        <text> in reflection, this is not a category</text>
-                    }
-                </td>
+	            <td>
+		            @if (item is IOptionCategoryDto)
+		            {
+			            @Html.ActionLink(item.Name, "ShowOptionCategory", new { id = item.Id })
+}
+	            </td>
+	            <td>
+					@if (item is IOptionCategoryDto)
+					{
+						<div class="btn-group">
+							<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+								<span aria-hidden="true">&#x25BC;</span>
+							</div>
+							<div class="dropdown-menu">
+								<ul class="ul-menu">
+									<li>
+										@Html.ActionLink("Update", "UpdateOptionCategoryItem", new { id = item.Id })
+									</li>
+									<li>
+										@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new { id = item.Id })
+									</li>
+									<li role="separator" class="divider"></li>
+									<li>@Html.ActionLink("Move to", "AddServiceOption") </li>
+								</ul>
+							</div>
+						</div>
+					}
+	            </td>
 
-                <td>
-                    @Html.ActionLink(item.Name, "ShowServiceOption", new {id = item.Id})
-                </td>
-                <td>
-                    <div class="btn-group">
-                        <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                            <span aria-hidden="true">&#x25BC;</span>
-                        </div>
-                        <div class="dropdown-menu">
-                            <ul class="ul-menu">
-                                <li>
-                                    @Html.ActionLink("Update", "UpdateServiceOption", new {id = item.Id})
-                                </li>
-                                <li>
-                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceSwotItem")
-                                </li>
-                                <li role="separator" class="divider"></li>
-                                <li>@Html.ActionLink("Move to", "AddServiceSectionItem") </li>
-                            </ul>
-                        </div>
-                    </div>
-                </td>
+	            <td>
+		            @if (item is IServiceOptionDto)
+		            {
+			            @Html.ActionLink(item.Name, "ShowServiceOption", new {id = item.Id})
+		            }
+	            </td>
+	            <td>
+		            @if (item is IServiceOptionDto)
+		            {
+			            <div class="btn-group">
+				            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+					            <span aria-hidden="true">&#x25BC;</span>
+				            </div>
+				            <div class="dropdown-menu">
+					            <ul class="ul-menu">
+						            <li>
+							            @Html.ActionLink("Update", "UpdateServiceOption", new {id = item.Id})
+						            </li>
+						            <li>
+							            @Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new {id = item.Id})
+						            </li>
+						            <li role="separator" class="divider"></li>
+						            <li>@Html.ActionLink("Move to", "AddServiceSectionItem") </li>
+					            </ul>
+				            </div>
+			            </div>
+		            }
+	            </td>
             </tr>
         }
         </tbody>
