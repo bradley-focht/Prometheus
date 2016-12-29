@@ -1,5 +1,4 @@
-﻿using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -55,8 +54,8 @@ namespace DataService.Models
 		public virtual ICollection<ServiceSwot> ServiceSwots { get; set; }
 		public virtual ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		public virtual ICollection<ServiceDocument> ServiceDocuments { get; set; }
-        public virtual ICollection<ServiceProcess> ServiceProcesses { get; set; }
+		public virtual ICollection<ServiceProcess> ServiceProcesses { get; set; }
 		public virtual ICollection<Service> Dependents { get; set; }
-        #endregion
+		#endregion
 	}
 }

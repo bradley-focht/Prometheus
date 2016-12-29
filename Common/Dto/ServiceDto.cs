@@ -1,5 +1,4 @@
-﻿using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -14,12 +13,12 @@ namespace Common.Dto
 		public int Id { get; set; }
 
 		//FK
-        [Required(ErrorMessage = "Service bundle must be selected")]
+		[Required(ErrorMessage = "Service bundle must be selected")]
 		public int ServiceBundleId { get; set; }
 
 		//Id to service status to reduce calls to db
 		[Display(Name = "Lifecycle Status", Order = 7)]
-        [Required(ErrorMessage = "Lifecycle status selection is required")]
+		[Required(ErrorMessage = "Lifecycle status selection is required")]
 		public int LifecycleStatusId { get; set; }
 
 		#region Fields
@@ -89,18 +88,18 @@ namespace Common.Dto
 		/// What you can get when you order this service
 		/// </summary>
 		public virtual ICollection<IServiceOptionDto> ServiceOptions { get; set; }
+
 		/// <summary>
 		/// All collections below are part of the service package that goes with each service
 		/// </summary>
-		public virtual ICollection<IServiceGoalDto> ServiceGoals { get; set; }
-		public virtual ICollection<IServiceSwotDto> ServiceSwots { get; set; }
-		public virtual ICollection<IServiceContractDto> ServiceContracts { get; set; }
-		public virtual ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
-		public virtual ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
-	    public ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
-	    public ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
-	    public ICollection<IServiceDto> Dpendents { get; set; }
-
-	    #endregion
-    }
+		public ICollection<IServiceGoalDto> ServiceGoals { get; set; }
+		public ICollection<IServiceSwotDto> ServiceSwots { get; set; }
+		public ICollection<IServiceContractDto> ServiceContracts { get; set; }
+		public ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
+		public ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
+		public ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
+		public ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
+		public ICollection<IServiceDto> Dependents { get; set; }
+		#endregion
+	}
 }

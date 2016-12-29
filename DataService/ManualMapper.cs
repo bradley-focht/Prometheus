@@ -1,7 +1,7 @@
-﻿using Common.Dto;
-using DataService.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Common.Dto;
+using DataService.Models;
 
 namespace DataService
 {
@@ -36,40 +36,78 @@ namespace DataService
 			};
 		}
 
-        public static ServiceOptionDto MapServiceOptionToDto(IServiceOption src)
-        {
-            if (src == null) return null;
-            return new ServiceOptionDto
-            {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                Description = src.Description,
-                ServiceId = src.ServiceId,
-                Name = src.Name,
-                BusinessValue = src.BusinessValue,
-                Prices = src.Prices,
-                Cost = src.Cost,
-                Picture = src.Picture            
-            };
-        }
+		public static IServiceOptionDto MapServiceOptionToDto(IServiceOption src)
+		{
+			if (src == null) return null;
+			var prices = new List<IPriceDto>();
+			foreach (var srcPrice in src.Prices)
+			{
+				prices.Add(MapPriceToDto(srcPrice));
+			}
 
-        public static ServiceOption MapDtoToServiceOption(IServiceOptionDto src)
-        {
-            if (src == null) return null;
-            return new ServiceOption
-            {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                Description = src.Description,
-                ServiceId = src.ServiceId,
-                Name = src.Name,
-                Prices = src.Prices,
-                Cost = src.Cost,
-                BusinessValue = src.BusinessValue,
-                Picture = src.Picture
-            };
-        }
-        public static Service MapDtoToService(IServiceDto src)
+			return new ServiceOptionDto
+			{
+				Id = src.Id,
+				Popularity = src.Popularity,
+				Description = src.Description,
+				ServiceId = src.ServiceId,
+				Name = src.Name,
+				BusinessValue = src.BusinessValue,
+				Prices = prices,
+				Cost = src.Cost,
+				Picture = src.Picture
+			};
+		}
+
+		public static IServiceOption MapDtoToServiceOption(IServiceOptionDto src)
+		{
+			if (src == null) return null;
+
+			var prices = new List<Price>();
+			foreach (var srcPrice in src.Prices)
+			{
+				prices.Add(MapDtoToPrice(srcPrice));
+			}
+
+			return new ServiceOption
+			{
+				Id = src.Id,
+				Popularity = src.Popularity,
+				Description = src.Description,
+				ServiceId = src.ServiceId,
+				Name = src.Name,
+				Prices = prices,
+				Cost = src.Cost,
+				BusinessValue = src.BusinessValue,
+				Picture = src.Picture
+			};
+		}
+
+		private static IPriceDto MapPriceToDto(IPrice src)
+		{
+			if (src == null) return null;
+			return new PriceDto()
+			{
+				Id = src.Id,
+				ServiceOptionId = src.ServiceOptionId,
+				Type = src.Type,
+				Value = src.Value
+			};
+		}
+
+		public static Price MapDtoToPrice(IPriceDto src)
+		{
+			if (src == null) return null;
+			return new Price()
+			{
+				Id = src.Id,
+				ServiceOptionId = src.ServiceOptionId,
+				Type = src.Type,
+				Value = src.Value
+			};
+		}
+
+		public static Service MapDtoToService(IServiceDto src)
 		{
 			if (src == null) return null;
 
@@ -151,38 +189,38 @@ namespace DataService
 				}
 			}
 
-            //Contracts
-            if (src.ServiceContracts != null)
-            {
-                serviceDto.ServiceContracts = new List<IServiceContractDto>();
-                foreach (var contra in src.ServiceContracts)
-                {
-                    serviceDto.ServiceContracts.Add(MapServiceContractToDto(contra));
-                }
-            }
+			//Contracts
+			if (src.ServiceContracts != null)
+			{
+				serviceDto.ServiceContracts = new List<IServiceContractDto>();
+				foreach (var contra in src.ServiceContracts)
+				{
+					serviceDto.ServiceContracts.Add(MapServiceContractToDto(contra));
+				}
+			}
 
-            //Measures
-		    if (src.ServiceMeasures != null)
-		    {
-                serviceDto.ServiceMeasures = new List<IServiceMeasureDto>();
-                foreach (var measure in src.ServiceMeasures)
-                {
-                    serviceDto.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
-                }
-            }
+			//Measures
+			if (src.ServiceMeasures != null)
+			{
+				serviceDto.ServiceMeasures = new List<IServiceMeasureDto>();
+				foreach (var measure in src.ServiceMeasures)
+				{
+					serviceDto.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
+				}
+			}
 
-            //Options
-            if (src.ServiceRequestOptions != null)
-            {
-                serviceDto.ServiceOptions = new List<IServiceOptionDto>();
-                foreach (var option in src.ServiceRequestOptions)
-                {
-                    serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
-                }
-            }
+			//Options
+			if (src.ServiceRequestOptions != null)
+			{
+				serviceDto.ServiceOptions = new List<IServiceOptionDto>();
+				foreach (var option in src.ServiceRequestOptions)
+				{
+					serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
+				}
+			}
 
-            //Status
-            serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
+			//Status
+			serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
 
 			return serviceDto;
 		}
@@ -198,19 +236,19 @@ namespace DataService
 				Description = src.Description,
 				BusinessValue = src.BusinessValue,
 				Measures = src.Measures,
-                Services =  new List<IServiceDto>()
+				Services = new List<IServiceDto>()
 			};
 
-            //just copy the minimum needed at this time
-		    if (src.Services != null && src.Services.Any())
-		    {
-		        foreach (var service in src.Services)
-		        {
-		            serviceBundle.Services.Add(new ServiceDto {Id = service.Id, Name = service.Name});
-		        }
-		    }
-            
-            return serviceBundle;
+			//just copy the minimum needed at this time
+			if (src.Services != null && src.Services.Any())
+			{
+				foreach (var service in src.Services)
+				{
+					serviceBundle.Services.Add(new ServiceDto { Id = service.Id, Name = service.Name });
+				}
+			}
+
+			return serviceBundle;
 		}
 
 
@@ -487,33 +525,33 @@ namespace DataService
 			};
 		}
 
-	    public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
-	    {
-	        if (src == null) { return null;}
+		public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
+		{
+			if (src == null) { return null; }
 
-	        return new OptionCategoryDto
-	        {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                ServiceId = src.Id,
-                Name = src.Name,
-                Description = src.Description
-	        };
+			return new OptionCategoryDto
+			{
+				Id = src.Id,
+				Popularity = src.Popularity,
+				ServiceId = src.Id,
+				Name = src.Name,
+				Description = src.Description
+			};
 
-	    }
+		}
 
-	    public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
-	    {
-            if (src == null) { return null; }
+		public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
+		{
+			if (src == null) { return null; }
 
-            return new OptionCategory
-            {
-                Id = src.Id,
-                Popularity = src.Popularity,
-                ServiceId = src.Id,
-                Name = src.Name,
-                Description = src.Description
-            };
-        }
+			return new OptionCategory
+			{
+				Id = src.Id,
+				Popularity = src.Popularity,
+				ServiceId = src.Id,
+				Name = src.Name,
+				Description = src.Description
+			};
+		}
 	}
 }

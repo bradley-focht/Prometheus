@@ -20,6 +20,7 @@ namespace DependencyResolver.Modules
 			Bind<IServiceWorkUnitDto>().To<ServiceWorkUnitDto>();
 			Bind<ISwotActivityDto>().To<SwotActivityDto>();
 			Bind<IUserDto>().To<UserDto>();
+			Bind<IPriceDto>().To<PriceDto>();
 		}
 	}
 }

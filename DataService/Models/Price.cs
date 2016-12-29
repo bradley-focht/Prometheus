@@ -1,36 +1,31 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Common.Enums.Entities;
 
 namespace DataService.Models
 {
-	public class ServiceOption : IServiceOption
+	public class Price : IPrice
 	{
 		//PK
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		public int Popularity { get; set; }
-
 		//FK
-		public int ServiceId { get; set; }
+		public int ServiceOptionId { get; set; }
 
 		#region Fields
-		public string Description { get; set; }
-		public string Name { get; set; }
-		public string BusinessValue { get; set; }
-		public string Picture { get; set; }
-		public double Cost { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+		public PriceType Type { get; set; }
+		public decimal Value { get; set; }
 		#endregion
+
 		#region Navigation properties
-		public virtual Service Service { get; set; }
-		public virtual ICollection<Price> Prices { get; set; }
+		public virtual ServiceOption ServiceOption { get; set; }
 		#endregion
 	}
 }
