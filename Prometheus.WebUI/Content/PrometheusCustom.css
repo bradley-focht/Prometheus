@@ -189,7 +189,6 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
 }
 
@@ -556,4 +555,22 @@
 
 .checkbox-success input[type="checkbox"]:checked + label::after {
     color: #fff;
+}
+
+.cat-box {
+	max-width: 200px;
+}
+.cat-ul {
+	 list-style-type: none;
+}
+
+.cat-ul > li:before {    
+    font-family: 'FontAwesome';
+    content: '\f054';
+	font-size: 0.6em;
+	margin: 0 5px 5px -15px;	
+}
+
+.cat-ul > li > span {
+	font-size: 1em;
 }

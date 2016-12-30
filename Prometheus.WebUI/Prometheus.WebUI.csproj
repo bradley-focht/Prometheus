@@ -317,7 +317,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CatalogController.cs" />
+    <Compile Include="Controllers\ServiceCatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
@@ -336,6 +336,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\ServiceCatalog\CatalogItem.cs" />
+    <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
+    <Compile Include="Models\ServiceCatalog\ICatalogItem.cs" />
+    <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
+    <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
@@ -409,7 +414,7 @@
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
     <Content Include="Views\SystemAccess\UserAccess.cshtml" />
     <Content Include="Views\ServicePortfolio\Update.cshtml" />
-    <Content Include="Views\Catalog\BusinessCatalog.cshtml" />
+    <Content Include="Views\ServiceCatalog\ServiceCatalog.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDynamicServiceItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateDynamicServiceItem.cshtml" />
@@ -430,6 +435,9 @@
     <Content Include="Views\Service\ShowServiceOption.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOptionCategory.cshtml" />
     <Content Include="Views\Service\ShowOptionCategory.cshtml" />
+    <Content Include="Views\ServiceCatalog\Details.cshtml" />
+    <Content Include="Views\ServiceCatalog\PartialViews\OptionView.cshtml" />
+    <Content Include="Views\ServiceCatalog\ServiceOptions.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

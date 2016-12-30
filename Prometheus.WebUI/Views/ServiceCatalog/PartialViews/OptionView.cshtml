@@ -1,0 +1,21 @@
+﻿@model Common.Dto.IServiceOptionDto
+
+<div class="flex-row">
+
+	<div class="flex-container-col">
+		<div>
+			<b>@Model.Name</b>
+		</div>
+		<div>
+			<div class="float-left-div" style="height: 100px; width: 100px; border: 1px solid #ddd; margin-right: 10px;">picture</div>
+			@Html.Raw(Model.Description)
+		</div>
+
+		<div>
+		</div>
+	</div>
+	<div>
+		pricing info goes here
+	</div>
+
+</div>

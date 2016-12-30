@@ -1,0 +1,24 @@
+﻿@model Prometheus.WebUI.Models.ServiceCatalog.ServiceOptionsModel
+@{
+	ViewBag.Title = Model.Catalog + " Catalog";
+	ViewBag.SubTitle = "";
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/" + Model.Catalog),
+		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+	};
+
+}
+@section Content
+{
+<h2>view all the service options for a service</h2>
+this is a good place to be.
+}
+
+@section Sidebar
+{
+	
+}
