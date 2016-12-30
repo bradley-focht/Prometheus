@@ -18,7 +18,7 @@
 }
 
 @section Content
-    {
+{
     @if (Model.Service.Id > 0)
     {
         <div class="panel-heading">
@@ -41,7 +41,7 @@
                     controlAvail = true;
                     break;
                 case "Options":
-                    @Html.Action("ShowServiceOptions", (ServiceDto)Model.Service)
+                    @Html.Action("ShowServiceOptions", new {id=Model.Service.Id, pageId = Model.CurrentPage})
                     footerAvail = false;
                     break;
                 default:

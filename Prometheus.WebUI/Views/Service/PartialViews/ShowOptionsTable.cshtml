@@ -44,8 +44,6 @@
 										<li>
 											@Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = item.Id })
 										</li>
-										<li role="separator" class="divider"></li>
-										<li>@Html.ActionLink("Move to", "AddServiceSectionItem") </li>
 									</ul>
 								</div>
 							</div>
@@ -99,8 +97,6 @@
 												<li>
 													@Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new {id = subOption.Id})
 												</li>
-												<li role="separator" class="divider"></li>
-												<li>@Html.ActionLink("Move to", "AddServiceSectionItem") </li>
 											</ul>
 										</div>
 									</div>
@@ -126,10 +122,28 @@ else
 		<div class="float-right-div">
 
 
-			@Html.ActionLink("Add Option", "AddServiceOption", new { id = Model.ServiceId }, new { @class = "btn btn-primary" })
+			@Html.ActionLink("Add Option", "AddServiceOption", new {id = Model.ServiceId}, new {@class = "btn btn-primary"})
 
-			@Html.ActionLink("Add Cateogory", "AddOptionCategory", new { id = Model.ServiceId }, new { @class = "btn btn-primary" })
+			@Html.ActionLink("Add Cateogory", "AddOptionCategory", new {id = Model.ServiceId}, new {@class = "btn btn-primary"})
 
 		</div>
+
+		<div class="float-left-div">
+			<div class="btn-group">
+				@for (int i = 0; i < Model.TotalPages; i++)
+				{
+					if (Model.CurrentPage == i)
+					{
+						<span class="btn btn-default active">@(i + 1)</span>
+					}
+					else
+					{
+						@Html.ActionLink((i + 1).ToString(), "Show", "Service", new { id = Model.ServiceId, section = "Options", pageId = i }, new { @class = "btn btn-default" })
+					}
+				}
+			</div>
+		</div>
+
+
 	</div>
 </div>

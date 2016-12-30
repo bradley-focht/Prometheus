@@ -14,5 +14,11 @@ namespace Prometheus.WebUI.Models.Service
 	    public double i { get; set; }
 	    public int n { get; set; }
 
-    }
+		/// <summary>
+		/// Pagination 
+		/// </summary>
+		public int CurrentPage { get; set; }
+		public int TotalPages { get; set; }
+
+	}
 }

@@ -19,7 +19,7 @@ namespace Prometheus.WebUI.Controllers
 	public class ServiceController : Controller
 	{
 		private int dummId = 0;
-		private const int ServicePageSize = 6;
+		private const int ServicePageSize = 12;
 
 		/// <summary>
 		/// Default page 
@@ -116,10 +116,11 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="section"></param>
 		/// <param name="id"></param>
+		/// <param name="pageId"></param>
 		/// <returns></returns>
-		public ActionResult Show(string section, int id)
+		public ActionResult Show(string section, int id, int pageId = 0)
 		{
-			ServiceModel sm = new ServiceModel();
+			ServiceModel sm = new ServiceModel {CurrentPage = pageId};
 
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			sm.Service = ps.GetService(id);
@@ -611,25 +612,31 @@ namespace Prometheus.WebUI.Controllers
 
 
 		[ChildActionOnly]
-		public ActionResult ShowServiceOptions(int id)
+		public ActionResult ShowServiceOptions(int id, int pageId = 0)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
-			OptionsTableModel model = new OptionsTableModel { Options = new List<ICatalogable>(), ServiceId = id };
+			OptionsTableModel model = new OptionsTableModel { Options = new List<ICatalogable>(), ServiceId = id, CurrentPage = pageId};
 			var service = ps.GetService(id);
 
-			model.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());
+			model.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());	//get and sort data
 			model.Options.AddRange((from o in service.ServiceOptions
 									where o.CategoryId == null
 									select (ICatalogable)o).ToList());
 
-			model.Options.OrderBy(o => o.Name);
+
+			model.Options = model.Options.OrderBy(o => o.Name).ToList();									//sorting
+			if (model.Options != null && model.Options.Count() > ServicePageSize)							//pagination
+			{
+				model.TotalPages = ((model.Options.Count() + ServicePageSize - 1) / ServicePageSize);
+				model.Options = model.Options.Skip(ServicePageSize * pageId).Take(ServicePageSize).ToList();
+			}
 
 			try
 			{
-				model.i = double.Parse(ConfigurationManager.AppSettings["DefaultPwMarr"]);
+				model.i = double.Parse(ConfigurationManager.AppSettings["DefaultPwMarr"]);		// for net present value calculations
 				model.n = int.Parse(ConfigurationManager.AppSettings["DefaultPwPeriods"]);
 			}
-			catch (Exception exception)		//leave it to default values
+			catch (Exception exception)															//leave it to default values (0) if fails
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to read from configuration file, error: {exception.Message}";

@@ -16,12 +16,10 @@ namespace Prometheus.WebUI
 				);
 
 			#region Service Portfolio
-
-
 			routes.MapRoute(
 				name: "ShowServiceSection",
-				url: "Service/Show/{section}/{id}",
-				defaults: new { controller = "Service", action = "Show", section = UrlParameter.Optional, id = UrlParameter.Optional }
+				url: "Service/Show/{section}/{id}/{pageId}",
+				defaults: new { controller = "Service", action = "Show", section = UrlParameter.Optional, id = UrlParameter.Optional, pageId = UrlParameter.Optional }
 			);
 
 

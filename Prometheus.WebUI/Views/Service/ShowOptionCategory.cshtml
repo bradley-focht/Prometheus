@@ -5,13 +5,11 @@
 	ViewBag.Title = "Services";
 	ViewBag.SubTitle = "Option Category";
 	ViewBag.Links = new List<KeyValuePair<string, string>> {
-																new KeyValuePair<string, string>("Home", "Home"),
-															   new KeyValuePair<string, string>("Services", "Service/Index"),
-																new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Options/{Model.ServiceId}"),
-																  new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
+															new KeyValuePair<string, string>("Home", "Home"),
+															new KeyValuePair<string, string>("Services", "Service/Index"),
+															new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Options/{Model.ServiceId}"),
+															new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
 }
-
-
 
 @section Content
 {
@@ -27,20 +25,28 @@
 				<td class="dd-cell">@Model.OptionCategory.Name</td>
 			</tr>
 			<tr>
-				<td class="dt-cell">Popularity</td>
-				<td class="dd-cell"></td>
-			</tr>
-			<tr>
 				<td class="dt-cell">Description</td>
 				<td class="dd-cell">@Html.Raw(Model.OptionCategory.Description)</td>
 			</tr>
 			<tr>
 				<td class="dt-cell">Options</td>
-				<td class="dd-cell"></td>
+				<td class="dd-cell">
+					@if (Model.OptionCategory.ServiceOptions != null && Model.OptionCategory.ServiceOptions.Any())
+					{
+						foreach (var option in Model.OptionCategory.ServiceOptions)
+						{
+							<div>@Html.ActionLink(option.Name, "ShowServiceOption", new {id=option.Id})</div>
+						}
+					}
+					else
+					{
+						<div class="alert alert-message alert-warning">No options.</div>
+					}
+				</td>
 			</tr>
 		</table>
 
-		<div class="flex-container">
+		<div class="flex-container-col">
 			<div class="panel-footer">
 				<div class="float-right-div">
 					@Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options"}, new { @class="btn btn-default btn-back"})
@@ -52,16 +58,11 @@
 				</div>
 			</div>
 		</div>
-
-
 	}
 	else
 	{
 		<div class="alert alert-message alert-warning">Option no longer exists</div>
 	}
-
-
-
 
 }
 

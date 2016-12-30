@@ -10,7 +10,7 @@
 <div class="flex-container">
 	<div>
 		<div class="float-right-div" style="margin-right: 10px;">
-			@Html.ActionLink("Add", "Add")
+			@Html.ActionLink("Add Service Bundle", "Add")
 		</div>
 	</div>
 </div>
@@ -34,7 +34,6 @@
 						@Html.ActionLink("Edit", "Update", new { id = serviceBundle.Id })
 					</div>
 					<div>
-						<div class="font-title3">Description</div>
 						<div>@Html.Raw(serviceBundle.Description)</div>
 					</div>
 					<div>
