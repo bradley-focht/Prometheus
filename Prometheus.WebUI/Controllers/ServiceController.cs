@@ -120,7 +120,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Show(string section, int id, int pageId = 0)
 		{
-			ServiceModel sm = new ServiceModel {CurrentPage = pageId};
+			ServiceModel sm = new ServiceModel { CurrentPage = pageId };
 
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			sm.Service = ps.GetService(id);
@@ -574,7 +574,6 @@ namespace Prometheus.WebUI.Controllers
 				new { id = swotId, serviceId = model.ServiceId, section = "Swot" });
 		}
 
-
 		/// <summary>
 		/// Show table of processes
 		/// </summary>
@@ -586,21 +585,21 @@ namespace Prometheus.WebUI.Controllers
 			TableDataModel tblModel = new TableDataModel
 			{
 				Action = "ShowServiceSectionItem",
+				AddAction = "AddServiceSectionItem",
+				ConfirmDeleteAction = "ConfirmDeleteServiceProcessesItem",
+				UpdateAction = "UpdateServiceSectionItem",
+				ServiceId = id,
 				ServiceSection = "Processes",
 				Controller = "Service"
 			};
 
-			tblModel.AddAction = "AddServiceSectionItem";
-			tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceProcessesItem";
-			tblModel.UpdateAction = "UpdateServiceSectionItem";
-			tblModel.ServiceId = id;
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 
-			var items = ps.GetService(id).ServiceProcesses;
+			var items = ps.GetService(id).ServiceProcesses;						
 			if (items != null && items.Any())
 			{
-				tblModel.Titles = new List<string> { "Name" };
-				tblModel.Data = new List<Tuple<int, ICollection<string>>>();
+				tblModel.Titles = new List<string> { "Name" };					//titles
+				tblModel.Data = new List<Tuple<int, ICollection<string>>>();    //list for data
 
 				foreach (var item in items)
 				{
@@ -615,17 +614,17 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceOptions(int id, int pageId = 0)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
-			OptionsTableModel model = new OptionsTableModel { Options = new List<ICatalogable>(), ServiceId = id, CurrentPage = pageId};
+			OptionsTableModel model = new OptionsTableModel { Options = new List<ICatalogable>(), ServiceId = id, CurrentPage = pageId };
 			var service = ps.GetService(id);
 
-			model.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());	//get and sort data
+			model.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());   //get and sort data
 			model.Options.AddRange((from o in service.ServiceOptions
 									where o.CategoryId == null
 									select (ICatalogable)o).ToList());
 
 
-			model.Options = model.Options.OrderBy(o => o.Name).ToList();									//sorting
-			if (model.Options != null && model.Options.Count() > ServicePageSize)							//pagination
+			model.Options = model.Options.OrderBy(o => o.Name).ToList();                                    //sorting
+			if (model.Options != null && model.Options.Count() > ServicePageSize)                           //pagination
 			{
 				model.TotalPages = ((model.Options.Count() + ServicePageSize - 1) / ServicePageSize);
 				model.Options = model.Options.Skip(ServicePageSize * pageId).Take(ServicePageSize).ToList();
@@ -633,10 +632,10 @@ namespace Prometheus.WebUI.Controllers
 
 			try
 			{
-				model.i = double.Parse(ConfigurationManager.AppSettings["DefaultPwMarr"]);		// for net present value calculations
+				model.i = double.Parse(ConfigurationManager.AppSettings["DefaultPwMarr"]);      // for net present value calculations
 				model.n = int.Parse(ConfigurationManager.AppSettings["DefaultPwPeriods"]);
 			}
-			catch (Exception exception)															//leave it to default values (0) if fails
+			catch (Exception exception)                                                         //leave it to default values (0) if fails
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to read from configuration file, error: {exception.Message}";
@@ -1361,9 +1360,6 @@ namespace Prometheus.WebUI.Controllers
 
 		/// <summary>
 		/// Upload and save files if they are present. Always redirects to the Show action.
-		///   File location is taken from the FilePath key in Web.config. 
-		///   Ensure web server is running with sufficient permissions to that folder location
-		///   Error messages are put into TempData[]
 		/// </summary>
 		/// <param name="file"></param>
 		/// <param name="id"></param>
@@ -1402,6 +1398,25 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 			return RedirectToAction("Show", new { id, section = "Documents" });
+		}
+
+		public ActionResult ShowServiceDocuments(int id, int pageId = 0)
+		{
+			DocumentsTableModel model = new DocumentsTableModel {ServiceId = id, CurrentPage = pageId};
+
+			var ps = InterfaceFactory.CreatePortfolioService(dummId);
+
+			var documents = ps.GetServiceDocuments(id).ToList();
+			
+			
+			if (documents.Any())                           //pagination
+			{
+				model.TotalPages = ((documents.Count() + ServicePageSize - 1) / ServicePageSize);
+				documents = documents.Skip(ServicePageSize * pageId).Take(ServicePageSize).ToList();
+				model.Documents = documents;
+			}
+
+			return View("PartialViews/ShowDocuments", model);
 		}
 
 		/// <summary>

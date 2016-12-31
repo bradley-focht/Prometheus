@@ -33,7 +33,7 @@
                 case null:
                     goto case "General";
                 case "Documents":
-                    @Html.Partial("PartialViews/ShowDocuments", (ServiceDto)Model.Service)
+                    @Html.Action("ShowServiceDocuments", new { id = Model.Service.Id, pageId = Model.CurrentPage })
                     footerAvail = false;
                     break;
                 case "General":

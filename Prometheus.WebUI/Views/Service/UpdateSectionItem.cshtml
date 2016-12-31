@@ -62,13 +62,21 @@
                     var measure = (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId);
                     if (measure != null)
                     {
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceMeasureDto)Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId))
-                        break;
-                    }
-                    goto default;
-                default:
-                    controlsAvail = false;
-                    <section class="alert alert-warning">
+                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceMeasureDto)measure)
+						break;
+					}
+					goto default;
+				case "Processes":
+					var proc = (ServiceProcessDto)Model.Service.ServiceProcesses.FirstOrDefault(g => g.Id == Model.SectionItemId);
+					if (proc != null)
+					{
+						@Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceProcessDto)proc)
+						break;
+					}
+					goto default;
+				default:
+					controlsAvail = false;
+                    <section class="alert alert-warning alert-message">
                         The data no longer exists.
                     </section>
                     break;

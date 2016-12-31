@@ -19,8 +19,8 @@
         <td class="dt-cell">Date</td>
         <td class="dd-cell">
             <div class="input-group date">
-                @Html.TextBox("Date", Model.Date>DateTime.MinValue ? Model.Date.ToString("d") : "", new { @class = "form-control" })
-                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+				@Html.TextBox("Date", Model.Date > DateTime.MinValue ? Model.Date.ToString("MM/dd/yyyy") : "", new { @class = "form-control" })
+				<span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                 @Html.ValidationMessageFor(model => model.Date)
             </div>
         </td>

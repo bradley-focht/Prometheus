@@ -1,72 +1,91 @@
-﻿@model Common.Dto.ServiceDto
+﻿@model Prometheus.WebUI.Models.Service.DocumentsTableModel
 
 <div class="panel">
 
-    @if (Model.ServiceDocuments != null && Model.ServiceDocuments.Any())
-    {
+	@if (Model.Documents != null && Model.Documents.Any())
+	{
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th style="min-width: 160px;"><label class="table-title">File</label></th>
-                    <th style="width: 100px;"><label class="font-title-initial">Date</label></th>
-                    <th><label class="font-title-initial">Uploader</label></th>
-                    <th></th>
-                </tr>
-            </thead>
+		<table class="table table-hover">
+			<thead>
+				<tr>
+					<th style="min-width: 160px;"><label class="table-title">File</label></th>
+					<th style="width: 100px;"><label class="font-title-initial">Date</label></th>
+					<th><label class="font-title-initial">Uploader</label></th>
+					<th></th>
+				</tr>
+			</thead>
 
-            @foreach (var document in Model.ServiceDocuments)
-            {
-                <tr>
-                    <td>@Html.ActionLink(document.Filename, "DownloadServiceDocument", new { id = document.StorageNameGuid })</td>
-                    <td>@document.UploadDate</td>
-                    <td>@document.Uploader</td>
-                    <td>
-                        <div class="btn-group">
-                            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                <span aria-hidden="true">&#x25BC;</span>
-                            </div>
-                            <div class="dropdown-menu">
-                                <ul class="ul-menu">
-                                    <li>
-                                        @Html.ActionLink("Rename", "UpdateServiceDocument", new { id = document.StorageNameGuid })
-                                    </li>
+			@foreach (var document in Model.Documents)
+			{
+				<tr>
+					<td>@Html.ActionLink(document.Filename, "DownloadServiceDocument", new { id = document.StorageNameGuid })</td>
+					<td>@document.UploadDate</td>
+					<td>@document.Uploader</td>
+					<td>
+						<div class="btn-group">
+							<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+								<span aria-hidden="true">&#x25BC;</span>
+							</div>
+							<div class="dropdown-menu">
+								<ul class="ul-menu">
+									<li>
+										@Html.ActionLink("Rename", "UpdateServiceDocument", new { id = document.StorageNameGuid })
+									</li>
 
-                                    <li>
-                                        @Html.ActionLink("Delete", "ConfirmDeleteServiceDocument", new { id = document.StorageNameGuid })
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-            }
-        </table>
-    }
-    else
-    {
-        <div class="alert alert-warning">No files exist</div>
-    }
+									<li>
+										@Html.ActionLink("Delete", "ConfirmDeleteServiceDocument", new { id = document.StorageNameGuid })
+									</li>
+								</ul>
+							</div>
+						</div>
+					</td>
+				</tr>
+			}
+		</table>
+	}
+	else
+	{
+		<div class="alert alert-warning alert-message">No files exist</div>
+	}
 </div>
 
 @using (Html.BeginForm("UploadServiceDocument", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
-    @Html.Hidden("id", Model.Id)
-    <div class="flex-container">
-        <div class="panel-footer">
+	@Html.Hidden("id", Model.ServiceId)
+	<div class="flex-container-col">
+		<div class="panel-footer">
 
-            <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
-                <span class="fileupload-preview"></span>
-                <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-                <span class="btn btn-primary btn-file">
-                    <span class="fileupload-new">Select file</span>
-                    <span class="fileupload-exists">Change</span>         <input type="file" name="file" />
+			<div class="float-right-div">
+				<div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
+					<span class="fileupload-preview"></span>
+					<a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+					<span class="btn btn-primary btn-file">
+						<span class="fileupload-new">Select file</span>
+						<span class="fileupload-exists">Change</span>         <input type="file" name="file" />
 
-                </span>
-                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
+					</span>
+					<span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
 
-
-            </div>
-        </div>
-    </div>
+				</div>
+			</div>
+			<div class="float-left-div">
+				<div class="btn-group">
+					@if (Model.TotalPages > 1)
+					{
+						for (int i = 0; i < Model.TotalPages; i++)
+						{
+							if (Model.CurrentPage == i)
+							{
+								<span class="btn btn-default active">@(i + 1)</span>
+							}
+							else
+							{
+								@Html.ActionLink((i + 1).ToString(), "Show", "Service", new { id = Model.ServiceId, section = "Documents", pageId = i }, new { @class = "btn btn-default" })
+							}
+						}
+					}
+				</div>
+			</div>
+		</div>
+	</div>
 }
