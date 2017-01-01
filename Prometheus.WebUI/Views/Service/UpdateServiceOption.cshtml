@@ -19,7 +19,7 @@
 
 	<div class="title-div">@ViewBag.SubTitle</div>
 
-	@using (Html.BeginForm("SaveOptionsItem", "Service", FormMethod.Post))
+	@using (Html.BeginForm("SaveOptionsItem", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 	{
 		<input type="hidden" name="Id" value="@Model.Option.Id" />
 		<input type="hidden" name="ServiceId" value="@Model.Option.ServiceId" />

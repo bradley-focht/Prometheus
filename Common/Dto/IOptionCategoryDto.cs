@@ -9,7 +9,7 @@ namespace Common.Dto
         int Popularity { get; set; }
         int ServiceId { get; set; }
         string Name { get; set; }
-        string Description { get; set; }
+        string BusinessValue { get; set; }
         ICollection<ServiceOptionDto> ServiceOptions { get; set; }
     }
 }

@@ -11,15 +11,10 @@
 			@Html.ValidationMessageFor(model => model.OptionCategory.Name)
 		</td>
 	</tr>
+
 	<tr>
-		<td class="dt-cell">Popularity</td>
-		<td class="dd-cell">
-			@Html.DropDownList("Popularity", Enumerable.Range(1, 5).Select(i => new SelectListItem {Text = i.ToString(), Value = i.ToString()}), new {style = "width:60px;" })
-		</td>
-	</tr>
-	<tr>
-		<td class="dt-cell">Description</td>
-		<td class="dd-cell">@Html.TextArea("Description", Model.OptionCategory.Description, new {@class = "ckeditor"})</td>
+		<td class="dt-cell">Business Value</td>
+		<td class="dd-cell">@Html.TextArea("BusinessValue", Model.OptionCategory.BusinessValue, new {@class = "ckeditor"})</td>
 	</tr>
 </table>
 

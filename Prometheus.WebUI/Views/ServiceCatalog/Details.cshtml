@@ -9,11 +9,10 @@
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
 		new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/" + Model.Catalog),
+		new KeyValuePair<string, string>(Model.ServiceName, $"ServiceCatalog/ServiceOptions/{Model.Catalog}/{Model.ServiceId}"),
 		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 	};
 }
-
-
 
 @section Sidebar
 {
@@ -23,24 +22,29 @@
 @section Content
 {
 	<div class="title-div">@Model.Option.Name</div>
-	<div>
-		@Html.Raw(Model.Option.Description)
-	</div>
 
 
-	if this was done, you'd see info here.
-	@if (Model.Option is IServiceOptionDto)
+	@{
+		var dto = Model.Option as IServiceOptionDto;
+	}
+	@if (dto != null)
 	{
-		<text> this is an option </text>
+		@Html.Partial("PartialViews/OptionView", dto)
 	}
 	else if (Model.Option is IOptionCategoryDto)
 	{
 		IOptionCategoryDto category = (IOptionCategoryDto)Model.Option;
 		<div>
-			this is a category
+			@Html.Raw(Model.Option.BusinessValue)
 		</div>
+
+
 		foreach (var option in category.ServiceOptions)
 		{
+			<div>
+				<b>@option.Name</b>
+			</div>
+
 			@Html.Partial("PartialViews/OptionView", option)
 		}
 

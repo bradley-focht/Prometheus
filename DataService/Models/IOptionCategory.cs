@@ -4,7 +4,7 @@ namespace DataService.Models
 {
     public interface IOptionCategory
     {
-        string Description { get; set; }
+        string BusinessValue { get; set; }
         int Popularity { get; set; }
         int Id { get; set; }
         int ServiceId { get; set; }

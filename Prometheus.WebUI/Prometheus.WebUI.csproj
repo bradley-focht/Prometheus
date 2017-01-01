@@ -434,7 +434,6 @@
     <Content Include="Views\Service\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\ShowServiceOption.cshtml" />
-    <Content Include="Views\Service\PartialViews\ShowOptionCategory.cshtml" />
     <Content Include="Views\Service\ShowOptionCategory.cshtml" />
     <Content Include="Views\ServiceCatalog\Details.cshtml" />
     <Content Include="Views\ServiceCatalog\PartialViews\OptionView.cshtml" />

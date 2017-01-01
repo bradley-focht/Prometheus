@@ -40,8 +40,6 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 
-
-
 			return View("ServiceCatalog", model);
 		}
 
@@ -69,6 +67,9 @@ namespace Prometheus.WebUI.Controllers
 				else if (type == "opt")
 					model.Option = (ICatalogable) service.ServiceOptions.FirstOrDefault(s => s.Id == id);
 
+				model.ServiceId = service.Id;
+				model.ServiceName = service.Name;
+
 				return View(model);
 			}
 
@@ -77,9 +78,30 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 
-		public ActionResult ServiceOptions(ServiceTypeRole catalog, int id)
+		public ActionResult ServiceOptions(ServiceTypeRole type, int serviceId)
 		{
-			var model = new ServiceOptionsModel {Catalog = catalog};
+			var model = new ServiceOptionsModel {Catalog = type, ServiceId = serviceId};
+			ICatalogController rs = new CatalogController(_dummId);
+			IList<IServiceDto> services = null;
+
+			if (type == ServiceTypeRole.Business)				//create list of available services to view
+				services = rs.BusinessCatalog.ToList();
+			else if (type == ServiceTypeRole.Supporting)
+				services = rs.SupportCatalog.ToList();
+
+			if (services != null)
+			{
+				var service = services.FirstOrDefault(s => s.Id == serviceId);
+				model.ServiceName = service.Name;	//fill in the services list
+				model.ServiceNames = from s in services
+					select new Tuple<int, string>(s.Id, s.Name);
+
+				var options = ((from o in service.OptionCategories select (ICatalogable)o).ToList());
+				options.AddRange((from o in service.ServiceOptions
+									where o.CategoryId == null
+									select (ICatalogable)o).ToList());
+				model.Options = options.OrderBy(o => o.Name);
+			}
 			return View(model);
 		}
 	}

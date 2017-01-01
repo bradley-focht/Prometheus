@@ -2,10 +2,7 @@
 
 <div class="flex-row">
 
-	<div class="flex-container-col">
-		<div>
-			<b>@Model.Name</b>
-		</div>
+	<div class="flex-container-col" style="width: 50%; display: inline-block;">
 		<div>
 			<div class="float-left-div" style="height: 100px; width: 100px; border: 1px solid #ddd; margin-right: 10px;">picture</div>
 			@Html.Raw(Model.Description)
@@ -14,8 +11,21 @@
 		<div>
 		</div>
 	</div>
-	<div>
-		pricing info goes here
+	<div style="margin-left: 20px; display: inline-block;">
+		<table class="table">
+			<thead>
+			<tr>
+				<th style="padding-right: 10px;">up front</th>
+				<th>monthly</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td>@Model.PriceUpFront.ToString("C")</td>
+				<td>@Model.PriceMonthly.ToString("C")</td>
+			</tr>
+			</tbody>
+		</table>
 	</div>
 
 </div>

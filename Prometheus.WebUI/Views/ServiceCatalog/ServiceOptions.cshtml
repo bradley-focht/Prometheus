@@ -1,7 +1,8 @@
-﻿@model Prometheus.WebUI.Models.ServiceCatalog.ServiceOptionsModel
+﻿@using Common.Dto
+@model Prometheus.WebUI.Models.ServiceCatalog.ServiceOptionsModel
 @{
 	ViewBag.Title = Model.Catalog + " Catalog";
-	ViewBag.SubTitle = "";
+	ViewBag.SubTitle = Model.ServiceName;
 	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
 	ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -14,11 +15,92 @@
 }
 @section Content
 {
-<h2>view all the service options for a service</h2>
-this is a good place to be.
+	<div class="flex-container-col">
+		<div class="title-div">Available Options for @ViewBag.Subtitle</div>
+		<div style="font-size: 0.8em; color: #666;">View all options available. Other services are on the left</div>
+	</div>
+
+	<div class="flex-container-col">
+		@if (Model.Options != null && Model.Options.Any())
+		{
+			foreach (var option in Model.Options)
+			{
+				string OptionType = null;
+				if (option is IOptionCategoryDto)
+				{
+					OptionType = "cat";
+				}
+				else if (option is IServiceOptionDto)
+				{
+					OptionType = "opt";
+				}
+
+				<div class="flex-container-col" style="margin-top: 10px;">
+					<div class="subtitle-div">@Html.ActionLink(option.Name, "Details", new {serviceId=Model.ServiceId, type= OptionType, id = option.Id })</div>
+					<div>@Html.Raw(option.BusinessValue)</div>
+					@if (OptionType == "cat")
+					{
+						var category = (IOptionCategoryDto) option;
+						if (category.ServiceOptions != null && category.ServiceOptions.Any())
+						{
+
+							<div style="position: relative;">
+
+								<input id="drop-checkbox@(option.Id)" type="checkbox" class="drop-checkbox">
+								<label for="drop-checkbox@(option.Id)" id="example" class="drop-text" data-toggle="collapse" data-target="#category@(option.Id)">See options</label>
+
+								<div class="collapse drop-well" id="category@(option.Id)">
+									@foreach (var item in category.ServiceOptions)
+									{
+										<div class="flex-container-col" >
+											<div class="subsubtitle-div" style="padding-right: 20px;">@item.Name</div>
+											<div style="padding-right: 20px;">@Html.Raw(item.BusinessValue)</div>
+										</div>
+									}
+
+								</div>
+
+							</div>
+						}
+					}
+
+				</div>
+			}
+		}
+
+
+	</div>
+
+	<script language="javascript" type="text/javascript">
+
+	</script>
+
 }
 
 @section Sidebar
 {
-	
+	<div class="title-div">Other Services</div>
+	@foreach (var service in Model.ServiceNames)
+	{
+		if (Model.ServiceId == service.Item1) //highlight selected item
+		{
+			<section class="bg-primary">
+				<a href="#">@service.Item2</a>
+			</section>
+		}
+		else                                    //don't highlight others
+		{
+			<section class="bg-default">
+				@Html.ActionLink(service.Item2, "ServiceOptions", "ServiceCatalog", new { type = Model.Catalog, serviceId = service.Item1 }, null)
+			</section>
+		}
+	}
+}
+            else                                            //no results found
+            {
+<section class="alert alert-warning">
+	No Services exist
+</section>
+            }
+        }
 }

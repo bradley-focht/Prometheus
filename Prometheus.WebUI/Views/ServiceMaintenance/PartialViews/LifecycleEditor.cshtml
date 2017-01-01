@@ -4,7 +4,7 @@
     {
         <div class="title-div">@ViewBag.Title</div>
 
-        <div class="panel-body">
+        <div class="panel-div">
             @Html.HiddenFor(m => Model.Id)
             <table>
                 @foreach (var property in ViewData.ModelMetadata.Properties)

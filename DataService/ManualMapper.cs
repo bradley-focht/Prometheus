@@ -521,7 +521,7 @@ namespace DataService
 				Popularity = src.Popularity,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
-				Description = src.Description
+				BusinessValue = src.BusinessValue
 			};
 			if (src.ServiceOptions != null)
 			{
@@ -545,7 +545,7 @@ namespace DataService
 				Popularity = src.Popularity,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
-				Description = src.Description
+				BusinessValue = src.BusinessValue
 			};
 			return category;
 		}

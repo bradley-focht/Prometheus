@@ -14,7 +14,8 @@ namespace Common.Dto
         [Required(ErrorMessage = "Name is required")]
         public string Name { get; set; }
         [AllowHtml]
-        public string Description { get; set; }
+		[Display(Name = "Business Value")]
+		public string BusinessValue { get; set; }
         public virtual ICollection<ServiceOptionDto> ServiceOptions { get; set; }
     }
 }

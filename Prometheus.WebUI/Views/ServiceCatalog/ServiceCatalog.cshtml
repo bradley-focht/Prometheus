@@ -29,30 +29,30 @@
 
 <h2>Future home of the Service Catalog</h2>
 
-<div style="display: flex; flex-flow: wrap"></div>
+<div style="display: flex; flex-flow: row wrap;"></div>
 @if (Model.CatalogItems != null && Model.CatalogItems.Any())
 {
 	foreach (var service in Model.CatalogItems)
 	{
-		<div class="panel-primary" style="display: inline-block; width: 200px;">
+		<div class="panel-primary cat-box">
 			<div class="panel-heading">
-				@service.ServiceName
+				@Html.ActionLink(service.ServiceName, "ServiceOptions", new { type = Model.Catalog, serviceId = service.ServiceId }, new {@class="font-inverse"})
 			</div>
-			<div class="panel-body">
+			<div style="min-height: 100px; padding: 5px;">
 				<ul class="cat-ul">
 					@foreach (var item in service.Options)
 					{
 						string optionType = item is IOptionCategoryDto ? "cat" : "opt";
 						<li>
 							<span>
-								@Html.ActionLink(item.Name, "Details", new {serviceId = item.ServiceId, type = optionType, id = item.Id })
+								@Html.ActionLink(item.Name, "Details", new {type = optionType, serviceId = item.ServiceId, id = item.Id })
 							</span>
 						</li>
 					}
 				</ul>
 
 			</div>
-			<div class="panel-footer">@Html.ActionLink("View all", "ServiceOptions", new { catalog = Model.Catalog, id= service.ServiceId })</div>
+			<div class="panel-footer">@Html.ActionLink("View all", "ServiceOptions", new { type = Model.Catalog, serviceId= service.ServiceId })</div>
 		</div>
 	}
 }

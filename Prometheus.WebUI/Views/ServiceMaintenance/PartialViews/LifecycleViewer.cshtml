@@ -1,7 +1,7 @@
 ﻿@model Common.Dto.ILifecycleStatusDto
 
-<div class="title-div">@ViewBag.Title</div>
-<div class="panel-body">
+<div class="panel-heading">@ViewBag.Title</div>
+<div class="panel">
     <table>
         @foreach (var property in ViewData.ModelMetadata.Properties)
         {
@@ -44,11 +44,11 @@
 <div class="flex-container">
     <div class="panel-footer">
         <div class="float-right-div">
-            @Html.ActionLink("Update", "UpdateLifecycle", new { id = Model.Id }, new { @class = "btn btn-primary" })
+	        @Html.ActionLink("Back", "ShowLifecycle", new { id = 0 }, new { @class = "btn btn-default btn-back" })
+			@Html.ActionLink("Update", "UpdateLifecycle", new { id = Model.Id }, new { @class = "btn btn-primary" })
             @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", new {id = Model.Id}, new { @class = "btn btn-danger" })
-        </div>
-        <div class="float-left-div">
-            @Html.ActionLink("Back", "ShowLifecycle", new {id = 0}, new { @class = "btn btn-default" })
+
+            
         </div>
 
     </div>

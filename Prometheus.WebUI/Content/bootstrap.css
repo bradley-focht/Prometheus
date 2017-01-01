@@ -5363,6 +5363,7 @@ a.list-group-item:focus {
   padding: 10px 5px;
   background-color: #fff;
 	border: 1px solid #ddd;
+	border-bottom: 0;
 }
 
 .panel-body:before,

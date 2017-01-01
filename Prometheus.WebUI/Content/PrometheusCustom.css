@@ -12,9 +12,30 @@
 .title-div {
     border-bottom: 1px solid #dddddd;
     white-space: nowrap;
+	font-size: 1.3em;
     font-weight: 600;
+	color: #333;
     padding: 5px 5px;
     margin-bottom: 10px;
+}
+
+.subtitle-div {
+	border-bottom: 1px solid #ddd;
+	white-space: nowrap;
+	font-size: 1.2em;
+	font-weight: 600;
+	color: #333;
+	padding: 5px 5px;
+	margin-bottom: 10px; 
+}
+
+.subsubtitle-div {
+	color: #333;
+	white-space: nowrap;
+	font-size: 1em;
+	font-weight: 600;
+	margin-bottom: 5px;
+	display: inline-block;
 }
 
 .copyright-notice {
@@ -42,7 +63,15 @@
 }
 
 .font-inverse {
-    color: white;
+    color: #fff;
+}
+
+.font-inverse:hover {
+	color: #fff;
+}
+
+.font-inverse:active {
+	color: #fff;
 }
 
 .hamburger-menu {
@@ -558,10 +587,14 @@
 }
 
 .cat-box {
-	max-width: 200px;
+	flex: 1;
+	display: inline-block;
+	width: 30%;
+	margin: 10px;
 }
 .cat-ul {
 	 list-style-type: none;
+	margin-left: -10px;
 }
 
 .cat-ul > li:before {    
@@ -573,4 +606,36 @@
 
 .cat-ul > li > span {
 	font-size: 1em;
+}
+
+#example {
+  position: relative;
+}
+.drop-checkbox {
+  display: none;
+}
+.drop-checkbox:checked + .drop-text:after {
+  content: 'Hide options';
+  position: absolute;
+	color: #666;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: white;
+	white-space: nowrap;
+	font-weight: 300;
+}
+
+.drop-text {
+	color: #666;
+	font-weight: 300;
+	cursor: pointer;
+}
+
+.drop-well {
+	border-top: 1px solid #ddd; 
+	border-bottom: 1px solid #ddd; 
+	background-color: #fafafa; 
+	padding: 5px 40px;
 }
