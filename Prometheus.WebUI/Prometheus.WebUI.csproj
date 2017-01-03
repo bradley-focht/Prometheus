@@ -302,7 +302,6 @@
     <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.1.1.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -322,6 +321,7 @@
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
     <Compile Include="Helpers\FinancialCalculator.cs" />
     <Compile Include="Helpers\InterfaceFactory.cs" />
@@ -364,6 +364,7 @@
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
     <Compile Include="Models\SystemAccess\ADSearchResultsModel.cs" />
+    <Compile Include="Models\SystemAccess\RoleModel.cs" />
     <Compile Include="Models\UserAccount\UserAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -426,8 +427,7 @@
     <Content Include="Views\Service\ShowSwotActivityItem.cshtml" />
     <Content Include="Views\Service\ConfirmDeleteSwotActivityItem.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\SystemRoles.cshtml" />
-    <Content Include="Views\SystemAccess\AddRole.cshtml" />
-    <Content Include="Views\SystemAccess\UpdateRole.cshtml" />
+    <Content Include="Views\SystemAccess\EditRole.cshtml" />
     <Content Include="Views\Service\PartialViews\ViewControls.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOptionsTable.cshtml" />
     <Content Include="Views\Service\UpdateServiceOption.cshtml" />
@@ -438,6 +438,7 @@
     <Content Include="Views\ServiceCatalog\Details.cshtml" />
     <Content Include="Views\ServiceCatalog\PartialViews\OptionView.cshtml" />
     <Content Include="Views\ServiceCatalog\ServiceOptions.cshtml" />
+    <Content Include="Views\SystemAccess\PartialViews\RolesEditor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

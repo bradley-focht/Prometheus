@@ -2,7 +2,7 @@
 
 <div class="panel panel-default">
     <div class="flex-col">
-        <div class="panel-body flex-row">
+        <div class="flex-row">
 
             @if (Model.FilterMenu != null)
             {
@@ -42,7 +42,9 @@
 
                         <input name="searchString" type="text" class="form-control" placeholder="Search for...">
                         <span class="input-group-btn">
-                            <input class="btn btn-primary" type="submit" value="Search">
+                            <button class="btn btn-primary" type="submit">
+								<i class="fa fa-search" aria-hidden="true"></i> Search
+							</button>
                         </span>
                     </div>
                 }
@@ -68,16 +70,16 @@
             <div class="pull-right">
                 @Html.ActionLink("Add Service", "AddService")
             </div>
-
         </div>
+		<div style="display: flex;">
+			<div class="pull-left" style="margin-top: 5px;">
+				@if (Model.AppliedFilter != null)
+				{
+					@Model.AppliedFilter
+				}
+			</div>
+		</div>
 
     </div>
-    <div style="margin: 0 20px">
-        <div class="pull-left">
-            @if (Model.AppliedFilter != null)
-            {
-                @Model.AppliedFilter
-            }
-        </div>
-    </div>
+
 </div>

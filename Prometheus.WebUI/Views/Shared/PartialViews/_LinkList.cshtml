@@ -11,23 +11,23 @@
                 {
                     if (Model.SelectedItemId == item.Item1) //highlight selected item
                     {
-                        <section class="bg-primary">
+                        <div class="bg-primary">
                             <a href="#">@item.Item2</a>
-                        </section>
+                        </div>
                     }
                     else                                    //don't highlight others
                     {
-                        <section class="bg-default">
+                        <div class="bg-default">
                             @Html.ActionLink(item.Item2, Model.SelectAction, Model.Controller, new { id = item.Item1 }, null)
-                        </section>
+                        </div>
                     }
                 }
             }
             else                                            //no results found
             {
-                <section class="alert alert-warning">
+                <div class="alert alert-warning">
                     No @Model.Title exist
-                </section>
+                </div>
             }
         }
     </div>

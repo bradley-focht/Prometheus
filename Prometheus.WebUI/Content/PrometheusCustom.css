@@ -639,3 +639,12 @@
 	background-color: #fafafa; 
 	padding: 5px 40px;
 }
+
+.make-space-top {
+	margin-top: 10px;
+}
+
+
+.make-space-bottom {
+	margin-bottom: 10px;
+}

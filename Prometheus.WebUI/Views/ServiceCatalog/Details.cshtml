@@ -16,20 +16,48 @@
 
 @section Sidebar
 {
-	other options go here. i guess
+	<div class="title-div">Available Options</div>
+
+	<div class="flex-container-col">
+	@if (Model.Options != null)
+	{
+		string optionType = null;
+		string css = null;
+
+		foreach (var option in Model.Options)
+		{
+			css = Model.Option.Id == option.Id ? "bg-primary" : "bg-default";
+			if (option is IOptionCategoryDto)
+			{
+				optionType = "cat";
+			}
+			else if (option is IServiceOptionDto)
+			{
+				optionType = "opt";
+			}
+
+			<div class="@css">
+					@Html.ActionLink(option.Name, "Details", new { serviceId = option.ServiceId, type=optionType, id=option.Id })
+
+			</div>
+		}
+	}
+	</div>
 }
 
 @section Content
 {
 	<div class="title-div">@Model.Option.Name</div>
 
-
+	<div class="flex-container-col">
 	@{
 		var dto = Model.Option as IServiceOptionDto;
 	}
 	@if (dto != null)
 	{
-		@Html.Partial("PartialViews/OptionView", dto)
+		<div>
+			@Html.Partial("PartialViews/OptionView", dto)
+		</div>
 	}
 	else if (Model.Option is IOptionCategoryDto)
 	{
@@ -44,11 +72,11 @@
 			<div>
 				<b>@option.Name</b>
 			</div>
-
-			@Html.Partial("PartialViews/OptionView", option)
+			<div>
+				@Html.Partial("PartialViews/OptionView", option)
+			</div>
 		}
-
-		<text>you have reached a beautiful place. </text>
 	}
+	</div>
 
 }

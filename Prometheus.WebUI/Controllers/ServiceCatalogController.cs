@@ -70,6 +70,11 @@ namespace Prometheus.WebUI.Controllers
 				model.ServiceId = service.Id;
 				model.ServiceName = service.Name;
 
+				List<ICatalogable> options = (from o in service.OptionCategories select (ICatalogable)o).ToList(); //build list of options & categories
+				options.AddRange(from o in service.ServiceOptions where o.CategoryId == null select (ICatalogable)o);	//sort by name
+				options = options.OrderBy(o => o.Name).ToList();
+				model.Options = options;
+
 				return View(model);
 			}
 

@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model Prometheus.WebUI.Models.SystemAccess.RoleModel
 
 @{
     ViewBag.Title = "System Access";
@@ -15,10 +15,14 @@
 
 
 @section Sidebar
-{}
+{
+	@Html.Action("ShowRoles", new { Id = 0})
+}
 
 @section Content
 {
+	<div class="title-div">@ViewBag.SubTitle</div>
 
-Add role goes here
+	@Html.Partial("PartialViews/RolesEditor", Model.Role)
+
 }

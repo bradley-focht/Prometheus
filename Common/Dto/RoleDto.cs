@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Dto
 {
@@ -8,6 +9,7 @@ namespace Common.Dto
 		public int Id { get; set; }
 
 		#region Fields
+		[Required(ErrorMessage = "Name is required")]
 		public string Name { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }

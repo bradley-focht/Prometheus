@@ -20,23 +20,25 @@ namespace Prometheus.WebUI.Controllers
 
         public ActionResult PermissionsAndRoles()
         {
-            return View();
-        }
+			return View("PermissionsAndRoles", new RoleModel { Role = new RoleDto() });
+		}
 
+		/// <summary>
+		/// Default page to show and edit roles
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
         public ActionResult ShowRolePermissions(int id)
         {
-
-            return View("PermissionsAndRoles", new RoleDto { Id = id});
+            return View("PermissionsAndRoles", new RoleModel{Role = new RoleDto()});
         }
-
-
 
         /// <summary>
         /// Show the link list of roles
         /// </summary>
         /// <returns></returns>
         [ChildActionOnly]
-        public ActionResult ShowRoles(int id)
+        public ActionResult ShowRoles(int id = 0)
         {
             var model = new LinkListModel
             {
@@ -51,9 +53,13 @@ namespace Prometheus.WebUI.Controllers
             return View("PartialViews/_LinkList", model);
         }
 
+		/// <summary>
+		/// Returns screen to add a new role 
+		/// </summary>
+		/// <returns></returns>
         public ActionResult AddRole()
         {
-            return View();
+            return View("EditRole", new RoleModel {Role = new RoleDto(), Action = "Add"});
         }
 
 

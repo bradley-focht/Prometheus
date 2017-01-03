@@ -25,20 +25,20 @@
 		{
 			foreach (var option in Model.Options)
 			{
-				string OptionType = null;
+				string optionType = null;
 				if (option is IOptionCategoryDto)
 				{
-					OptionType = "cat";
+					optionType = "cat";
 				}
 				else if (option is IServiceOptionDto)
 				{
-					OptionType = "opt";
+					optionType = "opt";
 				}
 
-				<div class="flex-container-col" style="margin-top: 10px;">
-					<div class="subtitle-div">@Html.ActionLink(option.Name, "Details", new {serviceId=Model.ServiceId, type= OptionType, id = option.Id })</div>
+				<div class="flex-container-col make-space-top" >
+					<div class="subtitle-div">@Html.ActionLink(option.Name, "Details", new {serviceId=Model.ServiceId, type= optionType, id = option.Id })</div>
 					<div>@Html.Raw(option.BusinessValue)</div>
-					@if (OptionType == "cat")
+					@if (optionType == "cat")
 					{
 						var category = (IOptionCategoryDto) option;
 						if (category.ServiceOptions != null && category.ServiceOptions.Any())
