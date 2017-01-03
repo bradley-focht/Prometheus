@@ -427,7 +427,7 @@
     <Content Include="Views\Service\ShowSwotActivityItem.cshtml" />
     <Content Include="Views\Service\ConfirmDeleteSwotActivityItem.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\SystemRoles.cshtml" />
-    <Content Include="Views\SystemAccess\EditRole.cshtml" />
+    <Content Include="Views\SystemAccess\UpdateRole.cshtml" />
     <Content Include="Views\Service\PartialViews\ViewControls.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOptionsTable.cshtml" />
     <Content Include="Views\Service\UpdateServiceOption.cshtml" />

@@ -30,7 +30,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
         public ActionResult ShowRolePermissions(int id)
         {
-            return View("PermissionsAndRoles", new RoleModel{Role = new RoleDto()});
+			// need to get role from user manager 
+            return View("PermissionsAndRoles", new RoleModel{Role = new RoleDto {Id = id} });
         }
 
         /// <summary>
@@ -59,7 +60,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
         public ActionResult AddRole()
         {
-            return View("EditRole", new RoleModel {Role = new RoleDto(), Action = "Add"});
+            return View("UpdateRole", new RoleModel {Role = new RoleDto(), Action = "Add"});
         }
 
 
@@ -71,7 +72,17 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult SaveRole(RoleDto role)
         {
-            return RedirectToAction("ShowRolePermissions", role.Id);
+	        if (!ModelState.IsValid)
+	        {
+		        TempData["MessageType"] = WebMessageType.Failure;
+		        TempData["Message"] = "Failed to save Role due to invalid data";
+
+		        return RedirectToAction("UpdateRole");
+	        }
+
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Successfully saved Role";
+			return RedirectToAction("ShowRolePermissions", role.Id);
         }
 
 

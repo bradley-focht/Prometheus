@@ -1,15 +1,15 @@
 ﻿@model Prometheus.WebUI.Models.SystemAccess.RoleModel
 
 @{
-    ViewBag.Title = "System Access";
-    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+	ViewBag.Title = "System Access";
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-    ViewBag.Links = new List<KeyValuePair<string, string>>
-    {
-        new KeyValuePair<string, string>("Home", "Home"),
-        new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
-        new KeyValuePair<string, string>(ViewBag.Title, "SystemAccess/PermissionsAndRoles")
-    };
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
+		new KeyValuePair<string, string>(ViewBag.Title, "SystemAccess/PermissionsAndRoles")
+	};
 
 }
 
@@ -17,16 +17,65 @@
 
 @section Sidebar
 {
-    @Html.Action("ShowRoles", Model.Id)
+	@Html.Action("ShowRoles", Model.Id)
 }
 
 
 
 @section Content
 {
-    @if (Model != null && Model.Id > 0)
-    {
-        <text> howdy doody </text>
+	@if (Model != null && Model.Id > 0)
+	{
+		<div class="title-div">Role</div>
 
-    }
+		<table>
+			<tr>
+				<td class="dt-cell">Name</td>
+				<td class="dd-cell">@Model.Role.Name</td>
+		</tr>
+		<tr>
+			<td class="dt-cell">Approve Service Request</td>
+			<td class="dd-cell"></td>
+		</tr>
+		<tr>
+			<td class="dt-cell">Business Catalog</td>
+			<td class="dd-cell"></td>
+		</tr>
+		<tr>
+			<td class="dt-cell">Support Catalog</td>
+			<td class="dd-cell"></td>
+		</tr>
+		<tr>
+			<td class="dt-cell">Role Permission Adjustment</td>
+			<td class="dd-cell"></td>
+		</tr>
+		<tr>
+			<td class="dt-cell">Service Details</td>
+			<td class="dd-cell"></td>
+		</tr>
+		<tr>
+			<td class="dt-cell">Service Request Submission</td>
+			<td class="dd-cell"></td>
+		</tr>
+		<tr>
+			<td class="dt-cell">User Role Assignment</td>
+			<td class="dd-cell"></td>
+		</tr>
+	</table>
+
+
+
+		<div class="flex-container-col">
+			<div class="panel-footer">
+				<div class="float-right-div">
+					@Html.ActionLink("Back", "ShowRoles", new { id = Model.Id }, new { @class = "btn btn-default btn-back" })
+
+					@Html.ActionLink("Update", "UpdateRole", new { id = Model.Id }, new { @class = "btn btn-primary" })
+					@Html.ActionLink("Delete", "ConfirmDeleteRole", new { id = Model.Id }, new { @class = "btn btn-danger" })
+				</div>
+			</div>
+
+		</div>
+
+	}
 }

@@ -4,11 +4,10 @@
 
 <div class="navbar-inverse navbar-fixed-top">
 
-    <div class="content-body flex-container">
-        <div>
+    <div class="content-body">
 
             <div class="float-right-div" style="padding-right: 10px; display: inline-block;">
-
+				
                 <div class="dropdown">
                     <span class="font-inverse">@Session["DisplayName"]</span>
                     <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
@@ -26,12 +25,15 @@
                 </div>
 
             </div>
-              <div class="float-left-div">
-                        <label class="navbar-brand">@ViewBag.Title</label>
-                </div>
+	    <div class="float-left-div">
+		    <label class="navbar-brand">@ViewBag.Title</label>
+	    </div>
 
 
-        </div>
+		<label class="font-inverse" style="margin-top: 12px;">Contact us at: 123-4567</label>
+	
+
+
     </div>
 
 </div>
