@@ -28,12 +28,6 @@
 	    <div class="float-left-div">
 		    <label class="navbar-brand">@ViewBag.Title</label>
 	    </div>
-
-
-		<label class="font-inverse" style="margin-top: 12px;">Contact us at: 123-4567</label>
-	
-
-
     </div>
 
 </div>
@@ -64,11 +58,11 @@
                 cssClass = null;
                 break;
         }
-        <div class="content-body" style="background-color: #fff;">
-            <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
-                <span class="float-left-div;">&times;</span>
-                @TempData["Message"]
-            </div>
-        </div>
-    }
+	    <div class="content-body" style="background-color: #fff;">
+		    <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
+			    <span class="float-left-div;">&times;</span>
+			    @TempData["Message"]
+		    </div>
+	    </div>
+	}
 }

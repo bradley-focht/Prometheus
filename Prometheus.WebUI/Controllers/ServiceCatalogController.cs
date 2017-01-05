@@ -54,6 +54,13 @@ namespace Prometheus.WebUI.Controllers
 			return View("ServiceCatalog", model);
 		}
 
+		/// <summary>
+		/// Return View of an option
+		/// </summary>
+		/// <param name="serviceId"></param>
+		/// <param name="type"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult Details(int serviceId, string type, int id)
 		{
 			ICatalogController rs = new CatalogController(_dummId);
@@ -82,7 +89,12 @@ namespace Prometheus.WebUI.Controllers
 			return View();//not sure what to do here yet
 		}
 
-
+		/// <summary>
+		/// Returns View of all options for a Service
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="serviceId"></param>
+		/// <returns></returns>
 		public ActionResult ServiceOptions(ServiceTypeRole type, int serviceId)
 		{
 			var model = new ServiceOptionsModel {Catalog = type, ServiceId = serviceId};

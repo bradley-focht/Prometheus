@@ -27,21 +27,21 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(string filterBy, string filterArg, int pageId = 0)
 		{
-			if (filterBy == null)
+			if (filterBy == null)       //avoid null pointer exceptions below
 				filterBy = "All";
 			if (filterArg == null)
 				filterArg = "All";
 			ServiceViewModel model = new ServiceViewModel { ControlsModel = new ServiceViewControlsModel { FilterBy = filterBy, FilterArg = filterArg, PageNumber = pageId } };
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 
-			ServiceIndexHelper helper = new ServiceIndexHelper(ps.GetServices());
+			ServiceIndexHelper helper = new ServiceIndexHelper(ps.GetServices());   //apply filters
 			model.ControlsModel.FilterMenu = helper.GetControlsModel();
 
 			if (filterBy != "All")
 			{
 				if (filterBy == "Search")
 				{
-					if (filterArg == "")
+					if (filterArg == "All")
 					{
 						return RedirectToAction("Index");
 					}
@@ -54,7 +54,7 @@ namespace Prometheus.WebUI.Controllers
 					try { arg = int.Parse(filterArg); }
 					catch { model.Services = helper.GetServices(); } //no search string returns all services
 
-					switch (filterBy)
+					switch (filterBy)           //limited number of filter options
 					{
 						case "Catalog":
 							helper.AddFilter(FilterByType.Catalog, arg);
@@ -304,7 +304,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveSwotActivityItem(SwotActivityDto activity)
 		{
-			if (!ModelState.IsValid)
+			if (!ModelState.IsValid)	//server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save SWOT activity due to invalid data";
@@ -322,11 +322,6 @@ namespace Prometheus.WebUI.Controllers
 				new { section = "Swot", serviceId = activityParent.ServiceId, id = activity.ServiceSwotId });
 		}
 
-		[HttpPost]
-		public ActionResult SaveSwotServiceMeasureItem(ServiceMeasureDto activity)
-		{
-			return RedirectToAction("Show");
-		}
 
 		[HttpPost]
 		public ActionResult SaveContractsItem(ServiceContractDto contract)
@@ -347,6 +342,11 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Show", new { id = contract.ServiceId, section = "Contracts" });
 		}
 
+		/// <summary>
+		/// Returns list of table of goals
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowServiceGoals(int id)
 		{
@@ -411,7 +411,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						contract.ServiceProvider,
 						contract.ContractNumber,
-						contract.StartDate.ToString("d"),
+						contract.StartDate.ToString("d"),	//proper date format also used in razor view
 						contract.ExpiryDate.ToString("d")
 					}));
 				}
@@ -457,6 +457,11 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
 		}
 
+		/// <summary>
+		/// returns Service Measures table
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowServiceMeasures(int id)
 		{
@@ -595,10 +600,10 @@ namespace Prometheus.WebUI.Controllers
 
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 
-			var items = ps.GetService(id).ServiceProcesses;						
+			var items = ps.GetService(id).ServiceProcesses;
 			if (items != null && items.Any())
 			{
-				tblModel.Titles = new List<string> { "Name" };					//titles
+				tblModel.Titles = new List<string> { "Name" };                  //titles
 				tblModel.Data = new List<Tuple<int, ICollection<string>>>();    //list for data
 
 				foreach (var item in items)
@@ -609,7 +614,12 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
 		}
 
-
+		/// <summary>
+		/// Show all ICatalogable items
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="pageId"></param>
+		/// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowServiceOptions(int id, int pageId = 0)
 		{
@@ -644,19 +654,64 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("PartialViews/ShowOptionsTable", model);
 		}
 
+		/// <summary>
+		/// Save a new or updates to an existing service option
+		/// </summary>
+		/// <param name="option"></param>
+		/// <param name="image"></param>
+		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveOptionsItem(ServiceOptionDto option)
+		public ActionResult SaveOptionsItem(ServiceOptionDto option, HttpPostedFileBase image = null)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save option due to invalid data";
-				return RedirectToAction("UpdateServiceSectionItem");
+				return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = option.ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
 			}
-			//save service
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
-			ps.ModifyServiceOption(option, option.Id < 1 ? EntityModification.Create : EntityModification.Update);
+			if (image != null)
+			{
+				if (option.Id != 0) //need to deal with updating an existing image
+				{
+					var existingOption = ps.GetServiceOption(option.Id);
+					if (existingOption.Picture != null)
+					{
+						var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());    //catch error if key is not in web.config
+						try
+						{
+							System.IO.File.Delete(Server.MapPath(path));
+						}
+						catch (Exception exception)
+						{
+							TempData["MessageType"] = WebMessageType.Failure;														//unable to delete, exit at this point
+							TempData["Message"] = $"Failed to delete existing file, error: {exception.Message}";
+							return RedirectToAction("UpdateServiceOption", new { id = option.Id });
+						}
+						option.PictureMimeType = image.ContentType;
+						option.Picture = Guid.NewGuid();
+					}
+				}
+				else
+				{
+					option.PictureMimeType = image.ContentType;	//rename file to a guid and store original file type
+					option.Picture = Guid.NewGuid();
+				}
+				try
+				{
+					var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());	//save file
+					image.SaveAs(Server.MapPath(path));
+				}
+				catch (Exception exception)
+				{
+					TempData["MessageType"] = WebMessageType.Failure;
+					TempData["Message"] = $"Failed to save option, file error: {exception.Message}";
+					return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = option.ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
+				}
+			}
 
+			//save valid service, file is already uploaded		
+			ps.ModifyServiceOption(option, option.Id < 1 ? EntityModification.Create : EntityModification.Update);
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"New option {option.Name} saved successfully";
 
@@ -1311,7 +1366,7 @@ namespace Prometheus.WebUI.Controllers
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			try
 			{
-				ps.ModifyServiceContract(new ServiceContractDto() { Id = model.Id }, EntityModification.Delete);
+				ps.ModifyServiceContract(new ServiceContractDto { Id = model.Id }, EntityModification.Delete);
 			}
 			catch (Exception e)
 			{
@@ -1372,12 +1427,11 @@ namespace Prometheus.WebUI.Controllers
 				var fileName = Path.GetFileName(file.FileName);
 				if (fileName != null)
 				{
-					Guid newFileName = Guid.NewGuid(); //to rename document
-
-					var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], newFileName.ToString());
-					//file path location comes from the Web.config file
+					Guid newFileName = Guid.NewGuid(); //to rename document			
+													   //file path location comes from the Web.config file
 					try
 					{
+						var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], newFileName.ToString());
 						file.SaveAs(Server.MapPath(path));
 					}
 					catch (Exception e)
@@ -1402,13 +1456,13 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult ShowServiceDocuments(int id, int pageId = 0)
 		{
-			DocumentsTableModel model = new DocumentsTableModel {ServiceId = id, CurrentPage = pageId};
+			DocumentsTableModel model = new DocumentsTableModel { ServiceId = id, CurrentPage = pageId };
 
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 
 			var documents = ps.GetServiceDocuments(id).ToList();
-			
-			
+
+
 			if (documents.Any())                           //pagination
 			{
 				model.TotalPages = ((documents.Count() + ServicePageSize - 1) / ServicePageSize);
@@ -1485,13 +1539,12 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public FileResult DownloadServiceDocument(Guid id)
 		{
-
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			var doc = ps.GetServiceDocument(id);
 
-			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename + doc.FileExtension);
+			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename + doc.FileExtension);     //suggest file name to browser
 
-			var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], id.ToString());
+			var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], id.ToString());
 
 			return new FilePathResult(path, MimeMapping.GetMimeMapping(path));
 		}
@@ -1509,10 +1562,10 @@ namespace Prometheus.WebUI.Controllers
 
 			ps.ModifyServiceDocument(ps.GetServiceDocument(id), EntityModification.Delete);
 
-			//don't forget to delete the document in the file system
-			var path = Path.Combine(ConfigurationManager.AppSettings["FilePath"], id.ToString());
+			//don't forget to delete the document in the file system		
 			try
 			{
+				var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], id.ToString());    //catch error if key is not in web.config
 				System.IO.File.Delete(path);
 			}
 			catch (Exception e)
@@ -1618,6 +1671,29 @@ namespace Prometheus.WebUI.Controllers
 								  select c.Name).FirstOrDefault();
 
 			return View(model);
+		}
+		/// <summary>
+		/// Returns picture for use in Html document, use with URL.Action()
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[ChildActionOnly]
+		public FileContentResult GetOptionPicture(int id)
+		{
+			var ps = InterfaceFactory.CreatePortfolioService(id);
+			IServiceOptionDto option = ps.GetServiceOption(id);
+
+			if (option.Picture == null)
+				return null;
+
+			var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());
+			byte[] fileData = null;		//file data to return
+			try
+			{
+				fileData = System.IO.File.ReadAllBytes(Server.MapPath(path));
+			}
+			catch { } //do nothing, return null for the time
+			return File(fileData, option.PictureMimeType);
 		}
 
 	}

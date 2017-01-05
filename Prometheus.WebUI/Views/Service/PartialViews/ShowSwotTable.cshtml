@@ -1,7 +1,5 @@
-﻿@using Common.Enums
-@using Common.Enums.Entities
+﻿@using Common.Enums.Entities
 @model Prometheus.WebUI.Models.Service.SwotTableModel
-<div class="panel">
     <div class="flex-square-container">
         <div class="flex-square-content">
             <div class="flex-row">
@@ -213,13 +211,12 @@
 
                     @if (Model.Threats == null || !Model.Threats.Any())
             {
-                        <section class="alert alert-warning alert-message">
+                        <div class="alert alert-warning alert-message">
                             No threats exist. @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.ServiceId, section = "SwotThreat" })
-                        </section>
+                        </div>
                     }
                 </div>
             </div>
 
         </div>
     </div>
-</div>

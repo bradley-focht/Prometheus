@@ -14,7 +14,9 @@ namespace DataService.Models
         string Name { get; set; }
         string Description { get; set; }
         string BusinessValue { get; set; }
-        string Picture { get; set; }
+		Guid? Picture { get; set; }
+		string PictureMimeType { get; set; }
+
 		double PriceUpFront { get; set; }
 		double PriceMonthly { get; set; }
 		double Cost { get; set; }

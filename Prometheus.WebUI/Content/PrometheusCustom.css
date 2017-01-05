@@ -8,7 +8,9 @@
     font-weight: 600;
     color: #17a7f8;
 }
-
+.title-size {
+	font-size: 1.2em;
+}
 .title-div {
     border-bottom: 1px solid #ddd;
     white-space: nowrap;
@@ -29,6 +31,14 @@
 	margin-bottom: 10px; 
 }
 
+.title-div-placeholder {
+	border-bottom: 1px solid #ddd;
+	white-space: nowrap;
+	font-weight: 500;
+	color: #333;
+	padding: 5px 5px;
+	margin-bottom: 10px; 
+}
 .subsubtitle-div {
 	color: #333;
 	white-space: nowrap;
@@ -321,9 +331,9 @@
 
 .panel-div {
     display: flex;
-    min-height: 100%;
 	padding: 10px;
     flex-direction: column;
+	min-height: 400px;
 }
 
 /* file upload */

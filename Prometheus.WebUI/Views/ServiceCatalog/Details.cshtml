@@ -18,7 +18,7 @@
 {
 	<div class="title-div">Available Options</div>
 
-	<div class="flex-container-col">
+	<div class="flex-container-col" style="padding-top: 5px; padding-bottom: 5px;">
 	@if (Model.Options != null)
 	{
 		string optionType = null;
@@ -36,9 +36,10 @@
 				optionType = "opt";
 			}
 
+			css = option.Id == Model.Option.Id ? "bg-primary" : "bg-default";
+
 			<div class="@css">
 					@Html.ActionLink(option.Name, "Details", new { serviceId = option.ServiceId, type=optionType, id=option.Id })
-
 			</div>
 		}
 	}

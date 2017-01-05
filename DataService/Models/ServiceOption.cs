@@ -20,7 +20,8 @@ namespace DataService.Models
 	    public string Description { get; set; }
         public string Name { get; set; }
 	    public string BusinessValue { get; set; }
-	    public string Picture { get; set; }
+		public Guid? Picture { get; set; }
+		public string PictureMimeType { get; set; }
 		public double PriceUpFront { get; set; }
 		public double PriceMonthly { get; set; }
 		public double Cost { get; set; }

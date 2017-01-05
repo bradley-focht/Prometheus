@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Common.Enums.Entities;
 
 namespace Common.Dto
 {
@@ -13,7 +11,8 @@ namespace Common.Dto
         string Description { get; set; }
         string Name { get; set; }
         string BusinessValue { get; set; }
-        string Picture { get; set; }
+        Guid? Picture { get; set; }
+		string PictureMimeType { get; set; }
         double PriceUpFront { get; set; }
 		double PriceMonthly { get; set; }
         double Cost { get; set; }

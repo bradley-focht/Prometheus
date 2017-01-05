@@ -24,8 +24,9 @@ namespace Common.Dto
         [Display(Name = "Business Value", Order = 4)]
         [AllowHtml]
 	    public string BusinessValue { get; set; }
-        [Display(Order = 5)]
-		public string Picture { get; set; }
+        [HiddenInput]
+		public Guid? Picture { get; set; }
+		public string PictureMimeType { get; set; }
 
 		[Display(Order = 6)]
 		public double Cost { get; set; }

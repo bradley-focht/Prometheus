@@ -1,0 +1,83 @@
+﻿@model Common.Dto.IServiceDto
+@{
+	ViewBag.Title = "Index";
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+	int id = Model?.Id ?? 0;
+
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("Service Request Maintenance", "#")
+	};
+
+	AjaxOptions ajaxOptions = new AjaxOptions { UpdateTargetId = "ServicesDiv" };
+
+
+}
+
+@section Sidebar {
+
+
+
+	<div class="title-div-placeholder flex-container-row">
+		<div class="title-size" style="padding-right: 10px;">
+			Services
+		</div>
+
+	@using (Ajax.BeginForm("GetServiceNames", ajaxOptions))
+	{
+		<div class="input-group">
+
+			@Html.DropDownList("catalog", new SelectList(new[] { "Both", "Business", "Support" }), new { @class = "selectpicker" })
+			<span class="input-group-btn">
+				<button type="submit" class="btn btn-primary"><i class="fa fa-filter" aria-hidden="true"></i></button>
+			</span>
+		</div>
+	}
+	</div>
+	<div id="ServicesDiv" style="padding-top: 5px; padding-bottom: 5px;">
+		@Html.Action("GetServiceNames", new {catalog = "Both", id })
+	</div>
+<div class="panel-footer">
+
+</div>
+}
+
+@section Content{
+	@if (id > 0)
+	{
+		<div class="title-div">@Model.Name</div>
+		<div class="panel-div">
+			<div style="display: table;">
+				<div style="display: table-row;">
+					<div class="dt-cell" style="display: table-cell;">
+						Popularity
+					</div>
+					<div class="dd-cell" style="display: table-cell">1</div>
+				</div>
+
+				<div style="display: table-row">
+					<div class="dt-cell" style="display: table-cell">Options</div>
+					<div class="dd-cell" style="display: table-cell">
+
+						@if (Model.ServiceOptions != null)
+						{
+							foreach (var option in Model.ServiceOptions)
+							{
+								<div>@Html.ActionLink(option.Name, "ShowServiceOption", new {id = option.Id})</div>
+							}
+						}
+
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+		<div class="panel-footer">
+			<div class="float-right-div">@Html.ActionLink("Update Service", "UpdateService", new {id = Model.Id}, new {@class="btn btn-primary"})</div>
+		</div>
+	}
+
+
+}

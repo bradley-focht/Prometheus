@@ -1,4 +1,5 @@
-﻿using ServicePortfolioService;
+﻿using RequestService;
+using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Helpers
@@ -22,5 +23,10 @@ namespace Prometheus.WebUI.Helpers
                 new OptionCategoryController(),
                 new ServiceProcessController());
         }
-    }
+
+	    public static ICatalogController CreateCatalogController(int dummyId)
+	    {
+			return new CatalogController(dummyId);
+		} 
+	}
 }

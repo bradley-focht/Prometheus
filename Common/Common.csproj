@@ -83,6 +83,7 @@
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Enums\Entities\CatalogableTypes.cs" />
     <Compile Include="Enums\Entities\EntityModification.cs" />
     <Compile Include="Enums\Entities\Pricing.cs" />
     <Compile Include="Enums\Entities\ServiceGoalType.cs" />

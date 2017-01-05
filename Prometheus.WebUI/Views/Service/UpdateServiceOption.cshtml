@@ -54,7 +54,7 @@
 							<span class="input-group-addon">
 								<i class="fa fa-usd" aria-hidden="true"></i>
 							</span>
-							@Html.TextBox("Cost", string.Format("{0:0.00}", Model.Option.Cost), new {@class = "form-control form-money"})
+							@Html.TextBox("Cost", $"{Model.Option.Cost:0.00}", new {@class = "form-control form-money"})
 
 						</div>
 						@Html.ValidationMessageFor(m => Model.Cost)
@@ -69,7 +69,7 @@
 							<span class="input-group-addon">
 								<i class="fa fa-usd" aria-hidden="true"></i>
 							</span>
-							@Html.TextBox("PriceUpFront", string.Format("{0:0.00}", Model.Option.PriceUpFront), new {@class = "form-control form-money"})
+							@Html.TextBox("PriceUpFront", $"{Model.Option.PriceUpFront:0.00}", new {@class = "form-control form-money"})
 						</div>
 						@Html.ValidationMessageFor(m => Model.PriceUpFront)
 					</td>
@@ -83,14 +83,34 @@
 							<span class="input-group-addon">
 								<i class="fa fa-usd" aria-hidden="true"></i>
 							</span>
-							@Html.TextBox("PriceMonthly", string.Format("{0:0.00}", Model.PriceMonthly), new { @class = "form-control form-money" })
+							@Html.TextBox("PriceMonthly", $"{Model.PriceMonthly:0.00}", new { @class = "form-control form-money" })
 							@Html.ValidationMessageFor(m => Model.PriceMonthly)
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td class="dt-cell">Picture</td>
-					<td class="dd-cell">need to work on this...</td>
+					<td class="dd-cell">
+						<input type="hidden" name="Picture" value="@Model.Option.Picture"/>
+
+						<div style="position: relative">
+							<a class="btn" href="javascript:;">
+								Choose file
+								<input type="file" name="Image" size="40" style="position: absolute; z-index: 2; top: 0; left: 0; filter: alpha(opacity=0); opacity: 0; background-color: transparent; color: transparent;" onchange='$("#upload-file-info").html($(this).val());'/>
+							</a>
+							<span class="label label-info" id="upload-file-info"></span>
+						</div>
+						<div>
+							@if (Model.Option.Picture == null)
+							{
+								<div class="form-control-static">No Image</div>
+							}
+							else
+							{
+								<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", new {id = Model.Option.Id})"/>
+							}
+						</div>
+					</td>
 				</tr>
 				<tr>
 					<td class="dt-cell">Category</td>

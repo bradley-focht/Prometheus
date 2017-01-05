@@ -20,83 +20,87 @@
 
 @section Content
 {
-    <div class="title-div">@ViewBag.SubTitle</div>
-    <div class="panel">
-        @if (Model.Option != null)
-        {
-            <table>
-                <tr>
-                    <td class="dt-cell">
-                        Name
-                    </td>
-                    <td class="dd-cell">
-                        @Model.Option.Name
-                    </td>
+<div>
+	<div class="title-div">@ViewBag.SubTitle</div>
+	<div class="panel-div">
+		@if (Model.Option != null)
+		{
+			<table>
+				<tr>
+					<td class="dt-cell">
+						Name
+					</td>
+					<td class="dd-cell">
+						@Model.Option.Name
+					</td>
 
-                </tr>
-                <tr>
-                    <td class="dt-cell">
-                        Description
-                    </td>
-                    <td class="dd-cell">
-                        @Html.Raw(Model.Option.Description)
-                    </td>
-                </tr>
+				</tr>
+				<tr>
+					<td class="dt-cell">
+						Business Value
+					</td>
+					<td class="dd-cell">
+						@Html.Raw(Model.Option.BusinessValue)
+					</td>
+				</tr>
+				<tr>
+					<td class="dt-cell">
+						Description
+					</td>
+					<td class="dd-cell">
+						@Html.Raw(Model.Option.Description)
+					</td>
+				</tr>
+				<tr>
+					<td class="dt-cell">Cost</td>
+					<td class="dd-cell">
+						@($"{Model.Option.Cost:C}")
+					</td>
+				</tr>
 
-                <tr>
-                    <td class="dt-cell">
-                        Business Value
-                    </td>
-                    <td class="dd-cell">
-                        @Html.Raw(Model.Option.BusinessValue)
-                    </td>
-                </tr>
+				<tr>
+					<td class="dt-cell">Up Front Price</td>
+					<td class="dd-cell">
+						@($"{Model.Option.PriceUpFront:C}")
+					</td>
+				</tr>
 
-                <tr>
-                    <td class="dt-cell">Cost</td>
-                    <td class="dd-cell">
-                       @string.Format("{0:C}",Model.Option.Cost)
-                    </td>
-                </tr>
-
-	            <tr>
-		            <td class="dt-cell">Up Front Price</td>
-		            <td class="dd-cell">
-			            @string.Format("{0:C}", Model.Option.PriceUpFront)
-		            </td>
-	            </tr>
-
-	            <tr>
-		            <td class="dt-cell">Up Front Price</td>
-		            <td class="dd-cell">
-			            @string.Format("{0:C}", Model.Option.PriceMonthly)
-		            </td>
-	            </tr>
-	            <tr>
-		            <td class="dt-cell">Picture</td>
-		            <td class="dd-cell"></td>
-	            </tr>
-	            <tr>
-		            <td class="dt-cell">Category</td>
+				<tr>
+					<td class="dt-cell">Up Front Price</td>
+					<td class="dd-cell">
+						@($"{Model.Option.PriceMonthly:C}")
+					</td>
+				</tr>
+				<tr>
+					<td class="dt-cell">Category</td>
 					<td class="dd-cell">@Model.CategoryName</td>
-	            </tr>
-            </table>
-        }
-        else
-        {
-            <section class="alert alert-warning">
-                Data no longer exists.
-            </section>
-        }
-    </div>
+				</tr>
+				<tr>
+					<td class="dt-cell">Picture</td>
+					<td class="dd-cell">
+						<img class="img-thumbnail" width="150" height="200" src="@Url.Action("GetOptionPicture", new {id=Model.Option.Id})" alt="picture" />
+					</td>
+				</tr>
 
-<div class="flex-container">
-    <div class="panel-footer">
-        <div class="float-right-div">
-            @Html.ActionLink("Back", "Show", new {id=Model.Option.ServiceId , section = "Options"}, new { @class = "btn btn-default btn-back" })
-            @Html.ActionLink("Update", "UpdateServiceOption", new { id = Model.Option.Id }, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = Model.Option.Id }, new { @class = "btn btn-danger" })
-        </div>
-    </div>
+			</table>
+		}
+		else
+		{
+			<div class="alert alert-warning alert-message">
+				Data no longer exists.
+			</div>
+		}
+	</div>
+
+	<div class="flex-container">
+		<div class="panel-footer">
+			<div class="float-right-div">
+				@Html.ActionLink("Back", "Show", new { id = Model.Option.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
+				@Html.ActionLink("Update", "UpdateServiceOption", new { id = Model.Option.Id }, new { @class = "btn btn-primary" })
+				@Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = Model.Option.Id }, new { @class = "btn btn-danger" })
+			</div>
+		</div>
+	</div>
 </div>
+
 }

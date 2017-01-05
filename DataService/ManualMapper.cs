@@ -51,7 +51,8 @@ namespace DataService
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
-				Picture = src.Picture            
+				Picture = src.Picture,
+				PictureMimeType = src.PictureMimeType
 			};
 		}
 
@@ -70,7 +71,8 @@ namespace DataService
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
 				BusinessValue = src.BusinessValue,
-				Picture = src.Picture
+				Picture = src.Picture,
+				PictureMimeType = src.PictureMimeType
 			};
 		}
 		public static Service MapDtoToService(IServiceDto src)
