@@ -108,6 +108,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\Images\invest.png" />
+    <Content Include="Content\Images\pad.png" />
     <Content Include="Content\Images\people-network.png" />
     <Content Include="Content\Images\people.gif" />
     <Content Include="Content\Images\people.png" />
@@ -320,6 +321,7 @@
     <Compile Include="Controllers\ServiceCatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
+    <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\ServiceRequestMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
@@ -343,7 +345,7 @@
     <Compile Include="Models\ServiceCatalog\ICatalogItem.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
-    <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestMaintenanceModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
@@ -445,6 +447,7 @@
     <Content Include="Views\ServiceRequestMaintenance\Index.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetServiceNames.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowServiceOption.cshtml" />
+    <Content Include="Views\ServiceRequest\BeginOptionRequest.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

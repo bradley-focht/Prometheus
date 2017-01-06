@@ -8,36 +8,34 @@
     @Html.AntiForgeryToken()
     <div class="content-body">
     <div class="panel-primary" style="max-width: 600px;">
-        <div class="panel-heading" style="padding-top: 20px;">
-            <h2 class="panel-title">
-                <strong>Prometheus ITSM Login</strong>
-            </h2>
-            <section style="margin-top: 10px;">
+        <div class="panel-heading" style="padding-top: 10px;">
+            <div class="hugetitle-div">
+                Prometheus Login
+            </div>
+            <div style="margin-top: 10px;">
                 <ul>
                     <li>Login using your Windows login credentials</li>
                     <li>If you are not able to login, you will need to contact your IT Service Desk at 306-123-4567</li>
                 </ul>
 
                 <p>
-            </section>
+            </div>
         </div>
         <div class="panel-body">
             @if (TempData["MessageType"] != null && TempData["Message"] != null)
             {
-                <div class="alert alert-dismissable alert-danger close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
-                    <table>
-                        <tr>
-                            <td>
-
-
+                <div class="alert alert-dismissable alert-danger close" role="alert" data-dismiss="alert" aria-label="Close">
+                    <div class="dd">
+                        <div class="dd-row">
+                            <div class="dt-cell">
                                 <div class="float-left-div;">&times;</div>
-                            </td>
-                            <td>
+                            </div>
+                            <div class="dd-cell">
                                 @TempData["Message"]
 
-                            </td>
-                        </tr>
-                    </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             }
 
@@ -45,41 +43,37 @@
                 @using (Html.BeginForm("Login", "UserAccount", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <table>
-                        <tr>
-                            <td colspan="2" style="padding-bottom: 10px;"><span class="font-title3">Login</span></td>
-                        </tr>
-                        <tr>
-                            <td class="dt-cell">Username</td>
-                            <td class="dd-cell">
-                                @Html.TextBox("Username", null, new {@class = "form-control"})
+
+							<div class="title-div" style="max-width: 650px;">Login</div>
+
+                    <div class="dd">
+                        <div class="dd-row">
+                            <div class="dt-cell"><label for="Username">Username</label></div>
+                            <div class="dd-cell">
+                                @Html.TextBox("Username", null, new {@class = "form-control", id="Username"})
                                 @Html.ValidationMessageFor(model => model.Username)
-                            </td>
+                            </div>
 
-                        </tr>
-                        <tr>
-                            <td class="dt-cell">Password</td>
-                            <td class="dd-cell">
-                                @Html.Password("Password", null, new {@class = "form-control"})
+                        </div>
+                        <div class="dd-row">
+                            <div class="dt-cell"><label for="Password">Password</label></div>
+                            <div class="dd-cell">
+                                @Html.Password("Password", null, new {@class = "form-control", id="Password"})
                                 @Html.ValidationMessageFor(model => model.Password)
-                            </td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <td class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary"/></td>
-
-                        </tr>
-
-                    </table>
+                            </div>
+                        </div>
+                        <div class="dd-row">
+                            <div></div>
+                            <div class="dd-cell"><input type="submit" name="Login" value="Login" class="btn btn-primary"/></div>
+                        </div>
+                    </div>
                 }
             </div>
-            <div>
                 @using (Html.BeginForm("LoginGuest", "UserAccount", FormMethod.Post))
                 {
                     @Html.AntiForgeryToken()
-                    <span class="font-title3">Or Continue as a <input type="submit" value="Guest" class="btn-link" /></span>
+                    <div>Or Continue as a <input type="submit" value="Guest" class="btn-link" /></div>
                 }
-            </div>
 
         </div>
         <div class="panel-footer">

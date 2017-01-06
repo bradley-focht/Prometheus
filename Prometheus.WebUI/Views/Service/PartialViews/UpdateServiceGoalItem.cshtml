@@ -43,7 +43,7 @@
         <td class="dd-cell">
             <div class="input-group date">
                 @Html.TextBox("StartDate", Model.StartDate?.ToString("MM/dd/yyyy") ?? "", new { @class = "form-control" })
-                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
 
         </td>
@@ -53,7 +53,7 @@
         <td class="dd-cell">
             <div class="input-group date">
                 @Html.TextBox("EndDate", Model.StartDate?.ToString("d") ?? "", new { @class = "form-control" })
-                <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
         </td>
     </tr>

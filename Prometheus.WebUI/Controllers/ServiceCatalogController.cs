@@ -21,7 +21,7 @@ namespace Prometheus.WebUI.Controllers
 			var services = rs.BusinessCatalog;
 			if (services != null)
 			{
-				foreach (var service in services)
+				foreach (var service in services)											//add services to the catalog model
 				{
 					var i = new CatalogItem
 					{
@@ -30,7 +30,7 @@ namespace Prometheus.WebUI.Controllers
 						ServiceDescription = service.Description,
 						Options = new List<ICatalogable>()
 					};
-					i.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());
+					i.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());	//find the top 3 items
 					i.Options.AddRange((from o in service.ServiceOptions
 											where o.CategoryId == null
 											select (ICatalogable)o).ToList());
@@ -49,7 +49,29 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Technical()
 		{
-			CatalogModel model = new CatalogModel { Catalog = ServiceTypeRole.Supporting };
+			ICatalogController rs = new CatalogController(_dummId);
+			CatalogModel model = new CatalogModel { Catalog = ServiceTypeRole.Supporting, CatalogItems = new List<CatalogItem>() };
+			var services = rs.SupportCatalog;
+			if (services != null)
+			{
+				foreach (var service in services)
+				{
+					var i = new CatalogItem
+					{
+						ServiceName = service.Name,
+						ServiceId = service.Id,
+						ServiceDescription = service.Description,
+						Options = new List<ICatalogable>()
+					};
+					i.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());
+					i.Options.AddRange((from o in service.ServiceOptions
+										where o.CategoryId == null
+										select (ICatalogable)o).ToList());
+					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
+
+					model.CatalogItems.Add(i);
+				}
+			}
 
 			return View("ServiceCatalog", model);
 		}
@@ -61,17 +83,17 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="type"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Details(int serviceId, string type, int id)
+		public ActionResult Details(int serviceId, CatalogableTypes type, int id)
 		{
 			ICatalogController rs = new CatalogController(_dummId);
 			var service = rs.BusinessCatalog.FirstOrDefault(s => s.Id == serviceId);
 
 			if (service != null)
 			{
-				OptionModel model = new OptionModel {Catalog = service.ServiceTypeRole};
-				if (type == "cat")
+				OptionModel model = new OptionModel {Catalog = service.ServiceTypeRole};					//pack a list of options and categories
+				if (type == CatalogableTypes.Category)
 					model.Option = (ICatalogable) service.OptionCategories.FirstOrDefault(o => o.Id == id);
-				else if (type == "opt")
+				else if (type == CatalogableTypes.Option)
 					model.Option = (ICatalogable) service.ServiceOptions.FirstOrDefault(s => s.Id == id);
 
 				model.ServiceId = service.Id;
@@ -109,7 +131,7 @@ namespace Prometheus.WebUI.Controllers
 			if (services != null)
 			{
 				var service = services.FirstOrDefault(s => s.Id == serviceId);
-				model.ServiceName = service.Name;	//fill in the services list
+				model.ServiceName = service.Name;				//fill in the services list
 				model.ServiceNames = from s in services
 					select new Tuple<int, string>(s.Id, s.Name);
 

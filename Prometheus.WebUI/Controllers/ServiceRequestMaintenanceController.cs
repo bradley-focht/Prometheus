@@ -59,7 +59,9 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 	    public ActionResult ShowServiceOption(int id)
 		{
-			return View();
+			ServiceRequestOptionModel model = new ServiceRequestOptionModel();
+			
+			return View(model);
 		}
 
 	}

@@ -102,7 +102,7 @@
     <Compile Include="Models\ServiceDocument.cs" />
     <Compile Include="Models\ServiceGoal.cs" />
     <Compile Include="Models\ServiceMeasure.cs" />
-    <Compile Include="Models\ServiceProcessDto.cs" />
+    <Compile Include="Models\ServiceProcess.cs" />
     <Compile Include="Models\ServiceOption.cs" />
     <Compile Include="Models\ServiceSwot.cs" />
     <Compile Include="Models\ServiceWorkUnit.cs" />

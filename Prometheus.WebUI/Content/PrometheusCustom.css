@@ -5,12 +5,16 @@
 .font-title1 {
     color: #151515;
     font-size: 1.6em;
-    font-weight: 600;
     color: #17a7f8;
 }
 .title-size {
 	font-size: 1.2em;
 }
+
+.hugetitle-div {
+	font-size: 1.5em;
+}
+
 .title-div {
     border-bottom: 1px solid #ddd;
     white-space: nowrap;
@@ -168,14 +172,7 @@
    min-width: 300px;
 }
 
-.color-bar {
-    border-bottom-left-radius: 4px;
-    border-top-left-radius: 4px;
-    width: 10px;
-    position: relative;
-    margin-right: 10px;
-    background-color: #17a7f8; 
-}
+
 
 
 .highlight-cell {
@@ -212,9 +209,10 @@
 
 .breadcrumb-container {
     vertical-align: central;
-    z-index: 100;
+ 
     position: relative;
-    background-color: #f1f1ff;
+    background-color: #f5f5f5;
+
 }
 
 .btn-empty {
@@ -272,8 +270,12 @@
         border-color: #cccccc;
     }
 
-.dd-sp {
-    padding-bottom: 10px;
+.dd {
+		display: table;
+	}
+
+.dd-row {
+    display:table-row
 }
 
 .dt-sp {
@@ -282,25 +284,43 @@
 }
 
 .dt-cell {
+	display: table-cell;
     vertical-align: top;
     text-align: right;
     font-weight: 600;
     padding-right: 5px;
-    color: #333333;
+    color: #0C537C;
     padding-bottom: 10px;
 }
 
 .dd-cell {
+	display: table-cell;
     text-align: left;
     padding-left: 5px;
     padding-bottom: 10px;
 }
 
-.dl-section {
-    margin-top: 0;
-    padding-top: 10px;
-    border-top: 1px solid #cccccc;
-    border-bottom: 1px solid #cccccc;
+.dd-cell-nostyle {
+	display: table-cell;
+}
+
+.dd-cell-base {
+	display: table-cell;
+	padding-bottom: 10px;
+	padding-left: 10px;
+}
+
+.color-bar {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+    width: 10px;
+	display: table-cell;
+    position: relative;
+    margin-right: 10px;
+    background-color: #17a7f8; 
+}
+.color-bar:hover {
+	background-color: #2a6496;
 }
 
 .ul-menu {
@@ -625,6 +645,10 @@
 
 .cat-ul > li > span {
 	font-size: 1em;
+}
+
+.cat-box-heading {
+	font-size: 1.2em;
 }
 
 #example {

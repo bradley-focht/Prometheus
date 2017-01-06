@@ -27,22 +27,20 @@
 	}
 </div>
 
-<h2>Future home of the Service Catalog</h2>
-
 <div style="display: flex; flex-flow: row wrap;"></div>
 @if (Model.CatalogItems != null && Model.CatalogItems.Any())
 {
 	foreach (var service in Model.CatalogItems)
 	{
 		<div class="panel-primary cat-box">
-			<div class="panel-heading">
+			<div class="panel-heading cat-box-heading">
 				@Html.ActionLink(service.ServiceName, "ServiceOptions", new { type = Model.Catalog, serviceId = service.ServiceId }, new {@class="font-inverse"})
 			</div>
 			<div style="min-height: 100px; padding: 5px;">
 				<ul class="cat-ul">
 					@foreach (var item in service.Options)
 					{
-						string optionType = item is IOptionCategoryDto ? "cat" : "opt";
+						CatalogableTypes optionType = item is IOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
 						<li>
 							<span>
 								@Html.ActionLink(item.Name, "Details", new {type = optionType, serviceId = item.ServiceId, id = item.Id })

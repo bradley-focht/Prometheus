@@ -1,4 +1,5 @@
 ﻿@using Common.Dto
+@using Common.Enums.Entities
 @model Prometheus.WebUI.Models.ServiceCatalog.OptionModel
 @{
 	ViewBag.Title = Model.Catalog + " Catalog";
@@ -21,24 +22,22 @@
 	<div class="flex-container-col" style="padding-top: 5px; padding-bottom: 5px;">
 	@if (Model.Options != null)
 	{
-		string optionType = null;
-		string css = null;
+		CatalogableTypes selectedType = Model.Option is IServiceOptionDto ? CatalogableTypes.Option : CatalogableTypes.Category;
 
 		foreach (var option in Model.Options)
 		{
-			css = Model.Option.Id == option.Id ? "bg-primary" : "bg-default";
+			CatalogableTypes optionType = CatalogableTypes.Option;		//initialize with a default value
 			if (option is IOptionCategoryDto)
 			{
-				optionType = "cat";
+				optionType = CatalogableTypes.Category;
 			}
 			else if (option is IServiceOptionDto)
 			{
-				optionType = "opt";
+				optionType = CatalogableTypes.Option;
 			}
 
-			css = option.Id == Model.Option.Id ? "bg-primary" : "bg-default";
 
-			<div class="@css">
+			<div class="@(Model.Option.Id == option.Id && selectedType == optionType ? "bg-primary" : "bg-default")">
 					@Html.ActionLink(option.Name, "Details", new { serviceId = option.ServiceId, type=optionType, id=option.Id })
 			</div>
 		}
@@ -48,7 +47,9 @@
 
 @section Content
 {
-	<div class="title-div">@Model.Option.Name</div>
+	<div class="title-div">
+		@Model.Option.Name
+	</div>
 
 	<div class="flex-container-col">
 	@{

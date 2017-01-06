@@ -12,5 +12,6 @@ namespace DataService.Models
         string Name { get; set; }
         string Description { get; set; }
         int ServiceId { get; set; }
-    }
+		string Owner { get; set; }
+	}
 }

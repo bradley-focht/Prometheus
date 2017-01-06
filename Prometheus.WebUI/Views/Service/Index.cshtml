@@ -7,40 +7,41 @@
 }
 
 @Html.Partial("PartialViews/ViewControls", Model.ControlsModel)
-<div class="flex-row" style="flex-wrap: wrap;">
+<div class="flex-row" style="flex-wrap: wrap; justify-content: space-between">
 	@if (Model.Services != null && Model.Services.Any())
 	{
 		foreach (var service in Model.Services)
 		{
-			<div class="flex-row" style="margin-top: 10px; margin-right: 10px; flex: 1 0 auto;">
-				<div class="color-bar"></div>
-				<div class="flex-col">
-					<div>
-						@Html.ActionLink(service.Name, "Show", new { section = "General", id = service.Id }, new { @class = "font-title1" })
-					</div>
-					<div>
-						@Html.Raw(service.Description)
-					</div>
-					<div>
-						<div>
-							<div class="font-title3">
-								Service Owner
+			<div class="dd" style="width: 50%; margin-top:20px;">
+				<div class="dd-row">
+					<div class="color-bar"></div>
+					<div class="dd-cell-nostyle">
+						<div class="dd">
+							<div class="dd-row">
+								<div class="dd-cell-base">@Html.ActionLink(service.Name, "Show", new { section = "General", id = service.Id }, new { @class = "font-title1" })</div>
 							</div>
-							<div>
-								@service.ServiceOwner
+							<div class="dd-row">
+								<div class="dd-cell-base">@Html.Raw(service.Description)</div>
+							</div>
+							<div class="dd-row">
+								<div class="dd-cell-base">
+									<div class="dd">
+										<div class="dd-row">
+											<div class="dt-cell">Status</div>
+											<div class="dd-cell">@service.LifecycleStatusDto.Name</div>
+										</div>
+										<div class="dd-row">
+											<div class="dt-cell">Service Owner</div>
+											<div class="dd-cell">@service.ServiceOwner</div>
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
-						<div>
-							<div class="font-title3">
-								Status
-							</div>
-							<div>
-								@service.LifecycleStatusDto.Name
-							</div>
-						</div>
-					</div>
-				</div>
 
+					</div>
+
+				</div>
 			</div>
 		}
 

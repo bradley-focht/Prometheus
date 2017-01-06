@@ -7,19 +7,10 @@
             if (Model.ListItems != null && Model.ListItems.Any())
             {
                 foreach (var item in Model.ListItems)
-                {
-                    if (Model.SelectedItemId == item.Item1) //highlight selected item
-                    {
-                        <div class="bg-primary">
-                            <a href="#">@item.Item2</a>
-                        </div>
-                    }
-                    else                                    //don't highlight others
-                    {
-                        <div class="bg-default">
+                {											//highlight the slected item
+                        <div class="@(Model.SelectedItemId == item.Item1 ? "bg-primary" : "bg-default")">
                             @Html.ActionLink(item.Item2, Model.SelectAction, Model.Controller, new { id = item.Item1 }, null)
                         </div>
-                    }
                 }
             }
             else                                            //no results found
@@ -32,7 +23,7 @@
     </div>
     <div class="panel-footer">
         <div class="float-right-div">
-            @if (Model.AddAction != null)
+            @if (Model.AddAction != null)					//optional footer item
             {
                 @Html.ActionLink("Add", Model.AddAction, Model.SelectedItemId, new { @class = "btn btn-default" })
             }
