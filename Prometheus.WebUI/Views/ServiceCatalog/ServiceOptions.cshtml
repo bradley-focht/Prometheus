@@ -22,50 +22,12 @@
 	</div>
 
 	<div class="flex-container-col">
-		@if (Model.Options != null && Model.Options.Any())
+		@if (Model.Options != null)
 		{
 			foreach (var option in Model.Options)
 			{
-				var optionType = option is IOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
+				@Html.Partial("PartialViews/SummarizedOptionView", option)
 
-				<div class="dd" style="margin-top: 10px;">
-					<div class="dd-row">
-						<div class="color-bar"></div>
-						<div class="dd">
-							<div class="dd-row">
-								<div class="dd-cell subtitle-div">@Html.ActionLink(option.Name, "Details", new { serviceId = Model.ServiceId, type = optionType, id = option.Id })</div>
-							</div>
-							<div class="dd-row">
-								<div class="dd-cell">@Html.Raw(option.BusinessValue)</div>
-							</div>
-							@if (optionType == CatalogableTypes.Category)
-							{
-								var category = (IOptionCategoryDto)option;
-								if (category.ServiceOptions != null && category.ServiceOptions.Any())
-								{
-									<div class="dd-row">
-										<div class="dd-cell" style="position: relative;">
-
-											<input id="drop-checkbox@(option.Id)" type="checkbox" class="drop-checkbox">
-											<label for="drop-checkbox@(option.Id)" id="example" class="drop-text" data-toggle="collapse" data-target="#category@(option.Id)">See options</label>
-
-											<div class="collapse drop-well" id="category@(option.Id)">
-												@foreach (var item in category.ServiceOptions)
-												{
-													<div class="flex-container-col">
-														<div class="subsubtitle-div" style="padding-right: 20px;">@item.Name</div>
-														<div style="padding-right: 20px;">@Html.Raw(item.BusinessValue)</div>
-													</div>
-												}
-											</div>
-										</div>
-									</div>
-								}
-							}
-
-						</div>
-					</div>
-				</div>
 			}
 		}
 	</div>

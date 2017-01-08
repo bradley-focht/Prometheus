@@ -47,12 +47,16 @@ namespace DataService
 				Description = src.Description,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
+				Features = src.Features,
+				Benefits = src.Benefits,
+				Support = src.Support,
 				BusinessValue = src.BusinessValue,
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
 				Picture = src.Picture,
-				PictureMimeType = src.PictureMimeType
+				PictureMimeType = src.PictureMimeType,
+				Usage = src.Usage
 			};
 		}
 
@@ -67,12 +71,16 @@ namespace DataService
 				Description = src.Description,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
+				Features = src.Features,
+				Benefits = src.Benefits,
+				Support = src.Support,
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
 				BusinessValue = src.BusinessValue,
 				Picture = src.Picture,
-				PictureMimeType = src.PictureMimeType
+				PictureMimeType = src.PictureMimeType,
+				Usage = src.Usage
 			};
 		}
 		public static Service MapDtoToService(IServiceDto src)
@@ -89,7 +97,8 @@ namespace DataService
 				LifecycleStatusId = src.LifecycleStatusId,
 				ServiceTypeProvision = src.ServiceTypeProvision,
 				ServiceTypeRole = src.ServiceTypeRole,
-				ServiceBundleId = src.ServiceBundleId
+				ServiceBundleId = src.ServiceBundleId,
+				Popularity = src.Popularity
 			};
 		}
 
@@ -113,6 +122,7 @@ namespace DataService
 				ServiceTypeProvision = src.ServiceTypeProvision,
 				ServiceTypeRole = src.ServiceTypeRole,
 				ServiceBundleId = src.ServiceBundleId,
+				Popularity = src.Popularity,
 
 				LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
 			};
@@ -268,6 +278,7 @@ namespace DataService
 				ServiceId = src.ServiceId,
 				StorageNameGuid = src.StorageNameGuid,
 				Filename = src.Filename,
+				MimeType = src.MimeType,
 				FileExtension = src.FileExtension
 
 			};
@@ -283,6 +294,7 @@ namespace DataService
 				ServiceId = src.ServiceId,
 				StorageNameGuid = src.StorageNameGuid,
 				Filename = src.Filename,
+				MimeType = src.MimeType,
 				FileExtension = src.FileExtension
 			};
 		}
@@ -520,8 +532,11 @@ namespace DataService
 			var categoryDto = new OptionCategoryDto
 			{
 				Id = src.Id,
-				Popularity = src.Popularity,
 				ServiceId = src.ServiceId,
+				Popularity = src.Popularity,
+				Features = src.Features,
+				Benefits = src.Benefits,
+				Support = src.Support,
 				Name = src.Name,
 				BusinessValue = src.BusinessValue
 			};
@@ -547,6 +562,9 @@ namespace DataService
 				Popularity = src.Popularity,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
+				Features = src.Features,
+				Benefits = src.Benefits,
+				Support = src.Support,
 				BusinessValue = src.BusinessValue
 			};
 			return category;

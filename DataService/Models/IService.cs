@@ -12,9 +12,11 @@ namespace DataService.Models
 
 		string BusinessOwner { get; set; }
 		string Description { get; set; }
+		string BusinessValue { get; set; }
 		int LifecycleStatusId { get; set; }
 		string Name { get; set; }
 		string ServiceOwner { get; set; }
+		int Popularity { get; set; }
 		ServiceTypeRole ServiceTypeRole { get; set; }
 		ServiceTypeProvision ServiceTypeProvision { get; set; }
 

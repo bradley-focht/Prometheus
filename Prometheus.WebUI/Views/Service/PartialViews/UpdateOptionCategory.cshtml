@@ -1,22 +1,71 @@
-﻿@model Prometheus.WebUI.Models.Service.UpdateOptionCategoryModel
+﻿@model Common.Dto.IOptionCategoryDto
 
-<input type="hidden" name="Id" value="@Model.OptionCategory.Id" />
+<input type="hidden" name="Id" value="@Model.Id" />
 @Html.Hidden("ServiceId", Model.ServiceId)
 
-<table>
-	<tr>
-		<td class="dt-cell">Name</td>
-		<td class="dd-cell">
-			@Html.TextBox("Name", Model.OptionCategory.Name, new {@class = "form-control"})
-			@Html.ValidationMessageFor(model => model.OptionCategory.Name)
-		</td>
-	</tr>
+@{
+	bool catMsgShown = false;
+}
+<input type="hidden" name="Id" value="@Model.Id" />
+<input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
-	<tr>
-		<td class="dt-cell">Business Value</td>
-		<td class="dd-cell">@Html.TextArea("BusinessValue", Model.OptionCategory.BusinessValue, new {@class = "ckeditor"})</td>
-	</tr>
-</table>
+<div class="dd">
+	@foreach (var property in ViewData.ModelMetadata.Properties)
+	{
+		switch (property.PropertyName)
+		{
+			case "Id":  /*do nothing for these attributes */
+			case "ServiceId":
+			case "DateCreated":
+			case "DateUpdated":
+			case "CreatedByUserId":
+			case "UpdatedByUserId":
+			case "PictureMimeType":
+			case "Popularity":
+				continue;
+		}
+		<div class="dd-row">
+			<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+
+			@switch (property.PropertyName)
+			{
+				case "Name":
+					<div class="dd-cell">
+						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>
+					break;
+				case "Features":
+				case "Benefits":
+				case "Support":
+
+					<div class="dd-cell">
+						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>
+						break;
+				case "Description":
+				case "BusinessValue":
+					<div class="dd-cell">
+						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>					if (!catMsgShown)
+					{
+						<div class="highlight-cell-top">&nbsp;</div>
+						<div class="dd-cell-base small-message">
+							*Visible in service catalog
+						</div>
+						catMsgShown = true;
+					}
+					else
+					{ <div class="highlight-cell-bottom">&nbsp;</div> }
+					break;
+			}
+
+		</div>
+	}
+</div>
+
 
 <script type="text/javascript" language="javascript">
     $('#Popularity')

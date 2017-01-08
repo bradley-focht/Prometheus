@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
+using Common.Dto;
 
 namespace DataService.Models
 {
-    public interface IOptionCategory
+    public interface IOptionCategory: IOffering, IUserCreatedEntity
     {
-        string BusinessValue { get; set; }
-        int Popularity { get; set; }
-        int Id { get; set; }
-        int ServiceId { get; set; }
-        string Name { get; set; }
         ICollection<ServiceOption> ServiceOptions { get; set; }
     }
 }

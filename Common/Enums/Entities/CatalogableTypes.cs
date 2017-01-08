@@ -5,6 +5,7 @@
 	/// </summary>
 	public enum CatalogableTypes
 	{
+		Service,
 		Category,
 		Option
 	}

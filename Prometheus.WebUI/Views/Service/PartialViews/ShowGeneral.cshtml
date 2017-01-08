@@ -1,40 +1,44 @@
 ﻿@model Common.Dto.ServiceDto
-    <table>
-        <tr>
-            <td class="dt-cell">Name</td>
-            <td class="dd-cell">@Model.Name</td>
-        </tr>
-        <tr>
-            <td class="dt-cell">Description</td>
-            <td class="dd-cell">@Html.Raw(Model.Description)</td>
-        </tr>
-        <tr>
-            <td class="dt-cell">Business Owner</td>
-            <td class="dd-cell">@Model.BusinessOwner</td>
-        </tr>
-        <tr>
-            <td class="dt-cell">Service Owner</td>
-            <td class="dd-cell">@Model.ServiceOwner</td>
+    <div class="dd">
+	    <div class="dd-row">
+		    <div class="dt-cell">Name</div>
+		    <div class="dd-cell">@Model.Name</div>
+	    </div>
+		<div class="dd-row">
+			<div class="dt-cell">Business Value</div>
+			<div class="dd-cell">@Html.Raw(Model.BusinessValue)</div>
+		</div>
+        <div class="dd-row">
+            <div class="dt-cell">Description</div>
+            <div class="dd-cell">@Html.Raw(Model.Description)</div>
+        </div>
+        <div class="dd-row">
+            <div class="dt-cell">Business Owner</div>
+            <div class="dd-cell">@Model.BusinessOwner</div>
+        </div>
+        <div class="dd-row">
+            <div class="dt-cell">Service Owner</div>
+            <div class="dd-cell">@Model.ServiceOwner</div>
 
-        </tr>
-        <tr>
+        </div>
+        <div class="dd-row">
 
-            <td class="dt-cell">Service Type</td>
-            <td class="dd-cell">
-                <table>
-                    <tr>
-                        <td class="dt-cell">Role</td>
-                        <td class="dd-cell">@Model.ServiceTypeRole</td>
-                    </tr>
-                    <tr>
-                        <td class="dt-cell">Provision</td>
-                        <td class="dd-cell">@Model.ServiceTypeProvision</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td class="dt-cell">Status</td>
-            <td class="dd-cell">@Model.LifecycleStatusDto.Name</td>
-        </tr>
-    </table>
+            <div class="dt-cell">Service Type</div>
+            <div class="dd-cell">
+                <div class="dd">
+                    <div class="dd-row">
+                        <div class="dt-cell">Role</div>
+                        <div class="dd-cell">@Model.ServiceTypeRole</div>
+                    </div>
+                    <div class="dd-row">
+                        <div class="dt-cell">Provision</div>
+                        <div class="dd-cell">@Model.ServiceTypeProvision</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="dd-row">
+            <div class="dt-cell">Status</div>
+            <div class="dd-cell">@Model.LifecycleStatusDto.Name</div>
+        </div>
+    </div>

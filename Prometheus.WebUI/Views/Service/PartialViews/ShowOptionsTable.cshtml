@@ -21,7 +21,7 @@
 			</thead>
 			<tbody>
 
-				@foreach (ICatalogable item in Model.Options)
+				@foreach (IOffering item in Model.Options)
 				{
 					if (item is IServiceOptionDto)
 					{
@@ -29,13 +29,13 @@
 						<tr>
 							<td></td>
 							<td>@Html.ActionLink(item.Name, "ShowServiceOption", new { id = item.Id })</td>
-							<td>@string.Format("{0:C}", option.Cost)</td>
-							<td>@string.Format("{0:C}", option.PriceUpFront)</td>
-							<td>@string.Format("{0:C}", option.PriceMonthly)</td>
+							<td>@($"{option.Cost:C}")</td>
+							<td>@($"{option.PriceUpFront:C}")</td>
+							<td>@($"{option.PriceMonthly:C}")</td>
 							<td>@($"{(calc.CalculatePw(option.PriceUpFront, option.PriceMonthly) - option.Cost):C}")</td>
 							<td>
 								<div class="btn-group">
-									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default">
 										<span aria-hidden="true">&#x25BC;</span>
 									</div>
 									<div class="dropdown-menu">
@@ -55,12 +55,12 @@
 					}
 					else if (item is IOptionCategoryDto)
 					{
-						<tr class="highlight-cell">
+						<tr class="highlight">
 							<td></td>
 							<td colspan="5">Category: @Html.ActionLink(item.Name, "ShowOptionCategory", new { id = item.Id })</td>
 							<td>
 								<div class="btn-group">
-									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-empty">
 										<span aria-hidden="true">&#x25BC;</span>
 									</div>
 									<div class="dropdown-menu">
@@ -74,21 +74,21 @@
 						</tr>
 
 						var category = (IOptionCategoryDto)item;
-						if (category.ServiceOptions != null && category.ServiceOptions.Any())
+						if (category.ServiceOptions != null)
 						{
 							foreach (var option in category.ServiceOptions)
 							{
 								var subOption = (IServiceOptionDto)option;
 								<tr>
 									<td class="highlight-cell"></td>
-									<td>@Html.ActionLink(subOption.Name, "ShowServiceOption", new { id = item.Id })</td>
+									<td>@Html.ActionLink(subOption.Name, "ShowServiceOption", new { id = option.Id })</td>
 									<td>@($"{subOption.Cost:C}")</td>
 									<td>@($"{subOption.PriceUpFront:C}")</td>
 									<td>@($"{subOption.PriceMonthly:C}")</td>
 									<td>@($"{(calc.CalculatePw(subOption.PriceUpFront, subOption.PriceMonthly) - subOption.Cost):C}")</td>
 									<td>
 										<div class="btn-group">
-											<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+											<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-empty">
 												<span aria-hidden="true">&#x25BC;</span>
 											</div>
 											<div class="dropdown-menu">
@@ -112,7 +112,7 @@
 			</tbody>
 
 		</table>
-
+		<div class="note">*net present worth is calculated over @Model.n year with MARR @Model.i.ToString("P")</div>
 	}
 	else
 	{

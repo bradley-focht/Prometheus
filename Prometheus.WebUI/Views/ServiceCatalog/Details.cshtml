@@ -23,6 +23,7 @@
 	@if (Model.Options != null)
 	{
 		CatalogableTypes selectedType = Model.Option is IServiceOptionDto ? CatalogableTypes.Option : CatalogableTypes.Category;
+		int serviceId = 0;
 
 		foreach (var option in Model.Options)
 		{
@@ -38,7 +39,7 @@
 
 
 			<div class="@(Model.Option.Id == option.Id && selectedType == optionType ? "bg-primary" : "bg-default")">
-					@Html.ActionLink(option.Name, "Details", new { serviceId = option.ServiceId, type=optionType, id=option.Id })
+					@Html.ActionLink(option.Name, "Details", new { serviceId = Model.ServiceId, type=optionType, id=option.Id })
 			</div>
 		}
 	}
@@ -51,7 +52,7 @@
 		@Model.Option.Name
 	</div>
 
-	<div class="flex-container-col">
+
 	@{
 		var dto = Model.Option as IServiceOptionDto;
 	}
@@ -65,20 +66,14 @@
 	{
 		IOptionCategoryDto category = (IOptionCategoryDto)Model.Option;
 		<div>
-			@Html.Raw(Model.Option.BusinessValue)
+			@Html.Raw(category.BusinessValue)
 		</div>
 
 
 		foreach (var option in category.ServiceOptions)
 		{
-			<div>
-				<b>@option.Name</b>
-			</div>
-			<div>
 				@Html.Partial("PartialViews/OptionView", option)
-			</div>
 		}
 	}
-	</div>
 
 }

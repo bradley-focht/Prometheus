@@ -116,6 +116,7 @@
     <Content Include="Content\Images\presentation.gif" />
     <Content Include="Content\Images\presentation.png" />
     <Content Include="Content\Images\shake.png" />
+    <Content Include="Content\Images\stack.png" />
     <Content Include="Content\Images\target.png" />
     <Content Include="Content\PrometheusCustom.css" />
     <Content Include="Content\Selectize\css\selectize.bootstrap2.css" />
@@ -325,6 +326,7 @@
     <Compile Include="Controllers\ServiceRequestMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\Enums\ServiceCatalogs.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
     <Compile Include="Helpers\FinancialCalculator.cs" />
@@ -339,13 +341,24 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\ScriptedSelectionInput.cs" />
+    <Compile Include="Infrastructure\SelectionInput.cs" />
+    <Compile Include="Infrastructure\TextInput.cs" />
+    <Compile Include="Infrastructure\UserInputTypes.cs" />
+    <Compile Include="Infrastructure\IScriptedSelection.cs" />
+    <Compile Include="Infrastructure\ISelectable.cs" />
+    <Compile Include="Infrastructure\ISelection.cs" />
+    <Compile Include="Infrastructure\ITextInput.cs" />
+    <Compile Include="Infrastructure\IUserInput.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogItem.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\ICatalogItem.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
+    <Compile Include="Models\ServiceCatalog\GeneralCatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\AddUserInputModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
@@ -448,6 +461,14 @@
     <Content Include="Views\ServiceRequestMaintenance\GetServiceNames.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowServiceOption.cshtml" />
     <Content Include="Views\ServiceRequest\BeginOptionRequest.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\AddUserInput.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputEditor.cshtml" />
+    <Content Include="Views\ServiceCatalog\PartialViews\CatalogControls.cshtml" />
+    <Content Include="Views\ServiceCatalog\ServiceCatalogGeneral.cshtml" />
+    <Content Include="Views\ServiceCatalog\PartialViews\SummarizedOptionView.cshtml" />
+    <Content Include="Views\Service\PartialViews\ServiceOptionEditor.cshtml" />
+    <Content Include="Views\Service\PartialViews\CategoryDropDown.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowOffering.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

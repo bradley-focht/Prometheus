@@ -15,63 +15,68 @@
 	</div>
 </div>
 
-<div class="flex-row" style="flex-wrap: wrap">
+<div class="flex-row" style="flex-wrap: wrap; justify-content: space-between">
 
 
 	@if (Model != null)
 	{
 		foreach (var serviceBundle in Model)
 		{
-			<div class="flex-row" style="margin-top: 10px; margin-right: 10px; flex: 1 0 auto;">
-				<div class="color-bar"></div>
+			<div class="dd" style="width: 49%; margin-top: 20px;">
+				<div class="dd-row">
+					<div class="color-bar"></div>
 
-				<div class="flex-col">
-					<div>
-						<label class="font-title1">@serviceBundle.Name</label>
-
-					</div>
-					<div>
-						@Html.ActionLink("Edit", "Update", new { id = serviceBundle.Id })
-					</div>
-					<div>
-						<div>@Html.Raw(serviceBundle.Description)</div>
-					</div>
-					<div>
-						<div class="font-title3">Business Value</div>
-						<div>@Html.Raw(serviceBundle.BusinessValue)</div>
-					</div>
-
-					<div>
-						<div class="font-title3">Services</div>
-						<div>
-							@{
-								int i = 1;
-								foreach (var service in serviceBundle.Services)
-								{
-
-									if (i < serviceBundle.Services.Count)
-									{
-										@service.Name<text>,</text>
-										i++;
-									}
-									else
-									{
-										@service.Name
-
-									}
-								}
-							}
+					<div class="dd-cell-nostyle">
+						<div class="dd">
+							<div class="dd-row">
+								<div class="dd-cell-base"><label class="font-title1">@serviceBundle.Name</label></div>
+							</div>
+							<div class="dd-row">
+								<div class="dd-cell-base">@Html.ActionLink("Edit", "Update", new { id = serviceBundle.Id })</div>
+							</div>
+							<div class="dd-row">
+								<div class="dd-row">
+									<div class="dd-cell-base">@Html.Raw(serviceBundle.Description)</div>
+								</div>
+							</div>
+							<div class="dd-row">
+								<div class="dd-cell-base">
+									<div class="dd">
+										<div class="dd-row">
+											<div class="dt-cell">Business Value</div>
+											<div class="dd-cell">@Html.Raw(serviceBundle.BusinessValue)</div>
+										</div>
+										<div class="dd-row">
+											<div class="dt-cell">Services</div>
+											<div class="dd-cell">
+												@{
+													int i = 1;
+													foreach (var service in serviceBundle.Services)
+													{
+														if (i < serviceBundle.Services.Count)
+														{
+															@service.Name<text>,</text>
+															i++;
+														}
+														else
+														{
+															@service.Name
+														}
+													}
+												}
+											</div>
+										</div>
+										<div class="dd-row">
+											<div class="dt-cell">Measures</div>
+											<div class="dd-cell">@serviceBundle.Measures</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div>
-						<div class="font-title3">Measures</div>
-						<div>@serviceBundle.Measures</div>
-					</div>
 				</div>
-
-	
 			</div>
-
-									}
-								}
+														}
+													}
 </div>

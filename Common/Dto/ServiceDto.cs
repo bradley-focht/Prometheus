@@ -16,12 +16,9 @@ namespace Common.Dto
 		[Required(ErrorMessage = "Service bundle must be selected")]
 		public int ServiceBundleId { get; set; }
 
-		//Id to service status to reduce calls to db
-		[Display(Name = "Lifecycle Status", Order = 7)]
-		[Required(ErrorMessage = "Lifecycle status selection is required")]
 		public int LifecycleStatusId { get; set; }
 
-		#region Fields
+
 		public DateTime? DateCreated { get; set; }
 
 		public DateTime? DateUpdated { get; set; }
@@ -29,6 +26,9 @@ namespace Common.Dto
 		public int CreatedByUserId { get; set; }
 
 		public int UpdatedByUserId { get; set; }
+
+
+		#region Fields
 
 		/// <summary>
 		/// Unique name to identify each service
@@ -38,19 +38,19 @@ namespace Common.Dto
 		public string Name { get; set; }
 
 		/// <summary>
-		/// Lengthy text description
+		/// Value offered to Customers, inherited from ICatalogable
 		/// </summary>
-		[DataType(DataType.MultilineText)]
 		[AllowHtml]
-		[Display(Order = 2)]
-		public string Description { get; set; }
+		[Display(Order = 2, Name = "Business Value")]
+		public string BusinessValue { get; set; }
 
 		/// <summary>
-		/// Personel responsible for the business aspects of the service
-		/// this may be changed to an SSID in the future
+		/// Lengthy text description, internal and may be technical
 		/// </summary>
-		[Display(Name = "Business Owner", Order = 3)]
-		public string BusinessOwner { get; set; }
+		[AllowHtml]
+		[Display(Order = 3)]
+		public string Description { get; set; }
+
 
 		/// <summary>
 		/// User who is responsibile for execution of the process
@@ -60,16 +60,30 @@ namespace Common.Dto
 		public string ServiceOwner { get; set; }
 
 		/// <summary>
+		/// Not yet defined
+		/// </summary>
+		[Display(Name = "Business Owner", Order = 5)]
+		public string BusinessOwner { get; set; }
+
+		/// <summary>
 		/// Determines which service catalog (service or supporting) the service belongs in
 		/// </summary>
-		[Display(Name = "Service Type Role", Order = 5)]
+		[Display(Name = "Service Type Role", Order = 6)]
 		public ServiceTypeRole ServiceTypeRole { get; set; }
 
 		/// <summary>
 		/// Indicate if the service is internally provided or outsourced
 		/// </summary>
-		[Display(Name = "Service Type Provision", Order = 6)]
+		[Display(Name = "Service Type Provision", Order = 7)]
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
+		
+		/// <summary>
+		/// Used for sorting in the Service Catalog, inherited from ICatalogable
+		/// </summary>
+		public int Popularity { get; set; }
+
+
+
 		#endregion
 
 		#region Navigation Properties

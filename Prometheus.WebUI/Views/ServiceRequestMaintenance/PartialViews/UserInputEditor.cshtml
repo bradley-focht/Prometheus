@@ -1,0 +1,35 @@
+﻿@model dynamic
+
+<div class="dd">
+@foreach (var property in ViewData.ModelMetadata.Properties)
+{
+	if (property.PropertyName.Contains("Id"))
+	{
+		continue;
+	}
+
+	<div class="dd-row">
+		<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+	@switch (property.PropertyName)
+	{
+		case "MultiLine":
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-default" id="MultiLineTrue">
+					@Html.RadioButton("ServiceTypeRole", "true", false) Multi Line
+				</label>
+
+				<label class="btn btn-default" id="MultiLineTrueFalse">
+					@Html.RadioButton("ServiceTypeRole", "false", false) Single Line
+				</label>
+			</div>
+			break;
+	}
+
+	</div>
+
+
+
+}
+
+
+</div>

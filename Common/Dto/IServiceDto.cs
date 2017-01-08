@@ -3,13 +3,11 @@ using Common.Enums.Entities;
 
 namespace Common.Dto
 {
-	public interface IServiceDto : IUserCreatedEntityDto
+	public interface IServiceDto : ICatalogPublishable, IUserCreatedEntityDto
 	{
 		string BusinessOwner { get; set; }
 		string Description { get; set; }
-		int Id { get; set; }
 		int LifecycleStatusId { get; set; }
-		string Name { get; set; }
 		int ServiceBundleId { get; set; }
 		string ServiceOwner { get; set; }
 		ServiceTypeProvision ServiceTypeProvision { get; set; }

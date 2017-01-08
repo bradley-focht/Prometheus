@@ -60,8 +60,18 @@ namespace Prometheus.WebUI
 			routes.MapRoute(
 				name: "ServiceOptions",
 				url: "ServiceCatalog/ServiceOptions/{type}/{serviceId}",
-				defaults: new {controller = "ServiceCatalog", action = "ServiceOptions"});
+				defaults: new { controller = "ServiceCatalog", action = "ServiceOptions" });
 
+			#endregion
+
+			#region Service Maintenance
+
+			routes.MapRoute(
+				name: "AddUserInput",
+				url: "ServiceRequestMaintenance/AddUserInput/{id}/{type}",
+				defaults:
+					new { controller = "ServiceRequestMaintenance", action = "AddUserInput" }
+				);
 			#endregion
 
 			routes.MapRoute(

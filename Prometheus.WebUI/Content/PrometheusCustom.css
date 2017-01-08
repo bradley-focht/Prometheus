@@ -17,17 +17,14 @@
 
 .title-div {
     border-bottom: 1px solid #ddd;
-    white-space: nowrap;
 	font-size: 1.2em;
     font-weight: 500;
 	color: #333;
     padding: 5px 5px;
-    margin-bottom: 10px;
 }
 
 .subtitle-div {
 	border-bottom: 1px solid #ddd;
-	white-space: nowrap;
 	font-size: 1.1em;
 	font-weight: 500;
 	color: #333;
@@ -53,22 +50,13 @@
 }
 
 .copyright-notice {
-    font-size: 11px;
+    font-size: 0.8em;
     color: #aaaaaa;
 }
 
-.font-title2 {
-    color: #151515;
-    font-size: large;
-    font-weight: 200;
-}
-
-
-.font-title3 {
-    color: #333333;
-    font-weight: 600;
-    font-size: 1em;
-	margin-top: 10px;
+.note {
+	font-size: 0.8em;
+	color: #666;
 }
 
 .instructions-div {
@@ -173,9 +161,30 @@
 }
 
 
+.btn-empty {
+    display: inline-block;
+    text-align: center;
+    padding: 3px;
+    display: inline-block;
+    margin-bottom: 0;
+    font-size: 12px;
+    font-weight: normal;
+    line-height: 1.428571429;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: white;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 
-.highlight-cell {
+.highlight {
 	  background-color: #e5e5e5;
 }
 
@@ -188,6 +197,7 @@
     text-align: center;
     vertical-align: bottom;
     margin: 20px;
+	max-width: 125px;
 }
 
 .std-div {
@@ -213,28 +223,6 @@
     position: relative;
     background-color: #f5f5f5;
 
-}
-
-.btn-empty {
-    display: inline-block;
-    text-align: center;
-    padding: 3px;
-    display: inline-block;
-    margin-bottom: 0;
-    font-size: 12px;
-    font-weight: normal;
-    line-height: 1.428571429;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    background-color: white;
-    border: 1px solid #cccccc;
-    border-radius: 4px;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
 }
 
 .cke_toolbar {
@@ -298,10 +286,12 @@
     text-align: left;
     padding-left: 5px;
     padding-bottom: 10px;
+	padding-right: 10px;
 }
 
 .dd-cell-nostyle {
 	display: table-cell;
+	vertical-align: top;
 }
 
 .dd-cell-base {
@@ -314,14 +304,36 @@
     border-bottom-left-radius: 4px;
     border-top-left-radius: 4px;
     width: 10px;
+    width: 10px;
 	display: table-cell;
     position: relative;
     margin-right: 10px;
     background-color: #17a7f8; 
 }
 .color-bar:hover {
-	background-color: #2a6496;
+	background-color: #0897e8;
 }
+
+.highlight-cell {
+	width: 10px;
+	display: table-cell;
+	background-color: #ddd;
+}
+.highlight-cell-top {
+		width: 10px;
+	display: table-cell;
+	background-color: #ddd;
+	border-top-right-radius: 4px;
+}
+
+.highlight-cell-bottom {
+		width: 10px;
+	display: table-cell;
+	background-color: #ddd;
+	border-bottom-right-radius: 4px;
+}
+
+
 
 .ul-menu {
     list-style-type: none;
@@ -690,4 +702,9 @@
 
 .make-space-bottom {
 	margin-bottom: 10px;
+}
+
+.small-message {
+	color: #666;
+	font-size: 0.6em;
 }

@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Common.Dto;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
 
@@ -60,9 +62,22 @@ namespace Prometheus.WebUI.Controllers
 	    public ActionResult ShowServiceOption(int id)
 		{
 			ServiceRequestOptionModel model = new ServiceRequestOptionModel();
+
+			model.Option = (IRequestable)InterfaceFactory.CreatePortfolioService(_dummyId).GetServiceOption(id);
 			
 			return View(model);
 		}
+
+		/// <summary>
+		/// Returns View to add form of corresponding type
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+	    public ActionResult AddUserInput(UserInputTypes type, int id)
+	    {
+		    return View(new AddUserInputModel { InputType = type, OptionId = id });
+	    }
 
 	}
 }

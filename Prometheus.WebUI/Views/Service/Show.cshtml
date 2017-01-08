@@ -2,7 +2,7 @@
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceModel
 @{
-	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Title = "Services";
 
 	if (Model.SelectedSection != null)
@@ -17,9 +17,9 @@
 	bool footerAvail = true;
 }
 
-@section Content
-{
-	@if (Model.Service.Id > 0)
+<div class="title-div">@Model.Service.Name</div>
+
+@if (Model.Service.Id > 0)
 	{
 		<div>
 			<div style="border-bottom: 1px solid #ddd;">
@@ -74,16 +74,6 @@
 			}
 		</div>
 	}
-}
 
-@section Sidebar
-{
-	@if (Model.SelectedSection == "General")
-	{
-		@Html.Action("ShowServiceList", Model.Service.Id)
-	}
-	else
-	{
-		<div class="title-div">@Model.Service.Name</div>
-	}
-}
+
+

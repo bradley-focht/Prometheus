@@ -17,7 +17,6 @@ namespace DataService.Models
 		//FK
 		public int ServiceBundleId { get; set; }
 
-		[Display(Name = "Lifecycle Status")]
 		public int LifecycleStatusId { get; set; }
 
 		#region Fields
@@ -29,16 +28,13 @@ namespace DataService.Models
 
 		public int UpdatedByUserId { get; set; }
 
-		[Required(ErrorMessage = "Service: Name required")]
 		public string Name { get; set; }
-
-		[DataType(DataType.MultilineText)]
+		public string BusinessValue { get; set; }
 		public string Description { get; set; }
-
-		[Display(Name = "Business Owner")]
 		public string BusinessOwner { get; set; }
 
-		[Display(Name = "Service Owner")]
+		public int Popularity { get; set; }
+
 		public string ServiceOwner { get; set; }
 		public ServiceTypeRole ServiceTypeRole { get; set; }
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }

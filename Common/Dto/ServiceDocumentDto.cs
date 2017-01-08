@@ -32,5 +32,10 @@ namespace Common.Dto
         /// sid of who did the uploading
         /// </summary>
         public string Uploader { get; set; }
+
+		/// <summary>
+		/// Save MIME type once so it doesn't have to be generated later
+		/// </summary>
+	    public string MimeType { get; set; }
     }
 }

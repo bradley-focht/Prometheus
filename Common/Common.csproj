@@ -50,9 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\ICreatedEntityDto.cs" />
-    <Compile Include="Dto\ICatalogable.cs" />
+    <Compile Include="Dto\ICatalogPublishable.cs" />
+    <Compile Include="Dto\IOffering.cs" />
     <Compile Include="Dto\ILifecycleStatusDto.cs" />
     <Compile Include="Dto\IOptionCategoryDto.cs" />
+    <Compile Include="Dto\IPublicizable.cs" />
     <Compile Include="Dto\IRequestable.cs" />
     <Compile Include="Dto\IRoleDto.cs" />
     <Compile Include="Dto\IServiceBundleDto.cs" />

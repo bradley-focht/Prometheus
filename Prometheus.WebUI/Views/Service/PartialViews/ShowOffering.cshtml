@@ -1,0 +1,61 @@
+﻿@model dynamic
+
+<div class="dd">
+	@foreach (var property in ViewData.ModelMetadata.Properties)
+	{
+		switch (property.PropertyName)
+		{
+			case "Id":  /*do nothing for these attributes */
+			case "ServiceId":
+			case "DateCreated":
+			case "DateUpdated":
+			case "CreatedByUserId":
+			case "UpdatedByUserId":
+			case "PictureMimeType":
+			case "Popularity":
+				continue;
+		}
+		<div class="dd-row">
+			<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+
+			@switch (property.PropertyName)
+			{
+				case "CategoryId":
+					<div class="dd-cell">
+					</div>
+					break;
+				case "Cost":
+				case "PriceUpFront":
+				case "PriceMonthly":
+					<div class="dd-cell">
+						@($"${property.Model:0.00}")
+
+					</div>
+					break;
+				case "Description":
+				case "BusinessValue":
+					<div class="dd-cell">
+						@Html.Raw(property.Model)
+					</div>
+						break;
+					case "Picture":
+					<div class="dd-cell">
+						@if (Model.Picture == null)
+						{
+							<text >No Image</text>
+						}
+						else
+						{
+							<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", new {id = Model.Id})" />
+						}
+					</div>
+						break;
+					default:
+					<div class="dd-cell">@Html.Raw(property.Model)</div>
+					break;
+			}
+
+		</div>
+	}
+</div>
+

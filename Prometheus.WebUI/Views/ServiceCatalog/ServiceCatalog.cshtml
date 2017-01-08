@@ -1,9 +1,10 @@
 ﻿@using Common.Dto
 @using Common.Enums.Entities
+@using Prometheus.WebUI.Helpers.Enums
 @model Prometheus.WebUI.Models.ServiceCatalog.CatalogModel
 
 @{
-	ViewBag.Title = Model.Catalog == ServiceTypeRole.Business ? "Business Catalog" : "Technical Catalog";
+	ViewBag.Title = Model.Catalog == ServiceCatalogs.Business ? "Business Catalog" : "Technical Catalog";
 
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -13,19 +14,7 @@
 	};
 	}
 
-<div class="flex-row" style="justify-content: space-around">
-
-	@if (Model.Catalog == ServiceTypeRole.Business)
-	{
-		<div><span class="btn btn-default active">Business Catalog</span></div>
-		<div>@Html.ActionLink("Technical Catalog", "Technical", null, new { @class = "btn btn-primary" })</div>
-	}
-	else
-	{
-		<div>@Html.ActionLink("Business Catalog", "Business", null, new { @class = "btn btn-primary" })</div>
-		<div><span class="btn btn-default active">Technical Catalog</span></div>
-	}
-</div>
+@Html.Partial("PartialViews/CatalogControls", Model.Catalog)
 
 <div style="display: flex; flex-flow: row wrap;"></div>
 @if (Model.CatalogItems != null && Model.CatalogItems.Any())
@@ -43,7 +32,7 @@
 						CatalogableTypes optionType = item is IOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
 						<li>
 							<span>
-								@Html.ActionLink(item.Name, "Details", new {type = optionType, serviceId = item.ServiceId, id = item.Id })
+								@Html.ActionLink(item.Name, "Details", new {type = optionType, serviceId = service.ServiceId, id = item.Id })
 							</span>
 						</li>
 					}
@@ -56,7 +45,7 @@
 }
 else
 {
-	<div class="alert alert-message alert-warning">There are currently no Services available.</div>
+	<div class="alert alert-message alert-warning" style="margin-top: 10px;">No Services available.</div>
 }
 
 

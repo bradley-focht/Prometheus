@@ -5,7 +5,7 @@ namespace Prometheus.WebUI.Models.Service
 {
     public class OptionsTableModel
     {
-        public List<ICatalogable> Options { get; set; }
+        public List<IOffering> Options { get; set; }
         public int ServiceId { get; set; }
 
 		/// <summary>

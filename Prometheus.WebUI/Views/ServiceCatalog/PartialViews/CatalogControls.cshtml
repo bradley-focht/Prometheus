@@ -1,0 +1,33 @@
+﻿@using Prometheus.WebUI.Helpers.Enums
+@model ServiceCatalogs
+	
+<div class="flex-row" style="justify-content: space-around">
+
+	@if (Model == ServiceCatalogs.Business)
+	{
+		<div><span class="btn btn-default active">Business Catalog</span></div>
+		<div>@Html.ActionLink("Technical Catalog", "Technical", null, new { @class = "btn btn-primary" })</div>
+	}
+	else
+	{
+		<div>@Html.ActionLink("Business Catalog", "Business", null, new { @class = "btn btn-primary" })</div>
+		<div><span class="btn btn-default active">Technical Catalog</span></div>
+	}
+
+	<div style="margin-right: 20px;">
+		@using (Html.BeginForm("CatalogSearch", "ServiceCatalog", FormMethod.Post))
+		{
+			<div class="input-group" style="margin-left: 20px; max-width: 250px">
+
+				<input name="searchString" type="text" class="form-control" placeholder="Search for...">
+				<span class="input-group-btn">
+					<button class="btn btn-primary" type="submit">
+						<i class="fa fa-search" aria-hidden="true"></i> Search
+					</button>
+				</span>
+			</div>
+			<input type="hidden" name="Catalog" value="@Model" />
+		}
+
+	</div>
+</div>

@@ -20,69 +20,12 @@
 
 @section Content
 {
-<div>
+	<div>
 	<div class="title-div">@ViewBag.SubTitle</div>
 	<div class="panel-div">
 		@if (Model.Option != null)
 		{
-			<table>
-				<tr>
-					<td class="dt-cell">
-						Name
-					</td>
-					<td class="dd-cell">
-						@Model.Option.Name
-					</td>
-
-				</tr>
-				<tr>
-					<td class="dt-cell">
-						Business Value
-					</td>
-					<td class="dd-cell">
-						@Html.Raw(Model.Option.BusinessValue)
-					</td>
-				</tr>
-				<tr>
-					<td class="dt-cell">
-						Description
-					</td>
-					<td class="dd-cell">
-						@Html.Raw(Model.Option.Description)
-					</td>
-				</tr>
-				<tr>
-					<td class="dt-cell">Cost</td>
-					<td class="dd-cell">
-						@($"{Model.Option.Cost:C}")
-					</td>
-				</tr>
-
-				<tr>
-					<td class="dt-cell">Up Front Price</td>
-					<td class="dd-cell">
-						@($"{Model.Option.PriceUpFront:C}")
-					</td>
-				</tr>
-
-				<tr>
-					<td class="dt-cell">Up Front Price</td>
-					<td class="dd-cell">
-						@($"{Model.Option.PriceMonthly:C}")
-					</td>
-				</tr>
-				<tr>
-					<td class="dt-cell">Category</td>
-					<td class="dd-cell">@Model.CategoryName</td>
-				</tr>
-				<tr>
-					<td class="dt-cell">Picture</td>
-					<td class="dd-cell">
-						<img class="img-thumbnail" width="150" height="200" src="@Url.Action("GetOptionPicture", new {id=Model.Option.Id})" alt="picture" />
-					</td>
-				</tr>
-
-			</table>
+			@Html.Partial("PartialViews/ShowOffering", Model.Option)
 		}
 		else
 		{

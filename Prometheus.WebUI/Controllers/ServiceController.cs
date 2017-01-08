@@ -624,13 +624,13 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceOptions(int id, int pageId = 0)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
-			OptionsTableModel model = new OptionsTableModel { Options = new List<ICatalogable>(), ServiceId = id, CurrentPage = pageId };
+			OptionsTableModel model = new OptionsTableModel { Options = new List<IOffering>(), ServiceId = id, CurrentPage = pageId };
 			var service = ps.GetService(id);
 
-			model.Options.AddRange((from o in service.OptionCategories select (ICatalogable)o).ToList());   //get and sort data
+			model.Options.AddRange((from o in service.OptionCategories select (IOffering)o).ToList());   //get and sort data
 			model.Options.AddRange((from o in service.ServiceOptions
 									where o.CategoryId == null
-									select (ICatalogable)o).ToList());
+									select (IOffering)o).ToList());
 
 
 			model.Options = model.Options.OrderBy(o => o.Name).ToList();                                    //sorting
@@ -928,15 +928,6 @@ namespace Prometheus.WebUI.Controllers
 			model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
 			model.Action = "Add";
 
-			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Category..." } };
-			optionsList.AddRange(ps.GetService(id).OptionCategories.Select(l =>
-					   new SelectListItem
-					   {
-						   Value = l.Id.ToString(),
-						   Text = l.Name.ToString()
-					   }).ToList());
-			model.OptionCategories = optionsList;
-
 			return View("UpdateServiceOption", model);
 		}
 
@@ -946,16 +937,6 @@ namespace Prometheus.WebUI.Controllers
 			var model = new ServiceOptionModel { Option = (ServiceOptionDto)ps.GetServiceOption(id) };
 			model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
 			model.Action = "Update";
-
-			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Category..." } };
-			optionsList.AddRange(ps.GetService(model.Option.ServiceId).OptionCategories.Select(l =>
-					   new SelectListItem
-					   {
-						   Value = l.Id.ToString(),
-						   Text = l.Name.ToString(),
-						   Selected = model.Option.CategoryId != null && l.Id == model.Option.CategoryId
-					   }).ToList());
-			model.OptionCategories = optionsList;
 
 			return View("UpdateServiceOption", model);
 		}
@@ -1672,6 +1653,35 @@ namespace Prometheus.WebUI.Controllers
 
 			return View(model);
 		}
+
+		[ChildActionOnly]
+		public ActionResult GetCategoryDropdown(int id = 0, int serviceId = 0)
+		{
+			IEnumerable<SelectListItem> model = new List<SelectListItem>();
+			var ps = InterfaceFactory.CreatePortfolioService(dummId);
+			
+			if (serviceId > 0)
+			{
+				int? selectedCategory = null;
+
+				if (id > 0)
+				{
+					selectedCategory = ps.GetServiceOption(id).CategoryId;
+				}
+				
+				var optionsList = new List<SelectListItem> {new SelectListItem {Value = "", Text = "Category..."}};
+				optionsList.AddRange(ps.GetService(serviceId).OptionCategories.Select(l =>
+					new SelectListItem
+					{
+						Value = l.Id.ToString(),
+						Text = l.Name.ToString(),
+						Selected = selectedCategory != null && l.Id == selectedCategory
+					}).ToList());
+				model = optionsList.OrderBy(c=>c.Text);
+			}
+			return View("PartialViews/CategoryDropDown", model);
+		}
+
 		/// <summary>
 		/// Returns picture for use in Html document, use with URL.Action()
 		/// </summary>
@@ -1692,7 +1702,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				fileData = System.IO.File.ReadAllBytes(Server.MapPath(path));
 			}
-			catch { } //do nothing, return null for the time
+			catch { /* ignored */} 
 			return File(fileData, option.PictureMimeType);
 		}
 

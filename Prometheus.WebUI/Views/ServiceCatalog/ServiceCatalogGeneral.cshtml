@@ -1,0 +1,24 @@
+﻿@model Prometheus.WebUI.Models.ServiceCatalog.GeneralCatalogModel
+@using Prometheus.WebUI.Helpers.Enums
+@{
+	ViewBag.Title = Model.Catalog == ServiceCatalogs.Business ? "Business Catalog" : "Technical Catalog";
+
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>(ViewBag.Title, "#")
+	};
+}
+
+@Html.Partial("PartialViews/CatalogControls", Model.Catalog)
+
+
+@if (Model.Results != null)
+{
+	foreach (var r in Model.Results)
+	{
+	
+		@Html.Partial("PartialViews/SummarizedOptionView", r)
+	}
+}

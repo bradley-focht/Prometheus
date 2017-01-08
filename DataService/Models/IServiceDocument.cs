@@ -2,10 +2,11 @@
 
 namespace DataService.Models
 {
-	public interface IServiceDocument
+	public interface IServiceDocument : IUserCreatedEntity
 	{
 		string FileExtension { get; set; }
 		string Filename { get; set; }
+		string MimeType { get; set; }
 		int Id { get; set; }
 		int ServiceId { get; set; }
 		Guid StorageNameGuid { get; set; }

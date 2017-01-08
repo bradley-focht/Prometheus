@@ -1,4 +1,5 @@
-﻿@model Prometheus.WebUI.Models.ServiceRequestMaintenance.ServiceRequestOptionModel
+﻿@using Prometheus.WebUI.Infrastructure
+@model Prometheus.WebUI.Models.ServiceRequestMaintenance.ServiceRequestOptionModel
 @{
 	ViewBag.Title = "ShowServiceOption";
 	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
@@ -16,16 +17,33 @@
 	<div class="dd">
 		<div class="dd-row">
 			<div class="dt-cell">Popularity</div>
+			<div class="dd-cell">->determines where/if items show up on service catalog main page</div>
 		</div>
-		<div class="dd-row">User Input</div>
-		<div class="dd-cell">
 
+		<div class="dd-row">
+			<div class="dd-cell"> * pending requirements </div>
+		</div>
+
+		<div class="dd-row">
+			<div class="dt-cell">User Input </div>
+			 
 		</div>
 	</div>
 
 	<div class="panel-footer">
 		<div class="float-right-div">
-			@Html.ActionLink("Add User Input", "AddUserInput", null, new { @class = "btn btn-primary"})
+			<div class="btn-group">
+				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					Add User Input <span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu pull-right">
+					<li>@Html.ActionLink("Text", "AddUserInput", new {id = Model.Option.Id, type = UserInputTypes.Text })</li>
+					<li>@Html.ActionLink("Selection", "AddUserInput", new {id = Model.Option.Id, type = UserInputTypes.Selection })</li>
+					<li>@Html.ActionLink("Scripted Selection", "AddUserInput", new {id = Model.Option.Id, type = UserInputTypes.ScriptedSelection })</li>
+				</ul>
+			</div>
+
+			
 		</div>
 	</div>
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Security.Principal;
 
 namespace Common.Dto
 {
@@ -12,5 +11,6 @@ namespace Common.Dto
         Guid StorageNameGuid { get; set; }
         DateTime? UploadDate { get; set; }
         string Uploader { get; set; }
+		string MimeType { get; set; }
     }
 }
