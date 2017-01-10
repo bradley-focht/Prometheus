@@ -63,7 +63,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			ServiceRequestOptionModel model = new ServiceRequestOptionModel();
 
-			model.Option = (IRequestable)InterfaceFactory.CreatePortfolioService(_dummyId).GetServiceOption(id);
+			model.Option = InterfaceFactory.CreatePortfolioService(_dummyId).GetServiceOption(id);
 			
 			return View(model);
 		}

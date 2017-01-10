@@ -7,7 +7,7 @@
 	{
 		FinancialCalculator calc = new FinancialCalculator(Model.n, Model.i);
 
-		<table class="table table-hover" style="display: inline-block;">
+		<table class="table table-hover">
 			<thead>
 				<tr>
 					<th col-md-1></th>
@@ -35,7 +35,7 @@
 							<td>@($"{(calc.CalculatePw(option.PriceUpFront, option.PriceMonthly) - option.Cost):C}")</td>
 							<td>
 								<div class="btn-group">
-									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default">
+									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
 										<span aria-hidden="true">&#x25BC;</span>
 									</div>
 									<div class="dropdown-menu">
@@ -60,7 +60,7 @@
 							<td colspan="5">Category: @Html.ActionLink(item.Name, "ShowOptionCategory", new { id = item.Id })</td>
 							<td>
 								<div class="btn-group">
-									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-empty">
+									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
 										<span aria-hidden="true">&#x25BC;</span>
 									</div>
 									<div class="dropdown-menu">
@@ -88,7 +88,7 @@
 									<td>@($"{(calc.CalculatePw(subOption.PriceUpFront, subOption.PriceMonthly) - subOption.Cost):C}")</td>
 									<td>
 										<div class="btn-group">
-											<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-empty">
+											<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
 												<span aria-hidden="true">&#x25BC;</span>
 											</div>
 											<div class="dropdown-menu">
@@ -112,7 +112,7 @@
 			</tbody>
 
 		</table>
-		<div class="note">*net present worth is calculated over @Model.n year with MARR @Model.i.ToString("P")</div>
+		<div class="note">*@calc.PwCalculationToString()</div>
 	}
 	else
 	{

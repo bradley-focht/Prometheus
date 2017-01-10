@@ -3,9 +3,6 @@
 <input type="hidden" name="Id" value="@Model.Id" />
 @Html.Hidden("ServiceId", Model.ServiceId)
 
-@{
-	bool catMsgShown = false;
-}
 <input type="hidden" name="Id" value="@Model.Id" />
 <input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
@@ -35,30 +32,30 @@
 						@Html.ValidationMessage(property.PropertyName)
 					</div>
 					break;
+				case "ServiceOptions":
+					@Html.Action("GetOptionsDropDown", new { serviceId = Model.ServiceId, id=Model.Id})
+					break;
 				case "Features":
 				case "Benefits":
 				case "Support":
-
+				case "Description":
 					<div class="dd-cell">
 						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
 						@Html.ValidationMessage(property.PropertyName)
 					</div>
-						break;
-				case "Description":
+					break;
+
 				case "BusinessValue":
 					<div class="dd-cell">
 						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
 						@Html.ValidationMessage(property.PropertyName)
-					</div>					if (!catMsgShown)
-					{
-						<div class="highlight-cell-top">&nbsp;</div>
+					</div>
+						<div class="highlight-cell-single">&nbsp;</div>
 						<div class="dd-cell-base small-message">
 							*Visible in service catalog
 						</div>
-						catMsgShown = true;
-					}
-					else
-					{ <div class="highlight-cell-bottom">&nbsp;</div> }
+
+
 					break;
 			}
 

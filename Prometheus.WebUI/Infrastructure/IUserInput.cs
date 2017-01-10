@@ -3,7 +3,7 @@
 	public interface IUserInput
 	{
 		int Id { get; set; }
-		string Name { get; set; }
+		string DisplayName { get; set; }
 		string HelpToolTip { get; set; }
 	}
 }

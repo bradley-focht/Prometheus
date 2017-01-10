@@ -9,7 +9,10 @@ namespace Prometheus.WebUI.Infrastructure
 	{
 		[HiddenInput]
 		public int Id { get; set; }
-		[Display(Order = 1)]
+		[Display(Order = 1, Name="Display Order")]
+		public string DisplayName { get; set; }
+
+
 		public string Name { get; set; }
 		[Display(Name="Help Tool Tip")]
 		public string HelpToolTip { get; set; }

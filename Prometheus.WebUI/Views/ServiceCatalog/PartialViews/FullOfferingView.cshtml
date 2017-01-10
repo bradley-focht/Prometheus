@@ -1,0 +1,71 @@
+﻿@using Common.Dto
+@model IOffering
+<div class="dd full-width">
+	<div class="dd-row">
+
+		<div class="dd-cell-nostyle">
+
+			<div class="dd full-width">
+				<div class="dd-row">
+					<div class="dd-cell-nostyle title-div" style="width: 75%">@Model.Name</div>
+					<div class="dd-cell-nostyle" style="width: 20%;"></div>
+					@if (Model is IRequestable)
+					{
+						<div class="dd-cell-nostyle" style="vertical-align: top; text-align: right; width: 5%;">
+							<a href="@Url.Action("BeginOptionRequest", "ServiceRequest", new {id = Model.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+						</div>
+					}
+				</div>
+				@if (Model is IOptionCategoryDto)
+				{
+					<div class="dd-row">
+						<div class="dd-cell-base">
+							@Html.Raw(Model.BusinessValue)
+						</div>
+					</div>
+				}
+				else if (Model is IServiceOptionDto)
+				{
+					var option = (IServiceOptionDto) Model;
+					<div class="dd-row">
+						<div class="dd-cell-base" style="width:75%">@Html.Raw(option.BusinessValue)</div>
+						<div class="dd-cell-nostyle" style="width:20%">
+							<div class="dd full-width">
+								<div class="dd-row">
+									<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
+									<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Monthly</div>
+								</div>
+								<div class="dd-row">
+									<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceUpFront}")</div>
+									<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceMonthly}")</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="dd-row">
+						<div class="dd-cell-base">
+							@if (option.Picture != null)
+							{
+								<div class="float-left-div" style="border: 1px solid #ddd; margin-right: 10px;">
+									<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" width="150" height="150" alt="picture" />
+								</div>
+							}
+							@Html.Raw(Model.Description)
+						</div>
+					</div>
+
+				}
+				</div>
+			</div>
+		</div>
+	</div>
+
+@if (Model is IOptionCategoryDto)
+{
+	IOptionCategoryDto category = (IOptionCategoryDto)Model;
+
+	foreach (var option in category.ServiceOptions)
+	{
+		@Html.Partial("PartialViews/OptionView", option)
+	}
+}

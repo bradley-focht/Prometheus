@@ -1,6 +1,6 @@
 ﻿@model Prometheus.WebUI.Models.UserAccount.UserAccountModel
 @{
-    Layout = "~/Views/Shared/_BasicLayout.cshtml";
+    Layout = "~/Views/Shared/_EmptyLayout.cshtml";
     ViewBag.Title = "Login";
 }
 
@@ -30,10 +30,7 @@
                             <div class="dt-cell">
                                 <div class="float-left-div;">&times;</div>
                             </div>
-                            <div class="dd-cell">
-                                @TempData["Message"]
-
-                            </div>
+                            <div class="dd-cell">@TempData["Message"]</div>
                         </div>
                     </div>
                 </div>

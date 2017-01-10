@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
+using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Models.ServiceCatalog;
 using RequestService;
@@ -17,35 +18,35 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult CatalogSearch(string searchString, ServiceCatalogs catalog, int pageId = 0)
 		{
+			searchString = searchString.ToLower();											//compare everything in lowercase
 			GeneralCatalogModel model = new GeneralCatalogModel {Catalog = catalog};
-			List<ICatalogPublishable> searchresults = new List<ICatalogPublishable>();       //start the container for catalogables
+			List<ICatalogPublishable> searchresults = new List<ICatalogPublishable>();      //start the container for catalogables
 			ICatalogController rs = new CatalogController(_dummId);
-
 			
-			if (catalog == ServiceCatalogs.Both || catalog == ServiceCatalogs.Business)			//add things from the business catalog
+			if (catalog == ServiceCatalogs.Both || catalog == ServiceCatalogs.Business)		//add things from the business catalog
 			{
 				var services = (from s in rs.BusinessCatalog select s).ToList();
-				searchresults.AddRange(from s in services where s.Name.Contains(searchString) select (ICatalogPublishable)s);
+				searchresults.AddRange(from s in services where s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
 				foreach (var service in services)
 				{
-					searchresults.AddRange(from o in service.ServiceOptions where o.Name.Contains(searchString) select (ICatalogPublishable)o);
-					searchresults.AddRange(from c in service.OptionCategories where c.Name.Contains(searchString) select (ICatalogPublishable)c);
+					searchresults.AddRange(from o in service.ServiceOptions where o.Name.ToLower().Contains(searchString) select (ICatalogPublishable)o);
+					searchresults.AddRange(from c in service.OptionCategories where c.Name.ToLower().Contains(searchString) select (ICatalogPublishable)c);
 				}
 			}
 
 			if (catalog == ServiceCatalogs.Both || catalog == ServiceCatalogs.Technical)		//add things from the tech catalog	
 			{
 				var services = (from s in rs.SupportCatalog select s).ToList();
-				searchresults.AddRange(from s in services where s.Name.Contains(searchString) select (ICatalogPublishable)s);
+				searchresults.AddRange(from s in services where s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
 				foreach (var service in services)
 				{
-					searchresults.AddRange(from o in service.ServiceOptions where o.Name.Contains(searchString) select (ICatalogPublishable)o);
-					searchresults.AddRange(from c in service.OptionCategories where c.Name.Contains(searchString) select (ICatalogPublishable)c);
+					searchresults.AddRange(from o in service.ServiceOptions where o.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)o);
+					searchresults.AddRange(from c in service.OptionCategories where c.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)c);
 				}
 			}
-			//instead of sorting by number of occurences of the search string, since only names are searched anyways, sort items by name
+			//since search is performed on names only, there isn't much point weighting results. 
+			//sorting first by name only
 			model.Results = searchresults.OrderByDescending(a => a.Name);
-
 
 			return View("ServiceCatalogGeneral", model);
 		}
@@ -122,16 +123,16 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Details(int serviceId, CatalogableTypes type, int id)
 		{
-			ICatalogController rs = new CatalogController(_dummId);
-			var service = rs.BusinessCatalog.FirstOrDefault(s => s.Id == serviceId);
+			var ps = InterfaceFactory.CreatePortfolioService(_dummId);
+			var service = ps.GetService(serviceId);
 
 			if (service != null)
 			{
 				OptionModel model = new OptionModel {Catalog = service.ServiceTypeRole};					//pack a list of options and categories
 				if (type == CatalogableTypes.Category)
-					model.Option = (ICatalogPublishable) service.OptionCategories.FirstOrDefault(o => o.Id == id);
+					model.Option = service.OptionCategories.FirstOrDefault(o => o.Id == id);
 				else if (type == CatalogableTypes.Option)
-					model.Option = (ICatalogPublishable) service.ServiceOptions.FirstOrDefault(s => s.Id == id);
+					model.Option = service.ServiceOptions.FirstOrDefault(s => s.Id == id);
 
 				model.ServiceId = service.Id;
 				model.ServiceName = service.Name;

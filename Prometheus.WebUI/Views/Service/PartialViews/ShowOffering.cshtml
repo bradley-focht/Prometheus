@@ -1,8 +1,17 @@
-﻿@model dynamic
+﻿@using Common.Dto
+@using Common.Enums.Entities
+@model dynamic
+
+
 
 <div class="dd">
 	@foreach (var property in ViewData.ModelMetadata.Properties)
 	{
+		if (property.Model == null)
+		{
+			continue;
+		}
+
 		switch (property.PropertyName)
 		{
 			case "Id":  /*do nothing for these attributes */
@@ -29,7 +38,6 @@
 				case "PriceMonthly":
 					<div class="dd-cell">
 						@($"${property.Model:0.00}")
-
 					</div>
 					break;
 				case "Description":
@@ -40,21 +48,31 @@
 						break;
 					case "Picture":
 					<div class="dd-cell">
-						@if (Model.Picture == null)
+						@if (property.Model == null)
 						{
 							<text >No Image</text>
 						}
 						else
 						{
-							<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", new {id = Model.Id})" />
+							<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", new {id = Model.Id})" alt="Picture"/>
 						}
 					</div>
-						break;
-					default:
+					break;
+				case "ServiceOptions":
+					var options = property.Model as List<ServiceOptionDto>;
+					if (options != null)
+					{
+						foreach (var option in options)
+						{
+							<div>@Html.ActionLink(option.Name, "ShowServiceOption", new {id=option.Id, type=CatalogableTypes.Option})</div>
+						}
+
+					}
+					break;
+				default:
 					<div class="dd-cell">@Html.Raw(property.Model)</div>
 					break;
 			}
-
 		</div>
 	}
 </div>

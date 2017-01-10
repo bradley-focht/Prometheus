@@ -17,13 +17,12 @@
 
 @section Sidebar
 {
-	<div class="title-div">Available Options</div>
+	<div class="title-div">Other Options</div>
 
 	<div class="flex-container-col" style="padding-top: 5px; padding-bottom: 5px;">
 	@if (Model.Options != null)
 	{
 		CatalogableTypes selectedType = Model.Option is IServiceOptionDto ? CatalogableTypes.Option : CatalogableTypes.Category;
-		int serviceId = 0;
 
 		foreach (var option in Model.Options)
 		{
@@ -48,32 +47,12 @@
 
 @section Content
 {
-	<div class="title-div">
-		@Model.Option.Name
-	</div>
-
-
 	@{
-		var dto = Model.Option as IServiceOptionDto;
+		var offering = Model.Option as IOffering;
 	}
-	@if (dto != null)
+	@if (offering != null)
 	{
-		<div>
-			@Html.Partial("PartialViews/OptionView", dto)
-		</div>
-	}
-	else if (Model.Option is IOptionCategoryDto)
-	{
-		IOptionCategoryDto category = (IOptionCategoryDto)Model.Option;
-		<div>
-			@Html.Raw(category.BusinessValue)
-		</div>
-
-
-		foreach (var option in category.ServiceOptions)
-		{
-				@Html.Partial("PartialViews/OptionView", option)
-		}
+			@Html.Partial("PartialViews/FullOfferingView", offering)
 	}
 
 }

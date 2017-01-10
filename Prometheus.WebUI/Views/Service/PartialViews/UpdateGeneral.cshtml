@@ -82,7 +82,10 @@
             @Html.DropDownList("ServiceBundleId", Model.ServiceBundleNames, new { placeholder="Service Bundle", style="max-width: 300px;"})
             @Html.ValidationMessageFor(model => model.ServiceBundleId)
         </td>
-    </tr>
+	</tr><tr>
+		<td class="dt-cell">Dependencies</td>
+		<td>@Html.Action("GetServicesDropDown", new {id=Model.Service.Id})</td>
+	</tr>
 </table>
 
 <script type="text/javascript" language="javascript">
@@ -101,4 +104,11 @@
                 .selectize({
                     maxItems: 1
                 });
+	$('#ServiceIds').selectize({
+		plugins: ['remove_button'],
+		maxItems: 10,
+		delimiter: ',',
+		persist: false
+		});
+
 </script>

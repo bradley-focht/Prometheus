@@ -25,7 +25,7 @@
 
 			@switch (property.PropertyName)
 			{
-				case "Name":
+				case "Name":	/*standard textbox */
 				case "Usage":
 					<div class="dd-cell">
 						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
@@ -37,7 +37,7 @@
 						@Html.Action("GetCategoryDropdown", new { id = Model.Id, serviceId = Model.ServiceId })
 					</div>
 							break;
-						case "Features":
+						case "Features":	/*ck editor */
 						case "Benefits":
 						case "Support":
 	
@@ -46,7 +46,7 @@
 						@Html.ValidationMessage(property.PropertyName)
 					</div>
 						break;
-					case "Cost":
+					case "Cost":		/*money */
 					<div class="dd-cell">
 						<div class="input-group">
 							<span class="input-group-addon">
@@ -80,7 +80,7 @@
 					}
 					else { <div class="highlight-cell">&nbsp;</div> }
 					break;
-				case "Description":
+				case "Description":		/*ck editor + service catalog visible */
 				case "BusinessValue":
 					<div class="dd-cell">
 						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
@@ -88,7 +88,7 @@
 					</div>
 					<div class="highlight-cell">&nbsp;</div>
 						break;
-					case "Picture":
+					case "Picture":		/*Picture */
 					<div class="dd-cell">
 						<input type="hidden" name="Picture" value="@Model.Picture"/>
 

@@ -1,44 +1,55 @@
-﻿@model Common.Dto.ServiceDto
-    <div class="dd">
-	    <div class="dd-row">
-		    <div class="dt-cell">Name</div>
-		    <div class="dd-cell">@Model.Name</div>
-	    </div>
-		<div class="dd-row">
-			<div class="dt-cell">Business Value</div>
-			<div class="dd-cell">@Html.Raw(Model.BusinessValue)</div>
-		</div>
-        <div class="dd-row">
-            <div class="dt-cell">Description</div>
-            <div class="dd-cell">@Html.Raw(Model.Description)</div>
-        </div>
-        <div class="dd-row">
-            <div class="dt-cell">Business Owner</div>
-            <div class="dd-cell">@Model.BusinessOwner</div>
-        </div>
-        <div class="dd-row">
-            <div class="dt-cell">Service Owner</div>
-            <div class="dd-cell">@Model.ServiceOwner</div>
+﻿@using Common.Dto
+@model ServiceDto
+<div class="dd full-width">
 
-        </div>
-        <div class="dd-row">
+	@foreach (var property in ViewData.ModelMetadata.Properties)
+	{
+		switch (property.PropertyName)
+		{
+			case "Id":
+			case "LifecycleStatusId":
+			case "CreatedByUserId":
+			case "Popularity":
+			case "ServiceGoals":
+			case "ServiceSwots":
+			case "ServiceContracts":
+			case "ServiceWorkUnits":
+			case "ServiceOptions":
+			case "ServiceProcesses":
+			case "ServiceDocuments":
+			case "ServiceMeasures":
+			case "UpdatedByUserId":
+			case "DateUpdated":
+			case "DateCreated":
+			case "ServiceBundleId":
+			case "ServiceBundle":
+			case "OptionCategories":
+				continue;
+			case "LifecycleStatusDto":
+				var status = property.Model as LifecycleStatusDto;
+				if (status != null)
+				{
+					<div class="dd-row">
+						<div class="dt-cell">Lifecycle Status</div>
+						<div class="dd-cell tq-width">@status.Name</div>
+					</div>
+				}
+				break;
+			case "Services":
+				<div class="dd-row">
+					<div class="dt-cell">Dependencies</div>
+					<div class="dd-cell tq-width">
+						@property.Model
+					</div>
+				</div>
+				break;
+			default:
 
-            <div class="dt-cell">Service Type</div>
-            <div class="dd-cell">
-                <div class="dd">
-                    <div class="dd-row">
-                        <div class="dt-cell">Role</div>
-                        <div class="dd-cell">@Model.ServiceTypeRole</div>
-                    </div>
-                    <div class="dd-row">
-                        <div class="dt-cell">Provision</div>
-                        <div class="dd-cell">@Model.ServiceTypeProvision</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="dd-row">
-            <div class="dt-cell">Status</div>
-            <div class="dd-cell">@Model.LifecycleStatusDto.Name</div>
-        </div>
-    </div>
+				<div class="dd-row">
+					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="dd-cell tq-width">@Html.Raw(property.Model)</div>
+				</div>
+				break;
+		}
+	}
+</div>

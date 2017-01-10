@@ -21,18 +21,13 @@
 								<div class="dd-cell-base">@Html.ActionLink(service.Name, "Show", new { section = "General", id = service.Id }, new { @class = "font-title1" })</div>
 							</div>
 							<div class="dd-row">
-								<div class="dd-cell-base">@Html.Raw(service.Description)</div>
-							</div>
-							<div class="dd-row">
 								<div class="dd-cell-base">
 									<div class="dd">
 										<div class="dd-row">
-											<div class="dt-cell">Status</div>
-											<div class="dd-cell">@service.LifecycleStatusDto.Name</div>
+											<div class="dd-cell-base"><span class="dt-font">Status</span> @service.LifecycleStatusDto.Name</div>
 										</div>
 										<div class="dd-row">
-											<div class="dt-cell">Service Owner</div>
-											<div class="dd-cell">@service.ServiceOwner</div>
+											<div class="dd-cell-base"><span class="dt-font">Service Owner</span> @service.ServiceOwner</div>
 										</div>
 									</div>
 								</div>

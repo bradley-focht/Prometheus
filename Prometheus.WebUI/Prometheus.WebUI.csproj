@@ -465,10 +465,14 @@
     <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputEditor.cshtml" />
     <Content Include="Views\ServiceCatalog\PartialViews\CatalogControls.cshtml" />
     <Content Include="Views\ServiceCatalog\ServiceCatalogGeneral.cshtml" />
-    <Content Include="Views\ServiceCatalog\PartialViews\SummarizedOptionView.cshtml" />
+    <Content Include="Views\ServiceCatalog\PartialViews\SummarizedCatalogableView.cshtml" />
     <Content Include="Views\Service\PartialViews\ServiceOptionEditor.cshtml" />
     <Content Include="Views\Service\PartialViews\CategoryDropDown.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOffering.cshtml" />
+    <Content Include="Views\ServiceCatalog\PartialViews\FullOfferingView.cshtml" />
+    <Content Include="Views\Service\PartialViews\OptionsDropDown.cshtml" />
+    <Content Include="Views\Shared\_EmptyLayout.cshtml" />
+    <Content Include="Views\Service\PartialViews\ServicesDropDown.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

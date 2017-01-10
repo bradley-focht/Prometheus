@@ -18,12 +18,12 @@
 
 
 	<div class="title-div">@ViewBag.SubTitle</div>
-
+	
 	@using (Html.BeginForm("SaveOptionsItem", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 	{
-
-		@Html.Partial("PartialViews/ServiceOptionEditor", Model.Option)
-
+		<div class="make-space-top">
+			@Html.Partial("PartialViews/ServiceOptionEditor", Model.Option)
+		</div>
 		<div class="flex-container">
 			<div class="panel-footer">
 				<div class="float-right-div">

@@ -1,0 +1,28 @@
+﻿@model IEnumerable<SelectListItem>
+@if (Model != null)
+{
+	@Html.DropDownList("Options", Model, new {placeholder = "Options...", multiple = "multiple", @class="btn-default"})
+	;
+
+	<script type="text/javascript" language="javascript">
+		$('#Options')
+			.selectize({
+				plugins: ['remove_button'],
+				delimiter: ',',
+				persist: false,
+				create: function(input) {
+					return {
+						value: input,
+						text: input
+					}
+				}
+			});
+	</script>
+
+}
+else
+{
+	<text>No Options in this Service</text>
+}
+
+

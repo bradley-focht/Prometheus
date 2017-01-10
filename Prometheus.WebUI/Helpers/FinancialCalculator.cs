@@ -31,7 +31,13 @@ namespace Prometheus.WebUI.Helpers
 		/// <returns></returns>
 		public double CalculatePw(double seriesAmount, int compundingPeriod)
 		{
-			return seriesAmount * (Math.Pow(1 + i, n * compundingPeriod) - 1)/(i*Math.Pow(1 + i, n * compundingPeriod));
+			return seriesAmount * (Math.Pow(1 + i, n * compundingPeriod) - 1) / (i * Math.Pow(1 + i, n * compundingPeriod));
+		}
+
+		public string PwCalculationToString()
+		{
+			return $"net present worth is calculated over {n} year with MARR {i.ToString("P")}";
+
 		}
 	}
 }

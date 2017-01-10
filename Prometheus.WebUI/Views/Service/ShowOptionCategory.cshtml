@@ -16,53 +16,30 @@
 	<div class="title-div">
 		@ViewBag.SubTitle
 	</div>
-
-	@if (Model.OptionCategory != null)
+	<div class="panel-div">
+		@if (Model.OptionCategory != null)
 	{
-		<table>
-			<tr>
-				<td class="dt-cell">Name</td>
-				<td class="dd-cell">@Model.OptionCategory.Name</td>
-			</tr>
-			<tr>
-				<td class="dt-cell">Business Value</td>
-				<td class="dd-cell">@Html.Raw(Model.OptionCategory.BusinessValue)</td>
-			</tr>
-			<tr>
-				<td class="dt-cell">Options</td>
-				<td class="dd-cell">
-					@if (Model.OptionCategory.ServiceOptions != null && Model.OptionCategory.ServiceOptions.Any())
-					{
-						foreach (var option in Model.OptionCategory.ServiceOptions)
-						{
-							<div>@Html.ActionLink(option.Name, "ShowServiceOption", new {id=option.Id})</div>
-						}
-					}
-					else
-					{
-						<div class="alert alert-message alert-warning">No options.</div>
-					}
-				</td>
-			</tr>
-		</table>
-
-		<div class="flex-container-col">
-			<div class="panel-footer">
-				<div class="float-right-div">
-					@Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options"}, new { @class="btn btn-default btn-back"})
-
-					@Html.ActionLink("Update", "UpdateOptionCategoryItem", new { id = Model.OptionCategory.Id }, new { @class = "btn btn-default" })
-					
-					@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new { id = Model.OptionCategory.Id }, new { @class = "btn btn-danger" })
-					
-				</div>
-			</div>
-		</div>
+			@Html.Partial("PartialViews/ShowOffering", Model.OptionCategory)
 	}
 	else
 	{
-		<div class="alert alert-message alert-warning">Option no longer exists</div>
+			<div class="alert alert-message alert-warning">Option no longer exists</div>
 	}
+	</div>
+	<div class="flex-container-col">
+		<div class="panel-footer">
+			<div class="float-right-div">
+				@Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
+
+				@Html.ActionLink("Update", "UpdateOptionCategoryItem", new { id = Model.OptionCategory.Id }, new { @class = "btn btn-primary" })
+
+				@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new { id = Model.OptionCategory.Id }, new { @class = "btn btn-danger" })
+
+			</div>
+		</div>
+	</div>
+}
+
 
 }
 

@@ -1,23 +1,40 @@
 ﻿@using Common.Dto
+@using Common.Enums.Entities
 @model IServiceOptionDto
 <div class="dd" style="margin-top: 10px; width: 100%;">
 	<div class="dd-row">
 		<div class="color-bar"></div>
 		<div class="dd-cell">
-			<div class="dd">
+			<div class="dd full-width">
 				<div class="dd-row">
-					<div class="dd-cell" style="width: 90%;">
-						<div class="subsubtitle-div">
-							@Model.Name
+					<div class="dd-cell" style="width: 75%;">
+						<div class="font-title1" style="border-bottom: 1px #ddd;">
+							@Html.ActionLink(Model.Name, "Details", new {type=CatalogableTypes.Option, id=Model.Id, serviceId= Model.ServiceId})
 						</div>
 					</div>
-					<div class="dd-cell-nostyle" style="vertical-align: top; text-align: right; width: 10%;">
-		
-							<a href="@Url.Action("BeginOptionRequest", "ServiceRequest", new {id = Model.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
-
+					<div class="dd-cell-nostyle" style="width: 20%;"></div>
+					<div class="dd-cell-nostyle" style="vertical-align: top; text-align: right; width: 5%;">
+						<a href="@Url.Action("BeginOptionRequest", "ServiceRequest", new {id = Model.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
 					</div>
-
 				</div>
+				<div class="dd-row">
+					<div class="dd-cell-base">
+						@Html.Raw(Model.BusinessValue)
+					</div>
+					<div class="dd-cell-nostyle">
+						<div class="dd full-width">
+							<div class="dd-row">
+								<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
+								<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Monthly</div>
+							</div>
+							<div class="dd-row">
+								<div class="dd-cell note" style="padding: 5px;">@($"${Model.PriceUpFront}")</div>
+								<div class="dd-cell note" style="padding: 5px;">@($"${Model.PriceMonthly}")</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<div class="dd-row">
 					<div class="dd-cell-base">
 						@if (Model.Picture != null)
@@ -29,11 +46,7 @@
 						@Html.Raw(Model.Description)
 					</div>
 				</div>
-
 			</div>
-
 		</div>
-
 	</div>
-
 </div>

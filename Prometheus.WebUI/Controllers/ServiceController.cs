@@ -304,7 +304,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveSwotActivityItem(SwotActivityDto activity)
 		{
-			if (!ModelState.IsValid)	//server side validation
+			if (!ModelState.IsValid)    //server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save SWOT activity due to invalid data";
@@ -684,7 +684,7 @@ namespace Prometheus.WebUI.Controllers
 						}
 						catch (Exception exception)
 						{
-							TempData["MessageType"] = WebMessageType.Failure;														//unable to delete, exit at this point
+							TempData["MessageType"] = WebMessageType.Failure;                                                       //unable to delete, exit at this point
 							TempData["Message"] = $"Failed to delete existing file, error: {exception.Message}";
 							return RedirectToAction("UpdateServiceOption", new { id = option.Id });
 						}
@@ -694,12 +694,12 @@ namespace Prometheus.WebUI.Controllers
 				}
 				else
 				{
-					option.PictureMimeType = image.ContentType;	//rename file to a guid and store original file type
+					option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
 					option.Picture = Guid.NewGuid();
 				}
 				try
 				{
-					var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());	//save file
+					var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString()); //save file
 					image.SaveAs(Server.MapPath(path));
 				}
 				catch (Exception exception)
@@ -745,10 +745,11 @@ namespace Prometheus.WebUI.Controllers
 		/// <summary>
 		/// Save new or existing option category
 		/// </summary>
-		/// <param name="category"></param>
+		/// <param name="category">posted cattegory attributes</param>
+		/// <param name="options">Ids of options</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveOptionCategory(OptionCategoryDto category)
+		public ActionResult SaveOptionCategory(OptionCategoryDto category, ICollection<int> options)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -758,9 +759,10 @@ namespace Prometheus.WebUI.Controllers
 			}
 			//save new category
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
+
 			try
 			{
-				ps.ModifyOptionCategory(category, category.Id < 1 ? EntityModification.Create : EntityModification.Update);
+				category.Id = ps.ModifyOptionCategory(category, category.Id < 1 ? EntityModification.Create : EntityModification.Update).Id;    //make sure it has the new id if is new
 			}
 			catch (Exception exception)
 			{
@@ -768,6 +770,38 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = $"Failed to save category, error: {exception.Message}";
 				return RedirectToAction("UpdateOptionCategoryItem", new { id = category.ServiceId });
 			}
+			// update category id of service options
+			foreach (var option in ps.GetService(category.ServiceId).ServiceOptions)        //update service options with new category Ids
+			{
+				try
+				{
+					if (options == null && option.CategoryId == category.Id)		//if removing all options
+					{
+						option.CategoryId = null;
+						ps.ModifyServiceOption(option, EntityModification.Update);
+					}
+					else if (options != null)
+					{
+						if (option.CategoryId == category.Id && !options.Contains(option.Id)) //if removing some
+						{
+							option.CategoryId = null;
+							ps.ModifyServiceOption(option, EntityModification.Update);
+						}
+						else if (option.CategoryId != null || (option.CategoryId != category.Id && options.Contains(option.Id))) //if adding
+						{
+							option.CategoryId = category.Id;
+							ps.ModifyServiceOption(option, EntityModification.Update);
+						}
+					}
+				}
+				catch (Exception exception)
+				{
+					TempData["MessageType"] = WebMessageType.Failure;
+					TempData["Message"] = $"Failed to complete updating service options, error: {exception.Message}";
+					return RedirectToAction("Show", new { id = category.ServiceId, section = "Options" });
+				}
+			}
+
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully saved {category.Name}";
 
@@ -1425,6 +1459,7 @@ namespace Prometheus.WebUI.Controllers
 
 					ps.ModifyServiceDocument(new ServiceDocumentDto
 					{
+						MimeType = file.ContentType,
 						ServiceId = id,
 						Filename = Path.GetFileNameWithoutExtension(fileName),
 						StorageNameGuid = newFileName,
@@ -1527,7 +1562,7 @@ namespace Prometheus.WebUI.Controllers
 
 			var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], id.ToString());
 
-			return new FilePathResult(path, MimeMapping.GetMimeMapping(path));
+			return new FilePathResult(path, doc.MimeType);
 		}
 
 		/// <summary>
@@ -1659,7 +1694,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			IEnumerable<SelectListItem> model = new List<SelectListItem>();
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
-			
+
 			if (serviceId > 0)
 			{
 				int? selectedCategory = null;
@@ -1668,8 +1703,8 @@ namespace Prometheus.WebUI.Controllers
 				{
 					selectedCategory = ps.GetServiceOption(id).CategoryId;
 				}
-				
-				var optionsList = new List<SelectListItem> {new SelectListItem {Value = "", Text = "Category..."}};
+
+				var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Category..." } };
 				optionsList.AddRange(ps.GetService(serviceId).OptionCategories.Select(l =>
 					new SelectListItem
 					{
@@ -1677,9 +1712,53 @@ namespace Prometheus.WebUI.Controllers
 						Text = l.Name.ToString(),
 						Selected = selectedCategory != null && l.Id == selectedCategory
 					}).ToList());
-				model = optionsList.OrderBy(c=>c.Text);
+				model = optionsList.OrderBy(c => c.Text);
 			}
 			return View("PartialViews/CategoryDropDown", model);
+		}
+
+		public ActionResult GetServicesDropDown(int id)
+		{
+			var ps = InterfaceFactory.CreatePortfolioService(dummId);
+
+			//ICollection<int> selectedOptions = (from o in ps.GetOptionCategory(id).ServiceOptions select o.Id).ToList();
+
+			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Services..." } };
+			optionsList.AddRange(ps.GetServices().Select(l =>
+				new SelectListItem
+				{
+					Value = l.Id.ToString(),
+					Text = l.Name.ToString(),
+					//Selected = selectedOptions.Contains(l.Id)
+				}).ToList());
+			IEnumerable<SelectListItem> model = optionsList.OrderBy(c => c.Text);
+
+			return View("PartialViews/ServicesDropDown", model);
+		}
+
+		/// <summary>
+		/// Returns a styalized dropdown list of options for the corresponding service id and appropriate options selected
+		/// </summary>
+		/// <param name="serviceId"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult GetOptionsDropDown(int serviceId, int id = 0)
+		{
+			var ps = InterfaceFactory.CreatePortfolioService(dummId);
+
+			ICollection<int> selectedOptions = (from o in ps.GetOptionCategory(id).ServiceOptions select o.Id).ToList();
+
+			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Options..." } };
+			optionsList.AddRange(ps.GetService(serviceId).ServiceOptions.Select(l =>
+				new SelectListItem
+				{
+					Value = l.Id.ToString(),
+					Text = l.Name.ToString(),
+					Selected = selectedOptions.Contains(l.Id)
+				}).ToList());
+			IEnumerable<SelectListItem> model = optionsList.OrderBy(c => c.Text);
+
+			return View("PartialViews/OptionsDropDown", model);
 		}
 
 		/// <summary>
@@ -1697,12 +1776,12 @@ namespace Prometheus.WebUI.Controllers
 				return null;
 
 			var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());
-			byte[] fileData = null;		//file data to return
+			byte[] fileData = null;     //file data to return
 			try
 			{
 				fileData = System.IO.File.ReadAllBytes(Server.MapPath(path));
 			}
-			catch { /* ignored */} 
+			catch { /* ignored */}
 			return File(fileData, option.PictureMimeType);
 		}
 
