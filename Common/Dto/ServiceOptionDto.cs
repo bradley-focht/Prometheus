@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -8,11 +9,11 @@ namespace Common.Dto
 	{
 		[HiddenInput]
 		public int Id { get; set; }
-		
+
 		public int? CategoryId { get; set; }
 		[Display(Order = 2)]
-	    public int Popularity { get; set; }
-	    //FK
+		public int Popularity { get; set; }
+		//FK
 		[HiddenInput]
 		public int ServiceId { get; set; }
 		[Required(ErrorMessage = "Name is required")]

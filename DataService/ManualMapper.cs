@@ -36,7 +36,7 @@ namespace DataService
 			};
 		}
 
-		public static IServiceOptionDto MapServiceOptionToDto(IServiceOption src)
+		public static ServiceOptionDto MapServiceOptionToDto(IServiceOption src)
 		{
 			if (src == null) return null;
 			var prices = new List<IPriceDto>();
@@ -230,7 +230,7 @@ namespace DataService
 			}
 
 			//Processes
-				if (src.ServiceProcesses != null)
+			if (src.ServiceProcesses != null)
 			{
 				serviceDto.ServiceProcesses = new List<IServiceProcessDto>();
 				foreach (var process in src.ServiceProcesses)
@@ -547,7 +547,7 @@ namespace DataService
 
 		public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
 		{
-			if (src == null) { return null;}
+			if (src == null) { return null; }
 
 			var categoryDto = new OptionCategoryDto
 			{
