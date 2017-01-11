@@ -583,5 +583,42 @@ namespace DataService
 			};
 			return category;
 		}
+
+		public static IRoleDto MapRoleToDto(IRole src)
+		{
+			if (src == null) { return null; }
+
+			return new RoleDto()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ApproveServiceRequestAccess = src.ApproveServiceRequestAccess,
+				BusinessCatalogAccess = src.BusinessCatalogAccess,
+				RolePermissionAdjustmentAccess = src.RolePermissionAdjustmentAccess,
+				ServiceDetailsAccess = src.ServiceDetailsAccess,
+				ServiceRequestSubmissionAccess = src.ServiceRequestSubmissionAccess,
+				SupportCatalogAccess = src.SupportCatalogAccess,
+				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess
+
+			};
+		}
+
+		public static IRole MapDtoToRole(IRoleDto src)
+		{
+			if (src == null) { return null; }
+
+			return new Role()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ApproveServiceRequestAccess = src.ApproveServiceRequestAccess,
+				BusinessCatalogAccess = src.BusinessCatalogAccess,
+				RolePermissionAdjustmentAccess = src.RolePermissionAdjustmentAccess,
+				ServiceDetailsAccess = src.ServiceDetailsAccess,
+				ServiceRequestSubmissionAccess = src.ServiceRequestSubmissionAccess,
+				SupportCatalogAccess = src.SupportCatalogAccess,
+				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess
+			};
+		}
 	}
 }

@@ -98,6 +98,7 @@
     <Compile Include="Enums\Permissions\ServiceRequestSubmission.cs" />
     <Compile Include="Enums\Permissions\SupportCatalog.cs" />
     <Compile Include="Enums\Permissions\UserRoleAssignment.cs" />
+    <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\ModificationException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AutoMapperInitializer.cs" />

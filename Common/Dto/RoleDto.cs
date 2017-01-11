@@ -1,4 +1,5 @@
 ﻿using System;
+using Common.Enums.Permissions;
 
 namespace Common.Dto
 {
@@ -16,6 +17,13 @@ namespace Common.Dto
 		#endregion
 
 		#region Navigation properties
+		public ApproveServiceRequest ApproveServiceRequestAccess { get; set; }
+		public BusinessCatalog BusinessCatalogAccess { get; set; }
+		public SupportCatalog SupportCatalogAccess { get; set; }
+		public RolePermissionAdustment RolePermissionAdjustmentAccess { get; set; }
+		public ServiceDetails ServiceDetailsAccess { get; set; }
+		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
+		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 		#endregion
 	}
 }
