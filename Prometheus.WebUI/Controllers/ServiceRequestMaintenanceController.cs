@@ -130,7 +130,7 @@ namespace Prometheus.WebUI.Controllers
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to save new User Input, error: {exception.Message}";
 				if (input.Id == 0)                              //depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Text, id = input.ServiceOptionId }));
+					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Text, id = input.ServiceOptionId });
 				return RedirectToAction("UpdateUserInput", new { type = UserInputTypes.Text, id = input.Id });
 			}
 			TempData["MessageType"] = WebMessageType.Success;

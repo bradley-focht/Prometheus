@@ -7,7 +7,8 @@ using System.Linq;
 namespace DataService
 {
 	/// <summary>
-	/// Temporary replacement for Automapper. As you can see, it is of limited use. But hey, it works.
+	/// Lazy loading from entities in the dataservice layer to DTOs
+	/// 
 	/// </summary>
 	public class ManualMapper
 	{
@@ -62,7 +63,8 @@ namespace DataService
 				Cost = src.Cost,
 				Picture = src.Picture,
 				PictureMimeType = src.PictureMimeType,
-				Usage = src.Usage
+				Usage = src.Usage,
+				TextInputs = new List<ITextInputDto>() /* for lazy loading items later */
 			});
 
 			if (src.TextInputs != null)
@@ -532,15 +534,16 @@ namespace DataService
 		public static ServiceWorkUnitDto MapServiceWorkUnitToDto(IServiceWorkUnit src)
 		{
 			if (src == null) { return null; }
-
-			return new ServiceWorkUnitDto
+			Lazy<ServiceWorkUnitDto> unit = new Lazy<ServiceWorkUnitDto>(()=>
+			 new ServiceWorkUnitDto
 			{
 				Id = src.Id,
 				ServiceId = src.ServiceId,
 				Contact = src.Contact,
 				Responsibilities = src.Responsibilities,
 				Name = src.Name
-			};
+			});
+			return unit.Value;
 		}
 
 		public static ServiceWorkUnit MapDtoToServiceWorkUnit(IServiceWorkUnitDto src)
