@@ -5,15 +5,15 @@ namespace Common.Dto
     /// <summary>
     /// Just a marker interface at the moment
     /// </summary>
-    public interface IRequestable
+    public interface IRequestableDto
     {
 		//name, id, serviceId
 
 		//help tip?
 
-		ICollection<ITextInput> TextInputs { get; set; }
-	//	ICollection<IScriptedSelection> ScriptedSelecentionInputs { get; set; }
-	//	ICollection<ISelection> SelectionInputs { get; set; }
+		ICollection<ITextInputDto> TextInputs { get; set; }
+		ICollection<IScriptedSelectionDto> ScriptedSelecentionInputs { get; set; }
+		ICollection<ISelectionDto> SelectionInputs { get; set; }
 
 		//anything else required to be requestable. included items?
     }

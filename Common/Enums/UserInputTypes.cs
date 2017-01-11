@@ -1,4 +1,4 @@
-﻿namespace Prometheus.WebUI.Infrastructure
+﻿namespace Common.Enums
 {
 	public enum UserInputTypes
 	{

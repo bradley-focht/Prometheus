@@ -123,8 +123,11 @@ namespace Common.Dto
 		/// <summary>
 		/// Other services that this service depends on
 		/// </summary>
-		public virtual ICollection<IServiceDto> Dependencies { get; set; }
+		public virtual ICollection<int> ServiceIds { get; set; }
 
+		/// <summary>
+		/// Option categories
+		/// </summary>
 		public virtual ICollection<IOptionCategoryDto> OptionCategories { get; set; }
 	}
 

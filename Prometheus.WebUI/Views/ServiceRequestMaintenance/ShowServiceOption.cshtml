@@ -1,4 +1,6 @@
-﻿@using Prometheus.WebUI.Infrastructure
+﻿@using Common.Dto
+@using Common.Enums
+@using Prometheus.WebUI.Infrastructure
 @model Prometheus.WebUI.Models.ServiceRequestMaintenance.ServiceRequestOptionModel
 @{
 	ViewBag.Title = "ShowServiceOption";
@@ -14,6 +16,15 @@
 
 @section Content
 {
+@{
+	ServiceOptionDto option = null;
+	if (Model is ServiceOptionDto)
+	{
+		option = (ServiceOptionDto) Model.Option;
+	}
+}
+
+
 	<div class="dd">
 		<div class="dd-row">
 			<div class="dt-cell">Popularity</div>

@@ -1,35 +1,38 @@
 ﻿@model dynamic
 
 <div class="dd">
-@foreach (var property in ViewData.ModelMetadata.Properties)
-{
-	if (property.PropertyName.Contains("Id"))
+	@foreach (var property in ViewData.ModelMetadata.Properties)
 	{
-		continue;
-	}
+		switch (property.PropertyName)
+		{
+			case "Id":
+			case "ServiceOptionId":
+				<input type="hidden" value="@property.Model" name="@property.PropertyName"/>
+				break;
+			case "MultiLine":
+				<div class="dd-row">
+					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default" id="MultiLineTrue">
+							@Html.RadioButton("ServiceTypeRole", "true", false) Multi Line
+						</label>
 
-	<div class="dd-row">
-		<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-	@switch (property.PropertyName)
-	{
-		case "MultiLine":
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-default" id="MultiLineTrue">
-					@Html.RadioButton("ServiceTypeRole", "true", false) Multi Line
-				</label>
-
-				<label class="btn btn-default" id="MultiLineTrueFalse">
-					@Html.RadioButton("ServiceTypeRole", "false", false) Single Line
-				</label>
+						<label class="btn btn-default" id="MultiLineTrueFalse">
+							@Html.RadioButton("ServiceTypeRole", "false", false) Single Line
+						</label>
+					</div>
+				</div>
+				break;
+			default:
+				<div class="dd-row">
+					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="dd-cell">
+						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>
 			</div>
-			break;
+				break;
+		}
 	}
-
-	</div>
-
-
-
-}
-
-
 </div>
+

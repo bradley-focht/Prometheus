@@ -1,14 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
-namespace Prometheus.WebUI.Infrastructure
+namespace Common.Dto
 {
-	public class SelectionInput : ISelection 
+	public class SelectionInputDto : ISelectionDto 
 	{
 		[HiddenInput]
 		public int Id { get; set; }
+
+		public int ServiceOptionId { get; set; }
+
 		[Display(Order = 1, Name="Display Order")]
 		public string DisplayName { get; set; }
 

@@ -51,7 +51,7 @@ namespace DataService.Models
         public virtual ICollection<ServiceProcess> ServiceProcesses { get; set; }
         public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
         public virtual ICollection<OptionCategory> OptionCategories { get; set; }
-        public virtual ICollection<Service> Dependencies { get; set; }
+        public virtual ICollection<int> ServiceIds { get; set; }
         #endregion
 	}
 }

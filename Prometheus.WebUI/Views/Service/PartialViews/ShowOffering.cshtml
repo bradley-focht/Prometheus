@@ -16,9 +16,13 @@
 		{
 			case "Id":  /*do nothing for these attributes */
 			case "ServiceId":
+			case "ServiceOptionId":
 			case "DateCreated":
 			case "DateUpdated":
 			case "CreatedByUserId":
+			case "TextInputs":
+			case "ScriptedSelecentionInputs":
+			case "SelectionInputs":
 			case "UpdatedByUserId":
 			case "PictureMimeType":
 			case "Popularity":
@@ -54,7 +58,7 @@
 						}
 						else
 						{
-							<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", new {id = Model.Id})" alt="Picture"/>
+							<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture","Service", new {id = Model.Id})" alt="Picture"/>
 						}
 					</div>
 					break;

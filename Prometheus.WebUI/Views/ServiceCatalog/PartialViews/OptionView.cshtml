@@ -40,7 +40,7 @@
 						@if (Model.Picture != null)
 						{
 							<div class="float-left-div" style="border: 1px solid #ddd; margin-right: 10px;">
-								<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" width="150" height="150" alt="picture" />
+								<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" alt="picture" />
 							</div>
 						}
 						@Html.Raw(Model.Description)

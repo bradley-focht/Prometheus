@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Common.Dto;
 using Common.Enums.Entities;
 
 namespace DataService.Models
@@ -40,5 +41,9 @@ namespace DataService.Models
 		public virtual Service Service { get; set; }
 		public int? OptionCategoryId { get; set; }
 		#endregion
+
+		public ICollection<ITextInput> TextInputs { get; set; }
+		//public ICollection<IScriptedSelection> ScriptedSelecentionInputs { get; set; }
+		//public ICollection<ISelectionDto> SelectionInputs { get; set; }
 	}
 }

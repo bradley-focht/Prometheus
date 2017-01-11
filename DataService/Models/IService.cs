@@ -31,6 +31,6 @@ namespace DataService.Models
         ICollection<ServiceProcess> ServiceProcesses { get; set; }
         ICollection<ServiceOption> ServiceOptions { get; set; }
         ICollection<OptionCategory> OptionCategories { get; set; }
-        ICollection<Service> Dependencies { get; set; }
+        ICollection<int> ServiceIds { get; set; }
 	}
 }

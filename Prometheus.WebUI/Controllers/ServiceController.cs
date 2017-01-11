@@ -677,26 +677,24 @@ namespace Prometheus.WebUI.Controllers
 					var existingOption = ps.GetServiceOption(option.Id);
 					if (existingOption.Picture != null)
 					{
-						var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());    //catch error if key is not in web.config
+						var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());
+							//catch error if key is not in web.config
 						try
 						{
 							System.IO.File.Delete(Server.MapPath(path));
 						}
 						catch (Exception exception)
 						{
-							TempData["MessageType"] = WebMessageType.Failure;                                                       //unable to delete, exit at this point
+							TempData["MessageType"] = WebMessageType.Failure; //unable to delete, exit at this point
 							TempData["Message"] = $"Failed to delete existing file, error: {exception.Message}";
-							return RedirectToAction("UpdateServiceOption", new { id = option.Id });
+							return RedirectToAction("UpdateServiceOption", new {id = option.Id});
 						}
-						option.PictureMimeType = image.ContentType;
-						option.Picture = Guid.NewGuid();
 					}
 				}
-				else
-				{
-					option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
+
+				option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
 					option.Picture = Guid.NewGuid();
-				}
+
 				try
 				{
 					var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString()); //save file
@@ -1766,7 +1764,6 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		[ChildActionOnly]
 		public FileContentResult GetOptionPicture(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(id);

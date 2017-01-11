@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;
+using Prometheus.WebUI.Models.SystemAccess.Prometheus.WebUI.Models.Service;
 
 
 namespace Prometheus.WebUI.Controllers
@@ -12,12 +14,18 @@ namespace Prometheus.WebUI.Controllers
     //[Authorize]
     public class SystemAccessController : Controller
     {
-        // GET: SystemAccess
+        /// <summary>
+		/// Returns system access home page 
+		/// </summary>
+		/// <returns></returns>
         public ActionResult Index()
         {
             return View();
         }
-
+		/// <summary>
+		/// Returns default permissions and roles page for initial crud operations
+		/// </summary>
+		/// <returns></returns>
         public ActionResult PermissionsAndRoles()
         {
 			return View("PermissionsAndRoles", new RoleModel { Role = new RoleDto() });
@@ -26,7 +34,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <summary>
 		/// Default page to show and edit roles
 		/// </summary>
-		/// <param name="id"></param>
+		/// <param name="id">role id</param>
 		/// <returns></returns>
         public ActionResult ShowRolePermissions(int id)
         {
@@ -63,8 +71,12 @@ namespace Prometheus.WebUI.Controllers
             return View("UpdateRole", new RoleModel {Role = new RoleDto(), Action = "Add"});
         }
 
-
-        public ActionResult UpdateRole()
+		/// <summary>
+		/// Retrieve a role to update
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+        public ActionResult UpdateRole(int id)
         {
             return View();
         }
@@ -76,25 +88,52 @@ namespace Prometheus.WebUI.Controllers
 	        {
 		        TempData["MessageType"] = WebMessageType.Failure;
 		        TempData["Message"] = "Failed to save Role due to invalid data";
-
-		        return RedirectToAction("UpdateRole");
+		        if (role.Id == 0)
+		        {
+			        RedirectToAction("AddRole");
+		        }
+		        return RedirectToAction("UpdateRole", new {id = role.Id});	//return to last page
 	        }
+	        try
+	        {
+		        //perform save
+	        }
+	        catch (Exception exception)
+	        {
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to save Role, error: {exception.Message}";
+				if (role.Id == 0)
+				{
+					RedirectToAction("AddRole");
+				}
+				return RedirectToAction("UpdateRole", new { id = role.Id });    //return to last page
+			}
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved Role";
-			return RedirectToAction("ShowRolePermissions", role.Id);
+			return RedirectToAction("ShowRolePermissions");
         }
 
 
         public ActionResult ConfirmDeleteRole()
         {
+			ConfirmDeleteModel model = new ConfirmDeleteModel();
+
             return View();
         }
 
+		/// <summary>
+		/// Complete the deletion process
+		/// </summary>
+		/// <param name="id">role id</param>
+		/// <returns></returns>
         [HttpPost]
-        public ActionResult DeleteRole()
+        public ActionResult DeleteRole(int id)
         {
-            return RedirectToAction("ShowRolePermissions");
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Successfully deleted Role";
+
+			return RedirectToAction("ShowRolePermissions");
         }
         public ActionResult UserAccess()
         {

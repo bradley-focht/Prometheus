@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -89,5 +90,9 @@ namespace Common.Dto
 		#endregion
 		#region Navigation properties
 		#endregion
+
+		public virtual ICollection<ITextInputDto> TextInputs { get; set; }
+		public virtual ICollection<IScriptedSelectionDto> ScriptedSelecentionInputs { get; set; }
+		public virtual ICollection<ISelectionDto> SelectionInputs { get; set; }
 	}
 }

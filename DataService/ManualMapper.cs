@@ -1,4 +1,5 @@
-﻿using Common.Dto;
+﻿using System;
+using Common.Dto;
 using DataService.Models;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,11 +37,16 @@ namespace DataService
 			};
 		}
 
+		/// <summary>
+		/// Lazy load a service option entity to a DTO
+		/// </summary>
+		/// <param name="src">source entity</param>
+		/// <returns></returns>
 		public static ServiceOptionDto MapServiceOptionToDto(IServiceOption src)
 		{
 			if (src == null) return null;
-			return new ServiceOptionDto
-			{
+
+			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(()=>new ServiceOptionDto {
 				Id = src.Id,
 				CategoryId = src.OptionCategoryId,
 				Popularity = src.Popularity,
@@ -57,13 +63,29 @@ namespace DataService
 				Picture = src.Picture,
 				PictureMimeType = src.PictureMimeType,
 				Usage = src.Usage
-			};
+			});
+
+			if (src.TextInputs != null)
+			{
+				foreach (var t in src.TextInputs)
+				{
+					option.Value.TextInputs.Add(MapTextInputToDto(t));	
+				}
+			}
+
+			return option.Value;
 		}
 
+		/// <summary>
+		/// Convert a dto to the service option
+		/// </summary>
+		/// <param name="src">source dto</param>
+		/// <returns></returns>
 		public static ServiceOption MapDtoToServiceOption(IServiceOptionDto src)
 		{
 			if (src == null) return null;
-			return new ServiceOption
+
+			ServiceOption serviceOption = new ServiceOption
 			{
 				Id = src.Id,
 				OptionCategoryId = src.CategoryId,
@@ -82,6 +104,14 @@ namespace DataService
 				PictureMimeType = src.PictureMimeType,
 				Usage = src.Usage
 			};
+
+			if (src.TextInputs != null)									//deal with text inputs
+			{
+				serviceOption.TextInputs = new List<ITextInput>();
+				foreach(var t in src.TextInputs)
+					serviceOption.TextInputs.Add(MapDtoToTextInput(t));
+			}
+			return serviceOption;
 		}
 		public static Service MapDtoToService(IServiceDto src)
 		{
@@ -98,7 +128,9 @@ namespace DataService
 				ServiceTypeProvision = src.ServiceTypeProvision,
 				ServiceTypeRole = src.ServiceTypeRole,
 				ServiceBundleId = src.ServiceBundleId,
-				Popularity = src.Popularity
+				Popularity = src.Popularity,
+				ServiceIds = src.ServiceIds,
+				
 			};
 		}
 
@@ -123,7 +155,7 @@ namespace DataService
 				ServiceTypeRole = src.ServiceTypeRole,
 				ServiceBundleId = src.ServiceBundleId,
 				Popularity = src.Popularity,
-
+				ServiceIds = src.ServiceIds,
 				LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
 			};
 
@@ -208,7 +240,7 @@ namespace DataService
 			}
 
 			//Processes
-				if (src.ServiceProcesses != null)
+			if (src.ServiceProcesses != null)
 			{
 				serviceDto.ServiceProcesses = new List<IServiceProcessDto>();
 				foreach (var process in src.ServiceProcesses)
@@ -234,7 +266,7 @@ namespace DataService
 				Description = src.Description,
 				BusinessValue = src.BusinessValue,
 				Measures = src.Measures,
-				Services =  new List<IServiceDto>()
+				Services = new List<IServiceDto>()
 			};
 
 			//just copy the minimum needed at this time
@@ -242,10 +274,10 @@ namespace DataService
 			{
 				foreach (var service in src.Services)
 				{
-					serviceBundle.Services.Add(new ServiceDto {Id = service.Id, Name = service.Name});
+					serviceBundle.Services.Add(new ServiceDto { Id = service.Id, Name = service.Name });
 				}
 			}
-			
+
 			return serviceBundle;
 		}
 
@@ -527,7 +559,7 @@ namespace DataService
 
 		public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
 		{
-			if (src == null) { return null;}
+			if (src == null) { return null; }
 
 			var categoryDto = new OptionCategoryDto
 			{
@@ -569,5 +601,48 @@ namespace DataService
 			};
 			return category;
 		}
+
+		#region User Inputs
+
+		/// <summary>
+		/// Lazy loads a text input mapped to a dto
+		/// </summary>
+		/// <param name="src">source entity</param>
+		/// <returns></returns>
+		public static TextInputDto MapTextInputToDto(ITextInput src)
+		{
+			if (src == null) return null;
+			Lazy<TextInputDto> textInput = new Lazy<TextInputDto>(()=>new TextInputDto
+			{
+				DisplayName = src.DisplayName,
+				Id = src.Id,
+				ServiceOptionId = src.ServiceOptionId,
+				MultiLine = src.MultiLine,
+			    HelpToolTip = src.HelpToolTip
+			});
+
+			return textInput.Value;
+		}
+
+		/// <summary>
+		/// Map dto to its entity
+		/// </summary>
+		/// <param name="src">source dto</param>
+		/// <returns></returns>
+		public static TextInput MapDtoToTextInput(ITextInputDto src)
+		{
+			if (src == null) return null;
+			return new TextInput
+			{
+				DisplayName = src.DisplayName,
+				Id = src.Id,
+				MultiLine = src.MultiLine,
+				HelpToolTip = src.HelpToolTip
+			};
+		}
+
+
+		#endregion
+
 	}
 }

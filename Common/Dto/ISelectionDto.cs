@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace Prometheus.WebUI.Infrastructure
+namespace Common.Dto
 {
-	public interface ISelection : ISelectable
+	public interface ISelectionDto : ISelectable
 	{
 		IEnumerable<string> SelectItems { get; set; }
 	}

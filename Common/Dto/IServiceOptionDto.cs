@@ -2,7 +2,7 @@
 
 namespace Common.Dto
 {
-	public interface IServiceOptionDto : IOffering, IRequestable, IUserCreatedEntityDto
+	public interface IServiceOptionDto : IOffering, IRequestableDto, IUserCreatedEntityDto
 	{
 		int? CategoryId { get; set; }
         Guid? Picture { get; set; }
