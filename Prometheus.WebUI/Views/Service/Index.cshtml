@@ -1,47 +1,47 @@
 ﻿@model Prometheus.WebUI.Models.Service.ServiceViewModel
 @{
-    ViewBag.Title = "Services ";
-    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                                new KeyValuePair<string, string>(ViewBag.Title, "#")};
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Services ";
+	ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+																new KeyValuePair<string, string>(ViewBag.Title, "#")};
+	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 @Html.Partial("PartialViews/ViewControls", Model.ControlsModel)
 @if (Model.Services != null && Model.Services.Any())
 {
-    
-        foreach (var service in Model.Services)
-        {
-            <div style="display: flex; flex-direction: row; margin-top: 10px;">
-                <div class="color-bar"></div>
-                <div style="display: flex; flex-direction: column">
-                    <div>
-                        @Html.ActionLink(service.Name, "Show", new {section = "General", id = service.Id}, new {@class = "font-title1"})
-                    </div>
-                    <div style="max-width: 500px;">
-                        @Html.Raw(service.Description)
-                    </div>
-                    <div>
-                        <div class="flex-row">
-                            <div class="dt-cell">
-                                Service Owner
-                            </div>
-                            <div>
-                                @service.ServiceOwner
-                            </div>
-                        </div>
-                        <div class="flex-row">
-                            <div class="dt-cell">
-                                Status
-                            </div>
-                            <div>
-                                @service.LifecycleStatusDto.Name
-                            </div>
-                        </div>
-                    </div>
-                </div>
+	<div class="flex-row" style="flex-wrap: wrap">
+		@foreach (var service in Model.Services)
+		{
+			<div class="flex-row" style="margin-top: 10px; margin-right: 10px; flex: 1;">
+				<div class="color-bar"></div>
+				<div class="flex-col">
+					<div>
+						@Html.ActionLink(service.Name, "Show", new { section = "General", id = service.Id }, new { @class = "font-title1" })
+					</div>
+					<div>
+						@Html.Raw(service.Description)
+					</div>
+					<div>
+						<div>
+							<div class="font-title3">
+								Service Owner
+							</div>
+							<div>
+								@service.ServiceOwner
+							</div>
+						</div>
+						<div>
+							<div class="font-title3">
+								Status
+							</div>
+							<div>
+								@service.LifecycleStatusDto.Name
+							</div>
+						</div>
+					</div>
+				</div>
 
-            </div>
-        }
-
+			</div>
+		}
+	</div>
 }

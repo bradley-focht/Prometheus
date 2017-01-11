@@ -5,7 +5,7 @@
 .font-title1 {
     color: #151515;
     font-size: 1.6em;
-    font-weight: 300;
+    font-weight: 600;
     color: #17a7f8;
 }
 
@@ -32,7 +32,8 @@
 .font-title3 {
     color: #333333;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 1em;
+	margin-top: 10px;
 }
 
 .instructions-div {
@@ -79,7 +80,12 @@
 
 .flex-container {
     display: flex;
-    flex-direction: column;
+	flex-direction: column;
+}
+
+.flex-container-col {
+	display: flex;
+	flex-direction: column;
 }
 
 .flex-container-row {
@@ -119,16 +125,14 @@
     border-bottom-left-radius: 4px;
     border-top-left-radius: 4px;
     width: 10px;
-
     position: relative;
     margin-right: 10px;
     background-color: #17a7f8; 
 }
 
 
-.std-table {
-    padding: 10px;
-    width: 100%;
+.highlight-cell {
+	  background-color: #e5e5e5;
 }
 
 .std-cell {
@@ -138,8 +142,8 @@
 
 .content-cell {
     text-align: center;
-    vertical-align: central;
-    padding-top: 10px;
+    vertical-align: bottom;
+    margin: 20px;
 }
 
 .std-div {
@@ -185,7 +189,6 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
-    -o-user-select: none;
     user-select: none;
 }
 
@@ -241,7 +244,6 @@
 }
 
 .dd-cell {
-    vertical-align: bottom;
     text-align: left;
     padding-left: 5px;
     padding-bottom: 10px;
@@ -553,4 +555,22 @@
 
 .checkbox-success input[type="checkbox"]:checked + label::after {
     color: #fff;
+}
+
+.cat-box {
+	max-width: 200px;
+}
+.cat-ul {
+	 list-style-type: none;
+}
+
+.cat-ul > li:before {    
+    font-family: 'FontAwesome';
+    content: '\f054';
+	font-size: 0.6em;
+	margin: 0 5px 5px -15px;	
+}
+
+.cat-ul > li > span {
+	font-size: 1em;
 }

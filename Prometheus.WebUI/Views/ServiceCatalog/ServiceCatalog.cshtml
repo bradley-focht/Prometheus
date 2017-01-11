@@ -1,0 +1,64 @@
+﻿@using Common.Dto
+@using Common.Enums.Entities
+@model Prometheus.WebUI.Models.ServiceCatalog.CatalogModel
+
+@{
+	ViewBag.Title = Model.Catalog == ServiceTypeRole.Business ? "Business Catalog" : "Technical Catalog";
+
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>(ViewBag.Title, "#")
+	};
+	}
+
+<div class="flex-row" style="justify-content: space-around">
+
+	@if (Model.Catalog == ServiceTypeRole.Business)
+	{
+		<div><span class="btn btn-default active">Business Catalog</span></div>
+		<div>@Html.ActionLink("Technical Catalog", "Technical", null, new { @class = "btn btn-primary" })</div>
+	}
+	else
+	{
+		<div>@Html.ActionLink("Business Catalog", "Business", null, new { @class = "btn btn-primary" })</div>
+		<div><span class="btn btn-default active">Technical Catalog</span></div>
+	}
+</div>
+
+<h2>Future home of the Service Catalog</h2>
+
+<div style="display: flex; flex-flow: wrap"></div>
+@if (Model.CatalogItems != null && Model.CatalogItems.Any())
+{
+	foreach (var service in Model.CatalogItems)
+	{
+		<div class="panel-primary" style="display: inline-block; width: 200px;">
+			<div class="panel-heading">
+				@service.ServiceName
+			</div>
+			<div class="panel-body">
+				<ul class="cat-ul">
+					@foreach (var item in service.Options)
+					{
+						string optionType = item is IOptionCategoryDto ? "cat" : "opt";
+						<li>
+							<span>
+								@Html.ActionLink(item.Name, "Details", new {serviceId = item.ServiceId, type = optionType, id = item.Id })
+							</span>
+						</li>
+					}
+				</ul>
+
+			</div>
+			<div class="panel-footer">@Html.ActionLink("View all", "ServiceOptions", new { catalog = Model.Catalog, id= service.ServiceId })</div>
+		</div>
+	}
+}
+else
+{
+	<div class="alert alert-message alert-warning">There are currently no Services available.</div>
+}
+
+

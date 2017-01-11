@@ -15,8 +15,11 @@
 
 @section Content
 {
+    <div class="title-div">
+        Confirm Deletion
+    </div>
 
-        @using (Html.BeginForm(Model.DeleteAction, "Service", FormMethod.Post))
+    @using (Html.BeginForm(Model.DeleteAction, "Service", FormMethod.Post))
         {
             <input type="hidden" name="Id" value="@Model.Id"/>
             <input type="hidden" name="ServiceId" value="@Model.ServiceId"/>

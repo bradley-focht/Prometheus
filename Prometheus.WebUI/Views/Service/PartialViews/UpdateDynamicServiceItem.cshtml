@@ -10,7 +10,8 @@
         {
             <tr>
                 <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                @if (property.PropertyName == "Description" || property.PropertyName == "Responsibilities" || property.PropertyName == "Outcome")
+                @if (property.PropertyName == "Description" || property.PropertyName == "Responsibilities" || property.PropertyName == "Outcome" 
+                    || property.PropertyName == "Benefits" || property.PropertyName == "Improvements")
                 {
                     <td class="dd-cell">@Html.TextArea(property.PropertyName, new { @class = "ckeditor" })</td>
                 }
@@ -33,7 +34,7 @@
                 <td class="dd-cell">
                     <div class="input-group date">
                         @Html.TextBox(property.PropertyName, (DateTime) property.Model > DateTime.MinValue ? ((DateTime) property.Model).ToString("MM/dd/yyyy") : "", new {@class = "form-control"})
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-th"></i></span>
+                        <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
                         
                     </div>
                     @Html.ValidationMessage(property.PropertyName)

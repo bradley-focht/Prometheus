@@ -18,7 +18,7 @@
 }
 
 @section Content
-    {
+{
     @if (Model.Service.Id > 0)
     {
         <div class="panel-heading">
@@ -33,7 +33,7 @@
                 case null:
                     goto case "General";
                 case "Documents":
-                    @Html.Partial("PartialViews/ShowDocuments", (ServiceDto)Model.Service)
+                    @Html.Action("ShowServiceDocuments", new { id = Model.Service.Id, pageId = Model.CurrentPage })
                     footerAvail = false;
                     break;
                 case "General":
@@ -41,7 +41,7 @@
                     controlAvail = true;
                     break;
                 case "Options":
-                    @Html.Action("ShowServiceOptions", (ServiceDto)Model.Service)
+                    @Html.Action("ShowServiceOptions", new {id=Model.Service.Id, pageId = Model.CurrentPage})
                     footerAvail = false;
                     break;
                 default:
@@ -54,7 +54,7 @@
 
         if (footerAvail)
         {
-            <div class="flex-container">
+            <div class="flex-container-col">
                 <div class="panel-footer">
                     <div class="float-right-div">
                         @if (controlAvail)

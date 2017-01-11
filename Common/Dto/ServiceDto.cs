@@ -85,21 +85,34 @@ namespace Common.Dto
 		public virtual ILifecycleStatusDto LifecycleStatusDto { get; set; }
 
 		/// <summary>
+		/// All collections below are part of the service package that goes with each service
+		/// </summary>
+		public virtual ICollection<IServiceGoalDto> ServiceGoals { get; set; }
+		public virtual ICollection<IServiceSwotDto> ServiceSwots { get; set; }
+		public virtual ICollection<IServiceContractDto> ServiceContracts { get; set; }
+		public virtual ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
+		public virtual ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
+		/// <summary>
+		/// Used for basic document management
+		/// </summary>
+		public ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
+		/// <summary>
+		/// Term is ambiguous, may be Gartner or ITIL by definition
+		/// </summary>
+		public ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
+
+		/// <summary>
 		/// What you can get when you order this service
 		/// </summary>
 		public virtual ICollection<IServiceOptionDto> ServiceOptions { get; set; }
 
 		/// <summary>
-		/// All collections below are part of the service package that goes with each service
+		/// Other services that this service depends on
 		/// </summary>
-		public ICollection<IServiceGoalDto> ServiceGoals { get; set; }
-		public ICollection<IServiceSwotDto> ServiceSwots { get; set; }
-		public ICollection<IServiceContractDto> ServiceContracts { get; set; }
-		public ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }
-		public ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
-		public ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
-		public ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
-		public ICollection<IServiceDto> Dependents { get; set; }
-		#endregion
+		public virtual ICollection<IServiceDto> Dependencies { get; set; }
+
+		public virtual ICollection<IOptionCategoryDto> OptionCategories { get; set; }
 	}
+
+	#endregion
 }

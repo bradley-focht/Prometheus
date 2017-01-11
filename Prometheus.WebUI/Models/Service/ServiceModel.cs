@@ -3,17 +3,10 @@ namespace Prometheus.WebUI.Models.Service
 {
     public class ServiceModel
     {
-        public ServiceModel()
-        {
-            
-        }
-        public ServiceModel(IServiceDto service, string selectedSection)     
-        {
-            Service = service;
-            SelectedSection = selectedSection;
-        }
-
         public IServiceDto Service { get; set; }
         public string SelectedSection { get; set; }
+		public int CurrentPage { get; set; }
+		public int PageCount { get; set; }
+	    public int ServiceId => Service.Id;
     }
 }

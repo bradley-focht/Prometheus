@@ -210,12 +210,32 @@ namespace DataService
 			}
 
 			//Options
-			if (src.ServiceRequestOptions != null)
+			if (src.ServiceOptions != null)
 			{
 				serviceDto.ServiceOptions = new List<IServiceOptionDto>();
-				foreach (var option in src.ServiceRequestOptions)
+				foreach (var option in src.ServiceOptions)
 				{
 					serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
+				}
+			}
+			//Categories
+			if (src.OptionCategories != null)
+			{
+				serviceDto.OptionCategories = new List<IOptionCategoryDto>();
+
+				foreach (var category in src.OptionCategories)
+				{
+					serviceDto.OptionCategories.Add(MapOptionCategoryToDto(category));
+				}
+			}
+
+			//Processes
+				if (src.ServiceProcesses != null)
+			{
+				serviceDto.ServiceProcesses = new List<IServiceProcessDto>();
+				foreach (var process in src.ServiceProcesses)
+				{
+					serviceDto.ServiceProcesses.Add(MapServiceProcessToDto(process));
 				}
 			}
 
@@ -527,16 +547,25 @@ namespace DataService
 
 		public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
 		{
-			if (src == null) { return null; }
+			if (src == null) { return null;}
 
-			return new OptionCategoryDto
+			var categoryDto = new OptionCategoryDto
 			{
 				Id = src.Id,
 				Popularity = src.Popularity,
-				ServiceId = src.Id,
+				ServiceId = src.ServiceId,
 				Name = src.Name,
 				Description = src.Description
 			};
+			if (src.ServiceOptions != null)
+			{
+				categoryDto.ServiceOptions = new List<ServiceOptionDto>();
+				foreach (var option in src.ServiceOptions)
+				{
+					categoryDto.ServiceOptions.Add(MapServiceOptionToDto(option));
+				}
+			}
+			return categoryDto;
 
 		}
 
@@ -544,14 +573,15 @@ namespace DataService
 		{
 			if (src == null) { return null; }
 
-			return new OptionCategory
+			OptionCategory category = new OptionCategory
 			{
 				Id = src.Id,
 				Popularity = src.Popularity,
-				ServiceId = src.Id,
+				ServiceId = src.ServiceId,
 				Name = src.Name,
 				Description = src.Description
 			};
+			return category;
 		}
 	}
 }

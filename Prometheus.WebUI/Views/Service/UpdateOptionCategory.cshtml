@@ -1,11 +1,11 @@
-﻿@model Prometheus.WebUI.Models.Service.OptionCategoryModel
+﻿@model Prometheus.WebUI.Models.Service.UpdateOptionCategoryModel
 @{
     ViewBag.Title = "Services";
     ViewBag.SubTitle = Model.Action + " Option Category";
     ViewBag.Links = new List<KeyValuePair<string, string>> {
                                                                 new KeyValuePair<string, string>("Home", "Home"),
                                                                new KeyValuePair<string, string>("Services", "Service/Index"),
-                                                                new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Swot/{Model.ServiceId}"),
+                                                                new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Options/{Model.ServiceId}"),
                                                                   new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
@@ -18,13 +18,13 @@
     <div class="panel">
     @using (Html.BeginForm("SaveOptionCategory", "Service", FormMethod.Post))
     {
-        @Html.Partial("PartialViews/UpdateOptionCategory", Model.OptionCategory)
+        @Html.Partial("PartialViews/UpdateOptionCategory", Model)
   
 
         <div class="flex-container">
             <div class="panel-footer">
                 <div class="float-right-div">
-                    @Html.ActionLink("Back", "ShowServiceSectionItem", new { serviceId = Model.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
+                    @Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
                     <input type="submit" value="Save" id="Save" class="btn btn-primary" />
                 </div>
             </div>

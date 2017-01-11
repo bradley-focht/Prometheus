@@ -317,19 +317,17 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\CatalogController.cs" />
+    <Compile Include="Controllers\ServiceCatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
+    <Compile Include="Helpers\FinancialCalculator.cs" />
     <Compile Include="Helpers\InterfaceFactory.cs" />
-    <Compile Include="Helpers\ITile.cs" />
     <Compile Include="Helpers\ServiceIndexHelper.cs" />
     <Compile Include="Helpers\ServiceDocumentHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
-    <Compile Include="Helpers\Tile.cs" />
-    <Compile Include="Helpers\TileSets.cs" />
     <Compile Include="Helpers\Enums\WebMessageType.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -338,11 +336,18 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Models\ServiceCatalog\CatalogItem.cs" />
+    <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
+    <Compile Include="Models\ServiceCatalog\ICatalogItem.cs" />
+    <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
+    <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
+    <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\DeleteSectionItemModel.cs" />
     <Compile Include="Models\Service\LifecycleStatusesModel.cs" />
-    <Compile Include="Models\Service\OptionCategoryModel.cs" />
+    <Compile Include="Models\Service\UpdateOptionCategoryModel.cs" />
+    <Compile Include="Models\Service\ShowOptionCategoryModel.cs" />
     <Compile Include="Models\Service\ServiceBundleModel.cs" />
     <Compile Include="Models\Service\ServiceOptionModel.cs" />
     <Compile Include="Models\Service\ServiceSectionModel.cs" />
@@ -410,7 +415,7 @@
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
     <Content Include="Views\SystemAccess\UserAccess.cshtml" />
     <Content Include="Views\ServicePortfolio\Update.cshtml" />
-    <Content Include="Views\Catalog\BusinessCatalog.cshtml" />
+    <Content Include="Views\ServiceCatalog\ServiceCatalog.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDynamicServiceItem.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowGeneral.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateDynamicServiceItem.cshtml" />
@@ -425,10 +430,15 @@
     <Content Include="Views\SystemAccess\UpdateRole.cshtml" />
     <Content Include="Views\Service\PartialViews\ViewControls.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOptionsTable.cshtml" />
-    <Content Include="Views\Service\PartialViews\UpdateServiceOption.cshtml" />
+    <Content Include="Views\Service\UpdateServiceOption.cshtml" />
     <Content Include="Views\Service\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateOptionCategory.cshtml" />
     <Content Include="Views\Service\ShowServiceOption.cshtml" />
+    <Content Include="Views\Service\PartialViews\ShowOptionCategory.cshtml" />
+    <Content Include="Views\Service\ShowOptionCategory.cshtml" />
+    <Content Include="Views\ServiceCatalog\Details.cshtml" />
+    <Content Include="Views\ServiceCatalog\PartialViews\OptionView.cshtml" />
+    <Content Include="Views\ServiceCatalog\ServiceOptions.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

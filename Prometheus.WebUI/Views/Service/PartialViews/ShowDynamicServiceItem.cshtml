@@ -1,43 +1,44 @@
 ﻿@model dynamic
-    
-@if (Model != null)
-{
-    <table>
-        @foreach (var property in ViewData.ModelMetadata.Properties)
-        {
-            if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Created") || property.PropertyName.Contains("Updated"))
-            {
-                continue;
-            }
-            <tr>
-                <td class="dt-cell">
-                    @(property.DisplayName ?? property.PropertyName)
-                </td>
-                @if (property.PropertyName.Contains("Date"))
-                    {
-                        <td class="dd-cell">
-                            @if (property.Model != null)
-                            {
-                                {
-                                    @Html.Raw(((DateTime) property.Model).ToString("d"))
-                                }
-                            }
-                        </td>
-    }
-    else
-    {
-        <td class="dd-cell">@Html.Raw(property.Model)</td>
-    }
+    <div style="margin-right: auto; margin-left: auto;">
+	@if (Model != null)
+	{
+		<table>
+			@foreach (var property in ViewData.ModelMetadata.Properties)
+			{
+				if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Created") || property.PropertyName.Contains("Updated"))
+				{
+					continue;
+				}
+				<tr>
+					<td class="dt-cell">
+						@(property.DisplayName ?? property.PropertyName)
+					</td>
+					@if (property.PropertyName.Contains("Date"))
+					{
+						<td class="dd-cell">
+							@if (property.Model != null)
+							{
+								{
+									@Html.Raw(((DateTime)property.Model).ToString("d"))
+								}
+							}
+						</td>
+					}
+					else
+					{
+						<td class="dd-cell">@Html.Raw(property.Model)</td>
+					}
 
-            </tr>
-    }
+				</tr>
+			}
 
 
-    </table>
-    }
-    else
-    {
-        <section class="alert alert-warning">
-            Data no longer exists.
-        </section>
-    }
+		</table>
+	}
+	else
+	{
+		<section class="alert alert-warning">
+			Data no longer exists.
+		</section>
+	}
+</div>

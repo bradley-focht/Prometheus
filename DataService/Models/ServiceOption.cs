@@ -31,6 +31,7 @@ namespace DataService.Models
 		#region Navigation properties
 		public virtual Service Service { get; set; }
 		public virtual ICollection<Price> Prices { get; set; }
+		public int? OptionCategoryId { get; set; }
 		#endregion
 	}
 }
