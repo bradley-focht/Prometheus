@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Common.Enums.Permissions;
+﻿using Common.Enums.Permissions;
+using System.Collections.Generic;
 
 namespace DataService.Models
 {

@@ -80,6 +80,7 @@
     <Compile Include="Models\ICreatedEntity.cs" />
     <Compile Include="Models\ILifecycleStatus.cs" />
     <Compile Include="Models\IOptionCategory.cs" />
+    <Compile Include="Models\IPrice.cs" />
     <Compile Include="Models\IRole.cs" />
     <Compile Include="Models\IService.cs" />
     <Compile Include="Models\IServiceBundle.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Models\IUserCreatedEntity.cs" />
     <Compile Include="Models\LifecycleStatus.cs" />
     <Compile Include="Models\OptionCategory.cs" />
+    <Compile Include="Models\Price.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ServiceBundle.cs" />
     <Compile Include="Models\ServiceContract.cs" />

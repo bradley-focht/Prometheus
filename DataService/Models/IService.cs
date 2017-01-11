@@ -1,6 +1,4 @@
-﻿using Common.Enums;
-using System.Collections.Generic;
-using Common.Dto;
+﻿using System.Collections.Generic;
 using Common.Enums.Entities;
 
 namespace DataService.Models
