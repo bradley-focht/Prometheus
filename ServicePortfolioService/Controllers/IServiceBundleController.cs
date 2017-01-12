@@ -1,6 +1,6 @@
-﻿using Common.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Common.Dto;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -39,12 +39,12 @@ namespace ServicePortfolioService.Controllers
 		/// <returns>True if successful</returns>
 		bool DeleteServiceBundle(int serviceBundleId);
 
-        /// <summary>
-        /// Update a service bundle
-        /// </summary>
-        /// <param name="serviceBundle"></param>
-        /// <returns></returns>
-	    IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle);
+		/// <summary>
+		/// Update a service bundle
+		/// </summary>
+		/// <param name="serviceBundle"></param>
+		/// <returns></returns>
+		IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle);
 
 	}
 }

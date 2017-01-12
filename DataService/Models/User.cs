@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -23,7 +24,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 		#endregion
 		#region Navigation properties
-		public virtual Role Role { get; set; }
+		public virtual ICollection<Role> Roles { get; set; }
 		#endregion
 	}
 }

@@ -1,4 +1,6 @@
-﻿namespace DataService.Models
+﻿using System.Collections.Generic;
+
+namespace DataService.Models
 {
 	public interface IUser : IUserCreatedEntity
 	{
@@ -8,6 +10,6 @@
 		string Name { get; set; }
 		string Password { get; set; }
 
-		Role Role { get; set; }
+		ICollection<Role> Roles { get; set; }
 	}
 }
