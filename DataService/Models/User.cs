@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -11,9 +12,6 @@ namespace DataService.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		//FK
-		public int RoleId { get; set; }
-
 		#region Fields
 		public string Name { get; set; }
 		public string Password { get; set; }
@@ -23,7 +21,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 		#endregion
 		#region Navigation properties
-		public virtual Role Role { get; set; }
+		public virtual ICollection<Role> Roles { get; set; }
 		#endregion
 	}
 }

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Common.Enums.Permissions;
+﻿using Common.Enums.Permissions;
 
 namespace Common.Dto
 {
@@ -15,6 +14,5 @@ namespace Common.Dto
 		ServiceDetails ServiceDetailsAccess { get; set; }
 		ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
 		UserRoleAssignment UserRoleAssignmentAccess { get; set; }
-		ICollection<UserDto> Users { get; set; }
 	}
 }

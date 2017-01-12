@@ -1,12 +1,21 @@
-﻿using Common.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Common.Dto;
 using UserManager.AdService;
+using UserManager.Controllers;
 
 namespace UserManager
 {
-	public class UserManager
+	public class UserManager : IPermissionController
 	{
+		private readonly IPermissionController _permissionController;
+
+		public UserManager(IPermissionController permissionController)
+		{
+			_permissionController = permissionController;
+		}
+
+
 		//TODO: Sean implement login
 		public IUserDto Login(string username, string password)
 		{
@@ -32,6 +41,11 @@ namespace UserManager
 		{
 			IAdSearch userSearch = new AdSearch();
 			return userSearch.SearchDirectoryUsers(searchString);
+		}
+
+		public bool UserHasPermission<T>(int userId, T permission)
+		{
+			return _permissionController.UserHasPermission(userId, permission);
 		}
 	}
 }

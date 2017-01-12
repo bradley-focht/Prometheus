@@ -1,8 +1,8 @@
 ﻿using System;
-using Common.Dto;
-using DataService.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Dto;
+using DataService.Models;
 
 namespace DataService
 {
@@ -47,7 +47,8 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(()=>new ServiceOptionDto {
+			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(() => new ServiceOptionDto
+			{
 				Id = src.Id,
 				CategoryId = src.OptionCategoryId,
 				Popularity = src.Popularity,
@@ -71,7 +72,7 @@ namespace DataService
 			{
 				foreach (var t in src.TextInputs)
 				{
-					option.Value.TextInputs.Add(MapTextInputToDto(t));	
+					option.Value.TextInputs.Add(MapTextInputToDto(t));
 				}
 			}
 
@@ -107,10 +108,10 @@ namespace DataService
 				Usage = src.Usage
 			};
 
-			if (src.TextInputs != null)									//deal with text inputs
+			if (src.TextInputs != null)                                 //deal with text inputs
 			{
 				serviceOption.TextInputs = new List<ITextInput>();
-				foreach(var t in src.TextInputs)
+				foreach (var t in src.TextInputs)
 					serviceOption.TextInputs.Add(MapDtoToTextInput(t));
 			}
 			return serviceOption;
@@ -132,7 +133,7 @@ namespace DataService
 				ServiceBundleId = src.ServiceBundleId,
 				Popularity = src.Popularity,
 				ServiceIds = src.ServiceIds,
-				
+
 			};
 		}
 
@@ -533,15 +534,15 @@ namespace DataService
 		public static ServiceWorkUnitDto MapServiceWorkUnitToDto(IServiceWorkUnit src)
 		{
 			if (src == null) { return null; }
-			Lazy<ServiceWorkUnitDto> unit = new Lazy<ServiceWorkUnitDto>(()=>
+			Lazy<ServiceWorkUnitDto> unit = new Lazy<ServiceWorkUnitDto>(() =>
 			 new ServiceWorkUnitDto
-			{
-				Id = src.Id,
-				ServiceId = src.ServiceId,
-				Contact = src.Contact,
-				Responsibilities = src.Responsibilities,
-				Name = src.Name
-			});
+			 {
+				 Id = src.Id,
+				 ServiceId = src.ServiceId,
+				 Contact = src.Contact,
+				 Responsibilities = src.Responsibilities,
+				 Name = src.Name
+			 });
 			return unit.Value;
 		}
 
@@ -604,6 +605,43 @@ namespace DataService
 			return category;
 		}
 
+		public static RoleDto MapRoleToDto(IRole src)
+		{
+			if (src == null) { return null; }
+
+			return new RoleDto()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ApproveServiceRequestAccess = src.ApproveServiceRequestAccess,
+				BusinessCatalogAccess = src.BusinessCatalogAccess,
+				RolePermissionAdjustmentAccess = src.RolePermissionAdjustmentAccess,
+				ServiceDetailsAccess = src.ServiceDetailsAccess,
+				ServiceRequestSubmissionAccess = src.ServiceRequestSubmissionAccess,
+				SupportCatalogAccess = src.SupportCatalogAccess,
+				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess
+
+			};
+		}
+
+		public static Role MapDtoToRole(IRoleDto src)
+		{
+			if (src == null) { return null; }
+
+			return new Role()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ApproveServiceRequestAccess = src.ApproveServiceRequestAccess,
+				BusinessCatalogAccess = src.BusinessCatalogAccess,
+				RolePermissionAdjustmentAccess = src.RolePermissionAdjustmentAccess,
+				ServiceDetailsAccess = src.ServiceDetailsAccess,
+				ServiceRequestSubmissionAccess = src.ServiceRequestSubmissionAccess,
+				SupportCatalogAccess = src.SupportCatalogAccess,
+				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess
+			};
+		}
+
 		#region User Inputs
 
 		/// <summary>
@@ -614,13 +652,13 @@ namespace DataService
 		public static TextInputDto MapTextInputToDto(ITextInput src)
 		{
 			if (src == null) return null;
-			Lazy<TextInputDto> textInput = new Lazy<TextInputDto>(()=>new TextInputDto
+			Lazy<TextInputDto> textInput = new Lazy<TextInputDto>(() => new TextInputDto
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
 				ServiceOptionId = src.ServiceOptionId,
 				MultiLine = src.MultiLine,
-			    HelpToolTip = src.HelpToolTip
+				HelpToolTip = src.HelpToolTip
 			});
 
 			return textInput.Value;
@@ -716,5 +754,26 @@ namespace DataService
 		}
 		#endregion
 
+		public static User MapDtoToUser(IUserDto src)
+		{
+			if (src == null) return null;
+			return new User
+			{
+				Id = src.Id,
+				Name = src.Name,
+				Password = src.Password
+			};
+		}
+
+		public static IUserDto MapUserToDto(IUser src)
+		{
+			if (src == null) return null;
+			return new UserDto()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				Password = src.Password
+			};
+		}
 	}
 }

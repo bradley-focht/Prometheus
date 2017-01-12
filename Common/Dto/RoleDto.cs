@@ -17,25 +17,16 @@ namespace Common.Dto
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
-
-		public ApproveServiceRequest ApproveServiceRequestAccess { get; set; }
-
-		public BusinessCatalog BusinessCatalogAccess { get; set; }
-
-		public SupportCatalog SupportCatalogAccess { get; set; }
-
-		public RolePermissionAdustment RolePermissionAdjustmentAccess { get; set; }
-
-		public ServiceDetails ServiceDetailsAccess { get; set; }
-		
-		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
-		
-		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
-		
-		public ICollection<UserDto> Users { get; set; }
 		#endregion
 
 		#region Navigation properties
+		public ApproveServiceRequest ApproveServiceRequestAccess { get; set; }
+		public BusinessCatalog BusinessCatalogAccess { get; set; }
+		public SupportCatalog SupportCatalogAccess { get; set; }
+		public RolePermissionAdustment RolePermissionAdjustmentAccess { get; set; }
+		public ServiceDetails ServiceDetailsAccess { get; set; }
+		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
+		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 		#endregion
 	}
 }
