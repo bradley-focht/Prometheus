@@ -53,6 +53,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modules\UserManagerModule.cs" />
     <Compile Include="Modules\RequestServiceModule.cs" />
     <Compile Include="Modules\ServicePortfolioServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +79,10 @@
     <ProjectReference Include="..\ServicePortfolioService\ServicePortfolioService.csproj">
       <Project>{280599D6-A130-4AF9-89F0-D5D36A32C330}</Project>
       <Name>ServicePortfolioService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserManager\UserManager.csproj">
+      <Project>{1A415A6A-0658-40D7-9BA2-938EF6E3210E}</Project>
+      <Name>UserManager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
