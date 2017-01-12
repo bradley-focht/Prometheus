@@ -1,5 +1,5 @@
 ﻿using Ninject.Modules;
-using RequestService;
+using RequestService.Controllers;
 
 namespace DependencyResolver.Modules
 {

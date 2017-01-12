@@ -8,6 +8,7 @@ using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Models.ServiceCatalog;
 using RequestService;
+using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -28,7 +29,7 @@ namespace Prometheus.WebUI.Controllers
 			searchString = searchString?.ToLower();                                          //compare everything in lowercase
 
 			CatalogModel model = new CatalogModel { Catalog = type };
-			model.Controls = new CatalogControlsModel {CatalogType = type };
+			model.Controls = new CatalogControlsModel { CatalogType = type };
 
 			ServiceCatalogSearcher searcher = new ServiceCatalogSearcher();
 
@@ -59,7 +60,7 @@ namespace Prometheus.WebUI.Controllers
 			var model = new CatalogModel
 			{
 				Catalog = type,
-				Controls = new CatalogControlsModel {CatalogType = type, PageNumber =  pageId}
+				Controls = new CatalogControlsModel { CatalogType = type, PageNumber = pageId }
 			};
 
 			var searcher = new ServiceCatalogSearcher();
@@ -85,14 +86,14 @@ namespace Prometheus.WebUI.Controllers
 		{
 			ICatalogController rs = new CatalogController(_dummId);
 			CatalogModel model = new CatalogModel { Catalog = type, CatalogItems = new List<ICatalogPublishable>() };
-			model.Controls = new CatalogControlsModel { SearchString = "", CatalogType = type };		 //setup info for the controls
+			model.Controls = new CatalogControlsModel { SearchString = "", CatalogType = type };         //setup info for the controls
 
-			IEnumerable<IServiceDto> services;															 //lazy loaded data for filtering and use later
+			IEnumerable<IServiceDto> services;                                                           //lazy loaded data for filtering and use later
 
-			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Business)						//add things from the business catalog
+			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Business)                       //add things from the business catalog
 			{
 				services = (from s in rs.BusinessCatalog select s).ToList();
-				foreach (var service in services)														//add services to the catalog model
+				foreach (var service in services)                                                       //add services to the catalog model
 				{
 					var i = new ServiceSummary
 					{
@@ -112,10 +113,10 @@ namespace Prometheus.WebUI.Controllers
 
 			}
 
-			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Technical)					//add things from the tech catalog	
+			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Technical)                  //add things from the tech catalog	
 			{
 				services = (from s in rs.SupportCatalog select s).ToList();
-				foreach (var service in services)													//add services to the catalog model
+				foreach (var service in services)                                                   //add services to the catalog model
 				{
 					var i = new ServiceSummary
 					{

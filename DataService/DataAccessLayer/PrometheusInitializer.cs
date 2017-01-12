@@ -27,10 +27,8 @@ namespace DataService.DataAccessLayer
 			//Populate Users
 			var users = new List<User>
 			{
-				new User{RoleId = roles[0].Id},
-				new User{RoleId = roles[1].Id},
-				new User{RoleId = roles[2].Id},
-				new User{RoleId = roles[3].Id},
+				new User(),
+				new User()
 			};
 			foreach (var user in users)
 			{
@@ -50,7 +48,7 @@ namespace DataService.DataAccessLayer
 						LifecycleStatus = new LifecycleStatus()
 						{
 							Name = "Operational"
-                        }/*, TODO: Sean - sorry but the null references these create are a bit of an issue
+						}/*, TODO: Sean - sorry but the null references these create are a bit of an issue
 						ServiceRequestOptions = new List<ServiceOption>
 						{
 							new ServiceOption(),

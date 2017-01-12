@@ -1,10 +1,9 @@
-﻿using DataService.Models;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
-using Common.Dto;
+using DataService.Models;
 
 namespace DataService.DataAccessLayer
 {
@@ -28,12 +27,12 @@ namespace DataService.DataAccessLayer
 		public DbSet<ServiceMeasure> ServiceMeasures { get; set; }
 		public DbSet<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		public DbSet<ServiceContract> ServiceContracts { get; set; }
-        public DbSet<ServiceOption> ServiceOptions { get; set; }
-	    public DbSet<OptionCategory> OptionCategories { get; set; }
-        public DbSet<ServiceProcess> ServiceProcesses { get; set; }
+		public DbSet<ServiceOption> ServiceOptions { get; set; }
+		public DbSet<OptionCategory> OptionCategories { get; set; }
+		public DbSet<ServiceProcess> ServiceProcesses { get; set; }
 		public DbSet<TextInput> TextInputs { get; set; }
 		public DbSet<SelectionInput> SelectionInputs { get; set; }
-		public DbSet<ScriptedSelectionInput>  ScriptedSelectionInputs { get; set; }
+		public DbSet<ScriptedSelectionInput> ScriptedSelectionInputs { get; set; }
 
 
 		//User Manager Entities

@@ -1,25 +1,27 @@
-﻿using Common.Dto;
-using Common.Enums;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Common.Dto;
+using Common.Enums.Entities;
+using Common.Enums.Permissions;
+using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
-using System.Collections.Generic;
-using System.Linq;
-using Common.Enums.Entities;
+using UserManager;
 
-namespace RequestService
+namespace RequestService.Controllers
 {
 	public class CatalogController : ICatalogController
 	{
-		private int _userId;
+		private IUserManager _userManager;
 
-		public CatalogController(int userId)
+		public CatalogController(IUserManager userManager)
 		{
-			_userId = userId;
+			_userManager = userManager;
 		}
 
-		public IEnumerable<IServiceDto> BusinessCatalog
+		public IEnumerable<IServiceDto> RequestBusinessCatalog(int requestingUserId)
 		{
-			get
+			if (_userManager.UserHasPermission(requestingUserId, BusinessCatalog.CanViewCatalog))
 			{
 				using (var context = new PrometheusContext())
 				{
@@ -32,19 +34,15 @@ namespace RequestService
 					}
 				}
 			}
+			throw new PermissionException("Cannot view Business Catalog.", requestingUserId, BusinessCatalog.CanViewCatalog);
 		}
 
-		//TODO: Add in role check once permissions are in place
-		public IEnumerable<IServiceDto> SupportCatalog
+		public IEnumerable<IServiceDto> RequestSupportCatalog(int requestingUserId)
 		{
-			get
+			if (_userManager.UserHasPermission(requestingUserId, SupportCatalog.CanViewCatalog))
 			{
 				using (var context = new PrometheusContext())
 				{
-					var user = context.Users.Find(_userId);
-					if (user == null)
-						yield break;
-
 					var services = context.Services.ToList()
 						.Where(x => x.ServiceTypeRole == ServiceTypeRole.Supporting && x.LifecycleStatus.CatalogVisible == true);
 
@@ -54,6 +52,7 @@ namespace RequestService
 					}
 				}
 			}
+			throw new PermissionException("Cannot view Support Catalog.", requestingUserId, SupportCatalog.CanViewCatalog);
 		}
 	}
 }

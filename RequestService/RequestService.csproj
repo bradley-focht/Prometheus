@@ -56,6 +56,10 @@
       <Project>{7757884F-C8D9-48AC-A4D6-6238D0203431}</Project>
       <Name>DataService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\UserManager\UserManager.csproj">
+      <Project>{1A415A6A-0658-40D7-9BA2-938EF6E3210E}</Project>
+      <Name>UserManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

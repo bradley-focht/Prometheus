@@ -4,6 +4,7 @@ using System.Linq;
 using Common.Dto;
 using Prometheus.WebUI.Helpers.Enums;
 using RequestService;
+using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Models.ServiceCatalog
 {
