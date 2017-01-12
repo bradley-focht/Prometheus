@@ -7,9 +7,6 @@ namespace Common.Dto
 		//PK
 		public int Id { get; set; }
 
-		//FK
-		public int RoleId { get; set; }
-
 		#region Fields
 		public string Name { get; set; }
 		public string Password { get; set; }
