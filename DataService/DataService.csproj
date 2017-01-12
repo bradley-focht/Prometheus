@@ -81,7 +81,10 @@
     <Compile Include="Models\ILifecycleStatus.cs" />
     <Compile Include="Models\IOptionCategory.cs" />
     <Compile Include="Models\IPrice.cs" />
+    <Compile Include="Models\IRequestable.cs" />
     <Compile Include="Models\IRole.cs" />
+    <Compile Include="Models\IScriptedSelectionInput.cs" />
+    <Compile Include="Models\ISelectionInput.cs" />
     <Compile Include="Models\IService.cs" />
     <Compile Include="Models\IServiceBundle.cs" />
     <Compile Include="Models\IServiceContract.cs" />
@@ -93,12 +96,15 @@
     <Compile Include="Models\IServiceSwot.cs" />
     <Compile Include="Models\IServiceWorkUnit.cs" />
     <Compile Include="Models\ISwotActivity.cs" />
+    <Compile Include="Models\ITextInput.cs" />
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\IUserCreatedEntity.cs" />
     <Compile Include="Models\LifecycleStatus.cs" />
     <Compile Include="Models\OptionCategory.cs" />
     <Compile Include="Models\Price.cs" />
     <Compile Include="Models\Role.cs" />
+    <Compile Include="Models\ScriptedSelectionInput.cs" />
+    <Compile Include="Models\SelectionInput.cs" />
     <Compile Include="Models\ServiceBundle.cs" />
     <Compile Include="Models\ServiceContract.cs" />
     <Compile Include="Models\ServiceDocument.cs" />
@@ -109,6 +115,7 @@
     <Compile Include="Models\ServiceSwot.cs" />
     <Compile Include="Models\ServiceWorkUnit.cs" />
     <Compile Include="Models\SwotActivity.cs" />
+    <Compile Include="Models\TextInput.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\Service.cs" />

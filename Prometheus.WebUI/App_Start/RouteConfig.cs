@@ -62,6 +62,18 @@ namespace Prometheus.WebUI
 				url: "ServiceCatalog/ServiceOptions/{type}/{serviceId}",
 				defaults: new { controller = "ServiceCatalog", action = "ServiceOptions" });
 
+			routes.MapRoute(
+				name: "ServiceCatalogIndex",
+				url: "ServiceCatalog/Index/{type}/{id}",
+				defaults: new {controller = "ServiceCatalog", action = "Index", type = UrlParameter.Optional, id = UrlParameter.Optional}
+				);
+
+			routes.MapRoute(
+				name: "SearviceCatalogSearch",
+				url: "ServiceCatalog/CatalogSearch/{type}/{pageId}/{searchString}", 
+				defaults: new {controller = "ServiceCatalog", action = "CatalogSearch", pageId = UrlParameter.Optional, searchString = UrlParameter.Optional }
+				);
+
 			#endregion
 
 			#region Service Maintenance

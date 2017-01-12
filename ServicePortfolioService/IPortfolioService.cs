@@ -5,7 +5,7 @@ namespace ServicePortfolioService
 	public interface IPortfolioService : IServiceController, IServiceBundleController, ILifecycleStatusController,
 		IServiceSwotController, ISwotActivityController, IServiceDocumentController, IServiceGoalController,
 		IServiceContractController, IServiceWorkUnitController, IServiceMeasureController, IServiceOptionController,
-        IServiceProcessController, IOptionCategoryController
+        IServiceProcessController, IOptionCategoryController, ITextInputController
 	{
 	}
 }

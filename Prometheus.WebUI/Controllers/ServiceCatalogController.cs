@@ -14,94 +14,94 @@ namespace Prometheus.WebUI.Controllers
 	public class ServiceCatalogController : Controller
 	{
 		private int _dummId;
-		
+		private int _catalogPageSize = 12;
+
+		/// <summary>
+		/// Search feature
+		/// </summary>
+		/// <param name="searchString">user entered search argument</param>
+		/// <param name="type"></param>
+		/// <returns></returns>
 		[HttpPost]
-		public ActionResult CatalogSearch(string searchString, ServiceCatalogs catalog, int pageId = 0)
+		public ActionResult CatalogSearch(string searchString, ServiceCatalogs type)
 		{
-			searchString = searchString.ToLower();											//compare everything in lowercase
-			GeneralCatalogModel model = new GeneralCatalogModel {Catalog = catalog};
-			List<ICatalogPublishable> searchresults = new List<ICatalogPublishable>();      //start the container for catalogables
-			ICatalogController rs = new CatalogController(_dummId);
-			
-			if (catalog == ServiceCatalogs.Both || catalog == ServiceCatalogs.Business)		//add things from the business catalog
+			searchString = searchString?.ToLower();                                          //compare everything in lowercase
+
+			CatalogModel model = new CatalogModel { Catalog = type };
+			model.Controls = new CatalogControlsModel {CatalogType = type };
+
+			ServiceCatalogSearcher searcher = new ServiceCatalogSearcher();
+
+			List<ICatalogPublishable> searchresults = searcher.Search(type, searchString, _dummId);
+			//pagination
+			if (searchresults.Count > _catalogPageSize)
 			{
-				var services = (from s in rs.BusinessCatalog select s).ToList();
-				searchresults.AddRange(from s in services where s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
-				foreach (var service in services)
-				{
-					searchresults.AddRange(from o in service.ServiceOptions where o.Name.ToLower().Contains(searchString) select (ICatalogPublishable)o);
-					searchresults.AddRange(from c in service.OptionCategories where c.Name.ToLower().Contains(searchString) select (ICatalogPublishable)c);
-				}
+				model.Controls.TotalPages = (searchresults.Count + _catalogPageSize - 1) / _catalogPageSize;
+				searchresults = (searchresults.Skip(0).Take(_catalogPageSize)).ToList();
 			}
 
-			if (catalog == ServiceCatalogs.Both || catalog == ServiceCatalogs.Technical)		//add things from the tech catalog	
-			{
-				var services = (from s in rs.SupportCatalog select s).ToList();
-				searchresults.AddRange(from s in services where s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
-				foreach (var service in services)
-				{
-					searchresults.AddRange(from o in service.ServiceOptions where o.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)o);
-					searchresults.AddRange(from c in service.OptionCategories where c.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)c);
-				}
-			}
-			//since search is performed on names only, there isn't much point weighting results. 
-			//sorting first by name only
-			model.Results = searchresults.OrderByDescending(a => a.Name);
-
+			model.CatalogItems = searchresults;
 			return View("ServiceCatalogGeneral", model);
 		}
 
-
-		public ActionResult Business()
+		/// <summary>
+		/// Pagination from search results go here
+		/// </summary>
+		/// <param name="searchString"></param>
+		/// <param name="type"></param>
+		/// <param name="pageId"></param>
+		/// <returns></returns>
+		[HttpGet]
+		public ActionResult CatalogSearch(string searchString, ServiceCatalogs type, int pageId)
 		{
-			ICatalogController rs = new CatalogController(_dummId);
-			CatalogModel model = new CatalogModel { Catalog = ServiceCatalogs.Business, CatalogItems = new List<CatalogItem>() };
-			var services = rs.BusinessCatalog;
-			if (services != null)
-			{
-				foreach (var service in services)											//add services to the catalog model
-				{
-					var i = new CatalogItem
-					{
-						ServiceName = service.Name,
-						ServiceId = service.Id,
-						ServiceDescription = service.Description,
-						Options = new List<ICatalogPublishable>()
-					};
-					i.Options.AddRange((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());	//find the top 3 items
-					i.Options.AddRange((from o in service.ServiceOptions
-											where o.CategoryId == null
-											select (ICatalogPublishable)o).ToList());
-					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
+			searchString = searchString == null ? "" : searchString.ToLower();                                          //compare everything in lowercase
 
-					model.CatalogItems.Add(i);
-				}
+			var model = new CatalogModel
+			{
+				Catalog = type,
+				Controls = new CatalogControlsModel {CatalogType = type, PageNumber =  pageId}
+			};
+
+			var searcher = new ServiceCatalogSearcher();
+
+			var searchresults = searcher.Search(type, searchString, _dummId);
+			//pagination
+			if (searchresults.Count > _catalogPageSize)
+			{
+				model.Controls.TotalPages = (searchresults.Count + _catalogPageSize - 1) / _catalogPageSize;
+				searchresults = (searchresults.Skip(_catalogPageSize * pageId).Take(_catalogPageSize)).ToList();
 			}
 
-			return View("ServiceCatalog", model);
+			model.CatalogItems = searchresults;
+			return View("ServiceCatalogGeneral", model);
 		}
 
 		/// <summary>
-		/// Technical Service Catalog
+		/// Service Catalog Index, either business, technical, or both
 		/// </summary>
+		/// <param name="type"></param>
 		/// <returns></returns>
-		public ActionResult Technical()
+		public ActionResult Index(ServiceCatalogs type = ServiceCatalogs.Business, int id = 0)
 		{
 			ICatalogController rs = new CatalogController(_dummId);
-			CatalogModel model = new CatalogModel { Catalog = ServiceCatalogs.Technical, CatalogItems = new List<CatalogItem>() };
-			var services = rs.SupportCatalog;
-			if (services != null)
+			CatalogModel model = new CatalogModel { Catalog = type, CatalogItems = new List<ICatalogPublishable>() };
+			model.Controls = new CatalogControlsModel { SearchString = "", CatalogType = type };		 //setup info for the controls
+
+			IEnumerable<IServiceDto> services;															 //lazy loaded data for filtering and use later
+
+			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Business)						//add things from the business catalog
 			{
-				foreach (var service in services)
+				services = (from s in rs.BusinessCatalog select s).ToList();
+				foreach (var service in services)														//add services to the catalog model
 				{
-					var i = new CatalogItem
+					var i = new ServiceSummary
 					{
-						ServiceName = service.Name,
-						ServiceId = service.Id,
-						ServiceDescription = service.Description,
+						Name = service.Name,
+						Id = service.Id,
+						BusinessValue = service.Description,
 						Options = new List<ICatalogPublishable>()
 					};
-					i.Options.AddRange((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());
+					i.Options.AddRange((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());    //find the top 3 items
 					i.Options.AddRange((from o in service.ServiceOptions
 										where o.CategoryId == null
 										select (ICatalogPublishable)o).ToList());
@@ -109,6 +109,35 @@ namespace Prometheus.WebUI.Controllers
 
 					model.CatalogItems.Add(i);
 				}
+
+			}
+
+			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Technical)					//add things from the tech catalog	
+			{
+				services = (from s in rs.SupportCatalog select s).ToList();
+				foreach (var service in services)													//add services to the catalog model
+				{
+					var i = new ServiceSummary
+					{
+						Name = service.Name,
+						Id = service.Id,
+						BusinessValue = service.Description,
+						Options = new List<ICatalogPublishable>()
+					};
+					i.Options.AddRange((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());    //find the top 3 items
+					i.Options.AddRange((from o in service.ServiceOptions
+										where o.CategoryId == null
+										select (ICatalogPublishable)o).ToList());
+					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
+
+					model.CatalogItems.Add(i);
+				}
+			}
+
+			if (model.CatalogItems != null && model.CatalogItems.Count > _catalogPageSize)
+			{
+				model.Controls.TotalPages = (model.CatalogItems.Count + _catalogPageSize - 1) / _catalogPageSize;
+				model.CatalogItems = (List<ICatalogPublishable>)model.CatalogItems.Skip(_catalogPageSize * id).Take(_catalogPageSize);
 			}
 
 			return View("ServiceCatalog", model);
@@ -128,7 +157,7 @@ namespace Prometheus.WebUI.Controllers
 
 			if (service != null)
 			{
-				OptionModel model = new OptionModel {Catalog = service.ServiceTypeRole};					//pack a list of options and categories
+				OptionModel model = new OptionModel { Catalog = service.ServiceTypeRole };                  //pack a list of options and categories
 				if (type == CatalogableTypes.Category)
 					model.Option = service.OptionCategories.FirstOrDefault(o => o.Id == id);
 				else if (type == CatalogableTypes.Option)
@@ -138,7 +167,7 @@ namespace Prometheus.WebUI.Controllers
 				model.ServiceName = service.Name;
 
 				List<ICatalogPublishable> options = (from o in service.OptionCategories select (ICatalogPublishable)o).ToList(); //build list of options & categories
-				options.AddRange(from o in service.ServiceOptions where o.CategoryId == null select (ICatalogPublishable)o);	//sort by name
+				options.AddRange(from o in service.ServiceOptions where o.CategoryId == null select (ICatalogPublishable)o);    //sort by name
 				options = options.OrderBy(o => o.Name).ToList();
 				model.Options = options;
 
@@ -146,7 +175,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 
 
-			return View();//not sure what to do here yet
+			return View();          //not sure how you got here...
 		}
 
 		/// <summary>
@@ -157,11 +186,11 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ServiceOptions(ServiceTypeRole type, int serviceId)
 		{
-			var model = new ServiceOptionsModel {Catalog = type, ServiceId = serviceId};
+			var model = new ServiceOptionsModel { Catalog = type, ServiceId = serviceId };
 			ICatalogController rs = new CatalogController(_dummId);
 			IList<IServiceDto> services = null;
 
-			if (type == ServiceTypeRole.Business)				//create list of available services to view
+			if (type == ServiceTypeRole.Business)               //create list of available services to view
 				services = rs.BusinessCatalog.ToList();
 			else if (type == ServiceTypeRole.Supporting)
 				services = rs.SupportCatalog.ToList();
@@ -169,14 +198,14 @@ namespace Prometheus.WebUI.Controllers
 			if (services != null)
 			{
 				var service = services.FirstOrDefault(s => s.Id == serviceId);
-				model.ServiceName = service.Name;				//fill in the services list
+				model.ServiceName = service.Name;               //fill in the services list
 				model.ServiceNames = from s in services
-					select new Tuple<int, string>(s.Id, s.Name);
+									 select new Tuple<int, string>(s.Id, s.Name);
 
 				var options = ((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());
 				options.AddRange((from o in service.ServiceOptions
-									where o.CategoryId == null
-									select (ICatalogPublishable)o).ToList());
+								  where o.CategoryId == null
+								  select (ICatalogPublishable)o).ToList());
 				model.Options = options.OrderBy(o => o.Name);
 			}
 			return View(model);

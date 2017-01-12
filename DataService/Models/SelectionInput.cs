@@ -1,13 +1,17 @@
-﻿namespace Common.Dto
+﻿using System.Collections.Generic;
+
+namespace DataService.Models
 {
-	public class ScriptedSelectionInputDto : IScriptedSelectionInputDto
+	public class SelectionInput : ISelectionInput
 	{
-		public string Script { get; set; }
-		public bool ExecutionEnabled { get; set; }
 		public int Id { get; set; }
+
 		public int ServiceOptionId { get; set; }
+
 		public string DisplayName { get; set; }
+		
 		public string HelpToolTip { get; set; }
 		public int NumberToSelect { get; set; }
+		public IEnumerable<string> SelectItems { get; set; }
 	}
 }

@@ -21,9 +21,11 @@ namespace ServicePortfolioService
 		private readonly IServiceContractController _serviceContractController;
 		private readonly IServiceWorkUnitController _serviceWorkUnitController;
 		private readonly IServiceMeasureController _serviceMeasureController;
-		private readonly IServiceOptionController _serviceOptionController;
-		private readonly IServiceProcessController _serviceProcessController;
-		private readonly IOptionCategoryController _optionCategoryController;
+	    private readonly IServiceOptionController _serviceOptionController;
+	    private readonly IServiceProcessController _serviceProcessController;
+	    private readonly IOptionCategoryController _optionCategoryController;
+	    private readonly ITextInputController _textInputController;
+	
 
 
 		//TODO: Add check for valid user being set
@@ -46,7 +48,8 @@ namespace ServicePortfolioService
 			IServiceDocumentController serviceDocumentController, IServiceGoalController serviceGoalController,
 			IServiceContractController serviceContractController, IServiceWorkUnitController serviceWorkUnitController,
 			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController,
-			IOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController)
+            IOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController,
+			ITextInputController textInputController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
@@ -58,9 +61,10 @@ namespace ServicePortfolioService
 			_serviceContractController = serviceContractController;
 			_serviceWorkUnitController = serviceWorkUnitController;
 			_serviceMeasureController = serviceMeasureController;
-			_serviceOptionController = serviceOptionController;
-			_optionCategoryController = optionCategoryController;
-			_serviceProcessController = serviceProcessController;
+		    _serviceOptionController = serviceOptionController;
+		    _optionCategoryController = optionCategoryController;
+		    _serviceProcessController = serviceProcessController;
+			_textInputController = textInputController;
 
 			UserId = userId;
 		}
@@ -246,29 +250,39 @@ namespace ServicePortfolioService
 			return _serviceOptionController.GetServiceOption(serviceOptionId);
 		}
 
-		public IServiceOptionDto ModifyServiceOption(IServiceOptionDto serviceOption, EntityModification modification)
+	    public IServiceOptionDto ModifyServiceOption(IServiceOptionDto serviceOption, EntityModification modification)
+	    {
+            return _serviceOptionController.ModifyServiceOption(serviceOption, modification);
+        }
+
+        public IServiceProcessDto GetServiceProcess(int serviceProcessId)
+        {
+            return _serviceProcessController.GetServiceProcess(serviceProcessId);
+        }
+
+        public IServiceProcessDto ModifyServiceProcess(IServiceProcessDto serviceProcess, EntityModification modification)
+        {
+            return _serviceProcessController.ModifyServiceProcess(serviceProcess, modification);
+        }
+
+        public IOptionCategoryDto GetOptionCategory(int optionCategoryId)
+        {
+            return _optionCategoryController.GetOptionCategory(optionCategoryId);
+        }
+
+        public IOptionCategoryDto ModifyOptionCategory(IOptionCategoryDto optionCategory, EntityModification modification)
+        {
+	        return _optionCategoryController.ModifyOptionCategory(optionCategory, modification);
+        }
+
+		public ITextInputDto GetTextInput(int textInputId)
 		{
-			return _serviceOptionController.ModifyServiceOption(serviceOption, modification);
+			return _textInputController.GetTextInput(textInputId);
 		}
 
-		public IServiceProcessDto GetServiceProcess(int serviceProcessId)
+		public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
 		{
-			return _serviceProcessController.GetServiceProcess(serviceProcessId);
-		}
-
-		public IServiceProcessDto ModifyServiceProcess(IServiceProcessDto serviceProcess, EntityModification modification)
-		{
-			return _serviceProcessController.ModifyServiceProcess(serviceProcess, modification);
-		}
-
-		public IOptionCategoryDto GetOptionCategory(int optionCategoryId)
-		{
-			return _optionCategoryController.GetOptionCategory(optionCategoryId);
-		}
-
-		public IOptionCategoryDto ModifyOptionCategory(IOptionCategoryDto optionCategory, EntityModification modification)
-		{
-			return _optionCategoryController.ModifyOptionCategory(optionCategory, modification);
+			return _textInputController.ModifyTextInput(textInput, modification);
 		}
 	}
 }

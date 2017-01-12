@@ -92,7 +92,7 @@ namespace Common.Dto
 		#endregion
 
 		public virtual ICollection<ITextInputDto> TextInputs { get; set; }
-		public virtual ICollection<IScriptedSelectionDto> ScriptedSelecentionInputs { get; set; }
-		public virtual ICollection<ISelectionDto> SelectionInputs { get; set; }
+		public virtual ICollection<IScriptedSelectionInputDto> ScriptedSelecentionInputs { get; set; }
+		public virtual ICollection<ISelectionInputDto> SelectionInputs { get; set; }
 	}
 }

@@ -146,8 +146,7 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-			var serviceDto = new ServiceDto
-			{
+			var serviceDto = new Lazy<ServiceDto>(()=>new ServiceDto{
 				Id = src.Id,
 				Name = src.Name,
 				Description = src.Description,
@@ -160,102 +159,102 @@ namespace DataService
 				Popularity = src.Popularity,
 				ServiceIds = src.ServiceIds,
 				LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
-			};
+			});
 
 			//Documents
 			if (src.ServiceDocuments != null)
 			{
-				serviceDto.ServiceDocuments = new List<IServiceDocumentDto>();
+				serviceDto.Value.ServiceDocuments = new List<IServiceDocumentDto>();
 				foreach (var doc in src.ServiceDocuments)
 				{
-					serviceDto.ServiceDocuments.Add(MapServiceDocumentToDto(doc));
+					serviceDto.Value.ServiceDocuments.Add(MapServiceDocumentToDto(doc));
 				}
 			}
 
 			//Swot
 			if (src.ServiceSwots != null)
 			{
-				serviceDto.ServiceSwots = new List<IServiceSwotDto>();
+				serviceDto.Value.ServiceSwots = new List<IServiceSwotDto>();
 				foreach (var doc in src.ServiceSwots)
 				{
-					serviceDto.ServiceSwots.Add(MapServiceSwotToDto(doc));
+					serviceDto.Value.ServiceSwots.Add(MapServiceSwotToDto(doc));
 				}
 			}
 
 			//Goals
 			if (src.ServiceGoals != null)
 			{
-				serviceDto.ServiceGoals = new List<IServiceGoalDto>();
+				serviceDto.Value.ServiceGoals = new List<IServiceGoalDto>();
 				foreach (var goal in src.ServiceGoals)
 				{
-					serviceDto.ServiceGoals.Add(MapServiceGoalToDto(goal));
+					serviceDto.Value.ServiceGoals.Add(MapServiceGoalToDto(goal));
 				}
 			}
 
 			//Work Units
 			if (src.ServiceWorkUnits != null)
 			{
-				serviceDto.ServiceWorkUnits = new List<IServiceWorkUnitDto>();
+				serviceDto.Value.ServiceWorkUnits = new List<IServiceWorkUnitDto>();
 				foreach (var unit in src.ServiceWorkUnits)
 				{
-					serviceDto.ServiceWorkUnits.Add(MapServiceWorkUnitToDto(unit));
+					serviceDto.Value.ServiceWorkUnits.Add(MapServiceWorkUnitToDto(unit));
 				}
 			}
 
 			//Contracts
 			if (src.ServiceContracts != null)
 			{
-				serviceDto.ServiceContracts = new List<IServiceContractDto>();
+				serviceDto.Value.ServiceContracts = new List<IServiceContractDto>();
 				foreach (var contra in src.ServiceContracts)
 				{
-					serviceDto.ServiceContracts.Add(MapServiceContractToDto(contra));
+					serviceDto.Value.ServiceContracts.Add(MapServiceContractToDto(contra));
 				}
 			}
 
 			//Measures
 			if (src.ServiceMeasures != null)
 			{
-				serviceDto.ServiceMeasures = new List<IServiceMeasureDto>();
+				serviceDto.Value.ServiceMeasures = new List<IServiceMeasureDto>();
 				foreach (var measure in src.ServiceMeasures)
 				{
-					serviceDto.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
+					serviceDto.Value.ServiceMeasures.Add(MapServiceMeasureToDto(measure));
 				}
 			}
 
 			//Options
 			if (src.ServiceOptions != null)
 			{
-				serviceDto.ServiceOptions = new List<IServiceOptionDto>();
+				serviceDto.Value.ServiceOptions = new List<IServiceOptionDto>();
 				foreach (var option in src.ServiceOptions)
 				{
-					serviceDto.ServiceOptions.Add(MapServiceOptionToDto(option));
+					serviceDto.Value.ServiceOptions.Add(MapServiceOptionToDto(option));
 				}
 			}
 			//Categories
 			if (src.OptionCategories != null)
 			{
-				serviceDto.OptionCategories = new List<IOptionCategoryDto>();
+				serviceDto.Value.OptionCategories = new List<IOptionCategoryDto>();
 
 				foreach (var category in src.OptionCategories)
 				{
-					serviceDto.OptionCategories.Add(MapOptionCategoryToDto(category));
+					serviceDto.Value.OptionCategories.Add(MapOptionCategoryToDto(category));
 				}
 			}
 
 			//Processes
 			if (src.ServiceProcesses != null)
 			{
-				serviceDto.ServiceProcesses = new List<IServiceProcessDto>();
+				serviceDto.Value.ServiceProcesses = new List<IServiceProcessDto>();
 				foreach (var process in src.ServiceProcesses)
 				{
-					serviceDto.ServiceProcesses.Add(MapServiceProcessToDto(process));
+					serviceDto.Value.ServiceProcesses.Add(MapServiceProcessToDto(process));
 				}
 			}
 
 			//Status
-			serviceDto.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
+			serviceDto.Value.LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus);
 
-			return serviceDto;
+			return serviceDto.Value;
 		}
 
 		public static ServiceBundleDto MapServiceBundleToDto(IServiceBundle src)
@@ -682,7 +681,77 @@ namespace DataService
 			};
 		}
 
+		public static SelectionInputDto MapSelectionInputToDto(ISelectionInput src)
+		{
+			if (src == null) return null;
+			Lazy<SelectionInputDto> input = new Lazy<SelectionInputDto>(() => new SelectionInputDto
+			{
+				DisplayName = src.DisplayName,
+				Id = src.Id,
+				HelpToolTip = src.HelpToolTip,
+				NumberToSelect = src.NumberToSelect,
+				SelectItems = src.SelectItems,
+				ServiceOptionId = src.ServiceOptionId
+			});
 
+			return input.Value;
+		}
+
+		/// <summary>
+		/// Map dto to its entity
+		/// </summary>
+		/// <param name="src">source dto</param>
+		/// <returns></returns>
+		public static SelectionInput MapDtoToSelectionInput(ISelectionInputDto src)
+		{
+			if (src == null) return null;
+			return new SelectionInput
+			{
+				DisplayName = src.DisplayName,
+				Id = src.Id,
+				HelpToolTip = src.HelpToolTip,
+				NumberToSelect = src.NumberToSelect,
+				SelectItems = src.SelectItems,
+				ServiceOptionId = src.ServiceOptionId
+			};
+		}
+
+		public static ScriptedSelectionInputDto MapScriptedSelectionInputToDto(IScriptedSelectionInput src)
+		{
+			if (src == null) return null;
+			Lazy<ScriptedSelectionInputDto> input = new Lazy<ScriptedSelectionInputDto>(() => new ScriptedSelectionInputDto
+			{
+				DisplayName = src.DisplayName,
+				Id = src.Id,
+				HelpToolTip = src.HelpToolTip,
+				NumberToSelect = src.NumberToSelect,
+				ExecutionEnabled = src.ExecutionEnabled,
+				Script = src.Script,
+				ServiceOptionId = src.ServiceOptionId
+			});
+
+			return input.Value;
+		}
+
+		/// <summary>
+		/// Map dto to its entity
+		/// </summary>
+		/// <param name="src">source dto</param>
+		/// <returns></returns>
+		public static ScriptedSelectionInput MapDtoToScriptedSelectionInput(IScriptedSelectionInputDto src)
+		{
+			if (src == null) return null;
+			return new ScriptedSelectionInput
+			{
+				DisplayName = src.DisplayName,
+				Id = src.Id,
+				HelpToolTip = src.HelpToolTip,
+				NumberToSelect = src.NumberToSelect,
+				ExecutionEnabled = src.ExecutionEnabled,
+				Script = src.Script,
+				ServiceOptionId = src.ServiceOptionId
+			};
+		}
 		#endregion
 
 		public static User MapDtoToUser(IUserDto src)

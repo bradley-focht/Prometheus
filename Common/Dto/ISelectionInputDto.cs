@@ -2,7 +2,7 @@
 
 namespace Common.Dto
 {
-	public interface ISelectionDto : ISelectable
+	public interface ISelectionInputDto : ISelectable
 	{
 		IEnumerable<string> SelectItems { get; set; }
 	}

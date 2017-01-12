@@ -342,11 +342,11 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
-    <Compile Include="Models\ServiceCatalog\CatalogItem.cs" />
+    <Compile Include="Models\ServiceCatalog\CatalogControlsModel.cs" />
+    <Compile Include="Models\ServiceCatalog\ServiceCatalogSearcher.cs" />
+    <Compile Include="Models\ServiceCatalog\ServiceSummary.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
-    <Compile Include="Models\ServiceCatalog\ICatalogItem.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
-    <Compile Include="Models\ServiceCatalog\GeneralCatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />

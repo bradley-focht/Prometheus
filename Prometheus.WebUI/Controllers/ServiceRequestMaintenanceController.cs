@@ -119,11 +119,11 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("UpdateUserInput", new {type = UserInputTypes.Text, parentId = input.ServiceOptionId, id = input.Id});
 			}
 
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
 			
-
 			try
 			{
-				//need a way to save this
+				ps.ModifyTextInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{

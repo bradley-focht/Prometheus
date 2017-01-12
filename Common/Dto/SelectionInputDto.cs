@@ -4,7 +4,7 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
-	public class SelectionInputDto : ISelectionDto 
+	public class SelectionInputDto : ISelectionInputDto 
 	{
 		[HiddenInput]
 		public int Id { get; set; }
