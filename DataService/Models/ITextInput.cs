@@ -1,4 +1,6 @@
-﻿namespace Common.Dto
+﻿using Common.Dto;
+
+namespace DataService.Models
 {
 	public interface ITextInput : IUserInput
 	{

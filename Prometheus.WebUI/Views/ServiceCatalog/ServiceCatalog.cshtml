@@ -1,10 +1,12 @@
 ﻿@using Common.Dto
 @using Common.Enums.Entities
+@using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Helpers.Enums
-@model Prometheus.WebUI.Models.ServiceCatalog.CatalogModel
+@using Prometheus.WebUI.Models.ServiceCatalog
+@model CatalogModel
 
 @{
-	ViewBag.Title = Model.Catalog == ServiceCatalogs.Business ? "Business Catalog" : "Technical Catalog";
+	ViewBag.Title = (Model.Catalog == ServiceCatalogs.Both ? "Service" : $"{Model.Catalog}") + " Catalog";
 
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -14,33 +16,35 @@
 	};
 	}
 
-@Html.Partial("PartialViews/CatalogControls", Model.Catalog)
+@Html.Partial("PartialViews/CatalogControls", Model.Controls)
 
 <div style="display: flex; flex-flow: row wrap;"></div>
 @if (Model.CatalogItems != null && Model.CatalogItems.Any())
 {
-	foreach (var service in Model.CatalogItems)
+	foreach (var s in Model.CatalogItems)
 	{
-		<div class="panel-primary cat-box">
+		if (s is ServiceSummary)
+		{
+			var service = (ServiceSummary)s;
+
+			<div class="panel-primary cat-box">
 			<div class="panel-heading cat-box-heading">
-				@Html.ActionLink(service.ServiceName, "ServiceOptions", new { type = Model.Catalog, serviceId = service.ServiceId }, new {@class="font-inverse"})
+				@Html.ActionLink(service.Name, "ServiceOptions", new { type = Model.Catalog, serviceId = service.Id }, new {@class="font-inverse"})
 			</div>
 			<div style="min-height: 100px; padding: 5px;">
 				<ul class="cat-ul">
 					@foreach (var item in service.Options)
 					{
-						CatalogableTypes optionType = item is IOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
+						var optionType = item is IOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
 						<li>
-							<span>
-								@Html.ActionLink(item.Name, "Details", new {type = optionType, serviceId = service.ServiceId, id = item.Id })
-							</span>
+							<span>@Html.ActionLink(item.Name, "Details", new {type = optionType, serviceId = service.Id, id = item.Id })</span>
 						</li>
 					}
 				</ul>
-
 			</div>
-			<div class="panel-footer">@Html.ActionLink("View all", "ServiceOptions", new { type = Model.Catalog, serviceId= service.ServiceId })</div>
+			<div class="panel-footer">@Html.ActionLink("View all", "ServiceOptions", new { type = Model.Catalog, serviceId= service.Id })</div>
 		</div>
+		}
 	}
 }
 else

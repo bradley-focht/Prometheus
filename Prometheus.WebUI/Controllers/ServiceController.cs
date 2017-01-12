@@ -37,7 +37,7 @@ namespace Prometheus.WebUI.Controllers
 			ServiceIndexHelper helper = new ServiceIndexHelper(ps.GetServices());   //apply filters
 			model.ControlsModel.FilterMenu = helper.GetControlsModel();
 
-			if (filterBy != "All")
+			if (filterBy != "All")		//one of several applied filters
 			{
 				if (filterBy == "Search")
 				{
@@ -1740,12 +1740,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="serviceId"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult GetOptionsDropDown(int serviceId, int id = 0)
+		public ActionResult GetOptionsDropDown(int serviceId, int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
-
-			ICollection<int> selectedOptions = (from o in ps.GetOptionCategory(id).ServiceOptions select o.Id).ToList();
-
+			ICollection<int> selectedOptions = id != 0 ? (from o in ps.GetOptionCategory(id).ServiceOptions select o.Id).ToList() : new List<int>();
 			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Options..." } };
 			optionsList.AddRange(ps.GetService(serviceId).ServiceOptions.Select(l =>
 				new SelectListItem

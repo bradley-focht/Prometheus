@@ -1,6 +1,6 @@
 ﻿namespace Common.Dto
 {
-	public interface IScriptedSelectionDto : ISelectable
+	public interface IScriptedSelectionInputDto : ISelectable
 	{
 		string Script { get; set; }
 		bool ExecutionEnabled { get; set; }

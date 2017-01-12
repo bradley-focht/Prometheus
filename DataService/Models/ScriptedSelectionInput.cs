@@ -1,6 +1,6 @@
-﻿namespace Common.Dto
+﻿namespace DataService.Models
 {
-	public class ScriptedSelectionInputDto : IScriptedSelectionInputDto
+	public class ScriptedSelectionInput : IScriptedSelectionInput
 	{
 		public string Script { get; set; }
 		public bool ExecutionEnabled { get; set; }

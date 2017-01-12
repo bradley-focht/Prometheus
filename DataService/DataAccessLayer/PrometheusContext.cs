@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
+using Common.Dto;
 
 namespace DataService.DataAccessLayer
 {
@@ -30,6 +31,9 @@ namespace DataService.DataAccessLayer
         public DbSet<ServiceOption> ServiceOptions { get; set; }
 	    public DbSet<OptionCategory> OptionCategories { get; set; }
         public DbSet<ServiceProcess> ServiceProcesses { get; set; }
+		public DbSet<TextInput> TextInputs { get; set; }
+		public DbSet<SelectionInput> SelectionInputs { get; set; }
+		public DbSet<ScriptedSelectionInput>  ScriptedSelectionInputs { get; set; }
 
 
 		//User Manager Entities

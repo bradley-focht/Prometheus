@@ -1,6 +1,4 @@
-﻿@using Common.Dto
-@using Common.Enums.Entities
-@model Prometheus.WebUI.Models.ServiceCatalog.ServiceOptionsModel
+﻿@model Prometheus.WebUI.Models.ServiceCatalog.ServiceOptionsModel
 @{
 	ViewBag.Title = Model.Catalog + " Catalog";
 	ViewBag.SubTitle = Model.ServiceName;
@@ -9,7 +7,7 @@
 	ViewBag.Links = new List<KeyValuePair<string, string>>
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
-		new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/" + Model.Catalog),
+		new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/Index/" + Model.Catalog),
 		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 	};
 

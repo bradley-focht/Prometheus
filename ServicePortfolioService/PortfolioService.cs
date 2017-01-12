@@ -24,6 +24,8 @@ namespace ServicePortfolioService
 	    private readonly IServiceOptionController _serviceOptionController;
 	    private readonly IServiceProcessController _serviceProcessController;
 	    private readonly IOptionCategoryController _optionCategoryController;
+	    private readonly ITextInputController _textInputController;
+	
 
 
 		//TODO: Add check for valid user being set
@@ -46,7 +48,8 @@ namespace ServicePortfolioService
 			IServiceDocumentController serviceDocumentController, IServiceGoalController serviceGoalController,
 			IServiceContractController serviceContractController, IServiceWorkUnitController serviceWorkUnitController,
 			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController,
-            IOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController)
+            IOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController,
+			ITextInputController textInputController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
@@ -61,6 +64,7 @@ namespace ServicePortfolioService
 		    _serviceOptionController = serviceOptionController;
 		    _optionCategoryController = optionCategoryController;
 		    _serviceProcessController = serviceProcessController;
+			_textInputController = textInputController;
 
 			UserId = userId;
 		}
@@ -270,5 +274,15 @@ namespace ServicePortfolioService
         {
 	        return _optionCategoryController.ModifyOptionCategory(optionCategory, modification);
         }
-    }
+
+		public ITextInputDto GetTextInput(int textInputId)
+		{
+			return _textInputController.GetTextInput(textInputId);
+		}
+
+		public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
+		{
+			return _textInputController.ModifyTextInput(textInput, modification);
+		}
+	}
 }

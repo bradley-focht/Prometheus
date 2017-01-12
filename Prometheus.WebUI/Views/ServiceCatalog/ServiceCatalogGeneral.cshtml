@@ -1,4 +1,4 @@
-﻿@model Prometheus.WebUI.Models.ServiceCatalog.GeneralCatalogModel
+﻿@model Prometheus.WebUI.Models.ServiceCatalog.CatalogModel
 @using Prometheus.WebUI.Helpers.Enums
 @{
 	ViewBag.Title = Model.Catalog == ServiceCatalogs.Business ? "Business Catalog" : "Technical Catalog";
@@ -11,14 +11,18 @@
 	};
 }
 
-@Html.Partial("PartialViews/CatalogControls", Model.Catalog)
+@Html.Partial("PartialViews/CatalogControls", Model.Controls)
 
 
-@if (Model.Results != null)
+@if (Model.CatalogItems != null && Model.CatalogItems.Any())
 {
-	foreach (var r in Model.Results)
+	foreach (var r in Model.CatalogItems)
 	{
-	
+
 		@Html.Partial("PartialViews/SummarizedCatalogableView", r)
 	}
+}
+else
+{
+	<div class="alert alert-message alert-warning" style="margin-top: 10px;">No Results Found.</div>
 }

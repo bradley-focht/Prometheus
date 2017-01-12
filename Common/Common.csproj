@@ -55,12 +55,11 @@
     <Compile Include="Dto\ILifecycleStatusDto.cs" />
     <Compile Include="Dto\IOptionCategoryDto.cs" />
     <Compile Include="Dto\IPriceDto.cs" />
-    <Compile Include="Dto\IRequestable.cs" />
     <Compile Include="Dto\IRequestableDto.cs" />
     <Compile Include="Dto\IRoleDto.cs" />
-    <Compile Include="Dto\IScriptedSelectionDto.cs" />
+    <Compile Include="Dto\IScriptedSelectionInputDto.cs" />
     <Compile Include="Dto\ISelectable.cs" />
-    <Compile Include="Dto\ISelectionDto.cs" />
+    <Compile Include="Dto\ISelectionInputDto.cs" />
     <Compile Include="Dto\IServiceBundleDto.cs" />
     <Compile Include="Dto\IServiceContractDto.cs" />
     <Compile Include="Dto\IServiceDocumentDto.cs" />
@@ -72,7 +71,6 @@
     <Compile Include="Dto\IServiceSwotDto.cs" />
     <Compile Include="Dto\IServiceWorkUnitDto.cs" />
     <Compile Include="Dto\ISwotActivityDto.cs" />
-    <Compile Include="Dto\ITextInput.cs" />
     <Compile Include="Dto\ITextInputDto.cs" />
     <Compile Include="Dto\IUserCreatedEntityDto.cs" />
     <Compile Include="Dto\IUserDto.cs" />
@@ -94,7 +92,6 @@
     <Compile Include="Dto\ServiceSwotDto.cs" />
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
-    <Compile Include="Dto\TextInput.cs" />
     <Compile Include="Dto\TextInputDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Enums\UserInputTypes.cs" />

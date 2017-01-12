@@ -12,8 +12,8 @@ namespace Common.Dto
 		//help tip?
 
 		ICollection<ITextInputDto> TextInputs { get; set; }
-		ICollection<IScriptedSelectionDto> ScriptedSelecentionInputs { get; set; }
-		ICollection<ISelectionDto> SelectionInputs { get; set; }
+		ICollection<IScriptedSelectionInputDto> ScriptedSelecentionInputs { get; set; }
+		ICollection<ISelectionInputDto> SelectionInputs { get; set; }
 
 		//anything else required to be requestable. included items?
     }

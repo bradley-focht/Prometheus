@@ -57,6 +57,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\ILifecycleStatusController.cs" />
+    <Compile Include="Controllers\ISelectionInputController.cs" />
+    <Compile Include="Controllers\IScriptedSelectionInputController.cs" />
+    <Compile Include="Controllers\ITextInputController.cs" />
     <Compile Include="Controllers\IServiceMeasureController.cs" />
     <Compile Include="Controllers\IOptionCategoryController.cs" />
     <Compile Include="Controllers\IServiceProcessController.cs" />
@@ -75,6 +78,9 @@
     <Compile Include="Controllers\ServiceContractController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceDocumentController.cs" />
+    <Compile Include="Controllers\SelectionInputController.cs" />
+    <Compile Include="Controllers\ScriptedSelectionInputController.cs" />
+    <Compile Include="Controllers\TextInputController.cs" />
     <Compile Include="Controllers\ServiceMeasureController.cs" />
     <Compile Include="Controllers\OptionCategoryController.cs" />
     <Compile Include="Controllers\ServiceProcessController.cs" />

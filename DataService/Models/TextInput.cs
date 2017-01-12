@@ -1,4 +1,4 @@
-﻿namespace Common.Dto
+﻿namespace DataService.Models
 {
 	public class TextInput : ITextInput
 	{

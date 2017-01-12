@@ -43,7 +43,7 @@ namespace DataService.Models
 		#endregion
 
 		public ICollection<ITextInput> TextInputs { get; set; }
-		//public ICollection<IScriptedSelection> ScriptedSelecentionInputs { get; set; }
-		//public ICollection<ISelectionDto> SelectionInputs { get; set; }
+		public ICollection<IScriptedSelectionInput> ScriptedSelecentionInputs { get; set; }
+		public ICollection<ISelectionInput> SelectionInputs { get; set; }
 	}
 }
