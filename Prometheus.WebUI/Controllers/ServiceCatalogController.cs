@@ -7,15 +7,20 @@ using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Models.ServiceCatalog;
-using RequestService;
 using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceCatalogController : Controller
 	{
-		private int _dummId;
-		private int _catalogPageSize = 12;
+		private int _dummId = 1;
+		private const int CatalogPageSize = 12;
+		private readonly ICatalogController _requestService;
+
+		public ServiceCatalogController()
+		{
+			_requestService = InterfaceFactory.CreateCatalogController(_dummId);
+		}
 
 		/// <summary>
 		/// Search feature
@@ -35,10 +40,10 @@ namespace Prometheus.WebUI.Controllers
 
 			List<ICatalogPublishable> searchresults = searcher.Search(type, searchString, _dummId);
 			//pagination
-			if (searchresults.Count > _catalogPageSize)
+			if (searchresults.Count > CatalogPageSize)
 			{
-				model.Controls.TotalPages = (searchresults.Count + _catalogPageSize - 1) / _catalogPageSize;
-				searchresults = (searchresults.Skip(0).Take(_catalogPageSize)).ToList();
+				model.Controls.TotalPages = (searchresults.Count + CatalogPageSize - 1) / CatalogPageSize;
+				searchresults = (searchresults.Skip(0).Take(CatalogPageSize)).ToList();
 			}
 
 			model.CatalogItems = searchresults;
@@ -67,10 +72,10 @@ namespace Prometheus.WebUI.Controllers
 
 			var searchresults = searcher.Search(type, searchString, _dummId);
 			//pagination
-			if (searchresults.Count > _catalogPageSize)
+			if (searchresults.Count > CatalogPageSize)
 			{
-				model.Controls.TotalPages = (searchresults.Count + _catalogPageSize - 1) / _catalogPageSize;
-				searchresults = (searchresults.Skip(_catalogPageSize * pageId).Take(_catalogPageSize)).ToList();
+				model.Controls.TotalPages = (searchresults.Count + CatalogPageSize - 1) / CatalogPageSize;
+				searchresults = (searchresults.Skip(CatalogPageSize * pageId).Take(CatalogPageSize)).ToList();
 			}
 
 			model.CatalogItems = searchresults;
@@ -81,10 +86,10 @@ namespace Prometheus.WebUI.Controllers
 		/// Service Catalog Index, either business, technical, or both
 		/// </summary>
 		/// <param name="type"></param>
+		/// <param name="id"></param>
 		/// <returns></returns>
 		public ActionResult Index(ServiceCatalogs type = ServiceCatalogs.Business, int id = 0)
 		{
-			ICatalogController rs = new CatalogController(_dummId);
 			CatalogModel model = new CatalogModel { Catalog = type, CatalogItems = new List<ICatalogPublishable>() };
 			model.Controls = new CatalogControlsModel { SearchString = "", CatalogType = type };         //setup info for the controls
 
@@ -92,7 +97,7 @@ namespace Prometheus.WebUI.Controllers
 
 			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Business)                       //add things from the business catalog
 			{
-				services = (from s in rs.BusinessCatalog select s).ToList();
+				services = (from s in _requestService.RequestBusinessCatalog(_dummId) select s).ToList();
 				foreach (var service in services)                                                       //add services to the catalog model
 				{
 					var i = new ServiceSummary
@@ -115,7 +120,7 @@ namespace Prometheus.WebUI.Controllers
 
 			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Technical)                  //add things from the tech catalog	
 			{
-				services = (from s in rs.SupportCatalog select s).ToList();
+				services = (from s in _requestService.RequestSupportCatalog(_dummId) select s).ToList();
 				foreach (var service in services)                                                   //add services to the catalog model
 				{
 					var i = new ServiceSummary
@@ -135,10 +140,10 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 
-			if (model.CatalogItems != null && model.CatalogItems.Count > _catalogPageSize)
+			if (model.CatalogItems != null && model.CatalogItems.Count > CatalogPageSize)
 			{
-				model.Controls.TotalPages = (model.CatalogItems.Count + _catalogPageSize - 1) / _catalogPageSize;
-				model.CatalogItems = (List<ICatalogPublishable>)model.CatalogItems.Skip(_catalogPageSize * id).Take(_catalogPageSize);
+				model.Controls.TotalPages = (model.CatalogItems.Count + CatalogPageSize - 1) / CatalogPageSize;
+				model.CatalogItems = (List<ICatalogPublishable>)model.CatalogItems.Skip(CatalogPageSize * id).Take(CatalogPageSize);
 			}
 
 			return View("ServiceCatalog", model);
@@ -188,13 +193,13 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ServiceOptions(ServiceTypeRole type, int serviceId)
 		{
 			var model = new ServiceOptionsModel { Catalog = type, ServiceId = serviceId };
-			ICatalogController rs = new CatalogController(_dummId);
+
 			IList<IServiceDto> services = null;
 
 			if (type == ServiceTypeRole.Business)               //create list of available services to view
-				services = rs.BusinessCatalog.ToList();
+				services = _requestService.RequestBusinessCatalog(_dummId).ToList();
 			else if (type == ServiceTypeRole.Supporting)
-				services = rs.SupportCatalog.ToList();
+				services = _requestService.RequestSupportCatalog(_dummId).ToList();
 
 			if (services != null)
 			{

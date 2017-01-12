@@ -1,21 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
-using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
+using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceRequestMaintenanceController : Controller
 	{
-		private int _dummyId = 0;
+		private int _dummyId = 1;
+		private ICatalogController _requestService;
+
+		public ServiceRequestMaintenanceController()
+		{
+			_requestService = new CatalogController(InterfaceFactory.CreateUserManagerService());
+		}
 
 		// GET: ServiceRequestMaintenance
 		public ActionResult Index()
@@ -31,17 +36,16 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public PartialViewResult GetServiceNames(string catalog = "Both", int id = 0)
 		{
-			var rs = InterfaceFactory.CreateCatalogController(_dummyId);
 			var services = new List<Tuple<int, string>>();
 			if (catalog == "Business" || catalog == "Both")
 			{
-				services.AddRange(from s in rs.BusinessCatalog
+				services.AddRange(from s in _requestService.RequestBusinessCatalog(_dummyId)
 								  select new Tuple<int, string>(s.Id, s.Name));
 			}
 
 			if (catalog == "Support" || catalog == "Both")
 			{
-				services.AddRange(from s in rs.SupportCatalog
+				services.AddRange(from s in _requestService.RequestSupportCatalog(_dummyId)
 								  select new Tuple<int, string>(s.Id, s.Name));
 			}
 			LinkListModel model = new LinkListModel { SelectedItemId = id, ListItems = services };

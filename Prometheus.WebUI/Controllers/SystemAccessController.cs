@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
-using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;
 using Prometheus.WebUI.Models.SystemAccess.Prometheus.WebUI.Models.Service;
+using UserManager;
 
 
 namespace Prometheus.WebUI.Controllers
@@ -14,6 +14,13 @@ namespace Prometheus.WebUI.Controllers
     //[Authorize]
     public class SystemAccessController : Controller
     {
+	    private IUserManager _userManager;
+
+	    public SystemAccessController()
+	    {
+		    _userManager = InterfaceFactory.CreateUserManagerService();
+	    }
+
         /// <summary>
 		/// Returns system access home page 
 		/// </summary>
@@ -148,10 +155,10 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult SearchAdAccount(string searchString)
         {
             AdSearchResultsModel model = new AdSearchResultsModel();
-            UserManager.UserManager um = new UserManager.UserManager();
+	        
             try
             {
-                model.SearchResults = um.SearchUsers(searchString);
+               // model.SearchResults = um.SearchUsers(searchString);
             }
             catch(Exception exception)
             {

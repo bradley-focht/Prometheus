@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using Common.Dto;
+using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using RequestService;
 using RequestService.Controllers;
+using UserManager;
+using UserManager.Controllers;
 
 namespace Prometheus.WebUI.Models.ServiceCatalog
 {
@@ -16,11 +19,11 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 		public List<ICatalogPublishable> Search(ServiceCatalogs catalog, string searchString, int userId)
 		{
 			List<ICatalogPublishable> searchresults = new List<ICatalogPublishable>();      //start the container for catalogables
-			ICatalogController rs = new CatalogController(userId);
+			ICatalogController rs = InterfaceFactory.CreateCatalogController(userId);
 
 			if (catalog == ServiceCatalogs.Both || catalog == ServiceCatalogs.Business)     //add things from the business catalog
 			{
-				var services = (from s in rs.BusinessCatalog select s).ToList();
+				var services = (from s in rs.RequestBusinessCatalog(userId) select s).ToList();
 				searchresults.AddRange(from s in services where searchString != null && s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
 				foreach (var service in services)
 				{
@@ -31,7 +34,7 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 
 			if (catalog == ServiceCatalogs.Both || catalog == ServiceCatalogs.Technical)        //add things from the tech catalog	
 			{
-				var services = (from s in rs.SupportCatalog select s).ToList();
+				var services = (from s in rs.RequestSupportCatalog(userId) select s).ToList();
 				searchresults.AddRange(from s in services where searchString != null && s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
 				foreach (var service in services)
 				{
