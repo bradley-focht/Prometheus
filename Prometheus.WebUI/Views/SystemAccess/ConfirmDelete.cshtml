@@ -1,0 +1,37 @@
+﻿@model Prometheus.WebUI.Models.SystemAccess.ConfirmDeleteModel
+@{
+	ViewBag.Title = "System Access";
+	ViewBag.SubTitle = "Confirm Delete";
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>(ViewBag.Title, "SystemAccess/Index"),
+		new KeyValuePair<string, string>("Permissions and Roles", "SystemAccess/PermissionsAndRoles"),
+		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+	};
+}
+
+
+
+@section Sidebar{}
+
+@section Content{
+	<div class="title-div">@ViewBag.SubTitle</div>
+
+	@using (Html.BeginForm(Model.DeleteAction, "SystemAccess", FormMethod.Post))
+	{
+		@Html.Partial("PartialViews/ConfirmDeleteMessage", Model)
+
+		<div class="flex-container">
+			<div class="panel panel-footer">
+				<div class="float-right-div">
+					@Html.ActionLink("Cancel", Model.ReturnAction, new {id = Model.Id,}, new {@class = "btn btn-default"})
+					<input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+
+				</div>
+			</div>
+		</div>
+	}
+}

@@ -141,6 +141,30 @@ namespace UserManager.Controllers
 				RolePermissionAdustment.CanAdustRolePermissions);
 		}
 
+		//TODO: Sean i don't wnat to deal with this....
+		public IEnumerable<RoleDto> GetRoles(int performingUserId)
+		{
+			//do some wild things with permissions .... 
+			using (var context = new PrometheusContext())
+			{
+				var roles = context.Roles;
+				foreach (var role in roles)
+				{
+					yield return ManualMapper.MapRoleToDto(role);
+				}
+			}
+		}
+
+		//TODO: Sean i don't want to deal with this either... yours truly, Brad.
+		public RoleDto GetRole(int performingUserId, int roleId)
+		{
+			// > permission things go here <
+			using (var context = new PrometheusContext())
+			{
+				return ManualMapper.MapRoleToDto(context.Roles.FirstOrDefault(r => r.Id == roleId));
+			}
+		}
+
 		protected override bool UserHasPermissionToModify(int performingUserId, EntityModification modification, out object permission)
 		{
 			permission = RolePermissionAdustment.CanAdustRolePermissions;

@@ -11,14 +11,18 @@ namespace Common.Dto
 
 		public int ServiceOptionId { get; set; }
 
-		[Display(Order = 1, Name="Display Order")]
+		[Display(Order = 1, Name="Display Name")]
+		[Required(ErrorMessage = "Display Name is required")]
 		public string DisplayName { get; set; }
 
-
-		public string Name { get; set; }
-		[Display(Name="Help Tool Tip")]
+		[Display(Order = 2, Name="Help Tool Tip")]
+		[AllowHtml]
 		public string HelpToolTip { get; set; }
+		[Display(Order = 3, Name = "Number of Selections")]
 		public int NumberToSelect { get; set; }
-		public IEnumerable<string> SelectItems { get; set; }
+		[Display(Order = 4, Name = "Selection Items")]
+		public string SelectItems { get; set; }
+		[HiddenInput]
+		public string Delimiter { get; set; }
 	}
 }

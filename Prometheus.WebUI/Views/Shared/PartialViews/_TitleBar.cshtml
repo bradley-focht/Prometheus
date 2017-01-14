@@ -10,18 +10,19 @@
 				
                 <div class="dropdown">
                     <span class="font-inverse">@Session["DisplayName"]</span>
-	                <span class="hamburger-menu btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
-                    <div class="dropdown-menu pull-right" aria-labelledby="dropdownMenuButton">
-                        <ul class="list-unstyled">
-                            <li><a class="dropdown-item" href="~/UserAccount/Logout">Logout</a></li>
+	                <span class="hamburger-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+
+                        <ul class="dropdown-menu pull-right" style="width: 150px;">
+	                        <li>@Html.ActionLink("Logout", "Logout", "UserAccount", null, new {@class = "dropdown-item"})</li>
+							<li class="divider"></li>
                             <li><a class="dropdown-item" href="~/Home/Index">Home</a></li>
-                        </ul>
-                        <div class="dropdown-divider"></div>
-                        <ul class="list-unstyled">
-                            <li class="dropdown-item">Roles</li>
+							<li class="divider"></li>
+
+	                        <li class="dropdown-item">Roles</li>
+	                        <li> - not working yet - </li>
 
                         </ul>
-                    </div>
+
                 </div>
 
             </div>

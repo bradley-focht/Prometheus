@@ -348,8 +348,10 @@
     <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\ConfirmDeleteModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
+    <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
@@ -372,9 +374,9 @@
     <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
-    <Compile Include="Models\SystemAccess\ADSearchResultsModel.cs" />
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
+    <Compile Include="Models\SystemAccess\UserModel.cs" />
     <Compile Include="Models\UserAccount\UserAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -424,7 +426,7 @@
     <Content Include="Views\Service\PartialViews\RenameDocument.cshtml" />
     <Content Include="Views\Shared\_BasicLayout.cshtml" />
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
-    <Content Include="Views\SystemAccess\UserAccess.cshtml" />
+    <Content Include="Views\SystemAccess\AddUsers.cshtml" />
     <Content Include="Views\ServicePortfolio\Update.cshtml" />
     <Content Include="Views\ServiceCatalog\ServiceCatalog.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDynamicServiceItem.cshtml" />
@@ -436,7 +438,7 @@
     <Content Include="Views\Service\UpdateSwotActivityItem.cshtml" />
     <Content Include="Views\Service\ShowSwotActivityItem.cshtml" />
     <Content Include="Views\Service\ConfirmDeleteSwotActivityItem.cshtml" />
-    <Content Include="Views\SystemAccess\PartialViews\SystemRoles.cshtml" />
+    <Content Include="Views\SystemAccess\PartialViews\SelectRoles.cshtml" />
     <Content Include="Views\SystemAccess\UpdateRole.cshtml" />
     <Content Include="Views\Service\PartialViews\ViewControls.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowOptionsTable.cshtml" />
@@ -465,7 +467,12 @@
     <Content Include="Views\Service\PartialViews\OptionsDropDown.cshtml" />
     <Content Include="Views\Shared\_EmptyLayout.cshtml" />
     <Content Include="Views\Service\PartialViews\ServicesDropDown.cshtml" />
-    <Content Include="Views\SystemAccess\ConfirmDeleteRole.cshtml" />
+    <Content Include="Views\SystemAccess\ConfirmDelete.cshtml" />
+    <Content Include="Views\SystemAccess\PartialViews\ConfirmDeleteMessage.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ShowUserInput.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputViewer.cshtml" />
+    <Content Include="Views\ServiceRequest\SubmitNewServiceRequest.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ConfirmDeleteUserInput.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

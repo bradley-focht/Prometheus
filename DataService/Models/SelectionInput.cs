@@ -12,6 +12,7 @@ namespace DataService.Models
 		
 		public string HelpToolTip { get; set; }
 		public int NumberToSelect { get; set; }
-		public IEnumerable<string> SelectItems { get; set; }
+		public string SelectItems { get; set; }
+		public string Delimiter { get; set; }
 	}
 }

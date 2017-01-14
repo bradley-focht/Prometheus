@@ -25,6 +25,8 @@ namespace ServicePortfolioService
 	    private readonly IServiceProcessController _serviceProcessController;
 	    private readonly IOptionCategoryController _optionCategoryController;
 	    private readonly ITextInputController _textInputController;
+		private readonly ISelectionInputController _selectionInputController;
+		private readonly IScriptedSelectionController _scriptedSelectionController;
 	
 
 
@@ -49,7 +51,7 @@ namespace ServicePortfolioService
 			IServiceContractController serviceContractController, IServiceWorkUnitController serviceWorkUnitController,
 			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController,
             IOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController,
-			ITextInputController textInputController)
+			ITextInputController textInputController, ISelectionInputController selectionInputController, IScriptedSelectionController scriptedSelectionController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
@@ -65,6 +67,8 @@ namespace ServicePortfolioService
 		    _optionCategoryController = optionCategoryController;
 		    _serviceProcessController = serviceProcessController;
 			_textInputController = textInputController;
+			_selectionInputController = selectionInputController;
+			_scriptedSelectionController = scriptedSelectionController;
 
 			UserId = userId;
 		}
@@ -283,6 +287,27 @@ namespace ServicePortfolioService
 		public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
 		{
 			return _textInputController.ModifyTextInput(textInput, modification);
+		}
+
+		public ISelectionInputDto GetSelectionInput(int selectionInputId)
+		{
+			return _selectionInputController.GetSelectionInput(selectionInputId);
+		}
+
+		public ISelectionInputDto ModifySelectionInput(ISelectionInputDto selectionInput, EntityModification modification)
+		{
+			return _selectionInputController.ModifySelectionInput(selectionInput, modification);
+		}
+
+		public IScriptedSelectionInputDto GetScriptedSelectionInput(int scriptedSelection)
+		{
+			return _scriptedSelectionController.GetScriptedSelectionInput(scriptedSelection);
+		}
+
+		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto scriptedSelection,
+			EntityModification modification)
+		{
+			return _scriptedSelectionController.ModifyScriptedSelectionInput(scriptedSelection, modification);
 		}
 	}
 }

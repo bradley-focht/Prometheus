@@ -11,9 +11,9 @@ namespace DataService.Models
 
 		//help tip?
 
-		ICollection<ITextInput> TextInputs { get; set; }
-		ICollection<IScriptedSelectionInput> ScriptedSelecentionInputs { get; set; }
-		ICollection<ISelectionInput> SelectionInputs { get; set; }
+		ICollection<TextInput> TextInputs { get; set; }
+		ICollection<ScriptedSelectionInput> ScriptedSelecentionInputs { get; set; }
+		ICollection<SelectionInput> SelectionInputs { get; set; }
 
 		//anything else required to be requestable. included items?
     }

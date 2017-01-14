@@ -25,7 +25,9 @@ namespace Prometheus.WebUI.Helpers
 				new ServiceOptionController(),
 				new OptionCategoryController(),
 				new ServiceProcessController(),
-				new TextInputController());
+				new TextInputController(),
+				new SelectionInputController(),
+				new ScriptedSelectionInputController());
 		}
 
 		public static ICatalogController CreateCatalogController(int dummyId)

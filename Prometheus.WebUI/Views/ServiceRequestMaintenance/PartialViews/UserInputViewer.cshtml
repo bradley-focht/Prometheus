@@ -1,0 +1,18 @@
+﻿@model dynamic
+	<div class="dd">
+	@foreach (var property in ViewData.ModelMetadata.Properties)
+	{
+		switch (property.PropertyName)
+		{
+			case "Id":
+			case "ServiceOptionId":
+				continue;
+			default:
+				<div class="dd-row">
+					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="dd-cell">@property.Model</div>
+				</div>
+				break;
+		}
+	}
+</div>

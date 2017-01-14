@@ -40,10 +40,11 @@ namespace DataService.Models
 		#region Navigation properties
 		public virtual Service Service { get; set; }
 		public int? OptionCategoryId { get; set; }
-		#endregion
 
-		public ICollection<ITextInput> TextInputs { get; set; }
-		public ICollection<IScriptedSelectionInput> ScriptedSelecentionInputs { get; set; }
-		public ICollection<ISelectionInput> SelectionInputs { get; set; }
+
+		public virtual ICollection<TextInput> TextInputs { get; set; }
+		public virtual ICollection<ScriptedSelectionInput> ScriptedSelecentionInputs { get; set; }
+		public virtual ICollection<SelectionInput> SelectionInputs { get; set; }
+		#endregion
 	}
 }

@@ -17,80 +17,80 @@
 
 <div class="flex-container-col">
 
-	<div class="subsubtitle-div make-space-top">Approve Service Requests</div>
+	<div class="make-space-top dt-text">Approve Service Requests</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (ApproveServiceRequest permission in Enum.GetValues(typeof(ApproveServiceRequest)))
 		{
 			<label class="btn btn-default" id="ApproveServiceRequest@(permission)">
-				@Html.RadioButton("ApproveServiceRequest", permission, Model.ApproveServiceRequestAccess == permission)
+				@Html.RadioButton("ApproveServiceRequestAccess", permission, Model.ApproveServiceRequestAccess == permission)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
 	</div>
 
 
-	<div class="subsubtitle-div make-space-top">Business Catalog</div>
+	<div class="dt-text make-space-top">Business Catalog</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (BusinessCatalog permission in Enum.GetValues(typeof(BusinessCatalog)))
 		{
 			<label class="btn btn-default" id="BusinessCatalog@(permission)">
-				@Html.RadioButton("BusinessCatalog", permission, false)
+				@Html.RadioButton("BusinessCatalogAccess", permission, false)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
 	</div>
 
-	<div class="subsubtitle-div make-space-top">Technical Requests</div>
+	<div class="dt-text make-space-top">Technical Requests</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (SupportCatalog permission in Enum.GetValues(typeof(SupportCatalog)))
 		{
 			<label class="btn btn-default" id="SupportingCatalog@(permission)">
-				@Html.RadioButton("SupportingCatalog", permission, false)
+				@Html.RadioButton("SupportCatalogAccess", permission, false)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
 	</div>
 
 
-	<div class="subsubtitle-div make-space-top">Role/Permission Adjustment</div>
+	<div class="dt-text make-space-top">Role/Permission Adjustment</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (RolePermissionAdustment permission in Enum.GetValues(typeof(RolePermissionAdustment)))
 		{
 			<label class="btn btn-default" id="RolePermissionAdjustment@(permission)">
-				@Html.RadioButton("RolePermissionAdjustment", permission, false)
+				@Html.RadioButton("RolePermissionAdjustmentAccess", permission, false)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
 	</div>
 
 
-	<div class="subsubtitle-div make-space-top">Service Details</div>
+	<div class="dt-text make-space-top">Service Details</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (ServiceDetails permission in Enum.GetValues(typeof(ServiceDetails)))
 		{
 			<label class="btn btn-default" id="ServiceDetails@(permission)">
-				@Html.RadioButton("ServiceDetails", permission, false)
+				@Html.RadioButton("ServiceDetailsAccess", permission, false)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
 	</div>
 
-	<div class="subsubtitle-div make-space-top">Service Request Assignment</div>
+	<div class="dt-text make-space-top">Service Request Assignment</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (ServiceRequestSubmission permission in Enum.GetValues(typeof(ServiceRequestSubmission)))
 		{
 			<label class="btn btn-default" id="ServiceRequestSubmission@(permission)">
-				@Html.RadioButton("ServiceRequestSubmission", permission, false)
+				@Html.RadioButton("ServiceRequestSubmissionAccess", permission, false)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
 	</div>
-	<div class="subsubtitle-div make-space-top">User/Role Assignment</div>
+	<div class="dt-text make-space-top">User/Role Assignment</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (UserRoleAssignment permission in Enum.GetValues(typeof(UserRoleAssignment)))
 		{
 			<label class="btn btn-default" id="UserRoleAssignment@(permission)">
-				@Html.RadioButton("UserRoleAssignment", permission, false)
+				@Html.RadioButton("UserRoleAssignmentAccess", permission, false)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}

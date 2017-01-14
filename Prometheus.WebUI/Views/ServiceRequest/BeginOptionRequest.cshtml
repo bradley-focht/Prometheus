@@ -1,10 +1,54 @@
-﻿
+﻿@using Common.Dto
+@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
 @{
-    ViewBag.Title = "BeginOptionRequest";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "BeginOptionRequest";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("Service Request", "@")
+	};
 }
 
 <h2>Begin Service Request</h2>
 
-You have reached a beautiful place. 
+You have reached a beautiful place.
 
+@using (Html.BeginForm("SubmitNewServiceRequest", "ServiceRequest", FormMethod.Post))
+{
+
+<div class="panel panel-default flex-container-row" style="justify-content: space-between">
+	<div class="flex-container-row">
+		<div>Requestor</div>
+		<div>Me</div>
+	</div>
+	<div>
+		Requested for
+	</div>
+	<div>
+		Required date
+	</div>
+</div>
+
+<div class="flex-container-col">
+	<div>@Model.Option.Name</div>
+	@foreach (var input in Model.Option.TextInputs)
+	{
+		@Html.TextBox("input1", "", new {@class = "form-control"})
+	}
+	@foreach (var input in Model.Option.SelectionInputs)
+	{
+		<text>some other input... </text>
+	}
+
+</div>
+
+<div class="flex-container-col">
+	<div class="panel-footer">
+		<div class="float-right-div">
+			<input type="submit" value="Submit" class="btn btn-primary"/>
+		</div>
+	</div>
+
+</div>
+}

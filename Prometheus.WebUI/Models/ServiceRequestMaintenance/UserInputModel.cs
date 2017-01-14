@@ -1,9 +1,11 @@
 ﻿using Common.Dto;
 using Common.Enums;
-using Prometheus.WebUI.Infrastructure;
 
 namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 {
+	/// <summary>
+	/// Model used for views
+	/// </summary>
 	public class UserInputModel
 	{
 		/// <summary>

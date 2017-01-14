@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Common.Dto.IRoleDto>
+
+@foreach (var role in Model)
+{
+
+	<div class="checkbox checkbox-primary">
+		<input id="@role.Id" type="checkbox">
+		<label for="@role.Id">
+			@role.Name
+		</label>
+	</div>
+
+}

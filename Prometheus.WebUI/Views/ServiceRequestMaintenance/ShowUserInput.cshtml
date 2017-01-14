@@ -1,0 +1,51 @@
+﻿@using Common.Dto
+@using Common.Enums
+@model Prometheus.WebUI.Models.ServiceRequestMaintenance.UserInputModel
+@{
+	ViewBag.Title = "ShowUserInput";
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("Service Request Maintenance", "#"),
+		new KeyValuePair<string, string>("Service", "Service"),
+		new KeyValuePair<string, string>("Service Option", "Service")
+	};
+}
+
+@section Content
+{
+
+	<div class="title-div">User Input</div>
+	<div class="panel-div">
+		@switch (Model.InputType)
+		{
+			case UserInputTypes.Text:
+				@Html.Partial("PartialViews/UserInputViewer", (ITextInputDto) Model.UserInput)
+				break;
+			case UserInputTypes.Selection:
+				@Html.Partial("PartialViews/UserInputViewer", (ISelectionInputDto) Model.UserInput)
+				break;
+			case UserInputTypes.ScriptedSelection:
+				@Html.Partial("PartialViews/UserInputViewer", (IScriptedSelectionInputDto) Model.UserInput)
+				break;
+		}
+	</div>
+
+
+	<div class="flex-container-col">
+		<div class="panel-footer">
+			<div class="float-right-div">
+				@Html.ActionLink("Back", "ShowServiceOption", new { id = Model.OptionId}, new { @class = "btn btn-default btn-back"})
+				@Html.ActionLink("Update", "UpdateUserInput", new {id = Model.UserInput.Id, type = Model.InputType}, new {@class = "btn btn-primary"})
+				@Html.ActionLink("Delete", "ConfirmDeleteUserInput", new {id = Model.UserInput.Id, type = Model.InputType}, new {@class="btn btn-danger"})
+			</div>
+		</div>
+	</div>
+
+}
+
+@section Sidebar
+{
+
+}

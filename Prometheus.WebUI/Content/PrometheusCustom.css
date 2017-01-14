@@ -23,6 +23,11 @@
 	color: #333;
     padding: 5px 5px;
 }
+.title-font {
+	font-size: 1.3em;
+    font-weight: 500;
+	color: #333;
+}
 
 .subtitle-div {
 	border-bottom: 1px solid #ddd;
@@ -35,11 +40,7 @@
 
 .title-div-placeholder {
 	border-bottom: 1px solid #ddd;
-	white-space: nowrap;
-	font-weight: 500;
-	color: #333;
 	padding: 5px 5px;
-	margin-bottom: 10px; 
 }
 .subsubtitle-div {
 	color: #333;
@@ -80,6 +81,13 @@
 .hamburger-menu {
     font-size: 2em;
     color: #ddd;
+	  display: inline-block;
+  font-weight: normal;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+
 }
 
     .hamburger-menu:hover {
@@ -93,7 +101,10 @@
     }
 .form-money {
     max-width:100px;
-    margin-bottom: 10px;
+}
+
+.form-number {
+	max-width: 50px;
 }
 
 .font-home-link {
@@ -275,6 +286,11 @@
 .dt-sp {
     color: #414141;
     padding-bottom: 10px;
+}
+
+.dt-text {
+    color: #0C537C;
+	font-weight: 600;
 }
 
 .dt-cell {

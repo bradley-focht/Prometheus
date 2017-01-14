@@ -15,8 +15,11 @@ namespace Prometheus.WebUI.Controllers
 	public class ServiceRequestMaintenanceController : Controller
 	{
 		private int _dummyId = 1;
-		private ICatalogController _requestService;
+		private readonly ICatalogController _requestService;
 
+		/// <summary>
+		/// Default constructor
+		/// </summary>
 		public ServiceRequestMaintenanceController()
 		{
 			_requestService = new CatalogController(InterfaceFactory.CreateUserManagerService());
@@ -68,8 +71,28 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceOption(int id)
 		{
 			ServiceRequestOptionModel model = new ServiceRequestOptionModel();
-
-			model.Option = InterfaceFactory.CreatePortfolioService(_dummyId).GetServiceOption(id);
+			try
+			{
+				model.Option = InterfaceFactory.CreatePortfolioService(_dummyId).GetServiceOption(id);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = exception.Message;
+				return View(model);
+			}
+			var inputs = new List<IUserInput>();						//sort user inputs
+			if (model.Option.TextInputs != null) {
+				inputs.AddRange(from t in model.Option.TextInputs select (IUserInput)t);
+			}
+			if (model.Option.SelectionInputs != null) {
+				inputs.AddRange(from t in model.Option.SelectionInputs select (IUserInput)t);
+			}
+			if (model.Option.ScriptedSelecentionInputs != null) {
+				inputs.AddRange(from t in model.Option.ScriptedSelecentionInputs select (IUserInput)t);
+			}
+			model.UserInputs = inputs.OrderBy(i => i.DisplayName);
+			
 
 			return View(model);
 		}
@@ -97,7 +120,7 @@ namespace Prometheus.WebUI.Controllers
 					input = new SelectionInputDto();
 					break;
 				default:									//need a default
-					input = new TextInputDto();
+					input = null;
 					break;
 			}
 
@@ -112,19 +135,93 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="input">input dto</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveTextInput(TextInputDto input)
+		public ActionResult SaveSelectionInput(SelectionInputDto input)
 		{
 			if (!ModelState.IsValid)							//server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save new User Input due to invalid data";
 				if (input.Id == 0)								//depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Text, id = input.ServiceOptionId});
+					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Selection, id = input.ServiceOptionId});
 				return RedirectToAction("UpdateUserInput", new {type = UserInputTypes.Text, parentId = input.ServiceOptionId, id = input.Id});
 			}
 
 			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
 			
+			try
+			{
+				ps.ModifySelectionInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to save new User Input, error: {exception.Message}";
+				if (input.Id == 0)                              //depending on user action at the time
+					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Selection, id = input.ServiceOptionId });
+				return RedirectToAction("UpdateUserInput", new { type = UserInputTypes.Selection, id = input.Id });
+			}
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Successfully saved new User Input";
+
+			return RedirectToAction("ShowServiceOption", new { id = input.ServiceOptionId });
+		}
+
+		/// <summary>
+		/// Save new or updates to existing text user inputs
+		/// </summary>
+		/// <param name="input">input dto</param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult SaveScriptedSelectionInput(ScriptedSelectionInputDto input)
+		{
+			if (!ModelState.IsValid)                            //server side validation
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to save new User Input due to invalid data";
+				if (input.Id == 0)                              //depending on user action at the time
+					return RedirectToAction("AddUserInput", new { type = UserInputTypes.ScriptedSelection, id = input.ServiceOptionId });
+				return RedirectToAction("UpdateUserInput", new { type = UserInputTypes.ScriptedSelection, parentId = input.ServiceOptionId, id = input.Id });
+			}
+
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+
+			try
+			{
+				ps.ModifyScriptedSelectionInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to save new User Input, error: {exception.Message}";
+				if (input.Id == 0)                              //depending on user action at the time
+					return RedirectToAction("AddUserInput", new { type = UserInputTypes.ScriptedSelection, id = input.ServiceOptionId });
+				return RedirectToAction("UpdateUserInput", new { type = UserInputTypes.ScriptedSelection, id = input.Id });
+			}
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Successfully saved new User Input";
+
+			return RedirectToAction("ShowServiceOption", new { id = input.ServiceOptionId });
+		}
+
+		/// <summary>
+		/// Save new or updates to existing text user inputs
+		/// </summary>
+		/// <param name="input">input dto</param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult SaveTextInput(TextInputDto input)
+		{
+			if (!ModelState.IsValid)                            //server side validation
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to save new User Input due to invalid data";
+				if (input.Id == 0)                              //depending on user action at the time
+					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Text, id = input.ServiceOptionId });
+				return RedirectToAction("UpdateUserInput", new { type = UserInputTypes.Text, parentId = input.ServiceOptionId, id = input.Id });
+			}
+
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+
 			try
 			{
 				ps.ModifyTextInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create);
@@ -143,9 +240,69 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("ShowServiceOption", new { id = input.ServiceOptionId });
 		}
 
-		public ActionResult UpdateUserInput(int id)
+		public ActionResult UpdateUserInput(UserInputTypes type, int id)
 		{
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+			
+			IUserInput input;
+
+				switch (type)
+				{
+					case UserInputTypes.Text:
+						input = ps.GetTextInput(id);
+						break;
+					case UserInputTypes.Selection:
+						input = ps.GetSelectionInput(id);
+						break;
+					case UserInputTypes.ScriptedSelection:
+						input = ps.GetScriptedSelectionInput(id);
+						
+						break;
+					default: //need a default
+						input = new TextInputDto();
+						break;
+				}
+				//input.ServiceOptionId = id;
+			string optionName = ps.GetServiceOption(input.ServiceOptionId).Name;
+
+			return View("EditUserInput", new UserInputModel { InputType = type, OptionId = id, OptionName = optionName, UserInput = input });
+		}
+
+		public ActionResult ConfirmDeleteUserInput(UserInputTypes inputType, int id)
+		{
+			ConfirmDeleteModel model = new ConfirmDeleteModel();
 			return View();
+		}
+
+		public ActionResult ShowUserInput(UserInputTypes type, int id)
+		{
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+			var model = new UserInputModel {InputType = type};
+			IUserInput input;
+
+			switch (type)
+			{
+				case UserInputTypes.Text:
+					input = ps.GetTextInput(id);
+					break;
+				case UserInputTypes.ScriptedSelection:
+					input = ps.GetScriptedSelectionInput(id);
+					break;
+				case UserInputTypes.Selection:
+					input = ps.GetSelectionInput(id);
+
+					break;
+				default: //need a default
+					input = new TextInputDto();
+					break;
+			}
+			//input.ServiceOptionId = id;
+			var option = ps.GetServiceOption(input.ServiceOptionId);
+			model.OptionId = option.Id;
+			model.OptionName = option.Name;
+			model.UserInput = input;
+
+			return View("ShowUserInput", model);
 		}
 
 	}

@@ -1,0 +1,99 @@
+﻿@model Prometheus.WebUI.Models.SystemAccess.UserModel
+
+@{
+	ViewBag.Title = "User Access";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
+		new KeyValuePair<string, string>(ViewBag.Title, "#")
+	};
+}
+<div class="dd">
+	<div class="dd-row">
+		<div class="dd-cell-nostyle" style="margin-right: 10px;">
+			<div class="title-div">Users</div>
+			@using (Html.BeginForm("SearchAdAccount", "SystemAccess", FormMethod.Post))
+			{
+				<div class="input-group make-space-top make-space-bottom">
+					<input name="searchString" type="text" class="form-control" placeholder="Search for...">
+					<span class="input-group-btn">
+						<button class="btn btn-primary" type="submit">
+							<i class="fa fa-search" aria-hidden="true"></i>
+							Search
+						</button>
+					</span>
+				</div>
+			}
+
+		</div>
+		@if (Model.Users != null && Model.Users.Any())
+		{
+			<div class="title-div">Roles</div>
+		}
+	</div>
+	@using (Html.BeginForm("SaveUsers", "SystemAccess", FormMethod.Post))
+	{
+		<div class="dd-row">
+
+			@if (Model.ReturningSearch && Model.Users != null && Model.Users.Any())
+			{
+				int i = 0; /*uniquely identify selected user */
+				<div class="dd-cell-base">
+					<div class="funkyradio">
+						@foreach (var user in Model.Users)
+					{
+							<div class="checkbox checkbox-primary">
+								<input type="checkbox" name="selectedUsers" value="@user.Item1" id="selectedUsers@(i)" />
+								<label for="selectedUsers@(i)">@user.Item2</label>
+							</div>
+
+					}
+					</div>
+				</div>
+			}
+			else
+			{
+				<div class="dd-cell-base">
+					<div class="alert alert-warning alert-message make-space-top">No results</div>
+				</div>
+			}
+
+			@if (Model.Users != null && Model.Roles != null)
+			{
+				<div class="dd-cell-base">
+					@Html.Partial("PartialViews/SelectRoles", Model.Roles)
+				</div>
+			}
+
+
+		</div>
+		if (Model.ReturningSearch && Model.Users != null && Model.Users.Any())
+		{
+			<div class="dd-row">
+				<div class="dd-cell-base">
+					<div class="flex-container-col">
+						<div class="panel-footer">
+							<div class="float-right-div">
+								@Html.ActionLink("Clear", "AddUsers", new { @class = "btn btn-primary" })
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="dd-cell-base">
+					<div class="flex-container-col">
+						<div class="panel-footer">
+							<div class="float-right-div">
+								<input type="submit" value="Save" class="btn btn-primary" />
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+		}
+	}
+</div>

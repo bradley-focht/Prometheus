@@ -15,5 +15,6 @@ namespace DataService.Models
 		double Cost { get; set; }
 		string Usage { get; set; }
 
+
     }
 }

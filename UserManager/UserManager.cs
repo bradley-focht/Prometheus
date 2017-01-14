@@ -77,5 +77,15 @@ namespace UserManager
 		{
 			return _roleController.RemoveRoleFromUsers(performingUserId, roleDto, users);
 		}
+
+		public IEnumerable<RoleDto> GetRoles(int performingUserId)
+		{
+			return _roleController.GetRoles(performingUserId);
+		}
+
+		public RoleDto GetRole(int performingUserId, int roleId)
+		{
+			return _roleController.GetRole(performingUserId, roleId);
+		}
 	}
 }
