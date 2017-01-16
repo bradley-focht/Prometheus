@@ -71,28 +71,38 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceOption(int id)
 		{
 			ServiceRequestOptionModel model = new ServiceRequestOptionModel();
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
 			try
 			{
-				model.Option = InterfaceFactory.CreatePortfolioService(_dummyId).GetServiceOption(id);
+				model.Option = ps.GetServiceOption(id);					//get data for back links
+				model.ServiceName = ps.GetService(model.Option.Id).Name;
+				model.ServiceId = model.Option.ServiceId;
 			}
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = exception.Message;
+
 				return View(model);
 			}
-			var inputs = new List<IUserInput>();						//sort user inputs
-			if (model.Option.TextInputs != null) {
+			var inputs = new List<IUserInput>();                        //sort user inputs
+			if (model.Option.TextInputs != null)
+			{
 				inputs.AddRange(from t in model.Option.TextInputs select (IUserInput)t);
 			}
-			if (model.Option.SelectionInputs != null) {
+			if (model.Option.SelectionInputs != null)
+			{
 				inputs.AddRange(from t in model.Option.SelectionInputs select (IUserInput)t);
 			}
-			if (model.Option.ScriptedSelecentionInputs != null) {
+			if (model.Option.ScriptedSelecentionInputs != null)
+			{
 				inputs.AddRange(from t in model.Option.ScriptedSelecentionInputs select (IUserInput)t);
 			}
-			model.UserInputs = inputs.OrderBy(i => i.DisplayName);
-			
+			model.UserInputs = inputs.OrderBy(i => i.DisplayName);			//ordered alphabetically here
+
+
+
+
 
 			return View(model);
 		}
@@ -113,20 +123,20 @@ namespace Prometheus.WebUI.Controllers
 				case UserInputTypes.Text:
 					input = new TextInputDto();
 					break;
-					case UserInputTypes.ScriptedSelection:
+				case UserInputTypes.ScriptedSelection:
 					input = new ScriptedSelectionInputDto();
 					break;
-					case UserInputTypes.Selection:
-					input = new SelectionInputDto();
+				case UserInputTypes.Selection:
+					input = new SelectionInputDto {Delimiter = ","};	//set the default to comma
 					break;
-				default:									//need a default
+				default:												//need a default
 					input = null;
 					break;
 			}
 
 			input.ServiceOptionId = id;
 
-			return View("EditUserInput", new UserInputModel { InputType = type, OptionId = id, OptionName = option.Name, UserInput = input});
+			return View("EditUserInput", new UserInputModel { InputType = type, OptionId = id, OptionName = option.Name, UserInput = input });
 		}
 
 		/// <summary>
@@ -137,17 +147,17 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveSelectionInput(SelectionInputDto input)
 		{
-			if (!ModelState.IsValid)							//server side validation
+			if (!ModelState.IsValid)                            //server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save new User Input due to invalid data";
-				if (input.Id == 0)								//depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Selection, id = input.ServiceOptionId});
-				return RedirectToAction("UpdateUserInput", new {type = UserInputTypes.Text, parentId = input.ServiceOptionId, id = input.Id});
+				if (input.Id == 0)                              //depending on user action at the time
+					return RedirectToAction("AddUserInput", new { type = UserInputTypes.Selection, id = input.ServiceOptionId });
+				return RedirectToAction("UpdateUserInput", new { type = UserInputTypes.Text, parentId = input.ServiceOptionId, id = input.Id });
 			}
 
 			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
-			
+
 			try
 			{
 				ps.ModifySelectionInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create);
@@ -240,12 +250,58 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("ShowServiceOption", new { id = input.ServiceOptionId });
 		}
 
+		/// <summary>
+		/// Return view to update a user input
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult UpdateUserInput(UserInputTypes type, int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
-			
+
 			IUserInput input;
 
+			switch (type)
+			{
+				case UserInputTypes.Text:
+					input = ps.GetTextInput(id);
+					break;
+				case UserInputTypes.Selection:
+					input = ps.GetSelectionInput(id);
+					break;
+				case UserInputTypes.ScriptedSelection:
+					input = ps.GetScriptedSelectionInput(id);
+
+					break;
+				default: //need a default
+					input = new TextInputDto();
+					break;
+			}
+			//input.ServiceOptionId = id;
+			string optionName = ps.GetServiceOption(input.ServiceOptionId).Name;
+
+			return View("EditUserInput", new UserInputModel { InputType = type, OptionId = id, OptionName = optionName, UserInput = input });
+		}
+
+		/// <summary>
+		/// First step of deleting a user input
+		/// </summary>
+		/// <param name="type"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult ConfirmDeleteUserInput(UserInputTypes type, int id)
+		{
+			ConfirmDeleteModel model = new ConfirmDeleteModel { Type = type, Id = id };
+			model.DeleteAction = "DeleteUserInput";
+			model.ReturnAction = "ShowUserInput";
+
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+			IUserInput input = null;
+			IServiceOptionDto option = null;
+
+			try
+			{
 				switch (type)
 				{
 					case UserInputTypes.Text:
@@ -256,28 +312,42 @@ namespace Prometheus.WebUI.Controllers
 						break;
 					case UserInputTypes.ScriptedSelection:
 						input = ps.GetScriptedSelectionInput(id);
-						
-						break;
-					default: //need a default
-						input = new TextInputDto();
 						break;
 				}
-				//input.ServiceOptionId = id;
-			string optionName = ps.GetServiceOption(input.ServiceOptionId).Name;
 
-			return View("EditUserInput", new UserInputModel { InputType = type, OptionId = id, OptionName = optionName, UserInput = input });
+				if (input != null) {
+					option = ps.GetServiceOption(input.Id);
+					if (option != null)
+					{
+						model.ServiceName = ps.GetService(option.ServiceId).Name;
+						model.OptionId = option.Id;
+						model.OptionName = option.Name;
+						model.Name = input.DisplayName;
+						model.ServiceId = option.ServiceId;
+					}
+				}
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;				//return incomplete data with an error message
+				TempData["Message"] = $"Failed to find user input, error: {exception.Message}";
+				return View(model);
+			}
+			
+
+			return View(model);
 		}
 
-		public ActionResult ConfirmDeleteUserInput(UserInputTypes inputType, int id)
-		{
-			ConfirmDeleteModel model = new ConfirmDeleteModel();
-			return View();
-		}
-
+		/// <summary>
+		/// Show details of a user input
+		/// </summary>
+		/// <param name="type">input type</param>
+		/// <param name="id">id of input</param>
+		/// <returns></returns>
 		public ActionResult ShowUserInput(UserInputTypes type, int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
-			var model = new UserInputModel {InputType = type};
+			var model = new UserInputModel { InputType = type };
 			IUserInput input;
 
 			switch (type)
@@ -303,6 +373,42 @@ namespace Prometheus.WebUI.Controllers
 			model.UserInput = input;
 
 			return View("ShowUserInput", model);
+		}
+
+		/// <summary>
+		/// Complete deltion process of a user input
+		/// </summary>
+		/// <param name="deleteModel"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult DeleteUserInput(ConfirmDeleteModel deleteModel)
+		{
+			var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+			try
+			{
+				switch (deleteModel.Type)
+				{
+					case UserInputTypes.Text:
+						ps.ModifyTextInput(new TextInputDto {Id = deleteModel.Id}, EntityModification.Delete);
+						break;
+					case UserInputTypes.ScriptedSelection:
+						ps.ModifyScriptedSelectionInput(new ScriptedSelectionInputDto {Id = deleteModel.Id}, EntityModification.Delete);
+						break;
+					case UserInputTypes.Selection:
+						ps.ModifySelectionInput(new SelectionInputDto {Id = deleteModel.Id}, EntityModification.Delete);
+						break;
+				}
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to delete {deleteModel.Name}, error: {exception.Message}";
+			}
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Successfully deleted user input";
+
+
+			return RedirectToAction("ShowServiceOption", new {type = deleteModel.Type, id = deleteModel.Id});
 		}
 
 	}

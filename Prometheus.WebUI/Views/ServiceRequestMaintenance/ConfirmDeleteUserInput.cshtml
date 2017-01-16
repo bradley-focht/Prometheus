@@ -5,8 +5,11 @@
 	ViewBag.Links = new List<KeyValuePair<string, string>>
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
-		new KeyValuePair<string, string>("Service Request Maintenance", "ServiceRequestMaintenance/ShowServiceOption/"),
-		new KeyValuePair<string, string>("service name --", "Service")
+		new KeyValuePair<string, string>("Service Request Maintenance", "ServiceRequestMaintenance/Index"),
+		new KeyValuePair<string, string>($"{Model.ServiceName}", $"ServiceRequestMaintenance/ShowServiceOptions/{Model.ServiceId}"),
+		new KeyValuePair<string, string>($"{Model.OptionName}", $"ServiceRequestMaintenance/ShowServiceOption/{Model.OptionId}"),
+		new KeyValuePair<string, string>($"{Model.Name}", $"ServiceRequestMaintenance/ShowUserInput/{Model.Id}"),
+		new KeyValuePair<string, string>("Confirm Deletion", "#")
 	};
 
 }
@@ -14,6 +17,12 @@
 @section Content {
 	@using (Html.BeginForm(Model.DeleteAction, "ServiceRequestMaintenance", FormMethod.Post))
 	{
+		<input type="hidden" name="Id" value="@Model.Id"/>
+		<input type="hidden" name="ServiceId" value="@Model.ServiceId"/>
+		<input type="hidden" name="OptionId" value="@Model.OptionId"/>
+		<input type="hidden" name="Name" value="@Model.Name"/>
+		<input type="hidden" name="Type", value="@Model.Type"/>
+
 		<div class="title-div">Confirm Deletion</div>
 
 		<div class="present-section">

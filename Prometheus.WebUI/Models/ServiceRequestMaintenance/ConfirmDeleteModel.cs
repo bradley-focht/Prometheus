@@ -11,5 +11,9 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 		public string ReturnAction { get; set; }
 		public UserInputTypes Type { get; set; }
 		public int Id { get; set; }
+
+		public int ServiceId { get; set; }
+		public string ServiceName { get; set; }
+
 	}
 }

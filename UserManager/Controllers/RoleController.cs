@@ -141,10 +141,10 @@ namespace UserManager.Controllers
 				RolePermissionAdustment.CanAdustRolePermissions);
 		}
 
-		//TODO: Sean i don't wnat to deal with this....
+		//TODO: Sean - permission checks are needed
 		public IEnumerable<RoleDto> GetRoles(int performingUserId)
 		{
-			//do some wild things with permissions .... 
+			 
 			using (var context = new PrometheusContext())
 			{
 				var roles = context.Roles;
@@ -158,7 +158,7 @@ namespace UserManager.Controllers
 		//TODO: Sean i don't want to deal with this either... yours truly, Brad.
 		public RoleDto GetRole(int performingUserId, int roleId)
 		{
-			// > permission things go here <
+			//TODO: Sean > permission things go here <
 			using (var context = new PrometheusContext())
 			{
 				return ManualMapper.MapRoleToDto(context.Roles.FirstOrDefault(r => r.Id == roleId));

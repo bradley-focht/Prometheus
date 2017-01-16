@@ -241,12 +241,45 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="users"></param>
 		/// <returns></returns>
 		[HttpPost]
-		ActionResult SaveUsers(ICollection<int> roles, ICollection<Guid> users)
+		public ActionResult SaveAddUsers(ICollection<int> roles, ICollection<Guid> users)
 		{
+			if (!ModelState.IsValid)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to save new user due to invalid data";
+				return View("AddUsers", new UserModel());
+			}
+
+			try
+			{
+
+			}
+			catch (Exception exception)
+			{
+				
+			}
+
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved new users";
 
 			return RedirectToAction("AddUsers");
+		}
+
+		public ActionResult CurrentUsers(int id = 0)
+		{
+			CurrentUserModel model = new CurrentUserModel {SelectedUser = id};
+
+			try
+			{
+				model.Users = _userManager.GetUsers(uid).ToList();
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to get users, error: {exception.Message}";
+			}
+
+			return View("ShowCurrentUsers", model);
 		}
 
 	}

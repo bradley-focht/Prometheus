@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequest;
+using Prometheus.WebUI.Models.Shared;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -23,10 +24,11 @@ namespace Prometheus.WebUI.Controllers
         }
 
 
-	    public ActionResult SubmitNewServiceRequest(FormCollection data)
+	    public ActionResult SubmitNewServiceRequest(ServiceRequest serviceRequest)
 	    {
-		    return View();
-	    }
+
+			return View(serviceRequest);
+		}
 
 	}
 }

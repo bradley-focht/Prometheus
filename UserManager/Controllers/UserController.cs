@@ -19,6 +19,38 @@ namespace UserManager.Controllers
 			return base.ModifyEntity(performingUserId, userDto, modification);
 		}
 
+		public IEnumerable<UserDto> GetUsers(int performingUserId)
+		{
+			//TODO: Sean -  need to check permissions...
+			{
+
+				using (var context = new PrometheusContext())
+				{
+					var users = context.Users;
+					foreach (var user in users)
+					{
+						yield return (UserDto)ManualMapper.MapUserToDto(user);
+					}
+				}
+			}
+		}
+
+
+
+		public UserDto GetUser(int performingUserId, int userId)
+		{
+			//TODO: Sean - need to do permissions stuff here
+
+			using (var context = new PrometheusContext())
+			{
+				var user = (from u in context.Users
+							where u.Id == userId
+							select u).FirstOrDefault();
+
+				return (UserDto)ManualMapper.MapUserToDto(user);				//will return null if user not found
+			}
+		}
+
 		protected override IUserDto Create(int performingUserId, IUserDto userDto)
 		{
 			using (var context = new PrometheusContext())

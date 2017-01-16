@@ -7,5 +7,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 	{
 		public IServiceOptionDto Option { get; set; }
 		public IEnumerable<IUserInput> UserInputs { get; set; }
+		public int ServiceId { get; set; }
+		public string ServiceName { get; set; }
 	}
 }

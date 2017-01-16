@@ -12,23 +12,7 @@
 		new KeyValuePair<string, string>(Model.OptionName, $"ServiceRequestMaintenance/ShowServiceOption/{Model.OptionId}"),
 		new KeyValuePair<string, string>($"{Model.Action} User Input", "#")
 	};
-	string form;
 
-	switch (Model.InputType)
-	{
-		case UserInputTypes.Text:
-			form = "SaveTextInput";
-			break;
-		case UserInputTypes.Selection:
-			form = "SaveSelection";
-			break;
-		case UserInputTypes.ScriptedSelection:
-			form = "SaveScriptedSelection";
-			break;
-		default:
-			form = "";      //controller will fail before reaching this point
-			break;
-	}
 
 }
 

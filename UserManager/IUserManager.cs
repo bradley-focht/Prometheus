@@ -7,7 +7,8 @@ namespace UserManager
 {
 	public interface IUserManager : IPermissionController, IUserController, IRoleController
 	{
-		IUserDto Login(string username, string password);
+		UserDto Login(string username, string password);
 		ICollection<Tuple<Guid, string>> SearchUsers(string searchString);
+		string GetDisplayName(Guid userGuid);
 	}
 }

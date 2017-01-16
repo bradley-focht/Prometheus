@@ -10,7 +10,7 @@
 			default:
 				<div class="dd-row">
 					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-					<div class="dd-cell">@property.Model</div>
+					<div class="dd-cell">@Html.Raw(property.Model)</div>
 				</div>
 				break;
 		}

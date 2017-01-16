@@ -22,12 +22,12 @@ namespace UserManager
 
 
 		//TODO: Sean implement login
-		public IUserDto Login(string username, string password)
+		public UserDto Login(string username, string password)
 		{
 			// <hack>I'm in</hack>
 			//return null;      //perhaps not
 
-			AdUser user = new AdUser();
+			IDirectoryUser user = new AdUser();
 			if (user.AuthenticateUser(username, password))
 			{
 				return new UserDto
@@ -40,6 +40,13 @@ namespace UserManager
 				};
 			}
 			return null;
+		}
+
+
+		public string GetDisplayName(Guid userGuid)
+		{
+			IAdSearch userSearch = new AdSearch();
+			return userSearch.GetUserDisplayName(userGuid);
 		}
 
 		public ICollection<Tuple<Guid, string>> SearchUsers(string searchString)
@@ -61,6 +68,16 @@ namespace UserManager
 		public IUserDto ModifyUser(int performingUserId, IUserDto userDto, EntityModification modification)
 		{
 			return _userController.ModifyUser(performingUserId, userDto, modification);
+		}
+
+		public IEnumerable<UserDto> GetUsers(int performingUserId)
+		{
+			return _userController.GetUsers(performingUserId);
+		}
+
+		public UserDto GetUser(int performingUserId, int userId)
+		{
+			return _userController.GetUser(performingUserId, userId);
 		}
 
 		public IRoleDto ModifyRole(int performingUserId, IRoleDto roleDto, EntityModification modification)

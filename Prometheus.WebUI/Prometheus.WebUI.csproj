@@ -322,6 +322,7 @@
     <Compile Include="Controllers\ServiceCatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
+    <Compile Include="Controllers\ServiceRequestApprovalController.cs" />
     <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\ServiceRequestMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
@@ -373,8 +374,12 @@
     <Compile Include="Models\ServiceMaintenance\LifecycleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
+    <Compile Include="Models\Shared\ServiceRequest.cs" />
+    <Compile Include="Models\Shared\ServiceRequestOption.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
+    <Compile Include="Models\Shared\UserInput.cs" />
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
+    <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
     <Compile Include="Models\SystemAccess\UserModel.cs" />
     <Compile Include="Models\UserAccount\UserAccountModel.cs" />
@@ -473,6 +478,8 @@
     <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputViewer.cshtml" />
     <Content Include="Views\ServiceRequest\SubmitNewServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ConfirmDeleteUserInput.cshtml" />
+    <Content Include="Views\ServiceRequestApproval\Index.cshtml" />
+    <Content Include="Views\SystemAccess\ShowCurrentUsers.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
