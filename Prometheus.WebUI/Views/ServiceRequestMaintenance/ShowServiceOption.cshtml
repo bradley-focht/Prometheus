@@ -18,7 +18,7 @@
 @section Content
 {
 	<div class="title-div">Service Option</div>
-
+	<div class="panel-div">
 	<div class="dd">
 		<div class="dd-row">
 			<div class="dt-cell">Name</div>
@@ -36,11 +36,11 @@
 				{
 					<table class="table table-hover">
 						<thead>
-						<tr>
-							<th><span class="table-title">Display Name</span></th>
-							<th><span class="table-title">Type</span></th>
-							<th></th>
-						</tr>
+							<tr>
+								<th><span class="table-title">Display Name</span></th>
+								<th><span class="table-title">Type</span></th>
+								<th></th>
+							</tr>
 						</thead>
 						@foreach (var input in Model.UserInputs)
 						{
@@ -63,7 +63,7 @@
 								typeName = "Scripted Selection";
 							}
 							<tr>
-								<td>@Html.ActionLink(input.DisplayName, "ShowUserInput", new {id = input.Id, type = inputType})</td>
+								<td>@Html.ActionLink(input.DisplayName, "ShowUserInput", new { id = input.Id, type = inputType })</td>
 								<td>@typeName</td>
 								<td>
 									<div class="btn-group">
@@ -71,8 +71,8 @@
 											<span aria-hidden="true">&#x25BC;</span>
 										</div>
 										<ul class="dropdown-menu">
-											<li>@Html.ActionLink("Update", "UpdateUserInput", new {type = inputType, id = input.Id})</li>
-											<li>@Html.ActionLink("Delete", "ConfirmDeleteUserInput", new {type = inputType, id = input.Id})</li>
+											<li>@Html.ActionLink("Update", "UpdateUserInput", new { type = inputType, id = input.Id })</li>
+											<li>@Html.ActionLink("Delete", "ConfirmDeleteUserInput", new { type = inputType, id = input.Id })</li>
 										</ul>
 									</div>
 								</td>
@@ -89,7 +89,7 @@
 			</div>
 		</div>
 	</div>
-
+</div>
 	<div class="panel-footer">
 		<div class="float-right-div">
 			<div class="btn-group">

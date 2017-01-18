@@ -19,28 +19,32 @@
 
 
 
-	<div class="title-div-placeholder flex-container-row">
-		<div class="title-size" style="padding-right: 10px;">
-			Services
-		</div>
+	<div class="title-div">
 
-	@using (Ajax.BeginForm("GetServiceNames", ajaxOptions))
+		Services
+
+
+	</div>
+	<div id="ServicesDiv" class="panel-div" style="padding-top: 5px; padding-bottom: 5px;">
+		<div class="make-space-bottom">
+			@using (Ajax.BeginForm("GetServiceNames", ajaxOptions))
 	{
-		<div class="input-group">
+				<div class="input-group">
 
-			@Html.DropDownList("catalog", new SelectList(new[] { "Both", "Business", "Support" }), new { @class = "selectpicker" })
-			<span class="input-group-btn">
-				<button type="submit" class="btn btn-primary"><i class="fa fa-filter" aria-hidden="true"></i></button>
-			</span>
-		</div>
+					@Html.DropDownList("catalog", new SelectList(new[] { "Both", "Business", "Support" }), new { @class = "selectpicker" })
+					<span class="input-group-btn">
+						<button type="submit" class="btn btn-primary"><i class="fa fa-filter" aria-hidden="true"></i></button>
+					</span>
+				</div>
 	}
+		</div>
+		@Html.Action("GetServiceNames", new { catalog = "Both", id })
 	</div>
-	<div id="ServicesDiv" style="padding-top: 5px; padding-bottom: 5px;">
-		@Html.Action("GetServiceNames", new {catalog = "Both", id })
+	<div class="flex-container-col">
+		<div class="panel-footer">
+			<div class="float-right-div">&nbsp;</div>
+		</div>
 	</div>
-<div class="panel-footer">
-
-</div>
 }
 
 @section Content{
@@ -64,18 +68,16 @@
 						{
 							foreach (var option in Model.ServiceOptions)
 							{
-								<div>@Html.ActionLink(option.Name, "ShowServiceOption", new {id = option.Id})</div>
+								<div>@Html.ActionLink(option.Name, "ShowServiceOption", new { id = option.Id })</div>
 							}
 						}
-
 					</div>
 				</div>
 			</div>
 
-
 		</div>
 		<div class="panel-footer">
-			<div class="float-right-div">@Html.ActionLink("Update Service", "UpdateService", new {id = Model.Id}, new {@class="btn btn-primary"})</div>
+			<div class="float-right-div">@Html.ActionLink("Update Service", "UpdateService", new { id = Model.Id }, new { @class = "btn btn-primary" })</div>
 		</div>
 	}
 

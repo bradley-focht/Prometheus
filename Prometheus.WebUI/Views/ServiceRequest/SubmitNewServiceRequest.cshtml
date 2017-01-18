@@ -17,6 +17,10 @@
 		<div class="dd-cell-base">Requestor</div>
 		<div class="dd-cell-base">@Model.Requestor</div>
 	</div>
+	<div class="dd-row">
+		<div class="dd-cell-base">Date</div>
+		<div class="dd-cell-base">@Model.RequiredDate</div>
+	</div>
 	@foreach (var item in Model.UserInputs)
 	{
 		<div class="dd-row">
@@ -26,4 +30,6 @@
 	}
 
 </div>
+
+go to your service requests @Html.ActionLink("here", "Index", "ServiceRequestApproval")
 

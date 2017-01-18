@@ -179,7 +179,7 @@ namespace ServicePortfolioService
 			return _serviceDocumentController.ModifyServiceDocument(document, modification);
 		}
 
-		public IServiceDocumentDto GetServiceDocument(Guid documentGuid)
+		public IServiceDocumentDto GetServiceDocument(int documentGuid)
 		{
 			return _serviceDocumentController.GetServiceDocument(documentGuid);
 		}

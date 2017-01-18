@@ -29,11 +29,11 @@ namespace ServicePortfolioService.Controllers
 			_userId = userId;
 		}
 
-		public IServiceDocumentDto GetServiceDocument(Guid serviceDocumentId)
+		public IServiceDocumentDto GetServiceDocument(int serviceDocumentId)
 		{
 			using (var context = new PrometheusContext())
 			{
-				var document = context.ServiceDocuments.ToList().FirstOrDefault(x => x.StorageNameGuid == serviceDocumentId);
+				var document = context.ServiceDocuments.ToList().FirstOrDefault(x => x.Id == serviceDocumentId);
 				return ManualMapper.MapServiceDocumentToDto(document);
 			}
 		}
@@ -67,7 +67,7 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				var toDelete = context.ServiceDocuments.ToList().FirstOrDefault(x => x.StorageNameGuid == document.StorageNameGuid);
+				var toDelete = context.ServiceDocuments.ToList().FirstOrDefault(x => x.Id == document.Id);
 				context.ServiceDocuments.Remove(toDelete);
 				context.SaveChanges(_userId);
 			}

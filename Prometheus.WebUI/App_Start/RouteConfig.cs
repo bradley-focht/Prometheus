@@ -96,6 +96,13 @@ namespace Prometheus.WebUI
 				url: "ServiceRequestMaintenance/ConfirmDeleteUserInput/{id}/{type}",
 				defaults: new { controller = "ServiceRequestMaintenance", action = "ConfirmDeleteUserInput" }
 				);
+
+			routes.MapRoute(
+				name: "ShowUserInput",
+				url: "ServiceRequestMaintenance/ShowUserInput/{id}/{type}",
+				defaults: new {controller = "ServiceRequestMaintenance", action = "ShowUserInput"}
+				);
+
 			#endregion
 
 			routes.MapRoute(

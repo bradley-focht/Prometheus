@@ -71,7 +71,7 @@
 												<div class="dd-cell-base" style="width: 75%">@Html.ActionLink(item.Name, "Details", new {id = item.Id, type = CatalogableTypes.Option, serviceId = item.ServiceId}, new {@class = "font-title2"})</div>
 												<div class="dd-cell-nostyle" style="width:20%"></div>
 												<div class="dd-cell-nostyle" style="width: 5%; vertical-align: top; text-align: right; width: 10%;">
-													<a href="@Url.Action("BeginOptionRequest", "ServiceRequest", new {id = Model.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+													<a href="@Url.Action("BeginOptionRequest", "ServiceRequest", new {id = item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
 												</div>
 
 											</div>

@@ -9,6 +9,14 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 	public class UserInputModel
 	{
 		/// <summary>
+		/// used for back links
+		/// </summary>
+		public string ServiceName { get; set; }
+		/// <summary>
+		/// used for back links
+		/// </summary>
+		public int ServiceId { get; set; }
+		/// <summary>
 		/// used for display
 		/// </summary>
 		public string Action { get; set; }

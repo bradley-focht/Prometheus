@@ -9,18 +9,15 @@
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
 		new KeyValuePair<string, string>("Service Request Maintenance", "ServiceRequestMaintenance/Index"),
+		new KeyValuePair<string, string>(Model.ServiceName, $"ServiceRequestMaintenance/ShowServiceOptions/{Model.ServiceId}"),
 		new KeyValuePair<string, string>(Model.OptionName, $"ServiceRequestMaintenance/ShowServiceOption/{Model.OptionId}"),
 		new KeyValuePair<string, string>($"{Model.Action} User Input", "#")
 	};
-
-
 }
-
 
 
 @section Content
 	{
-
 	<div class="title-div">@Model.Action User Input</div>
 	@using (Html.BeginForm("Save" + Model.InputType + "Input", "ServiceRequestMaintenance", FormMethod.Post))
 	{
@@ -41,16 +38,15 @@
 		<div class="flex-container-col">
 			<div class="panel-footer">
 				<div class="float-right-div">
-					@Html.ActionLink("Back", "ShowServiceOptions", new { id = Model.OptionId }, new { @class = "btn btn-default btn-back" })
+					@Html.ActionLink("Back", "ShowUserInput", new { id = Model.UserInput.Id, type = Model.InputType }, new { @class = "btn btn-default btn-back" })
 					<input type="submit" value="Save" class="btn btn-primary" />
 				</div>
 			</div>
 		</div>
 	}
 }
-}
+
 @section Sidebar
 {
-	some info here...
 
 }

@@ -1,6 +1,4 @@
 ﻿using Common.Dto;
-using Common.Enums;
-using System;
 using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
@@ -12,7 +10,7 @@ namespace ServicePortfolioService.Controllers
 		/// </summary>
 		/// <param name="serviceDocumentId"></param>
 		/// <returns></returns>
-		IServiceDocumentDto GetServiceDocument(Guid serviceDocumentId);
+		IServiceDocumentDto GetServiceDocument(int serviceDocumentId);
 
 		/// <summary>
 		/// Modifies the service document in the database

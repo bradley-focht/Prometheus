@@ -75,7 +75,7 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.Option = ps.GetServiceOption(id);					//get data for back links
-				model.ServiceName = ps.GetService(model.Option.Id).Name;
+				model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
 				model.ServiceId = model.Option.ServiceId;
 			}
 			catch (Exception exception)
@@ -135,8 +135,12 @@ namespace Prometheus.WebUI.Controllers
 			}
 
 			input.ServiceOptionId = id;
-
-			return View("EditUserInput", new UserInputModel { InputType = type, OptionId = id, OptionName = option.Name, UserInput = input });
+			
+			var model = new UserInputModel {InputType = type, OptionId = id, OptionName = option.Name, UserInput = input};
+			model.ServiceId = option.ServiceId;
+			model.ServiceName = ps.GetService(option.ServiceId).Name;
+			
+			return View("EditUserInput", model);
 		}
 
 		/// <summary>
@@ -279,9 +283,17 @@ namespace Prometheus.WebUI.Controllers
 					break;
 			}
 			//input.ServiceOptionId = id;
-			string optionName = ps.GetServiceOption(input.ServiceOptionId).Name;
-
-			return View("EditUserInput", new UserInputModel { InputType = type, OptionId = id, OptionName = optionName, UserInput = input });
+			var option = ps.GetServiceOption(input.ServiceOptionId);
+			UserInputModel model = new UserInputModel
+			{
+				InputType = type,
+				OptionId = id,
+				OptionName = option.Name,
+				UserInput = input,
+				ServiceId = option.ServiceId,
+				ServiceName = ps.GetService(option.ServiceId).Name
+		};
+			return View("EditUserInput", model);
 		}
 
 		/// <summary>
@@ -316,7 +328,7 @@ namespace Prometheus.WebUI.Controllers
 				}
 
 				if (input != null) {
-					option = ps.GetServiceOption(input.Id);
+					option = ps.GetServiceOption(input.ServiceOptionId);
 					if (option != null)
 					{
 						model.ServiceName = ps.GetService(option.ServiceId).Name;
@@ -368,6 +380,8 @@ namespace Prometheus.WebUI.Controllers
 			}
 			//input.ServiceOptionId = id;
 			var option = ps.GetServiceOption(input.ServiceOptionId);
+			model.ServiceId = option.ServiceId;
+			model.ServiceName = ps.GetService(option.ServiceId).Name;
 			model.OptionId = option.Id;
 			model.OptionName = option.Name;
 			model.UserInput = input;
@@ -408,7 +422,7 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = "Successfully deleted user input";
 
 
-			return RedirectToAction("ShowServiceOption", new {type = deleteModel.Type, id = deleteModel.Id});
+			return RedirectToAction("ShowServiceOption", new {id = deleteModel.Id});
 		}
 
 	}

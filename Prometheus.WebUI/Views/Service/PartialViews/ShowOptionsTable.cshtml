@@ -1,123 +1,124 @@
 ﻿@using Common.Dto
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.OptionsTableModel
+<div class="flex-container-center">
+    <div class="panel-div panel-inset-div">
+        @if (Model.Options != null && Model.Options.Any())
+        {
+            FinancialCalculator calc = new FinancialCalculator(Model.n, Model.i);
 
-<div class="panel-div">
-	@if (Model.Options != null && Model.Options.Any())
-	{
-		FinancialCalculator calc = new FinancialCalculator(Model.n, Model.i);
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th col-md-1></th>
+                        <th class="table-title col-md-3">Option</th>
+                        <th class="table-title col-md-2">Cost</th>
+                        <th class="table-title col-md-2">Up-Front Price</th>
+                        <th class="table-title col-md-2">Monthly Price</th>
+                        <th class="table-title col-md-2">Net</th>
+                        <th class="col-md-1"></th>
+                    </tr>
+                </thead>
+                <tbody>
 
-		<table class="table table-hover">
-			<thead>
-				<tr>
-					<th col-md-1></th>
-					<th class="table-title col-md-3">Option</th>
-					<th class="table-title col-md-2">Cost</th>
-					<th class="table-title col-md-2">Up-Front Price</th>
-					<th class="table-title col-md-2">Monthly Price</th>
-					<th class="table-title col-md-2">Net</th>
-					<th class="col-md-1"></th>
-				</tr>
-			</thead>
-			<tbody>
+                    @foreach (IOffering item in Model.Options)
+                    {
+                        if (item is IServiceOptionDto)
+                        {
+                            var option = (IServiceOptionDto)item;
+                            <tr>
+                                <td></td>
+                                <td>@Html.ActionLink(item.Name, "ShowServiceOption", new { id = item.Id })</td>
+                                <td>@($"{option.Cost:C}")</td>
+                                <td>@($"{option.PriceUpFront:C}")</td>
+                                <td>@($"{option.PriceMonthly:C}")</td>
+                                <td>@($"{(calc.CalculatePw(option.PriceUpFront, option.PriceMonthly) - option.Cost):C}")</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                            <span aria-hidden="true">&#x25BC;</span>
+                                        </div>
+                                        <div class="dropdown-menu">
+                                            <ul class="ul-menu">
+                                                <li>
+                                                    @Html.ActionLink("Update", "UpdateServiceOption", new { id = item.Id })
+                                                </li>
+                                                <li>
+                                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = item.Id })
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
 
-				@foreach (IOffering item in Model.Options)
-				{
-					if (item is IServiceOptionDto)
-					{
-						var option = (IServiceOptionDto)item;
-						<tr>
-							<td></td>
-							<td>@Html.ActionLink(item.Name, "ShowServiceOption", new { id = item.Id })</td>
-							<td>@($"{option.Cost:C}")</td>
-							<td>@($"{option.PriceUpFront:C}")</td>
-							<td>@($"{option.PriceMonthly:C}")</td>
-							<td>@($"{(calc.CalculatePw(option.PriceUpFront, option.PriceMonthly) - option.Cost):C}")</td>
-							<td>
-								<div class="btn-group">
-									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-										<span aria-hidden="true">&#x25BC;</span>
-									</div>
-									<div class="dropdown-menu">
-										<ul class="ul-menu">
-											<li>
-												@Html.ActionLink("Update", "UpdateServiceOption", new { id = item.Id })
-											</li>
-											<li>
-												@Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = item.Id })
-											</li>
-										</ul>
-									</div>
-								</div>
+                                </td>
+                            </tr>
+                        }
+                        else if (item is IOptionCategoryDto)
+                        {
+                            <tr class="highlight">
+                                <td></td>
+                                <td colspan="5">Category: @Html.ActionLink(item.Name, "ShowOptionCategory", new { id = item.Id })</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                            <span aria-hidden="true">&#x25BC;</span>
+                                        </div>
+                                        <div class="dropdown-menu">
+                                            <ul class="ul-menu">
+                                                <li>@Html.ActionLink("Update", "UpdateOptionCategoryItem", new { id = item.Id })</li>
+                                                <li>@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new { id = item.Id })</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
 
-							</td>
-						</tr>
-					}
-					else if (item is IOptionCategoryDto)
-					{
-						<tr class="highlight">
-							<td></td>
-							<td colspan="5">Category: @Html.ActionLink(item.Name, "ShowOptionCategory", new { id = item.Id })</td>
-							<td>
-								<div class="btn-group">
-									<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-										<span aria-hidden="true">&#x25BC;</span>
-									</div>
-									<div class="dropdown-menu">
-										<ul class="ul-menu">
-											<li>@Html.ActionLink("Update", "UpdateOptionCategoryItem", new { id = item.Id })</li>
-											<li>@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new { id = item.Id })</li>
-										</ul>
-									</div>
-								</div>
-							</td>
-						</tr>
+                            var category = (IOptionCategoryDto)item;
+                            if (category.ServiceOptions != null)
+                            {
+                                foreach (var option in category.ServiceOptions)
+                                {
+                                    var subOption = (IServiceOptionDto)option;
+                                    <tr>
+                                        <td class="highlight-cell"></td>
+                                        <td>@Html.ActionLink(subOption.Name, "ShowServiceOption", new { id = option.Id })</td>
+                                        <td>@($"{subOption.Cost:C}")</td>
+                                        <td>@($"{subOption.PriceUpFront:C}")</td>
+                                        <td>@($"{subOption.PriceMonthly:C}")</td>
+                                        <td>@($"{(calc.CalculatePw(subOption.PriceUpFront, subOption.PriceMonthly) - subOption.Cost):C}")</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                                    <span aria-hidden="true">&#x25BC;</span>
+                                                </div>
+                                                <div class="dropdown-menu">
+                                                    <ul class="ul-menu">
+                                                        <li>
+                                                            @Html.ActionLink("Update", "UpdateServiceOption", new { id = subOption.Id })
+                                                        </li>
+                                                        <li>
+                                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = subOption.Id })
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
 
-						var category = (IOptionCategoryDto)item;
-						if (category.ServiceOptions != null)
-						{
-							foreach (var option in category.ServiceOptions)
-							{
-								var subOption = (IServiceOptionDto)option;
-								<tr>
-									<td class="highlight-cell"></td>
-									<td>@Html.ActionLink(subOption.Name, "ShowServiceOption", new { id = option.Id })</td>
-									<td>@($"{subOption.Cost:C}")</td>
-									<td>@($"{subOption.PriceUpFront:C}")</td>
-									<td>@($"{subOption.PriceMonthly:C}")</td>
-									<td>@($"{(calc.CalculatePw(subOption.PriceUpFront, subOption.PriceMonthly) - subOption.Cost):C}")</td>
-									<td>
-										<div class="btn-group">
-											<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-												<span aria-hidden="true">&#x25BC;</span>
-											</div>
-											<div class="dropdown-menu">
-												<ul class="ul-menu">
-													<li>
-														@Html.ActionLink("Update", "UpdateServiceOption", new { id = subOption.Id })
-													</li>
-													<li>
-														@Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = subOption.Id })
-													</li>
-												</ul>
-											</div>
-										</div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }
+                </tbody>
 
-									</td>
-								</tr>
-							}
-						}
-					}
-				}
-			</tbody>
-
-		</table>
-		<div class="note">*@calc.PwCalculationToString()</div>
-	}
-	else
-	{
-		<div class="alert alert-warning alert-message">No options exist. @Html.ActionLink("Add", "AddServiceOption", new { id = Model.ServiceId })</div>
-	}
+            </table>
+            <div class="note">*@calc.PwCalculationToString()</div>
+        }
+        else
+        {
+            <div class="alert alert-warning alert-message">No options exist. @Html.ActionLink("Add", "AddServiceOption", new { id = Model.ServiceId })</div>
+        }
+    </div>
 </div>
 <div class="flex-container-col ">
 	<div class="panel-footer">

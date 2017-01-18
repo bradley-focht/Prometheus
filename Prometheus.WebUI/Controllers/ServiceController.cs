@@ -693,7 +693,7 @@ namespace Prometheus.WebUI.Controllers
 				}
 
 				option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
-					option.Picture = Guid.NewGuid();
+				option.Picture = Guid.NewGuid();
 
 				try
 				{
@@ -1433,11 +1433,13 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="id"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult UploadServiceDocument(HttpPostedFileBase file, int id = 0)
+		public ActionResult UploadServiceDocument(HttpPostedFileBase file, int id)
 		{
 			if (Request.Files.Count > 0)
 			{
 				var fileName = Path.GetFileName(file.FileName);
+				var ps = InterfaceFactory.CreatePortfolioService(dummId);
+
 				if (fileName != null)
 				{
 					Guid newFileName = Guid.NewGuid(); //to rename document			
@@ -1445,24 +1447,22 @@ namespace Prometheus.WebUI.Controllers
 					try
 					{
 						var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], newFileName.ToString());
-						file.SaveAs(Server.MapPath(path));
+						file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
+						ps.ModifyServiceDocument(new ServiceDocumentDto
+						{
+							MimeType = file.ContentType,
+							ServiceId = id,
+							Filename = Path.GetFileNameWithoutExtension(fileName),
+							StorageNameGuid = newFileName,
+                            UploadDate = DateTime.Now,
+							FileExtension = Path.GetExtension(fileName)
+						}, EntityModification.Create);
 					}
-					catch (Exception e)
+					catch (Exception exception)
 					{
 						TempData["MessageType"] = WebMessageType.Failure;
-						TempData["Message"] = $"Failed to upload document, error: {e.Message}";
-						return RedirectToAction("Show", new { id, section = "Documents" });
+						TempData["Message"] = $"Failed to upload document, error: {exception.Message}";
 					}
-					var ps = InterfaceFactory.CreatePortfolioService(dummId);
-
-					ps.ModifyServiceDocument(new ServiceDocumentDto
-					{
-						MimeType = file.ContentType,
-						ServiceId = id,
-						Filename = Path.GetFileNameWithoutExtension(fileName),
-						StorageNameGuid = newFileName,
-						FileExtension = Path.GetExtension(fileName)
-					}, EntityModification.Create);
 				}
 			}
 			return RedirectToAction("Show", new { id, section = "Documents" });
@@ -1475,11 +1475,10 @@ namespace Prometheus.WebUI.Controllers
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 
 			var documents = ps.GetServiceDocuments(id).ToList();
-
-
+            
 			if (documents.Any())                           //pagination
 			{
-				model.TotalPages = ((documents.Count() + ServicePageSize - 1) / ServicePageSize);
+				model.TotalPages = (documents.Count + ServicePageSize - 1) / ServicePageSize;
 				documents = documents.Skip(ServicePageSize * pageId).Take(ServicePageSize).ToList();
 				model.Documents = documents;
 			}
@@ -1503,7 +1502,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 			//perform the save
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
-			var doc = ps.GetServiceDocument(document.StorageNameGuid);
+			var doc = ps.GetServiceDocument(document.Id);
 			doc.Filename = document.Filename;
 			try
 			{
@@ -1529,7 +1528,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult UpdateServiceDocument(Guid id)
+		public ActionResult UpdateServiceDocument(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			var doc = ps.GetServiceDocument(id);
@@ -1551,14 +1550,14 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id">Use file's storage name</param>
 		/// <returns></returns>
-		public FileResult DownloadServiceDocument(Guid id)
+		public FileResult DownloadServiceDocument(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			var doc = ps.GetServiceDocument(id);
 
 			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename + doc.FileExtension);     //suggest file name to browser
 
-			var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], id.ToString());
+			var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], doc.StorageNameGuid.ToString());
 
 			return new FilePathResult(path, doc.MimeType);
 		}
@@ -1569,7 +1568,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="id"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult DeleteServiceDocument(Guid id)
+		public ActionResult DeleteServiceDocument(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			var file = ps.GetServiceDocument(id);
@@ -1579,20 +1578,20 @@ namespace Prometheus.WebUI.Controllers
 			//don't forget to delete the document in the file system		
 			try
 			{
-				var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], id.ToString());    //catch error if key is not in web.config
-				System.IO.File.Delete(path);
+				var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], file.StorageNameGuid.ToString());    //catch error if key is not in web.config
+				System.IO.File.Delete(Server.MapPath(path));
 			}
 			catch (Exception e)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to delete {file.Filename}, error: {e.Message}";
-				return RedirectToAction("Show", new { id = file.ServiceId });
+				return RedirectToAction("Show", new {section="Documents", id = file.ServiceId });
 			}
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Sucessfully deleted file {file.Filename}{file.FileExtension}";
 
-			return RedirectToAction("Show", new { id = file.ServiceId });
+			return RedirectToAction("Show", new {section="Documents", id = file.ServiceId });
 		}
 
 		/// <summary>
@@ -1600,7 +1599,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult ConfirmDeleteServiceDocument(Guid id)
+		public ActionResult ConfirmDeleteServiceDocument(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(dummId);
 			var document = ps.GetServiceDocument(id);

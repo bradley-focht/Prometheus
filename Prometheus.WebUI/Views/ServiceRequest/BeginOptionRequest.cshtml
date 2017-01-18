@@ -85,25 +85,30 @@
 					<div class="dd-row">
 						<div class="dt-cell">@input.DisplayName</div>
 						<div class="dd-cell">
-							@Html.Hidden("serviceRequest.UserInputs[" + indexer + "].Key", StringHelper.RemoveSpaces(input.DisplayName))
-							@Html.TextBox($"serviceRequest.UserInputs[{indexer}].Value", null, new {id="serviceRequest_UserInputs", style="width: 350px;" })
+							<div class="input-group">
+								@Html.Hidden("serviceRequest.UserInputs[" + indexer + "].Key", StringHelper.RemoveSpaces(input.DisplayName))
+								@Html.TextBox($"serviceRequest.UserInputs[{indexer}].Value", null, new { id = "serviceRequest_UserInputs", style = "width: 350px;" })
+								<span class="input-group-btn">
+									<span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(input.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
+								</span>
 
-							<script type="text/javascript" language="javascript">
-								$('#serviceRequest_UserInputs')
-									.selectize({
-										plugins: ['remove_button'],
-										delimiter: ',',
-										valueField: 'value',
-										labelField: 'label',
-										persist: false,
-										options: [
-								
-									@Html.Raw(StringHelper.ConvertStringtoJsValLabelArray(input.SelectItems, ','))
-									]
-									});
-							</script>
+							</div>
+								<script type="text/javascript" language="javascript">
+									$('#serviceRequest_UserInputs')
+										.selectize({
+											plugins: ['remove_button'],
+											delimiter: '@Html.Raw(input.Delimiter)',
+											valueField: 'value',
+											labelField: 'label',
+											persist: false,
+											maxItems: @(input.NumberToSelect),
+											options: [
+												@Html.Raw(StringHelper.ConvertStringtoJsValLabelArray(input.SelectItems, ','))
+											]
+										});
+								</script>
 
-						</div>
+							</div>
 					</div>
 
 					indexer++;

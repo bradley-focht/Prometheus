@@ -27,7 +27,7 @@ namespace Common.Dto
         /// <summary>
         /// date uploaded to the system
         /// </summary>
-        public DateTime? UploadDate { get; set; }
+        public DateTime UploadDate { get; set; }
         /// <summary>
         /// sid of who did the uploading
         /// </summary>

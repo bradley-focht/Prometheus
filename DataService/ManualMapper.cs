@@ -334,7 +334,8 @@ namespace DataService
 				StorageNameGuid = src.StorageNameGuid,
 				Filename = src.Filename,
 				MimeType = src.MimeType,
-				FileExtension = src.FileExtension
+				FileExtension = src.FileExtension,
+                UploadDate = src.UploadDate
 
 			};
 		}
@@ -350,8 +351,9 @@ namespace DataService
 				StorageNameGuid = src.StorageNameGuid,
 				Filename = src.Filename,
 				MimeType = src.MimeType,
-				FileExtension = src.FileExtension
-			};
+				FileExtension = src.FileExtension,
+                UploadDate = src.UploadDate
+            };
 		}
 
 		public static ServiceSwotDto MapServiceSwotToDto(IServiceSwot src)
