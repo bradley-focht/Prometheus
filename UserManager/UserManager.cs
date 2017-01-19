@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Security.Authentication;
 using Common.Dto;
 using Common.Enums.Entities;
+using DataService;
+using DataService.DataAccessLayer;
 using UserManager.AdService;
 using UserManager.Controllers;
 
@@ -12,6 +16,7 @@ namespace UserManager
 		private readonly IPermissionController _permissionController;
 		private IUserController _userController;
 		private IRoleController _roleController;
+		private const string AuthorizedUserRoleName = "Authorized User";
 
 		public UserManagerService(IPermissionController permissionController, IUserController userController, IRoleController roleController)
 		{
@@ -20,26 +25,48 @@ namespace UserManager
 			_roleController = roleController;
 		}
 
-
-		//TODO: Sean implement login
+		/// <summary>
+		/// Attempts authentication through AD and then adds the user to the DB if they do not already exist with the 
+		/// "Authorized User" role added as a default.
+		/// </summary>
+		/// <param name="username"></param>
+		/// <param name="password"></param>
+		/// <returns></returns>
 		public IUserDto Login(string username, string password)
 		{
-			// <hack>I'm in</hack>
-			//return null;      //perhaps not
-
-			AdUser user = new AdUser();
-			if (user.AuthenticateUser(username, password))
+			AdUser adUser = new AdUser();
+			if (adUser.AuthenticateUser(username, password))
 			{
-				return new UserDto
+				using (var context = new PrometheusContext())
 				{
-					Name = user.DisplayName,
-					//Id = user.UserGuid.ToInt(), //this doesn't seem to work... hmmm
-					Id = 0,
-					Password = "bubba lou", //maybe not a field that is needed...
-					Role = new RoleDto { Name = "God Mode" }
-				};
+					//See if the user exists already
+					var user = context.Users.FirstOrDefault(x => x.AdGuid == adUser.UserGuid);
+					if (user != null)
+					{
+						//If they existed retrun them
+						return ManualMapper.MapUserToDto(user);
+					}
+					else
+					{
+						//Otherwise add them with the authenticated role
+						var userDto = new UserDto()
+						{
+							AdGuid = adUser.UserGuid,
+							Name = adUser.DisplayName
+						};
+
+						//Get the role that is to be added to the user
+						var authenticatedRole = context.Roles.FirstOrDefault(x => x.Name == AuthorizedUserRoleName);
+
+						//Add them and their role to the database
+						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(userDto));
+						savedUser.Roles.Add(authenticatedRole);
+						context.SaveChanges();
+						return ManualMapper.MapUserToDto(savedUser);
+					}
+				}
 			}
-			return null;
+			throw new AuthenticationException("Username and password could not authenticate with Active Directory");
 		}
 
 		public ICollection<Tuple<Guid, string>> SearchUsers(string searchString)

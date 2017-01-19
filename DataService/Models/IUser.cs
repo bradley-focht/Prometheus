@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DataService.Models
 {
@@ -7,7 +8,7 @@ namespace DataService.Models
 		int Id { get; set; }
 
 		string Name { get; set; }
-		string Password { get; set; }
+		Guid AdGuid { get; set; }
 
 		ICollection<Role> Roles { get; set; }
 	}

@@ -14,7 +14,7 @@ namespace DataService.Models
 
 		#region Fields
 		public string Name { get; set; }
-		public string Password { get; set; }
+		public Guid AdGuid { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
@@ -22,6 +22,7 @@ namespace DataService.Models
 		#endregion
 		#region Navigation properties
 		public virtual ICollection<Role> Roles { get; set; }
+
 		#endregion
 	}
 }

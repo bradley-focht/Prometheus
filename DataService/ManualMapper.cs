@@ -146,7 +146,8 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-			var serviceDto = new Lazy<ServiceDto>(()=>new ServiceDto{
+			var serviceDto = new Lazy<ServiceDto>(() => new ServiceDto
+			{
 				Id = src.Id,
 				Name = src.Name,
 				Description = src.Description,
@@ -761,7 +762,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
-				Password = src.Password
+				AdGuid = src.AdGuid
 			};
 		}
 
@@ -772,7 +773,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
-				Password = src.Password
+				AdGuid = src.AdGuid
 			};
 		}
 	}
