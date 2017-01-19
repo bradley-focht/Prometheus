@@ -9,6 +9,7 @@
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
 		new KeyValuePair<string, string>(ViewBag.Title, "SystemAccess/Index"),
+		new KeyValuePair<string, string>("Permissions and Roles", "SystemAccess/PermissionsAndRoles"),
 		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 	};
 }
@@ -35,7 +36,7 @@
 		<div class="flex-container-col">
 			<div class="panel-footer">
 				<div class="float-right-div">
-					@Html.ActionLink("Back", "ShowRoles", new { id = Model.Id }, new { @class = "btn btn-default btn-back" })
+					@Html.ActionLink("Back", "PermissionsAndRoles", new { id = Model.Id }, new { @class = "btn btn-default btn-back" })
 					<input type="submit" value="Save" class="btn btn-primary" />
 
 				</div>

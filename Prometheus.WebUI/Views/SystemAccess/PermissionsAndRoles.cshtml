@@ -1,4 +1,5 @@
-﻿@model Prometheus.WebUI.Models.SystemAccess.RoleModel
+﻿@using Prometheus.WebUI.Helpers
+@model Common.Dto.RoleDto
 
 @{
 	ViewBag.Title = "System Access";
@@ -8,74 +9,51 @@
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
 		new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
-		new KeyValuePair<string, string>(ViewBag.Title, "SystemAccess/PermissionsAndRoles")
+		new KeyValuePair<string, string>("Permissions and Roles", "SystemAccess/PermissionsAndRoles")
 	};
-
 }
-
-
 
 @section Sidebar
 {
 	@Html.Action("ShowRoles", Model.Id)
 }
 
-
-
 @section Content
 {
 	@if (Model != null && Model.Id > 0)
 	{
 		<div class="title-div">Role</div>
+		<div class="panel-div">
+			<div class="dd">
+				@foreach (var property in ViewData.ModelMetadata.Properties)
+				{
+					switch (property.PropertyName)
+					{
+						case "DateCreated":
+						case "DateUpdated":
+						case "Id":
+						case "CreatedByUserId":
+						case "UpdatedByUserId":
+							continue;
+						default:
+							<div class="dd-row">
+								<div class="dt-cell">@(StringHelper.CamelToString(property.PropertyName))</div>
+								<div class="dd-cell">@(StringHelper.CamelToString(property.Model.ToString()))</div>
+							</div>
+					break;
+			}
+		}
+			</div>
+		</div>
 
-		<table>
-			<tr>
-				<td class="dt-cell">Name</td>
-				<td class="dd-cell">@Model.Role.Name</td>
-		</tr>
-		<tr>
-			<td class="dt-cell">Approve Service Request</td>
-			<td class="dd-cell"></td>
-		</tr>
-		<tr>
-			<td class="dt-cell">Business Catalog</td>
-			<td class="dd-cell"></td>
-		</tr>
-		<tr>
-			<td class="dt-cell">Support Catalog</td>
-			<td class="dd-cell"></td>
-		</tr>
-		<tr>
-			<td class="dt-cell">Role Permission Adjustment</td>
-			<td class="dd-cell"></td>
-		</tr>
-		<tr>
-			<td class="dt-cell">Service Details</td>
-			<td class="dd-cell"></td>
-		</tr>
-		<tr>
-			<td class="dt-cell">Service Request Submission</td>
-			<td class="dd-cell"></td>
-		</tr>
-		<tr>
-			<td class="dt-cell">User Role Assignment</td>
-			<td class="dd-cell"></td>
-		</tr>
-	</table>
-
-
-
-		<div class="flex-container-col">
-			<div class="panel-footer">
-				<div class="float-right-div">
-					@Html.ActionLink("Back", "ShowRoles", new { id = Model.Id }, new { @class = "btn btn-default btn-back" })
-
-					@Html.ActionLink("Update", "UpdateRole", new { id = Model.Id }, new { @class = "btn btn-primary" })
-					@Html.ActionLink("Delete", "ConfirmDeleteRole", new { id = Model.Id }, new { @class = "btn btn-danger" })
+			<div class="flex-container-col">
+				<div class="panel-footer">
+					<div class="float-right-div">
+						@Html.ActionLink("Update", "UpdateRole", new { id = Model.Id }, new { @class = "btn btn-primary" })
+						@Html.ActionLink("Delete", "ConfirmDeleteRole", new { id = Model.Id }, new { @class = "btn btn-danger" })
+					</div>
 				</div>
 			</div>
-
-		</div>
 
 	}
 }

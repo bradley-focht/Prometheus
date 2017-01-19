@@ -34,7 +34,11 @@ namespace RequestService.Controllers
 					}
 				}
 			}
-			throw new PermissionException("Cannot view Business Catalog.", requestingUserId, BusinessCatalog.CanViewCatalog);
+			else //TODO: Sean - brad put this else in here
+			{
+				throw new PermissionException("Cannot view Business Catalog.", requestingUserId, BusinessCatalog.CanViewCatalog);
+			}
+			
 		}
 
 		public IEnumerable<IServiceDto> RequestSupportCatalog(int requestingUserId)
@@ -52,7 +56,10 @@ namespace RequestService.Controllers
 					}
 				}
 			}
-			throw new PermissionException("Cannot view Support Catalog.", requestingUserId, SupportCatalog.CanViewCatalog);
+			else //TODO: Sean - brad put this else in here
+			{
+				throw new PermissionException("Cannot view Support Catalog.", requestingUserId, SupportCatalog.CanViewCatalog);
+			}
 		}
 	}
 }

@@ -4,6 +4,7 @@ namespace Common.Dto
 {
 	public interface ISelectionInputDto : ISelectable
 	{
-		IEnumerable<string> SelectItems { get; set; }
+		string SelectItems { get; set; }
+		string Delimiter { get; set; }
 	}
 }

@@ -4,11 +4,21 @@ using System.Web.Security;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.UserAccount;
+using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
     public class UserAccountController : Controller
     {
+
+	    private IUserManager _userManager;
+
+
+	    public UserAccountController()
+	    {
+		    _userManager = InterfaceFactory.CreateUserManagerService();
+	    }
+
         /// <summary>
         /// Index page is the login page
         /// </summary>
@@ -32,11 +42,11 @@ namespace Prometheus.WebUI.Controllers
                 return View("Index");
 
             //validate login, create session cookie
-            var um = new global::UserManager.UserManager();     /*this is weird, sean why did you name it like this? */
+            
 	        IUserDto user;
 	        try
 	        {
-		        user = (UserDto) um.Login(userLogin.Username, userLogin.Password);
+		        user = (UserDto) _userManager.Login(userLogin.Username, userLogin.Password);
 	        }
 	        catch (Exception exception)
 	        {

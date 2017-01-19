@@ -65,14 +65,35 @@ namespace DataService
 				Picture = src.Picture,
 				PictureMimeType = src.PictureMimeType,
 				Usage = src.Usage,
-				TextInputs = new List<ITextInputDto>() /* for lazy loading items later */
+				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
+				SelectionInputs = new List<ISelectionInputDto>(),
+				ScriptedSelecentionInputs = new List<IScriptedSelectionInputDto>()
 			});
 
+			// text inputs
 			if (src.TextInputs != null)
 			{
 				foreach (var t in src.TextInputs)
 				{
 					option.Value.TextInputs.Add(MapTextInputToDto(t));
+				}
+			}
+
+			// selection inputs
+			if (src.SelectionInputs != null)
+			{
+				foreach (var t in src.SelectionInputs)
+				{
+					option.Value.SelectionInputs.Add(MapSelectionInputToDto(t));
+				}
+			}
+
+			// scripted selection inputs
+			if (src.ScriptedSelecentionInputs != null)
+			{
+				foreach (var t in src.ScriptedSelecentionInputs)
+				{
+					option.Value.ScriptedSelecentionInputs.Add(MapScriptedSelectionInputToDto(t));
 				}
 			}
 
@@ -110,7 +131,7 @@ namespace DataService
 
 			if (src.TextInputs != null)                                 //deal with text inputs
 			{
-				serviceOption.TextInputs = new List<ITextInput>();
+				serviceOption.TextInputs = new List<TextInput>();
 				foreach (var t in src.TextInputs)
 					serviceOption.TextInputs.Add(MapDtoToTextInput(t));
 			}
@@ -314,7 +335,8 @@ namespace DataService
 				StorageNameGuid = src.StorageNameGuid,
 				Filename = src.Filename,
 				MimeType = src.MimeType,
-				FileExtension = src.FileExtension
+				FileExtension = src.FileExtension,
+                UploadDate = src.UploadDate
 
 			};
 		}
@@ -330,8 +352,9 @@ namespace DataService
 				StorageNameGuid = src.StorageNameGuid,
 				Filename = src.Filename,
 				MimeType = src.MimeType,
-				FileExtension = src.FileExtension
-			};
+				FileExtension = src.FileExtension,
+                UploadDate = src.UploadDate
+            };
 		}
 
 		public static ServiceSwotDto MapServiceSwotToDto(IServiceSwot src)
@@ -677,6 +700,7 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
+				ServiceOptionId = src.ServiceOptionId,
 				MultiLine = src.MultiLine,
 				HelpToolTip = src.HelpToolTip
 			};
@@ -689,6 +713,7 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
+				Delimiter = src.Delimiter,
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				SelectItems = src.SelectItems,
@@ -710,6 +735,7 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
+				Delimiter =  src.Delimiter,
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				SelectItems = src.SelectItems,

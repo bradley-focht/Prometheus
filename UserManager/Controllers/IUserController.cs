@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common.Dto;
 using Common.Enums.Entities;
 
@@ -23,5 +24,20 @@ namespace UserManager.Controllers
 		/// <param name="modification">Type of modification to make</param>
 		/// <returns></returns>
 		IUserDto ModifyUser(int performingUserId, IUserDto userDto, EntityModification modification);
+
+		/// <summary>
+		/// Get a list of all users
+		/// </summary>
+		/// <param name="performingUserId">user id of requestor</param>
+		/// <returns></returns>
+		IEnumerable<UserDto> GetUsers(int performingUserId);
+
+		/// <summary>
+		/// get a specific user
+		/// </summary>
+		/// <param name="performingUserId">user making the request</param>
+		/// <param name="userId">user requested</param>
+		/// <returns></returns>
+		UserDto GetUser(int performingUserId, int userId);
 	}
 }

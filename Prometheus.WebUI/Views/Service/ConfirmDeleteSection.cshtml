@@ -27,12 +27,12 @@
 
                 <div class="panel">
                     Are you sure you want to delete
-                    <section class="present-section">
+                    <div class="present-section">
                         @Model.Name
-                    </section>
+                    </div>
                 </div>
 
-                <div class="flex-container">
+                <div class="flex-container-col">
                     <div class="panel panel-footer">
                         <div class="float-right-div">
                             @Html.ActionLink("Cancel", "ShowServiceSectionItem", new { id = Model.Id, }, new { @class = "btn btn-default" })

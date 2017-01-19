@@ -69,6 +69,13 @@ namespace UserManager
 			throw new AuthenticationException("Username and password could not authenticate with Active Directory");
 		}
 
+
+		public string GetDisplayName(Guid userGuid)
+		{
+			IAdSearch userSearch = new AdSearch();
+			return userSearch.GetUserDisplayName(userGuid);
+		}
+
 		public ICollection<Tuple<Guid, string>> SearchUsers(string searchString)
 		{
 			IAdSearch userSearch = new AdSearch();
@@ -90,6 +97,16 @@ namespace UserManager
 			return _userController.ModifyUser(performingUserId, userDto, modification);
 		}
 
+		public IEnumerable<UserDto> GetUsers(int performingUserId)
+		{
+			return _userController.GetUsers(performingUserId);
+		}
+
+		public UserDto GetUser(int performingUserId, int userId)
+		{
+			return _userController.GetUser(performingUserId, userId);
+		}
+
 		public IRoleDto ModifyRole(int performingUserId, IRoleDto roleDto, EntityModification modification)
 		{
 			return _roleController.ModifyRole(performingUserId, roleDto, modification);
@@ -103,6 +120,16 @@ namespace UserManager
 		public IEnumerable<IUserDto> RemoveRoleFromUsers(int performingUserId, IRoleDto roleDto, IEnumerable<IUserDto> users)
 		{
 			return _roleController.RemoveRoleFromUsers(performingUserId, roleDto, users);
+		}
+
+		public IEnumerable<RoleDto> GetRoles(int performingUserId)
+		{
+			return _roleController.GetRoles(performingUserId);
+		}
+
+		public RoleDto GetRole(int performingUserId, int roleId)
+		{
+			return _roleController.GetRole(performingUserId, roleId);
 		}
 	}
 }

@@ -7,10 +7,11 @@ namespace DataService.Models
 	public class ServiceDocument : IServiceDocument
 	{
 		//PK
+		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		[Key]
 		public int Id { get; set; }
 
-		[Key]
-		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+		
 		//FK
 		public int ServiceId { get; set; }
 		/// <summary>
@@ -23,7 +24,7 @@ namespace DataService.Models
 		/// </summary>
 		public string FileExtension { get; set; }
 		public Guid StorageNameGuid { get; set; }
-		public DateTime? UploadDate { get; set; }
+		public DateTime UploadDate { get; set; }
 		public string Uploader { get; set; }
 		#region Navigation Properties
 		public virtual Service Service { get; set; }

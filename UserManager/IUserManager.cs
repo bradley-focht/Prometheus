@@ -16,5 +16,6 @@ namespace UserManager
 		IUserDto Login(string username, string password);
 
 		ICollection<Tuple<Guid, string>> SearchUsers(string searchString);
+		string GetDisplayName(Guid userGuid);
 	}
 }

@@ -7,5 +7,6 @@ namespace UserManager.AdService
     {
         ICollection<Tuple<Guid, string>> SearchDirectoryGroups(string queryString);
         ICollection<Tuple<Guid, string>> SearchDirectoryUsers(string queryString);
+	    string GetUserDisplayName(Guid userGuid);
     }
 }

@@ -5,9 +5,49 @@
 	{
 		switch (property.PropertyName)
 		{
+			case "Delimiter":
+				continue;
 			case "Id":
 			case "ServiceOptionId":
-				<input type="hidden" value="@property.Model" name="@property.PropertyName"/>
+				<input type="hidden" value="@property.Model" name="@property.PropertyName" />
+				break;
+
+			case "HelpToolTip":
+				<div class="dd-row">
+					<div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
+					<div class="dd-cell">
+						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+					@Html.ValidationMessage(property.PropertyName)
+				</div>
+			</div>
+				break;
+			case "SelectItems":
+				<div class="dd-row">
+					<div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
+					<div>@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })</div>
+					<script language="javascript" type="text/javascript">
+						$('#@property.PropertyName').selectize({
+							plugins: ['remove_button'],
+							delimiter: ',',
+							persist: false,
+							create: function (input) {
+								return {
+									value: input,
+									text: input
+								}
+							}
+						});
+					</script>
+				</div>
+				break;
+			case "NumberToSelect":
+				<div class="dd-row">
+					<div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
+					<div class="dd-cell">
+						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control form-number", style = "width:50px;" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>
+				</div>
 				break;
 			case "MultiLine":
 				<div class="dd-row">
@@ -20,6 +60,7 @@
 						<label class="btn btn-default" id="MultiLineTrueFalse">
 							@Html.RadioButton("ServiceTypeRole", "false", false) Single Line
 						</label>
+						@Html.ValidationMessage(property.PropertyName)
 					</div>
 				</div>
 				break;
@@ -30,9 +71,8 @@
 						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
 						@Html.ValidationMessage(property.PropertyName)
 					</div>
-			</div>
+				</div>
 				break;
 		}
 	}
 </div>
-

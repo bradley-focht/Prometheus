@@ -10,7 +10,7 @@
 					<div class="dd-cell" style="width: 75%;">
 						<div class="font-title1" style="border-bottom: 1px #ddd;">
 							@Html.ActionLink(Model.Name, "Details", new {type=CatalogableTypes.Option, id=Model.Id, serviceId= Model.ServiceId})
-						s</div>
+						</div>
 					</div>
 					<div class="dd-cell-nostyle" style="width: 20%;"></div>
 					<div class="dd-cell-nostyle" style="vertical-align: top; text-align: right; width: 5%;">
@@ -40,7 +40,7 @@
 						@if (Model.Picture != null)
 						{
 							<div class="float-left-div" style="border: 1px solid #ddd; margin-right: 10px;">
-								<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" alt="picture" />
+								<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" width="150"  alt="picture" />
 							</div>
 						}
 						@Html.Raw(Model.Description)

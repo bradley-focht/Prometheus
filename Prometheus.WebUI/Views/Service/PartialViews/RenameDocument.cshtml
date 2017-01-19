@@ -17,10 +17,10 @@
         </tr>
     </table>
 
-    <div class="flex-container">
+    <div class="flex-container-col">
         <div class="panel-footer">
             <div class="float-right-div">
-                @Html.ActionLink("Back", "Show", new { id = Model.StorageNameGuid, section = "Documents" }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Back", "Show", new { section = "Documents", id = Model.ServiceId }, new { @class = "btn btn-default btn-back" })
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </div>

@@ -2,78 +2,82 @@
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceModel
 @{
-	Layout = "~/Views/Shared/_Layout.cshtml";
-	ViewBag.Title = "Services";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Services";
 
-	if (Model.SelectedSection != null)
-	{
-		ViewBag.SubTitle = ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.SelectedSection);
-	}
+    if (Model.SelectedSection != null)
+    {
+        ViewBag.SubTitle = ServiceSectionHelper.ConvertRouteStringToFriendlyName(Model.SelectedSection);
+    }
 
-	ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-															 new KeyValuePair<string, string>("Services", "Service/Index"),
-															 new KeyValuePair<string, string>(Model.Service.Name, "#")};
-	bool controlAvail = false;
-	bool footerAvail = true;
+    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+                                                             new KeyValuePair<string, string>("Services", "Service/Index"),
+                                                             new KeyValuePair<string, string>(Model.Service.Name, "#")};
+    bool controlAvail = false;
+    bool footerAvail = true;
+
 }
 
 <div class="title-div">@Model.Service.Name</div>
 
 @if (Model.Service.Id > 0)
-	{
-		<div>
-			<div style="border-bottom: 1px solid #ddd;">
-				@Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
-			</div>
+{
+    <div>
+        <div class="title-div-placeholder">
+            @Html.Action("ShowNav", new { id = Model.Service.Id, section = Model.SelectedSection })
+        </div>
 
-			@switch (Model.SelectedSection)
-			{
-				case null:
-					goto case "General";
-				case "Documents":
-					@Html.Action("ShowServiceDocuments", new { id = Model.Service.Id, pageId = Model.CurrentPage })
-					footerAvail = false;
-					break;
-				case "General":
-					<div class="panel-div">
-						@Html.Partial("PartialViews/ShowGeneral", (ServiceDto)Model.Service)
-					</div>
-					controlAvail = true;
-					break;
-				case "Options":
-					@Html.Action("ShowServiceOptions", new { id = Model.Service.Id, pageId = Model.CurrentPage })
-					footerAvail = false;
-					break;
-				default:
-					<div class="panel-div">
-						@Html.Action("ShowService" + Model.SelectedSection, Model)
-					</div>
-					controlAvail = true;
-					break;
-			}
+        @switch (Model.SelectedSection)
+                {
+                    case null:
+                        goto case "General";
+                    case "Documents":
+                @Html.Action("ShowServiceDocuments", new { id = Model.Service.Id, pageId = Model.CurrentPage })
+                footerAvail = false;
+                break;
+            case "General":
+                <div class="flex-container-center">
+                    <div class="panel-div">
+                        @Html.Partial("PartialViews/ShowGeneral", (ServiceDto)Model.Service)
+                    </div>
+                </div>
+                controlAvail = true;
+                break;
+            case "Options":
+                @Html.Action("ShowServiceOptions", new { id = Model.Service.Id, pageId = Model.CurrentPage })
+                footerAvail = false;
+                break;
+            default:
+                <div class="flex-container-center">
+                    <div class="panel-div panel-inset-div">
+                        @Html.Action("ShowService" + Model.SelectedSection, Model)
+                    </div>
+                </div>
+                controlAvail = true;
+                break;
+        }
 
-			@if (footerAvail)
-			{
-				<div class="flex-container-col">
-					<div class="panel-footer">
-						<div class="float-right-div">
-							@if (controlAvail)
-							{
-								if (Model.SelectedSection == "General" || Model.SelectedSection == null)
-								{
-									@Html.ActionLink("Update", "UpdateGeneral", new { id = Model.Service.Id }, new { @class = "btn btn-primary" })
-								}
-								else
-								{
-									@Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-primary" })
-								}
-							}
-						</div>
-					</div>
-				</div>
-			}
-		</div>
-	}
+        @if (footerAvail)
+        {
+            <div class="flex-container-col">
+                <div class="panel-footer">
+                    <div class="float-right-div">
+                        @if (controlAvail)
+                        {
+                            if (Model.SelectedSection == "General" || Model.SelectedSection == null)
+                            {
+                                @Html.ActionLink("Update", "UpdateGeneral", new { id = Model.Service.Id }, new { @class = "btn btn-primary" })
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Add", "AddServiceSectionItem", new { id = Model.Service.Id, section = Model.SelectedSection }, new { @class = "btn btn-primary" })
+                            }
+                        }
+                    </div>
+                </div>
+            </div>}
+    </div>
+}
 
 
 

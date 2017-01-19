@@ -42,5 +42,12 @@ namespace UserManager.AdService
 
             return (from result in results where result.Guid != null select new Tuple<Guid, string>(result.Guid.Value, result.DisplayName)).ToList();
         }
+
+	    public string GetUserDisplayName(Guid userGuid)
+	    {
+		    UserPrincipal user = UserPrincipal.FindByIdentity(new PrincipalContext(ContextType.Domain), IdentityType.Guid, userGuid.ToString());
+
+		    return user?.DisplayName;
+	    }
     }
 }

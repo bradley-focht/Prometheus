@@ -118,7 +118,7 @@
   color: #303030;
   font-family: inherit;
   font-size: 1em;
-  line-height: 18px;
+
   -webkit-font-smoothing: inherit;
 }
 .selectize-input,
@@ -277,6 +277,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   max-height: 200px;
+	max-width: 200px;
 }
 .selectize-control.single .selectize-input,
 .selectize-control.single .selectize-input input {

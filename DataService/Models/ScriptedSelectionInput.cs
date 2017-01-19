@@ -1,4 +1,7 @@
-﻿namespace DataService.Models
+﻿using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
+
+namespace DataService.Models
 {
 	public class ScriptedSelectionInput : IScriptedSelectionInput
 	{
@@ -6,7 +9,11 @@
 		public bool ExecutionEnabled { get; set; }
 		public int Id { get; set; }
 		public int ServiceOptionId { get; set; }
+		[Display(Order = 1, Name = "Display Name")]
+		[Required(ErrorMessage = "Display Name is required")]
 		public string DisplayName { get; set; }
+		[Display(Order = 2, Name = "Help Tool Tip")]
+		[AllowHtml]
 		public string HelpToolTip { get; set; }
 		public int NumberToSelect { get; set; }
 	}

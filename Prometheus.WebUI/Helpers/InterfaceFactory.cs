@@ -2,6 +2,8 @@
 using RequestService.Controllers;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
+using UserManager;
+using UserManager.Controllers;
 
 namespace Prometheus.WebUI.Helpers
 {
@@ -23,12 +25,25 @@ namespace Prometheus.WebUI.Helpers
 				new ServiceOptionController(),
 				new OptionCategoryController(),
 				new ServiceProcessController(),
-				new TextInputController());
+				new TextInputController(),
+				new SelectionInputController(),
+				new ScriptedSelectionInputController());
 		}
 
 		public static ICatalogController CreateCatalogController(int dummyId)
 		{
-			return new CatalogController(dummyId);
+			return new CatalogController(CreateUserManagerService());
 		}
+
+
+		public static UserManagerService CreateUserManagerService()
+		{
+			return new UserManagerService(
+				new PermissionController(),
+				new UserController(),
+				new RoleController(new PermissionController())
+				);
+		}
+
 	}
 }

@@ -1,44 +1,39 @@
 ﻿@model dynamic
-    <div style="margin-right: auto; margin-left: auto;">
+
 	@if (Model != null)
 	{
-		<table>
+		<div class="dd">
 			@foreach (var property in ViewData.ModelMetadata.Properties)
 			{
 				if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Created") || property.PropertyName.Contains("Updated"))
 				{
 					continue;
 				}
-				<tr>
-					<td class="dt-cell">
-						@(property.DisplayName ?? property.PropertyName)
-					</td>
+				<div class="dd-row">
+					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 					@if (property.PropertyName.Contains("Date"))
 					{
-						<td class="dd-cell">
+						<div class="dd-cell">
 							@if (property.Model != null)
 							{
 								{
 									@Html.Raw(((DateTime)property.Model).ToString("d"))
 								}
 							}
-						</td>
+						</div>
 					}
 					else
 					{
-						<td class="dd-cell">@Html.Raw(property.Model)</td>
+						<div class="dd-cell">@Html.Raw(property.Model)</div>
 					}
 
-				</tr>
+				</div>
 			}
-
-
-		</table>
+		</div>
 	}
 	else
 	{
-		<section class="alert alert-warning">
+		<div class="alert alert-warning">
 			Data no longer exists.
-		</section>
+		</div>
 	}
-</div>

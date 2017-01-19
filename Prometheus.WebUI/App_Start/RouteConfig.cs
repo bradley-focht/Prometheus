@@ -76,14 +76,33 @@ namespace Prometheus.WebUI
 
 			#endregion
 
-			#region Service Maintenance
+			#region Service Request Maintenance
 
 			routes.MapRoute(
 				name: "AddUserInput",
 				url: "ServiceRequestMaintenance/AddUserInput/{id}/{type}",
-				defaults:
-					new { controller = "ServiceRequestMaintenance", action = "AddUserInput" }
+				defaults: new { controller = "ServiceRequestMaintenance", action = "AddUserInput" }
 				);
+
+			routes.MapRoute(
+				name: "UpdateUserInput",
+				url: "ServiceRequestMaintenance/UpdateUserInput/{id}/{type}",
+				defaults: new {controller = "ServiceRequestMaintenance", action = "UpdateUserInput"}
+				);
+
+
+			routes.MapRoute(
+				name: "ConfirmDeleteUserInput",
+				url: "ServiceRequestMaintenance/ConfirmDeleteUserInput/{id}/{type}",
+				defaults: new { controller = "ServiceRequestMaintenance", action = "ConfirmDeleteUserInput" }
+				);
+
+			routes.MapRoute(
+				name: "ShowUserInput",
+				url: "ServiceRequestMaintenance/ShowUserInput/{id}/{type}",
+				defaults: new {controller = "ServiceRequestMaintenance", action = "ShowUserInput"}
+				);
+
 			#endregion
 
 			routes.MapRoute(

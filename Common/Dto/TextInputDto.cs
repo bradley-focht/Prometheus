@@ -26,6 +26,7 @@ namespace Common.Dto
 		/// Display a user-help tip
 		/// </summary>
 		[Display(Name="Help Tip")]
+		[AllowHtml]
 		public string HelpToolTip { get; set; }
 
 		/// <summary>

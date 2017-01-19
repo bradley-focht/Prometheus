@@ -5,6 +5,7 @@ namespace DataService.Models
 {
 	public interface ISelectionInput : ISelectable
 	{
-		IEnumerable<string> SelectItems { get; set; }
+		string SelectItems { get; set; }
+		string Delimiter { get; set; }
 	}
 }

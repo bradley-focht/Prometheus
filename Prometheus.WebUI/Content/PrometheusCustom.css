@@ -23,10 +23,15 @@
 	color: #333;
     padding: 5px 5px;
 }
+.title-font {
+	font-size: 1.3em;
+    font-weight: 500;
+	color: #333;
+}
 
 .subtitle-div {
 	border-bottom: 1px solid #ddd;
-	font-size: 1.1em;
+	font-size: 1.2em;
 	font-weight: 500;
 	color: #333;
 	padding: 5px 5px;
@@ -35,11 +40,7 @@
 
 .title-div-placeholder {
 	border-bottom: 1px solid #ddd;
-	white-space: nowrap;
-	font-weight: 500;
-	color: #333;
 	padding: 5px 5px;
-	margin-bottom: 10px; 
 }
 .subsubtitle-div {
 	color: #333;
@@ -80,6 +81,13 @@
 .hamburger-menu {
     font-size: 2em;
     color: #ddd;
+	  display: inline-block;
+  font-weight: normal;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+
 }
 
     .hamburger-menu:hover {
@@ -93,7 +101,10 @@
     }
 .form-money {
     max-width:100px;
-    margin-bottom: 10px;
+}
+
+.form-number {
+	max-width: 50px;
 }
 
 .font-home-link {
@@ -109,14 +120,19 @@
     padding-right: 10px;
 }
 
-.flex-container {
-    display: flex;
-	flex-direction: column;
-}
-
 .flex-container-col {
 	display: flex;
 	flex-direction: column;
+}
+
+.flex-container {
+	display: flex;
+	flex-direction: column;
+}
+
+.flex-container-center {
+    display: flex; 
+    justify-content: space-around;
 }
 
 .flex-container-row {
@@ -277,6 +293,11 @@
     padding-bottom: 10px;
 }
 
+.dt-text {
+    color: #0C537C;
+	font-weight: 600;
+}
+
 .dt-cell {
 	display: table-cell;
 	vertical-align: top;
@@ -384,7 +405,11 @@
 	padding: 10px;
     flex-direction: column;
 	min-height: 400px;
+        display: inline-block; 
+    margin-left: auto;
+    margin-right: auto;
 }
+
 
 /* file upload */
 .clearfix {
@@ -720,6 +745,10 @@
 	width: 100%;
 }
 
+.half-width {
+	width: 50%;
+}
+
 .tq-width {
 	width: 75%;	
 }
@@ -727,7 +756,13 @@
 .make-space-top {
 	margin-top: 10px;
 }
+.make-space-left {
+	margin-left: 10px;
+}
 
+.make-space-right {
+	margin-right: 10px;
+}
 
 .make-space-bottom {
 	margin-bottom: 10px;
@@ -736,4 +771,9 @@
 .small-message {
 	color: #666;
 	font-size: 0.6em;
+}
+
+.center-content {
+    margin-right: auto;
+    margin-left: auto;
 }

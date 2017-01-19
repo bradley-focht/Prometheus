@@ -34,17 +34,14 @@
 
 
 			<div class="flex-col content-cell">
-				<div style="height: 80px;"><a href="@Url.Action("Index", "SystemAccess")"><img src="~/Content/Images/people-network.png" alt="Services" style="height: 80px; width: 74px;"></a></div>
+				<div style="height: 80px;"><a href="@Url.Action("Index", "SystemAccess")"><img src="~/Content/Images/people-network.png" alt="System Access" style="height: 80px; width: 74px;"></a></div>
 				<div>@Html.ActionLink("System Access", "Index", "SystemAccess", null, new {@class = "font-home-link"})</div>
 			</div>
 
 			<div class="flex-col content-cell">
-				<div style="height: 80px;">
-					<img src="~/Content/Images/shake.png" alt="Services" style="height: 70px; width: 88px;">
-				</div>
-				<div>
-					<label class="font-home-link">Service Request Approvals</label>
-				</div>
+				<div style="height: 80px;"><a href="@Url.Action("Index", "ServiceRequestApproval")"><img src="~/Content/Images/shake.png" alt="Service Request Approvals" style="height: 70px; width: 88px;"></a>
+					@Html.ActionLink("Service Request Approvals", "Index", "ServiceRequestApproval", null, new { @class = "font-home-link" })
+</div>
 			</div>
 			<div class="flex-col content-cell">
 				<div style="height: 80px;">

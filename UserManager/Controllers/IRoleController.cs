@@ -32,5 +32,20 @@ namespace UserManager.Controllers
 		/// <param name="users">Users having the role removed from them</param>
 		/// <returns>All Users with the role removed</returns>
 		IEnumerable<IUserDto> RemoveRoleFromUsers(int performingUserId, IRoleDto roleDto, IEnumerable<IUserDto> users);
+
+		/// <summary>
+		/// Get all available roles
+		/// </summary>
+		/// <param name="performingUserId">user requesting the action</param>
+		/// <returns></returns>
+		IEnumerable<RoleDto> GetRoles(int performingUserId);
+		/// <summary>
+		/// Retrieve a single role
+		/// </summary>
+		/// <param name="performingUserId">user making hte request</param>
+		/// <param name="roleId">role to retrieve</param>
+		/// <returns></returns>
+		RoleDto GetRole(int performingUserId, int roleId);
+
 	}
 }
