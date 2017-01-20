@@ -38,15 +38,21 @@
     <div class="dd" style="width: 60%;">
         <div class="dd-row">
 
-            @if (Model.ReturningSearch && Model.Users != null && Model.Users.Any())
+            @if (Model.Users != null && Model.Users.Any())
             {
                 foreach (var user in Model.Users)
                 {
+
                     <div class="checkbox checkbox-primary">
                         <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="users">
                         <label for="@user.UserGuid">
                             @user.DisplayName
+                            @foreach (var role in user.UserDto.Roles)
+                            {
+                                <br/><span class="note"> @role.Name </span>
+                            }
                         </label>
+
                     </div>
                 }
             }
@@ -57,16 +63,14 @@
                 </div>
             }
 
-            @if (Model.ReturningSearch && Model.Users != null && Model.Users.Any() && Model.Roles != null)
+            @if (Model.Users != null && Model.Users.Any() && Model.Roles != null)
                 {
                 <div class="dd-cell-base">
                     @Html.Partial("PartialViews/SelectRoles", Model.Roles)
                 </div>
             }
-
-
         </div>
-        @if (Model.ReturningSearch && Model.Users != null && Model.Users.Any())
+        @if (Model.Users != null && Model.Users.Any())
         {
             <div class="dd-row">
                 <div class="dd-cell-base">
@@ -74,6 +78,7 @@
                         <div class="panel-footer">
                             <div class="float-right-div">
                                 @Html.ActionLink("Clear", "ManageUsers", null, new { @class = "btn btn-primary" })
+                                <input type="submit" value="Remove"class="btn btn-danger" name="SubmitButton"/>
                             </div>
                         </div>
                     </div>
@@ -83,7 +88,7 @@
                     <div class="flex-container-col">
                         <div class="panel-footer">
                             <div class="float-right-div">
-                                <input type="submit" value="Save" class="btn btn-primary" />
+                                <input type="submit" value="Save" class="btn btn-primary" name="SubmitButton" />
                             </div>
                         </div>
                     </div>

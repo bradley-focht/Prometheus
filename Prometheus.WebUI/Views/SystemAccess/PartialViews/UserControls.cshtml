@@ -7,10 +7,16 @@
             {
                     <div class="dropdown">
                         <span class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</span>
+                        
+
                         <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+
+                            <li>@Html.ActionLink("All Roles", "FilterByShowAll", "SystemAccess", null, new { @class = "dropdown-item" })</li>
+                            <li class="divider"></li>
+
                             @foreach (var role in Model.Roles)
                             {
-                                <li>@Html.ActionLink(role.Item2, "ManageUsers", new { id = role.Item1 })</li>
+                                <li>@Html.ActionLink(role.Item2, "FilterByRole", new { id = role.Item1 })</li>
                             }
                         </ul>
                     </div>

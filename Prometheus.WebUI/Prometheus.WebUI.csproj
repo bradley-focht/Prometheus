@@ -482,6 +482,7 @@
     <Content Include="Views\ServiceRequestMaintenance\ConfirmDeleteUserInput.cshtml" />
     <Content Include="Views\ServiceRequestApproval\Index.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\UserControls.cshtml" />
+    <Content Include="Views\SystemAccess\ConfirmDeleteUsers.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -1,0 +1,46 @@
+﻿@model ICollection<Prometheus.WebUI.Models.SystemAccess.UserDetailsModel>
+@{
+    ViewBag.Title = "System Access";
+    ViewBag.SubTitle = "Confirm Remove Users";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+    };
+}
+
+
+@section Sidebar{}
+
+@section Content{
+    <div class="title-div">@ViewBag.SubTitle</div>
+
+    @using (Html.BeginForm("DeleteUsers", "SystemAccess", FormMethod.Post))
+    {
+        <div class="panel-div">
+            Confirm removing the following User accounts. This action will remove any roles and reset them to their default state.
+            <div class="present-section flex-container-row">
+                @foreach (var user in Model)
+                {
+                    <div>
+                    @user.DisplayName
+                </div>
+                }
+            </div>
+        </div>
+
+        <div class="flex-container">
+            <div class="panel panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Cancel", "ManageUsers", null, new { @class = "btn btn-default" })
+                    <input type="submit" value="Confirm Delete" class="btn btn-danger" />
+                </div>
+            </div>
+        </div>
+    }
+}
+
+
