@@ -1,7 +1,6 @@
 ﻿@using Common.Dto
 @model ServiceDto
 <div class="dd full-width">
-
 	@foreach (var property in ViewData.ModelMetadata.Properties)
     {
         switch (property.PropertyName)
@@ -50,7 +49,6 @@
                     </div>
                 </div>  break;
             default:
-
 				<div class="dd-row">
 					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 					<div class="dd-cell tq-width">@Html.Raw(property.Model)</div>

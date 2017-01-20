@@ -117,7 +117,7 @@
   color: #333333;
   font-family: inherit;
   font-size: inherit;
-  line-height: 20px;
+  line-height: 1.428571429;
   -webkit-font-smoothing: inherit;
 }
 .selectize-input,
@@ -128,9 +128,9 @@
 }
 .selectize-input {
   border: 1px solid #cccccc;
-  padding: 6px 12px;
   display: inline-block;
-  width: 100%;
+  max-width: 100%;
+    padding: 0;
   overflow: hidden;
   position: relative;
   z-index: 1;

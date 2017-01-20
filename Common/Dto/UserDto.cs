@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Common.Dto
 {
@@ -10,14 +11,14 @@ namespace Common.Dto
 		#region Fields
 		public string Name { get; set; }
 		public Guid AdGuid { get; set; }
-		public DateTime? DateCreated { get; set; }
+	    public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
-		#endregion
+        #endregion
 
-		#region Navigation properties
-
-		#endregion
-	}
+        #region Navigation properties
+        public ICollection<RoleDto> Roles { get; set; }
+        #endregion
+    }
 }

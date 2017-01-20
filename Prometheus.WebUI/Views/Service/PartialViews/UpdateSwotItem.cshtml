@@ -4,7 +4,7 @@
 @Html.Hidden("ServiceId", Model.ServiceId)
 <input type="hidden" name="Id" value="@Model.Id"/>
 
-<table>
+<div class="dd">
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
         if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Activities") || property.PropertyName.Contains("Date"))
@@ -12,17 +12,17 @@
             continue;
         }
 
-        <tr>
-            <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+        <div class="dd-row">
+            <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 
             @if (property.PropertyName == "Type")
             {
-                <td class="dd-cell">
+                <div class="dd-cell">
                     <div class="btn-group" data-toggle="buttons">
                         @foreach (var type in Enum.GetValues(typeof(ServiceSwotType)))
                         {
                             <label class="btn btn-default" id="@type">
-                                @(Model.Type != (ServiceSwotType) type || Model.Id >= 0 ? Html.RadioButton("Type", type.ToString(), false) : Html.RadioButton("Type", type.ToString(), true))
+                                @(Model.Type != (ServiceSwotType)type || Model.Id >= 0 ? Html.RadioButton("Type", type.ToString(), false) : Html.RadioButton("Type", type.ToString(), true))
                                 @type
                             </label>
                         }
@@ -30,24 +30,24 @@
                     </div>
                     @Html.ValidationMessage(property.PropertyName)
 
-                </td>
+                </div>
             }
             else if (property.PropertyName == "Description")
             {
-                <td class="dd-cell">
+                <div class="dd-cell">
                     @Html.TextArea(property.PropertyName, new {@class = "ckeditor"})
-                </td>
+                </div>
             }
             else
             {
-                <td class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control"})
+                <div class="dd-cell">@Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control"})
                     @Html.ValidationMessage(property.PropertyName)
-                </td>
+                </div>
             }
 
-        </tr>
+        </div>
     }
-</table>
+</div>
 
 
 @if (Model.Id >= 0)

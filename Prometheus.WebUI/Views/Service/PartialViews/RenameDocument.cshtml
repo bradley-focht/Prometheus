@@ -1,27 +1,26 @@
 ﻿@model Common.Dto.ServiceDocumentDto
 
-
-<input type="hidden" name="Id" value="@Model.Id"/>
-    @Html.Hidden("StorageNameGuid", Model.StorageNameGuid.ToString())
-    @Html.Hidden("FileExtension", Model.FileExtension)
-    @Html.Hidden("ServiceId", Model.ServiceId)
-    <table>
-        <tr>
-            <td class="dt-cell">Filename</td>
-            <td class="dd-cell">
-                <div class="input-group">
-                    @Html.TextBox("Filename", Model.Filename, new { @class = "form-control" })
-                    <span class="input-group-addon">@Model.FileExtension</span>
-</div>
-</td>
-        </tr>
-    </table>
-
-    <div class="flex-container-col">
-        <div class="panel-footer">
-            <div class="float-right-div">
-                @Html.ActionLink("Back", "Show", new { section = "Documents", id = Model.ServiceId }, new { @class = "btn btn-default btn-back" })
-                <input type="submit" value="Save" class="btn btn-primary" />
+<input type="hidden" name="Id" value="@Model.Id" />
+@Html.Hidden("StorageNameGuid", Model.StorageNameGuid.ToString())
+@Html.Hidden("FileExtension", Model.FileExtension)
+@Html.Hidden("ServiceId", Model.ServiceId)
+<div class="dd">
+    <div>
+        <div class="dt-cell">Filename</div>
+        <div class="dd-cell">
+            <div class="input-group">
+                @Html.TextBox("Filename", Model.Filename, new { @class = "form-control" })
+                <span class="input-group-addon">@Model.FileExtension</span>
             </div>
         </div>
     </div>
+</div>
+
+<div class="flex-container-col">
+    <div class="panel-footer">
+        <div class="float-right-div">
+            @Html.ActionLink("Back", "Show", new { section = "Documents", id = Model.ServiceId }, new { @class = "btn btn-default btn-back" })
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </div>
+</div>

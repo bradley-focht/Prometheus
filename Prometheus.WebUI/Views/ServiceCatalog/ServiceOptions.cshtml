@@ -14,6 +14,8 @@
 }
 @section Content
 {
+    @Html.Partial("PartialViews/CatalogControls", Model.Controls)
+
 	<div class="flex-container-col">
 		<div class="title-div">Available Options for @ViewBag.Subtitle</div>
 		<div style="font-size: 0.8em; color: #666; padding: 10px;">View all options available. Other services are on the left</div>

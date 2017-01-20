@@ -1,0 +1,94 @@
+﻿@model Prometheus.WebUI.Models.SystemAccess.ManageUsersModel
+
+@{
+    ViewBag.Title = "System Access";
+    ViewBag.SubTitle = "Add Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+    };
+}
+
+@Html.Partial("PartialViews/UserControls", Model.Controls)
+
+<div class="dd" style="width: 60%;">
+    <div class="dd-row">
+
+        @if (Model.Users != null && Model.Users.Any())
+            {
+            <div class="dd-cell-nostyle" style="margin-right: 10px; width:50%">
+                <div class="title-div">Users</div>
+            </div>
+            <div class="dd-cell-nostyle" style="width:50%;">
+                <div class="title-div make-space-left">Roles</div>
+            </div>
+        }
+        else
+        {
+            <div class="dd-cell-nostyle" style="width: 50%;"></div>
+        }
+    </div>
+</div>
+@using (Html.BeginForm("SaveUsers", "SystemAccess", FormMethod.Post))
+{
+    <div class="dd" style="width: 60%;">
+        <div class="dd-row">
+
+            @if (Model.ReturningSearch && Model.Users != null && Model.Users.Any())
+            {
+                foreach (var user in Model.Users)
+                {
+                    <div class="checkbox checkbox-primary">
+                        <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="users">
+                        <label for="@user.UserGuid">
+                            @user.DisplayName
+                        </label>
+                    </div>
+                }
+            }
+            else if (Model.ReturningSearch && (Model.Users == null || !Model.Users.Any()))
+            {
+                <div class="dd-cell-base">
+                    <div class="alert alert-warning alert-message make-space-top">No results</div>
+                </div>
+            }
+
+            @if (Model.ReturningSearch && Model.Users != null && Model.Users.Any() && Model.Roles != null)
+                {
+                <div class="dd-cell-base">
+                    @Html.Partial("PartialViews/SelectRoles", Model.Roles)
+                </div>
+            }
+
+
+        </div>
+        @if (Model.ReturningSearch && Model.Users != null && Model.Users.Any())
+        {
+            <div class="dd-row">
+                <div class="dd-cell-base">
+                    <div class="flex-container-col">
+                        <div class="panel-footer">
+                            <div class="float-right-div">
+                                @Html.ActionLink("Clear", "ManageUsers", null, new { @class = "btn btn-primary" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dd-cell-base">
+                    <div class="flex-container-col">
+                        <div class="panel-footer">
+                            <div class="float-right-div">
+                                <input type="submit" value="Save" class="btn btn-primary" />
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>}
+    </div>
+}

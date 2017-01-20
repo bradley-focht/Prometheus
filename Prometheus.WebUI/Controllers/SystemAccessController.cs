@@ -8,6 +8,7 @@ using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;
 using UserManager;
+using UserManager.AdService;
 
 
 namespace Prometheus.WebUI.Controllers
@@ -206,10 +207,42 @@ namespace Prometheus.WebUI.Controllers
 
 			return RedirectToAction("PermissionsAndRoles");
 		}
-		public ActionResult AddUsers()
+        /// <summary>
+        /// initial screen for managing users
+        /// </summary>
+        /// <returns></returns>
+		public ActionResult ManageUsers()
 		{
-			return View(new UserModel {ReturningSearch = false});
+            UserControlsModel controls = new UserControlsModel();
+		    controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
+
+			return View("ManageUsers", new ManageUsersModel {Controls = controls, ReturningSearch = false});
 		}
+
+        /// <summary>
+        /// Apply a filter on the results
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+	    public ActionResult FilterByRole(int id)
+	    {
+            UserControlsModel controls = new UserControlsModel();   /*construct model for view */
+	        var model = new ManageUsersModel {Controls = controls, ReturningSearch = false};
+
+            controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
+	        var users = (from u in _userManager.GetUsers(uid) where u.Roles.Any(role => role.Id == id) select u);
+            List<UserDetailsModel> modelUsers = new List<UserDetailsModel>();
+
+	        IAdSearch searcher = new AdSearch();
+            foreach (var user in users)
+	        {
+	            modelUsers.Add(new UserDetailsModel {UserDto = user, DisplayName = searcher.GetUserDisplayName(user.AdGuid)});
+	        }
+	        model.Users = modelUsers.OrderBy(o => o.DisplayName).ToList();
+
+            return View("ManageUsers", model);
+        }
+
 
 		/// <summary>
 		/// Setup the partial View for searching AD accounts   
@@ -218,20 +251,34 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SearchAdAccount(string searchString)
 		{
-			var model = new UserModel {ReturningSearch = true};
+			var model = new ManageUsersModel {ReturningSearch = true, Users = new List<UserDetailsModel>()};
+            var controls = new UserControlsModel();
+            model.Controls = controls;
+            controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
 
+            List<Tuple<Guid, string>> users;
 			try
 			{
-				model.Users = _userManager.SearchUsers(searchString);
-				model.Roles = _userManager.GetRoles(uid).ToList();
-			}
+                model.Roles = _userManager.GetRoles(uid).ToList();
+                users  = _userManager.SearchUsers(searchString).ToList();
+            }
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = exception.Message;
-				return View("AddUsers", model);
+				return View("ManageUsers", model);
 			}
-			return View("AddUsers", model);
+
+            foreach (var user in users)
+            {
+                model.Users.Add(new UserDetailsModel
+                {
+                    UserDto = new UserDto { AdGuid = user.Item1 },
+                    DisplayName = user.Item2
+                });
+            }
+
+            return View("ManageUsers", model);
 		}
 
 		/// <summary>
@@ -241,45 +288,68 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="users"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveAddUsers(ICollection<int> roles, ICollection<Guid> users)
+		public ActionResult SaveUsers(ICollection<int> roles, ICollection<Guid> users)
 		{
-			if (!ModelState.IsValid)
+			if (!ModelState.IsValid)                    /*server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save new user due to invalid data";
-				return View("AddUsers", new UserModel());
+				return View("ManageUsers", new ManageUsersModel());
 			}
 
-			try
-			{
+		    if (users != null && roles != null && users.Any() && roles.Any())
+		    {
+                var userList = _userManager.GetUsers(uid).ToList();     //get the user list to check new users in
+		        var roleList = _userManager.GetRoles(uid).ToList();
 
-			}
-			catch (Exception exception)
-			{
-				
-			}
+		        foreach (var user in users) //W I P
+		        {
+		            try
+		            {
 
-			TempData["MessageType"] = WebMessageType.Success;
-			TempData["Message"] = "Successfully saved new users";
+		            }
+		            catch(Exception exception)
+		            {
+		             
+		            }
 
-			return RedirectToAction("AddUsers");
-		}
+		            if (userList.All(u => user != u.AdGuid))            /* first add anyone new */
+		            {
+		                try
+		                {
+		                    _userManager.ModifyUser(uid, new UserDto {AdGuid = user}, EntityModification.Create);
+		                }
+		                catch (Exception exception)
+		                {
+		                    TempData["MessageType"] = WebMessageType.Failure;
+		                    TempData["Message"] = $"Failed to save a user, error: {exception.Message}";
+		                }
+		            }   
+		            UserDto userDto = (from u in userList where u.AdGuid == user select u).First();     //get the userId of any user
+                   
+		            foreach (var role in roleList)                                                      //adding and removing roles        
+		            {
+		                try /* make the best of what I have */
+		                {
+                            
+		                }
+		                catch (Exception)
+		                {
+		                    
+                            
+		                }
+		                
+		                if (userDto.Roles.Any(r => r.Id == role.Id))
+		                {
+	
+		                }
+		            }
+		        }
 
-		public ActionResult CurrentUsers(int id = 0)
-		{
-			CurrentUserModel model = new CurrentUserModel {SelectedUser = id};
-
-			try
-			{
-				model.Users = _userManager.GetUsers(uid).ToList();
-			}
-			catch (Exception exception)
-			{
-				TempData["MessageType"] = WebMessageType.Failure;
-				TempData["Message"] = $"Failed to get users, error: {exception.Message}";
-			}
-
-			return View("ShowCurrentUsers", model);
+		        TempData["MessageType"] = WebMessageType.Success;
+		        TempData["Message"] = "Successfully saved new users";
+		    }
+		    return RedirectToAction("ManageUsers");
 		}
 
 	}

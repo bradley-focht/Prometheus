@@ -1,28 +1,27 @@
 ﻿@model Common.Dto.IServiceGoalDto
 
-@using Common.Enums
 @using Common.Enums.Entities
 
 <input type="hidden" name="Id" value="@Model.Id" />
 <input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
-<table>
+<div class="dd">
 
-    <tr>
-        <td class="dt-cell">Name</td>
-        <td class="dd-cell">
+    <div class="dd-row">
+        <div class="dt-cell">Name</div>
+        <div class="dd-cell">
             @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Name)
-        </td>
-    </tr>
+        </div>
+    </div>
 
-    <tr>
-        <td class="dt-cell">Description</td>
-        <td class="dd-cell">@Html.TextArea("Description", Model.Description, new { @class = "ckeditor" })</td>
-    </tr>
-    <tr>
-        <td class="dt-cell">Type</td>
-        <td class="dd-cell">
+    <div class="dd-row">
+        <div class="dt-cell">Description</div>
+        <div class="dd-cell">@Html.TextArea("Description", Model.Description, new { @class = "ckeditor" })</div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">Type</div>
+        <div class="dd-cell">
             <div class="btn-group" data-toggle="buttons">
                 <label class="btn btn-default" id="@ServiceGoalType.ShortTerm">
                     @(Model.Id > 0 && Model.Type == ServiceGoalType.ShortTerm ? Html.RadioButton("Type", ServiceGoalType.ShortTerm, true) : Html.RadioButton("Type", ServiceGoalType.ShortTerm, false))
@@ -35,29 +34,29 @@
                 </label>
             </div>
             @Html.ValidationMessageFor(model => model.Type)
-        </td>
+        </div>
 
-    </tr>
-    <tr>
-        <td class="dt-cell">Start Date</td>
-        <td class="dd-cell">
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">Start Date</div>
+        <div class="dd-cell">
             <div class="input-group date">
                 @Html.TextBox("StartDate", Model.StartDate?.ToString("MM/dd/yyyy") ?? "", new { @class = "form-control" })
                 <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
 
-        </td>
-    </tr>
-    <tr>
-        <td class="dt-cell">End Date</td>
-        <td class="dd-cell">
+        </div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">End Date</div>
+        <div class="dd-cell">
             <div class="input-group date">
                 @Html.TextBox("EndDate", Model.StartDate?.ToString("d") ?? "", new { @class = "form-control" })
                 <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+</div>
 
 
 <script language="javascript" type="text/javascript">

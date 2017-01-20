@@ -1,0 +1,35 @@
+﻿@model Prometheus.WebUI.Models.SystemAccess.UserControlsModel
+<div class="panel panel-default">
+
+        <div class="flex-row">
+            <div style="height: 100%;" class="make-space-top">
+                @if (Model.Roles != null)
+            {
+                    <div class="dropdown">
+                        <span class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter</span>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                            @foreach (var role in Model.Roles)
+                            {
+                                <li>@Html.ActionLink(role.Item2, "ManageUsers", new { id = role.Item1 })</li>
+                            }
+                        </ul>
+                    </div>
+                }
+            </div>
+            <div class="make-space-left">
+                @using (Html.BeginForm("SearchAdAccount", "SystemAccess", FormMethod.Post))
+                {
+                    <div class="input-group make-space-top make-space-bottom" style="max-width: 400px;">
+                        <input name="searchString" type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit">
+                                <i class="fa fa-search" aria-hidden="true"></i>
+                                Search
+                            </button>
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+

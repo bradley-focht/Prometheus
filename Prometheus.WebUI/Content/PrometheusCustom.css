@@ -2,6 +2,11 @@
     display: inline-block;
 }
 
+
+.title-underline {
+    border-bottom: 1px solid #ddd;
+}
+
 .font-title1 {
     font-size: 1.3em;
     color: #17a7f8;

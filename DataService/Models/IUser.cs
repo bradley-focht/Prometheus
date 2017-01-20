@@ -9,7 +9,6 @@ namespace DataService.Models
 
 		string Name { get; set; }
 		Guid AdGuid { get; set; }
-
 		ICollection<Role> Roles { get; set; }
 	}
 }

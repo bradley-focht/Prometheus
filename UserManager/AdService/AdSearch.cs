@@ -43,6 +43,11 @@ namespace UserManager.AdService
             return (from result in results where result.Guid != null select new Tuple<Guid, string>(result.Guid.Value, result.DisplayName)).ToList();
         }
 
+        /// <summary>
+        /// Resolve a user Guid to a displayname
+        /// </summary>
+        /// <param name="userGuid"></param>
+        /// <returns></returns>
 	    public string GetUserDisplayName(Guid userGuid)
 	    {
 		    UserPrincipal user = UserPrincipal.FindByIdentity(new PrincipalContext(ContextType.Domain), IdentityType.Guid, userGuid.ToString());

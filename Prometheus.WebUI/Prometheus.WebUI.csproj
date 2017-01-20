@@ -381,7 +381,9 @@
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
     <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
-    <Compile Include="Models\SystemAccess\UserModel.cs" />
+    <Compile Include="Models\SystemAccess\UserControlsModel.cs" />
+    <Compile Include="Models\SystemAccess\UserDetailsModel.cs" />
+    <Compile Include="Models\SystemAccess\ManageUsersModel.cs" />
     <Compile Include="Models\UserAccount\UserAccountModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -431,7 +433,7 @@
     <Content Include="Views\Service\PartialViews\RenameDocument.cshtml" />
     <Content Include="Views\Shared\_BasicLayout.cshtml" />
     <Content Include="Views\SystemAccess\PermissionsAndRoles.cshtml" />
-    <Content Include="Views\SystemAccess\AddUsers.cshtml" />
+    <Content Include="Views\SystemAccess\ManageUsers.cshtml" />
     <Content Include="Views\ServicePortfolio\Update.cshtml" />
     <Content Include="Views\ServiceCatalog\ServiceCatalog.cshtml" />
     <Content Include="Views\Service\PartialViews\ShowDynamicServiceItem.cshtml" />
@@ -479,7 +481,7 @@
     <Content Include="Views\ServiceRequest\SubmitNewServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ConfirmDeleteUserInput.cshtml" />
     <Content Include="Views\ServiceRequestApproval\Index.cshtml" />
-    <Content Include="Views\SystemAccess\ShowCurrentUsers.cshtml" />
+    <Content Include="Views\SystemAccess\PartialViews\UserControls.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

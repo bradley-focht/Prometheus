@@ -795,10 +795,20 @@ namespace DataService
 		public static IUserDto MapUserToDto(IUser src)
 		{
 			if (src == null) return null;
+
+            List<RoleDto> roles = new List<RoleDto>();
+		    if (src.Roles != null)
+		    {
+		        foreach (var role in src.Roles)
+		        {
+		            roles.Add(MapRoleToDto(role));
+		        }
+		    }
+
 			return new UserDto()
 			{
 				Id = src.Id,
-				Name = src.Name,
+				Roles = roles,
 				AdGuid = src.AdGuid
 			};
 		}
