@@ -10,11 +10,12 @@ namespace Prometheus.WebUI.Controllers
 {
     public class UserAccountController : Controller
     {
+        /// <summary>
+        /// user manager functions for security
+        /// </summary>
+	    private readonly IUserManager _userManager;
 
-	    private IUserManager _userManager;
-
-
-	    public UserAccountController()
+        public UserAccountController()
 	    {
 		    _userManager = InterfaceFactory.CreateUserManagerService();
 	    }
@@ -46,7 +47,7 @@ namespace Prometheus.WebUI.Controllers
 	        IUserDto user;
 	        try
 	        {
-		        user = (UserDto) _userManager.Login(userLogin.Username, userLogin.Password);
+		        user = (UserDto) _userManager.Login(userLogin.Username, userLogin.Password);    //get the user object
 	        }
 	        catch (Exception exception)
 	        {
@@ -56,10 +57,18 @@ namespace Prometheus.WebUI.Controllers
 			}
 	        if (user != null)
             {
-                FormsAuthentication.SetAuthCookie(user.Name, true);
+                FormsAuthentication.SetAuthCookie(user.Name, true);                             //enter data in session cookie
                
                 Session["DisplayName"] = user.Name;
+                Session["Guid"] = user.AdGuid;
                 Session["Id"] = user.Id;
+
+                string roles = null;                                                           //put role(s) into cookie for hamburger menu
+                foreach (var role in user.Roles) //more than role is a border case
+                {
+                    roles += $"{role},";
+                }
+                Session["Roles"] = roles;
 
                 return RedirectToAction("Index", "Home");
             }

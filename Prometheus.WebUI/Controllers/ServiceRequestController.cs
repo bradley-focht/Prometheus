@@ -1,5 +1,6 @@
-﻿using System.Web.Mvc;
-using Prometheus.WebUI.Helpers;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Mvc;
 using Prometheus.WebUI.Models.ServiceRequest;
 using Prometheus.WebUI.Models.Shared;
 
@@ -9,18 +10,13 @@ namespace Prometheus.WebUI.Controllers
     {
 	    private int userId = 1;
         // GET: ServiceRequest
-        public ActionResult BeginOptionRequest(int id)
+        public ActionResult Form(int id=0)
         {
-	        var ps = InterfaceFactory.CreatePortfolioService(userId);
-
-	        var option = ps.GetServiceOption(id);
-
-			ServiceRequestModel model = new ServiceRequestModel
-			{
-				Option = option
-			};
-
-            return View(model);
+            ServiceRequestModel model = new ServiceRequestModel();
+            IEnumerable<Tuple<int, string>> titles = new List<Tuple<int, string>> {new Tuple<int, string>(0, "User Account"), new Tuple<int, string>(1, "Hardware"), new Tuple<int, string>(2, "Software"), new Tuple<int, string>(3, "Network Access")};
+            model.Titles = titles;
+            model.CurrentIndex = -1;
+            return View("ServiceRequest", model);
         }
 
 

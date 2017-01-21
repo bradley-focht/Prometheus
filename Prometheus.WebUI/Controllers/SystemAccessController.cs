@@ -9,8 +9,6 @@ using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;
 using UserManager;
 using UserManager.AdService;
-using UserManager.Controllers;
-
 
 namespace Prometheus.WebUI.Controllers
 {

@@ -1,0 +1,36 @@
+﻿@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestNavigationModel
+@{
+    
+}
+
+<div class="flex-row" style="margin-left: -40px;">
+    <ul class="sr-navigation">
+
+
+        @if (Model.SelectedIndex < 0)
+        {
+            <li class="sr-navigation-active"><a href="#">Info</a></li>
+        }
+        else
+        {
+            <li><a href="info">Start</a></li>
+        }
+
+        @{
+            int counter = 0;
+            foreach (var title in Model.Titles)
+            {
+                if (Model.SelectedIndex == counter)
+                {
+                    <li class="sr-navigation-active"><a href="#">@title.Item2 </a></li>
+                }
+                else
+                {
+                    <li><a href="#">@title.Item2</a></li>
+                }
+                counter++;
+            }
+        }
+        <li><a></a></li>
+    </ul>
+</div>

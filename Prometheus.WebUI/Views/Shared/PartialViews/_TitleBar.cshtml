@@ -15,11 +15,21 @@
                 <ul class="dropdown-menu pull-right" style="width: 150px;">
                     <li>@Html.ActionLink("Logout", "Logout", "UserAccount", null, new {@class = "dropdown-item"})</li>
                     <li class="divider"></li>
-                    <li><a class="dropdown-item" href="~/Home/Index">Home</a></li>
+                    <li>@Html.ActionLink("Home", "Index", "Home", null, new {@class="dropdown-item"})</li>
                     <li class="divider"></li>
 
                     <li class="dropdown-item">Roles</li>
-                    <li> - not working yet - </li>
+                    <li>@{
+                            if (Session["Roles"] != null)
+                            {
+                                string s = (string) Session["Roles"];
+                                s.Replace(",", "<br/>");
+
+                                <text>@s</text>
+                            }
+                        }
+                        
+                    </li>
                 </ul>
             </div>
 

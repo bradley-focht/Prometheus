@@ -353,6 +353,7 @@
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
+    <Compile Include="Models\ServiceRequest\ServiceRequestNavigationModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
@@ -368,6 +369,8 @@
     <Compile Include="Models\Service\SwotActivityItemModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\DeleteModel.cs" />
+    <Compile Include="Models\Shared\ScriptedSelectionInputModel.cs" />
+    <Compile Include="Models\Shared\SelectionInputModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
     <Compile Include="Models\Service\ServiceModel.cs" />
     <Compile Include="Models\Shared\LinkListModel.cs" />
@@ -377,6 +380,7 @@
     <Compile Include="Models\Shared\ServiceRequest.cs" />
     <Compile Include="Models\Shared\ServiceRequestOption.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
+    <Compile Include="Models\Shared\TextInputModel.cs" />
     <Compile Include="Models\Shared\UserInput.cs" />
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
     <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
@@ -461,7 +465,7 @@
     <Content Include="Views\ServiceRequestMaintenance\Index.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetServiceNames.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowServiceOption.cshtml" />
-    <Content Include="Views\ServiceRequest\BeginOptionRequest.cshtml" />
+    <Content Include="Views\ServiceRequest\ServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\EditUserInput.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputEditor.cshtml" />
     <Content Include="Views\ServiceCatalog\PartialViews\CatalogControls.cshtml" />
@@ -483,6 +487,9 @@
     <Content Include="Views\ServiceRequestApproval\Index.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\UserControls.cshtml" />
     <Content Include="Views\SystemAccess\ConfirmDeleteUsers.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_SelectionInput.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_TextInput.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestNavigation.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

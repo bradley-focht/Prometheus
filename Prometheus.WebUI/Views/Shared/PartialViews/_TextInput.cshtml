@@ -1,0 +1,19 @@
+﻿@model Prometheus.WebUI.Models.Shared.TextInputModel
+
+@if (Model.TextInput.MultiLine)
+{
+    <div class="input-group">
+    </div>
+
+}
+else
+{
+    <div class="input-group">
+        @Html.TextBox(Model.ControlName, null, new { @class = "form-control" })
+        <span class="input-group-btn">
+            <span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(Model.TextInput.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
+        </span>
+
+    </div>
+
+}
