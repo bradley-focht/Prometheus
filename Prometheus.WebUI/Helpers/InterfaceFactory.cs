@@ -9,6 +9,11 @@ namespace Prometheus.WebUI.Helpers
 {
 	public class InterfaceFactory
 	{
+        /// <summary>
+        /// Creat the Portfolio Service Interface
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
 		public static PortfolioService CreatePortfolioService(int userId)
 		{
 			return new PortfolioService(userId,
@@ -30,12 +35,20 @@ namespace Prometheus.WebUI.Helpers
 				new ScriptedSelectionInputController());
 		}
 
+        /// <summary>
+        /// Create a Catalog Controller, no interface
+        /// </summary>
+        /// <param name="dummyId"></param>
+        /// <returns></returns>
 		public static ICatalogController CreateCatalogController(int dummyId)
 		{
 			return new CatalogController(CreateUserManagerService());
 		}
 
-
+        /// <summary>
+        /// Create the User Manager Interface
+        /// </summary>
+        /// <returns></returns>
 		public static UserManagerService CreateUserManagerService()
 		{
 			return new UserManagerService(

@@ -333,9 +333,9 @@
     <Compile Include="Helpers\FinancialCalculator.cs" />
     <Compile Include="Helpers\InterfaceFactory.cs" />
     <Compile Include="Helpers\ServiceIndexHelper.cs" />
-    <Compile Include="Helpers\ServiceDocumentHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="Helpers\Enums\WebMessageType.cs" />
+    <Compile Include="Helpers\UiPermissionHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
@@ -490,6 +490,7 @@
     <Content Include="Views\Shared\PartialViews\_SelectionInput.cshtml" />
     <Content Include="Views\Shared\PartialViews\_TextInput.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestNavigation.cshtml" />
+    <Content Include="Views\ServiceMaintenance\PartialViews\StatusCountDropDown.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

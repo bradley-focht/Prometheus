@@ -50,7 +50,7 @@
                                 break;
                             case "Position":
                                 <td class="dd-cell">
-                                    @Html.DropDownListFor(m => m.Position, Enumerable.Range(1, 15).Select(i => new SelectListItem { Text = i.ToString(), Value = i.ToString() }))
+                                    @Html.Action("GetStatusCountDropDown", new {id = Model.Position})
                                     @Html.ValidationMessage(property.PropertyName)
                                 </td>
                                 break;

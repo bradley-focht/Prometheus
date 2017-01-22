@@ -66,7 +66,7 @@ namespace Prometheus.WebUI.Controllers
                 string roles = null;                                                           //put role(s) into cookie for hamburger menu
                 foreach (var role in user.Roles) //more than role is a border case
                 {
-                    roles += $"{role},";
+                    roles += $"{role.Name},";
                 }
                 Session["Roles"] = roles;
 
@@ -89,7 +89,7 @@ namespace Prometheus.WebUI.Controllers
         {
             FormsAuthentication.SetAuthCookie("Guest", true);
             Session["DisplayName"] = "Guest";
-            Session["Id"] = 0;
+            Session["Id"] = 1;
             return RedirectToAction("Index", "Home");
         }
 

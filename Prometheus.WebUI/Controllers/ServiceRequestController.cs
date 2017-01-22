@@ -8,9 +8,8 @@ namespace Prometheus.WebUI.Controllers
 {
     public class ServiceRequestController : Controller
     {
-	    private int userId = 1;
         // GET: ServiceRequest
-        public ActionResult Form(int id=0)
+        public ActionResult BeginRequest(int id=0)
         {
             ServiceRequestModel model = new ServiceRequestModel();
             IEnumerable<Tuple<int, string>> titles = new List<Tuple<int, string>> {new Tuple<int, string>(0, "User Account"), new Tuple<int, string>(1, "Hardware"), new Tuple<int, string>(2, "Software"), new Tuple<int, string>(3, "Network Access")};

@@ -47,9 +47,14 @@
                         <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="users">
                         <label for="@user.UserGuid">
                             @user.DisplayName
-                            @foreach (var role in user.UserDto.Roles)
+                            @if (user.UserDto.Roles != null)
                             {
-                                <br/><span class="note"> @role.Name </span>
+                                <br />
+                                foreach (var role in user.UserDto.Roles)
+                                {
+
+                                    <span class="note"> @role.Name </span>
+                                }
                             }
                         </label>
 

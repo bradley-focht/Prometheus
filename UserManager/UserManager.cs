@@ -44,7 +44,9 @@ namespace UserManager
 					if (user != null)
 					{
 						//If they existed retrun them
-						return ManualMapper.MapUserToDto(user);
+						IUserDto userDto = ManualMapper.MapUserToDto(user); //name Resolution
+					    userDto.Name = GetDisplayName(userDto.AdGuid);
+					    return userDto;
 					}
 					else
 					{
@@ -62,9 +64,11 @@ namespace UserManager
 						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(userDto));
 						savedUser.Roles.Add(authenticatedRole);
 						context.SaveChanges();
-						return ManualMapper.MapUserToDto(savedUser);
+						userDto = (UserDto)ManualMapper.MapUserToDto(savedUser);
+					    userDto.Name = GetDisplayName(userDto.AdGuid);      //Name resolution
+					    return userDto;
 					}
-				}
+				;}
 			}
 			throw new AuthenticationException("Username and password could not authenticate with Active Directory");
 		}

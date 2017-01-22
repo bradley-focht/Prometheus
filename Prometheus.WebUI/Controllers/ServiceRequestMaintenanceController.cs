@@ -100,10 +100,6 @@ namespace Prometheus.WebUI.Controllers
 			}
 			model.UserInputs = inputs.OrderBy(i => i.DisplayName);			//ordered alphabetically here
 
-
-
-
-
 			return View(model);
 		}
 

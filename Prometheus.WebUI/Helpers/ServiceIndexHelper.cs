@@ -73,6 +73,10 @@ namespace Prometheus.WebUI.Helpers
             return _services;
         }
 
+        /// <summary>
+        /// Create controls model for the Service Controls
+        /// </summary>
+        /// <returns></returns>
         public List<Tuple<string, string, IEnumerable<Tuple<int, string>>>> GetControlsModel()
         {
 
