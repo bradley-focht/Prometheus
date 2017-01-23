@@ -6,7 +6,7 @@
 
         <div class="panel-div">
             @Html.HiddenFor(m => Model.Id)
-            <table>
+            <div>
                 @foreach (var property in ViewData.ModelMetadata.Properties)
                 {
                     if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
@@ -14,14 +14,14 @@
                         continue;
                     }
 
-                    <tr>
-                        <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
+                    <div class="dd-row">
+                        <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
                         @switch (property.PropertyName)
                     {
                         case "CatalogVisible":
 
 
-                                <td class="dd-cell">
+                                <div class="dd-cell">
 
                                     <div class="form-group">
                                         <div class="btn-group" data-toggle="buttons">
@@ -45,25 +45,25 @@
                                     }
                                     </script>
                                     @Html.ValidationMessage(property.PropertyName)
-                                </td>
+                                </div>
 
                                 break;
                             case "Position":
-                                <td class="dd-cell">
+                                <div class="dd-cell">
                                     @Html.Action("GetStatusCountDropDown", new {id = Model.Position})
                                     @Html.ValidationMessage(property.PropertyName)
-                                </td>
+                                </div>
                                 break;
                             default:
-                                <td class="dd-cell">
+                                <div class="dd-cell">
                                     @Html.TextBox(property.PropertyName, null, new { @class = "form-control" })
                                     @Html.ValidationMessage(property.PropertyName)
-                                </td>
+                                </div>
                                 break;
                         }
-                    </tr>
+                    </div>
                 }
-            </table>
+            </div>
         </div>
             <div class="flex-container">
                 <div class="panel-footer">

@@ -68,9 +68,9 @@ namespace UserManager
 					    userDto.Name = GetDisplayName(userDto.AdGuid);      //Name resolution
 					    return userDto;
 					}
-				;}
+				}
 			}
-			throw new AuthenticationException("Username and password could not authenticate with Active Directory");
+		    return new UserDto {Name = "failed"}; //failed login
 		}
 
 

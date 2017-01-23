@@ -1,0 +1,89 @@
+﻿@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
+@model Prometheus.WebUI.Models.Shared.TableDataModel
+@{
+    int userId;
+    try { userId = int.Parse(Session["Id"].ToString()); }
+    catch { return; } /*abort rendering */
+}
+
+@if (Model.Titles != null && Model.Data != null)
+{
+    <table class="table table-hover" style="display: inline-block;">
+        <thead>
+            <tr>
+                @foreach (string title in Model.Titles) //begin creating the table
+                {
+                    <th><span class="table-title">@title</span></th>
+                }
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Data)
+                {
+                    bool firstCol = true;
+                <tr>
+                    @foreach (string data in row.Item2)
+                    {
+                        <td>
+                            @if (firstCol)
+                            {
+                                if (Model.ServiceSection == null)
+                                {
+                                    @Html.ActionLink(data, Model.Action, new { id = row.Item1 })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink(data, Model.Action, new { id = row.Item1, section = Model.ServiceSection, serviceId = Model.ServiceId })
+                                }
+                                firstCol = false;
+                            }
+                            else
+                            {
+                                @Html.Raw(data)
+                            }
+                        </td>
+
+                    }
+                    <td>
+                        @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
+                        {
+                            <div class="btn-group">
+                                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                    <span aria-hidden="true">&#x25BC;</span>
+                                </div>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            @if (Model.ServiceSection == null)
+                                            {
+                                                @Html.ActionLink("Update", Model.UpdateAction, new { id = row.Item1 })
+                                            }
+                                            else
+                                            {
+                                                @Html.ActionLink("Update", Model.UpdateAction, new { id = row.Item1, section = Model.ServiceSection, serviceId = Model.ServiceId })
+                                            }
+                                        </li>
+                                        <li>
+                                            @Html.ActionLink("Delete", Model.ConfirmDeleteAction, new { id = row.Item1 })
+                                        </li>
+                                    </ul>
+                                </div>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-warning alert-message">
+        No @Model.ServiceSection available.
+        @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
+        {
+            @Html.ActionLink("Add", Model.AddAction, new { section = Model.ServiceSection, id = Model.ServiceId })
+        }
+    </div>
+
+}

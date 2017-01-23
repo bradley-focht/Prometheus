@@ -53,7 +53,7 @@ namespace Prometheus.WebUI.Controllers
 	        {
 		        TempData["MessageType"] = WebMessageType.Failure;
 		        TempData["Message"] = $"Login failure, error: {exception.Message}";
-				return RedirectToAction("Index", "Home");
+				return RedirectToAction("Index", "UserAccount");
 			}
 	        if (user != null)
             {
@@ -62,14 +62,6 @@ namespace Prometheus.WebUI.Controllers
                 Session["DisplayName"] = user.Name;
                 Session["Guid"] = user.AdGuid;
                 Session["Id"] = user.Id;
-
-                string roles = null;                                                           //put role(s) into cookie for hamburger menu
-                foreach (var role in user.Roles) //more than role is a border case
-                {
-                    roles += $"{role.Name},";
-                }
-                Session["Roles"] = roles;
-
                 return RedirectToAction("Index", "Home");
             }
 

@@ -12,24 +12,11 @@
                 <span class="font-inverse" style="font-size: 1em; vertical-align: middle;">@Session["DisplayName"]</span>
                 <span class="hamburger-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
                 
-                <ul class="dropdown-menu pull-right" style="width: 150px;">
+                <ul class="dropdown-menu pull-right">
                     <li>@Html.ActionLink("Logout", "Logout", "UserAccount", null, new {@class = "dropdown-item"})</li>
                     <li class="divider"></li>
                     <li>@Html.ActionLink("Home", "Index", "Home", null, new {@class="dropdown-item"})</li>
-                    <li class="divider"></li>
-
-                    <li class="dropdown-item">Roles</li>
-                    <li>@{
-                            if (Session["Roles"] != null)
-                            {
-                                string s = (string) Session["Roles"];
-                                s.Replace(",", "<br/>");
-
-                                <text>@s</text>
-                            }
-                        }
-                        
-                    </li>
+                    <li>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new { @class = "dropdown-item" })</li>
                 </ul>
             </div>
 

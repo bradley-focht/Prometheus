@@ -1,37 +1,45 @@
-﻿@model Prometheus.WebUI.Models.Service.DocumentsTableModel
+﻿@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
+@model Prometheus.WebUI.Models.Service.DocumentsTableModel
+@{
+    int userId; /* determine user ID for permissions */
+    try { userId = int.Parse(Session["Id"].ToString()); }
+    catch { return; } /*abort rendering */
+
+}
 <div class="flex-container-center">
     <div class="panel-div panel-inset-div">
         @if (Model.Documents != null && Model.Documents.Any())
         {
             <table class="table table-hover">
                 <thead>
-                    <tr>
-                        <th style="min-width: 160px;"><label class="table-title">File</label></th>
-                        <th style="width: 100px;"><label class="font-title-initial">Date</label></th>
-                        <th></th>
-                    </tr>
+                <tr>
+                    <th style="min-width: 160px;"><label class="table-title">File</label></th>
+                    <th style="width: 100px;"><label class="font-title-initial">Date</label></th>
+                    <th></th>
+                </tr>
                 </thead>
 
                 @foreach (var document in Model.Documents)
                 {
                     <tr>
-                        <td>@Html.ActionLink(document.Filename, "DownloadServiceDocument", new { id = document.Id })</td>
+                        <td>@Html.ActionLink(document.Filename, "DownloadServiceDocument", new {id = document.Id})</td>
                         <td style="white-space: nowrap;">@document.UploadDate.Date.ToString("d")</td>
                         <td>
                             <div class="btn-group">
                                 <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
                                     <span aria-hidden="true">&#x25BC;</span>
                                 </div>
-                                    <ul class="dropdown-menu">
-                                        <li>
-                                            @Html.ActionLink("Rename", "UpdateServiceDocument", new { id = document.Id })
-                                        </li>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        @Html.ActionLink("Rename", "UpdateServiceDocument", new {id = document.Id})
+                                    </li>
 
-                                        <li>
-                                            @Html.ActionLink("Delete", "ConfirmDeleteServiceDocument", new { id = document.Id })
-                                        </li>
-                                    </ul>
-                                </div>
+                                    <li>
+                                        @Html.ActionLink("Delete", "ConfirmDeleteServiceDocument", new {id = document.Id})
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 }
@@ -41,43 +49,47 @@
             <div class="alert alert-warning alert-message">No files exist</div>}
     </div>
 </div>
-@using (Html.BeginForm("UploadServiceDocument", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
+
+@if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
 {
-    @Html.Hidden("id", Model.ServiceId)
-    <div class="flex-container-col">
-        <div class="panel-footer">
-            <div class="float-right-div">
-                <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
-                    <span class="fileupload-preview"></span>
-                    <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-                    <span class="btn btn-primary btn-file">
+    using (Html.BeginForm("UploadServiceDocument", "Service", FormMethod.Post, new {enctype = "multipart/form-data"}))
+    {
+        @Html.Hidden("id", Model.ServiceId)
+        <div class="flex-container-col">
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
+                        <span class="fileupload-preview"></span>
+                        <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                        <span class="btn btn-primary btn-file">
                         <span class="fileupload-new">Select file</span>
                         <span class="fileupload-exists">Change</span>         <input type="file" name="file" />
 
                     </span>
-                    <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
+                        <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
 
+                    </div>
                 </div>
-            </div>
 
-            <div class="float-left-div">
-                <div class="btn-group">
-                    @if (Model.TotalPages > 1)
-                    {
-                        for (int i = 0; i < Model.TotalPages; i++)
+                <div class="float-left-div">
+                    <div class="btn-group">
+                        @if (Model.TotalPages > 1)
                         {
-                            if (Model.CurrentPage == i)
+                            for (int i = 0; i < Model.TotalPages; i++)
                             {
-                                <span class="btn btn-default active">@(i + 1)</span>
-                            }
-                            else
-                            {
-                                @Html.ActionLink((i + 1).ToString(), "Show", "Service", new { id = Model.ServiceId, section = "Documents", pageId = i }, new { @class = "btn btn-default" })
+                                if (Model.CurrentPage == i)
+                                {
+                                    <span class="btn btn-default active">@(i + 1)</span>
+                                }
+                                else
+                                {
+                                    @Html.ActionLink((i + 1).ToString(), "Show", "Service", new {id = Model.ServiceId, section = "Documents", pageId = i}, new {@class = "btn btn-default"})
+                                }
                             }
                         }
-                    }
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    }
 }

@@ -11,6 +11,9 @@
                                                                 new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    int userId;
+    try { userId = int.Parse(Session["Id"].ToString()); }
+    catch { return; } /*abort rendering */
 }
 
 @section Content
@@ -24,6 +27,7 @@
     <div class="panel-footer">
         <div class="float-right-div">
             @Html.ActionLink("Back", "ShowServiceSectionItem", new { serviceId = Model.ServiceId, section = "Swot", id = Model.SwotId }, new { @class = "btn btn-default btn-back" })
+
             @Html.ActionLink("Update", "UpdateSwotActivityItem", new { id = Model.SwotActivity.Id}, new { @class = "btn btn-primary" })
             @Html.ActionLink("Delete", "ConfirmDeleteSwotActivityItem", new { id = Model.SwotActivity.Id }, new { @class = "btn btn-danger" })
         </div>

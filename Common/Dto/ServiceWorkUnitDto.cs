@@ -20,17 +20,26 @@ namespace Common.Dto
 		/// <summary>
 		/// The title of a team in the company
 		/// </summary>
+		[Display(Order = 1)]
         [Required(ErrorMessage = "Work Unit name is required")]
 		public string Name { get; set; }
 
-		/// <summary>
+        /// <summary>
+        /// department the team belongs to
+        /// </summary>
+        [Display(Order = 2)]
+	    public string Department { get; set; }
+
+	    /// <summary>
 		/// A manager or someone's name to contact
 		/// </summary>
+		[Display(Order = 3)]
 		public string Contact { get; set; }
 
 		/// <summary>
 		/// A list of things that this team does to support this service
 		/// </summary>
+		[Display(Order = 4)]
 		[AllowHtml]
 		public string Responsibilities { get; set; }
 		#endregion

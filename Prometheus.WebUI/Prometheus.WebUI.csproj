@@ -420,7 +420,7 @@
     <Content Include="Views\Service\Show.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDelete.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteLifecycle.cshtml" />
-    <Content Include="Views\Shared\PartialViews\_TableViewer.cshtml" />
+    <Content Include="Views\Service\PartialViews\_TableViewer.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGeneral.cshtml" />
     <Content Include="Views\Service\UpdateSectionItem.cshtml" />
     <Content Include="Views\Service\ShowSectionItem.cshtml" />

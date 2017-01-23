@@ -336,7 +336,7 @@ namespace DataService
 				Filename = src.Filename,
 				MimeType = src.MimeType,
 				FileExtension = src.FileExtension,
-                UploadDate = src.UploadDate
+				UploadDate = src.UploadDate
 
 			};
 		}
@@ -353,8 +353,8 @@ namespace DataService
 				Filename = src.Filename,
 				MimeType = src.MimeType,
 				FileExtension = src.FileExtension,
-                UploadDate = src.UploadDate
-            };
+				UploadDate = src.UploadDate
+			};
 		}
 
 		public static ServiceSwotDto MapServiceSwotToDto(IServiceSwot src)
@@ -443,6 +443,7 @@ namespace DataService
 				Description = src.Description,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
+				Owner = src.Owner,
 				Improvements = src.Improvements,
 				Benefits = src.Benefits
 			};
@@ -458,6 +459,7 @@ namespace DataService
 				Description = src.Description,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
+				Owner = src.Owner,
 				Improvements = src.Improvements,
 				Benefits = src.Benefits
 			};
@@ -565,7 +567,9 @@ namespace DataService
 				 ServiceId = src.ServiceId,
 				 Contact = src.Contact,
 				 Responsibilities = src.Responsibilities,
-				 Name = src.Name
+				 Name = src.Name,
+				 Department = src.Department
+				 
 			 });
 			return unit.Value;
 		}
@@ -580,7 +584,8 @@ namespace DataService
 				ServiceId = src.ServiceId,
 				Contact = src.Contact,
 				Responsibilities = src.Responsibilities,
-				Name = src.Name
+				Name = src.Name,
+				Department = src.Department
 			};
 		}
 
@@ -796,14 +801,14 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-            List<RoleDto> roles = new List<RoleDto>();
-		    if (src.Roles != null)
-		    {
-		        foreach (var role in src.Roles)
-		        {
-		            roles.Add(MapRoleToDto(role));
-		        }
-		    }
+			List<RoleDto> roles = new List<RoleDto>();
+			if (src.Roles != null)
+			{
+				foreach (var role in src.Roles)
+				{
+					roles.Add(MapRoleToDto(role));
+				}
+			}
 
 			return new UserDto()
 			{

@@ -1,14 +1,19 @@
-﻿@model  Prometheus.WebUI.Models.Service.ShowOptionCategoryModel
+﻿@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
+@model  Prometheus.WebUI.Models.Service.ShowOptionCategoryModel
 @{
-	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-	ViewBag.Title = "Services";
-	ViewBag.SubTitle = "Option Category";
-	ViewBag.Links = new List<KeyValuePair<string, string>> {
-															new KeyValuePair<string, string>("Home", "Home"),
-															new KeyValuePair<string, string>("Services", "Service/Index"),
-															new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Options/{Model.ServiceId}"),
-															new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
+    ViewBag.Title = "Services";
+    ViewBag.SubTitle = "Option Category";
+    ViewBag.Links = new List<KeyValuePair<string, string>> {
+                                                            new KeyValuePair<string, string>("Home", "Home"),
+                                                            new KeyValuePair<string, string>("Services", "Service/Index"),
+                                                            new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Options/{Model.ServiceId}"),
+                                                            new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
+    int userId;
+    try { userId = int.Parse(Session["Id"].ToString()); }
+    catch { return; } /*abort rendering */
 }
 
 @section Content
@@ -31,10 +36,12 @@
 			<div class="float-right-div">
 				@Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
 
-				@Html.ActionLink("Update", "UpdateOptionCategoryItem", new { id = Model.OptionCategory.Id }, new { @class = "btn btn-primary" })
+                @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
+                {
+                    @Html.ActionLink("Update", "UpdateOptionCategoryItem", new {id = Model.OptionCategory.Id}, new {@class = "btn btn-primary"})
 
-				@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new { id = Model.OptionCategory.Id }, new { @class = "btn btn-danger" })
-
+                    @Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new {id = Model.OptionCategory.Id}, new {@class = "btn btn-danger"})
+                }
 			</div>
 		</div>
 	</div>

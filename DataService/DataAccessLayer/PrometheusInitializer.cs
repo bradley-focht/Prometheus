@@ -10,24 +10,10 @@ namespace DataService.DataAccessLayer
 	{
 		protected override void Seed(PrometheusContext context)
 		{
-			//Populate Roles
-			var roles = new List<Role>
-			{
-				new Role {Name = "Admin"},
-				new Role {Name = "Manager"},
-				new Role {Name = "User"},
-				new Role {Name = "Peasant"}
-			};
-			foreach (var role in roles)
-			{
-				context.Roles.Add(role);
-			}
-			context.SaveChanges();
 
 			//Populate Users
 			var users = new List<User>
 			{
-				new User(),
 				new User()
 			};
 			foreach (var user in users)

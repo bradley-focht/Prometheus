@@ -7,5 +7,6 @@
 		string Responsibilities { get; set; }
 		int ServiceId { get; set; }
 		string Name { get; set; }
+        string Department { get; set; }
 	}
 }

@@ -1,6 +1,12 @@
 ﻿@using Common.Dto
+@using Common.Enums.Permissions
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.OptionsTableModel
+@{
+    int userId; /* determine user ID for permissions */
+    try { userId = int.Parse(Session["Id"].ToString()); }
+    catch { return; } /*abort rendering */
+}
 <div class="flex-container-center">
     <div class="panel-div panel-inset-div">
         @if (Model.Options != null && Model.Options.Any())
@@ -34,12 +40,13 @@
                                 <td>@($"{option.PriceMonthly:C}")</td>
                                 <td>@($"{(calc.CalculatePw(option.PriceUpFront, option.PriceMonthly) - option.Cost):C}")</td>
                                 <td>
-                                    <div class="btn-group">
-                                        <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                            <span aria-hidden="true">&#x25BC;</span>
-                                        </div>
-                                        <div class="dropdown-menu">
-                                            <ul class="ul-menu">
+                                    @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
+                                    {
+                                        <div class="btn-group">
+                                            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                                                <span aria-hidden="true">&#x25BC;</span>
+                                            </div>
+                                            <ul class="dropdown-menu">
                                                 <li>
                                                     @Html.ActionLink("Update", "UpdateServiceOption", new { id = item.Id })
                                                 </li>
@@ -48,8 +55,7 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </div>
-
+                                    }
                                 </td>
                             </tr>
                         }
@@ -72,7 +78,6 @@
                                     </div>
                                 </td>
                             </tr>
-
                             var category = (IOptionCategoryDto)item;
                             if (category.ServiceOptions != null)
                             {
@@ -112,41 +117,43 @@
                 </tbody>
 
             </table>
-            <div class="note">*@calc.PwCalculationToString()</div>
-        }
+            <div class="note">*@calc.PwCalculationToString()</div>}
         else
         {
-            <div class="alert alert-warning alert-message">No options exist. @Html.ActionLink("Add", "AddServiceOption", new { id = Model.ServiceId })</div>
-        }
+            <div class="alert alert-warning alert-message">No options exist. @Html.ActionLink("Add", "AddServiceOption", new { id = Model.ServiceId })</div>}
     </div>
 </div>
-<div class="flex-container-col ">
-	<div class="panel-footer">
-		<div class="float-right-div">
+@if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails) || Model.TotalPages > 0)
+{
+    <div class="flex-container-col ">
+        <div class="panel-footer">
+            <div class="float-right-div">
+                @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
+                {
+
+                    @Html.ActionLink("Add Option", "AddServiceOption", new { id = Model.ServiceId }, new { @class = "btn btn-primary", style = "margin-left:5px;" })
+
+                    @Html.ActionLink("Add Cateogory", "AddOptionCategory", new { id = Model.ServiceId }, new { @class = "btn btn-primary" })
+                }
+            </div>
+
+            <div class="float-left-div">
+                <div class="btn-group">
+                    @for (int i = 0; i < Model.TotalPages; i++)
+                    {
+                        if (Model.CurrentPage == i)
+                        {
+                            <span class="btn btn-default active">@(i + 1)</span>
+                        }
+                        else
+                        {
+                            @Html.ActionLink((i + 1).ToString(), "Show", "Service", new { id = Model.ServiceId, section = "Options", pageId = i }, new { @class = "btn btn-default" })
+                        }
+                    }
+                </div>
+            </div>
 
 
-			@Html.ActionLink("Add Option", "AddServiceOption", new {id = Model.ServiceId}, new {@class = "btn btn-primary"})
-
-			@Html.ActionLink("Add Cateogory", "AddOptionCategory", new {id = Model.ServiceId}, new {@class = "btn btn-primary"})
-
-		</div>
-
-		<div class="float-left-div">
-			<div class="btn-group">
-				@for (int i = 0; i < Model.TotalPages; i++)
-				{
-					if (Model.CurrentPage == i)
-					{
-						<span class="btn btn-default active">@(i + 1)</span>
-					}
-					else
-					{
-						@Html.ActionLink((i + 1).ToString(), "Show", "Service", new { id = Model.ServiceId, section = "Options", pageId = i }, new { @class = "btn btn-default" })
-					}
-				}
-			</div>
-		</div>
-
-
-	</div>
-</div>
+        </div>
+    </div>
+}

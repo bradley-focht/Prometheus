@@ -21,6 +21,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 
 		public string Name { get; set; }
+        public string Department { get; set; }
 
 		public string Contact { get; set; }
 		public string Responsibilities { get; set; }

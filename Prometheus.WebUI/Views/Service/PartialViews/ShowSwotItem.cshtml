@@ -1,5 +1,13 @@
-﻿@model Common.Dto.IServiceSwotDto
-<table>
+﻿@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
+@model Common.Dto.IServiceSwotDto
+    @{
+        int userId; /* determine user ID for permissions */
+        try { userId = int.Parse(Session["Id"].ToString()); }
+        catch { return; } /*abort rendering */
+
+    }
+<div class="dd">
 
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
@@ -7,30 +15,36 @@
         {
             continue;
         }
-        <tr>
-            <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-            <td class="dd-cell">@Html.Raw(property.Model)</td>
-        </tr>
+        <div class="dd-row">
+            <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+            <div class="dd-cell">@Html.Raw(property.Model)</div>
+        </div>
     }
-    <tr>
-        <td class="dt-cell">Activities</td>
-        <td class="dd-cell">
+    <div class="dd-row">
+        <div class="dt-cell">Activities</div>
+        <div class="dd-cell">
             @if (Model.SwotActivities != null)
             {
                 @Html.Action("ShowSwotActivities", Model.Id)
                 <div>
-                <div class="float-right-div">
-                    @Html.ActionLink("Add Activity", "AddSwotActivityItem", new { id = Model.Id })
-                </div>
+                    @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
+                    {
+                        <div class="float-right-div">
+                            @Html.ActionLink("Add Activity", "AddSwotActivityItem", new {id = Model.Id})
+                        </div>
+                    }
                 </div>
             }
             else
             {
                 <div class="alert alert-warning">
-                    No activities. @Html.ActionLink("Add", "AddSwotActivityItem", new { id = Model.Id })
-
+                    No activities.
+                    @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
+                    {
+                        @Html.ActionLink("Add", "AddSwotActivityItem", new {id = Model.Id})
+                    }
                 </div>
             }
-        </td>
-    </tr>
-</table>
+        </div>
+    </div>
+</div>

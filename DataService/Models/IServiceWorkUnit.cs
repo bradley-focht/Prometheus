@@ -8,6 +8,7 @@
 		string Contact { get; set; }
 		string Responsibilities { get; set; }
 		string Name { get; set; }
+        string Department { get; set; }
 
 		Service Service { get; set; }
 	}

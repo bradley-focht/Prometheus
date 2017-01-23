@@ -1,5 +1,6 @@
 ﻿@using System.Web.Mvc.Html
 @using Common.Dto
+@using Common.Enums.Permissions
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 @{
@@ -15,13 +16,16 @@
         new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
     };
 
-
-    bool controlAvail = true; /*used to indicate if add/edit buttons should be visible */
+    int userId;
+    try { userId = int.Parse(Session["Id"].ToString()); }
+    catch { return; } /*abort rendering */
+                      /*used to indicate if add/edit buttons should be visible */
+    bool controlAvail = UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails);
 }
 
 @section Sidebar
 {
-    @Html.Action("ShowServiceList", Model.Service.Id)
+
 }
 
 @section Content {
@@ -30,7 +34,7 @@
         @ViewBag.SubTitle
     </div>
 
-    <div class="panel">
+    <div class="panel-div">
 
         @switch (Model.Section)
         {
@@ -97,7 +101,7 @@
 
                 @if (controlAvail)
                 {
-                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = Model.SectionItemId, serviceId = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-default" })
+                    @Html.ActionLink("Update", "UpdateServiceSectionItem", new { id = Model.SectionItemId, serviceId = Model.Service.Id, section = Model.Section }, new { @class = "btn btn-primary" })
 
                     @Html.ActionLink("Delete", "ConfirmDeleteService" + ServiceSectionHelper.ConvertToRouteString(Model.Section) + "Item", new { id = Model.SectionItemId }, new { @class = "btn btn-danger", style = "margin-left:5px;" })
                 }

@@ -78,6 +78,11 @@ namespace Prometheus.WebUI.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Show lifecycle status link list
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ShowLifeCycleList(int id = 0)
         {
             var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
@@ -95,6 +100,10 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("PartialViews/_LinkList", servicesModel);
         }
 
+        /// <summary>
+        /// return view to add a lifecycle status
+        /// </summary>
+        /// <returns></returns>
         public ActionResult AddLifecycle()
         {
             return View();
@@ -124,7 +133,12 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("AddLifecycle");
         }
 
-        public ActionResult UpdateLifecycle(int id = 0)
+        /// <summary>
+        /// Return view for updating a lifecycle status
+        /// </summary>
+        /// <param name="id">lifecycle status id</param>
+        /// <returns></returns>
+        public ActionResult UpdateLifecycle(int id)
         {
             var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
             return View((LifecycleStatusDto)ps.GetLifecycleStatus(id));

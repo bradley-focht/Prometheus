@@ -117,11 +117,15 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="id"></param>
 		/// <param name="pageId"></param>
 		/// <returns></returns>
-		public ActionResult Show(string section, int id, int pageId = 0)
+		public ActionResult Show(string section, int id=0, int pageId = 0)
 		{
+		    int userId;
+		    try{ userId = int.Parse(Session["Id"].ToString()); }            //this page is an entry point, possible userId may not exist
+            catch { return View();}
+
 			ServiceModel sm = new ServiceModel { CurrentPage = pageId };
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService(userId);
 			sm.Service = ps.GetService(id);
 			sm.SelectedSection = section;
 
@@ -362,7 +366,7 @@ namespace Prometheus.WebUI.Controllers
 
 			if (service.ServiceGoals != null && service.ServiceGoals.Any())
 			{
-				tblModel.Titles = new List<string> { "Goal", "Duration", "Start Date", "End Date" };
+				tblModel.Titles = new List<string> { "Goal","Description", "Duration", "Start Date", "End Date" };
 				List<Tuple<int, ICollection<string>>> data = new List<Tuple<int, ICollection<string>>>();
 
 				foreach (var goal in service.ServiceGoals)
@@ -371,7 +375,8 @@ namespace Prometheus.WebUI.Controllers
 					data.Add(new Tuple<int, ICollection<string>>(goal.Id, new List<string>
 					{
 						goal.Name,
-						goal.Type.ToString(),
+						StringHelper.CamelToString(goal.Type.ToString()),
+                        goal.Description,
 						goal.StartDate?.ToString("d") ?? "n/a",
 						goal.EndDate?.ToString("d") ?? "n/a"
 					}));
@@ -381,7 +386,7 @@ namespace Prometheus.WebUI.Controllers
 				tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceGoalsItem";
 				tblModel.UpdateAction = "UpdateServiceSectionItem";
 			}
-			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+			return PartialView("PartialViews/_TableViewer", tblModel);
 		}
 
 		[ChildActionOnly]
@@ -419,7 +424,7 @@ namespace Prometheus.WebUI.Controllers
 				tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceContractsItem";
 				tblModel.UpdateAction = "UpdateServiceSectionItem";
 			}
-			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+			return PartialView("PartialViews/_TableViewer", tblModel);
 		}
 
 		[ChildActionOnly]
@@ -444,16 +449,16 @@ namespace Prometheus.WebUI.Controllers
 
 			if (workUnits != null && workUnits.Any())
 			{
-				tblModel.Titles = new List<string> { "Name", "Contact" };
+				tblModel.Titles = new List<string> { "Name", "Department", "Contact", "Responsibilities" };
 				tblModel.Data = new List<Tuple<int, ICollection<string>>>();
 				foreach (var unit in workUnits)
 				{
 					tblModel.Data.Add(new Tuple<int, ICollection<string>>(unit.Id,
-						new List<string> { unit.Name, unit.Contact }));
+						new List<string> { unit.Name, unit.Department, unit.Contact, unit.Responsibilities }));
 				}
 			}
 
-			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+			return PartialView("PartialViews/_TableViewer", tblModel);
 		}
 
 		/// <summary>
@@ -482,16 +487,16 @@ namespace Prometheus.WebUI.Controllers
 
 			if (measures != null && measures.Any())
 			{
-				tblModel.Titles = new List<string> { "Method" };
+				tblModel.Titles = new List<string> { "Method", "Outcome" };
 				tblModel.Data = new List<Tuple<int, ICollection<string>>>();
 				foreach (var measure in measures)
 				{
 					tblModel.Data.Add(new Tuple<int, ICollection<string>>(measure.Id,
-						new List<string> { measure.Method }));
+						new List<string> { measure.Method, measure.Outcome }));
 				}
 			}
 
-			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+			return PartialView("PartialViews/_TableViewer", tblModel);
 		}
 
 		/// <summary>
@@ -602,15 +607,15 @@ namespace Prometheus.WebUI.Controllers
 			var items = ps.GetService(id).ServiceProcesses;
 			if (items != null && items.Any())
 			{
-				tblModel.Titles = new List<string> { "Name" };                  //titles
+				tblModel.Titles = new List<string> { "Name", "Owner", "Benefits", "Improvements" };                  //titles
 				tblModel.Data = new List<Tuple<int, ICollection<string>>>();    //list for data
 
 				foreach (var item in items)
 				{
-					tblModel.Data.Add(new Tuple<int, ICollection<string>>(item.Id, new List<string> { item.Name }));
+					tblModel.Data.Add(new Tuple<int, ICollection<string>>(item.Id, new List<string> { item.Name, item.Owner, item.Benefits, item.Improvements }));
 				}
 			}
-			return PartialView("/Views/Shared/PartialViews/_TableViewer.cshtml", tblModel);
+			return PartialView("PartialViews/_TableViewer", tblModel);
 		}
 
 		/// <summary>
