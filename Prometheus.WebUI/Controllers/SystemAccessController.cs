@@ -17,10 +17,12 @@ namespace Prometheus.WebUI.Controllers
     {
         private readonly IUserManager _userManager;
         private int uid = 1;
+        private readonly int _userPageSize;
 
         public SystemAccessController()
         {
             _userManager = InterfaceFactory.CreateUserManagerService();
+            _userPageSize = ConfigHelper.GetPaginationSize();
         }
 
         /// <summary>
@@ -224,16 +226,23 @@ namespace Prometheus.WebUI.Controllers
         /// <summary>
         /// Apply a filter on the results
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">role Id</param>
+        /// <param name="pageId">page of results</param>
         /// <returns></returns>
-        public ActionResult FilterByRole(int id)
+        public ActionResult FilterByRole(int id, int pageId = 0)
         {
-            UserControlsModel controls = new UserControlsModel(); /*construct model for view */
+            UserControlsModel controls = new UserControlsModel {CurrentPage = pageId, SelectedRole = id}; /*construct model for view */
             var model = new ManageUsersModel {Controls = controls, ReturningSearch = false};
             model.Roles = _userManager.GetRoles(uid).ToList(); //stop forgetting these roles, ok?
 
             controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
-            var users = (from u in _userManager.GetUsers(uid) where u.Roles.Any(role => role.Id == id) select u);
+
+            IEnumerable<UserDto> users = new List<UserDto>();
+            if ( id == 0)
+                users = (from u in _userManager.GetUsers(uid) select u);
+            else if (id > 0)
+                users = (from u in _userManager.GetUsers(uid) where u.Roles.Any(role => role.Id == id) select u);
+
             List<UserDetailsModel> modelUsers = new List<UserDetailsModel>();
 
             IAdSearch searcher = new AdSearch();
@@ -249,45 +258,17 @@ namespace Prometheus.WebUI.Controllers
 
                 modelUsers.Add(new UserDetailsModel {UserDto = user, DisplayName = displayName});
             }
-            model.Users = modelUsers.OrderBy(o => o.DisplayName).ToList();
+            modelUsers = modelUsers.OrderBy(o => o.DisplayName).ToList();
 
-            return View("ManageUsers", model);
-        }
-
-        /// <summary>
-        /// Show all users in the user table
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult FilterByShowAll()
-        {
-            UserControlsModel controls = new UserControlsModel(); /*construct model for view */
-            var model = new ManageUsersModel {Controls = controls, ReturningSearch = false};
-            model.Roles = _userManager.GetRoles(uid).ToList();
-
-            controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
-            var users = (from u in _userManager.GetUsers(uid) select u);
-            List<UserDetailsModel> modelUsers = new List<UserDetailsModel>();
-
-            IAdSearch searcher = new AdSearch();
-
-            foreach (var user in users)
+            if (modelUsers.Count() > _userPageSize)                           //pagination
             {
-                //TODO: AD string displayName = searcher.GetUserDisplayName(user.AdGuid);  //name resolution
-                string displayName = "honey bunny"; //debugging with no AD
-
-                if (displayName == null)
-                {
-                    displayName = "not found";
-                }
-
-                modelUsers.Add(new UserDetailsModel {UserDto = user, DisplayName = displayName});
+                model.Controls.TotalPages = ((modelUsers.Count() + _userPageSize - 1) / _userPageSize);   //# pages
+                modelUsers = modelUsers.Skip(_userPageSize * pageId).Take(_userPageSize).ToList();        //contents of the page
             }
-
-            model.Users = modelUsers.OrderBy(o => o.DisplayName).ToList();
+            model.Users = modelUsers;
 
             return View("ManageUsers", model);
         }
-
 
         /// <summary>
         /// Setup the partial View for searching AD accounts   

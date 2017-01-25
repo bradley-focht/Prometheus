@@ -643,11 +643,10 @@ namespace Prometheus.WebUI.Controllers
 				model.TotalPages = ((model.Options.Count() + ServicePageSize - 1) / ServicePageSize);
 				model.Options = model.Options.Skip(ServicePageSize * pageId).Take(ServicePageSize).ToList();
 			}
-
 			try
 			{
-				model.i = double.Parse(ConfigurationManager.AppSettings["DefaultPwMarr"]);      // for net present value calculations
-				model.n = int.Parse(ConfigurationManager.AppSettings["DefaultPwPeriods"]);
+				model.i = ConfigHelper.GetMarr();      // for net present value calculations
+				model.n = ConfigHelper.GetPeriod();
 			}
 			catch (Exception exception)                                                         //leave it to default values (0) if fails
 			{

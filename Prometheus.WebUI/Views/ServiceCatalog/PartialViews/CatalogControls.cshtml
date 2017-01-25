@@ -1,14 +1,21 @@
-﻿@using Prometheus.WebUI.Helpers.Enums
+﻿@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
+@using Prometheus.WebUI.Helpers.Enums
 @model Prometheus.WebUI.Models.ServiceCatalog.CatalogControlsModel
+    @{
+        int userId; /* determine user ID for permissions */
+        try { userId = int.Parse(Session["Id"].ToString()); }
+        catch { return; } /*abort rendering */
+    }
 <div class="panel panel-default">
 	<div class="flex-row" style="justify-content: space-around">
 
-		@if (Model.CatalogType == ServiceCatalogs.Business)
+		@if (Model.CatalogType == ServiceCatalogs.Business && UiPermissionHelper.HasPermission(userId, BusinessCatalog.CanViewCatalog))
 		{
 			<div><span class="btn btn-default active">Business Catalog</span></div>
 			<div>@Html.ActionLink("Technical Catalog", "Index", new { type = ServiceCatalogs.Technical }, new { @class = "btn btn-primary" })</div>
 		}
-		else
+		else if (UiPermissionHelper.HasPermission(userId, SupportCatalog.CanViewCatalog))
 		{
 			<div>@Html.ActionLink("Business Catalog", "Index", new { type = ServiceCatalogs.Business }, new { @class = "btn btn-primary" })</div>
 			<div><span class="btn btn-default active">Technical Catalog</span></div>

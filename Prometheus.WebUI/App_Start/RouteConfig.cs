@@ -103,9 +103,18 @@ namespace Prometheus.WebUI
 				defaults: new {controller = "ServiceRequestMaintenance", action = "ShowUserInput"}
 				);
 
-			#endregion
+            #endregion
 
-			routes.MapRoute(
+            #region User Management
+
+		    routes.MapRoute(
+		        name: "SystemAccessFilterByRole",
+                url: "SystemAccess/FilterByRole/{id}/{pageId}",
+                defaults: new {controller = "SystemAccess", action = "FilterByRole", pageId=UrlParameter.Optional}
+                );
+            #endregion  
+
+            routes.MapRoute(
 				name: "Default",
 				url: "{controller}/{action}/{id}",
 				defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

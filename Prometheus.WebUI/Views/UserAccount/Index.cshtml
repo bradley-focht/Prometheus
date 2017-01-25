@@ -1,4 +1,5 @@
-﻿@model Prometheus.WebUI.Models.UserAccount.UserAccountModel
+﻿@using Prometheus.WebUI.Helpers
+@model Prometheus.WebUI.Models.UserAccount.UserAccountModel
 @{
     Layout = "~/Views/Shared/_EmptyLayout.cshtml";
     ViewBag.Title = "Login";
@@ -15,7 +16,7 @@
             <div style="margin-top: 10px;">
                 <ul>
                     <li>Login using your Windows login credentials</li>
-                    <li>If you are not able to login, you will need to contact your IT Service Desk at 306-123-4567</li>
+                    <li>If you are not able to login, you will need to contact your IT Service Desk at @ConfigHelper.GetSpoc()</li>
                 </ul>
 
                 <p>

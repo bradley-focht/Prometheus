@@ -1,5 +1,4 @@
 ﻿@model Prometheus.WebUI.Models.SystemAccess.ManageUsersModel
-
 @{
     ViewBag.Title = "System Access";
     ViewBag.SubTitle = "Add Users";
@@ -37,14 +36,13 @@
 {
     <div class="dd" style="width: 60%;">
         <div class="dd-row">
-
             @if (Model.Users != null && Model.Users.Any())
             {
+                @Html.ValidationMessageFor(model => model.Users)
                 foreach (var user in Model.Users)
                 {
-
                     <div class="checkbox checkbox-primary">
-                        <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="users">
+                        <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="Users">
                         <label for="@user.UserGuid">
                             @user.DisplayName
                             @if (user.UserDto.Roles != null)
@@ -52,12 +50,10 @@
                                 <br />
                                 foreach (var role in user.UserDto.Roles)
                                 {
-
                                     <span class="note"> @role.Name </span>
                                 }
                             }
                         </label>
-
                     </div>
                 }
             }
@@ -70,9 +66,10 @@
 
             @if (Model.Users != null && Model.Users.Any() && Model.Roles != null)
                 {
-                <div class="dd-cell-base">
-                    @Html.Partial("PartialViews/SelectRoles", Model.Roles)
-                </div>
+                    <div class="dd-cell-base">
+                        @Html.ValidationMessageFor(model => model.Roles)
+                        @Html.Partial("PartialViews/SelectRoles", Model.Roles)
+                    </div>
             }
         </div>
         @if (Model.Users != null && Model.Users.Any())

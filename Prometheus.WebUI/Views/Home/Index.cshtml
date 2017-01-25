@@ -30,7 +30,7 @@
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "ServiceCatalog")"><img src="~/Content/Images/presentation.png" alt="Service Catalog" style="height: 72px; width: 77px;"></a>
                             </div>
-                            <div>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new { @class = "font-home-link" })</div>
+                            <div>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new {@class = "font-home-link"})</div>
                         </div>
                     }
 
@@ -39,7 +39,7 @@
                         <div class="flex-col content-cell">
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "ServiceRequestApproval")"><img src="~/Content/Images/shake.png" alt="Service Request Approvals" style="height: 70px; width: 88px;"></a>
-                                @Html.ActionLink("Service Request Approvals", "Index", "ServiceRequestApproval", null, new { @class = "font-home-link" })
+                                @Html.ActionLink("Service Request Approvals", "Index", "ServiceRequestApproval", null, new {@class = "font-home-link"})
                             </div>
                         </div>
                     }
@@ -51,7 +51,7 @@
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "Service")"><img src="~/Content/Images/pie.png" alt="Services" style="height: 68px; width: 69px;"></a>
                             </div>
-                            <div>@Html.ActionLink("Services", "Index", "Service", null, new { @class = "font-home-link" })</div>
+                            <div>@Html.ActionLink("Services", "Index", "Service", null, new {@class = "font-home-link"})</div>
                         </div>
                     }
                     @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanViewServiceDetails))
@@ -61,7 +61,7 @@
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "ServicePortfolio")"><img src="~/Content/Images/invest.png" alt="Service Portfolio" style="height: 72px; width: 77px;"></a>
                             </div>
-                            <div>@Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio", null, new { @class = "font-home-link" })</div>
+                            <div>@Html.ActionLink("Service Portfolio", "Index", "ServicePortfolio", null, new {@class = "font-home-link"})</div>
                         </div>
                     }
                 </div>
@@ -73,7 +73,7 @@
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "ServiceRequestMaintenance")"><img src="~/Content/Images/pad.png" alt="Service " style="height: 90px; width: 74px;"></a>
                             </div>
-                            <div>@Html.ActionLink("Service Request Maintenance", "Index", "ServiceRequestMaintenance", null, new { @class = "font-home-link" })</div>
+                            <div>@Html.ActionLink("Service Request Maintenance", "Index", "ServiceRequestMaintenance", null, new {@class = "font-home-link"})</div>
                         </div>
                     }
                     @if (UiPermissionHelper.HasPermission(userId, UserRoleAssignment.CanViewRoles))
@@ -82,7 +82,7 @@
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "SystemAccess")"><img src="~/Content/Images/people-network.png" alt="System Access" style="height: 80px; width: 74px;"></a>
                             </div>
-                            <div>@Html.ActionLink("System Access", "Index", "SystemAccess", null, new { @class = "font-home-link" })</div>
+                            <div>@Html.ActionLink("System Access", "Index", "SystemAccess", null, new {@class = "font-home-link"})</div>
                         </div>
                     }
                     @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanViewServiceDetails))
@@ -99,8 +99,8 @@
                 </div>
             </div>
         </div>
-        <div class="panel-footer">
-            <span class="copyright-notice">&copy;2017 Prometheus</span>
-        </div>
+    </div>
+    <div class="panel-footer">
+        <span class="copyright-notice">&copy;2017 Prometheus</span>
     </div>
 </div>
