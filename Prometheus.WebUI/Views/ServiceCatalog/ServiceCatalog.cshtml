@@ -17,10 +17,10 @@
 
 @Html.Partial("PartialViews/CatalogControls", Model.Controls)
 
-<div style="display: flex; flex-flow: row wrap;"></div>
-@if (Model.CatalogItems != null && Model.CatalogItems.Any())
+<div style="display: flex; flex-flow: row wrap;"></div>                         @* enumerate all items sent in *@
+@if (Model.CatalogItems != null && Model.CatalogItems.Any()) 
 {
-	foreach (var s in Model.CatalogItems)
+	foreach (var s in Model.CatalogItems)  
 	{
 		if (s is ServiceSummary)
 		{
@@ -31,8 +31,8 @@
 				@Html.ActionLink(service.Name, "ServiceOptions", new { type = Model.Catalog, serviceId = service.Id }, new {@class="font-inverse"})
 			</div>
 			<div style="min-height: 100px; padding: 5px;">
-				<ul class="cat-ul">
-					@foreach (var item in service.Options)
+				<ul class="cat-ul">                                             @* display service options *@
+					@foreach (var item in service.Options)          
 					{
 						var optionType = item is IOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
 						<li>

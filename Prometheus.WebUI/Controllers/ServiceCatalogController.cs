@@ -32,8 +32,8 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult CatalogSearch(string searchString, ServiceCatalogs type)
 		{
 			searchString = searchString?.ToLower();                                          //compare everything in lowercase
-
-			CatalogModel model = new CatalogModel { Catalog = type };
+            
+            CatalogModel model = new CatalogModel { Catalog = type };
 			model.Controls = new CatalogControlsModel { CatalogType = type };
 
 			ServiceCatalogSearcher searcher = new ServiceCatalogSearcher();
@@ -190,15 +190,16 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="type"></param>
 		/// <param name="serviceId"></param>
 		/// <returns></returns>
-		public ActionResult ServiceOptions(ServiceTypeRole type, int serviceId)
+		public ActionResult ServiceOptions(ServiceCatalogs type, int serviceId)
 		{
 			var model = new ServiceOptionsModel { Catalog = type, ServiceId = serviceId };
+            model.Controls = new CatalogControlsModel();
 
 			IList<IServiceDto> services = null;
 
-			if (type == ServiceTypeRole.Business)               //create list of available services to view
+			if (type == ServiceCatalogs.Business || type == ServiceCatalogs.Business)               //create list of available services to view
 				services = _requestService.RequestBusinessCatalog(_dummId).ToList();
-			else if (type == ServiceTypeRole.Supporting)
+			else if (type == ServiceCatalogs.Technical || type == ServiceCatalogs.Technical)
 				services = _requestService.RequestSupportCatalog(_dummId).ToList();
 
 			if (services != null)

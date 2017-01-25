@@ -14,7 +14,7 @@
 }
 @section Content
 {
-    @Html.Partial("PartialViews/CatalogControls", Model.Controls)
+    @* Html.Partial("PartialViews/CatalogControls", Model.Controls) *@
 
 	<div class="flex-container-col">
 		<div class="title-div">Available Options for @ViewBag.Subtitle</div>
@@ -35,7 +35,7 @@
 
 @section Sidebar
 {
-	<div class="title-div">Other Services</div>
+	<div class="title-div" style="margin-bottom: 5px;">Other Services</div>
 	@foreach (var service in Model.ServiceNames)
 	{
 		if (Model.ServiceId == service.Item1) //highlight selected item
