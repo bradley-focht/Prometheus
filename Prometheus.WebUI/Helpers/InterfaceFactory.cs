@@ -28,7 +28,7 @@ namespace Prometheus.WebUI.Helpers
 				new ServiceWorkUnitController(),
 				new ServiceMeasureController(),
 				new ServiceOptionController(),
-				new OptionCategoryController(),
+				new ServiceOptionCategoryController(),
 				new ServiceProcessController(),
 				new TextInputController(),
 				new SelectionInputController(),

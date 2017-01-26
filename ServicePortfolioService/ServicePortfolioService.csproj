@@ -82,7 +82,7 @@
     <Compile Include="Controllers\ScriptedSelectionInputController.cs" />
     <Compile Include="Controllers\TextInputController.cs" />
     <Compile Include="Controllers\ServiceMeasureController.cs" />
-    <Compile Include="Controllers\OptionCategoryController.cs" />
+    <Compile Include="Controllers\ServiceOptionCategoryController.cs" />
     <Compile Include="Controllers\ServiceProcessController.cs" />
     <Compile Include="Controllers\ServiceOptionController.cs" />
     <Compile Include="Controllers\ServiceSwotController.cs" />

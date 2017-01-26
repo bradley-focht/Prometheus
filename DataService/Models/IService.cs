@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Common.Enums.Entities;
+﻿using Common.Enums.Entities;
+using System.Collections.Generic;
 
 namespace DataService.Models
 {
@@ -26,9 +26,8 @@ namespace DataService.Models
 		ICollection<ServiceSwot> ServiceSwots { get; set; }
 		ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		ICollection<ServiceDocument> ServiceDocuments { get; set; }
-        ICollection<ServiceProcess> ServiceProcesses { get; set; }
-        ICollection<ServiceOption> ServiceOptions { get; set; }
-        ICollection<OptionCategory> OptionCategories { get; set; }
-        ICollection<int> ServiceIds { get; set; }
+		ICollection<ServiceProcess> ServiceProcesses { get; set; }
+		ICollection<ServiceOptionCategory> ServiceOptionCategories { get; set; }
+		ICollection<Service> DependentServices { get; set; }
 	}
 }

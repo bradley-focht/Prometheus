@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Common.Enums.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Common.Enums.Entities;
 
 namespace Common.Dto
 {
@@ -76,7 +76,7 @@ namespace Common.Dto
 		/// </summary>
 		[Display(Name = "Service Type Provision", Order = 7)]
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
-		
+
 		/// <summary>
 		/// Used for sorting in the Service Catalog, inherited from ICatalogable
 		/// </summary>
@@ -123,12 +123,12 @@ namespace Common.Dto
 		/// <summary>
 		/// Other services that this service depends on
 		/// </summary>
-		public virtual ICollection<int> ServiceIds { get; set; }
+		public virtual ICollection<IServiceDto> DependentServices { get; set; }
 
 		/// <summary>
 		/// Option categories
 		/// </summary>
-		public virtual ICollection<IOptionCategoryDto> OptionCategories { get; set; }
+		public virtual ICollection<IServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
 	}
 
 	#endregion

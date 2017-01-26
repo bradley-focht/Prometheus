@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 
-namespace Common.Dto 
+namespace Common.Dto
 {
-    public class OptionCategoryDto : IOptionCategoryDto
-    {
+	public class ServiceOptionCategoryDto : IServiceOptionCategoryDto
+	{
 		[HiddenInput]
-        public int Id { get; set; }
+		public int Id { get; set; }
 		[HiddenInput]
 		public int ServiceId { get; set; }
 
@@ -16,7 +16,7 @@ namespace Common.Dto
 		/// Used for sorting in service catalog
 		/// Inherited from ICatalogable
 		/// </summary>
-        public int Popularity { get; set; }
+		public int Popularity { get; set; }
 		/// <summary>
 		/// These attributes come from the Service Design Package
 		/// </summary>
@@ -34,17 +34,20 @@ namespace Common.Dto
 
 		[Display(Order = 7)]
 		[AllowHtml]
-	    public string Description { get; set; }
+		public string Description { get; set; }
 
-	    [Required(ErrorMessage = "Name is required")]
+		[Required(ErrorMessage = "Name is required")]
 		[Display(Order = 1)]
-        public string Name { get; set; }
+		public string Name { get; set; }
 
-        [AllowHtml]
+		[AllowHtml]
 		[Display(Order = 6, Name = "Business Value")]
 		public string BusinessValue { get; set; }
 
-		[Display(Order=2, Name="Service Options")]
-        public virtual ICollection<ServiceOptionDto> ServiceOptions { get; set; }
-    }
+		public IServiceDto Service { get; set; }
+
+		[Display(Order = 2, Name = "Service Options")]
+		public virtual ICollection<IServiceOptionDto> ServiceOptions { get; set; }
+
+	}
 }

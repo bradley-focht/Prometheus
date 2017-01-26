@@ -3,14 +3,14 @@ using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {
-	public interface IOptionCategoryController : IUserController
+	public interface IServiceOptionCategoryController : IUserController
 	{
 		/// <summary>
 		/// Finds option category with identifier provided and returns its DTO
 		/// </summary>
 		/// <param name="optionCategoryId"></param>
 		/// <returns></returns>
-		IOptionCategoryDto GetOptionCategory(int optionCategoryId);
+		IServiceOptionCategoryDto GetServiceOptionCategory(int optionCategoryId);
 
 		/// <summary>
 		/// Modifies the option category in the database
@@ -18,6 +18,6 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="optionCategory"></param>
 		/// <param name="modification">Type of modification to make</param>
 		/// <returns>Modified Service WorkUnit</returns>
-		IOptionCategoryDto ModifyOptionCategory(IOptionCategoryDto optionCategory, EntityModification modification);
+		IServiceOptionCategoryDto ModifyServiceOptionCategory(IServiceOptionCategoryDto optionCategory, EntityModification modification);
 	}
 }

@@ -1,12 +1,14 @@
 ﻿using System;
-using Common.Dto;
 
 
 namespace DataService.Models
 {
-	public interface IServiceOption : IOffering, IRequestable, IUserCreatedEntity
+	public interface IServiceOption : IRequestable, IUserCreatedEntity
 	{
-		int? OptionCategoryId { get; set; }
+		int Id { get; set; }
+
+		string Name { get; set; }
+		int ServiceOptionCategoryId { get; set; }
 		Guid? Picture { get; set; }
 		string PictureMimeType { get; set; }
 
@@ -15,6 +17,7 @@ namespace DataService.Models
 		double Cost { get; set; }
 		string Usage { get; set; }
 
+		ServiceOptionCategory ServiceOptionCategory { get; set; }
 
-    }
+	}
 }

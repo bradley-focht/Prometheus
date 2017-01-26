@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Common.Dto;
+using DataService.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Dto;
-using DataService.Models;
 
 namespace DataService
 {
@@ -50,15 +50,8 @@ namespace DataService
 			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(() => new ServiceOptionDto
 			{
 				Id = src.Id,
-				CategoryId = src.OptionCategoryId,
-				Popularity = src.Popularity,
-				Description = src.Description,
-				ServiceId = src.ServiceId,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
 				Name = src.Name,
-				Features = src.Features,
-				Benefits = src.Benefits,
-				Support = src.Support,
-				BusinessValue = src.BusinessValue,
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
@@ -67,7 +60,7 @@ namespace DataService
 				Usage = src.Usage,
 				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
-				ScriptedSelecentionInputs = new List<IScriptedSelectionInputDto>()
+				ScriptedSelectionInputs = new List<IScriptedSelectionInputDto>()
 			});
 
 			// text inputs
@@ -89,11 +82,11 @@ namespace DataService
 			}
 
 			// scripted selection inputs
-			if (src.ScriptedSelecentionInputs != null)
+			if (src.ScriptedSelectionInputs != null)
 			{
-				foreach (var t in src.ScriptedSelecentionInputs)
+				foreach (var t in src.ScriptedSelectionInputs)
 				{
-					option.Value.ScriptedSelecentionInputs.Add(MapScriptedSelectionInputToDto(t));
+					option.Value.ScriptedSelectionInputs.Add(MapScriptedSelectionInputToDto(t));
 				}
 			}
 
@@ -112,18 +105,11 @@ namespace DataService
 			ServiceOption serviceOption = new ServiceOption
 			{
 				Id = src.Id,
-				OptionCategoryId = src.CategoryId,
-				Popularity = src.Popularity,
-				Description = src.Description,
-				ServiceId = src.ServiceId,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
 				Name = src.Name,
-				Features = src.Features,
-				Benefits = src.Benefits,
-				Support = src.Support,
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
-				BusinessValue = src.BusinessValue,
 				Picture = src.Picture,
 				PictureMimeType = src.PictureMimeType,
 				Usage = src.Usage
@@ -152,9 +138,7 @@ namespace DataService
 				ServiceTypeProvision = src.ServiceTypeProvision,
 				ServiceTypeRole = src.ServiceTypeRole,
 				ServiceBundleId = src.ServiceBundleId,
-				Popularity = src.Popularity,
-				ServiceIds = src.ServiceIds,
-
+				Popularity = src.Popularity
 			};
 		}
 
@@ -179,7 +163,6 @@ namespace DataService
 				ServiceTypeRole = src.ServiceTypeRole,
 				ServiceBundleId = src.ServiceBundleId,
 				Popularity = src.Popularity,
-				ServiceIds = src.ServiceIds,
 				LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
 			});
 
@@ -243,23 +226,14 @@ namespace DataService
 				}
 			}
 
-			//Options
-			if (src.ServiceOptions != null)
-			{
-				serviceDto.Value.ServiceOptions = new List<IServiceOptionDto>();
-				foreach (var option in src.ServiceOptions)
-				{
-					serviceDto.Value.ServiceOptions.Add(MapServiceOptionToDto(option));
-				}
-			}
 			//Categories
-			if (src.OptionCategories != null)
+			if (src.ServiceOptionCategories != null)
 			{
-				serviceDto.Value.OptionCategories = new List<IOptionCategoryDto>();
+				serviceDto.Value.ServiceOptionCategories = new List<IServiceOptionCategoryDto>();
 
-				foreach (var category in src.OptionCategories)
+				foreach (var category in src.ServiceOptionCategories)
 				{
-					serviceDto.Value.OptionCategories.Add(MapOptionCategoryToDto(category));
+					serviceDto.Value.ServiceOptionCategories.Add(MapOptionCategoryToDto(category));
 				}
 			}
 
@@ -569,7 +543,7 @@ namespace DataService
 				 Responsibilities = src.Responsibilities,
 				 Name = src.Name,
 				 Department = src.Department
-				 
+
 			 });
 			return unit.Value;
 		}
@@ -589,11 +563,11 @@ namespace DataService
 			};
 		}
 
-		public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
+		public static ServiceOptionCategoryDto MapOptionCategoryToDto(IServiceOptionCategory src)
 		{
 			if (src == null) { return null; }
 
-			var categoryDto = new OptionCategoryDto
+			var categoryDto = new ServiceOptionCategoryDto
 			{
 				Id = src.Id,
 				ServiceId = src.ServiceId,
@@ -606,7 +580,7 @@ namespace DataService
 			};
 			if (src.ServiceOptions != null)
 			{
-				categoryDto.ServiceOptions = new List<ServiceOptionDto>();
+				categoryDto.ServiceOptions = new List<IServiceOptionDto>();
 				foreach (var option in src.ServiceOptions)
 				{
 					categoryDto.ServiceOptions.Add(MapServiceOptionToDto(option));
@@ -616,11 +590,11 @@ namespace DataService
 
 		}
 
-		public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
+		public static ServiceOptionCategory MapDtoToOptionCategory(IServiceOptionCategoryDto src)
 		{
 			if (src == null) { return null; }
 
-			OptionCategory category = new OptionCategory
+			ServiceOptionCategory category = new ServiceOptionCategory()
 			{
 				Id = src.Id,
 				Popularity = src.Popularity,
@@ -740,7 +714,7 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
-				Delimiter =  src.Delimiter,
+				Delimiter = src.Delimiter,
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				SelectItems = src.SelectItems,

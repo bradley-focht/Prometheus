@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Common.Enums.Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common.Enums.Entities;
 
 namespace DataService.Models
 {
@@ -48,10 +48,9 @@ namespace DataService.Models
 		public virtual ICollection<ServiceSwot> ServiceSwots { get; set; }
 		public virtual ICollection<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		public virtual ICollection<ServiceDocument> ServiceDocuments { get; set; }
-        public virtual ICollection<ServiceProcess> ServiceProcesses { get; set; }
-        public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
-        public virtual ICollection<OptionCategory> OptionCategories { get; set; }
-        public virtual ICollection<int> ServiceIds { get; set; }
-        #endregion
+		public virtual ICollection<ServiceProcess> ServiceProcesses { get; set; }
+		public virtual ICollection<ServiceOptionCategory> ServiceOptionCategories { get; set; }
+		public virtual ICollection<Service> DependentServices { get; set; }
+		#endregion
 	}
 }

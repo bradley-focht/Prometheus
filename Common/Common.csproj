@@ -53,7 +53,7 @@
     <Compile Include="Dto\ICatalogPublishable.cs" />
     <Compile Include="Dto\IOffering.cs" />
     <Compile Include="Dto\ILifecycleStatusDto.cs" />
-    <Compile Include="Dto\IOptionCategoryDto.cs" />
+    <Compile Include="Dto\IServiceOptionCategoryDto.cs" />
     <Compile Include="Dto\IPriceDto.cs" />
     <Compile Include="Dto\IRequestableDto.cs" />
     <Compile Include="Dto\IRoleDto.cs" />
@@ -94,6 +94,7 @@
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\TextInputDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Enums\ServiceRequestState.cs" />
     <Compile Include="Enums\UserInputTypes.cs" />
     <Compile Include="Enums\Entities\CatalogableTypes.cs" />
     <Compile Include="Enums\Entities\EntityModification.cs" />

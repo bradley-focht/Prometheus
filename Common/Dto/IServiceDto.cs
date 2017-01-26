@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Common.Enums.Entities;
+﻿using Common.Enums.Entities;
+using System.Collections.Generic;
 
 namespace Common.Dto
 {
@@ -21,8 +21,8 @@ namespace Common.Dto
 		ICollection<IServiceMeasureDto> ServiceMeasures { get; set; }
 		ICollection<IServiceDocumentDto> ServiceDocuments { get; set; }
 		ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
-        ICollection<IServiceOptionDto> ServiceOptions { get; set; }
-		ICollection<IOptionCategoryDto> OptionCategories { get; set; }
-        ICollection<int> ServiceIds { get; set; }
-    }
+		ICollection<IServiceOptionDto> ServiceOptions { get; set; }
+		ICollection<IServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
+		ICollection<IServiceDto> DependentServices { get; set; }
+	}
 }
