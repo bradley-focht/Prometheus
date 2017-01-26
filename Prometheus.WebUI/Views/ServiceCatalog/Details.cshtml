@@ -27,7 +27,7 @@
 		foreach (var option in Model.Options)
 		{
 			CatalogableTypes optionType = CatalogableTypes.Option;		//initialize with a default value
-			if (option is IOptionCategoryDto)
+			if (option is IServiceOptionCategoryDto)
 			{
 				optionType = CatalogableTypes.Category;
 			}

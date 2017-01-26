@@ -68,6 +68,7 @@
     <Compile Include="Dto\IServiceMeasureDto.cs" />
     <Compile Include="Dto\IServiceProcessDto.cs" />
     <Compile Include="Dto\IServiceOptionDto.cs" />
+    <Compile Include="Dto\IServiceRequestPackageDto.cs" />
     <Compile Include="Dto\IServiceSwotDto.cs" />
     <Compile Include="Dto\IServiceWorkUnitDto.cs" />
     <Compile Include="Dto\ISwotActivityDto.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Dto\ServiceMeasureDto.cs" />
     <Compile Include="Dto\ServiceProcessDto.cs" />
     <Compile Include="Dto\ServiceOptionDto.cs" />
+    <Compile Include="Dto\ServiceRequestPackageDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />

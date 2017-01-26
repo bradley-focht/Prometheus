@@ -12,12 +12,15 @@ namespace DataService.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-		//FK
+
+
+	    //FK
 		public int ServiceOptionCategoryId { get; set; }
 
-
-		public string Name { get; set; }
-		public Guid? Picture { get; set; }
+        public int Popularity { get; set; }
+        public string Name { get; set; }
+	    public string BusinessValue { get; set; }
+	    public Guid? Picture { get; set; }
 		public string PictureMimeType { get; set; }
 		public double PriceUpFront { get; set; }
 		public double PriceMonthly { get; set; }

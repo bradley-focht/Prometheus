@@ -33,6 +33,7 @@ namespace DataService.DataAccessLayer
 						Name = "First Service",
 						LifecycleStatus = new LifecycleStatus()
 						{
+                            CatalogVisible = true,
 							Name = "Operational"
 						}/*, TODO: Sean - sorry but the null references these create are a bit of an issue
 						ServiceRequestOptions = new List<ServiceOption>

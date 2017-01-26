@@ -5,7 +5,7 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
-	public class ServiceOptionDto : IServiceOptionDto
+	public class ServiceOptionDto : IServiceOptionDto, ICatalogPublishable
 	{
 		[HiddenInput]
 		public int Id { get; set; }
@@ -28,7 +28,9 @@ namespace Common.Dto
 		[Display(Order = 1)]
 		public string Name { get; set; }
 
-		[Display(Order = 2, Name = "Category")]
+	    public string BusinessValue { get; set; }
+
+	    [Display(Order = 2, Name = "Category")]
 		public int ServiceOptionCategoryId { get; set; }
 
 		[Display(Order = 6)]

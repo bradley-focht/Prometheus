@@ -59,7 +59,7 @@
                                 </td>
                             </tr>
                         }
-                        else if (item is IOptionCategoryDto)
+                        else if (item is IServiceOptionCategoryDto)
                         {
                             <tr class="highlight">
                                 <td></td>
@@ -78,7 +78,7 @@
                                     </div>
                                 </td>
                             </tr>
-                            var category = (IOptionCategoryDto)item;
+                            var category = (IServiceOptionCategoryDto)item;
                             if (category.ServiceOptions != null)
                             {
                                 foreach (var option in category.ServiceOptions)

@@ -1,13 +1,11 @@
 ﻿using System;
+using Common.Dto;
 
 
 namespace DataService.Models
 {
-	public interface IServiceOption : IRequestable, IUserCreatedEntity
+	public interface IServiceOption : IRequestable, ICatalogPublishable, IUserCreatedEntity
 	{
-		int Id { get; set; }
-
-		string Name { get; set; }
 		int ServiceOptionCategoryId { get; set; }
 		Guid? Picture { get; set; }
 		string PictureMimeType { get; set; }

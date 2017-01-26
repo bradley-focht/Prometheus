@@ -75,9 +75,10 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.Option = ps.GetServiceOption(id);					//get data for back links
-				model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
-				model.ServiceId = model.Option.ServiceId;
-			}
+				model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Name;
+			    model.ServiceId = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Id;
+
+            }
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
@@ -94,9 +95,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				inputs.AddRange(from t in model.Option.SelectionInputs select (IUserInput)t);
 			}
-			if (model.Option.ScriptedSelecentionInputs != null)
+			if (model.Option.ScriptedSelectionInputs != null)
 			{
-				inputs.AddRange(from t in model.Option.ScriptedSelecentionInputs select (IUserInput)t);
+				inputs.AddRange(from t in model.Option.ScriptedSelectionInputs select (IUserInput)t);
 			}
 			model.UserInputs = inputs.OrderBy(i => i.DisplayName);			//ordered alphabetically here
 
@@ -133,10 +134,10 @@ namespace Prometheus.WebUI.Controllers
 			input.ServiceOptionId = id;
 			
 			var model = new UserInputModel {InputType = type, OptionId = id, OptionName = option.Name, UserInput = input};
-			model.ServiceId = option.ServiceId;
-			model.ServiceName = ps.GetService(option.ServiceId).Name;
-			
-			return View("EditUserInput", model);
+            model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).Id).Name;
+		    model.ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId;
+
+            return View("EditUserInput", model);
 		}
 
 		/// <summary>
@@ -286,8 +287,8 @@ namespace Prometheus.WebUI.Controllers
 				OptionId = id,
 				OptionName = option.Name,
 				UserInput = input,
-				ServiceId = option.ServiceId,
-				ServiceName = ps.GetService(option.ServiceId).Name
+				ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId,
+				ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId).Name
 		};
 			return View("EditUserInput", model);
 		}
@@ -327,11 +328,11 @@ namespace Prometheus.WebUI.Controllers
 					option = ps.GetServiceOption(input.ServiceOptionId);
 					if (option != null)
 					{
-						model.ServiceName = ps.GetService(option.ServiceId).Name;
+						model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId).Name;
 						model.OptionId = option.Id;
 						model.OptionName = option.Name;
 						model.Name = input.DisplayName;
-						model.ServiceId = option.ServiceId;
+						model.ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId;
 					}
 				}
 			}
@@ -376,8 +377,8 @@ namespace Prometheus.WebUI.Controllers
 			}
 			//input.ServiceOptionId = id;
 			var option = ps.GetServiceOption(input.ServiceOptionId);
-			model.ServiceId = option.ServiceId;
-			model.ServiceName = ps.GetService(option.ServiceId).Name;
+		    model.ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId;
+		    model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId).Name;
 			model.OptionId = option.Id;
 			model.OptionName = option.Name;
 			model.UserInput = input;

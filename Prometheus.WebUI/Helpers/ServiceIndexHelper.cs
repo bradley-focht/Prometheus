@@ -63,7 +63,7 @@ namespace Prometheus.WebUI.Helpers
                     }
                     else if (filter.Item1 == FilterByType.ServiceOwner)
                     {
-                        sb.Append("Service Owner is " + "this don't work yet yo");
+                        sb.Append("Service Owner is " + filter.Item2);
                         //do nothing for now.... sorry.
                     }
 

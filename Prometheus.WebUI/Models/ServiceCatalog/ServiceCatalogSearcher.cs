@@ -28,7 +28,7 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 				foreach (var service in services)
 				{
 					searchresults.AddRange(from o in service.ServiceOptions where searchString != null && o.Name.ToLower().Contains(searchString) select (ICatalogPublishable)o);
-					searchresults.AddRange(from c in service.OptionCategories where searchString != null && c.Name.ToLower().Contains(searchString) select (ICatalogPublishable)c);
+					searchresults.AddRange(from c in service.ServiceOptionCategories where searchString != null && c.Name.ToLower().Contains(searchString) select (ICatalogPublishable)c);
 				}
 			}
 
@@ -39,7 +39,7 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 				foreach (var service in services)
 				{
 					searchresults.AddRange(from o in service.ServiceOptions where searchString != null && o.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)o);
-					searchresults.AddRange(from c in service.OptionCategories where searchString != null && c.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)c);
+					searchresults.AddRange(from c in service.ServiceOptionCategories where searchString != null && c.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)c);
 				}
 			}
 			//since search is performed on names only, there isn't much point weighting results. 

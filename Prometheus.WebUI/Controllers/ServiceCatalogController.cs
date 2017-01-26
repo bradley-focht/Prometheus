@@ -107,11 +107,16 @@ namespace Prometheus.WebUI.Controllers
 						BusinessValue = service.Description,
 						Options = new List<ICatalogPublishable>()
 					};
-					i.Options.AddRange((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());    //find the top 3 items
-					i.Options.AddRange((from o in service.ServiceOptions
-										where o.CategoryId == null
-										select (ICatalogPublishable)o).ToList());
-					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
+				    if (service.ServiceOptionCategories != null)
+				    {
+				        i.Options.AddRange((from o in service.ServiceOptionCategories select (ICatalogPublishable) o).ToList());
+				            //find the top 3 items
+				    }
+				    if (service.ServiceOptions != null)
+				    {
+				        i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList());
+				    }
+				    i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
 
 					model.CatalogItems.Add(i);
 				}
@@ -130,10 +135,8 @@ namespace Prometheus.WebUI.Controllers
 						BusinessValue = service.Description,
 						Options = new List<ICatalogPublishable>()
 					};
-					i.Options.AddRange((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());    //find the top 3 items
-					i.Options.AddRange((from o in service.ServiceOptions
-										where o.CategoryId == null
-										select (ICatalogPublishable)o).ToList());
+					i.Options.AddRange((from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList());    //find the top 3 items
+					i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable)o).ToList());
 					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
 
 					model.CatalogItems.Add(i);
@@ -165,15 +168,15 @@ namespace Prometheus.WebUI.Controllers
 			{
 				OptionModel model = new OptionModel { Catalog = service.ServiceTypeRole };                  //pack a list of options and categories
 				if (type == CatalogableTypes.Category)
-					model.Option = service.OptionCategories.FirstOrDefault(o => o.Id == id);
+					model.Option = service.ServiceOptionCategories.FirstOrDefault(o => o.Id == id);
 				else if (type == CatalogableTypes.Option)
-					model.Option = service.ServiceOptions.FirstOrDefault(s => s.Id == id);
+					model.Option = (ICatalogPublishable) service.ServiceOptions.FirstOrDefault(s => s.Id == id);
 
 				model.ServiceId = service.Id;
 				model.ServiceName = service.Name;
 
-				List<ICatalogPublishable> options = (from o in service.OptionCategories select (ICatalogPublishable)o).ToList(); //build list of options & categories
-				options.AddRange(from o in service.ServiceOptions where o.CategoryId == null select (ICatalogPublishable)o);    //sort by name
+				List<ICatalogPublishable> options = (from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList(); //build list of options & categories
+				options.AddRange(from o in service.ServiceOptions select (ICatalogPublishable)o);    //sort by name
 				options = options.OrderBy(o => o.Name).ToList();
 				model.Options = options;
 
@@ -209,11 +212,17 @@ namespace Prometheus.WebUI.Controllers
 				model.ServiceNames = from s in services
 									 select new Tuple<int, string>(s.Id, s.Name);
 
-				var options = ((from o in service.OptionCategories select (ICatalogPublishable)o).ToList());
-				options.AddRange((from o in service.ServiceOptions
-								  where o.CategoryId == null
-								  select (ICatalogPublishable)o).ToList());
-				model.Options = options.OrderBy(o => o.Name);
+                List<ICatalogPublishable> options = new List<ICatalogPublishable>();
+
+			    if (service.ServiceOptionCategories != null)
+			    {
+			         options = (from o in service.ServiceOptionCategories select (ICatalogPublishable) o).ToList();
+			    }
+			    if (service.ServiceOptions != null)
+			    {
+			        options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList());
+			    }
+			    model.Options = options.OrderBy(o => o.Name);
 			}
 			return View(model);
 		}

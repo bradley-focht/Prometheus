@@ -8,7 +8,7 @@ namespace Prometheus.WebUI.Models.Service
 {
     public class UpdateOptionCategoryModel
     {
-        public OptionCategoryDto OptionCategory { get; set; }
+        public ServiceOptionCategoryDto OptionCategory { get; set; }
         public int ServiceId { get; set; }
         public string ServiceName { get; set; }
         public string Action { get; set; }
