@@ -27,7 +27,7 @@
                 </thead>
                 <tbody>
 
-                    @foreach (IOffering item in Model.Options)
+                    @foreach (ICatalogPublishable item in Model.Options)
                     {
                         if (item is IServiceOptionDto)
                         {
@@ -131,7 +131,7 @@
                 @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
                 {
 
-                    @Html.ActionLink("Add Option", "AddServiceOption", new { id = Model.ServiceId }, new { @class = "btn btn-primary", style = "margin-left:5px;" })
+                    @Html.ActionLink("Add Option", "AddServiceOption", new { id = Model.ServiceId }, new { @class = "btn btn-primary", style = "margin-right:5px;" })
 
                     @Html.ActionLink("Add Cateogory", "AddOptionCategory", new { id = Model.ServiceId }, new { @class = "btn btn-primary" })
                 }

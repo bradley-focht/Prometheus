@@ -775,35 +775,7 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = $"Failed to save category, error: {exception.Message}";
 				return RedirectToAction("UpdateOptionCategoryItem", new { id = category.ServiceId });
 			}
-			// update category id of service options
-			foreach (var option in ps.GetService(category.ServiceId).ServiceOptions)        //update service options with new category Ids
-			{
-				try
-				{
-					if (options == null && option.ServiceOptionCategoryId == category.Id)		//if removing all options
-					{
-						ps.ModifyServiceOption(option, EntityModification.Update);
-					}
-					else if (options != null)
-					{
-						if (option.ServiceOptionCategoryId == category.Id && !options.Contains(option.Id)) //if removing some
-						{
-							ps.ModifyServiceOption(option, EntityModification.Update);
-						}
-						else if (option.ServiceOptionCategoryId != category.Id && options.Contains(option.Id)) //if adding
-						{
-							option.ServiceOptionCategoryId = category.Id;
-							ps.ModifyServiceOption(option, EntityModification.Update);
-						}
-					}
-				}
-				catch (Exception exception)
-				{
-					TempData["MessageType"] = WebMessageType.Failure;
-					TempData["Message"] = $"Failed to complete updating service options, error: {exception.Message}";
-					return RedirectToAction("Show", new { id = category.ServiceId, section = "Options" });
-				}
-			}
+
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully saved {category.Name}";
@@ -1747,16 +1719,26 @@ namespace Prometheus.WebUI.Controllers
 			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
 			ICollection<int> selectedOptions = id != 0 ? (from o in ps.GetServiceOptionCategory(id).ServiceOptions select o.Id).ToList() : new List<int>();
 			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Options..." } };
-			optionsList.AddRange(ps.GetService(serviceId).ServiceOptions.Select(l =>
-				new SelectListItem
-				{
-					Value = l.Id.ToString(),
-					Text = l.Name.ToString(),
-					Selected = selectedOptions.Contains(l.Id)
-				}).ToList());
-			IEnumerable<SelectListItem> model = optionsList.OrderBy(c => c.Text);
 
-			return View("PartialViews/OptionsDropDown", model);
+		    var options = ps.GetService(serviceId).ServiceOptions;
+            IEnumerable<SelectListItem> model = new List<SelectListItem>();
+
+
+            if (options != null)
+		    {
+		        optionsList.AddRange(options.Select(l =>
+
+
+		            new SelectListItem
+		            {
+		                Value = l.Id.ToString(),
+		                Text = l.Name.ToString(),
+		                Selected = selectedOptions.Contains(l.Id)
+		            }).ToList());
+		        model = optionsList.OrderBy(c => c.Text);
+
+		    }
+		    return View("PartialViews/OptionsDropDown", model);
 		}
 
 		/// <summary>
