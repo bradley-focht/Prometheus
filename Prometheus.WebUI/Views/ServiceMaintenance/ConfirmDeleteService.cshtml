@@ -16,32 +16,30 @@
 }
 
 @section Content {
-    @using (Html.BeginForm("DeleteService", "ServiceMaintenance", FormMethod.Post)) {
+    @using (Html.BeginForm("DeleteService", "ServiceMaintenance", FormMethod.Post))
+    {
         @Html.Hidden("Id", Model.Id)
         @Html.Hidden("Name", Model.Name)
 
         <div class="title-div">
             @ViewBag.SubTitle
         </div>
-        
-        <div class="panel">
-        Are you sure you want to delete
-        <section class="present-section">
-            @Model.Name
-        </section>
-        
-            <div class="flex-container">
-                <div class="panel-footer">
-                    <div class="float-left-div">
-                        @Html.ActionLink("Back", "ShowServices", new { id = Model.Id }, new { @class = "btn btn-default" })
-                    </div>
 
+        <div class="panel-div">
+            Are you sure you want to delete
+            <div class="present-section">
+                @Model.Name
+            </div>
+        </div>
+            <div class="flex-container-col">
+                <div class="panel-footer">
                     <div class="float-right-div">
-                        <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
+                        @Html.ActionLink("Back", "ShowServices", new { id = Model.Id }, new { @class = "btn btn-default btn-back" })
+                        <input type="submit" value="Confirm Delete" class="btn btn-danger" />
                     </div>
                 </div>
             </div>
-    </div>
+
     }
 
 }

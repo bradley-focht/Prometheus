@@ -25,9 +25,11 @@ namespace DataService.Models
 		public double PriceUpFront { get; set; }
 		public double PriceMonthly { get; set; }
 		public double Cost { get; set; }
-		public string Usage { get; set; }
-
-		#region Fields
+		public string Utilization { get; set; }
+	    public string Included { get; set; }
+	    public string Procurement { get; set; }
+        public  string Description { get; set; }
+	    #region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }

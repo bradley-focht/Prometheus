@@ -12,7 +12,10 @@ namespace Common.Dto
 		double PriceUpFront { get; set; }
 		double PriceMonthly { get; set; }
 		double Cost { get; set; }
-		string Usage { get; set; }
+		string Utilization { get; set; }
+        string Included { get; set; }
+	    string Procurement { get; set; }
+        string Description { get; set; }
 
-	}
+    }
 }

@@ -1,13 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using Common.Dto;
 
 namespace Prometheus.WebUI.Models.ServiceRequest
 {
+    /// <summary>
+    /// Navigation model
+    /// </summary>
     public class ServiceRequestNavigationModel
     {
-        public IEnumerable<Tuple<int, string>> Titles { get; set; }
+        public ICollection<ServiceOptionCategoryDto> Titles { get; set; }
         public int SelectedIndex { get; set; }
     }
 }

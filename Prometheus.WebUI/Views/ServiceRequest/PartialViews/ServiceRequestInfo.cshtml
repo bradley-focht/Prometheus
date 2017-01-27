@@ -1,0 +1,26 @@
+﻿
+<div class="dd">
+    <div class="dd-row">
+        <div class="dt-cell">Requestor</div>
+        <div class="dd-cell">@Session["Displayname"]</div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">Requested For</div>
+        <div class="dd-cell"></div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">Date Required</div>
+        <div></div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">Comments</div>
+        <div class="dd-cell">
+            @Html.TextArea("Comments", "", new { @class = "ckeditor" })
+            <div class="note">additional requests in comments will not be honoured</div>
+        </div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">Office-Use</div>
+        <div class="dd-cell">@Html.TextBox("OfficeUseComments", "", new { @class = "form-control" })</div>
+    </div>
+</div>

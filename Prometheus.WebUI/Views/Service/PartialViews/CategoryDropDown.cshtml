@@ -6,4 +6,11 @@
 else
 {
     @Html.DropDownList("ServiceOptionCategoryId", Model, new { placeholder = "Category..." })
+
+    <script type="text/javascript" language="javascript">
+        $('#ServiceOptionCategoryId')
+            .selectize({
+                maxItems: 1
+            });
+    </script>
 }

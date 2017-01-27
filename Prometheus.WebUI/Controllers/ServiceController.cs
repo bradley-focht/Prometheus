@@ -670,13 +670,14 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveOptionsItem(ServiceOptionDto option, HttpPostedFileBase image = null)
 		{
-			if (!ModelState.IsValid) /* Server side validation */
+            var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+            if (!ModelState.IsValid) /* Server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save option due to invalid data";
-				return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = option.ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
+				return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
 			}
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+
 			if (image != null)
 			{
 				if (option.Id != 0) //need to deal with updating an existing image
@@ -711,7 +712,7 @@ namespace Prometheus.WebUI.Controllers
 				{
 					TempData["MessageType"] = WebMessageType.Failure;
 					TempData["Message"] = $"Failed to save option, file error: {exception.Message}";
-					return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = option.ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
+					return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
 				}
 			}
 
@@ -720,7 +721,7 @@ namespace Prometheus.WebUI.Controllers
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"New option {option.Name} saved successfully";
 
-			return RedirectToAction("Show", new { id = option.ServiceId, section = "Options" });
+			return RedirectToAction("Show", new { id = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId, section = "Options" });
 		}
 
 		/// <summary>
@@ -929,13 +930,26 @@ namespace Prometheus.WebUI.Controllers
 
 			return View("UpdateOptionCategory", model);
 		}
-
-		public ActionResult AddServiceOption(int id)
-		{
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var model = new ServiceOptionModel { Option = new ServiceOptionDto { ServiceId = id, Id = 0 } };
-			model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
-			model.Action = "Add";
+        /// <summary>
+        /// Add a new service option
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="categoryId"></param>
+        /// <returns></returns>
+		public ActionResult AddServiceOption(int id, int categoryId = 0)
+		{			
+			var model = new ServiceOptionModel { Option = new ServiceOptionDto { ServiceOptionCategoryId = categoryId, Id = 0 }, ServiceId = id}; //setup new model
+            model.Action = "Add";
+            try
+            {
+                IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+                model.ServiceName = ps.GetService(model.ServiceId).Name;
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;  
+                TempData["Message"] = $"Error encountered, {exception.Message}";
+            }          
 
 			return View("UpdateServiceOption", model);
 		}
@@ -944,7 +958,9 @@ namespace Prometheus.WebUI.Controllers
 		{
 			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
 			var model = new ServiceOptionModel { Option = (ServiceOptionDto)ps.GetServiceOption(id) };
-			model.ServiceName = ps.GetService(model.Option.ServiceId).Name;
+            model.ServiceId = ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId;
+
+            model.ServiceName = ps.GetService(model.ServiceId).Name;
 			model.Action = "Update";
 
 			return View("UpdateServiceOption", model);
@@ -1651,7 +1667,8 @@ namespace Prometheus.WebUI.Controllers
 			var model = new ServiceOptionModel();
 
 			model.Option = (ServiceOptionDto)ps.GetServiceOption(id);
-			var service = ps.GetService(model.Option.ServiceId);
+		    model.ServiceId = ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId;
+            var service = ps.GetService(model.ServiceId);
 
 			model.ServiceName = service.Name;
 			model.CategoryName = (from c in service.ServiceOptionCategories
@@ -1661,17 +1678,24 @@ namespace Prometheus.WebUI.Controllers
 			return View(model);
 		}
 
+        /// <summary>
+        /// create a properly setup drop down list of categories
+        /// </summary>
+        /// <param name="id">option Id</param>
+        /// <param name="categoryId"></param>
+        /// <param name="serviceId"></param>
+        /// <returns></returns>
 		[ChildActionOnly]
-		public ActionResult GetCategoryDropdown(int id = 0, int serviceId = 0)
+		public ActionResult GetCategoryDropdown(int id = 0, int categoryId = 0, int serviceId = 0)
 		{
 			IEnumerable<SelectListItem> model = new List<SelectListItem>();
 			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
 
 			if (serviceId > 0)
 			{
-				int? selectedCategory = null;
+				int selectedCategory = categoryId;
 
-				if (id > 0)
+				if (id > 0)     /* if a categoryId is already associated with option */
 				{
 					selectedCategory = ps.GetServiceOption(id).ServiceOptionCategoryId;
 				}
@@ -1682,7 +1706,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						Value = l.Id.ToString(),
 						Text = l.Name.ToString(),
-						Selected = selectedCategory != null && l.Id == selectedCategory
+						Selected =  l.Id == selectedCategory
 					}).ToList());
 				model = optionsList.OrderBy(c => c.Text);
 			}

@@ -1,17 +1,16 @@
 ﻿@model Common.Dto.ServiceDto
 
-<table>
-	<tr>
-		<td class="dt-cell">Name</td>
-		<td class="dd-cell">@Model.Name</td>
-	</tr><tr>
-		<td class="dt-cell">Description</td>
-		<td class="dd-cell">@Html.Raw(Model.Description)</td>
-	</tr><tr>
-		<td class="dt-cell">Status</td>
-		<td class="dd-cell">@Model.LifecycleStatusDto.Name</td>
-	</tr><tr>
-		<td class="dt-cell">Service Owner</td>
-		<td class="dd-cell">@Model.ServiceOwner</td>
-	</tr>
-</table>
+<div class="dd">
+    <div class="dd-row">
+        <div class="dt-cell">Name</div>
+        <div class="dd-cell">@Model.Name</div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell">Status</div>
+        <div class="dd-cell">@Model.LifecycleStatusDto.Name</div>
+    </div>
+    <div class="dd-row">
+		<div class="dt-cell">Service Owner</div>
+		<div class="dd-cell">@Model.ServiceOwner</div>
+	</div>
+</div>

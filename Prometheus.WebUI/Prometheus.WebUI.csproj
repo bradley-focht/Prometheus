@@ -463,7 +463,7 @@
     <Content Include="Views\ServiceCatalog\PartialViews\OptionView.cshtml" />
     <Content Include="Views\ServiceCatalog\ServiceOptions.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\RolesEditor.cshtml" />
-    <Content Include="Views\ServiceRequestMaintenance\Index.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ShowService.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetServiceNames.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowServiceOption.cshtml" />
     <Content Include="Views\ServiceRequest\ServiceRequest.cshtml" />
@@ -492,6 +492,8 @@
     <Content Include="Views\Shared\PartialViews\_TextInput.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestNavigation.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\StatusCountDropDown.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestInfo.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

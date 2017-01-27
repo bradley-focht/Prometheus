@@ -13,7 +13,7 @@ namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceCatalogController : Controller
 	{
-		private int _dummId = 1;
+		private readonly int _dummId = 1;
 		private const int CatalogPageSize = 12;
 		private readonly ICatalogController _requestService;
 

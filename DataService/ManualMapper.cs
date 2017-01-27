@@ -56,8 +56,11 @@ namespace DataService
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
 				Picture = src.Picture,
-				PictureMimeType = src.PictureMimeType,
-				Usage = src.Usage,
+                Description = src.Description,
+                PictureMimeType = src.PictureMimeType,
+				Utilization = src.Utilization,
+                Included =  src.Included,
+                Procurement = src.Procurement,
 				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
 				ScriptedSelectionInputs = new List<IScriptedSelectionInputDto>()
@@ -110,10 +113,13 @@ namespace DataService
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
 				Cost = src.Cost,
-				Picture = src.Picture,
+                Included = src.Included,
+                Description =src.Description,
+                Procurement = src.Procurement,
+                Picture = src.Picture,
 				PictureMimeType = src.PictureMimeType,
-				Usage = src.Usage
-			};
+                Utilization = src.Utilization
+            };
 
 			if (src.TextInputs != null)                                 //deal with text inputs
 			{

@@ -23,6 +23,6 @@ namespace Common.Dto
 		ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
 		ICollection<IServiceOptionDto> ServiceOptions { get; set; }
 		ICollection<IServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
-		ICollection<IServiceDto> DependentServices { get; set; }
+		ICollection<IServiceDto> Dependencies { get; set; }
 	}
 }

@@ -810,13 +810,15 @@
 
 
 
-        .sr-navigation li a {
+        .sr-navigation li button {
             color: white;
             text-decoration: none;
             position: relative;
             display: inline-block;
+        background-color: #999;
             float: left;
             padding: 5px 0 5px 35px;
+            border: 0;
 
         }
 
@@ -850,12 +852,18 @@
                 z-index: 1;
             }
 
-.sr-navigation li:first-child a {
+.sr-navigation li:first-child button {
     padding-left: 10px;
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
+
+}
+.sr-navigation li:first-child {
+    border-bottom-left-radius: 4px;
+    border-top-left-radius: 4px;
 }
 
-
-.sr-navigation li:last-child a {
+.sr-navigation li:last-child button {
     background: transparent !important;
     color: black;
     pointer-events: none;
@@ -866,24 +874,29 @@
     background-color: #fff;
 }
 
-    .sr-navigation li:last-child a::after {
+    .sr-navigation li:last-child button::after {
         border: 0;
     }
 
-.sr-navigation li a:hover {
+.sr-navigation li button:hover {
     background: #17a7f8;
 }
 
-    .sr-navigation li a:hover:after {
+.sr-navigation li:first-child button:hover {
+    background: #17a7f8 !important;
+}
+
+.sr-navigation li button:hover:after {
         border-left-color: #17a7f8 !important;
-    }
+}
 
-.sr-navigation-active a{
-    background: #428bca;
+.sr-navigation-active button{
+    background: #428bca!important;
 } 
+.sr-navigation-active button:hover {
+    background: #17a7f8 !important;    
+}
 
-
-
-.sr-navigation-active a:after {
+.sr-navigation-active button:after {
     border-left: 30px solid #428bca;
 }
