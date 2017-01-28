@@ -29,6 +29,8 @@ namespace DataService.Models
 	    public string Included { get; set; }
 	    public string Procurement { get; set; }
         public  string Description { get; set; }
+	    public string Details { get; set; }
+
 	    #region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }

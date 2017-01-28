@@ -49,19 +49,23 @@ namespace DataService
 
 			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(() => new ServiceOptionDto
 			{
-				Id = src.Id,
-				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
-				Name = src.Name,
-				PriceMonthly = src.PriceMonthly,
-				PriceUpFront = src.PriceUpFront,
-				Cost = src.Cost,
-				Picture = src.Picture,
+                BusinessValue = src.BusinessValue,
+                Cost = src.Cost,
                 Description = src.Description,
-                PictureMimeType = src.PictureMimeType,
-				Utilization = src.Utilization,
-                Included =  src.Included,
+                Details = src.Details,
+                Id = src.Id,
+                Included = src.Included,
+                Name = src.Name,
                 Procurement = src.Procurement,
-				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
+                Picture = src.Picture,
+                PriceMonthly = src.PriceMonthly,
+                PriceUpFront = src.PriceUpFront,
+                PictureMimeType = src.PictureMimeType,
+                Popularity = src.Popularity,
+                ServiceOptionCategoryId = src.ServiceOptionCategoryId,
+                Utilization = src.Utilization,
+
+                TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
 				ScriptedSelectionInputs = new List<IScriptedSelectionInputDto>()
 			});
@@ -107,17 +111,20 @@ namespace DataService
 
 			ServiceOption serviceOption = new ServiceOption
 			{
-				Id = src.Id,
-				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
-				Name = src.Name,
-				PriceMonthly = src.PriceMonthly,
-				PriceUpFront = src.PriceUpFront,
-				Cost = src.Cost,
+                BusinessValue = src.BusinessValue,
+                Cost = src.Cost,
+                Description = src.Description,
+                Details = src.Details,
+                Id = src.Id,
                 Included = src.Included,
-                Description =src.Description,
+                Name = src.Name,
                 Procurement = src.Procurement,
                 Picture = src.Picture,
-				PictureMimeType = src.PictureMimeType,
+                PriceMonthly = src.PriceMonthly,
+                PriceUpFront = src.PriceUpFront,
+                PictureMimeType = src.PictureMimeType,
+                Popularity = src.Popularity,
+                ServiceOptionCategoryId = src.ServiceOptionCategoryId,
                 Utilization = src.Utilization
             };
 
@@ -245,7 +252,7 @@ namespace DataService
 				}
 			}
 
-			//Processes
+            //Processes
 			if (src.ServiceProcesses != null)
 			{
 				serviceDto.Value.ServiceProcesses = new List<IServiceProcessDto>();

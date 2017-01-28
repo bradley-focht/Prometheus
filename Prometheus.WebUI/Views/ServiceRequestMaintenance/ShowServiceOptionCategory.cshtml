@@ -1,8 +1,69 @@
-﻿
+﻿@using Common.Dto
+@using Common.Enums
+
 @{
     ViewBag.Title = "ShowServiceOptionCategory";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
 <h2>ShowServiceOptionCategory</h2>
+@( /* foreach (var input in Model.UserInputs)
+{
+    UserInputTypes inputType = UserInputTypes.Text; //set a default
+    string typeName = "";
 
+    if (input is ITextInputDto)
+    {
+        inputType = UserInputTypes.Text;
+        typeName = "Text Input";
+    }
+    else if (input is ISelectionInputDto)
+    {
+        inputType = UserInputTypes.Selection;
+        typeName = "Selection";
+    }
+    else if (input is IScriptedSelectionInputDto)
+    {
+        inputType = UserInputTypes.ScriptedSelection;
+        typeName = "Scripted Selection";
+    }
+
+        */)
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <th><span class="table-title">Display Name</span></th>
+        <th><span class="table-title">Type</span></th>
+        <th></th>
+    </tr>
+    </thead>
+
+    <tr>
+        <td>@Html.ActionLink(input.DisplayName, "ShowUserInput", new {id = input.Id, type = inputType})</td>
+        <td>@typeName</td>
+        <td>
+            <div class="btn-group">
+                <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+                    <span aria-hidden="true">&#x25BC;</span>
+                </div>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Update", "UpdateUserInput", new {type = inputType, id = input.Id})</li>
+                    <li>@Html.ActionLink("Delete", "ConfirmDeleteUserInput", new {type = inputType, id = input.Id})</li>
+                </ul>
+            </div>
+        </td>
+    </tr>
+    }
+</table>
+
+
+<div class="btn-group">
+    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Add User Input <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu pull-right">
+        <li>@Html.ActionLink("Text", "AddUserInput", new { id = Model.Option.Id, type = UserInputTypes.Text })</li>
+        <li>@Html.ActionLink("Selection", "AddUserInput", new { id = Model.Option.Id, type = UserInputTypes.Selection })</li>
+        <li>@Html.ActionLink("Scripted Selection", "AddUserInput", new { id = Model.Option.Id, type = UserInputTypes.ScriptedSelection })</li>
+    </ul>
+</div>

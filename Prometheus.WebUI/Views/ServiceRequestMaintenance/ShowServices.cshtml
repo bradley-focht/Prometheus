@@ -44,10 +44,10 @@
         <div class="title-div">@Model.Name</div>
         <div class="panel-div">
             <div class="dd">
-                @Html.Partial("PartialViews/ShowService", Model)
+                @Html.Partial("PartialViews/ShowPublishable", Model)
 
                 <div class="dd-row">
-                    <div class="dt-cell">Options</div>
+                    <div class="dt-cell">Categories and Options</div>
                     <div class="dd-cell">
                         <div class="dd full-width">
 
@@ -63,15 +63,14 @@
                                             foreach (var option in category.ServiceOptions)
                                             {
                                                 <div>
-                                                    @Html.ActionLink(option.Name, "ShowServiceOption", new {id = option.Name})
+                                                    @Html.ActionLink(option.Name, "ShowServiceOption", new {id = option.Id})
                                                 </div>
                                             }
                                         }
                                     </div>
                                 </div>
                             }
-                        }
-                        
+                        }                      
                         </div>
                     </div>
                 </div>

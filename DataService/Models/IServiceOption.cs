@@ -17,6 +17,7 @@ namespace DataService.Models
         string Included { get; set; }
         string Procurement { get; set; }
         string Description { get; set; }
+        string Details { get; set; }
 		ServiceOptionCategory ServiceOptionCategory { get; set; }
 
 	}

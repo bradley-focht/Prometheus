@@ -155,13 +155,25 @@ namespace Prometheus.WebUI.Controllers
 		/// <summary>
 		/// Return View of an option
 		/// </summary>
-		/// <param name="serviceId"></param>
 		/// <param name="type"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Details(int serviceId, CatalogableTypes type, int id)
+		public ActionResult Details(CatalogableTypes type, int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(_dummId);
+		    int serviceId = 0;
+		    switch (type)
+		    {
+		        case CatalogableTypes.Option:
+		            serviceId = ps.GetServiceOptionCategory(ps.GetServiceOption(id).ServiceOptionCategoryId).ServiceId;
+		            break;
+		        case CatalogableTypes.Category:
+		            serviceId = ps.GetServiceOptionCategory(id).ServiceId;
+		            break;
+		        case CatalogableTypes.Service:
+		            serviceId = id;
+		            break;
+		    }
 			var service = ps.GetService(serviceId);
 
 			if (service != null)
@@ -176,8 +188,11 @@ namespace Prometheus.WebUI.Controllers
 				model.ServiceName = service.Name;
 
 				List<ICatalogPublishable> options = (from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList(); //build list of options & categories
-				options.AddRange(from o in service.ServiceOptions select (ICatalogPublishable)o);    //sort by name
-				options = options.OrderBy(o => o.Name).ToList();
+			    if (service.ServiceOptions != null)
+			    {
+			        options.AddRange(from o in service.ServiceOptions select (ICatalogPublishable) o); //sort by name
+			    }
+			    options = options.OrderBy(o => o.Name).ToList();
 				model.Options = options;
 
 				return View(model);
@@ -218,10 +233,7 @@ namespace Prometheus.WebUI.Controllers
 			    {
 			         options = (from o in service.ServiceOptionCategories select (ICatalogPublishable) o).ToList();
 			    }
-			    if (service.ServiceOptions != null)
-			    {
-			        options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList());
-			    }
+			   
 			    model.Options = options.OrderBy(o => o.Name);
 			}
 			return View(model);

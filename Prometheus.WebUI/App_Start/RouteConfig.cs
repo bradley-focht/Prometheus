@@ -45,6 +45,12 @@ namespace Prometheus.WebUI
                 name: "ConfirmDeleteServiceSectionItem",
                 url: "Service/ConfirmDeleteServiceSectionItem/{section}/{id}",
                 defaults: new { controller = "Service", action = "ConfirmDeleteServiceSectionItem", section = UrlParameter.Optional, id = UrlParameter.Optional }
+                );
+
+                routes.MapRoute(
+                    name: "AddServiceOption",
+                    url:"Service/AddServiceOption/{id}/{categoryId}",
+                    defaults: new {controller="Service", action="AddServiceOption", categoryId = UrlParameter.Optional }
             );
 
             #endregion
@@ -53,7 +59,7 @@ namespace Prometheus.WebUI
 
             routes.MapRoute(
                 name: "ServiceCatalog",
-                url: "ServiceCatalog/Details/{type}/{serviceId}/{id}",
+                url: "ServiceCatalog/Details/{type}/{id}",
                 defaults: new { controller = "ServiceCatalog", action = "Details" }
             );
 

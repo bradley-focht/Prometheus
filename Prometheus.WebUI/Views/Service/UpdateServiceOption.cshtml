@@ -23,7 +23,9 @@
 	{
 	    <div class="make-space-top">
             <div class="dd">
-                @Html.Partial("PartialViews/ServiceOptionEditor", Model.Option)
+                <input type="hidden" name="serviceId" value="@Model.ServiceId"/>
+
+                           @Html.Partial("PartialViews/ServiceOptionEditor", Model.Option)
 
                     <div class="dd-row">
                         <div class="dt-cell">Category</div>

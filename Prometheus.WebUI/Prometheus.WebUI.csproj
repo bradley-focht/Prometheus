@@ -327,6 +327,7 @@
     <Compile Include="Controllers\ServiceRequestMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\AbbreviatedEntityUpdate.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\Enums\ServiceCatalogs.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
@@ -352,6 +353,7 @@
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ConfirmDeleteModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceAbbreviatedModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\ServiceOptionAbbreviatedModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
@@ -495,10 +497,11 @@
     <Content Include="Views\ServiceMaintenance\PartialViews\StatusCountDropDown.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestInfo.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\Index.cshtml" />
-    <Content Include="Views\ServiceRequestMaintenance\PartialViews\ShowService.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\ShowPublishable.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\PartialViews\UpdatePublishable.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\UpdateService.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowServiceOptionCategory.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\UpdateServiceOption.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

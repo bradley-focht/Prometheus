@@ -32,13 +32,21 @@ namespace Common.Dto
         public string Description { get; set; }
 
         /// <summary>
+        /// technical details
+        /// </summary>
+        [Display(Order = 3)]
+        [AllowHtml]
+	    public string Details { get; set; }
+
+	    /// <summary>
         /// Service Catalog display information
         /// </summary>
         [AllowHtml]
+        [Display(Order = 2, Name = "Business Value")]
 	    public string BusinessValue { get; set; }
 
         [Required(ErrorMessage = "Category is required")]
-	    [Display(Order = 2, Name = "Category")]
+	    [Display(Order = 8, Name = "Category")]
 		public int ServiceOptionCategoryId { get; set; }
 
 		[Display(Order = 8)]

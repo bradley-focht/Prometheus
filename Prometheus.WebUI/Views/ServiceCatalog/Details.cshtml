@@ -2,57 +2,50 @@
 @using Common.Enums.Entities
 @model Prometheus.WebUI.Models.ServiceCatalog.OptionModel
 @{
-	ViewBag.Title = Model.Catalog + " Catalog";
-	ViewBag.SubTitle = Model.Option.Name;
-	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewBag.Title = Model.Catalog + " Catalog";
+    ViewBag.SubTitle = Model.Option.Name;
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-	ViewBag.Links = new List<KeyValuePair<string, string>>
-	{
-		new KeyValuePair<string, string>("Home", "Home"),
-		new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/Index/" + Model.Catalog),
-		new KeyValuePair<string, string>(Model.ServiceName, $"ServiceCatalog/ServiceOptions/{Model.Catalog}/{Model.ServiceId}"),
-		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
-	};
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/Index/" + Model.Catalog),
+        new KeyValuePair<string, string>(Model.ServiceName, $"ServiceCatalog/ServiceOptions/{Model.Catalog}/{Model.ServiceId}"),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+    };
 }
 
 @section Sidebar
 {
-	<div class="title-div">Other Options</div>
+    <div class="title-div">Other Options</div>
 
-	<div class="flex-container-col" style="padding-top: 5px; padding-bottom: 5px;">
-	@if (Model.Options != null)
-	{
-		CatalogableTypes selectedType = Model.Option is IServiceOptionDto ? CatalogableTypes.Option : CatalogableTypes.Category;
+    <div class="flex-container-col" style="padding-top: 5px; padding-bottom: 5px;">
+        @if (Model.Options != null)
+        {
+            CatalogableTypes selectedType = Model.Option is IServiceOptionDto ? CatalogableTypes.Option : CatalogableTypes.Category;
 
-		foreach (var option in Model.Options)
-		{
-			CatalogableTypes optionType = CatalogableTypes.Option;		//initialize with a default value
-			if (option is IServiceOptionCategoryDto)
-			{
-				optionType = CatalogableTypes.Category;
-			}
-			else if (option is IServiceOptionDto)
-			{
-				optionType = CatalogableTypes.Option;
-			}
+            foreach (var option in Model.Options)
+            {
+                CatalogableTypes optionType = CatalogableTypes.Option;      //initialize with a default value
+                if (option is IServiceOptionCategoryDto)
+                {
+                    optionType = CatalogableTypes.Category;
+                }
+                else if (option is IServiceOptionDto)
+                {
+                    optionType = CatalogableTypes.Option;
+                }
 
 
-			<div class="@(Model.Option.Id == option.Id && selectedType == optionType ? "bg-primary" : "bg-default")">
-					@Html.ActionLink(option.Name, "Details", new { serviceId = Model.ServiceId, type=optionType, id=option.Id })
-			</div>
-		}
-	}
-	</div>
+                <div class="@(Model.Option.Id == option.Id && selectedType == optionType ? "bg-primary" : "bg-default")">
+                    @Html.ActionLink(option.Name, "Details", new { serviceId = Model.ServiceId, type = optionType, id = option.Id })
+                </div>
+            }
+        }
+    </div>
 }
 
 @section Content
 {
-	@{
-		var offering = Model.Option as IOffering;
-	}
-	@if (offering != null)
-	{
-			@Html.Partial("PartialViews/FullOfferingView", offering)
-	}
-
+    @Html.Partial("PartialViews/FullOfferingView", Model.Option)
 }

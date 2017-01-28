@@ -1,0 +1,35 @@
+﻿@model dynamic
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        switch (property.PropertyName)
+        {
+            case "Details":
+            case "Name":
+            case "Popularity":
+            case "BusinessValue":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                    <div class="dd-cell">@Html.Raw(property.Model)</div>
+                </div>
+                break;
+            case "Picture":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                    <div class="dd-cell">
+                        @if (property.Model != null)
+                        {
+                            <img class="img-thumbnail" width="150" src="@Url.Action("GetOptionPicture", "Service", new
+                                                                        {
+                                                                            id = (from p in ViewData.ModelMetadata.Properties
+                                                                                 where p.PropertyName == "Id"
+                                                                                 select p.Model).FirstOrDefault() 
+                                                                                
+                                                                        })"/>
+                        }
+                    </div>
+                </div>
+                break;
+            default:
+                continue;
+        }
+    }

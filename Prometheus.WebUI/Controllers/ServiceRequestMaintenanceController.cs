@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
@@ -95,7 +98,6 @@ namespace Prometheus.WebUI.Controllers
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = "Failed to save changes to service";
             }
-
             
             try                                 //update state
             {
@@ -117,6 +119,60 @@ namespace Prometheus.WebUI.Controllers
             TempData["Message"] = "Successfully saved service";
 
             return View("ShowServices", newService);
+        }
+
+        /// <summary>
+        /// Save updates to an option
+        /// </summary>
+        /// <param name="option"></param>
+        /// <param name="serviceId"></param>
+        /// <param name="image"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveServiceOption(ServiceOptionAbbreviatedModel option, HttpPostedFileBase image = null)
+        {
+            _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+            var existingOption = (ServiceOptionDto)_ps.GetServiceOption(option.Id);       //option to amend
+            if (image != null)
+            {    
+                    if (existingOption.Picture != null)
+                    {
+                        var path = Path.Combine(ConfigHelper.GetOptionPictureLocation(), option.Picture.ToString());
+
+                    try   //catch error if key is not in web.config
+                    {   
+                            System.IO.File.Delete(Server.MapPath(path));
+                        }
+                        catch (Exception exception)
+                        {
+                            TempData["MessageType"] = WebMessageType.Failure; //unable to delete, exit at this point
+                            TempData["Message"] = $"Failed to delete existing file, error: {exception.Message}";
+                            return RedirectToAction("UpdateServiceOption", new {id = option.Id});
+                        }
+                    }
+
+                option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
+                option.Picture = Guid.NewGuid();
+
+                try
+                {
+                    var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"],
+                        option.Picture.ToString()); //save file
+                    image.SaveAs(Server.MapPath(path));
+                }
+                catch (Exception exception)
+                {
+                    TempData["MessageType"] = WebMessageType.Failure;
+                    TempData["Message"] = $"Failed to save option, file error: {exception.Message}";
+                    return RedirectToAction("UpdateServiceOption", new { id =option.Id });
+                        
+                }
+            }
+            existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
+            _ps.ModifyServiceOption(existingOption, EntityModification.Update);
+
+            return RedirectToAction("ShowServiceOption", new {id = option.Id});
+            
         }
 
         /// <summary>
@@ -174,23 +230,30 @@ namespace Prometheus.WebUI.Controllers
 
                 return View(model);
             }
-            var inputs = new List<IUserInput>();                        //sort user inputs
-            if (model.Option.TextInputs != null)
-            {
-                inputs.AddRange(from t in model.Option.TextInputs select (IUserInput)t);
-            }
-            if (model.Option.SelectionInputs != null)
-            {
-                inputs.AddRange(from t in model.Option.SelectionInputs select (IUserInput)t);
-            }
-            if (model.Option.ScriptedSelectionInputs != null)
-            {
-                inputs.AddRange(from t in model.Option.ScriptedSelectionInputs select (IUserInput)t);
-            }
-            model.UserInputs = inputs.OrderBy(i => i.DisplayName);          //ordered alphabetically here
-
             return View(model);
         }
+
+        public ActionResult UpdateServiceOption(int id)
+        {
+            ServiceRequestOptionModel model = new ServiceRequestOptionModel();
+            var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+            try
+            {
+                model.Option = ps.GetServiceOption(id);                 //get data for back links
+                model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Name;
+                model.ServiceId = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Id;
+
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = exception.Message;
+
+                return View(model);
+            }
+            return View(model);
+        }
+
 
         /// <summary>
         /// Returns View to add form of corresponding type

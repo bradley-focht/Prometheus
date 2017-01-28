@@ -38,5 +38,10 @@ namespace Prometheus.WebUI.Helpers
         {
             return int.Parse(ConfigurationManager.AppSettings["PaginationSize"]);
         }
+
+        public static string GetOptionPictureLocation()
+        {
+            return ConfigurationManager.AppSettings["OptionPicsPath"];
+        }
     }
 }

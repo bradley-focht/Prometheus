@@ -661,62 +661,29 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("PartialViews/ShowOptionsTable", model);
 		}
 
-		/// <summary>
-		/// Save a new or updates to an existing service option
-		/// </summary>
-		/// <param name="option"></param>
-		/// <param name="image"></param>
-		/// <returns></returns>
-		[HttpPost]
-		public ActionResult SaveOptionsItem(ServiceOptionDto option, HttpPostedFileBase image = null)
+	    /// <summary>
+	    /// Save a new or updates to an existing service option
+	    /// </summary>
+	    /// <param name="option">service option dto</param>
+	    /// <param name="serviceId">service Id</param>
+	    /// <returns></returns>
+	    [HttpPost]
+		public ActionResult SaveOptionsItem(ServiceOptionDto option, int serviceId)
 		{
             var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
             if (!ModelState.IsValid) /* Server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save option due to invalid data";
-				return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
-			}
-
-			if (image != null)
-			{
-				if (option.Id != 0) //need to deal with updating an existing image
-				{
-					var existingOption = ps.GetServiceOption(option.Id);
-					if (existingOption.Picture != null)
-					{
-						var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());
-							//catch error if key is not in web.config
-						try
-						{
-							System.IO.File.Delete(Server.MapPath(path));
-						}
-						catch (Exception exception)
-						{
-							TempData["MessageType"] = WebMessageType.Failure; //unable to delete, exit at this point
-							TempData["Message"] = $"Failed to delete existing file, error: {exception.Message}";
-							return RedirectToAction("UpdateServiceOption", new {id = option.Id});
-						}
-					}
-				}
-
-				option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
-				option.Picture = Guid.NewGuid();
-
-				try
-				{
-					var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString()); //save file
-					image.SaveAs(Server.MapPath(path));
-				}
-				catch (Exception exception)
-				{
-					TempData["MessageType"] = WebMessageType.Failure;
-					TempData["Message"] = $"Failed to save option, file error: {exception.Message}";
-					return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
-				}
+				return option.Id == 0 ? RedirectToAction("AddServiceOption", new { id = serviceId }) : RedirectToAction("UpdateServiceOption", new { id = option.Id });
 			}
 
 			//save valid service, file is already uploaded		
+	        if (option.Id > 0)      //existing record, need to not save over service catalog info
+	        {
+	            ServiceOptionDto existing = (ServiceOptionDto) ps.GetServiceOption(option.Id);
+	            option = AbbreviatedEntityUpdate.UpdateServiceOption(existing, option);
+	        }
 			ps.ModifyServiceOption(option, option.Id < 1 ? EntityModification.Create : EntityModification.Update);
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"New option {option.Name} saved successfully";
