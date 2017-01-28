@@ -1,0 +1,41 @@
+﻿@model Common.Dto.IServiceDto
+@{
+    ViewBag.Title = "Service Request Maintenance";
+    ViewBag.SubTitle = Model.Name;
+
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>(ViewBag.Title, "ServiceRequestMaintenance/Index"),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "ServiceRequestMaintenance/Index"),
+    };
+    AjaxOptions ajaxOptions = new AjaxOptions();
+    int id = Model.Id;
+}
+
+@section Content {
+    @using (Html.BeginForm("SaveService", "ServiceRequestMaintenance", FormMethod.Post))
+    {
+        @Html.Hidden("Id", Model.Id)
+        @Html.Hidden("Name", Model.Name)
+        <div class="title-div">@ViewBag.SubTitle</div>
+        <div class="panel-div">
+            @Html.Partial("PartialViews/UpdatePublishable", Model)
+
+        </div>
+
+        <div class="flex-container-col">
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Back", "ShowServices", new {id = Model.Id}, new {@class="btn btn-default btn-back"})
+                    <input type="submit" value="Save" class="btn btn-primary"/>
+                </div>
+            </div>
+        </div>
+    }
+}
+
+@section Sidebar
+{}

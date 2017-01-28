@@ -1,0 +1,32 @@
+﻿@model dynamic
+<div class="dd full-width">
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        switch (property.PropertyName)
+        {
+            case "Popularity":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                    <div class="dd-cell">
+                        <div class="input-group spinner" style="max-width: 50px;">
+                            @Html.TextBox(property.PropertyName, property.Model, new {min="0", max="99", @class="form-control numberSelect"})
+
+                            <div class="input-group-btn-vertical">
+                                <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                                <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                break;
+            case "BusinessValue":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                    <div class="dd-cell">@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })</div>
+                </div>
+                break;
+            default:
+                continue;
+        }
+    }
+</div>

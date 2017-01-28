@@ -832,9 +832,13 @@ namespace Prometheus.WebUI.Controllers
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"{service.Name} has been saved";
 
-			//perform the save
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyService(service, EntityModification.Update);
+            //perform the save
+            var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+		    var oldServiceData = ps.GetService(service.Id);         //data updated from ICatalogPublishable interface
+		    service.BusinessValue = oldServiceData.BusinessValue;
+		    service.Popularity = oldServiceData.Popularity;
+
+            ps.ModifyService(service, EntityModification.Update);   //perform the update
 
 			return RedirectToAction("Show", new { section = "General", id = service.Id });
 		}
@@ -1459,6 +1463,12 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Show", new { id, section = "Documents" });
 		}
 
+        /// <summary>
+        /// Show table of documents
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="pageId"></param>
+        /// <returns></returns>
 		public ActionResult ShowServiceDocuments(int id, int pageId = 0)
 		{
 			DocumentsTableModel model = new DocumentsTableModel { ServiceId = id, CurrentPage = pageId };
@@ -1713,6 +1723,11 @@ namespace Prometheus.WebUI.Controllers
 			return View("PartialViews/CategoryDropDown", model);
 		}
 
+        /// <summary>
+        /// Retrieve properly formatted service selection drop down for dependencies
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 		public ActionResult GetServicesDropDown(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
