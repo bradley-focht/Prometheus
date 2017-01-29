@@ -730,12 +730,15 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = "Failed to save category due to invalid data";
 				return RedirectToAction("UpdateOptionCategoryItem", new { id = category.ServiceId });
 			}
-			//save new category
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-
+			//save new category		
 			try
 			{
-				category.Id = ps.ModifyServiceOptionCategory(category, category.Id < 1 ? EntityModification.Create : EntityModification.Update).Id;    //make sure it has the new id if is new
+                var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			    if (category.Id > 0) //need to preserve catalog data on the entity
+			    {
+			        category = AbbreviatedEntityUpdate.UpdateServiceCategory(ps.GetServiceOptionCategory(category.Id), category);
+			    }
+                category.Id = ps.ModifyServiceOptionCategory(category, category.Id < 1 ? EntityModification.Create : EntityModification.Update).Id;    //make sure it has the new id if is new
 			}
 			catch (Exception exception)
 			{
@@ -743,7 +746,6 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = $"Failed to save category, error: {exception.Message}";
 				return RedirectToAction("UpdateOptionCategoryItem", new { id = category.ServiceId });
 			}
-
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully saved {category.Name}";
@@ -801,9 +803,7 @@ namespace Prometheus.WebUI.Controllers
 
             //perform the save
             var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-		    var oldServiceData = ps.GetService(service.Id);         //data updated from ICatalogPublishable interface
-		    service.BusinessValue = oldServiceData.BusinessValue;
-		    service.Popularity = oldServiceData.Popularity;
+		    service = AbbreviatedEntityUpdate.UpdateService(ps.GetService(service.Id), service);         //preserve data updated from ICatalogPublishable interface
 
             ps.ModifyService(service, EntityModification.Update);   //perform the update
 
@@ -1041,7 +1041,11 @@ namespace Prometheus.WebUI.Controllers
 
 			return View("ConfirmDeleteSection", model);
 		}
-
+        /// <summary>
+        /// Delete a Service Measure
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
 		public ActionResult ConfirmDeleteServiceMeasuresItem(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
@@ -1385,9 +1389,7 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Show", new { id = model.ServiceId, section = "Measures" });
 		}
 
-
 		#region Service Documents
-
 		/// <summary>
 		/// Upload and save files if they are present. Always redirects to the Show action.
 		/// </summary>

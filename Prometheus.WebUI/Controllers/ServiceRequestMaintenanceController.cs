@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
+using Common.Exceptions;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
@@ -61,6 +62,17 @@ namespace Prometheus.WebUI.Controllers
         }
 
         /// <summary>
+        /// Return view of packages
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult ShowPackages(int id = 0)
+        {
+            return View();
+        }
+
+
+        /// <summary>
         /// Editor to update changes to Service
         /// </summary>
         /// <param name="id"></param>
@@ -103,8 +115,7 @@ namespace Prometheus.WebUI.Controllers
             {
                 _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
 
-                newService = _ps.GetService(service.Id);
-                newService.BusinessValue = service.BusinessValue;
+                newService = AbbreviatedEntityUpdate.UpdateService(service, _ps.GetService(service.Id));    //preserve service design documentation
                 _ps.ModifyService(newService, EntityModification.Update);
             }
             catch(Exception exception)
@@ -125,7 +136,6 @@ namespace Prometheus.WebUI.Controllers
         /// Save updates to an option
         /// </summary>
         /// <param name="option"></param>
-        /// <param name="serviceId"></param>
         /// <param name="image"></param>
         /// <returns></returns>
         [HttpPost]
@@ -160,19 +170,51 @@ namespace Prometheus.WebUI.Controllers
                         option.Picture.ToString()); //save file
                     image.SaveAs(Server.MapPath(path));
                 }
+
                 catch (Exception exception)
                 {
                     TempData["MessageType"] = WebMessageType.Failure;
-                    TempData["Message"] = $"Failed to save option, file error: {exception.Message}";
-                    return RedirectToAction("UpdateServiceOption", new { id =option.Id });
-                        
+                    TempData["Message"] = $"Failed to save file, error: {exception.Message}";
+                    return RedirectToAction("UpdateServiceOption", new { id =option.Id });                     
                 }
             }
-            existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
-            _ps.ModifyServiceOption(existingOption, EntityModification.Update);
+            try
+            {
+                existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
+                _ps.ModifyServiceOption(existingOption, EntityModification.Update);
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save option, error: {exception.Message}";
+                return RedirectToAction("ShowServiceOption", new { id = option.Id });
+            }
 
             return RedirectToAction("ShowServiceOption", new {id = option.Id});
             
+        }
+
+        /// <summary>
+        /// Save updates to category
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
+        public ActionResult SaveServiceCategory(ServiceCategoryAbbreviatedModel category)
+        {
+            _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+            try
+            {
+                var existingCategory = (ServiceOptionCategoryDto) _ps.GetServiceOptionCategory(category.Id);//category to amend
+                existingCategory = AbbreviatedEntityUpdate.UpdateServiceCategory(category, existingCategory);
+                _ps.ModifyServiceOptionCategory(existingCategory, EntityModification.Update);
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save category, error: {exception.Message}";
+                return RedirectToAction("UpdateServiceCategory", new { id = category.Id });
+            }
+            return RedirectToAction("ShowOptionCategory", new {id = category.Id});
         }
 
         /// <summary>
@@ -199,12 +241,40 @@ namespace Prometheus.WebUI.Controllers
             return PartialView("PartialViews/GetServiceNames", model);
         }
 
+        /// <summary>
+        /// Create list of packages
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ChildActionOnly]
+        public ActionResult GetPackageNames(int id)
+        {
+            LinkListModel model = new LinkListModel {AddAction = "AddServicePackage"};
+            return View("PartialViews/ServicePackageList", model);
+        }
+
+        /// <summary>
+        /// show details of an option category
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult ShowOptionCategory(int id)
         {
+            var model = new ServiceRequestCategoryModel();
             var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
-            var service = ps.GetServiceOptionCategory(id);
 
-            return View("ShowServiceOptionCategory", service);
+            try
+            {
+                model.Category = ps.GetServiceOptionCategory(id);
+                model.ServiceId = model.Category.ServiceId;
+                model.ServiceName = ps.GetService(model.ServiceId).Name;
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to retrieve category {exception.Message}";
+            }
+            return View("ShowServiceOptionCategory", model);
         }
 
         /// <summary>
@@ -233,6 +303,11 @@ namespace Prometheus.WebUI.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// update service option view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult UpdateServiceOption(int id)
         {
             ServiceRequestOptionModel model = new ServiceRequestOptionModel();
@@ -248,12 +323,28 @@ namespace Prometheus.WebUI.Controllers
             {
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = exception.Message;
-
-                return View(model);
             }
             return View(model);
         }
 
+        public ActionResult UpdateServiceCategory(int id)
+        {
+            ServiceRequestCategoryModel model = new ServiceRequestCategoryModel();
+            var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+            try
+            {
+                model.Category = ps.GetServiceOptionCategory(id);                 //get data for back links
+                model.ServiceName = ps.GetService(model.Category.ServiceId).Name;
+                model.ServiceId = model.Category.ServiceId;
+
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = exception.Message;
+            }
+            return View(model);
+        }
 
         /// <summary>
         /// Returns View to add form of corresponding type

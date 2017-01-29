@@ -6,6 +6,62 @@ namespace Prometheus.WebUI.Helpers
     public class AbbreviatedEntityUpdate
     {
         /// <summary>
+        /// preserve catalogable attributes
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static ServiceDto UpdateService(ServiceAbbreviatedModel src, IServiceDto target)
+        {
+            target.BusinessValue = src.BusinessValue;
+            target.Popularity = src.Popularity;
+
+            return (ServiceDto)target;
+        }
+
+        /// <summary>
+        /// preserve catalogable attributes
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static ServiceDto UpdateService(IServiceDto src, IServiceDto target)
+        {
+            target.BusinessValue = src.BusinessValue;
+            target.Popularity = src.Popularity;
+
+            return (ServiceDto)target;
+        }
+
+        /// <summary>
+        /// preserve catalogable attributes
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static ServiceOptionCategoryDto UpdateServiceCategory(ServiceCategoryAbbreviatedModel src, IServiceOptionCategoryDto target)
+        {
+            target.BusinessValue = src.BusinessValue;
+            target.Popularity = src.Popularity;
+
+            return (ServiceOptionCategoryDto)target;
+        }
+
+        /// <summary>
+        /// preserve catalogable attributes
+        /// </summary>
+        /// <param name="src"></param>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public static ServiceOptionCategoryDto UpdateServiceCategory(IServiceOptionCategoryDto src, IServiceOptionCategoryDto target)
+        {
+            target.BusinessValue = src.BusinessValue;
+            target.Popularity = src.Popularity;
+
+            return (ServiceOptionCategoryDto)target;
+        }
+
+        /// <summary>
         /// transfer new data onto an existing entity
         /// </summary>
         /// <param name="src"></param>
