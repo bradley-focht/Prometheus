@@ -1,0 +1,44 @@
+﻿@model Prometheus.WebUI.Models.ServiceRequestMaintenance.PackageModel
+@if (Model != null)
+{
+    <div class="dd">
+        <div class="dd-row">
+            <div class="dt-cell">Name</div>
+            <div class="dd-cell">
+                @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+                @Html.ValidationMessage("Name")
+            </div>
+    </div>
+    <div class="dd-row">
+        <div class="dt-cell"><label for="Associations">Associations</label></div>
+        <div class="dd-cell">
+            <select id="Associations" name="Associations" placeholder="Add Associations..." multiple="multiple">
+                <option value="">Add Associations...</option>
+                @if (Model.Services != null)
+                {
+                    foreach (var service in Model.Services)
+                    {
+                        <optgroup label="@(service.Name)">
+                            @if (service.ServiceOptionCategories != null)
+                            {
+                                foreach (var category in service.ServiceOptionCategories)
+                                {
+                                    <option value="@(category.Id)">@category.Name</option>
+                                }
+                            }
+                        </optgroup>
+                    }
+                }
+            </select>
+            @Html.ValidationMessage("Name")
+            <script language="javascript" type="text/javascript">
+            $('#Associations').selectize({
+
+            });
+            </script>
+        </div>
+
+    </div>
+</div>
+}
+

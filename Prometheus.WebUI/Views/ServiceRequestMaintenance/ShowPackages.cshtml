@@ -1,4 +1,6 @@
-﻿
+﻿@model Common.Dto.ServiceRequestPackageDto
+
+
 @{
     ViewBag.Title = "Service Request Maintenance";
     ViewBag.SubTitle = "Service Packages";
@@ -14,11 +16,29 @@
 }
 
 @section Content
-{}
+{
+    @if (Model.Id > 0)
+    {
+        <div class="title-div">@ViewBag.SubTitle</div>
+        <div class="panel-div">
+            @Html.Partial("PartialViews/PackageViewer", Model)
+        </div>
+
+        <div class="flex-container-col">
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Update", "UpdatePackage", new {id = Model.Id}, new {@class="btn btn-primary"})
+                    @Html.ActionLink("Delete", "ConfirmDeletePackage", new {id = Model.Id}, new {@class = "btn btn-danger"})
+                </div>
+            </div>
+        </div>
+    }
+
+}
 
 
 @section Sidebar
 {
-    @Html.Action("GetPackageNames")
+    @Html.Action("GetPackageNames", new {id = Model.Id })
 }
 

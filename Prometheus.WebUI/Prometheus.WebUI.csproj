@@ -352,6 +352,7 @@
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ConfirmDeleteModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\PackageModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceAbbreviatedModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceCategoryAbbreviatedModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceOptionAbbreviatedModel.cs" />
@@ -506,7 +507,11 @@
     <Content Include="Views\ServiceRequestMaintenance\UpdateServiceOption.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\UpdateServiceCategory.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowPackages.cshtml" />
-    <Content Include="Views\ServiceRequestMaintenance\PartialViews\ServicePackageList.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\PackageEditor.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\PackageViewer.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\UpdatePackage.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\AddPackage.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ConfirmDeletePackage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

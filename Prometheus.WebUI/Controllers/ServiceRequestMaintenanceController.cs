@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
-using Common.Exceptions;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
@@ -48,10 +47,7 @@ namespace Prometheus.WebUI.Controllers
         {
             IServiceDto model;
 
-            if (id == 0)
-            {
-                model = new ServiceDto();
-            }
+            if (id == 0) { model = new ServiceDto(); }  //return no selected item
             else
             {
                 _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
@@ -68,9 +64,45 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult ShowPackages(int id = 0)
         {
+            ServiceRequestPackageDto srp = new ServiceRequestPackageDto();
+            return View(srp);
+        }
+
+        /// <summary>
+        /// Return view to update a package
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult UpdatePackage(int id)
+        {
             return View();
         }
 
+        /// <summary>
+        /// Editor to add a new package
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult AddPackage()
+        {
+            PackageModel model = new PackageModel();
+            try
+            {
+                _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+                model.Services = (from s in _ps.GetServices() select (ServiceDto) s).ToList();
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"failed to obtain services, error: {exception.Message}";
+            }
+
+            return View(model);
+        }
+
+        public ActionResult ConfirmDeletePackage(int id)
+        {
+            return View();
+        }
 
         /// <summary>
         /// Editor to update changes to Service
@@ -249,8 +281,15 @@ namespace Prometheus.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult GetPackageNames(int id)
         {
-            LinkListModel model = new LinkListModel {AddAction = "AddServicePackage"};
-            return View("PartialViews/ServicePackageList", model);
+            LinkListModel model = new LinkListModel
+            {
+                AddAction = "AddPackage",
+                Controller = "ServiceRequestMaintenanceController",
+                Title = "Packages",
+                SelectAction = "ShowServicePackages",
+                ListItems = new List<Tuple<int, string>>()
+            };
+            return View("PartialViews/_LinkList", model);
         }
 
         /// <summary>
@@ -327,6 +366,11 @@ namespace Prometheus.WebUI.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Update catalog attributes of a category
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult UpdateServiceCategory(int id)
         {
             ServiceRequestCategoryModel model = new ServiceRequestCategoryModel();
