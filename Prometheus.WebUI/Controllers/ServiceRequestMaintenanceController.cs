@@ -413,11 +413,11 @@ namespace Prometheus.WebUI.Controllers
                     input = new SelectionInputDto { Delimiter = "," };  //set the default to comma
                     break;
                 default:                                                //need a default
-                    input = null;
+                    input = null;                                       //null is ok, razor will handle
                     break;
             }
 
-            input.ServiceOptionId = id;
+            input.ServiceOptionId = id; 
 
             var model = new UserInputModel { InputType = type, OptionId = id, OptionName = option.Name, UserInput = input };
             model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).Id).Name;

@@ -4,12 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Common.Dto;
-using Common.Enums;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Helpers
 {
+    /// <summary>
+    /// Random tasks to help with the Service Index class
+    /// </summary>
     public class ServiceIndexHelper
     {
         private IEnumerable<IServiceDto> _services;
@@ -86,7 +88,7 @@ namespace Prometheus.WebUI.Helpers
             IEnumerable<Tuple<int, string>> serviceOwners = (from s in _services
                                                              where s.ServiceOwner != null
                                                              select new Tuple<int, string>(0, s.ServiceOwner)).Distinct();
-            if (serviceOwners.Any())
+        /*    if (serviceOwners.Any())  //removing feature from this version as service owner type is still unknown
             {
                 try
                 {
@@ -96,7 +98,7 @@ namespace Prometheus.WebUI.Helpers
                             ));
                 }
                  catch { } //just going to skip "problem items" for now. You know them by their null values....
-            }
+            } */
 
             //Add Service Catalog Types
             menuList.Add(new Tuple<string, string, IEnumerable<Tuple<int, string>>>("Catalog", "Catalog",
