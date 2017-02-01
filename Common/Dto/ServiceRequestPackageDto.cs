@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Common.Dto
 {
 	public class ServiceRequestPackageDto : IServiceRequestPackageDto
-    {
+	{
 
 		public int Id { get; set; }
 
@@ -15,6 +15,6 @@ namespace Common.Dto
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-		public virtual ICollection<ServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
+		public virtual ICollection<IServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
 	}
 }

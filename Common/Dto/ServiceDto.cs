@@ -1,6 +1,5 @@
 ﻿using Common.Enums.Entities;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
@@ -116,26 +115,26 @@ namespace Common.Dto
 		/// </summary>
 		public ICollection<IServiceProcessDto> ServiceProcesses { get; set; }
 
-	    /// <summary>
-	    /// What you can get when you order this service
-	    /// </summary>
-	    public virtual ICollection<IServiceOptionDto> ServiceOptions
-	    {
-	        get
-	        {
-                ICollection<IServiceOptionDto> options = new List<IServiceOptionDto>();
-	            foreach (var cat in ServiceOptionCategories)
-	            {
-	                foreach (var opt in cat.ServiceOptions)
-	                {
-	                    options.Add(opt);
-	                }
-	            }
-	            return options;
-	        }
+		/// <summary>
+		/// What you can get when you order this service
+		/// </summary>
+		public virtual ICollection<IServiceOptionDto> ServiceOptions
+		{
+			get
+			{
+				ICollection<IServiceOptionDto> options = new List<IServiceOptionDto>();
+				foreach (var cat in ServiceOptionCategories)
+				{
+					foreach (var opt in cat.ServiceOptions)
+					{
+						options.Add(opt);
+					}
+				}
+				return options;
+			}
 
-	        set { }
-	    }
+			set { }
+		}
 
 		/// <summary>
 		/// Other services that this service depends on

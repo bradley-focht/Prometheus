@@ -49,6 +49,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\ServiceRequestOptionScriptedSelectionInputDto.cs" />
+    <Compile Include="Dto\IServiceRequestOptionInputDto.cs" />
+    <Compile Include="Dto\IServiceRequestOptionScriptedSelectionInputDto.cs" />
+    <Compile Include="Dto\IServiceRequestOptionSelectionInput.cs" />
+    <Compile Include="Dto\IServiceRequestOptionTextInputDto.cs" />
+    <Compile Include="Dto\ServiceRequestOptionDto.cs" />
+    <Compile Include="Dto\IServiceRequestOptionDto.cs" />
+    <Compile Include="Dto\ServiceRequestDto.cs" />
     <Compile Include="Dto\ICreatedEntityDto.cs" />
     <Compile Include="Dto\ICatalogPublishable.cs" />
     <Compile Include="Dto\ILifecycleStatusDto.cs" />
@@ -67,6 +75,7 @@
     <Compile Include="Dto\IServiceMeasureDto.cs" />
     <Compile Include="Dto\IServiceProcessDto.cs" />
     <Compile Include="Dto\IServiceOptionDto.cs" />
+    <Compile Include="Dto\IServiceRequestDto.cs" />
     <Compile Include="Dto\IServiceRequestPackageDto.cs" />
     <Compile Include="Dto\IServiceSwotDto.cs" />
     <Compile Include="Dto\IServiceWorkUnitDto.cs" />
@@ -76,7 +85,7 @@
     <Compile Include="Dto\IUserDto.cs" />
     <Compile Include="Dto\IUserInput.cs" />
     <Compile Include="Dto\LifecycleStatusDto.cs" />
-    <Compile Include="Dto\OptionCategoryDto.cs" />
+    <Compile Include="Dto\ServiceOptionCategoryDto.cs" />
     <Compile Include="Dto\PriceDto.cs" />
     <Compile Include="Dto\RoleDto.cs" />
     <Compile Include="Dto\ScriptedSelectionInputDto.cs" />
@@ -89,6 +98,8 @@
     <Compile Include="Dto\ServiceMeasureDto.cs" />
     <Compile Include="Dto\ServiceProcessDto.cs" />
     <Compile Include="Dto\ServiceOptionDto.cs" />
+    <Compile Include="Dto\ServiceRequestOptionSelectionInputDto.cs" />
+    <Compile Include="Dto\ServiceRequestOptionTextInputDto.cs" />
     <Compile Include="Dto\ServiceRequestPackageDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
