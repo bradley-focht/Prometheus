@@ -1257,21 +1257,23 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult DeleteServiceOption(DeleteSectionItemModel model)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+		    int serviceId = 0;
 			try
 			{
 				ps.ModifyServiceOption(new ServiceOptionDto { Id = model.Id }, EntityModification.Delete);
+			    serviceId = ps.GetServiceOptionCategory(model.Id).ServiceId;
 			}
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to delete {model.FriendlyName}, error: {exception.Message}";
 
-				return RedirectToAction("Show", new { id = model.ServiceId, section = "Options" });
+				return RedirectToAction("Show", new { id = serviceId, section = "Options" });
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully deleted {model.FriendlyName}";
 
-			return RedirectToAction("Show", new { id = model.ServiceId, section = "Options" });
+			return RedirectToAction("Show", new { id = serviceId, section = "Options" });
 		}
 
 		/// <summary>

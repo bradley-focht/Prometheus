@@ -36,7 +36,7 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="userLogin">Contains user credentials</param>
         /// <returns></returns>
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public ActionResult Login(UserAccountModel userLogin)
         {
             if (!ModelState.IsValid)

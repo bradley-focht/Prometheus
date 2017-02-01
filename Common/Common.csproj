@@ -51,7 +51,6 @@
   <ItemGroup>
     <Compile Include="Dto\ICreatedEntityDto.cs" />
     <Compile Include="Dto\ICatalogPublishable.cs" />
-    <Compile Include="Dto\IOffering.cs" />
     <Compile Include="Dto\ILifecycleStatusDto.cs" />
     <Compile Include="Dto\IServiceOptionCategoryDto.cs" />
     <Compile Include="Dto\IPriceDto.cs" />

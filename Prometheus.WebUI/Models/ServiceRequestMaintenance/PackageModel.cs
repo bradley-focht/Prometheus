@@ -10,6 +10,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
     {
         [Required(ErrorMessage = "Name is Required")]
         public string Name { get; set; }
+        [Required(ErrorMessage = "At least one association is required")]
         public ICollection<int> Associations { get; set; }
         public ICollection<ServiceDto> Services { get; set; }
     }

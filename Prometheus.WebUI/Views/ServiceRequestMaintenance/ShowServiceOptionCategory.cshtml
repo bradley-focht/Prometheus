@@ -26,21 +26,24 @@
     <div class="panel-footer">
         <div class="float-right-div">
             @Html.ActionLink("Back", "ShowServices", new {id = Model.ServiceId}, new {@class = "btn btn-default btn-back"})
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Add User Input <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right">
+                    <li>@Html.ActionLink("Text", "AddUserInput", new { id = Model.Category.Id, type = UserInputTypes.Text })</li>
+                    <li>@Html.ActionLink("Selection", "AddUserInput", new { id = Model.Category.Id, type = UserInputTypes.Selection })</li>
+                    <li>@Html.ActionLink("Scripted Selection", "AddUserInput", new { id = Model.Category.Id, type = UserInputTypes.ScriptedSelection })</li>
+                </ul>
+            </div>
+
             @Html.ActionLink("Update", "UpdateServiceCategory", new {id = Model.Category.Id}, new {@class="btn btn-primary"})
         </div>
     </div>
 </div>
 
-    <div class="btn-group">
-        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Add User Input <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu pull-right">
-            <li>@Html.ActionLink("Text", "AddUserInput", new {id = Model.Category.Id, type = UserInputTypes.Text})</li>
-            <li>@Html.ActionLink("Selection", "AddUserInput", new {id = Model.Category.Id, type = UserInputTypes.Selection})</li>
-            <li>@Html.ActionLink("Scripted Selection", "AddUserInput", new {id = Model.Category.Id, type = UserInputTypes.ScriptedSelection})</li>
-        </ul>
-    </div>
+
 }
 
 

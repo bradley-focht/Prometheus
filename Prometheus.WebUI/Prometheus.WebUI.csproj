@@ -319,6 +319,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ScriptController.cs" />
     <Compile Include="Controllers\ServiceCatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
@@ -524,6 +525,7 @@
     <Folder Include="Content\Selectize\js\standalone\" />
     <Folder Include="ServiceDocs\" />
     <Folder Include="ServiceOptionPics\" />
+    <Folder Include="Views\Script\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

@@ -328,8 +328,8 @@ namespace Prometheus.WebUI.Controllers
             try
             {
                 model.Option = ps.GetServiceOption(id);                 //get data for back links
-                model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Name;
-                model.ServiceId = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Id;
+                model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId).Name;
+                model.ServiceId = ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId;
 
             }
             catch (Exception exception)
@@ -354,8 +354,8 @@ namespace Prometheus.WebUI.Controllers
             try
             {
                 model.Option = ps.GetServiceOption(id);                 //get data for back links
-                model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Name;
-                model.ServiceId = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).Id).Id;
+                model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId).Name;
+                model.ServiceId = ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId;
 
             }
             catch (Exception exception)

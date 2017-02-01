@@ -128,12 +128,6 @@ namespace DataService
                 Utilization = src.Utilization
             };
 
-			if (src.TextInputs != null)                                 //deal with text inputs
-			{
-				serviceOption.TextInputs = new List<TextInput>();
-				foreach (var t in src.TextInputs)
-					serviceOption.TextInputs.Add(MapDtoToTextInput(t));
-			}
 			return serviceOption;
 		}
 		public static Service MapDtoToService(IServiceDto src)
