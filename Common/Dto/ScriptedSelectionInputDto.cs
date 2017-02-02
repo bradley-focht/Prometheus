@@ -26,11 +26,6 @@ namespace Common.Dto
 		public int Id { get; set; }
 
 		/// <summary>
-		/// FK
-		/// </summary>
-		public int ServiceOptionId { get; set; }
-
-		/// <summary>
 		/// User friendly name displayed
 		/// </summary>
 		[Display(Order=1, Name = "Display Name")]

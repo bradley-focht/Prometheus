@@ -668,7 +668,6 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
-				ServiceOptionId = src.ServiceOptionId,
 				MultiLine = src.MultiLine,
 				HelpToolTip = src.HelpToolTip
 			});
@@ -688,7 +687,6 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
-				ServiceOptionId = src.ServiceOptionId,
 				MultiLine = src.MultiLine,
 				HelpToolTip = src.HelpToolTip
 			};
@@ -705,7 +703,6 @@ namespace DataService
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				SelectItems = src.SelectItems,
-				ServiceOptionId = src.ServiceOptionId
 			});
 
 			return input.Value;
@@ -727,7 +724,6 @@ namespace DataService
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				SelectItems = src.SelectItems,
-				ServiceOptionId = src.ServiceOptionId
 			};
 		}
 
@@ -742,7 +738,6 @@ namespace DataService
 				NumberToSelect = src.NumberToSelect,
 				ExecutionEnabled = src.ExecutionEnabled,
 				Script = src.Script,
-				ServiceOptionId = src.ServiceOptionId
 			});
 
 			return input.Value;
@@ -764,7 +759,6 @@ namespace DataService
 				NumberToSelect = src.NumberToSelect,
 				ExecutionEnabled = src.ExecutionEnabled,
 				Script = src.Script,
-				ServiceOptionId = src.ServiceOptionId
 			};
 		}
 		#endregion

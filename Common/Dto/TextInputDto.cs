@@ -11,12 +11,6 @@ namespace Common.Dto
 		[HiddenInput]
 		public int Id { get; set; }
 		/// <summary>
-		/// FK
-		/// </summary>
-		[HiddenInput]
-		public int ServiceOptionId { get; set; }
-
-		/// <summary>
 		/// Name as seen in the UI
 		/// </summary>
 		[Display(Name="Display Name")]
