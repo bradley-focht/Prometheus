@@ -2,6 +2,7 @@
 using DataService;
 using DataService.DataAccessLayer;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Common.Enums.Entities;
@@ -36,7 +37,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto textInput, EntityModification modification)
+	    public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto textInput, EntityModification modification)
 		{
 			return base.ModifyEntity(textInput, modification);
 		}

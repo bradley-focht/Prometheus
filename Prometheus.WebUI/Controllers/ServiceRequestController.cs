@@ -16,7 +16,7 @@ namespace Prometheus.WebUI.Controllers
             ServiceRequestModel model = new ServiceRequestModel();
 
                 model.Package = new ServiceRequestPackageDto();
-                model.Package.ServiceOptionCategories = new List<ServiceOptionCategoryDto>
+                model.Package.ServiceOptionCategories = new List<IServiceOptionCategoryDto>
                 {
                     new ServiceOptionCategoryDto
                     {
@@ -54,7 +54,7 @@ namespace Prometheus.WebUI.Controllers
                 return View("ServiceRequest", model);
             }
 	        model.Package = new ServiceRequestPackageDto();
-            model.Package.ServiceOptionCategories = new List<ServiceOptionCategoryDto>
+            model.Package.ServiceOptionCategories = new List<IServiceOptionCategoryDto>
                 {
                     new ServiceOptionCategoryDto
                     {

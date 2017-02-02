@@ -3,6 +3,7 @@ using Common.Enums;
 using DataService;
 using DataService.DataAccessLayer;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Common.Enums.Entities;
@@ -37,7 +38,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
+	    public IEnumerable<ITextInputDto> GetTextInputs()
+	    {
+	        throw new NotImplementedException();
+	    }
+
+	    public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
 		{
 			return base.ModifyEntity(textInput, modification);
 		}

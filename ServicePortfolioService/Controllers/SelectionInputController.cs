@@ -1,8 +1,8 @@
 ﻿using Common.Dto;
-using Common.Enums;
 using DataService;
 using DataService.DataAccessLayer;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Common.Enums.Entities;
@@ -37,7 +37,19 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public ISelectionInputDto ModifySelectionInput(ISelectionInputDto textInput, EntityModification modification)
+	    public IEnumerable<ISelectionInputDto> GetSelectionInputs()
+	    {
+	        using (var context = new PrometheusContext())
+	        {
+	            var inputs = context.SelectionInputs;
+	            foreach (var input in inputs)
+	            {
+	                yield return ManualMapper.MapSelectionInputToDto(input);
+	            }
+	        }
+	    }
+
+	    public ISelectionInputDto ModifySelectionInput(ISelectionInputDto textInput, EntityModification modification)
 		{
 			return base.ModifyEntity(textInput, modification);
 		}

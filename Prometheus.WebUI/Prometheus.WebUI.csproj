@@ -360,6 +360,7 @@
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestCategoryModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\UserInputsLinkListModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestNavigationModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
@@ -513,6 +514,7 @@
     <Content Include="Views\ServiceRequestMaintenance\UpdatePackage.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\AddPackage.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ConfirmDeletePackage.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputsLinkList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

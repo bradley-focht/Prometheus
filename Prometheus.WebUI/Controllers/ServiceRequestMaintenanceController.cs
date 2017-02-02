@@ -390,16 +390,16 @@ namespace Prometheus.WebUI.Controllers
             return View(model);
         }
 
+
         /// <summary>
         /// Returns View to add form of corresponding type
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult AddUserInput(UserInputTypes type, int id)
+        public ActionResult AddUserInput(UserInputTypes type)
         {
             var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
-            var option = ps.GetServiceOption(id);
+            UserInputModel model = new UserInputModel();
             IUserInput input;
             switch (type)
             {
@@ -417,11 +417,8 @@ namespace Prometheus.WebUI.Controllers
                     break;
             }
 
-            input.ServiceOptionId = id; 
-
-            var model = new UserInputModel { InputType = type, OptionId = id, OptionName = option.Name, UserInput = input };
-            model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).Id).Name;
-            model.ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId;
+            model.InputType = type;
+            model.UserInput = input;
 
             return View("EditUserInput", model);
         }
@@ -570,11 +567,7 @@ namespace Prometheus.WebUI.Controllers
             UserInputModel model = new UserInputModel
             {
                 InputType = type,
-                OptionId = id,
-                OptionName = option.Name,
-                UserInput = input,
-                ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId,
-                ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId).Name
+
             };
             return View("EditUserInput", model);
         }
@@ -635,39 +628,79 @@ namespace Prometheus.WebUI.Controllers
         }
 
         /// <summary>
+        /// Returns a link list of user inputs
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [ChildActionOnly]
+        public ActionResult GetUserInputs(UserInputTypes type = UserInputTypes.Text, int id = 0)
+        {
+            UserInputsLinkListModel itemList = new UserInputsLinkListModel {SelectedInputId = id, SelectedInputType = type};
+            _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+
+            List<Tuple<UserInputTypes, int, string>> items = new List<Tuple<UserInputTypes, int, string>>();
+            try
+            {
+                if (_ps.GetSelectionInputs() != null )
+                    items.AddRange(from s in _ps.GetSelectionInputs() select new Tuple<UserInputTypes, int, string>(UserInputTypes.Selection, s.Id, s.DisplayName));
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed retrieving user inputs {exception.Message}";
+            }
+            itemList.Items = items;
+
+            return View("PartialViews/UserInputsLinkList", itemList);
+        }
+
+
+        /// <summary>
         /// Show details of a user input
         /// </summary>
         /// <param name="type">input type</param>
         /// <param name="id">id of input</param>
         /// <returns></returns>
-        public ActionResult ShowUserInput(UserInputTypes type, int id)
+        public ActionResult ShowUserInput(UserInputTypes type = UserInputTypes.Text, int id = 0)
         {
             var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
             var model = new UserInputModel { InputType = type };
             IUserInput input;
 
-            switch (type)
+            if (id > 0)
             {
-                case UserInputTypes.Text:
-                    input = ps.GetTextInput(id);
-                    break;
-                case UserInputTypes.ScriptedSelection:
-                    input = ps.GetScriptedSelectionInput(id);
-                    break;
-                case UserInputTypes.Selection:
-                    input = ps.GetSelectionInput(id);
+                try
+                {
+                    switch (type)
+                    {
+                        case UserInputTypes.Text:
+                            input = ps.GetTextInput(id);
+                            break;
+                        case UserInputTypes.ScriptedSelection:
+                            input = ps.GetScriptedSelectionInput(id);
+                            break;
+                        case UserInputTypes.Selection:
+                            input = ps.GetSelectionInput(id);
 
-                    break;
-                default: //need a default
-                    input = new TextInputDto();
-                    break;
+                            break;
+                        default: //need a default
+                            input = new TextInputDto();
+                            break;
+                    }
+                }
+                catch(Exception exception)
+                {
+                    TempData["MessageType"] = WebMessageType.Failure;
+                    TempData["Message"] = $"Failed to retreive user input, error: {exception.Message}";
+                    input = new TextInputDto();     //some default where id = 0
+                }
+            }
+            else
+            {
+                input = new TextInputDto();     //some default where id = 0
             }
             //input.ServiceOptionId = id;
-            var option = ps.GetServiceOption(input.ServiceOptionId);
-            model.ServiceId = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId;
-            model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId).Name;
-            model.OptionId = option.Id;
-            model.OptionName = option.Name;
             model.UserInput = input;
 
             return View("ShowUserInput", model);
