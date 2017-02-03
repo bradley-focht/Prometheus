@@ -27,6 +27,7 @@ namespace ServicePortfolioService
 		private readonly ITextInputController _textInputController;
 		private readonly ISelectionInputController _selectionInputController;
 		private readonly IScriptedSelectionController _scriptedSelectionController;
+		private readonly IServiceRequestPackageController _serviceRequestPackageController;
 
 
 
@@ -51,7 +52,8 @@ namespace ServicePortfolioService
 			IServiceContractController serviceContractController, IServiceWorkUnitController serviceWorkUnitController,
 			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController,
 			IServiceOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController,
-			ITextInputController textInputController, ISelectionInputController selectionInputController, IScriptedSelectionController scriptedSelectionController)
+			ITextInputController textInputController, ISelectionInputController selectionInputController,
+			IScriptedSelectionController scriptedSelectionController, IServiceRequestPackageController serviceRequestPackageController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
@@ -69,6 +71,7 @@ namespace ServicePortfolioService
 			_textInputController = textInputController;
 			_selectionInputController = selectionInputController;
 			_scriptedSelectionController = scriptedSelectionController;
+			_serviceRequestPackageController = serviceRequestPackageController;
 
 			UserId = userId;
 		}
@@ -86,6 +89,7 @@ namespace ServicePortfolioService
 			_serviceWorkUnitController.UserId = userId;
 			_serviceMeasureController.UserId = userId;
 			_serviceOptionController.UserId = userId;
+			_serviceRequestPackageController.UserId = userId;
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
@@ -284,12 +288,12 @@ namespace ServicePortfolioService
 			return _textInputController.GetTextInput(textInputId);
 		}
 
-	    public IEnumerable<ITextInputDto> GetTextInputs()
-	    {
-            return _textInputController.GetTextInputs();
-        }
+		public IEnumerable<ITextInputDto> GetTextInputs()
+		{
+			return _textInputController.GetTextInputs();
+		}
 
-	    public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
+		public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
 		{
 			return _textInputController.ModifyTextInput(textInput, modification);
 		}
@@ -299,12 +303,12 @@ namespace ServicePortfolioService
 			return _selectionInputController.GetSelectionInput(selectionInputId);
 		}
 
-	    public IEnumerable<ISelectionInputDto> GetSelectionInputs()
-	    {
-            return _selectionInputController.GetSelectionInputs();
-        }
+		public IEnumerable<ISelectionInputDto> GetSelectionInputs()
+		{
+			return _selectionInputController.GetSelectionInputs();
+		}
 
-	    public ISelectionInputDto ModifySelectionInput(ISelectionInputDto selectionInput, EntityModification modification)
+		public ISelectionInputDto ModifySelectionInput(ISelectionInputDto selectionInput, EntityModification modification)
 		{
 			return _selectionInputController.ModifySelectionInput(selectionInput, modification);
 		}
@@ -314,15 +318,36 @@ namespace ServicePortfolioService
 			return _scriptedSelectionController.GetScriptedSelectionInput(scriptedSelection);
 		}
 
-	    public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs()
-	    {
-            return _scriptedSelectionController.GetScriptedSelectionInputs();
-        }
+		public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs()
+		{
+			return _scriptedSelectionController.GetScriptedSelectionInputs();
+		}
 
-	    public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto scriptedSelection,
+		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto scriptedSelection,
 			EntityModification modification)
 		{
 			return _scriptedSelectionController.ModifyScriptedSelectionInput(scriptedSelection, modification);
+		}
+
+		public IServiceRequestPackageDto GetServiceRequestPackage(int servicePackageId)
+		{
+			return _serviceRequestPackageController.GetServiceRequestPackage(servicePackageId);
+		}
+
+		public IServiceRequestPackageDto ModifyServiceRequestPackage(IServiceRequestPackageDto servicePackage,
+			EntityModification modification)
+		{
+			return _serviceRequestPackageController.ModifyServiceRequestPackage(servicePackage, modification);
+		}
+
+		public IEnumerable<IServiceRequestPackageDto> AllServiceRequestPackages
+		{
+			get { return _serviceRequestPackageController.AllServiceRequestPackages; }
+		}
+
+		public IServiceRequestPackageDto GetServiceRequestPackageForServiceOption(int serviceOptionId)
+		{
+			return _serviceRequestPackageController.GetServiceRequestPackageForServiceOption(serviceOptionId);
 		}
 	}
 }

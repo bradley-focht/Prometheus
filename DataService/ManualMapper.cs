@@ -49,23 +49,23 @@ namespace DataService
 
 			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(() => new ServiceOptionDto
 			{
-                BusinessValue = src.BusinessValue,
-                Cost = src.Cost,
-                Description = src.Description,
-                Details = src.Details,
-                Id = src.Id,
-                Included = src.Included,
-                Name = src.Name,
-                Procurement = src.Procurement,
-                Picture = src.Picture,
-                PriceMonthly = src.PriceMonthly,
-                PriceUpFront = src.PriceUpFront,
-                PictureMimeType = src.PictureMimeType,
-                Popularity = src.Popularity,
-                ServiceOptionCategoryId = src.ServiceOptionCategoryId,
-                Utilization = src.Utilization,
+				BusinessValue = src.BusinessValue,
+				Cost = src.Cost,
+				Description = src.Description,
+				Details = src.Details,
+				Id = src.Id,
+				Included = src.Included,
+				Name = src.Name,
+				Procurement = src.Procurement,
+				Picture = src.Picture,
+				PriceMonthly = src.PriceMonthly,
+				PriceUpFront = src.PriceUpFront,
+				PictureMimeType = src.PictureMimeType,
+				Popularity = src.Popularity,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
+				Utilization = src.Utilization,
 
-                TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
+				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
 				ScriptedSelectionInputs = new List<IScriptedSelectionInputDto>()
 			});
@@ -111,22 +111,22 @@ namespace DataService
 
 			ServiceOption serviceOption = new ServiceOption
 			{
-                BusinessValue = src.BusinessValue,
-                Cost = src.Cost,
-                Description = src.Description,
-                Details = src.Details,
-                Id = src.Id,
-                Included = src.Included,
-                Name = src.Name,
-                Procurement = src.Procurement,
-                Picture = src.Picture,
-                PriceMonthly = src.PriceMonthly,
-                PriceUpFront = src.PriceUpFront,
-                PictureMimeType = src.PictureMimeType,
-                Popularity = src.Popularity,
-                ServiceOptionCategoryId = src.ServiceOptionCategoryId,
-                Utilization = src.Utilization
-            };
+				BusinessValue = src.BusinessValue,
+				Cost = src.Cost,
+				Description = src.Description,
+				Details = src.Details,
+				Id = src.Id,
+				Included = src.Included,
+				Name = src.Name,
+				Procurement = src.Procurement,
+				Picture = src.Picture,
+				PriceMonthly = src.PriceMonthly,
+				PriceUpFront = src.PriceUpFront,
+				PictureMimeType = src.PictureMimeType,
+				Popularity = src.Popularity,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
+				Utilization = src.Utilization
+			};
 
 			return serviceOption;
 		}
@@ -139,7 +139,7 @@ namespace DataService
 				Id = src.Id,
 				Name = src.Name,
 				Description = src.Description,
-                BusinessValue = src.BusinessValue,
+				BusinessValue = src.BusinessValue,
 				BusinessOwner = src.BusinessOwner,
 				ServiceOwner = src.ServiceOwner,
 				LifecycleStatusId = src.LifecycleStatusId,
@@ -165,7 +165,7 @@ namespace DataService
 				Name = src.Name,
 				Description = src.Description,
 				BusinessOwner = src.BusinessOwner,
-                BusinessValue = src.BusinessValue,
+				BusinessValue = src.BusinessValue,
 				ServiceOwner = src.ServiceOwner,
 				LifecycleStatusId = src.LifecycleStatusId,
 				ServiceTypeProvision = src.ServiceTypeProvision,
@@ -246,7 +246,7 @@ namespace DataService
 				}
 			}
 
-            //Processes
+			//Processes
 			if (src.ServiceProcesses != null)
 			{
 				serviceDto.Value.ServiceProcesses = new List<IServiceProcessDto>();
@@ -792,6 +792,38 @@ namespace DataService
 				Id = src.Id,
 				Roles = roles,
 				AdGuid = src.AdGuid
+			};
+		}
+
+		public static IServiceRequestPackageDto MapServiceRequestPackageToDto(ServiceRequestPackage src)
+		{
+			if (src == null) return null;
+
+			List<IServiceOptionCategoryDto> serviceOptionCategories = new List<IServiceOptionCategoryDto>();
+			if (src.ServiceOptionCategories != null)
+			{
+				foreach (var category in src.ServiceOptionCategories)
+				{
+					serviceOptionCategories.Add(MapOptionCategoryToDto(category));
+				}
+			}
+
+
+			return new ServiceRequestPackageDto()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ServiceOptionCategories = serviceOptionCategories
+			};
+		}
+
+		public static ServiceRequestPackage MapDtoToServiceRequestPackage(IServiceRequestPackageDto src)
+		{
+			if (src == null) return null;
+			return new ServiceRequestPackage
+			{
+				Id = src.Id,
+				Name = src.Name
 			};
 		}
 	}
