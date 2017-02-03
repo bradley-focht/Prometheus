@@ -1,6 +1,7 @@
 ﻿@model Prometheus.WebUI.Models.ServiceRequestMaintenance.PackageModel
 @if (Model != null)
 {
+    @Html.Hidden("Id", Model.Id)
     <div class="dd">
         <div class="dd-row">
             <div class="dt-cell">Name</div>

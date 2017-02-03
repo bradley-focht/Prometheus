@@ -87,8 +87,11 @@ namespace Prometheus.WebUI.Controllers
             PackageModel model = new PackageModel();
             try
             {
-                _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
-                model.Services = (from s in _ps.GetServices() select (ServiceDto) s).ToList();
+                var serviceController = InterfaceFactory.CreateCatalogController(_dummyId);
+                var services = serviceController.RequestBusinessCatalog(_dummyId).ToList(); //build list
+                services.AddRange(serviceController.RequestSupportCatalog(_dummyId));
+                
+                model.Services = services;
             }
             catch (Exception exception)
             {
@@ -281,15 +284,62 @@ namespace Prometheus.WebUI.Controllers
         [ChildActionOnly]
         public ActionResult GetPackageNames(int id)
         {
+            _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
             LinkListModel model = new LinkListModel
             {
                 AddAction = "AddPackage",
                 Controller = "ServiceRequestMaintenanceController",
                 Title = "Packages",
                 SelectAction = "ShowServicePackages",
-                ListItems = new List<Tuple<int, string>>()
             };
+            IEnumerable<Tuple<int, string>> items = null;
+            try
+            {
+                 items = from s in _ps.AllServiceRequestPackages
+                    select new Tuple<int, string>(s.Id, s.Name);
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to retrieve service packages {exception.Message}";
+            }
+            model.ListItems = items;
             return View("PartialViews/_LinkList", model);
+        }
+
+        public ActionResult Savepackage(PackageModel package)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to retrieve service package due to invalid data";
+                if (package.Id > 0)
+                {
+                    return RedirectToAction("AddPackage");
+                }
+                return RedirectToAction("UpdatePackage", new {id = package.Id});
+            }
+
+            _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+            IServiceRequestPackageDto newPackage = new ServiceRequestPackageDto();      //transfer data to new package
+            newPackage.Name = package.Name;
+            newPackage.ServiceOptionCategories = new List<IServiceOptionCategoryDto>();
+            foreach (var category in package.Associations)
+            {
+                newPackage.ServiceOptionCategories.Add(new ServiceOptionCategoryDto {Id = category});
+            }
+            try
+            {
+                _ps.ModifyServiceRequestPackage(newPackage, EntityModification.Create);
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save service package, error: {exception.Message}";
+            }
+
+
+            return RedirectToAction("ShowPackages", new {id = 0});
         }
 
         /// <summary>

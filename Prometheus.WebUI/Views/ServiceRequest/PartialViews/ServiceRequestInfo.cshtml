@@ -5,8 +5,26 @@
         <div class="dd-cell">@Session["Displayname"]</div>
     </div>
     <div class="dd-row">
-        <div class="dt-cell">Requested For</div>
-        <div class="dd-cell"></div>
+        <div class="dt-cell">
+            Requested For
+        </div>
+        <div class="dd-cell">
+            <select id="Requestees" style="width:200px">
+                <option>Select Users</option>
+            </select>
+            <script type="text/javascript" language="javascript">
+                $(document).ready(function () {
+                        $.get('/Script/People', function(data) {
+                            console.log(data);
+                            $.each(data, function(index, value) {
+                                console.log(index + value);
+                                $('<option>').val(value).text(value).appendTo('#Requestees');
+                            });
+                        });
+                    }
+                )
+            </script>
+        </div>
     </div>
     <div class="dd-row">
         <div class="dt-cell">Date Required</div>
