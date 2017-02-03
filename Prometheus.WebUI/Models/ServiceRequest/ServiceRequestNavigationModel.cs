@@ -8,7 +8,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
     /// </summary>
     public class ServiceRequestNavigationModel
     {
-        public ICollection<ServiceOptionCategoryDto> Titles { get; set; }
+        public ICollection<IServiceOptionCategoryDto> Titles { get; set; }
         public int SelectedIndex { get; set; }
     }
 }
