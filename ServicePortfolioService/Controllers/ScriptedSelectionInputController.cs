@@ -39,8 +39,15 @@ namespace ServicePortfolioService.Controllers
 
 	    public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs()
 	    {
-	        throw new NotImplementedException();
-	    }
+            using (var context = new PrometheusContext())
+            {
+                var inputs = context.ScriptedSelectionInputs;
+                foreach (var input in inputs)
+                {
+                    yield return ManualMapper.MapScriptedSelectionInputToDto(input);
+                }
+            }
+        }
 
 	    public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto textInput, EntityModification modification)
 		{

@@ -40,8 +40,15 @@ namespace ServicePortfolioService.Controllers
 
 	    public IEnumerable<ITextInputDto> GetTextInputs()
 	    {
-	        throw new NotImplementedException();
-	    }
+            using (var context = new PrometheusContext())
+            {
+                var inputs = context.TextInputs;
+                foreach (var input in inputs)
+                {
+                     yield return ManualMapper.MapTextInputToDto(input);
+                }  
+            }
+        }
 
 	    public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
 		{

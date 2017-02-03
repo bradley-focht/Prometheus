@@ -3,6 +3,9 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
+    /// <summary>
+    /// Text Input for forms
+    /// </summary>
 	public class TextInputDto : ITextInputDto
 	{
 		/// <summary>
@@ -13,19 +16,20 @@ namespace Common.Dto
 		/// <summary>
 		/// Name as seen in the UI
 		/// </summary>
-		[Display(Name="Display Name")]
+		[Display(Order = 1, Name="Display Name")]
 		[Required(ErrorMessage = "Display Name is required")]
 		public string DisplayName { get; set; }
 		/// <summary>
 		/// Display a user-help tip
 		/// </summary>
-		[Display(Name="Help Tip")]
+		[Display(Order = 2, Name="Help Tip")]
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
 
 		/// <summary>
 		/// false for Textbox, true for Textarea
 		/// </summary>
+		[Display(Order = 3, Name="Multi Line")]
 		public bool MultiLine { get; set; }
 	}
 }

@@ -2,7 +2,7 @@
 @using Common.Enums
 @model Prometheus.WebUI.Models.ServiceRequestMaintenance.UserInputModel
 @{
-	ViewBag.Title = "AddUserInput";
+	ViewBag.Title = Model.Action + " User Input";
 	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
 	ViewBag.Links = new List<KeyValuePair<string, string>>
