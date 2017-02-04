@@ -26,5 +26,6 @@ namespace DataService.Models
 
 		public virtual Service Service { get; set; }
 		public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
+		public virtual ICollection<ServiceRequestPackage> ServiceRequestPackages { get; set; }
 	}
 }

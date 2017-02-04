@@ -71,6 +71,9 @@ namespace Common.Dto
 
 		[Display(Order = 7, Name = "Service Options")]
 		public virtual ICollection<IServiceOptionDto> ServiceOptions { get; set; }
+
+		public virtual ICollection<IServiceRequestPackageDto> ServiceRequestPackages { get; set; }
+
 		#endregion
 	}
 }

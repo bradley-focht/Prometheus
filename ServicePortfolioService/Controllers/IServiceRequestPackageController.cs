@@ -27,10 +27,10 @@ namespace ServicePortfolioService.Controllers
 		IEnumerable<IServiceRequestPackageDto> AllServiceRequestPackages { get; }
 
 		/// <summary>
-		/// Retrieves the service package that the service option id exists in
+		/// Retrieves the service packages that the service option id exists in
 		/// </summary>
 		/// <param name="serviceOptionId"></param>
 		/// <returns></returns>
-		IServiceRequestPackageDto GetServiceRequestPackageForServiceOption(int serviceOptionId);
+		IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int serviceOptionId);
 	}
 }

@@ -345,9 +345,9 @@ namespace ServicePortfolioService
 			get { return _serviceRequestPackageController.AllServiceRequestPackages; }
 		}
 
-		public IServiceRequestPackageDto GetServiceRequestPackageForServiceOption(int serviceOptionId)
+		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int serviceOptionId)
 		{
-			return _serviceRequestPackageController.GetServiceRequestPackageForServiceOption(serviceOptionId);
+			return _serviceRequestPackageController.GetServiceRequestPackagesForServiceOption(serviceOptionId);
 		}
 	}
 }

@@ -101,18 +101,22 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceRequestPackageDto GetServiceRequestPackageForServiceOption(int serviceOptionId)
+		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int serviceOptionId)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var option = context.ServiceOptions.Find(serviceOptionId);
 				if (option == null)
 					throw new InvalidOperationException(string.Format("Service Option with ID {0} does not exist. Cannot retrieve service package with option identifier {0}.", serviceOptionId));
-				var package = context.ServiceRequestPackages.First(x => x.ServiceOptionCategories.Any(y => y.ServiceOptions.Any(z => z.Id == serviceOptionId)));
+				var packages = context.ServiceRequestPackages.Where(x => x.ServiceOptionCategories.Any(y => y.ServiceOptions.Any(z => z.Id == serviceOptionId)));
 
-				if (package == null)
+				if (!packages.Any())
 					throw new InvalidOperationException(string.Format("Service Request Package with Service Option ID {0} does not exist.", serviceOptionId));
-				return ManualMapper.MapServiceRequestPackageToDto(package);
+
+				foreach (var package in packages)
+				{
+					yield return ManualMapper.MapServiceRequestPackageToDto(package);
+				}
 			}
 		}
 	}
