@@ -1,10 +1,21 @@
-﻿@model dynamic
+﻿@model Common.Dto.ServiceRequestPackageDto
 @if (Model != null)
 {
     <div class="dd">
-        @foreach (var property in ViewData.ModelMetadata.Properties)
-        {
-        }
+        <div class="dd-row">
+            <div class="dt-cell">Name</div>
+            <div class="dd-cell">@Model.Name</div>
+        </div>
+        <div class="dd-row">
+            <div class="dt-cell">
+                Packaged Categories
+            </div>
+            <div class="dd-cell">
+                ~ items
+                @Model.ServiceOptionCategories
+            </div>
+        </div>
+        
     </div>
 }
-            
+

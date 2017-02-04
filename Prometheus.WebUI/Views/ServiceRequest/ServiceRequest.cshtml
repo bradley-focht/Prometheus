@@ -17,17 +17,17 @@
 @using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
 {
     <input type="hidden" name="id" value="@Model.ServiceRequestId"/>
-    if (Model.ServiceRequestId > 0)
-     {
+
          <div class="panel panel-default flex-container-row make-space-bottom">
              <div class="dd">
                  <div class="dd-row">
+                     <div class="dt-cell">Service Request</div>
+                     <div class="dd-cell">@Model.Package.Name</div>
                      <div class="dt-cell">Status</div>
                      <div class="dd-cell"> ~ state ~ </div>
                  </div>
              </div>
          </div>
-     }
 
     @Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.Package.ServiceOptionCategories })
 

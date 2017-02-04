@@ -8,7 +8,8 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
     /// <summary>
     /// This is an intermediary class to build service packages
     /// </summary>
-    [Bind(Exclude = "Services")]
+    [Bind(Exclude = "Services, SelectedCategories")]
+    
     public class PackageModel
     {
         /// <summary>
@@ -33,5 +34,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         /// services for selection
         /// </summary>
         public ICollection<IServiceDto> Services { get; set; }
+
+        public ICollection<int> SelectedCategories { get; set; }
     }
 }

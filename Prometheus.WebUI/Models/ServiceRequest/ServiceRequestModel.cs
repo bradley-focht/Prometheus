@@ -21,7 +21,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// <summary>
         /// index, title
         /// </summary>
-        public ServiceRequestPackageDto Package { get; set; }
+        public IServiceRequestPackageDto Package { get; set; }
 
         public int CurrentIndex { get; set; }
 
