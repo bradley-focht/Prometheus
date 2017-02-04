@@ -28,6 +28,7 @@ namespace ServicePortfolioService
 		private readonly ISelectionInputController _selectionInputController;
 		private readonly IScriptedSelectionController _scriptedSelectionController;
 		private readonly IServiceRequestPackageController _serviceRequestPackageController;
+		private readonly IServiceRequestController _serviceRequestController;
 
 
 
@@ -53,7 +54,8 @@ namespace ServicePortfolioService
 			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController,
 			IServiceOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController,
 			ITextInputController textInputController, ISelectionInputController selectionInputController,
-			IScriptedSelectionController scriptedSelectionController, IServiceRequestPackageController serviceRequestPackageController)
+			IScriptedSelectionController scriptedSelectionController, IServiceRequestPackageController serviceRequestPackageController,
+			IServiceRequestController serviceRequestController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
@@ -72,6 +74,7 @@ namespace ServicePortfolioService
 			_selectionInputController = selectionInputController;
 			_scriptedSelectionController = scriptedSelectionController;
 			_serviceRequestPackageController = serviceRequestPackageController;
+			_serviceRequestController = serviceRequestController;
 
 			UserId = userId;
 		}
@@ -90,6 +93,7 @@ namespace ServicePortfolioService
 			_serviceMeasureController.UserId = userId;
 			_serviceOptionController.UserId = userId;
 			_serviceRequestPackageController.UserId = userId;
+			_serviceRequestController.UserId = userId;
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
@@ -348,6 +352,21 @@ namespace ServicePortfolioService
 		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int serviceOptionId)
 		{
 			return _serviceRequestPackageController.GetServiceRequestPackagesForServiceOption(serviceOptionId);
+		}
+
+		public IServiceRequestDto GetServiceRequest(int serviceRequestId)
+		{
+			return _serviceRequestController.GetServiceRequest(serviceRequestId);
+		}
+
+		public IServiceRequestDto ModifyServiceRequest(IServiceRequestDto serviceRequest, EntityModification modification)
+		{
+			return _serviceRequestController.ModifyServiceRequest(serviceRequest, modification);
+		}
+
+		public IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int requestorUserId)
+		{
+			return _serviceRequestController.GetServiceRequestsForRequestorId(requestorUserId);
 		}
 	}
 }

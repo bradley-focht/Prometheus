@@ -34,9 +34,8 @@ namespace DataService.DataAccessLayer
 		public DbSet<SelectionInput> SelectionInputs { get; set; }
 		public DbSet<ScriptedSelectionInput> ScriptedSelectionInputs { get; set; }
 
-
 		public DbSet<ServiceRequestPackage> ServiceRequestPackages { get; set; }
-
+		public DbSet<ServiceRequest> ServiceRequests { get; set; }
 
 		//User Manager Entities
 		public DbSet<User> Users { get; set; }
