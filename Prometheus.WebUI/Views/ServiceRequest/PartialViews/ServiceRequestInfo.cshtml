@@ -1,4 +1,6 @@
-﻿
+﻿@using Prometheus.WebUI.Models.ServiceRequest
+@model ServiceRequestModel
+
 <div class="dd">
     <div class="dd-row">
         <div class="dt-cell">Requestor</div>
@@ -14,31 +16,48 @@
             </select>
             <script type="text/javascript" language="javascript">
                 $(document).ready(function () {
-                        $.get('/Script/People', function(data) {
-                            console.log(data);
-                            $.each(data, function(index, value) {
-                                console.log(index + value);
-                                $('<option>').val(value).text(value).appendTo('#Requestees');
-                            });
+                    $.get('/Script/People', function (data) {
+                        console.log(data);
+                        $.each(data, function (index, value) {
+                            console.log(index + value);
+                            $('<option>').val(value).text(value).appendTo('#Requestees');
                         });
-                    }
+                    });
+                }
                 )
             </script>
         </div>
     </div>
     <div class="dd-row">
         <div class="dt-cell">Date Required</div>
-        <div></div>
-    </div>
-    <div class="dd-row">
-        <div class="dt-cell">Comments</div>
         <div class="dd-cell">
-            @Html.TextArea("Comments", "", new { @class = "ckeditor" })
-            <div class="note">additional requests in comments will not be honoured</div>
+            <div class="input-group date">
+                @Html.TextBox("RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date"})
+                <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+            </div>
+            @Html.ValidationMessage("RequestedDate")
+
+            <script language="javascript" type="text/javascript">
+                $(function() {
+                    $('#RequestedDate')
+                        .datepicker({
+                            autoclose: true,
+                            format: "mm-dd-yyyy"
+                        });
+                });
+            </script>
+
         </div>
     </div>
-    <div class="dd-row">
-        <div class="dt-cell">Office-Use</div>
-        <div class="dd-cell">@Html.TextBox("OfficeUseComments", "", new { @class = "form-control" })</div>
+<div class="dd-row">
+    <div class="dt-cell">Comments</div>
+    <div class="dd-cell">
+        @Html.TextArea("Comments", Model.Comments, new { @class = "ckeditor" })
+        <div class="note">additional requests in comments will not be honoured</div>
     </div>
+</div>
+<div class="dd-row">
+    <div class="dt-cell">Office-Use</div>
+    <div class="dd-cell">@Html.TextBox("OfficeUse", Model.OfficeUseComments, new { @class = "form-control" })</div>
+</div>
 </div>

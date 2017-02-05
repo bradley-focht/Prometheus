@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
+using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequest;
 using Prometheus.WebUI.Models.Shared;
@@ -20,10 +22,11 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Begin(int id = 0)
         {
-            ServiceRequestModel model = new ServiceRequestModel();
+            ServiceRequestModel model = new ServiceRequestModel {InitialOptionId = id};
             _ps = InterfaceFactory.CreatePortfolioService(dummyId);
 
-            IServiceRequestPackageDto package = _ps.GetServiceRequestPackageForServiceOption(id);
+            IServiceRequestPackageDto package = _ps.GetServiceRequestPackagesForServiceOption(id).FirstOrDefault();
+            
 
             model.Package = package;
             model.CurrentIndex = -1;
@@ -42,36 +45,60 @@ namespace Prometheus.WebUI.Controllers
             {
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = "Failed to save Service Request due to invalid data";
-
                 return View("ServiceRequest", model);
             }
-            model.Package = new ServiceRequestPackageDto();
-            model.Package.ServiceOptionCategories = new List<IServiceOptionCategoryDto>
-                {
-                    new ServiceOptionCategoryDto
-                    {
-                        Id = 1, Name = "User Accounts", ServiceOptions = new List<IServiceOptionDto>
-                        {
-                            new ServiceOptionDto {Id = 1, Name = "User Account"}
-                        }
-                    },
-                    new ServiceOptionCategoryDto
-                    {
-                        Id = 2, Name="Desktops", ServiceOptions = new List<IServiceOptionDto>
-                        {
-                            new ServiceOptionDto {Id = 2, Name="Standard Desktop" },
-                            new ServiceOptionDto {Id = 3, Name="Executive Desktop" }
-                        }
-                    }
-                };
+            // data ok from here on
+            ServiceRequestDto request = new ServiceRequestDto
+            {
+                RequestedByUserId = dummyId,
+                Comments = serviceRequest.Comments,
+                Officeuse = serviceRequest.OfficeUse,
+                SubmissionDate = serviceRequest.RequiredDate,
+                CreationDate = DateTime.Now
+            };
+
+            _ps = InterfaceFactory.CreatePortfolioService(dummyId);
+            model.Package = _ps.GetServiceRequestPackagesForServiceOption(serviceRequest.InitialOptionId).FirstOrDefault();
             model.CurrentIndex = 0;
+            try
+            {
+                request = (ServiceRequestDto) _ps.ModifyServiceRequest(request, EntityModification.Create);
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save service request, error: {exception.Message}";
+                model.CurrentIndex = -1;
+                return View("ServiceRequest", model);
+            }
 
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = "Successfully created Service Request";
 
 
-            return View("ServiceRequest", model);
+            return RedirectToAction("Form", new {id = request.Id, index = 0});
         }
 
+        public ActionResult Form(int id)
+        {
+            _ps = InterfaceFactory.CreatePortfolioService(dummyId);
+            IServiceRequestDto serviceRequest = null;
+            ServiceRequestModel model = new ServiceRequestModel {};
+            try
+            {
+                model.ServiceRequest = _ps.GetServiceRequest(id);
+                model.Package = _ps.GetServiceRequestPackage(1);
+
+            }
+            catch(Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
+                return View("ServiceRequest", model);
+            }
+
+            
+            return View("ServiceRequest");
+        }
     }
 }

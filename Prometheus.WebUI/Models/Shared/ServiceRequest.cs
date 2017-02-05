@@ -1,16 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Prometheus.WebUI.Models.Shared
 {
+    /// <summary>
+    /// intermediary between ServiceRequestDto and UI
+    /// </summary>
 	public class ServiceRequest
 	{
 	    public int Id { get; set; }
+        public string Comments { get; set; }
+        public string OfficeUse { get; set; }
 		public string Requestor { get; set; }
 		public DateTime? RequiredDate { get; set; }
-		public List<UserInput> UserInputs { get; set; }
+        public  int InitialOptionId { get; set; }
 
-	}
+    }
 }

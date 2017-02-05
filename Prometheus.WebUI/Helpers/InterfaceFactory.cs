@@ -33,7 +33,8 @@ namespace Prometheus.WebUI.Helpers
                 new TextInputController(),
                 new SelectionInputController(),
                 new ScriptedSelectionInputController(),
-                new ServiceRequestPackageController());
+                new ServiceRequestPackageController(),
+                new ServiceRequestController());
         }
 
         /// <summary>

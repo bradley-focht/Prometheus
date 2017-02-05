@@ -114,6 +114,10 @@
     max-width: 50px;
 }
 
+.form-date {
+    max-width: 100px;
+}
+
 .font-home-link {
     color: #19A7F8;
     font-weight: 600;
