@@ -65,6 +65,8 @@ namespace Common.Dto
 		[AllowHtml]
 		[Display(Order = 6, Name = "Business Value")]
 		public string BusinessValue { get; set; }
+        [Display(Order = 7)]
+        public bool Quantifiable { get; set; }
 
 		#region Nagivation
 		public virtual IServiceDto Service { get; set; }

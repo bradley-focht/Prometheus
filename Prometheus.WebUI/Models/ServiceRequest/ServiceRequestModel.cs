@@ -17,20 +17,24 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// who is making the request
         /// </summary>
         [Required(ErrorMessage = "Requestor is required")]
-        public string Requestor { get; set; }
+        public int Requestor => ServiceRequest.RequestedByUserId;
+
         /// <summary>
         /// who is this request for
         /// </summary>
-        [Required(ErrorMessage = "Requestor is required")]
+        [Required(ErrorMessage = "At least one rrequestee is required")]
         public IEnumerable<string> Requestees { get; set; }
 
+        /// <summary>
+        /// Requested Date
+        /// </summary>
         [Required(ErrorMessage = "Requested date is required")]
-        public DateTime RequestedDate { get; set; }
+        public DateTime RequestedDate => ServiceRequest.RequestedForDate;
 
-        public string Comments { get; set; }
-        public string OfficeUseComments { get; set; }
+        public string Comments => ServiceRequest.Comments;
+        public string OfficeUse => ServiceRequest.Officeuse;
 
-        public ServiceOptionCategoryDto OptionCategory { get; set; }
+        public IServiceOptionCategoryDto OptionCategory { get; set; }
         //SR UI
 
         /// <summary>

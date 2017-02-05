@@ -15,8 +15,9 @@ namespace DataService.Models
 		DateTime CreationDate { get; set; }
 		DateTime? SubmissionDate { get; set; }
 		DateTime? ApprovalDate { get; set; }
+        DateTime RequestedForDate { get; set; }
 
-		ServiceRequestState State { get; set; }
+        ServiceRequestState State { get; set; }
 
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 	}

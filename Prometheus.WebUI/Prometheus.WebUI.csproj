@@ -520,6 +520,7 @@
     <Content Include="Views\ServiceRequestMaintenance\AddPackage.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ConfirmDeletePackage.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputsLinkList.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

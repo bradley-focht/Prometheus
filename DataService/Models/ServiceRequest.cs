@@ -17,7 +17,9 @@ namespace DataService.Models
 	    public string Officeuse { get; set; }
 	    public DateTime CreationDate { get; set; }
 	    public DateTime? SubmissionDate { get; set; }
-	    public DateTime? ApprovalDate { get; set; } /* end here */
+	    public DateTime? ApprovalDate { get; set; }
+	    public DateTime RequestedForDate { get; set; }
+/* end here */
 	    public int ApproverUserId { get; set; }
 		public ServiceRequestState State { get; set; }
 		public DateTime? DateCreated { get; set; }

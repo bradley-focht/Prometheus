@@ -7,13 +7,13 @@ namespace Common.Dto
 	public interface IServiceRequestDto
 	{
 		int Id { get; set; }
-
 		DateTime? ApprovalDate { get; set; }
 		int ApproverUserId { get; set; }
 		string Comments { get; set; }
 		int CreatedByUserId { get; set; }
 		DateTime CreationDate { get; set; }
-		DateTime? DateCreated { get; set; }
+        DateTime RequestedForDate { get; set; }
+        DateTime? DateCreated { get; set; }
 		DateTime? DateUpdated { get; set; }
 		string Officeuse { get; set; }
 		int RequestedByUserId { get; set; }

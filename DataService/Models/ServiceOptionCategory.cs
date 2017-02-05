@@ -17,7 +17,8 @@ namespace DataService.Models
 		public string Benefits { get; set; }
 		public string Support { get; set; }
 		public string Description { get; set; }
-		public string BusinessValue { get; set; }
+	    public bool Quantifiable { get; set; }
+	    public string BusinessValue { get; set; }
 		public string Name { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }

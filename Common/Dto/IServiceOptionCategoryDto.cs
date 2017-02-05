@@ -11,8 +11,8 @@ namespace Common.Dto
 		string Benefits { get; set; }
 		string Support { get; set; }
 		string Description { get; set; }
-
-		ICollection<IServiceOptionDto> ServiceOptions { get; set; }
+        bool Quantifiable { get; set; }
+        ICollection<IServiceOptionDto> ServiceOptions { get; set; }
 		ICollection<IServiceRequestPackageDto> ServiceRequestPackages { get; set; }
 	}
 }

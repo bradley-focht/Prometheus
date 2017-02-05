@@ -123,8 +123,8 @@ namespace Prometheus.WebUI
             #region Service Request System
 
             routes.MapRoute(name: "ServiceRequest",
-                url: "ServiceRequest/Form/{id}/{index}",
-                defaults: new {controller = "ServiceRequest", action = "Form"});
+                url: "ServiceRequest/Form/{id}/{index}/{initialOptionId}",
+                defaults: new {controller = "ServiceRequest", action = "Form", initialOptionId = UrlParameter.Optional});
 
             #endregion
 

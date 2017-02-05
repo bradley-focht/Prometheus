@@ -33,6 +33,21 @@ namespace Prometheus.WebUI.Controllers
             return View("ServiceRequest", model);
         }
 
+
+        /// <summary>
+        /// Cancel an already started SR
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult CancelRequest(int id = 0)
+        {
+            //hell if i know what to do right now...
+
+            
+            return View();
+        }
+
+
         /// <summary>
         /// Save the info portion of a service request.
         /// </summary>
@@ -79,16 +94,22 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Form", new {id = request.Id, index = 0});
         }
 
-        public ActionResult Form(int id)
+        /// <summary>
+        /// View a tab in the SR form
+        /// </summary>
+        /// <param name="id">service request id</param>
+        /// <param name="index">package index</param>
+        /// <param name="selectedOptionId">optional id selected on the index</param>
+        /// <returns></returns>
+        public ActionResult Form(int id, int index, int selectedOptionId=0)
         {
             _ps = InterfaceFactory.CreatePortfolioService(dummyId);
-            IServiceRequestDto serviceRequest = null;
-            ServiceRequestModel model = new ServiceRequestModel {};
+            ServiceRequestModel model = new ServiceRequestModel {CurrentIndex = index, ServiceRequestId = id};
             try
             {
-                model.ServiceRequest = _ps.GetServiceRequest(id);
+                model.ServiceRequest = _ps.GetServiceRequest(id);       //get db info
                 model.Package = _ps.GetServiceRequestPackage(1);
-
+                model.OptionCategory =_ps.GetServiceOptionCategory(model.Package.ServiceOptionCategories.ElementAt(index).Id);
             }
             catch(Exception exception)
             {
@@ -98,7 +119,7 @@ namespace Prometheus.WebUI.Controllers
             }
 
             
-            return View("ServiceRequest");
+            return View("ServiceRequest", model);
         }
     }
 }

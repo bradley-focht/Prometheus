@@ -585,6 +585,7 @@ namespace DataService
 				Benefits = src.Benefits,
 				Support = src.Support,
 				Name = src.Name,
+                Quantifiable = src.Quantifiable,
 				BusinessValue = src.BusinessValue
 			};
 			if (src.ServiceOptions != null)
@@ -612,7 +613,8 @@ namespace DataService
 				Features = src.Features,
 				Benefits = src.Benefits,
 				Support = src.Support,
-				BusinessValue = src.BusinessValue
+                Quantifiable = src.Quantifiable,
+                BusinessValue = src.BusinessValue
 			};
 			return category;
 		}
@@ -840,8 +842,9 @@ namespace DataService
 				CreationDate = src.CreationDate,
 				Officeuse = src.Officeuse,
 				RequestedByUserId = src.RequestedByUserId,
-				SubmissionDate = src.SubmissionDate
-			};
+				SubmissionDate = src.SubmissionDate,
+                RequestedForDate = src.RequestedForDate
+            };
 		}
 
 		public static IServiceRequestDto MapServiceRequestToDto(ServiceRequest src)
@@ -868,8 +871,9 @@ namespace DataService
 				Officeuse = src.Officeuse,
 				RequestedByUserId = src.RequestedByUserId,
 				SubmissionDate = src.SubmissionDate,
-				ServiceRequestOptions = serviceRequestOptions
-			};
+				ServiceRequestOptions = serviceRequestOptions,
+                RequestedForDate = src.RequestedForDate
+            };
 		}
 
 		private static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)

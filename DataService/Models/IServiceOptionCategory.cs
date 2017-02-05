@@ -11,8 +11,8 @@ namespace DataService.Models
 		string Benefits { get; set; }
 		string Support { get; set; }
 		string Description { get; set; }
-
-		ICollection<ServiceRequestPackage> ServiceRequestPackages { get; set; }
+        bool Quantifiable { get; set; }
+        ICollection<ServiceRequestPackage> ServiceRequestPackages { get; set; }
 		ICollection<ServiceOption> ServiceOptions { get; set; }
 	}
 }

@@ -1,0 +1,31 @@
+﻿@using Common.Dto
+@model Common.Dto.ICatalogPublishable
+
+@if (Model is IServiceOptionCategoryDto)
+{
+    var category = (IServiceOptionCategoryDto)Model;
+
+    <div class="dd">
+        @foreach (var option in category.ServiceOptions)
+        {
+            <div class="dd-row">
+                <div class="dd-cell-base">
+                    <div class="checkbox checkbox-primary">
+                        <input value="@option.Id" type="checkbox" id="@option.Id" name="Options">
+                        <label for="@option.Id">
+                            @option.Name
+                        </label>
+                    </div>
+                    <div style="margin-top: -10px;">
+                        <input id="drop-checkbox@(option.Id)" type="checkbox" class="drop-checkbox">
+                        <label for="drop-checkbox@(option.Id)" id="example" class="drop-text" data-toggle="collapse" data-target="#category@(option.Id)">show details</label>
+
+                        <div class="collapse drop-well" id="category@(option.Id)" style="width: 100%;">
+                            @option.BusinessValue
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

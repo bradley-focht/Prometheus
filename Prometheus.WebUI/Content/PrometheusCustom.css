@@ -115,7 +115,7 @@
 }
 
 .form-date {
-    max-width: 100px;
+    max-width: 150px;
 }
 
 .font-home-link {
@@ -331,6 +331,13 @@
     width: 75%;
 }
 
+.dd-cell-multicol {
+    display: table-cell;
+    text-align: left;
+    padding-left: 5px;
+    padding-bottom: 10px;
+    margin-right: 10px;
+}
 .dd-cell-nostyle {
     display: table-cell;
     vertical-align: top;
