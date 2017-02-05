@@ -8,12 +8,14 @@ namespace Common.Dto
 	{
 		public int Id { get; set; }
 
+		public int ServiceRequestPackageId { get; set; }
+
 		public int RequestedByUserId { get; set; }
 		public string Comments { get; set; }    /*fields added by brad */
 		public string Officeuse { get; set; }
 		public DateTime CreationDate { get; set; }
-	    public DateTime RequestedForDate { get; set; }
-	    public DateTime? SubmissionDate { get; set; }
+		public DateTime RequestedForDate { get; set; }
+		public DateTime? SubmissionDate { get; set; }
 		public DateTime? ApprovalDate { get; set; } /* end here */
 		public int ApproverUserId { get; set; }
 		public ServiceRequestState State { get; set; }
