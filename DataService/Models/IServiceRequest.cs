@@ -7,6 +7,9 @@ namespace DataService.Models
 	public interface IServiceRequest : IUserCreatedEntity
 	{
 		int Id { get; set; }
+
+		int ServiceRequestPackageId { get; set; }
+
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }
 
@@ -15,10 +18,11 @@ namespace DataService.Models
 		DateTime CreationDate { get; set; }
 		DateTime? SubmissionDate { get; set; }
 		DateTime? ApprovalDate { get; set; }
-        DateTime RequestedForDate { get; set; }
+		DateTime RequestedForDate { get; set; }
 
-        ServiceRequestState State { get; set; }
+		ServiceRequestState State { get; set; }
 
+		ServiceRequestPackage ServiceRequestPackage { get; set; }
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 	}
 }
