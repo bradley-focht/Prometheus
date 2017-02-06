@@ -43,6 +43,7 @@ namespace Prometheus.WebUI.Helpers
         {
             target.BusinessValue = src.BusinessValue;
             target.Popularity = src.Popularity;
+            target.Quantifiable = src.Quantifiable;
 
             return (ServiceOptionCategoryDto)target;
         }
@@ -57,6 +58,7 @@ namespace Prometheus.WebUI.Helpers
         {
             target.BusinessValue = src.BusinessValue;
             target.Popularity = src.Popularity;
+            target.Quantifiable = src.Quantifiable;
 
             return (ServiceOptionCategoryDto)target;
         }

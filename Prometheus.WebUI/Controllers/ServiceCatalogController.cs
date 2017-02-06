@@ -152,13 +152,14 @@ namespace Prometheus.WebUI.Controllers
 			return View("ServiceCatalog", model);
 		}
 
-		/// <summary>
-		/// Return View of an option
-		/// </summary>
-		/// <param name="type"></param>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		public ActionResult Details(CatalogableTypes type, int id)
+	    /// <summary>
+	    /// Return View of an option
+	    /// </summary>
+	    /// <param name="catalog"></param>
+	    /// <param name="type"></param>
+	    /// <param name="id"></param>
+	    /// <returns></returns>
+	    public ActionResult Details(ServiceCatalogs catalog, CatalogableTypes type, int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(_dummId);
 		    int serviceId = 0;
@@ -178,7 +179,7 @@ namespace Prometheus.WebUI.Controllers
 
 			if (service != null)
 			{
-				OptionModel model = new OptionModel { Catalog = service.ServiceTypeRole };                  //pack a list of options and categories
+				OptionModel model = new OptionModel { Catalog = catalog };                  //pack a list of options and categories
 				if (type == CatalogableTypes.Category)
 					model.Option = service.ServiceOptionCategories.FirstOrDefault(o => o.Id == id);
 				else if (type == CatalogableTypes.Option)
@@ -186,7 +187,7 @@ namespace Prometheus.WebUI.Controllers
 
 				model.ServiceId = service.Id;
 				model.ServiceName = service.Name;
-
+                //add data
 				List<ICatalogPublishable> options = (from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList(); //build list of options & categories
 			    if (service.ServiceOptions != null)
 			    {
@@ -194,6 +195,9 @@ namespace Prometheus.WebUI.Controllers
 			    }
 			    options = options.OrderBy(o => o.Name).ToList();
 				model.Options = options;
+
+                //now create the controls model
+                model.Controls = new CatalogControlsModel {CatalogType = catalog};
 
 				return View(model);
 			}

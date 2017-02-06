@@ -336,6 +336,7 @@
     <Compile Include="Helpers\AbbreviatedEntityUpdate.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\Enums\ServiceCatalogs.cs" />
+    <Compile Include="Helpers\PackageHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
     <Compile Include="Helpers\FinancialCalculator.cs" />
@@ -366,6 +367,7 @@
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputsLinkListModel.cs" />
+    <Compile Include="Models\ServiceRequest\ServiceRequestFormModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestNavigationModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />

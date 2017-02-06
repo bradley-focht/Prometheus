@@ -4,6 +4,26 @@
     {
         switch (property.PropertyName)
         {
+            case "Quantifiable":
+                <div class="dd-row">
+                    <div class="dt-cell">
+                        Quantifiable
+                    </div>
+                    <div class="dd-cell">
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default" id="QuantifiableTrue">
+                                @Html.RadioButton(property.PropertyName, true, false) Yes
+                            </label>
+                            <label class="btn btn-default" id="QuantifiableFalse">
+                                @Html.RadioButton(property.PropertyName, false, false) No
+                            </label>
+                        </div>
+                        <script type="text/javascript" language="javascript">
+                            $('#Quantifiable@(property.Model)').button('toggle');
+                        </script>
+                    </div>
+                </div>
+                break;
             case "Popularity":
                 <div class="dd-row">
                     <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
