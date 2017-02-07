@@ -63,7 +63,7 @@
                     @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceWorkUnitDto { ServiceId = Model.Service.Id })
                     break;
                 case "OptionCategories":
-                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", new OptionCategoryDto { ServiceId = Model.Service.Id })
+                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceOptionCategoryDto { ServiceId = Model.Service.Id })
                     break;
                 case "Processes":
                     @Html.Partial("PartialViews/UpdateDynamicServiceItem", new ServiceProcessDto {ServiceId = Model.Service.Id})

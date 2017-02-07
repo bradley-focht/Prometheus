@@ -1,5 +1,6 @@
 ﻿@using Common.Dto
 @using Common.Enums.Entities
+@using Prometheus.WebUI.Models.ServiceCatalog
 @model Prometheus.WebUI.Models.ServiceCatalog.OptionModel
 @{
     ViewBag.Title = Model.Catalog + " Catalog";
@@ -47,6 +48,6 @@
     </div>
 
     <div class="content-main panel-div" style="display: flex; flex: 1;">
-        @Html.Partial("PartialViews/FullOfferingView", Model.Option)
+        @Html.Partial("PartialViews/FullOfferingView", new PublishableCatalogItemModel {Item = Model.Option, Catalog = Model.Catalog})
     </div>
 </div>

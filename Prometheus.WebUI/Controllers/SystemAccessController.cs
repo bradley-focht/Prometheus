@@ -251,11 +251,6 @@ namespace Prometheus.WebUI.Controllers
                 //TODO: AD string displayName = searcher.GetUserDisplayName(user.AdGuid);  //name resolution
                 string displayName = "honey bunny"; //debugging with no AD
 
-                if (displayName == null)
-                {
-                    displayName = "not found";
-                }
-
                 modelUsers.Add(new UserDetailsModel {UserDto = user, DisplayName = displayName});
             }
             modelUsers = modelUsers.OrderBy(o => o.DisplayName).ToList();

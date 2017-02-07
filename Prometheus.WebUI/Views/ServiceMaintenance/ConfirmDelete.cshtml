@@ -10,13 +10,12 @@
 
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-    LinkListModel linkListModel = new LinkListModel(Model.Statuses, Model.CurrentStatus.Id, "ShowLifecycle", "AddLifecycle", "Lifecycle Statuses");
-}
+    
 
 
 @section Sidebar
 {
-    @Html.Partial("/Views/Shared/PartialViews/_LinkList.cshtml", linkListModel)
+
 }
 
 @section Content

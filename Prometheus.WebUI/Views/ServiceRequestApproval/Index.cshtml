@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Common.Dto.IServiceRequestDto>
 @{
 	ViewBag.Title = "Service Requests";
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,5 +10,14 @@
 	};
 }
 
-<h2>You have no pending service requests</h2>
+<table>
 
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.State</td>
+        </tr>
+    }
+
+</table>

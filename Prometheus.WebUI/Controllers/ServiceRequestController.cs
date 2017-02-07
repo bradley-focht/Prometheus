@@ -77,7 +77,7 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
 	    public ActionResult SaveInfo(ServiceRequest serviceRequest, int submit)
         {
-            ServiceRequestModel model = new ServiceRequestModel();
+            ServiceRequestModel model = new ServiceRequestModel();      //data to be sent to next view
             if (!ModelState.IsValid)
             {
                 TempData["MessageType"] = WebMessageType.Failure;
@@ -87,12 +87,12 @@ namespace Prometheus.WebUI.Controllers
             // data ok from here on
             ServiceRequestDto request = new ServiceRequestDto
             {
-                Id = serviceRequest.Id,
-                RequestedByUserId = dummyId,
+                RequestedByUserId = int.Parse(Session["Id"].ToString()),
                 Comments = serviceRequest.Comments,
                 Officeuse = serviceRequest.OfficeUse,
                 SubmissionDate = DateTime.Now,
                 CreationDate = DateTime.Now,
+                ServiceRequestPackageId = serviceRequest.PackageId,
                 RequestedForDate = serviceRequest.RequestedDate
             };
 

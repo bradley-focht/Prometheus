@@ -65,7 +65,7 @@ namespace Prometheus.WebUI
             routes.MapRoute(
                 name: "ServiceDetails",
                 url: "ServiceCatalog/Details/{catalog}/{type}/{id}/{serviceId}",
-                defaults: new { controller = "ServiceCatalog", action = "Details" });
+                defaults: new { controller = "ServiceCatalog", action = "Details", serviceId = UrlParameter.Optional });
 
 
             routes.MapRoute(
