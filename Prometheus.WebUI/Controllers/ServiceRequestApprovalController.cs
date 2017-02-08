@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Models.ServiceRequestApproval;
 using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
@@ -26,7 +28,15 @@ namespace Prometheus.WebUI.Controllers
             }
 
             _ps = InterfaceFactory.CreatePortfolioService(userId);
-            var requests = _ps.GetServiceRequestsForRequestorId(userId);
+            List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
+            foreach(var item in _ps.GetServiceRequestsForRequestorId(userId))
+            {
+                requests.Add(new ServiceRequestTableItemModel
+                {
+                   Id = item.Id,
+                   State = item.State,
+                 });
+            }
 
             return View(requests);
         }

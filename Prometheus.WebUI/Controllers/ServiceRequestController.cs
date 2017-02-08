@@ -18,37 +18,16 @@ namespace Prometheus.WebUI.Controllers
         /// <summary>
         /// Begin a new Service Request
         /// </summary>
-        /// <param name="id">option selected Id</param>
+        /// <param name="id">selected option Id</param>
         /// <returns></returns>
-        public ActionResult Begin(int id = 0)
+        public ActionResult Begin(int id)
         {
-            ServiceRequestModel model = new ServiceRequestModel {InitialOptionId = id};
+            ServiceRequestModel model = new ServiceRequestModel {ServiceOptionId = id};
             _ps = InterfaceFactory.CreatePortfolioService(dummyId);
-            IServiceRequestPackageDto package = null;
-            try
-            {
-                 package = _ps.GetServiceRequestPackagesForServiceOption(id).FirstOrDefault();
-            }
-            catch (Exception) { /* no package available */ }
 
-            if (package == null)        //no package, so have to create one
-            {
-                package = new ServiceRequestPackageDto();
-                try
-                {
-                    package.ServiceOptionCategories = new List<IServiceOptionCategoryDto>();
-                    package.ServiceOptionCategories.Add(_ps.GetServiceOptionCategory(_ps.GetServiceOption(id).ServiceOptionCategoryId));
-                    package.Name = package.ServiceOptionCategories.First().Name;
-                }
-                catch (Exception)
-                {
-                    TempData["MessageType"] = WebMessageType.Failure;       //when all else has failed
-                    TempData["Message"] = "Unable to create any service request package";
-                }
-            }
+            model.Package = ServicePackageHelper.GetPackage(_ps, id);
 
-            model.Package = package;        //setup data for new Service Request
-            model.CurrentIndex = -1;
+            model.CurrentIndex = -1;            /* index for info tab */
             model.ServiceRequest = new ServiceRequestDto();
             return View("ServiceRequest", model);
         }
@@ -64,7 +43,7 @@ namespace Prometheus.WebUI.Controllers
             //hell if i know what to do right now...
 
             
-            return View();
+            return RedirectToAction("Index", "ServiceRequestApproval");
         }
 
 
@@ -75,7 +54,7 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="submit">submit buttn id</param>
         /// <returns></returns>
         [HttpPost]
-	    public ActionResult SaveInfo(ServiceRequest serviceRequest, int submit)
+	    public ActionResult SaveInfo(ServiceRequestInfoReturnModel serviceRequest, int submit)
         {
             ServiceRequestModel model = new ServiceRequestModel();      //data to be sent to next view
             if (!ModelState.IsValid)
@@ -87,17 +66,18 @@ namespace Prometheus.WebUI.Controllers
             // data ok from here on
             ServiceRequestDto request = new ServiceRequestDto
             {
+                Id = serviceRequest.Id,
                 RequestedByUserId = int.Parse(Session["Id"].ToString()),
                 Comments = serviceRequest.Comments,
                 Officeuse = serviceRequest.OfficeUse,
                 SubmissionDate = DateTime.Now,
                 CreationDate = DateTime.Now,
-                ServiceRequestPackageId = serviceRequest.PackageId,
-                RequestedForDate = serviceRequest.RequestedDate
+                ServiceOptionId = serviceRequest.ServiceOptionId,
+                RequestedForDate = serviceRequest.RequestedDate           
             };
 
             _ps = InterfaceFactory.CreatePortfolioService(dummyId);
-            model.Package = _ps.GetServiceRequestPackage(serviceRequest.PackageId);
+            
             model.CurrentIndex = 0;
             try
             {
@@ -111,12 +91,11 @@ namespace Prometheus.WebUI.Controllers
                 model.ServiceRequest = request;
                 return View("ServiceRequest", model);
             }
-            model.ServiceRequest = request;
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = "Successfully saved Service Request";
 
 
-            return RedirectToAction("Form", new {id = request.Id, index = submit});
+            return RedirectToAction("Form", new {id = request.Id, index = submit, ServiceOptionId = serviceRequest.ServiceOptionId});
         }
 
 
@@ -127,27 +106,32 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="submit">submit button clicked</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult SaveForm(ServiceRequestFormModel form, int submit)
+        public ActionResult SaveForm(ServiceRequestFormReturnModel form, int submit)
         {
+            if (form.Options != null)
+            {
+                TempData["MessageType"] = WebMessageType.Success;
+                TempData["Message"] = "Successfully saved changes to Service Request";
+            }
 
-
-            return RedirectToAction("Form", new {id = form.Id, index = submit});
+            return RedirectToAction("Form", new {id = form.Id, index = submit, serviceOptionId = form.ServiceOptionId});
         }
+
         /// <summary>
         /// View a tab in the SR form
         /// </summary>
         /// <param name="id">service request id</param>
         /// <param name="index">package index</param>
-        /// <param name="selectedOptionId">optional id selected on the index</param>
+        /// <param name="serviceOptionId"></param>
         /// <returns></returns>
-        public ActionResult Form(int id, int index, int selectedOptionId=0)
+        public ActionResult Form(int id, int index, int serviceOptionId=0)
         {
             _ps = InterfaceFactory.CreatePortfolioService(dummyId);
-            ServiceRequestModel model = new ServiceRequestModel {CurrentIndex = index, ServiceRequestId = id};
+            ServiceRequestModel model = new ServiceRequestModel {CurrentIndex = index, ServiceRequestId = id, ServiceOptionId = serviceOptionId};
+            model.Package = ServicePackageHelper.GetPackage(_ps, serviceOptionId);
             try
             {
                 model.ServiceRequest = _ps.GetServiceRequest(id);       //get db info
-                model.Package = _ps.GetServiceRequestPackage(1);
                 if (index >= 0)
                 {
                     model.OptionCategory = _ps.GetServiceOptionCategory(model.Package.ServiceOptionCategories.ElementAt(index).Id);
@@ -159,8 +143,6 @@ namespace Prometheus.WebUI.Controllers
                 TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
                 return View("ServiceRequest", model);
             }
-
-            
             return View("ServiceRequest", model);
         }
     }

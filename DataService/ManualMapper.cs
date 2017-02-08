@@ -844,7 +844,7 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
-				ServiceRequestPackageId = src.ServiceRequestPackageId
+                ServiceOptionId = src.ServiceOptionId
 			};
 		}
 
@@ -874,8 +874,8 @@ namespace DataService
 				SubmissionDate = src.SubmissionDate,
 				ServiceRequestOptions = serviceRequestOptions,
 				RequestedForDate = src.RequestedForDate,
-				ServiceRequestPackageId = src.ServiceRequestPackageId
-			};
+                ServiceOptionId = src.ServiceOptionId
+            };
 		}
 
 		private static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)

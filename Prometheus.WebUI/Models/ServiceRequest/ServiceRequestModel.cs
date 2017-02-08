@@ -6,12 +6,15 @@ using Common.Dto;
 
 namespace Prometheus.WebUI.Models.ServiceRequest
 {
+    /// <summary>
+    /// Service Controller to View model
+    /// </summary>
     public class ServiceRequestModel
     {
         [HiddenInput]
         public int ServiceRequestId { get; set; }
         [HiddenInput]
-        public int InitialOptionId { get; set; }
+        public int ServiceOptionId { get; set; }
 
         /// <summary>
         /// who is making the request
