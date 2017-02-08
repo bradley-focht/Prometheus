@@ -6,6 +6,6 @@ namespace DataService.Models
 	{
 		int Id { get; set; }
 		string Name { get; set; }
-		ICollection<ServiceOptionCategory> ServiceOptionCategories { get; set; }
+		ICollection<ServiceOptionCategoryTag> ServiceOptionCategoryTags { get; set; }
 	}
 }

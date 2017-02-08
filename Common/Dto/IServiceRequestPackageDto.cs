@@ -23,7 +23,7 @@ namespace Common.Dto
 		/// </summary>
 		[Display(Order = 1)]
 		string Name { get; set; }
-		ICollection<IServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
+		ICollection<IServiceOptionCategoryTagDto> ServiceOptionCategoryTags { get; set; }
 
 	}
 }

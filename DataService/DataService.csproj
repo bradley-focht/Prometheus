@@ -81,6 +81,8 @@
     <Compile Include="DataAccessLayer\PrometheusContext.cs" />
     <Compile Include="DataAccessLayer\PrometheusInitializer.cs" />
     <Compile Include="ManualMapper.cs" />
+    <Compile Include="Models\ServiceOptionCategoryTag.cs" />
+    <Compile Include="Models\IServiceOptionCategoryTag.cs" />
     <Compile Include="Models\ServiceRequest.cs" />
     <Compile Include="Models\IServiceRequest.cs" />
     <Compile Include="Models\IServiceRequestOption.cs" />

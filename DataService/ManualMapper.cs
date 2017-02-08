@@ -801,12 +801,18 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-			List<IServiceOptionCategoryDto> serviceOptionCategories = new List<IServiceOptionCategoryDto>();
-			if (src.ServiceOptionCategories != null)
+			List<IServiceOptionCategoryTagDto> serviceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
+			if (src.ServiceOptionCategoryTags != null)
 			{
-				foreach (var category in src.ServiceOptionCategories)
+				foreach (var tag in src.ServiceOptionCategoryTags)
 				{
-					serviceOptionCategories.Add(MapOptionCategoryToDto(category));
+					serviceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto
+					{
+						Id = tag.Id,
+						Order = tag.Order,
+						ServiceOptionCategoryId = tag.ServiceOptionCategoryId,
+						ServiceOptionCategory = MapOptionCategoryToDto(tag.ServiceOptionCategory)
+					});
 				}
 			}
 
@@ -815,7 +821,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
-				ServiceOptionCategories = serviceOptionCategories
+				ServiceOptionCategoryTags = serviceOptionCategoryTags
 			};
 		}
 

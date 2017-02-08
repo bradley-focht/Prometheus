@@ -108,7 +108,12 @@ namespace ServicePortfolioService.Controllers
 				var option = context.ServiceOptions.Find(serviceOptionId);
 				if (option == null)
 					throw new InvalidOperationException(string.Format("Service Option with ID {0} does not exist. Cannot retrieve service package with option identifier {0}.", serviceOptionId));
-				var packages = context.ServiceRequestPackages.Where(x => x.ServiceOptionCategories.Any(y => y.ServiceOptions.Any(z => z.Id == serviceOptionId)));
+
+				//Oh baby
+				var packages = context.ServiceRequestPackages.Where(
+					x => x.ServiceOptionCategoryTags.Any(
+						y => y.ServiceOptionCategory.ServiceOptions.Any(
+							z => z.Id == serviceOptionId)));
 
 				if (!packages.Any())
 					throw new InvalidOperationException(string.Format("Service Request Package with Service Option ID {0} does not exist.", serviceOptionId));

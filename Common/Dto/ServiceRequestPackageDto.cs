@@ -15,6 +15,6 @@ namespace Common.Dto
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-		public virtual ICollection<IServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
+		public virtual ICollection<IServiceOptionCategoryTagDto> ServiceOptionCategoryTags { get; set; }
 	}
 }
