@@ -1,6 +1,7 @@
 ﻿@model Common.Dto.LifecycleStatusDto
 @{
-    ViewBag.Title = "Lifecycle";
+    ViewBag.Title = "Services Maintenance";
+    ViewBag.SubTitle = "Lifecycle Status";
     ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
                                                              new KeyValuePair<string, string>("Services Maintenance", "ServiceMaintenance/Index"),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#")};   
@@ -15,6 +16,20 @@
 @section Content {
    @if (Model.Id != 0)
    {
-       @Html.Partial("/Views/ServiceMaintenance/PartialViews/LifecycleViewer.cshtml", Model)
+       <div class="title-div">@ViewBag.SubTitle</div>
+
+       <div class="panel-div">
+           @Html.Partial("/Views/ServiceMaintenance/PartialViews/LifecycleViewer.cshtml", Model)
+       </div>
+
+    <div class="flex-container-col">
+        <div class="panel-footer">
+            <div class="float-right-div">
+                @Html.ActionLink("Back", "ShowLifecycle", null, new { @class = "btn btn-default btn-back" })
+                @Html.ActionLink("Update", "UpdateLifecycle", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", new { id = Model.Id }, new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
    }
 }

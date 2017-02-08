@@ -20,8 +20,9 @@
         @Html.Hidden("Name", Model.Name)
         <div class="title-div">@ViewBag.SubTitle</div>
         <div class="panel-div">
-            @Html.Partial("PartialViews/UpdatePublishable", Model)
-
+            <div class="dd">
+                @Html.Partial("PartialViews/UpdatePublishable", Model)
+            </div>
         </div>
 
         <div class="flex-container-col">

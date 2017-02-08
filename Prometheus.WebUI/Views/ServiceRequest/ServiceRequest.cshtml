@@ -9,15 +9,14 @@
         new KeyValuePair<string, string>("Service Request", "#")
     };
 
-    var submitAction = Model.CurrentIndex < 0 ? "SaveInfo" : "SaveData";            //post operation to perform
+    var submitAction = Model.CurrentIndex < 0 ? "SaveInfo" : "SaveForm";            //post operation to perform
 }
-
-
 
 @using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
 {
-    <input type="hidden" name="InitialOptionId" value="@Model.InitialOptionId" />
+    <input type="hidden" name="ServiceOptionId" value="@Model.ServiceOptionId" />
     <input type="hidden" name="Id" value="@Model.ServiceRequestId" />
+    <input type="hidden" name="Index" value="@Model.CurrentIndex" />
 
     <div class="panel panel-default flex-container-row make-space-bottom">
         <div class="dd full-width">
@@ -39,40 +38,45 @@
         </div>
     </div>
 
-        @Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.Package.ServiceOptionCategories })
+    @Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.Package.ServiceOptionCategories })
 
-        <div class="panel-div">
-            @if (Model.CurrentIndex < 0)
-            {
-                @Html.Partial("PartialViews/ServiceRequestInfo", Model)
-            }
-            else
-            {
-                @Html.Partial("PartialViews/ServiceRequestForm", Model.OptionCategory)
-            }
+    <div class="panel-div full-width">
+        @if (Model.CurrentIndex < 0)
+        {
+            @Html.Partial("PartialViews/ServiceRequestInfo", Model)
+        }
+        else
+        {
+            @Html.Partial("PartialViews/ServiceRequestForm", Model.OptionCategory)
+        }
 
 
 
-        </div>
-    <div class="flex-container-col">
-        <div class="make-space-bottom" style="display: flex; justify-content: flex-end; margin-right: 40px;">
-            <div class="make-space-right">
-                @if (Model.CurrentIndex > 0)
+    </div>
+        <div class="flex-container-col">
+            <div class="make-space-bottom" style="display: flex; justify-content: flex-end; margin-right: 40px;">
+
+                @if (Model.CurrentIndex >= 0)
                 {
-                    <button name="@(Model.CurrentIndex - 1)" class="btn btn-default">Back</button>
+                    <div class="make-space-right">
+                        <button name="submit" value="@(Model.CurrentIndex - 1)" class="btn btn-default"><i class="fa fa-chevron-left" style="font-size: 0.8em; font-weight: 100;"  aria-hidden="true"></i> Back</button>
+                    </div>
+                }
+
+                @if (Model.CurrentIndex != (Model.Package.ServiceOptionCategories.Count() -1 ))
+                {
+                    <div>
+                        <button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>
+                    </div>
                 }
             </div>
-            <div>
-                <button name="@(Model.CurrentIndex + 1)" class="btn btn-default">Next</button>
-            </div>
-        </div>
 
             <div class="panel-footer">
                 <div class="float-right-div">
                     @Html.ActionLink("Cancel Request", "CancelRequest", new { id = Model.ServiceRequestId }, new { @class = "btn btn-danger" })
                     @if (Model.ServiceRequestId > 0)
                     {
-                        <input type="submit" value="Submit Request" name="SRSubmit" class="btn btn-primary"/>
+                        <input type="submit" value="Submit Request" name="SRSubmit" class="btn btn-primary" />
                     }
                 </div>
             </div>

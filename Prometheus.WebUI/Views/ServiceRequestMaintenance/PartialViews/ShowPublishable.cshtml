@@ -29,7 +29,15 @@
                     </div>
                 </div>
                 break;
-            default:
-                continue;
-        }
-    }
+            case "Quantifiable":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                    <div class="dd-cell">
+                        @(bool.Parse(property.Model.ToString()) ? "Yes" : "No" ) 
+                    </div>
+                </div>
+                    break;
+                    default:
+                    continue;
+                    }
+                    }

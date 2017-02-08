@@ -8,7 +8,7 @@ namespace Common.Dto
 	{
 		int Id { get; set; }
 
-		int ServiceRequestPackageId { get; set; }
+		int? ServiceOptionId { get; set; }
 
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }

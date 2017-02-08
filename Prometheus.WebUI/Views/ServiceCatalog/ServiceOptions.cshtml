@@ -1,4 +1,5 @@
-﻿@model Prometheus.WebUI.Models.ServiceCatalog.ServiceOptionsModel
+﻿@using Prometheus.WebUI.Models.ServiceCatalog
+@model ServiceOptionsModel
 @{
 	ViewBag.Title = Model.Catalog + " Catalog";
 	ViewBag.SubTitle = Model.ServiceName;
@@ -26,7 +27,7 @@
 		{
 			foreach (var option in Model.Options)
 			{
-				@Html.Partial("PartialViews/SummarizedCatalogableView", option)
+				@Html.Partial("PartialViews/SummarizedCatalogableView", new PublishableCatalogItemModel {Item = option, Catalog = Model.Catalog})
 
 			}
 		}

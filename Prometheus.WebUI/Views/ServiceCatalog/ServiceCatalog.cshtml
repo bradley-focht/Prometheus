@@ -36,7 +36,7 @@
 					{
 						var optionType = item is IServiceOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
 						<li>
-							<span>@Html.ActionLink(item.Name, "Details", new {type = optionType, serviceId = service.Id, id = item.Id })</span>
+							<span>@Html.ActionLink(item.Name, "Details", new {catalog = Model.Catalog, type = optionType, serviceId = service.Id, id = item.Id })</span>
 						</li>
 					}
 				</ul>

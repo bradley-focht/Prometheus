@@ -5,7 +5,7 @@
 {
     var category = (IServiceOptionCategoryDto)Model;
 
-    <div class="dd">
+    <div class="dd full-width">
         @foreach (var option in category.ServiceOptions)
         {
             <div class="dd-row">
@@ -24,6 +24,19 @@
                             @option.BusinessValue
                         </div>
                     </div>
+                </div>
+                <div class="dt-cell">
+                    @if (category.Quantifiable)
+                    {
+                        <div class="input-group spinner" style="max-width: 50px;">
+                            @Html.TextBox("Quantity", "0", new {min = "0", max = "99", @class = "form-control numberSelect"})
+
+                            <div class="input-group-btn-vertical">
+                                <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                                <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                            </div>
+                        </div>
+                    }
                 </div>
             </div>
         }

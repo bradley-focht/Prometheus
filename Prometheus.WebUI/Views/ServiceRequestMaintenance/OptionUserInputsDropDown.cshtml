@@ -1,9 +1,10 @@
 ﻿@model IEnumerable<SelectListItem>
+
 @if (Model != null)
 {
-	@Html.DropDownList("Options", Model, new {placeholder = "Options...", multiple = "multiple", @class="btn-default"})
+    @Html.DropDownList("UserInputs", Model, new {placeholder = "Options...", multiple = "multiple", @class = "btn-default"})
 
-	<script type="text/javascript" language="javascript">
+    <script type="text/javascript" language="javascript">
 		$('#Options')
 			.selectize({
 				plugins: ['remove_button'],
@@ -16,12 +17,9 @@
 					}
 				}
 			});
-	</script>
-
+    </script>
 }
 else
 {
-	<text>No Options in this Service</text>
+    <text>No user inputs available </text>
 }
-
-

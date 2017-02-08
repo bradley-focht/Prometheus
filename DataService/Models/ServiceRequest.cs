@@ -11,8 +11,10 @@ namespace DataService.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-
-		public int ServiceRequestPackageId { get; set; }
+        // see http://stackoverflow.com/questions/14062216/introducing-foreign-key-constraint-fk-dbo-models-dbo-makes-makeid-on-table-mo
+        // prevent a cycle in a cascading delete
+        // the fk is for temporary use until request is approved
+        public int? ServiceOptionId { get; set; }
 
 		public int RequestedByUserId { get; set; }
 		public string Comments { get; set; }    /*fields added by brad */
@@ -29,7 +31,7 @@ namespace DataService.Models
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-		public virtual ServiceRequestPackage ServiceRequestPackage { get; set; }
+		public virtual ServiceOption ServiceOption { get; set; }
 		public virtual ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 	}
 }

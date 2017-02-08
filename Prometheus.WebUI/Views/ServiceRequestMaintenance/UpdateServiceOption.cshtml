@@ -21,7 +21,11 @@
         @Html.Hidden("Id", Model.Option.Id)
         @Html.Hidden("ServiceId", Model.ServiceId)
         <div class="panel-div">
-            @Html.Partial("PartialViews/UpdatePublishable", Model.Option)
+            <div class="dd">
+                @Html.Partial("PartialViews/UpdatePublishable", Model.Option)
+                <div class="dt-cell">User Inputs</div>
+                <div class="dd-cell">@Html.Action("GetOptionUserInputsDropDown", new {id = Model.Option.Id})</div>
+            </div>
         </div>
 
         <div class="flex-container-col">

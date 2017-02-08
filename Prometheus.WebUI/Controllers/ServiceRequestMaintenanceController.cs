@@ -875,5 +875,10 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("ShowUserInput", new { id = 0 });
         }
 
+        public ActionResult GetOptionUserInputsDropDown(int id)
+        {
+            return View("OptionUserInputsDropDown");
+        }
+
     }
 }

@@ -9,11 +9,11 @@
 
         @if (Model.SelectedIndex < 0)
         {
-            <li class="sr-navigation-active"><button>Info</button></li>
+            <li class="sr-navigation-active"><button name="submit" value="-1">Info</button></li>
         }
         else
         {
-            <li><button>Info</button></li>
+            <li><button name="submit" value="-1">Info</button></li>
         }
 
         @{
@@ -22,12 +22,12 @@
             {
                 if (Model.SelectedIndex == counter)
                 {
-                    <li class="sr-navigation-active"><button>@title.Name </button></li>
+                    <li class="sr-navigation-active"><button disabled="disabled">@title.Name </button></li>
                     
                 }
                 else
                 {
-                    <li><button type="submit">@title.Name</button></li>
+                    <li><button type="submit"  name="submit" type="submit" value="@(counter)">@title.Name</button></li>
 
                 }
                 counter++;

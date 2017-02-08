@@ -8,8 +8,6 @@ namespace DataService.Models
 	{
 		int Id { get; set; }
 
-		int ServiceRequestPackageId { get; set; }
-
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }
 
@@ -22,7 +20,7 @@ namespace DataService.Models
 
 		ServiceRequestState State { get; set; }
 
-		ServiceRequestPackage ServiceRequestPackage { get; set; }
+		int? ServiceOptionId { get; set; }
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 	}
 }
