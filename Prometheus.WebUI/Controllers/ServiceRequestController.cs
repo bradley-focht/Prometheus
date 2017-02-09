@@ -134,7 +134,7 @@ namespace Prometheus.WebUI.Controllers
                 model.ServiceRequest = _ps.GetServiceRequest(id);       //get db info
                 if (index >= 0)
                 {
-                    model.OptionCategory = _ps.GetServiceOptionCategory(model.Package.ServiceOptionCategories.ElementAt(index).Id);
+                    model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
                 }
             }
             catch(Exception exception)

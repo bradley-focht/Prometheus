@@ -35,6 +35,7 @@ namespace Prometheus.WebUI.Controllers
                 {
                    Id = item.Id,
                    State = item.State,
+                   PackageName = ServicePackageHelper.GetPackage(_ps, item.ServiceOptionId).Name
                  });
             }
 

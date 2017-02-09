@@ -20,12 +20,11 @@
     </tr>
     </thead>
 
-
     @foreach (var item in Model)
     {
         <tr>
             <td>@item.Id</td>
-            <td></td>
+            <td>@item.PackageName</td>
             <td>@item.State</td>
 
 
@@ -43,5 +42,4 @@
             </td>
         </tr>
     }
-
 </table>

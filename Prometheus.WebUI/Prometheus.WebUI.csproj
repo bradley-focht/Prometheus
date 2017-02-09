@@ -337,7 +337,6 @@
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\Enums\ServiceCatalogs.cs" />
     <Compile Include="Helpers\Enums\ServiceRequestMode.cs" />
-    <Compile Include="Helpers\PackageHelper.cs" />
     <Compile Include="Helpers\ServicePackageHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
