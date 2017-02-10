@@ -18,11 +18,11 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            int userId;
-            
-            try { userId = int.Parse(Session["Id"].ToString()); }   //login is required
-            catch (Exception) { return RedirectToAction("Index", "UserAccount");    //some login issue
-            }
+            int userId;     //user info
+            try { userId = int.Parse(Session["Id"].ToString()); }                   //login is required
+            catch (Exception) { return RedirectToAction("Index", "UserAccount");  }  //some login issue
+
+            ServiceRequestApprovalModel model = new ServiceRequestApprovalModel {Controls = new ServiceRequestApprovalControls()};
 
             _ps = InterfaceFactory.CreatePortfolioService(userId);
             List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
@@ -39,8 +39,8 @@ namespace Prometheus.WebUI.Controllers
                     });
                 }
             }
-
-            return View(requests);
+            model.ServiceRequests = requests;
+            return View(model);
         }
     }
 }
