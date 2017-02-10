@@ -18,11 +18,11 @@
     <div class="dd-row">
 
         @if (Model.Users != null && Model.Users.Any())
-            {
-            <div class="dd-cell-nostyle" style="margin-right: 10px; width:50%">
+        {
+            <div class="dd-cell-nostyle" style="margin-right: 10px; width: 50%">
                 <div class="title-div">Users</div>
             </div>
-            <div class="dd-cell-nostyle" style="width:50%;">
+            <div class="dd-cell-nostyle" style="width: 50%;">
                 <div class="title-div make-space-left">Roles</div>
             </div>
         }
@@ -32,70 +32,72 @@
         }
     </div>
 </div>
-@using (Html.BeginForm("SaveUsers", "SystemAccess", FormMethod.Post))
-{
-    <div class="dd" style="width: 60%;">
-        <div class="dd-row">
-            @if (Model.Users != null && Model.Users.Any())
-            {
-                @Html.ValidationMessageFor(model => model.Users)
-                foreach (var user in Model.Users)
+<div class="panel-div full-width">
+    @using (Html.BeginForm("SaveUsers", "SystemAccess", FormMethod.Post))
+    {
+        <div class="dd" style="width: 60%;">
+            <div class="dd-row">
+                @if (Model.Users != null && Model.Users.Any())
                 {
-                    <div class="checkbox checkbox-primary">
-                        <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="Users">
-                        <label for="@user.UserGuid">
-                            @user.DisplayName
-                            @if (user.UserDto.Roles != null)
-                            {
-                                <br />
-                                foreach (var role in user.UserDto.Roles)
+                    @Html.ValidationMessageFor(model => model.Users)
+                    foreach (var user in Model.Users)
+                    {
+                        <div class="checkbox checkbox-primary">
+                            <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="Users">
+                            <label for="@user.UserGuid">
+                                @user.DisplayName
+                                @if (user.UserDto.Roles != null)
                                 {
-                                    <span class="note"> @role.Name </span>
+                                    <br />
+                                    foreach (var role in user.UserDto.Roles)
+                                    {
+                                        <span class="note"> @role.Name </span>
+                                    }
                                 }
-                            }
-                        </label>
+                            </label>
+                        </div>
+                    }
+                }
+                else if (Model.ReturningSearch && (Model.Users == null || !Model.Users.Any()))
+                {
+                    <div class="dd-cell-base">
+                        <div class="alert alert-warning alert-message make-space-top">No results</div>
                     </div>
                 }
-            }
-            else if (Model.ReturningSearch && (Model.Users == null || !Model.Users.Any()))
-            {
-                <div class="dd-cell-base">
-                    <div class="alert alert-warning alert-message make-space-top">No results</div>
-                </div>
-            }
 
-            @if (Model.Users != null && Model.Users.Any() && Model.Roles != null)
+                @if (Model.Users != null && Model.Users.Any() && Model.Roles != null)
                 {
                     <div class="dd-cell-base">
                         @Html.ValidationMessageFor(model => model.Roles)
                         @Html.Partial("PartialViews/SelectRoles", Model.Roles)
                     </div>
-            }
+                }
+            </div>
+            @if (Model.Users != null && Model.Users.Any())
+            {
+                <div class="dd-row">
+                    <div class="dd-cell-base">
+                        <div class="flex-container-col">
+                            <div class="panel-footer">
+                                <div class="float-right-div">
+                                    @Html.ActionLink("Clear", "ManageUsers", null, new { @class = "btn btn-primary" })
+                                    <input type="submit" value="Remove" class="btn btn-danger" name="SubmitButton" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dd-cell-base">
+                        <div class="flex-container-col">
+                            <div class="panel-footer">
+                                <div class="float-right-div">
+                                    <input type="submit" value="Save" class="btn btn-primary" name="SubmitButton" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>}
         </div>
-        @if (Model.Users != null && Model.Users.Any())
-        {
-            <div class="dd-row">
-                <div class="dd-cell-base">
-                    <div class="flex-container-col">
-                        <div class="panel-footer">
-                            <div class="float-right-div">
-                                @Html.ActionLink("Clear", "ManageUsers", null, new { @class = "btn btn-primary" })
-                                <input type="submit" value="Remove"class="btn btn-danger" name="SubmitButton"/>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dd-cell-base">
-                    <div class="flex-container-col">
-                        <div class="panel-footer">
-                            <div class="float-right-div">
-                                <input type="submit" value="Save" class="btn btn-primary" name="SubmitButton" />
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>}
-    </div>
-}
+    }
+</div>

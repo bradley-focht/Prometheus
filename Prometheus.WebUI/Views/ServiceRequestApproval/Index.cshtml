@@ -16,17 +16,18 @@
         <th>Id</th>
         <th>Request</th>
         <th>Status</th>
+        <th>Name</th>
         <th></th>
     </tr>
     </thead>
-
+    @* Build SR Table *@
     @foreach (var item in Model)
     {
         <tr>
             <td>@item.Id</td>
-            <td>@item.PackageName</td>
+            <td>@Html.ActionLink(@item.PackageName, "Form", "ServiceRequest", new {id = item.Id, index = -1, serviceOptionId = item.ServiceOptionId}, null )</td>
             <td>@item.State</td>
-
+            
 
             <td>
                 <div class="btn-group">

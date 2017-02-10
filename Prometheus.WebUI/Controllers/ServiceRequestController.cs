@@ -93,7 +93,11 @@ namespace Prometheus.WebUI.Controllers
             }
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = "Successfully saved Service Request";
-
+            if (submit >= 9999)
+            {
+                //TODO: Change state after saving
+                return RedirectToAction("Index", "ServiceRequestApproval");
+            }
 
             return RedirectToAction("Form", new {id = request.Id, index = submit, ServiceOptionId = serviceRequest.ServiceOptionId});
         }
@@ -113,7 +117,11 @@ namespace Prometheus.WebUI.Controllers
                 TempData["MessageType"] = WebMessageType.Success;
                 TempData["Message"] = "Successfully saved changes to Service Request";
             }
-
+            if (submit >= 9999)
+            {
+                //TODO: Change state after saving
+                return RedirectToAction("Index", "ServiceRequestApproval");
+            }
             return RedirectToAction("Form", new {id = form.Id, index = submit, serviceOptionId = form.ServiceOptionId});
         }
 

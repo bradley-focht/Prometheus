@@ -404,7 +404,7 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="package">package details</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Savepackage(PackageModel package)
+        public ActionResult SavePackage(PackageModel package)
         {
             if (!ModelState.IsValid)
             {
@@ -422,7 +422,7 @@ namespace Prometheus.WebUI.Controllers
             newPackage.Name = package.Name;
             newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
             newPackage.Id = package.Id;
-            foreach (var category in package.Associations)
+            foreach (var category in package.Associations)      //build new package
             {
                 newPackage.ServiceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto { ServiceOptionCategoryId = category });
             }
@@ -435,7 +435,6 @@ namespace Prometheus.WebUI.Controllers
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = $"Failed to save service package, error: {exception.Message}";
             }
-
 
             return RedirectToAction("ShowPackages", new { id = 0 });
         }

@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequestApproval;
@@ -31,12 +28,16 @@ namespace Prometheus.WebUI.Controllers
             List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
             foreach(var item in _ps.GetServiceRequestsForRequestorId(userId))
             {
-                requests.Add(new ServiceRequestTableItemModel
+                if (item.ServiceOptionId != null)       //if null than this isn't an SR that can be reconstructed in a form
                 {
-                   Id = item.Id,
-                   State = item.State,
-                   PackageName = ServicePackageHelper.GetPackage(_ps, item.ServiceOptionId).Name
-                 });
+                    requests.Add(new ServiceRequestTableItemModel
+                    {
+                        Id = item.Id,
+                        State = item.State,
+                        ServiceOptionId = item.ServiceOptionId.Value,
+                        PackageName = ServicePackageHelper.GetPackage(_ps, item.ServiceOptionId).Name
+                    });
+                }
             }
 
             return View(requests);
