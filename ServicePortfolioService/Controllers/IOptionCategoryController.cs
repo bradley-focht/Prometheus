@@ -13,7 +13,7 @@ namespace ServicePortfolioService.Controllers
 		IServiceOptionCategoryDto GetServiceOptionCategory(int optionCategoryId);
 
 		/// <summary>
-		/// Modifies the option category in the database
+		/// Modifies the option category in the database NEW COMMIT
 		/// </summary>
 		/// <param name="optionCategory"></param>
 		/// <param name="modification">Type of modification to make</param>
