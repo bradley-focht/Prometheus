@@ -13,7 +13,22 @@
             new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
         };
 }
-@section Sidebar {}
+@section Sidebar {
+    <div class="instructions-div">
+    <dl>
+        <dt>Initial Package</dt>
+        <dd>
+           The first category selected causes all options in that category to use this package
+        </dd>
+
+        <dt>Associations</dt>
+        <dd>
+           Associated categories in the package will be amended to the package
+        </dd>
+
+    </dl>
+</div>
+}
 
 @section Content {
     <div class="title-div">Add Package</div>

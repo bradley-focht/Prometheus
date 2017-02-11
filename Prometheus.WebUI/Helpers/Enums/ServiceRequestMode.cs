@@ -3,6 +3,7 @@
     public enum ServiceRequestMode
     {
         Selection,
-        Input
+        Input,
+        View
     }
 }

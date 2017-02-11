@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestTableItemModel>
+﻿@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestApprovalModel
 @{
 	ViewBag.Title = "Service Requests";
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -9,25 +9,28 @@
 		new KeyValuePair<string, string>("Service Requests", "#")
 	};
 }
+@Html.Partial("PartialViews/ServiceRequestApprovalControls", Model.Controls)
 
 <table class="table table-hover">
     <thead>
     <tr>
         <th>Id</th>
         <th>Request</th>
+        <th>Date Submitted</th>
+        <th>Date Required</th>
         <th>Status</th>
+        <th>Name</th>
         <th></th>
     </tr>
     </thead>
-
-
-    @foreach (var item in Model)
+    @* Build SR Table *@
+    @foreach (var item in Model.ServiceRequests)
     {
         <tr>
             <td>@item.Id</td>
-            <td></td>
+            <td>@Html.ActionLink(@item.PackageName, "Form", "ServiceRequest", new {id = item.Id, index = -1, serviceOptionId = item.ServiceOptionId}, null )</td>
             <td>@item.State</td>
-
+            
 
             <td>
                 <div class="btn-group">
@@ -43,5 +46,4 @@
             </td>
         </tr>
     }
-
 </table>

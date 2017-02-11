@@ -6,7 +6,6 @@
 <div class="flex-row" style="margin-left: -40px;">
     <ul class="sr-navigation">
 
-
         @if (Model.SelectedIndex < 0)
         {
             <li class="sr-navigation-active"><button name="submit" value="-1">Info</button></li>
@@ -22,13 +21,11 @@
             {
                 if (Model.SelectedIndex == counter)
                 {
-                    <li class="sr-navigation-active"><button disabled="disabled">@title.Name </button></li>
-                    
+                    <li class="sr-navigation-active"><button disabled="disabled">@title.ServiceOptionCategory.Name </button></li>         
                 }
                 else
                 {
-                    <li><button type="submit"  name="submit" type="submit" value="@(counter)">@title.Name</button></li>
-
+                    <li><button type="submit"  name="submit" type="submit" value="@(counter)">@title.ServiceOptionCategory.Name</button></li>
                 }
                 counter++;
             }

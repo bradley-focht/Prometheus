@@ -1,4 +1,5 @@
-﻿@model Common.Dto.ServiceRequestPackageDto
+﻿@using DataService.Models
+@model Common.Dto.ServiceRequestPackageDto
 @if (Model != null)
 {
     <div class="dd">
@@ -8,11 +9,13 @@
         </div>
         <div class="dd-row">
             <div class="dt-cell">
-                Packaged Categories
+                Associations
             </div>
             <div class="dd-cell">
-                ~ items
-                @Model.ServiceOptionCategories
+                @foreach (var item in Model.ServiceOptionCategoryTags)
+                {
+                    <div>@item.ServiceOptionCategory.Name</div>
+                }
             </div>
         </div>
         

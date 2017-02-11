@@ -11,7 +11,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestApproval
     public class ServiceRequestApprovalModel
     {
         public ServiceRequestApprovalControls Controls { get; set; }
-        private ICollection<ServiceRequestTableItemModel> ServiceRequests { get; set; }
+        public ICollection<ServiceRequestTableItemModel> ServiceRequests { get; set; }
         
     }
 }

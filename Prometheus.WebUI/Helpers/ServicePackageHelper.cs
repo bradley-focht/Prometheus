@@ -6,7 +6,6 @@ using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Helpers
 {
-
     /// <summary>
     /// Service Package functions
     /// </summary>
@@ -28,15 +27,29 @@ namespace Prometheus.WebUI.Helpers
             }
             catch (Exception) { /* dealt with below */}
 
-            if (package == null)    //make new default package if necessary
+            if (package == null) //make new default package if necessary
             {
                 package = new ServiceRequestPackageDto();
-                package.ServiceOptionCategories = new List<IServiceOptionCategoryDto>();    //it consists of just the option category
-                package.ServiceOptionCategories.Add(portfolioService.GetServiceOptionCategory(portfolioService.GetServiceOption(optionId).ServiceOptionCategoryId));
-                package.Name = package.ServiceOptionCategories.First().Name;
+                package.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
+                    //it consists of just the option category
+                package.ServiceOptionCategoryTags.Add(
+                    new ServiceOptionCategoryTagDto
+                    { ServiceOptionCategory = portfolioService.GetServiceOptionCategory(
+                                portfolioService.GetServiceOption(optionId).ServiceOptionCategoryId)
+                    });
             }
 
+            package.Name = package.ServiceOptionCategoryTags.First().ServiceOptionCategory.Name;
             return package;
+        }
+
+        public static IServiceRequestPackageDto GetPackage(IPortfolioService portfolioService, int? serviceOptionId)
+        {
+            if (serviceOptionId.HasValue)               //invalid input
+            {
+                return GetPackage(portfolioService, serviceOptionId.Value);
+            }
+                throw new Exception("Cannot retrieve package, Invalid Service Option parameter");           //you have reached a dangerous place    
         }
     }
 }

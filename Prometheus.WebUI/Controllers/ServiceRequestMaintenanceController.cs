@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
+using DataService.Models;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
@@ -403,7 +404,7 @@ namespace Prometheus.WebUI.Controllers
         /// <param name="package">package details</param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult Savepackage(PackageModel package)
+        public ActionResult SavePackage(PackageModel package)
         {
             if (!ModelState.IsValid)
             {
@@ -419,11 +420,11 @@ namespace Prometheus.WebUI.Controllers
             _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
             IServiceRequestPackageDto newPackage = new ServiceRequestPackageDto();      //transfer data to new package
             newPackage.Name = package.Name;
-            newPackage.ServiceOptionCategories = new List<IServiceOptionCategoryDto>();
+            newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
             newPackage.Id = package.Id;
-            foreach (var category in package.Associations)
+            foreach (var category in package.Associations)      //build new package
             {
-                newPackage.ServiceOptionCategories.Add(new ServiceOptionCategoryDto { Id = category });
+                newPackage.ServiceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto { ServiceOptionCategoryId = category });
             }
             try
             {
@@ -434,7 +435,6 @@ namespace Prometheus.WebUI.Controllers
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = $"Failed to save service package, error: {exception.Message}";
             }
-
 
             return RedirectToAction("ShowPackages", new { id = 0 });
         }
