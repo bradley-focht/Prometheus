@@ -267,6 +267,21 @@ namespace ServicePortfolioService
 			return _serviceOptionController.ModifyServiceOption(serviceOption, modification);
 		}
 
+		public IInputGroupDto GetInputsForServiceOptions(IEnumerable<IServiceOptionDto> serviceOptions)
+		{
+			return _serviceOptionController.GetInputsForServiceOptions(serviceOptions);
+		}
+
+		public IServiceOptionDto AddInputsToServiceOption(int serviceOptionId, IInputGroupDto inputsToAdd)
+		{
+			return _serviceOptionController.AddInputsToServiceOption(serviceOptionId, inputsToAdd);
+		}
+
+		public IServiceOptionDto RemoveInputsFromServiceOption(int serviceOptionId, IInputGroupDto inputsToRemove)
+		{
+			return _serviceOptionController.RemoveInputsFromServiceOption(serviceOptionId, inputsToRemove);
+		}
+
 		public IServiceProcessDto GetServiceProcess(int serviceProcessId)
 		{
 			return _serviceProcessController.GetServiceProcess(serviceProcessId);

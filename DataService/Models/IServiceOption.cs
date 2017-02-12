@@ -1,5 +1,5 @@
-﻿using System;
-using Common.Dto;
+﻿using Common.Dto;
+using System;
 
 
 namespace DataService.Models
@@ -14,10 +14,10 @@ namespace DataService.Models
 		double PriceMonthly { get; set; }
 		double Cost { get; set; }
 		string Utilization { get; set; }
-        string Included { get; set; }
-        string Procurement { get; set; }
-        string Description { get; set; }
-        string Details { get; set; }
+		string Included { get; set; }
+		string Procurement { get; set; }
+		string Description { get; set; }
+		string Details { get; set; }
 		ServiceOptionCategory ServiceOptionCategory { get; set; }
 
 	}

@@ -14,24 +14,24 @@ namespace DataService.Models
 
 
 
-	    //FK
+		//FK
 		public int ServiceOptionCategoryId { get; set; }
 
-        public int Popularity { get; set; }
-        public string Name { get; set; }
-	    public string BusinessValue { get; set; }
-	    public Guid? Picture { get; set; }
+		public int Popularity { get; set; }
+		public string Name { get; set; }
+		public string BusinessValue { get; set; }
+		public Guid? Picture { get; set; }
 		public string PictureMimeType { get; set; }
 		public double PriceUpFront { get; set; }
 		public double PriceMonthly { get; set; }
 		public double Cost { get; set; }
 		public string Utilization { get; set; }
-	    public string Included { get; set; }
-	    public string Procurement { get; set; }
-        public  string Description { get; set; }
-	    public string Details { get; set; }
+		public string Included { get; set; }
+		public string Procurement { get; set; }
+		public string Description { get; set; }
+		public string Details { get; set; }
 
-	    #region Fields
+		#region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }

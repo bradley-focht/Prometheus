@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Common.Enums.Permissions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common.Enums.Permissions;
 
 namespace DataService.Models
 {
@@ -22,6 +22,7 @@ namespace DataService.Models
 		public ServiceDetails ServiceDetailsAccess { get; set; }
 		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
 		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
+
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }

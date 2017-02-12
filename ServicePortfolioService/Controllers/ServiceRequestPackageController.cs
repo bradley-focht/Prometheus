@@ -109,10 +109,10 @@ namespace ServicePortfolioService.Controllers
 				if (option == null)
 					throw new InvalidOperationException(string.Format("Service Option with ID {0} does not exist. Cannot retrieve service package with option identifier {0}.", serviceOptionId));
 
-				//Oh baby
+				//All packages where the service option exists in the first category of the package
 				var packages = context.ServiceRequestPackages.Where(
 					x => x.ServiceOptionCategoryTags.Any(
-						y => y.ServiceOptionCategory.ServiceOptions.Any(
+						y => y.Order == 1 && y.ServiceOptionCategory.ServiceOptions.Any(
 							z => z.Id == serviceOptionId)));
 
 				if (!packages.Any())

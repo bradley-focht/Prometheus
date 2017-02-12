@@ -725,7 +725,7 @@ namespace DataService
 				Delimiter = src.Delimiter,
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
-				SelectItems = src.SelectItems,
+				SelectItems = src.SelectItems
 			};
 		}
 
@@ -850,7 +850,7 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
-                ServiceOptionId = src.ServiceOptionId
+				ServiceOptionId = src.ServiceOptionId
 			};
 		}
 
@@ -880,8 +880,8 @@ namespace DataService
 				SubmissionDate = src.SubmissionDate,
 				ServiceRequestOptions = serviceRequestOptions,
 				RequestedForDate = src.RequestedForDate,
-                ServiceOptionId = src.ServiceOptionId
-            };
+				ServiceOptionId = src.ServiceOptionId
+			};
 		}
 
 		private static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)

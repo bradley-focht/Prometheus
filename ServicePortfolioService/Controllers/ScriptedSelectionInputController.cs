@@ -1,11 +1,11 @@
 ﻿using Common.Dto;
+using Common.Enums.Entities;
 using DataService;
 using DataService.DataAccessLayer;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -37,19 +37,19 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-	    public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs()
-	    {
-            using (var context = new PrometheusContext())
-            {
-                var inputs = context.ScriptedSelectionInputs;
-                foreach (var input in inputs)
-                {
-                    yield return ManualMapper.MapScriptedSelectionInputToDto(input);
-                }
-            }
-        }
+		public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs()
+		{
+			using (var context = new PrometheusContext())
+			{
+				var inputs = context.ScriptedSelectionInputs;
+				foreach (var input in inputs)
+				{
+					yield return ManualMapper.MapScriptedSelectionInputToDto(input);
+				}
+			}
+		}
 
-	    public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto textInput, EntityModification modification)
+		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto textInput, EntityModification modification)
 		{
 			return base.ModifyEntity(textInput, modification);
 		}

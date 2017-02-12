@@ -49,6 +49,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dto\InputGroupDto.cs" />
+    <Compile Include="Dto\IInputGroupDto.cs" />
     <Compile Include="Dto\ServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\IServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionScriptedSelectionInputDto.cs" />
