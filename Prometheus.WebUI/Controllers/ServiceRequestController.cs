@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Models.ServiceRequest;
 using Prometheus.WebUI.Models.Shared;
 using ServicePortfolioService;
@@ -22,13 +23,11 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Begin(int id)
         {
-            ServiceRequestModel model = new ServiceRequestModel {ServiceOptionId = id};
+            ServiceRequestModel model = new ServiceRequestModel {ServiceRequest = new ServiceRequestDto {ServiceOptionId = id} };   //start new SR
             _ps = InterfaceFactory.CreatePortfolioService(dummyId);
 
             model.Package = ServicePackageHelper.GetPackage(_ps, id);
-
             model.CurrentIndex = -1;            /* index for info tab */
-            model.ServiceRequest = new ServiceRequestDto();
             return View("ServiceRequest", model);
         }
 
@@ -99,7 +98,7 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Index", "ServiceRequestApproval");
             }
 
-            return RedirectToAction("Form", new {id = request.Id, index = submit, ServiceOptionId = serviceRequest.ServiceOptionId});
+            return RedirectToAction("Form", new {id = request.Id, index = submit});
         }
 
 
@@ -122,7 +121,7 @@ namespace Prometheus.WebUI.Controllers
                 //TODO: Change state after saving
                 return RedirectToAction("Index", "ServiceRequestApproval");
             }
-            return RedirectToAction("Form", new {id = form.Id, index = submit, serviceOptionId = form.ServiceOptionId});
+            return RedirectToAction("Form", new {id = form.Id, index = submit});
         }
 
         /// <summary>
@@ -130,16 +129,17 @@ namespace Prometheus.WebUI.Controllers
         /// </summary>
         /// <param name="id">service request id</param>
         /// <param name="index">package index</param>
-        /// <param name="serviceOptionId"></param>
+        /// <param name="mode">display mode</param>
         /// <returns></returns>
-        public ActionResult Form(int id, int index, int serviceOptionId=0)
+        public ActionResult Form(int id, int index, ServiceRequestMode mode = ServiceRequestMode.Selection)
         {
             _ps = InterfaceFactory.CreatePortfolioService(dummyId);
-            ServiceRequestModel model = new ServiceRequestModel {CurrentIndex = index, ServiceRequestId = id, ServiceOptionId = serviceOptionId};
-            model.Package = ServicePackageHelper.GetPackage(_ps, serviceOptionId);
+            ServiceRequestModel model = new ServiceRequestModel {CurrentIndex = index, ServiceRequestId = id, Mode = mode};
+            
             try
             {
                 model.ServiceRequest = _ps.GetServiceRequest(id);       //get db info
+                model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId);
                 if (index >= 0)
                 {
                     model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;

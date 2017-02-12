@@ -16,9 +16,9 @@
     <tr>
         <th>Id</th>
         <th>Request</th>
+        <th>Status</th>
         <th>Date Submitted</th>
         <th>Date Required</th>
-        <th>Status</th>
         <th>Name</th>
         <th></th>
     </tr>
@@ -28,9 +28,11 @@
     {
         <tr>
             <td>@item.Id</td>
-            <td>@Html.ActionLink(@item.PackageName, "Form", "ServiceRequest", new {id = item.Id, index = -1, serviceOptionId = item.ServiceOptionId}, null )</td>
+            <td>@Html.ActionLink(@item.PackageName, "Form", "ServiceRequest", new {id = item.Id, index = -1}, null )</td>
             <td>@item.State</td>
-            
+            <td>@item.DateSubmitted</td>
+            <td>@item.DateRequired.ToString("d")</td>
+            <td></td>
 
             <td>
                 <div class="btn-group">

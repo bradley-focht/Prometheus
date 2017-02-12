@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Common.Dto;
+using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequest
 {
@@ -13,8 +14,23 @@ namespace Prometheus.WebUI.Models.ServiceRequest
     {
         [HiddenInput]
         public int ServiceRequestId { get; set; }
+        /// <summary>
+        /// Display Mode
+        /// </summary>
+        public ServiceRequestMode Mode { get; set; }
+
+        /// <summary>
+        /// Originally selected option to start the SR
+        /// </summary>
         [HiddenInput]
-        public int ServiceOptionId { get; set; }
+        public int ServiceOptionId
+        {
+            get
+            {
+                if (ServiceRequest.ServiceOptionId != null) return (int) ServiceRequest.ServiceOptionId;
+                return 0;   //by default return an impossible option
+            }
+        }
 
         /// <summary>
         /// who is making the request

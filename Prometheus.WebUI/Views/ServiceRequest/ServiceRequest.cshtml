@@ -15,7 +15,8 @@
 {
     <input type="hidden" name="ServiceOptionId" value="@Model.ServiceOptionId" />
     <input type="hidden" name="Id" value="@Model.ServiceRequestId" />
-    <input type="hidden" name="Index" value="@Model.CurrentIndex" />
+    <input type="hidden" name="Index" value="@Model.CurrentIndex"/>
+    <input type="hidden" name="Mode" value="@Model.Mode"/>
 
     <div class="panel panel-default flex-container-row make-space-bottom">
         <div class="dd full-width">
@@ -23,7 +24,7 @@
                 <div class="dt-cell">Service Request</div>
                 <div class="dd-cell-multicol">@Model.Package.Name</div>
                 <div class="dt-cell">Status</div>
-                <div class="dd-cell-multicol"></div>
+                <div class="dd-cell-multicol">@Model.ServiceRequest.State</div>
             </div>
             <div class="dd-row">
                 <div class="dt-cell"></div>
@@ -46,7 +47,7 @@
         }
         else
         {
-            @Html.Partial("PartialViews/ServiceRequestForm", Model.OptionCategory)
+            @Html.Partial("PartialViews/ServiceRequestForm", Model)
         }
     </div>
         <div class="flex-container-col">

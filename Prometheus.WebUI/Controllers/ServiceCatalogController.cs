@@ -14,12 +14,14 @@ namespace Prometheus.WebUI.Controllers
 	public class ServiceCatalogController : Controller
 	{
 		private readonly int _dummId = 1;
-		private const int CatalogPageSize = 12;
+		private readonly int _pageSize;
 		private readonly ICatalogController _requestService;
 
 		public ServiceCatalogController()
 		{
 			_requestService = InterfaceFactory.CreateCatalogController(_dummId);
+		    try { _pageSize = ConfigHelper.GetPaginationSize(); }       //set pagination size
+		    catch (Exception) { _pageSize = 12;     /*just in case */  }
 		}
 
 		/// <summary>
@@ -40,10 +42,10 @@ namespace Prometheus.WebUI.Controllers
 
 			List<ICatalogPublishable> searchresults = searcher.Search(type, searchString, _dummId);
 			//pagination
-			if (searchresults.Count > CatalogPageSize)
+			if (searchresults.Count > _pageSize)
 			{
-				model.Controls.TotalPages = (searchresults.Count + CatalogPageSize - 1) / CatalogPageSize;
-				searchresults = (searchresults.Skip(0).Take(CatalogPageSize)).ToList();
+				model.Controls.TotalPages = (searchresults.Count + _pageSize - 1) / _pageSize;
+				searchresults = (searchresults.Skip(0).Take(_pageSize)).ToList();
 			}
 
 			model.CatalogItems = searchresults;
@@ -60,7 +62,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpGet]
 		public ActionResult CatalogSearch(string searchString, ServiceCatalogs type, int pageId)
 		{
-			searchString = searchString == null ? "" : searchString.ToLower();                                          //compare everything in lowercase
+			searchString = searchString?.ToLower() ?? "";                                          //compare everything in lowercase
 
 			var model = new CatalogModel
 			{
@@ -72,10 +74,10 @@ namespace Prometheus.WebUI.Controllers
 
 			var searchresults = searcher.Search(type, searchString, _dummId);
 			//pagination
-			if (searchresults.Count > CatalogPageSize)
+			if (searchresults.Count > _pageSize)
 			{
-				model.Controls.TotalPages = (searchresults.Count + CatalogPageSize - 1) / CatalogPageSize;
-				searchresults = (searchresults.Skip(CatalogPageSize * pageId).Take(CatalogPageSize)).ToList();
+				model.Controls.TotalPages = (searchresults.Count + _pageSize - 1) / _pageSize;
+				searchresults = (searchresults.Skip(_pageSize * pageId).Take(_pageSize)).ToList();
 			}
 
 			model.CatalogItems = searchresults;
@@ -143,10 +145,10 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 
-			if (model.CatalogItems != null && model.CatalogItems.Count > CatalogPageSize)
+			if (model.CatalogItems != null && model.CatalogItems.Count > _pageSize)
 			{
-				model.Controls.TotalPages = (model.CatalogItems.Count + CatalogPageSize - 1) / CatalogPageSize;
-				model.CatalogItems = (List<ICatalogPublishable>)model.CatalogItems.Skip(CatalogPageSize * id).Take(CatalogPageSize);
+				model.Controls.TotalPages = (model.CatalogItems.Count + _pageSize - 1) / _pageSize;
+				model.CatalogItems = (List<ICatalogPublishable>)model.CatalogItems.Skip(_pageSize * id).Take(_pageSize);
 			}
 
 			return View("ServiceCatalog", model);

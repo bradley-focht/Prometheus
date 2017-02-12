@@ -1,63 +1,65 @@
 ﻿@using Prometheus.WebUI.Models.ServiceCatalog
 @model ServiceOptionsModel
 @{
-	ViewBag.Title = Model.Catalog + " Catalog";
-	ViewBag.SubTitle = Model.ServiceName;
-	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    ViewBag.Title = Model.Catalog + " Catalog";
+    ViewBag.SubTitle = Model.ServiceName;
+    Layout = "~/Views/Shared/_Layout.cshtml";
 
-	ViewBag.Links = new List<KeyValuePair<string, string>>
-	{
-		new KeyValuePair<string, string>("Home", "Home"),
-		new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/Index/" + Model.Catalog),
-		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
-	};
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>(ViewBag.Title, "ServiceCatalog/Index/" + Model.Catalog),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+    };
 
 }
-@section Content
-{
-    @* Html.Partial("PartialViews/CatalogControls", Model.Controls) *@
 
-	<div class="flex-container-col">
-		<div class="title-div">Available Options for @ViewBag.Subtitle</div>
-		<div style="font-size: 0.8em; color: #666; padding: 10px;">View all options available. Other services are on the left</div>
-	</div>
+@Html.Partial("PartialViews/CatalogControls", Model.Controls)
 
-	<div class="flex-container-col">
-		@if (Model.Options != null)
-		{
-			foreach (var option in Model.Options)
-			{
-				@Html.Partial("PartialViews/SummarizedCatalogableView", new PublishableCatalogItemModel {Item = option, Catalog = Model.Catalog})
-
-			}
-		}
-	</div>
-}
-
-@section Sidebar
-{
-	<div class="title-div" style="margin-bottom: 5px;">Other Services</div>
-	@foreach (var service in Model.ServiceNames)
-	{
-		if (Model.ServiceId == service.Item1) //highlight selected item
-		{
-			<section class="bg-primary">
-				<a href="#">@service.Item2</a>
-			</section>
-		}
-		else                                    //don't highlight others
-		{
-			<section class="bg-default">
-				@Html.ActionLink(service.Item2, "ServiceOptions", "ServiceCatalog", new { type = Model.Catalog, serviceId = service.Item1 }, null)
-			</section>
-		}
-	}
-}
-            else                                            //no results found
+<div class="flex-row">
+    <div class="conent-sidebar panel-div" style="display: flex; flex: 1;">
+        <div class="title-div" style="margin-bottom: 5px;">Other Services</div>
+        @if (Model.ServiceNames != null)
+        {
+            foreach (var service in Model.ServiceNames)
             {
-<section class="alert alert-warning">
-	No Services exist
-</section>
+                if (Model.ServiceId == service.Item1) //highlight selected item
+                {
+                    <section class="bg-primary">
+                        <a href="#">@service.Item2</a>
+                    </section>}
+                else //don't highlight others
+                {
+                    <section class="bg-default">
+                        @Html.ActionLink(service.Item2, "ServiceOptions", "ServiceCatalog", new { type = Model.Catalog, serviceId = service.Item1 }, null)
+                    </section>}
             }
         }
-}
+        else //no results found
+        {
+            <div class="alert alert-warning">
+                No Services exist
+            </div>
+        }
+    </div>
+    <div class="content-main panel-div" style="display: flex; flex: 1;">
+        <div class="flex-container-col">
+            <div class="title-div">Available Options for @ViewBag.Subtitle</div>
+            <div style="font-size: 0.8em; color: #666; padding: 10px;">View all options available. Other services are on the left</div>
+        </div>
+
+        <div class="flex-container-col">
+            @if (Model.Options != null)
+            {
+                foreach (var option in Model.Options)
+                {
+                    @Html.Partial("PartialViews/SummarizedCatalogableView", new PublishableCatalogItemModel { Item = option, Catalog = Model.Catalog })
+
+                }
+            }
+        </div>
+    </div>
+
+
+
+</div>
