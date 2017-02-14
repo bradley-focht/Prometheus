@@ -10,7 +10,6 @@ namespace DataService.DataAccessLayer
 	{
 		protected override void Seed(PrometheusContext context)
 		{
-
 			//Populate Users
 			var users = new List<User>
 			{

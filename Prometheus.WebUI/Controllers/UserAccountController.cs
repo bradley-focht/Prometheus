@@ -55,7 +55,7 @@ namespace Prometheus.WebUI.Controllers
 		        TempData["Message"] = $"Login failure, error: {exception.Message}";
 				return RedirectToAction("Index", "UserAccount");
 			}
-	        if (user != null)
+	        if (user != null && user.Id > 0)
             {
                 FormsAuthentication.SetAuthCookie(user.Name, true);                             //enter data in session cookie
                

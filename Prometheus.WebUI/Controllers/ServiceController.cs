@@ -248,16 +248,13 @@ namespace Prometheus.WebUI.Controllers
 			}
 			catch (Exception exception)
 			{
-
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to save Work Unit, error: {exception}";
 				return RedirectToAction("UpdateServiceSectionItem", new { section = "WorkUnits", id = workUnit.ServiceId });
 			}
 
-
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully saved {workUnit.Name}";
-
 			return RedirectToAction("Show", new { section = "WorkUnits", id = workUnit.ServiceId });
 		}
 
@@ -528,14 +525,12 @@ namespace Prometheus.WebUI.Controllers
 		[ChildActionOnly]
 		public ActionResult ShowSwotActivities(int id)
 		{
-			TableDataModel model = new TableDataModel();
-
-			model.Action = "ShowSwotActivity";
-
-			model.Titles = new List<string> { "Activity", "Date" };
-			model.Data = new List<Tuple<int, ICollection<string>>>();
-			model.UpdateAction = "UpdateSwotActivityItem";
-			model.ConfirmDeleteAction = "ConfirmDeleteSwotActivityItem";
+			TableDataModel model = new TableDataModel { /* new table data model */
+			Action = "ShowSwotActivity",
+			Titles = new List<string> { "Activity", "Date" },
+			Data = new List<Tuple<int, ICollection<string>>>(),
+			UpdateAction = "UpdateSwotActivityItem",
+			ConfirmDeleteAction = "ConfirmDeleteSwotActivityItem" };
 
 			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
 			var swot = ps.GetServiceSwot(id);
@@ -1353,13 +1348,11 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["messageType"] = WebMessageType.Failure;
 				TempData["message"] = $"Failed to delete {model.FriendlyName}, error: {e.Message}";
-
 				return RedirectToAction("Show", new { id = model.ServiceId, section = "Contracts" });
 			}
 
 			TempData["messageType"] = WebMessageType.Success;
 			TempData["message"] = "Successfully deleted " + model.FriendlyName;
-
 			return RedirectToAction("Show", new { id = model.ServiceId, section = "Contracts" });
 		}
 
@@ -1655,7 +1648,6 @@ namespace Prometheus.WebUI.Controllers
 			model.CategoryName = (from c in service.ServiceOptionCategories
                                   where model.Option.ServiceOptionCategoryId == c.Id
 								  select c.Name).FirstOrDefault();
-
 			return View(model);
 		}
 
@@ -1733,12 +1725,9 @@ namespace Prometheus.WebUI.Controllers
 		    var options = ps.GetService(serviceId).ServiceOptions;
             IEnumerable<SelectListItem> model = new List<SelectListItem>();
 
-
             if (options != null)
 		    {
 		        optionsList.AddRange(options.Select(l =>
-
-
 		            new SelectListItem
 		            {
 		                Value = l.Id.ToString(),
@@ -1746,7 +1735,6 @@ namespace Prometheus.WebUI.Controllers
 		                Selected = selectedOptions.Contains(l.Id)
 		            }).ToList());
 		        model = optionsList.OrderBy(c => c.Text);
-
 		    }
 		    return View("PartialViews/OptionsDropDown", model);
 		}

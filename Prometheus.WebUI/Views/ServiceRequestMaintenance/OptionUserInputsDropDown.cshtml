@@ -2,20 +2,13 @@
 
 @if (Model != null)
 {
-    @Html.DropDownList("UserInputs", Model, new {placeholder = "Options...", multiple = "multiple", @class = "btn-default"})
+    @Html.DropDownList("UserInputs", Model, new {placeholder = "User Inputs...", multiple = "multiple", @class = "form-control"})
 
     <script type="text/javascript" language="javascript">
-		$('#Options')
+        $('#UserInputs')
 			.selectize({
 				plugins: ['remove_button'],
-				delimiter: ',',
-				persist: false,
-				create: function(input) {
-					return {
-						value: input,
-						text: input
-					}
-				}
+				persist: false
 			});
     </script>
 }

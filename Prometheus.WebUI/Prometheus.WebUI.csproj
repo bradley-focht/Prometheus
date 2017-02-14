@@ -346,6 +346,7 @@
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="Helpers\Enums\WebMessageType.cs" />
     <Compile Include="Helpers\UiPermissionHelper.cs" />
+    <Compile Include="Helpers\UserInputHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
@@ -375,6 +376,7 @@
     <Compile Include="Models\ServiceRequest\ServiceRequestFormReturnModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestNavigationModel.cs" />
+    <Compile Include="Models\ServiceRequest\UserInputModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
@@ -523,9 +525,10 @@
     <Content Include="Views\ServiceRequestMaintenance\AddPackage.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ConfirmDeletePackage.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputsLinkList.cshtml" />
-    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestForm.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestFormSelect.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\OptionUserInputsDropDown.cshtml" />
     <Content Include="Views\ServiceRequestApproval\PartialViews\ServiceRequestApprovalControls.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestFormInput.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -747,6 +747,29 @@
         font-weight: 300;
     }
 
+	.drop-checkbox-request {
+		display: none;
+	}
+    .drop-checkbox-request:checked + .drop-text-request:after {
+        content: 'Hide details';
+        position: absolute;
+        color: #666;
+        top: 0;
+        left: 10px;
+        right: 0;
+        bottom: 0;
+        background: white;
+        white-space: nowrap;
+        font-weight: 300;
+    }
+
+	.drop-text-request {
+	padding-left: 10px;
+    color: #666;
+    font-weight: 300;
+    cursor: pointer;
+	}
+
 .drop-text {
     padding-left: 10px;
     color: #666;
@@ -817,8 +840,6 @@
         background-color: #999;
                  display: inline-block;
     }
-
-
 
         .sr-navigation li button {
             color: white;

@@ -1,0 +1,12 @@
+﻿@using Common.Dto
+@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
+
+<div class="dd">
+	@foreach (var input in Model.UserInputList)
+	{
+		<div class="dd-row">
+			<div class="dt-cell">@input.DisplayName</div>
+			<div class="dd-cell">[user input placeholder]</div>
+		</div>
+	}
+</div>

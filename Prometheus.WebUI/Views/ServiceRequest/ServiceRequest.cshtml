@@ -8,7 +8,7 @@
         new KeyValuePair<string, string>("Home", "Home"),
         new KeyValuePair<string, string>("Service Request", "#")
     };
-    var submitAction = Model.CurrentIndex < 0 ? "SaveInfo" : "SaveForm";            //post operation to perform
+    var submitAction = Model.CurrentIndex < 0 ? "SaveInfo" : "SaveFormSelection";            //post operation to perform
 }
 
 @using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
@@ -16,7 +16,7 @@
     <input type="hidden" name="ServiceOptionId" value="@Model.ServiceOptionId" />
     <input type="hidden" name="Id" value="@Model.ServiceRequestId" />
     <input type="hidden" name="Index" value="@Model.CurrentIndex"/>
-    <input type="hidden" name="Mode" value="@Model.Mode"/>
+	<input type="hidden" name="Mode" value="@Model.Mode"/>
 
     <div class="panel panel-default flex-container-row make-space-bottom">
         <div class="dd full-width">
@@ -44,11 +44,20 @@
         @if (Model.CurrentIndex < 0)
         {
             @Html.Partial("PartialViews/ServiceRequestInfo", Model)
-        }
-        else
-        {
-            @Html.Partial("PartialViews/ServiceRequestForm", Model)
-        }
+		}
+		else
+		{
+			if (Model.OptionCategory != null)
+			{
+				@Html.Partial("PartialViews/ServiceRequestFormSelect", Model)
+			}
+			else if (Model.UserInputs != null)
+			{
+				@Html.Partial("PartialViews/ServiceRequestFormInput", Model)
+			}
+
+
+		}
     </div>
         <div class="flex-container-col">
             <div class="make-space-bottom" style="display: flex; justify-content: flex-end; margin-right: 40px;">
@@ -60,12 +69,11 @@
                     </div>
                 }
 
-                @if (Model.CurrentIndex != (Model.Package.ServiceOptionCategoryTags.Count() -1 ))
-                {
+
                     <div>
                         <button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>
                     </div>
-                }
+
             </div>
 
             <div class="panel-footer">
@@ -78,6 +86,4 @@
                 </div>
             </div>
         </div>
-
 }
-

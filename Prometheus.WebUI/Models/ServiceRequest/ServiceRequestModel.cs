@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Helpers.Enums;
@@ -17,8 +19,8 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// <summary>
         /// Display Mode
         /// </summary>
+        [HiddenInput]
         public ServiceRequestMode Mode { get; set; }
-
         /// <summary>
         /// Originally selected option to start the SR
         /// </summary>
@@ -53,8 +55,12 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         public string Comments => ServiceRequest.Comments;
         public string OfficeUse => ServiceRequest.Officeuse;
 
+		/// <summary>
+		/// To display the contents
+		/// </summary>
         public IServiceOptionCategoryDto OptionCategory { get; set; }
-        //SR UI
+
+	    public IInputGroupDto UserInputs { get; set; }
 
         /// <summary>
         /// index, title
@@ -65,5 +71,25 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 
         public int CurrentIndex { get; set; }
 
+		/// <summary>
+		/// return a list of all user inputs
+		/// </summary>
+	    public IEnumerable<IUserInput> UserInputList
+	    {
+		    get
+		    {
+				List<IUserInput> inputs = new List<IUserInput>();
+			    if (UserInputs != null)
+			    {
+				    if (UserInputs.ScriptedSelectionInputs != null)
+						inputs.AddRange(from s in UserInputs.ScriptedSelectionInputs select (IUserInput)s);
+					if (UserInputs.TextInputs != null)
+						inputs.AddRange(from s in UserInputs.TextInputs select (IUserInput)s);
+					if (UserInputs.SelectionInputs != null)
+						inputs.AddRange(from s in UserInputs.SelectionInputs select (IUserInput)s);
+				}
+				return inputs;
+			}
+	    }
     }
 }

@@ -257,20 +257,21 @@ namespace Prometheus.WebUI.Controllers
             return View("ShowServices", newService);
         }
 
-        /// <summary>
-        /// Save updates to an option
-        /// </summary>
-        /// <param name="option"></param>
-        /// <param name="image"></param>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult SaveServiceOption(ServiceOptionAbbreviatedModel option, HttpPostedFileBase image = null)
-        {
+	    /// <summary>
+	    /// Save updates to an option
+	    /// </summary>
+	    /// <param name="option"></param>
+	    /// <param name="userInputs"></param>
+	    /// <param name="image"></param>
+	    /// <returns></returns>
+	    [HttpPost]
+        public ActionResult SaveServiceOption(ServiceOptionAbbreviatedModel option, ICollection<string> userInputs, HttpPostedFileBase image = null)
+        {	/*there is way too much code in this controller */
             _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
             var existingOption = (ServiceOptionDto)_ps.GetServiceOption(option.Id);       //option to amend
             if (image != null)
             {
-                if (existingOption.Picture != null)
+                if (existingOption.Picture != null)	/* deal with pictures */
                 {
                     var path = Path.Combine(ConfigHelper.GetOptionPictureLocation(), option.Picture.ToString());
 
@@ -302,11 +303,14 @@ namespace Prometheus.WebUI.Controllers
                     TempData["Message"] = $"Failed to save file, error: {exception.Message}";
                     return RedirectToAction("UpdateServiceOption", new { id = option.Id });
                 }
-            }
-            try
+            }  /*end of dealing with pictures */
+		    var inputGroup = UserInputHelper.MakeInputGroup(userInputs);
+			_ps.AddInputsToServiceOption(_dummyId, inputGroup);
+			try
             {
                 existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
                 _ps.ModifyServiceOption(existingOption, EntityModification.Update);
+				
             }
             catch (Exception exception)
             {
@@ -435,6 +439,9 @@ namespace Prometheus.WebUI.Controllers
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = $"Failed to save service package, error: {exception.Message}";
             }
+
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = "Successfully saved package";
 
             return RedirectToAction("ShowPackages", new { id = 0 });
         }
@@ -770,12 +777,19 @@ namespace Prometheus.WebUI.Controllers
             UserInputsLinkListModel itemList = new UserInputsLinkListModel { SelectedInputId = id, SelectedInputType = type, Action = "ShowUserInput" };
             _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
 
-            List<Tuple<UserInputTypes, int, string>> items = new List<Tuple<UserInputTypes, int, string>>();
+            List<Tuple<UserInputTypes, int, string>> items = new List<Tuple<UserInputTypes, int, string>>();    //for the model
+
             try
             {
-                if (_ps.GetSelectionInputs() != null)
-                    items.AddRange(from s in _ps.GetTextInputs() select new Tuple<UserInputTypes, int, string>(UserInputTypes.Text, s.Id, s.DisplayName));
-                items.AddRange(from s in _ps.GetSelectionInputs() select new Tuple<UserInputTypes, int, string>(UserInputTypes.Selection, s.Id, s.DisplayName));
+                var textInputs = _ps.GetTextInputs();                                   //store temporarily to check for nulls after
+                var selectionInputs = _ps.GetSelectionInputs();
+                var scriptedInputs = _ps.GetScriptedSelectionInputs();
+                if (textInputs != null)                                                //
+                    items.AddRange(from s in textInputs select new Tuple<UserInputTypes, int, string>(UserInputTypes.Text, s.Id, s.DisplayName));
+                if (textInputs != null)
+                    items.AddRange(from s in selectionInputs select new Tuple<UserInputTypes, int, string>(UserInputTypes.Selection, s.Id, s.DisplayName));
+                if (textInputs != null)
+                    items.AddRange(from s in scriptedInputs select new Tuple<UserInputTypes, int, string>(UserInputTypes.ScriptedSelection, s.Id, s.DisplayName));
             }
             catch (Exception exception)
             {
@@ -874,10 +888,46 @@ namespace Prometheus.WebUI.Controllers
 
             return RedirectToAction("ShowUserInput", new { id = 0 });
         }
-
+        
         public ActionResult GetOptionUserInputsDropDown(int id)
         {
-            return View("OptionUserInputsDropDown");
+            _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+            List<SelectListItem> inputDropDownList = new List<SelectListItem>();
+            List<IUserInput> inputs = new List<IUserInput>();
+
+            var textInputs = _ps.GetTextInputs();       //store temporarily to check for nulls after
+            var selectionInputs = _ps.GetSelectionInputs();
+            var scriptedInputs = _ps.GetScriptedSelectionInputs();
+
+            if (textInputs != null)
+                inputs.AddRange(from  i in textInputs select (IUserInput)i);
+            if (selectionInputs != null)
+                inputs.AddRange(from i in selectionInputs select (IUserInput)i);
+            if(scriptedInputs != null)
+                inputs.AddRange(from i in scriptedInputs select (IUserInput)i);
+            inputs = inputs.OrderByDescending(i => i.DisplayName).ToList();         //sort all the data by display name
+                                                                                    //need to find already selected items
+
+
+            //now convert it to a select list for the drop down list
+            foreach (var input in inputs)
+            {
+                string type = null;
+                if (input is TextInputDto)
+                    type = "textInput";
+                else if (input is SelectionInputDto)
+                    type = "selectionInput";
+                else if (input is ScriptedSelectionInputDto)
+                    type = "scriptedSelectionInput";
+
+                inputDropDownList.Add(new SelectListItem
+                {
+                    Value = $"{type}_{input.Id}",
+                    Text = input.DisplayName
+                });
+            }
+            
+            return View("OptionUserInputsDropDown", inputDropDownList);
         }
 
     }
