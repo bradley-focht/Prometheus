@@ -265,52 +265,60 @@ namespace Prometheus.WebUI.Controllers
 	    /// <param name="image"></param>
 	    /// <returns></returns>
 	    [HttpPost]
-        public ActionResult SaveServiceOption(ServiceOptionAbbreviatedModel option, ICollection<string> userInputs, HttpPostedFileBase image = null)
+        public ActionResult SaveServiceOption(ServiceOptionAbbreviatedModel option, ICollection<string> userInputs = null, HttpPostedFileBase image = null)
         {	/*there is way too much code in this controller */
             _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
             var existingOption = (ServiceOptionDto)_ps.GetServiceOption(option.Id);       //option to amend
-            if (image != null)
-            {
-                if (existingOption.Picture != null)	/* deal with pictures */
-                {
-                    var path = Path.Combine(ConfigHelper.GetOptionPictureLocation(), option.Picture.ToString());
+		    if (image != null)
+		    {
+			    if (existingOption.Picture != null) /* deal with pictures */
+			    {
+				    var path = Path.Combine(ConfigHelper.GetOptionPictureLocation(), option.Picture.ToString());
 
-                    try   //catch error if key is not in web.config
-                    {
-                        System.IO.File.Delete(Server.MapPath(path));
-                    }
-                    catch (Exception exception)
-                    {
-                        TempData["MessageType"] = WebMessageType.Failure; //unable to delete, exit at this point
-                        TempData["Message"] = $"Failed to delete existing file, error: {exception.Message}";
-                        return RedirectToAction("UpdateServiceOption", new { id = option.Id });
-                    }
-                }
+				    try //catch error if key is not in web.config
+				    {
+					    System.IO.File.Delete(Server.MapPath(path));
+				    }
+				    catch (Exception exception)
+				    {
+					    TempData["MessageType"] = WebMessageType.Failure; //unable to delete, exit at this point
+					    TempData["Message"] = $"Failed to delete existing file, error: {exception.Message}";
+					    return RedirectToAction("UpdateServiceOption", new {id = option.Id});
+				    }
+			    }
 
-                option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
-                option.Picture = Guid.NewGuid();
+			    option.PictureMimeType = image.ContentType; //rename file to a guid and store original file type
+			    option.Picture = Guid.NewGuid();
 
-                try
-                {
-                    var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"],
-                        option.Picture.ToString()); //save file
-                    image.SaveAs(Server.MapPath(path));
-                }
-
-                catch (Exception exception)
-                {
-                    TempData["MessageType"] = WebMessageType.Failure;
-                    TempData["Message"] = $"Failed to save file, error: {exception.Message}";
-                    return RedirectToAction("UpdateServiceOption", new { id = option.Id });
-                }
-            }  /*end of dealing with pictures */
+			    try
+			    {
+				    var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"],
+					    option.Picture.ToString()); //save file
+				    image.SaveAs(Server.MapPath(path));
+			    }
+			    catch (Exception exception)
+			    {
+				    TempData["MessageType"] = WebMessageType.Failure;
+				    TempData["Message"] = $"Failed to save file, error: {exception.Message}";
+				    return RedirectToAction("UpdateServiceOption", new {id = option.Id});
+			    }
+		    }
+			else //preserve picture data for now
+		    {
+			    if (option.Id > 0)
+			    {
+				    var tempOption = _ps.GetServiceOption(option.Id);
+				    option.Picture = tempOption.Picture;
+				    option.PictureMimeType = tempOption.PictureMimeType;
+			    }
+		    }  
+			/*end of dealing with pictures */
 		    var inputGroup = UserInputHelper.MakeInputGroup(userInputs);
 			_ps.AddInputsToServiceOption(_dummyId, inputGroup);
 			try
             {
                 existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
-                _ps.ModifyServiceOption(existingOption, EntityModification.Update);
-				
+                _ps.ModifyServiceOption(existingOption, EntityModification.Update);				
             }
             catch (Exception exception)
             {
