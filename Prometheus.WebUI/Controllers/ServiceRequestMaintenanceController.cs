@@ -271,7 +271,7 @@ namespace Prometheus.WebUI.Controllers
             var existingOption = (ServiceOptionDto)_ps.GetServiceOption(option.Id);       //option to amend
 		    if (image != null)
 		    {
-			    if (existingOption.Picture != null) /* deal with pictures */
+			    if (existingOption.Picture != null) /* deal with previous picture by deleting it */
 			    {
 				    var path = Path.Combine(ConfigHelper.GetOptionPictureLocation(), option.Picture.ToString());
 
@@ -313,21 +313,24 @@ namespace Prometheus.WebUI.Controllers
 			    }
 		    }  
 			/*end of dealing with pictures */
-		    var inputGroup = UserInputHelper.MakeInputGroup(userInputs);
-			_ps.AddInputsToServiceOption(_dummyId, inputGroup);
-			try
-            {
-                existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
-                _ps.ModifyServiceOption(existingOption, EntityModification.Update);				
-            }
-            catch (Exception exception)
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to save option, error: {exception.Message}";
-                return RedirectToAction("ShowServiceOption", new { id = option.Id });
-            }
-
-            return RedirectToAction("ShowServiceOption", new { id = option.Id });
+		    if (userInputs != null)
+		    {
+			    var inputGroup = UserInputHelper.MakeInputGroup(userInputs);
+			    _ps.AddInputsToServiceOption(_dummyId, inputGroup);
+		    }
+		    try
+			    {
+				    existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
+				    _ps.ModifyServiceOption(existingOption, EntityModification.Update);
+			    }
+			    catch (Exception exception)
+			    {
+				    TempData["MessageType"] = WebMessageType.Failure;
+				    TempData["Message"] = $"Failed to save option, error: {exception.Message}";
+				    return RedirectToAction("ShowServiceOption", new {id = option.Id});
+			    }
+		    
+		    return RedirectToAction("ShowServiceOption", new { id = option.Id });
 
         }
 
