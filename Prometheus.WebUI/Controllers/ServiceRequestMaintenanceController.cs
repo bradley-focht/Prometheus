@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
-using DataService.Models;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
@@ -98,7 +97,7 @@ namespace Prometheus.WebUI.Controllers
             _ps = InterfaceFactory.CreatePortfolioService(_dummyId);
             PackageModel model = new PackageModel();
 
-            try
+            try		//try and get a package
             {
                 var package = (ServiceRequestPackageDto)_ps.GetServiceRequestPackage(id);
                 model.Name = package.Name;
@@ -110,9 +109,8 @@ namespace Prometheus.WebUI.Controllers
                 TempData["Message"] = $"Failed to retrieve service package, error: {exception.Message}";
             }
 
-            //build services list to select from
-            try
-            {
+			try //build services list to select from
+			{
                 var serviceController = InterfaceFactory.CreateCatalogController(_dummyId);
                 var services = serviceController.RequestBusinessCatalog(_dummyId).ToList(); //build list
                 services.AddRange(serviceController.RequestSupportCatalog(_dummyId));
@@ -124,9 +122,7 @@ namespace Prometheus.WebUI.Controllers
                 TempData["MessageType"] = WebMessageType.Failure;
                 TempData["Message"] = $"failed to obtain services, error: {exception.Message}";
             }
-
             return View(model);
-
         }
 
         /// <summary>
@@ -606,14 +602,17 @@ namespace Prometheus.WebUI.Controllers
 
             var ps = InterfaceFactory.CreatePortfolioService(_dummyId);
             int entityId;           //returning id
-            try
+				try
             {
-                entityId = ps.ModifySelectionInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
+				if (input.Id == 0)
+				{
+					input.Delimiter = ConfigHelper.GetDelimiter();
+				}
+				entityId = ps.ModifySelectionInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
             }
             catch (Exception exception)
             {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to save new User Input, error: {exception.Message}";
+
                 if (input.Id == 0)                              //depending on user action at the time
                     return RedirectToAction("AddUserInput", new { type = UserInputTypes.Selection });
                 return RedirectToAction("UpdateUserInput", new { type = UserInputTypes.Selection, id = input.Id });

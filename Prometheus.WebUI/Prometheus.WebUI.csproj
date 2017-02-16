@@ -392,8 +392,6 @@
     <Compile Include="Models\Service\SwotActivityItemModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\DeleteModel.cs" />
-    <Compile Include="Models\Shared\ScriptedSelectionInputModel.cs" />
-    <Compile Include="Models\Shared\SelectionInputModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
     <Compile Include="Models\Service\ServiceModel.cs" />
     <Compile Include="Models\Shared\LinkListModel.cs" />
@@ -402,7 +400,7 @@
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestInfoReturnModel.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
-    <Compile Include="Models\Shared\TextInputModel.cs" />
+    <Compile Include="Models\Shared\InputModel.cs" />
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
     <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
@@ -529,6 +527,7 @@
     <Content Include="Views\ServiceRequestMaintenance\OptionUserInputsDropDown.cshtml" />
     <Content Include="Views\ServiceRequestApproval\PartialViews\ServiceRequestApprovalControls.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestFormInput.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_ScriptedSelectionInput.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

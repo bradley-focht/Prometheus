@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using DataService.Models;
 
 namespace Prometheus.WebUI.Models.Shared
 {
-    public class ScriptedSelectionInputModel
+    public class InputModel<T>
     {
-        public ScriptedSelectionInputModel SelectionInputModel { get; set; }
+        public T Control { get; set; }
         public string ControlName { get; set; }
     }
 }

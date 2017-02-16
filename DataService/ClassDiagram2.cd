@@ -1,0 +1,67 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataService.Models.Service">
+    <Position X="0.5" Y="0.5" Width="3.5" />
+    <TypeIdentifier>
+      <HashCode>AEBSgAAECQAgAgBCgAACAARAgQAQAIAABAwEQAAAAAQ=</HashCode>
+      <FileName>Models\Service.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="ServiceTypeRole" />
+      <Property Name="ServiceTypeProvision" />
+      <Property Name="ServiceGoals" />
+      <Property Name="LifecycleStatus" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Property Name="ServiceProcesses" />
+      <Property Name="ServiceDocuments" />
+      <Property Name="ServiceMeasures" />
+    </ShowAsCollectionAssociation>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataService.Models.LifecycleStatus">
+    <Position X="4.75" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAACAAAAAAAAAAAgAAACAAQAgAAAAAAAAAgEAgAAAAA=</HashCode>
+      <FileName>Models\LifecycleStatus.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataService.Models.ServiceProcess">
+    <Position X="9.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACCAAAAgAAAAAAAgAAQAgAAAAAAAAAAEgAAAAAA=</HashCode>
+      <FileName>Models\ServiceProcess.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataService.Models.ServiceDocument">
+    <Position X="5" Y="5.5" Width="2.25" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAQAQAAAACAAAAiACAQAAAAAkEAQAAAAA=</HashCode>
+      <FileName>Models\ServiceDocument.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataService.Models.ServiceMeasure">
+    <Position X="10" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACACAAAAAAAAAAAAAiAAAAgAIAQAAAAAgEAAAAAAA=</HashCode>
+      <FileName>Models\ServiceMeasure.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="System.Collections.Generic.ICollection&lt;T&gt;" Collapsed="true">
+    <Position X="4.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Enum Name="Common.Enums.Entities.ServiceTypeRole">
+    <Position X="7.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Enum Name="Common.Enums.Entities.ServiceTypeProvision" Collapsed="true">
+    <Position X="7.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
