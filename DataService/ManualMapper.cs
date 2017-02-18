@@ -825,6 +825,18 @@ namespace DataService
 			};
 		}
 
+		public static ServiceOptionCategoryTag MapDtoToServiceOptionCategoryTag(IServiceOptionCategoryTagDto src)
+		{
+			if (src == null) return null;
+
+			return new ServiceOptionCategoryTag
+			{
+				Id = src.Id,
+				Order = src.Order,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId
+			};
+		}
+
 		public static ServiceRequestPackage MapDtoToServiceRequestPackage(IServiceRequestPackageDto src)
 		{
 			if (src == null) return null;
