@@ -11,7 +11,7 @@ using DataService.Models;
 
 namespace UserManager.Controllers
 {
-	public class UserController : EntityController<IUserDto>, IUserController
+	public class UserController : UMEntityController<IUserDto>, IUserController
 	{
 
 		public IUserDto ModifyUser(int performingUserId, IUserDto userDto, EntityModification modification)

@@ -12,7 +12,7 @@ using DataService.Models;
 
 namespace UserManager.Controllers
 {
-	public class RoleController : EntityController<IRoleDto>, IRoleController
+	public class RoleController : UMEntityController<IRoleDto>, IRoleController
 	{
 		private readonly IPermissionController _permissionController;
 

@@ -3,7 +3,7 @@ using Common.Exceptions;
 
 namespace UserManager.Controllers
 {
-	public abstract class EntityController<T>
+	public abstract class UMEntityController<T>
 	{
 		/// <summary>
 		/// Creates the entity in the database
