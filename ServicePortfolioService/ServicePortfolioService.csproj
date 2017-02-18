@@ -63,7 +63,7 @@
     <Compile Include="Controllers\IScriptedSelectionInputController.cs" />
     <Compile Include="Controllers\ITextInputController.cs" />
     <Compile Include="Controllers\IServiceMeasureController.cs" />
-    <Compile Include="Controllers\IOptionCategoryController.cs" />
+    <Compile Include="Controllers\IServiceOptionCategoryController.cs" />
     <Compile Include="Controllers\IServiceProcessController.cs" />
     <Compile Include="Controllers\IServiceWorkUnitController.cs" />
     <Compile Include="Controllers\IServiceContractController.cs" />
@@ -82,6 +82,7 @@
     <Compile Include="Controllers\ServiceDocumentController.cs" />
     <Compile Include="Controllers\SelectionInputController.cs" />
     <Compile Include="Controllers\ScriptedSelectionInputController.cs" />
+    <Compile Include="Controllers\ServiceGoalController.cs" />
     <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\ServiceRequestPackageController.cs" />
     <Compile Include="Controllers\TextInputController.cs" />

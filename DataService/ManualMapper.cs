@@ -1,8 +1,8 @@
-﻿using Common.Dto;
-using DataService.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Dto;
+using DataService.Models;
 
 namespace DataService
 {
@@ -884,7 +884,7 @@ namespace DataService
 			};
 		}
 
-		private static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)
+		public static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)
 		{
 			if (src == null) return null;
 
