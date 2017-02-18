@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -102,66 +103,106 @@ namespace Prometheus.WebUI.Controllers
 
 
 		/// <summary>
-		/// Save data from SR forms
+		/// Save data from SR form  Select Options Mode
 		/// </summary>
-		/// <param name="form"></param>
+		/// <param name="form">all submitted data</param>
 		/// <param name="submit">submit button clicked</param>
 		/// <returns></returns>
 		[HttpPost]
 		public ActionResult SaveFormSelection(ServiceRequestFormReturnModel form, int submit)
 		{
-			if (form.Options != null)
+			/* STEP ONE - Get the Service Package and SR */
+			ServiceRequestModel model = new ServiceRequestModel	//used to hold all the data until redirecting
 			{
-				TempData["MessageType"] = WebMessageType.Success;
-				TempData["Message"] = "Successfully saved changes to Service Request";
+				CurrentIndex = submit,
+				ServiceRequestId = form.Id,
+				Mode = ServiceRequestMode.Selection
+			};
+			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			try
+			{
+				model.ServiceRequest = _ps.GetServiceRequest(form.Id); //SR
+				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId); //Package
 			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
+				model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
+				return View("ServiceRequest", model);
+			}
+
+			/* STEP TWO - figure out what category to work with */
+			var currentCategory =
+				_ps.GetServiceOptionCategory(
+					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategoryId);
+
+			/* STEP THREE - add/remove options in the SR */
+			{
+				var tempOptions = model.ServiceRequest.ServiceRequestOptions; //use temp list to avoid concurrency issues
+				var changesMade = false;
+				foreach (var option in currentCategory.ServiceOptions)
+				{
+					if (form.Options.Contains(option.Id) &&
+						!(from o in model.ServiceRequest.ServiceRequestOptions where o.Id == option.Id select true).FirstOrDefault())
+					{
+						tempOptions.Add(new ServiceRequestOptionDto { ServiceOptionId = option.Id });
+						changesMade = true;
+					}
+					else if (!form.Options.Contains(option.Id) &&
+							 (from o in model.ServiceRequest.ServiceRequestOptions where o.Id == option.Id select true).FirstOrDefault())
+					{
+						tempOptions.Remove(
+							(from o in model.ServiceRequest.ServiceRequestOptions where o.Id == option.Id select o).FirstOrDefault());
+						changesMade = true;
+					}
+				}
+				model.ServiceRequest.ServiceRequestOptions = tempOptions;
+				try
+				{
+					_ps.ModifyServiceRequest(model.ServiceRequest, EntityModification.Update);
+				}
+				catch (Exception exception)
+				{
+					TempData["MessageType"] = WebMessageType.Failure;
+					TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
+					model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
+					return View("ServiceRequest", model);
+				}
+				if (changesMade)
+				{
+					TempData["MessageType"] = WebMessageType.Success;
+					TempData["Message"] = "Successfully saved changes to Service Request";
+				}
+			}
+
+			/* STEP FOUR - navigation */
 			if (submit >= 9999)
 			{
 				//TODO: Change state after saving
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
 
-			//after the save
+			model.CurrentIndex = submit;
 
-			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = submit, ServiceRequestId = form.Id };
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
-			try
-			{
-				model.ServiceRequest = _ps.GetServiceRequest(form.Id);       //get the SR from the DB and the package
-				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId);
-				if (submit >= 0)
-				{
-					if (form.Options != null)	//determine what to show next, user input required or onto the next tab
-					{
-						
-						var userInputs = _ps.GetInputsForServiceOptions(from o in form.Options select new ServiceOptionDto {Id = o});
-						if ( userInputs != null)
-						{
-							model.CurrentIndex = submit > 0 ? submit - 1 : 0;  //watch for out of bounds, eh
-							model.UserInputs = userInputs;
-						}
-					}
-					if (model.UserInputs == null)
-					{
-						model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(submit).ServiceOptionCategory;
-					}
-				}
-			}
-			catch (Exception exception)
-			{
-				TempData["MessageType"] = WebMessageType.Failure;
-				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
-				model.CurrentIndex = submit > 0 ? submit - 1 : 0;  //don't move to a new tab in case it is out of range
-				return View("ServiceRequest", model);
-			}
-			return View("ServiceRequest", model);
+			model.Mode = ServiceRequestMode.Selection;
+			return RedirectToAction("Form", new {id = model.ServiceRequestId, index = model.CurrentIndex, mode = model.Mode});
 
 		}
 
-
-		public ActionResult SaveFormInput(ServiceRequestFormReturnModel form, ICollection<UserInputModel> inputs)
+		/// <summary>
+		/// Save data from User Input mode
+		/// </summary>
+		/// <param name="form"></param>
+		/// <param name="inputs"></param>
+		/// <param name="submit">id of submit button</param>
+		/// <returns></returns>
+		public ActionResult SaveFormInput(ServiceRequestFormReturnModel form, ICollection<UserInputModel> inputs, int submit)
 		{
-			return RedirectToAction("Form");
+			TempData["MessageType"] = WebMessageType.Info;
+			TempData["Message"] = $"Post back was successful";
+
+			return RedirectToAction("Form", new {id = form.Id, index = submit});
 		}
 
 		/// <summary>
@@ -176,21 +217,11 @@ namespace Prometheus.WebUI.Controllers
 			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
 			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = index, ServiceRequestId = id, Mode = mode };
 
+			/* STEP ONE - get SR and get package */
 			try
 			{
 				model.ServiceRequest = _ps.GetServiceRequest(id);       //get db info
 				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId);
-				if (index >= 0)
-				{
-					if (mode == ServiceRequestMode.Input)
-					{
-
-					}
-					else
-					{
-						model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
-					}
-				}
 			}
 			catch (Exception exception)
 			{
@@ -198,7 +229,28 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
 				return View("ServiceRequest", model);
 			}
+			/* STEP TWO - get any user inputs */
+			if (index < 0)
+			{
+				//not much to do here, eh...
+			}
+			else if (index < model.Package.ServiceOptionCategoryTags.Count && index < 999)
+			{
+				model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
+			}
+			else if (index >= 999 && index <= 999) // 999 = user input, 9999 = final submission attempt
+			{
+				model.UserInputs = _ps.GetInputsForServiceOptions(from x in model.ServiceRequest.ServiceRequestOptions
+														select new ServiceOptionDto {Id = x.Id});
+			}/* STEP THREE - navigation */
+			if (index >= 999 && index <= 9999)		// note: final submission is not deal with in this action
+			{
+				model.Mode = ServiceRequestMode.Input;
+			}
+			
 			return View("ServiceRequest", model);
 		}
+
+
 	}
 }
