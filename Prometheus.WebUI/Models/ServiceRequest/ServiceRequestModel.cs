@@ -56,10 +56,13 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         public string OfficeUse => ServiceRequest.Officeuse;
 
 		/// <summary>
-		/// To display the contents
+		/// To display the list of options
 		/// </summary>
         public IServiceOptionCategoryDto OptionCategory { get; set; }
 
+		/// <summary>
+		/// Display the list of inputs
+		/// </summary>
 	    public IInputGroupDto UserInputs { get; set; }
 
         /// <summary>
@@ -67,9 +70,20 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// </summary>
         public IServiceRequestPackageDto Package { get; set; }
 
+		/// <summary>
+		/// Display the SR
+		/// </summary>
         public IServiceRequestDto ServiceRequest { get; set; }
 
+		/// <summary>
+		/// Currently selected index 
+		/// </summary>
         public int CurrentIndex { get; set; }
+
+		/// <summary>
+		/// Mark if Input tab should show up
+		/// </summary>
+	    public bool RequiresInput { get; set; }
 
 		/// <summary>
 		/// return a list of all user inputs

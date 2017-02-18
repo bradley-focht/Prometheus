@@ -9,7 +9,7 @@
     $('#serviceRequest_UserInputs')
         .selectize({
             plugins: ['remove_button'],
-            delimiter: ',',
+            delimiter: '@Html.Raw(Model.Control.Delimiter)',
             valueField: 'value',
             labelField: 'label',
             persist: false,

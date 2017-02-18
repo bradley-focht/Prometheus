@@ -19,5 +19,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// What options were selected
 		/// </summary>
 		public ICollection<int> Options { get; set; }
+
+        /// <summary>
+        /// Index of package that was just submitted
+        /// </summary>
+	    public int CurrentIndex { get; set; }
 	}
 }
