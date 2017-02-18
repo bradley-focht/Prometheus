@@ -1,4 +1,5 @@
 ﻿@using Common.Dto
+@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
 
 @if (Model.OptionCategory != null)
@@ -24,7 +25,7 @@
 				</div>
 				<div class="dd-cell-base" style="width: 91%">
 					<div class="checkbox checkbox-primary">
-						<input value="@option.Id" type="checkbox" id="option_@(option.Id)" name="Options" @(Model.ServiceRequest.ServiceRequestOptions.Count == 0 && Model.ServiceOptionId == option.Id ? "checked" : " ") onchange="ChangeQuantity(@option.Id)">
+						<input value="@option.Id" type="checkbox" id="option_@(option.Id)" name="Options" onchange="UpdateOptions(@option.Id)">
 						<label for="option_@(option.Id)">
 							@option.Name
 						</label>
@@ -71,17 +72,93 @@
 	</div>
 
 	<script language="javascript" type="text/javascript">
-		function ChangeQuantity(id) {
+
+		function UpdateOptions(id) {
 			var input = document.getElementById("quantity_" + id);
+			var inputs = [];
+			@foreach (var input in Model.GetUserInputList())
+			{
+				<text>
+					inputs[inputs.length] = {name:'@(StringHelper.RemoveSpaces(input.DisplayName))', used:false};
+				</text>
+			}
+			@foreach (var option in Model.UserInputs)
+			{
+				<text>
+				if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true)
+				{
+					@foreach (var input in option.UserInputs.GetUserInputs())
+					{
+						<text>
+						var j;
+						for (j = 0; j < inputs.length; j++) {
+							if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
+								inputs[j].used = true;
+							}
+						}
+						</text>
+					}
+				}
+				</text>
+			}
+
 			if (document.getElementById("option_" + id).checked) {
 				input.value = 1;
 				input.min = 1;
-				input.max = 1;
-			} else {
+				input.max = 99;
+
+				@foreach (var option in Model.UserInputs)
+				{
+					<text>
+				if (id === @(option.ServiceOption.Id))
+					{
+						@foreach (var input in option.UserInputs.GetUserInputs())
+						{
+							<text>
+						var j;
+						for (j = 0; j < inputs.length; j++) {
+							if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
+									inputs[j].used = true;
+							}
+						}
+							</text>
+					}
+
+					}
+					</text>
+				}
+
+
+
+		} else {
 				input.value = 0;
-				input.min = 0;
-				input.max = 0;
+		input.min = 0;
+		input.max = 0;
+		}
+
+		var i;
+		for (i = 0; i < inputs.length; i++) {
+			if (!inputs[i].used) {
+				document.getElementById('div_' + inputs[i].name).style.display = 'none';
+				document.getElementById(inputs[i].name).value = '';
+			} else {
+				document.getElementById('div_' + inputs[i].name).style.display = '';
 			}
 		}
+
+		}
+
+		@if (Model.ServiceOptionId > 0)
+			{
+		<text>
+		$(document).ready(function(){
+
+			document.getElementById("option_@(Model.ServiceOptionId)").checked = true;
+			UpdateOptions(@Model.ServiceOptionId);
+
+		});
+		</text>
+			}
+
 	</script>
 }

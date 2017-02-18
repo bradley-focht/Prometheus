@@ -48,11 +48,11 @@
 		}
 		else
 		{
-			if (Model.Mode == ServiceRequestMode.Selection && Model.OptionCategory != null)
+			if (Model.OptionCategory != null)
 			{
 				@Html.Partial("PartialViews/ServiceRequestFormSelect", Model)
 			}
-			else if (Model.Mode == ServiceRequestMode.Input && Model.UserInputs != null)
+			if (Model.UserInputs != null)
 			{
 				@Html.Partial("PartialViews/ServiceRequestFormInput", Model)
 			}

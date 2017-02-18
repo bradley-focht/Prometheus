@@ -160,6 +160,7 @@ namespace Prometheus.WebUI.Controllers
 				model.ServiceRequest.ServiceRequestOptions = tempOptions;
 				try
 				{
+					
 					_ps.ModifyServiceRequest(model.ServiceRequest, EntityModification.Update);
 				}
 				catch (Exception exception)
@@ -191,21 +192,6 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// Save data from User Input mode
-		/// </summary>
-		/// <param name="form"></param>
-		/// <param name="inputs"></param>
-		/// <param name="submit">id of submit button</param>
-		/// <returns></returns>
-		public ActionResult SaveFormInput(ServiceRequestFormReturnModel form, ICollection<UserInputModel> inputs, int submit)
-		{
-			TempData["MessageType"] = WebMessageType.Info;
-			TempData["Message"] = $"Post back was successful";
-
-			return RedirectToAction("Form", new {id = form.Id, index = submit});
-		}
-
-		/// <summary>
 		/// View a tab in the SR form
 		/// </summary>
 		/// <param name="id">service request id</param>
@@ -229,25 +215,24 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
 				return View("ServiceRequest", model);
 			}
-			/* STEP TWO - get any user inputs */
+			/* STEP TWO - get any user inputs & associate with the option */
+			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
 			if (index < 0)
 			{
 				//not much to do here, eh...
 			}
 			else if (index < model.Package.ServiceOptionCategoryTags.Count && index < 999)
 			{
-				model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
+				model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;	
+				foreach (var option in model.OptionCategory.ServiceOptions)
+				{
+					optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = 
+						_ps.GetInputsForServiceOptions(new List<IServiceOptionDto> {option})}); 
+				}
 			}
-			else if (index >= 999 && index <= 999) // 999 = user input, 9999 = final submission attempt
-			{
-				model.UserInputs = _ps.GetInputsForServiceOptions(from x in model.ServiceRequest.ServiceRequestOptions
-														select new ServiceOptionDto {Id = x.Id});
-			}/* STEP THREE - navigation */
-			if (index >= 999 && index <= 9999)		// note: final submission is not deal with in this action
-			{
-				model.Mode = ServiceRequestMode.Input;
-			}
-			
+
+			model.UserInputs = optionInputList;
+
 			return View("ServiceRequest", model);
 		}
 

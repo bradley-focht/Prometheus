@@ -1,11 +1,12 @@
 ﻿@using Common.Dto
+@using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Models.Shared
 @model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
 
 <div class="dd tq-width">
-	@foreach (var input in Model.UserInputList)
+	@foreach (var input in Model.GetUserInputList())
 	{
-		<div class="dd-row">
+		<div class="dd-row" id="div_@StringHelper.RemoveSpaces(input.DisplayName)">
 			<div class="dt-cell">@input.DisplayName</div>
 			<div class="dd-cell">
 				@if (input is ITextInputDto)
@@ -20,9 +21,6 @@
 				{
 					@Html.Partial("PartialViews/_ScriptedSelectionInput", new InputModel<ScriptedSelectionInputDto> {Control = (ScriptedSelectionInputDto) input, ControlName = "abc"})
 				}
-			</div>
-			<div class="dd-cell-nostyle"> @* try this *@
-					<span class="btn btn-info" style="border-radius: 10px;" data-html="true" data-toggle="tooltip" title="@Html.Raw(input.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
 			</div>
 		</div>
 	}

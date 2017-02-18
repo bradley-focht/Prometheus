@@ -1,13 +1,14 @@
-﻿@model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.TextInputDto>
+﻿@using Prometheus.WebUI.Helpers
+@model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.TextInputDto>
 
 @if (Model.Control.MultiLine)
 {
-	@Html.TextArea(Model.ControlName, null, new { @class = "form-control" })
+	@Html.TextArea(Model.ControlName, null, new { @class = "ckeditor" })
 }
 else
 {
     <div class="input-group">
-        @Html.TextBox(Model.ControlName, null, new { @class = "form-control" })
+        @Html.TextBox(Model.ControlName, null, new { @class = "form-control", id=StringHelper.RemoveSpaces(Model.Control.DisplayName) })
         <span class="input-group-btn">
             <span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
         </span>

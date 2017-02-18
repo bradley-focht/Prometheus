@@ -373,10 +373,12 @@
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputsLinkListModel.cs" />
+    <Compile Include="Models\ServiceRequest\ServiceOptionTag.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestFormReturnModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestNavigationModel.cs" />
     <Compile Include="Models\ServiceRequest\UserInputModel.cs" />
+    <Compile Include="Models\ServiceRequest\UserInputTag.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />

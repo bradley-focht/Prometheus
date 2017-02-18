@@ -7,5 +7,6 @@ namespace Common.Dto
 		IEnumerable<IScriptedSelectionInputDto> ScriptedSelectionInputs { get; set; }
 		IEnumerable<ISelectionInputDto> SelectionInputs { get; set; }
 		IEnumerable<ITextInputDto> TextInputs { get; set; }
+		List<IUserInput> GetUserInputs();
 	}
 }
