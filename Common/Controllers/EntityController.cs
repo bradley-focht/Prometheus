@@ -1,4 +1,5 @@
-﻿using Common.Enums.Entities;
+﻿using System;
+using Common.Enums.Entities;
 using Common.Exceptions;
 
 namespace Common.Controllers
@@ -11,6 +12,9 @@ namespace Common.Controllers
 
 		public T ModifyEntity(T entityDto, EntityModification modification)
 		{
+			if (entityDto == null)
+				ThrowArgumentNullError(typeof(T).ToString());
+
 			switch (modification)
 			{
 				case EntityModification.Create:
@@ -21,6 +25,11 @@ namespace Common.Controllers
 					return Delete(entityDto);
 			}
 			throw new ModificationException(string.Format("Modification {0} was not performed on entity {1}", modification, entityDto));
+		}
+
+		protected void ThrowArgumentNullError(string argumentName)
+		{
+			throw new ArgumentException($"Argument \"{argumentName}\" cannot be null", argumentName);
 		}
 	}
 }

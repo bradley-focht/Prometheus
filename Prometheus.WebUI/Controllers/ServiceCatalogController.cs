@@ -20,8 +20,8 @@ namespace Prometheus.WebUI.Controllers
 		public ServiceCatalogController()
 		{
 			_requestService = InterfaceFactory.CreateCatalogController(_dummId);
-		    try { _pageSize = ConfigHelper.GetPaginationSize(); }       //set pagination size
-		    catch (Exception) { _pageSize = 12;     /*just in case */  }
+			try { _pageSize = ConfigHelper.GetPaginationSize(); }       //set pagination size
+			catch (Exception) { _pageSize = 12;     /*just in case */  }
 		}
 
 		/// <summary>
@@ -34,8 +34,8 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult CatalogSearch(string searchString, ServiceCatalogs type)
 		{
 			searchString = searchString?.ToLower();                                          //compare everything in lowercase
-            
-            CatalogModel model = new CatalogModel { Catalog = type };
+			
+			CatalogModel model = new CatalogModel { Catalog = type };
 			model.Controls = new CatalogControlsModel { CatalogType = type };
 
 			ServiceCatalogSearcher searcher = new ServiceCatalogSearcher();
@@ -109,16 +109,16 @@ namespace Prometheus.WebUI.Controllers
 						BusinessValue = service.Description,
 						Options = new List<ICatalogPublishable>()
 					};
-				    if (service.ServiceOptionCategories != null)
-				    {
-				        i.Options.AddRange((from o in service.ServiceOptionCategories select (ICatalogPublishable) o).ToList());
-				            //find the top 3 items
-				    }
-				    if (service.ServiceOptions != null)
-				    {
-				        i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList());
-				    }
-				    i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
+					if (service.ServiceOptionCategories != null)
+					{
+						i.Options.AddRange((from o in service.ServiceOptionCategories select (ICatalogPublishable) o).ToList());
+							//find the top 3 items
+					}
+					if (service.ServiceOptions != null)
+					{
+						i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList());
+					}
+					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
 
 					model.CatalogItems.Add(i);
 				}
@@ -154,29 +154,29 @@ namespace Prometheus.WebUI.Controllers
 			return View("ServiceCatalog", model);
 		}
 
-	    /// <summary>
-	    /// Return View of an option
-	    /// </summary>
-	    /// <param name="catalog"></param>
-	    /// <param name="type"></param>
-	    /// <param name="id"></param>
-	    /// <returns></returns>
-	    public ActionResult Details(ServiceCatalogs catalog, CatalogableTypes type, int id)
+		/// <summary>
+		/// Return View of an option
+		/// </summary>
+		/// <param name="catalog"></param>
+		/// <param name="type"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult Details(ServiceCatalogs catalog, CatalogableTypes type, int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(_dummId);
-		    int serviceId = 0;
-		    switch (type)
-		    {
-		        case CatalogableTypes.Option:
-		            serviceId = ps.GetServiceOptionCategory(ps.GetServiceOption(id).ServiceOptionCategoryId).ServiceId;
-		            break;
-		        case CatalogableTypes.Category:
-		            serviceId = ps.GetServiceOptionCategory(id).ServiceId;
-		            break;
-		        case CatalogableTypes.Service:
-		            serviceId = id;
-		            break;
-		    }
+			int serviceId = 0;
+			switch (type)
+			{
+				case CatalogableTypes.Option:
+					serviceId = ps.GetServiceOptionCategory(ps.GetServiceOption(id).ServiceOptionCategoryId).ServiceId;
+					break;
+				case CatalogableTypes.Category:
+					serviceId = ps.GetServiceOptionCategory(id).ServiceId;
+					break;
+				case CatalogableTypes.Service:
+					serviceId = id;
+					break;
+			}
 			var service = ps.GetService(serviceId);
 
 			if (service != null)
@@ -189,17 +189,17 @@ namespace Prometheus.WebUI.Controllers
 
 				model.ServiceId = service.Id;
 				model.ServiceName = service.Name;
-                //add data
+				//add data
 				List<ICatalogPublishable> options = (from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList(); //build list of options & categories
-			    if (service.ServiceOptions != null)
-			    {
-			        options.AddRange(from o in service.ServiceOptions select (ICatalogPublishable) o); //sort by name
-			    }
-			    options = options.OrderBy(o => o.Name).ToList();
+				if (service.ServiceOptions != null)
+				{
+					options.AddRange(from o in service.ServiceOptions select (ICatalogPublishable) o); //sort by name
+				}
+				options = options.OrderBy(o => o.Name).ToList();
 				model.Options = options;
 
-                //now create the controls model
-                model.Controls = new CatalogControlsModel {CatalogType = catalog};
+				//now create the controls model
+				model.Controls = new CatalogControlsModel {CatalogType = catalog};
 
 				return View(model);
 			}
@@ -217,7 +217,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ServiceOptions(ServiceCatalogs type, int serviceId)
 		{
 			var model = new ServiceOptionsModel { Catalog = type, ServiceId = serviceId };
-            model.Controls = new CatalogControlsModel();
+			model.Controls = new CatalogControlsModel();
 
 			IList<IServiceDto> services = null;
 
@@ -233,14 +233,14 @@ namespace Prometheus.WebUI.Controllers
 				model.ServiceNames = from s in services
 									 select new Tuple<int, string>(s.Id, s.Name);
 
-                List<ICatalogPublishable> options = new List<ICatalogPublishable>();
+				List<ICatalogPublishable> options = new List<ICatalogPublishable>();
 
-			    if (service.ServiceOptionCategories != null)
-			    {
-			         options = (from o in service.ServiceOptionCategories select (ICatalogPublishable) o).ToList();
-			    }
+				if (service.ServiceOptionCategories != null)
+				{
+					 options = (from o in service.ServiceOptionCategories select (ICatalogPublishable) o).ToList();
+				}
 			   
-			    model.Options = options.OrderBy(o => o.Name);
+				model.Options = options.OrderBy(o => o.Name);
 			}
 			return View(model);
 		}

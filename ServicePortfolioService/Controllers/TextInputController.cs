@@ -1,13 +1,12 @@
-﻿using Common.Dto;
-using Common.Enums.Entities;
-using DataService;
-using DataService.DataAccessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
+using Common.Dto;
 using Common.Enums.Entities;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
