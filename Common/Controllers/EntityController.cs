@@ -1,8 +1,7 @@
-﻿using Common.Enums;
-using Common.Enums.Entities;
+﻿using Common.Enums.Entities;
 using Common.Exceptions;
 
-namespace ServicePortfolioService.Controllers
+namespace Common.Controllers
 {
 	public abstract class EntityController<T>
 	{

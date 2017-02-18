@@ -4,6 +4,7 @@ using DataService.DataAccessLayer;
 using System;
 using System.Data.Entity;
 using System.Linq;
+using Common.Controllers;
 using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers

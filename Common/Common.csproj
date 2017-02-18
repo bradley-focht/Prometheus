@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Dto\ICreatedEntityDto.cs" />
     <Compile Include="Dto\ICatalogPublishable.cs" />
     <Compile Include="Dto\IOffering.cs" />
