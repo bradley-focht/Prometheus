@@ -1,8 +1,8 @@
-﻿using Common.Dto;
-using DataService.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Common.Dto;
+using DataService.Models;
 
 namespace DataService
 {
@@ -825,6 +825,18 @@ namespace DataService
 			};
 		}
 
+		public static ServiceOptionCategoryTag MapDtoToServiceOptionCategoryTag(IServiceOptionCategoryTagDto src)
+		{
+			if (src == null) return null;
+
+			return new ServiceOptionCategoryTag
+			{
+				Id = src.Id,
+				Order = src.Order,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId
+			};
+		}
+
 		public static ServiceRequestPackage MapDtoToServiceRequestPackage(IServiceRequestPackageDto src)
 		{
 			if (src == null) return null;
@@ -884,7 +896,7 @@ namespace DataService
 			};
 		}
 
-		private static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)
+		public static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)
 		{
 			if (src == null) return null;
 

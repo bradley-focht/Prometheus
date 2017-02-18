@@ -7,6 +7,7 @@ using Common.Dto;
 using Common.Enums.Entities;
 using DataService;
 using DataService.DataAccessLayer;
+using DataService.Models;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -56,6 +57,16 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Request Package with ID {0} already exists.", entity.Id));
 				}
 				var savedPackage = context.ServiceRequestPackages.Add(ManualMapper.MapDtoToServiceRequestPackage(entity));
+
+				//Set tags to match DTO tags
+				var tags = new List<ServiceOptionCategoryTag>();
+				foreach (var tag in entity.ServiceOptionCategoryTags)
+				{
+					tags.Add(ManualMapper.MapDtoToServiceOptionCategoryTag(tag));
+				}
+
+				savedPackage.ServiceOptionCategoryTags = tags;
+
 				context.SaveChanges(_userId);
 				return ManualMapper.MapServiceRequestPackageToDto(savedPackage);
 			}
@@ -70,6 +81,16 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Request Package with ID {0} cannot be updated since it does not exist.", entity.Id));
 				}
 				var updatedPackage = ManualMapper.MapDtoToServiceRequestPackage(entity);
+				
+				//Set tags to match DTO tags
+				var tags = new List<ServiceOptionCategoryTag>();
+				foreach (var tag in entity.ServiceOptionCategoryTags)
+				{
+					tags.Add(ManualMapper.MapDtoToServiceOptionCategoryTag(tag));
+				}
+
+				updatedPackage.ServiceOptionCategoryTags = tags;
+
 				context.ServiceRequestPackages.Attach(updatedPackage);
 				context.Entry(updatedPackage).State = EntityState.Modified;
 				context.SaveChanges(_userId);

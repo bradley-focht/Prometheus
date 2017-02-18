@@ -1,9 +1,9 @@
-﻿using DataService.Models;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
+using DataService.Models;
 
 namespace DataService.DataAccessLayer
 {
@@ -36,6 +36,7 @@ namespace DataService.DataAccessLayer
 
 		public DbSet<ServiceRequestPackage> ServiceRequestPackages { get; set; }
 		public DbSet<ServiceRequest> ServiceRequests { get; set; }
+		public DbSet<ServiceRequestOption> ServiceRequestOptions { get; set; }
 
 		//User Manager Entities
 		public DbSet<User> Users { get; set; }
