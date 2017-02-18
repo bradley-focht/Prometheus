@@ -529,6 +529,7 @@
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestFormInput.cshtml" />
     <Content Include="Views\Shared\PartialViews\_ScriptedSelectionInput.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestChangeState.cshtml" />
+    <Content Include="Views\ServiceRequest\ConfirmServiceRequestStateChange.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

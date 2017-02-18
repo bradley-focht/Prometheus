@@ -9,6 +9,7 @@ namespace Common.Dto
 
 		public int ServiceOptionId { get; set; }
 		public int ServiceRequestId { get; set; }
+		public int Quantity { get; set; }
 
 		public int RequestedByUserId { get; set; }
 		public int ApproverUserId { get; set; }

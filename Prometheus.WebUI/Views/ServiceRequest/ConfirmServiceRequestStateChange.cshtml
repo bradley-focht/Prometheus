@@ -1,0 +1,34 @@
+﻿@using Prometheus.WebUI.Models.ServiceRequest
+@model ServiceRequestModel
+@{
+	ViewBag.Title = "Service Request";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("Service Request", "#"),
+		new KeyValuePair<string, string>("Confirm ? change ", "#")
+	};
+
+}
+
+
+
+<div class="title-div">Confirm Change of SR</div>
+
+
+
+<div>Rejecting? then fill this out</div>
+<div>@Html.TextArea("RejectNotes", "", new { @class = "ckeditor" })</div>
+
+
+
+
+<div class="flex-container-col">
+	<div class="panel-footer">
+		<div class="float-right-div">
+			@Html.ActionLink("Back", "Begin", null, new { @class = "btn btn-default btn-back" })
+			<input type="submit" value="?" class="btn btn-primary" />
+		</div>
+	</div>
+</div>

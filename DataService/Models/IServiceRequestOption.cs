@@ -7,6 +7,7 @@ namespace DataService.Models
 		int Id { get; set; }
 		int ServiceOptionId { get; set; }
 		int ServiceRequestId { get; set; }
+		int Quantity { get; set; }
 
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }

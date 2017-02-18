@@ -903,6 +903,7 @@ namespace DataService
 				ApproverUserId = src.ApproverUserId,
 				RequestedByUserId = src.RequestedByUserId,
 				ServiceOptionId = src.ServiceOptionId,
+				Quantity = src.Quantity,
 				ServiceRequestId = src.ServiceRequestId,
 				ServiceOption = MapServiceOptionToDto(src.ServiceOption),
 				ServiceRequest = MapServiceRequestToDto(src.ServiceRequest),
@@ -920,6 +921,7 @@ namespace DataService
 				Id = src.Id,
 				ApproverUserId = src.ApproverUserId,
 				RequestedByUserId = src.RequestedByUserId,
+				Quantity = src.Quantity,
 				ServiceOptionId = src.ServiceOptionId,
 				ServiceRequestId = src.ServiceRequestId
 			};
