@@ -1,5 +1,4 @@
-﻿@using Common.Enums
-@using Common.Enums.Entities
+﻿@using Common.Enums.Entities
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
 
 <input type="hidden" name="Id" value="@Model.Service.Id" />
@@ -32,7 +31,7 @@
      <div class="dd-row">
         <div class="dt-cell">Service Type</div>
         <div class="dd-cell">
-            <table style="margin-top: 10px; margin-bottom: 10px;">
+            <div class="dd" style="margin-top: 10px; margin-bottom: 10px;">
                 <div class="dd-row">
                     <div class="dt-cell">
                         Role
@@ -65,7 +64,7 @@
 
                     </div>
                 </div>
-            </table>
+            </div>
         </div>
     </div>
     <div class="dd-row">

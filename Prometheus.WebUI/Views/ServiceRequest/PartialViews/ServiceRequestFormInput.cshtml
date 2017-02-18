@@ -1,0 +1,29 @@
+﻿@using Common.Dto
+@using Prometheus.WebUI.Models.Shared
+@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
+
+<div class="dd tq-width">
+	@foreach (var input in Model.UserInputList)
+	{
+		<div class="dd-row">
+			<div class="dt-cell">@input.DisplayName</div>
+			<div class="dd-cell">
+				@if (input is ITextInputDto)
+				{
+					@Html.Partial("PartialViews/_TextInput", new InputModel<TextInputDto> {Control = (TextInputDto) input, ControlName = "abc"})
+				}
+				else if (input is ISelectionInputDto)
+				{
+					@Html.Partial("PartialViews/_SelectionInput", new InputModel<SelectionInputDto> {Control = (SelectionInputDto) input, ControlName = "abc"})
+				}
+				else if (input is IScriptedSelectionInputDto)
+				{
+					@Html.Partial("PartialViews/_ScriptedSelectionInput", new InputModel<ScriptedSelectionInputDto> {Control = (ScriptedSelectionInputDto) input, ControlName = "abc"})
+				}
+			</div>
+			<div class="dd-cell-nostyle"> @* try this *@
+					<span class="btn btn-info" data-html="true" data-toggle="tooltip" title="@Html.Raw(input.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
+			</div>
+		</div>
+	}
+</div>

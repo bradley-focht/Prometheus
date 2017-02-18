@@ -1,12 +1,10 @@
 ﻿@using Prometheus.WebUI.Helpers
-@model Prometheus.WebUI.Models.Shared.SelectionInputModel
+@model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.SelectionInputDto>
 
-<div class="input-group">
-    @Html.TextBox(Model.ControlName, null, new { id = "serviceRequest_UserInputs", style = "max-width: 350px;" })
-    <span class="input-group-btn">
-        <span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(Model.SelectionInput.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
-    </span>
-</div>
+
+    @Html.TextBox(Model.ControlName, null, new { id = "serviceRequest_UserInputs", style = "max-width: 350px;", @class="form-control" })
+
+
 <script type="text/javascript" language="javascript">
     $('#serviceRequest_UserInputs')
         .selectize({
@@ -15,7 +13,7 @@
             valueField: 'value',
             labelField: 'label',
             persist: false,
-            maxItems: @(Model.SelectionInput.NumberToSelect),
-            options: [ @Html.Raw(StringHelper.ConvertStringtoJsValLabelArray(Model.SelectionInput.SelectItems, ',')) ]
+            maxItems: @(Model.Control.NumberToSelect),
+            options: [ @Html.Raw(StringHelper.ConvertStringtoJsValLabelArray(Model.Control.SelectItems, ',')) ]
         });
 </script>

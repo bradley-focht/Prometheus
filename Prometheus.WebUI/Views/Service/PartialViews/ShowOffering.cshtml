@@ -5,79 +5,62 @@
 
 
 <div class="dd">
-	@foreach (var property in ViewData.ModelMetadata.Properties)
-	{
-		if (property.Model == null)
-		{
-			continue;
-		}
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        if (property.Model == null)
+        {
+            continue;
+        }
 
-		switch (property.PropertyName)
-		{
-			case "Id":  /*do nothing for these attributes */
-			case "ServiceId":
-			case "ServiceOptionId":
-			case "DateCreated":
-			case "DateUpdated":
-			case "CreatedByUserId":
-			case "TextInputs":
-			case "ScriptedSelecentionInputs":
-			case "SelectionInputs":
-			case "UpdatedByUserId":
-			case "PictureMimeType":
-			case "Popularity":
-				continue;
-		}
-		<div class="dd-row">
-			<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+        switch (property.PropertyName)
+        {
+            case "Id":  /*do nothing for these attributes */
+            case "ServiceId":
+            case "ServiceOptionId":
+            case "DateCreated":
+            case "DateUpdated":
+            case "CreatedByUserId":
+            case "TextInputs":
+            case "ScriptedSelectionInputs":
+            case "SelectionInputs":
+            case "UpdatedByUserId":
+            case "PictureMimeType":
+            case "Popularity":
+            case "Picture":
+                continue;
+        }
+        <div class="dd-row">
+            <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 
-			@switch (property.PropertyName)
-			{
-				case "CategoryId":
-					<div class="dd-cell">
-					</div>
-					break;
-				case "Cost":
-				case "PriceUpFront":
-				case "PriceMonthly":
-					<div class="dd-cell">
-						@($"${property.Model:0.00}")
-					</div>
-					break;
-				case "Description":
-				case "BusinessValue":
-					<div class="dd-cell">
-						@Html.Raw(property.Model)
-					</div>
-						break;
-					case "Picture":
-					<div class="dd-cell">
-						@if (property.Model == null)
-						{
-							<text >No Image</text>
-						}
-						else
-						{
-							<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture","Service", new {id = Model.Id})" alt="Picture"/>
-						}
-					</div>
-					break;
-				case "ServiceOptions":
-					var options = property.Model as List<ServiceOptionDto>;
-					if (options != null)
-					{
-						foreach (var option in options)
-						{
-							<div>@Html.ActionLink(option.Name, "ShowServiceOption", new {id=option.Id, type=CatalogableTypes.Option})</div>
-						}
+            @switch (property.PropertyName)
+            {
+                case "CategoryId":
+                    <div class="dd-cell">
+                    </div>    break;
+                case "Cost":
+                case "PriceUpFront":
+                case "PriceMonthly":
+                    <div class="dd-cell">
+                        @($"${property.Model:0.00}")
+                    </div>    break;
+                case "Description":
+                case "BusinessValue":
+                    <div class="dd-cell">
+                        @Html.Raw(property.Model)
+                    </div>    break;
+                case "ServiceOptions":
+                    var options = property.Model as List<ServiceOptionDto>;
+                    if (options != null)
+                    {
+                        foreach (var option in options)
+                        {
+                            <div>@Html.ActionLink(option.Name, "ShowServiceOption", new { id = option.Id, type = CatalogableTypes.Option })</div>}
 
-					}
-					break;
-				default:
-					<div class="dd-cell">@Html.Raw(property.Model)</div>
-					break;
-			}
-		</div>
-	}
+                    }
+                    break;
+                default:
+                    <div class="dd-cell">@Html.Raw(property.Model)</div>    break;
+            }
+        </div>
+    }
 </div>
-

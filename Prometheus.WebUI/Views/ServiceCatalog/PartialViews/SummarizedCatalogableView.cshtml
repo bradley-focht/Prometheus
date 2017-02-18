@@ -1,10 +1,10 @@
 ﻿@using Common.Dto
 @using Common.Enums.Entities
-@model ICatalogPublishable
+@model Prometheus.WebUI.Models.ServiceCatalog.PublishableCatalogItemModel
 @{
 	CatalogableTypes optionType;
 
-	if (Model is IOptionCategoryDto)
+	if (Model.Item is IServiceOptionCategoryDto)
 	{
 		optionType = CatalogableTypes.Category;
 	}
@@ -21,34 +21,32 @@
 		<div class="dd-cell-nostyle">
 			<div class="dd" style="width: 100%;">
 				<div class="dd-row">
-					@if (Model is IServiceDto) /*deal with the title */
+					@if (Model.Item is IServiceDto) /*deal with the title */
 					{
-						var service = (ServiceDto)Model;
+						var service = (ServiceDto)Model.Item;
 
 						<div class="dd-cell-base" style="width: 90%">
-								@Html.ActionLink(Model.Name, "Details", new { serviceId = service.Id, type = optionType, id = Model.Id }, new { @class = "font-title1" })
+								@Html.ActionLink(Model.Item.Name, "Details", new {catalog = Model.Catalog, id = Model.Item.Id, type = optionType, serviceId = service.Id, }, new { @class = "font-title1" })
 						</div>
 					}
-					else if (Model is IOffering)
+					else if (Model.Item is IServiceOptionDto || Model.Item is IServiceOptionCategoryDto)
 					{
-
-						var offering = (IOffering)Model;
 						<div class="dd-cell-base" style="width: 90%">
-								@Html.ActionLink(Model.Name, "Details", new { serviceId = offering.ServiceId, type = optionType, id = Model.Id }, new { @class = "font-title1" })
+								@Html.ActionLink(Model.Item.Name, "Details", new { catalog = Model.Catalog, type = optionType, id = Model.Item.Id }, new { @class = "font-title1" })
 						</div>
-					}
+                    }
 
-					@if (Model is IRequestableDto)
+					@if (Model.Item is IRequestableDto)
 					{
 						<div class="dd-cell-nostyle" style="vertical-align: top; text-align: right; width: 10%;">
-							<a href="@Url.Action("BeginRequest", "ServiceRequest", new {id = Model.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+							<a href="@Url.Action("Begin", "ServiceRequest", new {id = Model.Item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
 						</div>
 					}
 				</div>
 
-				@if (Model is IOptionCategoryDto)
+				@if (Model.Item is IServiceOptionCategoryDto)
 				{
-					var category = (IOptionCategoryDto)Model;
+					var category = (IServiceOptionCategoryDto)Model.Item;
 
 					<div class="dd-row">
 						<div class="dd-cell-base">@Html.Raw(category.BusinessValue)</div>
@@ -59,19 +57,19 @@
 						<div class="dd-row">
 							<div class="dd-cell-nostyle" style="position: relative;">
 
-								<input id="drop-checkbox@(Model.Id)" type="checkbox" class="drop-checkbox">
-								<label for="drop-checkbox@(Model.Id)" id="example" class="drop-text" data-toggle="collapse" data-target="#category@(Model.Id)">See options</label>
+								<input id="drop-checkbox@(Model.Item.Id)" type="checkbox" class="drop-checkbox">
+								<label for="drop-checkbox@(Model.Item.Id)" id="example" class="drop-text" data-toggle="collapse" data-target="#category@(Model.Item.Id)">See options</label>
 
-								<div class="collapse drop-well" id="category@(Model.Id)" style="width: 100%;">
+								<div class="collapse drop-well" id="category@(Model.Item.Id)" style="width: 100%;">
 									<div class="dd" style="width: 100%;">
 										@foreach (var item in category.ServiceOptions)
 										{
 
 											<div class="dd-row">
-												<div class="dd-cell-base" style="width: 75%">@Html.ActionLink(item.Name, "Details", new {id = item.Id, type = CatalogableTypes.Option, serviceId = item.ServiceId}, new {@class = "font-title2"})</div>
+												<div class="dd-cell-base" style="width: 75%">@Html.ActionLink(item.Name, "Details", new {catalog = Model.Catalog, id = item.Id, type = CatalogableTypes.Option}, new {@class = "font-title2"})</div>
 												<div class="dd-cell-nostyle" style="width:20%"></div>
 												<div class="dd-cell-nostyle" style="width: 5%; vertical-align: top; text-align: right; width: 10%;">
-													<a href="@Url.Action("BeginRequest", "ServiceRequest", new {id = item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+													<a href="@Url.Action("Begin", "ServiceRequest", new {id = item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
 												</div>
 
 											</div>
@@ -100,9 +98,9 @@
 						</div>
 					}
 				}
-				else if (Model is IServiceOptionDto)
+				else if (Model.Item is IServiceOptionDto)
 				{
-					IServiceOptionDto opt = (IServiceOptionDto)Model;
+					IServiceOptionDto opt = (IServiceOptionDto)Model.Item;
 					<div class="dd-row">
 						<div class="dd-cell">@Html.Raw(opt.BusinessValue)</div>
 					</div>

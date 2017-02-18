@@ -6,67 +6,82 @@
     ViewBag.Links = new List<KeyValuePair<string, string>>
     {
         new KeyValuePair<string, string>("Home", "Home"),
-        new KeyValuePair<string, string>("Service Request", "@")
+        new KeyValuePair<string, string>("Service Request", "#")
     };
+    var submitAction = Model.CurrentIndex < 0 ? "SaveInfo" : "SaveFormSelection";            //post operation to perform
 }
 
-@using (Html.BeginForm("SubmitNewServiceRequest", "ServiceRequest", FormMethod.Post))
+@using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
 {
+    <input type="hidden" name="ServiceOptionId" value="@Model.ServiceOptionId" />
+    <input type="hidden" name="Id" value="@Model.ServiceRequestId" />
+    <input type="hidden" name="Index" value="@Model.CurrentIndex"/>
+	<input type="hidden" name="Mode" value="@Model.Mode"/>
 
     <div class="panel panel-default flex-container-row make-space-bottom">
-        <div>Status: </div>
+        <div class="dd full-width">
+            <div class="dd-row">
+                <div class="dt-cell">Service Request</div>
+                <div class="dd-cell-multicol">@Model.Package.Name</div>
+                <div class="dt-cell">Status</div>
+                <div class="dd-cell-multicol">@Model.ServiceRequest.State</div>
+            </div>
+            <div class="dd-row">
+                <div class="dt-cell"></div>
+                <div class="dd-cell-multicol"></div>
+                @if (Model.ServiceRequestId > 0)
+                {
+                    <div class="dt-cell">Service Request Id</div>
+                    <div class="dd-cell-multicol">@Model.ServiceRequestId</div>
+                }
+            </div>
+        </div>
     </div>
 
+    @Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.Package.ServiceOptionCategoryTags })
 
-    @Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.Titles })
-
-    if (Model.CurrentIndex < 0)
-    {
-        <div class="dd">
-            <div class="dd-row">
-                <div class="dt-cell">Requestor</div>
-                <div class="dd-cell">@Session["Displayname"]</div>
-            </div>
-            <div class="dd-row">
-                <div class="dt-cell">Requested For</div>
-                <div class="dd-cell"></div>
-            </div>
-            <div class="dd-row">
-                <div class="dt-cell">Date Required</div>
-                <div></div>
-            </div>
-            <div class="dd-row">
-                <div class="dt-cell">Comments</div>
-                <div class="dd-cell">
-                    @Html.TextArea("Comments", Model.Comments, new { @class = "ckeditor" })
-                    <div class="note">additional requests in comments will not be honoured</div>
-                </div>
-            </div>
-            <div class="dd-row">
-                <div class="dt-cell">Office-Use</div>
-                <div class="dd-cell">@Html.TextBox("OfficeUseComments", @Model.OfficeUseComments, new { @class = "form-control" })</div>
-            </div>
-        </div>
-
-        <div>
-            <div class="make-space-bottom" style="display: flex; justify-content: flex-end; margin-right: 40px;">
-                <div class="make-space-right">
-                    @Html.ActionLink("Back", "Index", null, new {@class = "btn btn-default"})
-                </div>
-                <div>
-                    @Html.ActionLink("Next", "Form", null, new { @class = "btn btn-default" })
-                </div>
-            </div>
-        </div>
-
+    <div class="panel-div full-width">
+        @if (Model.CurrentIndex < 0)
+        {
+            @Html.Partial("PartialViews/ServiceRequestInfo", Model)
+		}
+		else
+		{
+			if (Model.OptionCategory != null)
+			{
+				@Html.Partial("PartialViews/ServiceRequestFormSelect", Model)
+			}
+			else if (Model.UserInputs != null)
+			{
+				@Html.Partial("PartialViews/ServiceRequestFormInput", Model)
+			}
+		}
+    </div>
         <div class="flex-container-col">
+            <div class="make-space-bottom" style="display: flex; justify-content: flex-end; margin-right: 40px;">
+
+                @if (Model.CurrentIndex >= 0)
+                {
+                    <div class="make-space-right">
+                        <button name="submit" value="@(Model.CurrentIndex - 1)" class="btn btn-default"><i class="fa fa-chevron-left" style="font-size: 0.8em; font-weight: 100;"  aria-hidden="true"></i> Back</button>
+                    </div>
+                }
+
+
+                    <div>
+                        <button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>
+                    </div>
+
+            </div>
+
             <div class="panel-footer">
                 <div class="float-right-div">
-                    @Html.ActionLink("Cancel Request", "CancelRequest", new {id = Model.ServiceRequestId}, new {@class="btn btn-danger"})
-                    <input type="submit" value="Submit Request" name="SRSubmit" class="btn btn-primary"/>
+                    @Html.ActionLink("Cancel Request", "CancelRequest", new { id = Model.ServiceRequestId }, new { @class = "btn btn-danger" })
+                    @if (Model.ServiceRequestId > 0)
+                    {
+                        <button type="submit" value="9999" name="submit" class="btn btn-primary">Submit Request</button>
+                    }
                 </div>
             </div>
         </div>
-    }
 }
-

@@ -1,9 +1,9 @@
-﻿using System;
+﻿using DataService.Models;
+using System;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
-using DataService.Models;
 
 namespace DataService.DataAccessLayer
 {
@@ -28,12 +28,14 @@ namespace DataService.DataAccessLayer
 		public DbSet<ServiceWorkUnit> ServiceWorkUnits { get; set; }
 		public DbSet<ServiceContract> ServiceContracts { get; set; }
 		public DbSet<ServiceOption> ServiceOptions { get; set; }
-		public DbSet<OptionCategory> OptionCategories { get; set; }
+		public DbSet<ServiceOptionCategory> OptionCategories { get; set; }
 		public DbSet<ServiceProcess> ServiceProcesses { get; set; }
 		public DbSet<TextInput> TextInputs { get; set; }
 		public DbSet<SelectionInput> SelectionInputs { get; set; }
 		public DbSet<ScriptedSelectionInput> ScriptedSelectionInputs { get; set; }
 
+		public DbSet<ServiceRequestPackage> ServiceRequestPackages { get; set; }
+		public DbSet<ServiceRequest> ServiceRequests { get; set; }
 
 		//User Manager Entities
 		public DbSet<User> Users { get; set; }

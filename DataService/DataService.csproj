@@ -81,9 +81,23 @@
     <Compile Include="DataAccessLayer\PrometheusContext.cs" />
     <Compile Include="DataAccessLayer\PrometheusInitializer.cs" />
     <Compile Include="ManualMapper.cs" />
+    <Compile Include="Models\ServiceOptionCategoryTag.cs" />
+    <Compile Include="Models\IServiceOptionCategoryTag.cs" />
+    <Compile Include="Models\ServiceRequest.cs" />
+    <Compile Include="Models\IServiceRequest.cs" />
+    <Compile Include="Models\IServiceRequestOption.cs" />
+    <Compile Include="Models\IServiceRequestOptionInput.cs" />
+    <Compile Include="Models\IServiceRequestOptionScriptedSelectionInput.cs" />
+    <Compile Include="Models\IServiceRequestOptionSelectionInput.cs" />
+    <Compile Include="Models\ServiceRequestOptionTextInput.cs" />
+    <Compile Include="Models\IServiceRequestOptionTextInput.cs" />
+    <Compile Include="Models\ServiceRequestOption.cs" />
+    <Compile Include="Models\ServiceRequestOptionScriptedSelectionInput.cs" />
+    <Compile Include="Models\ServiceRequestOptionSelectionInput.cs" />
+    <Compile Include="Models\ServiceRequestPackage.cs" />
     <Compile Include="Models\ICreatedEntity.cs" />
     <Compile Include="Models\ILifecycleStatus.cs" />
-    <Compile Include="Models\IOptionCategory.cs" />
+    <Compile Include="Models\IServiceOptionCategory.cs" />
     <Compile Include="Models\IPrice.cs" />
     <Compile Include="Models\IRequestable.cs" />
     <Compile Include="Models\IRole.cs" />
@@ -97,6 +111,7 @@
     <Compile Include="Models\IServiceMeasure.cs" />
     <Compile Include="Models\IServiceProcess.cs" />
     <Compile Include="Models\IServiceOption.cs" />
+    <Compile Include="Models\IServiceRequestPackage.cs" />
     <Compile Include="Models\IServiceSwot.cs" />
     <Compile Include="Models\IServiceWorkUnit.cs" />
     <Compile Include="Models\ISwotActivity.cs" />
@@ -104,7 +119,7 @@
     <Compile Include="Models\IUser.cs" />
     <Compile Include="Models\IUserCreatedEntity.cs" />
     <Compile Include="Models\LifecycleStatus.cs" />
-    <Compile Include="Models\OptionCategory.cs" />
+    <Compile Include="Models\ServiceOptionCategory.cs" />
     <Compile Include="Models\Price.cs" />
     <Compile Include="Models\Role.cs" />
     <Compile Include="Models\ScriptedSelectionInput.cs" />
@@ -126,6 +141,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="ClassDiagram1.cd" />
+    <None Include="ClassDiagram2.cd" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

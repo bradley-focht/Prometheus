@@ -1,4 +1,5 @@
-﻿using Common.Dto;
+﻿using System.Collections.Generic;
+using Common.Dto;
 using Common.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
@@ -8,25 +9,10 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 	/// </summary>
 	public class UserInputModel
 	{
-		/// <summary>
-		/// used for back links
-		/// </summary>
-		public string ServiceName { get; set; }
-		/// <summary>
-		/// used for back links
-		/// </summary>
-		public int ServiceId { get; set; }
-		/// <summary>
-		/// used for display
-		/// </summary>
-		public string Action { get; set; }
-		/// <summary>
-		/// Option Id for back links
-		/// </summary>
-		public int OptionId { get; set; }
-		/// <summary>
-		/// Option name for back links
-		/// </summary>
+        /// <summary>
+        /// What is current activity
+        /// </summary>
+	    public string Action { get; set; }
 		public string OptionName { get; set; }
 		/// <summary>
 		/// Input type used for linking
@@ -36,5 +22,6 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 		/// User Input object to be used in the editor
 		/// </summary>
 		public IUserInput UserInput { get; set; }
+        
 	}
 }

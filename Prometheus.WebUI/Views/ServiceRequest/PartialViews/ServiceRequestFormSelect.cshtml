@@ -1,0 +1,72 @@
+﻿@using Common.Dto
+@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
+
+@if (Model.OptionCategory != null)
+{
+    var category = Model.OptionCategory; @* room to be scaled to ICatalogPublishable *@
+
+    <div class="dd full-width">
+        @foreach (var option in category.ServiceOptions)
+        {
+	        <div class="dd-row">
+		        <div class="dd-cell-base" style="width:9%">
+					                    @if (category.Quantifiable)
+                    {
+                        <div class="input-group spinner" style="max-width: 50px;">
+                            @Html.TextBox("Quantity", "0", new {min = "0", max = "99", @class = "form-control numberSelect"})
+
+                            <div class="input-group-btn-vertical">
+                                <button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+                                <button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+                            </div>
+                        </div>
+                    }
+		        </div>
+		        <div class="dd-cell-base" style="width:91%">
+			        <div class="checkbox checkbox-primary">
+				        <input value="@option.Id" type="checkbox" id="@option.Id" name="Options" @(Model.ServiceRequest.ServiceRequestOptions.Count == 0 && Model.ServiceOptionId == option.Id ? "checked" : " ")>
+				        <label for="@option.Id">
+					        @option.Name
+				        </label>
+			        </div>
+
+					<div style="margin-top: -10px;">
+						<input id="drop-checkbox@(option.Id)" type="checkbox" class="drop-checkbox-request">
+						<label for="drop-checkbox@(option.Id)" id="example" class="drop-text-request" data-toggle="collapse" data-target="#category@(option.Id)">Show details</label>
+
+						<div class="collapse drop-well" id="category@(option.Id)" style="width: 100%;">
+							<div class="dd">
+								<div class="dd-row">
+									<div class="dd-cell-base" style="width:75%">@Html.Raw(option.BusinessValue)</div>
+									<div class="dd-cell-nostyle" style="width:20%">
+										<div class="dd full-width">
+											<div class="dd-row">
+												<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
+												<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Monthly</div>
+											</div>
+											<div class="dd-row">
+												<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceUpFront}")</div>
+												<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceMonthly}")</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="dd-row">
+									<div class="dd-cell-base">
+										@if (option.Picture != null)
+										{
+											<div class="float-left-div" style="border: 1px solid #ddd; margin-right: 10px;">
+												<img src="@Url.Action("GetOptionPicture", "Service", new {id = option.Id})" alt="picture" width="150" />
+											</div>
+										}
+										@Html.Raw(option.Details)
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+		        </div>
+	        </div>
+        }
+    </div>
+}

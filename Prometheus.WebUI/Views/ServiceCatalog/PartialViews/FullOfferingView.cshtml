@@ -1,32 +1,31 @@
 ﻿@using Common.Dto
-@model IOffering
+@using Prometheus.WebUI.Models.ServiceCatalog
+@model PublishableCatalogItemModel
 <div class="dd full-width">
 	<div class="dd-row">
-
 		<div class="dd-cell-nostyle">
-
 			<div class="dd full-width">
 				<div class="dd-row">
-					<div class="dd-cell-nostyletq-width"><div class="title-div" style="display:inline-block">@Model.Name</div></div>
+					<div class="dd-cell-nostyletq-width"><div class="title-div" style="display:inline-block">@Model.Item.Name</div></div>
 					<div class="dd-cell-nostyle" style="width: 20%;"></div>
-					@if (Model is IRequestableDto)
+					@if (Model.Item is IRequestableDto)
 					{
 						<div class="dd-cell-nostyle" style="vertical-align: top; text-align: right; width: 5%;">
-							<a href="@Url.Action("BeginRequest", "ServiceRequest", new {id = Model.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+							<a href="@Url.Action("Begin", "ServiceRequest", new {id = Model.Item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
 						</div>
 					}
 				</div>
-				@if (Model is IOptionCategoryDto)
+				@if (Model.Item is IServiceOptionCategoryDto)
 				{
 					<div class="dd-row">
 						<div class="dd-cell-base">
-							@Html.Raw(Model.BusinessValue)
+							@Html.Raw(Model.Item.BusinessValue)
 						</div>
 					</div>
-				}
-				else if (Model is IServiceOptionDto)
-				{
-					var option = (IServiceOptionDto) Model;
+}
+                else if (Model.Item is IServiceOptionDto)
+                {
+                    var option = (IServiceOptionDto)Model.Item;
 					<div class="dd-row">
 						<div class="dd-cell-base" style="width:75%">@Html.Raw(option.BusinessValue)</div>
 						<div class="dd-cell-nostyle" style="width:20%">
@@ -47,10 +46,10 @@
 							@if (option.Picture != null)
 							{
 								<div class="float-left-div" style="border: 1px solid #ddd; margin-right: 10px;">
-									<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" alt="picture" width="150" />
+									<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Item.Id})" alt="picture" width="150" />
 								</div>
 							}
-							@Html.Raw(Model.Description)
+							@Html.Raw(option.Details)
 						</div>
 					</div>
 
@@ -60,12 +59,12 @@
 		</div>
 	</div>
 
-@if (Model is IOptionCategoryDto)
+@if (Model.Item is IServiceOptionCategoryDto)
 {
-	IOptionCategoryDto category = (IOptionCategoryDto)Model;
+    IServiceOptionCategoryDto category = (IServiceOptionCategoryDto)Model.Item;
 
-	foreach (var option in category.ServiceOptions)
-	{
-		@Html.Partial("PartialViews/OptionView", option)
+    foreach (var option in category.ServiceOptions)
+    {
+		@Html.Partial("PartialViews/OptionView", new PublishableCatalogItemModel {Item = (ICatalogPublishable)option, Catalog = Model.Catalog})
 	}
 }

@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using Common.Enums.Permissions;
+﻿using Common.Enums.Permissions;
 using DataService.Models;
+using System.Collections.Generic;
 
 namespace DataService.DataAccessLayer
 {
@@ -10,7 +10,6 @@ namespace DataService.DataAccessLayer
 	{
 		protected override void Seed(PrometheusContext context)
 		{
-
 			//Populate Users
 			var users = new List<User>
 			{
@@ -33,6 +32,7 @@ namespace DataService.DataAccessLayer
 						Name = "First Service",
 						LifecycleStatus = new LifecycleStatus()
 						{
+							CatalogVisible = true,
 							Name = "Operational"
 						}/*, TODO: Sean - sorry but the null references these create are a bit of an issue
 						ServiceRequestOptions = new List<ServiceOption>

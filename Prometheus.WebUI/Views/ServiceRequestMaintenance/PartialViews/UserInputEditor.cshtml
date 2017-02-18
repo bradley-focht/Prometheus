@@ -1,78 +1,80 @@
 ﻿@model dynamic
 
 <div class="dd">
-	@foreach (var property in ViewData.ModelMetadata.Properties)
-	{
-		switch (property.PropertyName)
-		{
-			case "Delimiter":
-				continue;
-			case "Id":
-			case "ServiceOptionId":
-				<input type="hidden" value="@property.Model" name="@property.PropertyName" />
-				break;
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        switch (property.PropertyName)
+        {
+            case "Delimiter":
+                continue;
+            case "Id":
+            case "ServiceOptionId":
+                <input type="hidden" value="@property.Model" name="@property.PropertyName" />  break;
 
-			case "HelpToolTip":
-				<div class="dd-row">
-					<div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
-					<div class="dd-cell">
-						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
-					@Html.ValidationMessage(property.PropertyName)
-				</div>
-			</div>
-				break;
-			case "SelectItems":
-				<div class="dd-row">
-					<div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
-					<div>@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })</div>
-					<script language="javascript" type="text/javascript">
-						$('#@property.PropertyName').selectize({
-							plugins: ['remove_button'],
-							delimiter: ',',
-							persist: false,
-							create: function (input) {
-								return {
-									value: input,
-									text: input
-								}
-							}
-						});
-					</script>
-				</div>
-				break;
-			case "NumberToSelect":
-				<div class="dd-row">
-					<div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
-					<div class="dd-cell">
-						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control form-number", style = "width:50px;" })
-						@Html.ValidationMessage(property.PropertyName)
-					</div>
-				</div>
-				break;
-			case "MultiLine":
-				<div class="dd-row">
-					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default" id="MultiLineTrue">
-							@Html.RadioButton("ServiceTypeRole", "true", false) Multi Line
-						</label>
+            case "HelpToolTip":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
+                    <div class="dd-cell">
+                        @Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                </div>  break;
+            case "SelectItems":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
+                    <div>@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })</div>
+                    <script language="javascript" type="text/javascript">
+                        $('#@property.PropertyName').selectize({
+                            plugins: ['remove_button'],
+                            delimiter: ',',
+                            persist: false,
+                            create: function (input) {
+                                return {
+                                    value: input,
+                                    text: input
+                                }
+                            }
+                        });
+                    </script>
+                </div>  break;
+            case "NumberToSelect":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.PropertyName ?? property.PropertyName)</div>
+                    <div class="dd-cell">
+                        @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control form-number", style = "width:50px;" })
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                </div>  break;
+            case "MultiLine":
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                    <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default" id="MultiLineTrue">
+                            @Html.RadioButton("MultiLine", "true", false) Multi Line
+                        </label>
 
-						<label class="btn btn-default" id="MultiLineTrueFalse">
-							@Html.RadioButton("ServiceTypeRole", "false", false) Single Line
-						</label>
-						@Html.ValidationMessage(property.PropertyName)
-					</div>
-				</div>
-				break;
-			default:
-				<div class="dd-row">
-					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-					<div class="dd-cell">
-						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
-						@Html.ValidationMessage(property.PropertyName)
-					</div>
-				</div>
-				break;
-		}
-	}
+                        <label class="btn btn-default" id="MultiLineFalse">
+                            @Html.RadioButton("MultiLine", "false", false) Single Line
+                        </label>
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                    <script type="text/javascript" language="javascript">
+                        @if (int.Parse((from p in ViewData.ModelMetadata.Properties where p.PropertyName == "Id" select p.Model).First().ToString()) != 0)
+				        {
+                        <text>
+                        $('#@($"MultiLine{property.Model}")').button('toggle');
+                        </text>
+				        }
+                    </script>
+                </div>  break;
+            default:
+                <div class="dd-row">
+                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                    <div class="dd-cell">
+                        @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                </div>  break;
+        }
+    }
 </div>

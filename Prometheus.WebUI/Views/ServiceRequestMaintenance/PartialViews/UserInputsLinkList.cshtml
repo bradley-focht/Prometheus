@@ -1,0 +1,43 @@
+﻿@using Common.Enums
+@model Prometheus.WebUI.Models.ServiceRequestMaintenance.UserInputsLinkListModel
+    
+
+<div class="title-div">
+    User Inputs
+</div>
+<div class="panel-div full-width" style="padding-top: 5px; padding-bottom: 5px;">
+    @{
+        if (Model.Items != null && Model.Items.Any())
+        {
+            foreach (var item in Model.Items)
+            {                                           //highlight the slected item
+                <div class="@(Model.SelectedInputId == item.Item2 && Model.SelectedInputType == item.Item1 ? "bg-primary full-width" : "bg-default full-width")">
+                    @Html.ActionLink(item.Item3, Model.Action, "ServiceRequestMaintenance", new { type= item.Item1, id = item.Item2}, null)
+                </div>
+            }
+        }
+        else                                            //no results found
+        {
+            <div class="alert alert-warning">
+                No User Inputs exist
+            </div>
+        }
+    }
+</div>
+<div class="panel-footer">
+    <div class="float-right-div">
+		<div class="btn-group dropup">
+			<button type="button" class="btn btn-default" data-toggle="dropup" aria-haspopup="true" aria-expanded="false">
+				Add User Input 
+			</button>
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+				<span class="caret"></span>
+				</button>
+			<ul class="dropdown-menu pull-right">
+					<li>@Html.ActionLink("Text", "AddUserInput", new { type = UserInputTypes.Text })</li>
+					<li>@Html.ActionLink("Selection", "AddUserInput", new { type = UserInputTypes.Selection })</li>
+					<li>@Html.ActionLink("Scripted Selection", "AddUserInput", new { type = UserInputTypes.ScriptedSelection })</li>
+				</ul>
+</div>
+    </div>
+</div>

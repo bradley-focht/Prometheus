@@ -1,19 +1,16 @@
-﻿@model Prometheus.WebUI.Models.Shared.TextInputModel
+﻿@model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.TextInputDto>
 
-@if (Model.TextInput.MultiLine)
+@if (Model.Control.MultiLine)
 {
-    <div class="input-group">
-    </div>
-
+	@Html.TextArea(Model.ControlName, null, new { @class = "form-control" })
 }
 else
 {
     <div class="input-group">
         @Html.TextBox(Model.ControlName, null, new { @class = "form-control" })
         <span class="input-group-btn">
-            <span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(Model.TextInput.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
+            <span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
         </span>
-
     </div>
 
 }

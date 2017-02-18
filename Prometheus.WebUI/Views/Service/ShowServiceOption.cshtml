@@ -11,7 +11,7 @@
         {
             new KeyValuePair<string, string>("Home", "Home"),
             new KeyValuePair<string, string>("Services", "Service/Index"),
-            new KeyValuePair<string, string>(Model.ServiceName, "Service/Show/Options/" + Model.Option.ServiceId),
+            new KeyValuePair<string, string>(Model.ServiceName, "Service/Show/Options/" + Model.ServiceId),
             new KeyValuePair<string, string>("Option", "#")
         };
 
@@ -27,7 +27,6 @@
 
 @section Content
 {
-	<div>
 	<div class="title-div">@ViewBag.SubTitle</div>
 	<div class="panel-div">
 		@if (Model.Option != null)
@@ -45,7 +44,7 @@
 	<div class="flex-container">
 		<div class="panel-footer">
 			<div class="float-right-div">
-				@Html.ActionLink("Back", "Show", new { id = Model.Option.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
+				@Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
                 @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
                 {
                     @Html.ActionLink("Update", "UpdateServiceOption", new {id = Model.Option.Id}, new {@class = "btn btn-primary"})
@@ -54,6 +53,6 @@
 			</div>
 		</div>
 	</div>
-</div>
+
 
 }

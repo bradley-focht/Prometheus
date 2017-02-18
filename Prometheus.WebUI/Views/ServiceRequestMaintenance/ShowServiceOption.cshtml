@@ -1,6 +1,4 @@
-﻿@using Common.Dto
-@using Common.Enums
-@model Prometheus.WebUI.Models.ServiceRequestMaintenance.ServiceRequestOptionModel
+﻿@model Prometheus.WebUI.Models.ServiceRequestMaintenance.ServiceRequestOptionModel
 @{
 	ViewBag.Title = "Service Request Maintenance";
 	ViewBag.SubTitle = Model.Option.Name;
@@ -10,101 +8,28 @@
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
 		new KeyValuePair<string, string>("Service Request Maintenance", "ServiceRequestMaintenance/Index"),
-		new KeyValuePair<string, string>(Model.ServiceName, $"ServiceRequestMaintenance/ShowServiceOptions/{Model.ServiceId}"),
+		new KeyValuePair<string, string>(Model.ServiceName, $"ServiceRequestMaintenance/ShowServices/{Model.ServiceId}"),
 		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 	};
 }
 
 @section Content
 {
-	<div class="title-div">Service Option</div>
-	<div class="panel-div">
-	<div class="dd">
-		<div class="dd-row">
-			<div class="dt-cell">Name</div>
-			<div class="dd-cell">@Model.Option.Name</div>
-		</div>
-		<div class="dd-row">
-			<div class="dt-cell">Popularity</div>
-			<div class="dd-cell">@Model.Option.Popularity</div>
-		</div>
+	<div class="title-div">@ViewBag.SubTitle</div>
 
-		<div class="dd-row">
-			<div class="dt-cell">User Inputs </div>
-			<div class="dd-cell">
-				@if (Model.UserInputs != null && Model.UserInputs.Any())
-				{
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th><span class="table-title">Display Name</span></th>
-								<th><span class="table-title">Type</span></th>
-								<th></th>
-							</tr>
-						</thead>
-						@foreach (var input in Model.UserInputs)
-						{
-							UserInputTypes inputType = UserInputTypes.Text; //set a default
-							string typeName = "";
+    <div class="panel-div">
+        <div class="dd">
+            @Html.Partial("PartialViews/ShowPublishable", Model.Option)
+        </div>
+    </div>
 
-							if (input is ITextInputDto)
-							{
-								inputType = UserInputTypes.Text;
-								typeName = "Text Input";
-							}
-							else if (input is ISelectionInputDto)
-							{
-								inputType = UserInputTypes.Selection;
-								typeName = "Selection";
-							}
-							else if (input is IScriptedSelectionInputDto)
-							{
-								inputType = UserInputTypes.ScriptedSelection;
-								typeName = "Scripted Selection";
-							}
-							<tr>
-								<td>@Html.ActionLink(input.DisplayName, "ShowUserInput", new { id = input.Id, type = inputType })</td>
-								<td>@typeName</td>
-								<td>
-									<div class="btn-group">
-										<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-											<span aria-hidden="true">&#x25BC;</span>
-										</div>
-										<ul class="dropdown-menu">
-											<li>@Html.ActionLink("Update", "UpdateUserInput", new { type = inputType, id = input.Id })</li>
-											<li>@Html.ActionLink("Delete", "ConfirmDeleteUserInput", new { type = inputType, id = input.Id })</li>
-										</ul>
-									</div>
-								</td>
-							</tr>
-						}
-					</table>
+    <div class="panel-footer">
+        <div class="float-right-div">
+            @Html.ActionLink("Back", "ShowServices", new { id = Model.ServiceId}, new { @class="btn btn-default btn-back"})
+            @Html.ActionLink("Update", "UpdateServiceOption", new {id = Model.Option.Id}, new {@class = "btn btn-primary"})
 
 
-				}
-				else
-				{
-					<text>No User inputs.</text>
-				}
-			</div>
-		</div>
-	</div>
-</div>
-	<div class="panel-footer">
-		<div class="float-right-div">
-			<div class="btn-group">
-				<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					Add User Input <span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu pull-right">
-					<li>@Html.ActionLink("Text", "AddUserInput", new { id = Model.Option.Id, type = UserInputTypes.Text })</li>
-					<li>@Html.ActionLink("Selection", "AddUserInput", new { id = Model.Option.Id, type = UserInputTypes.Selection })</li>
-					<li>@Html.ActionLink("Scripted Selection", "AddUserInput", new { id = Model.Option.Id, type = UserInputTypes.ScriptedSelection })</li>
-				</ul>
-			</div>
-
-
-		</div>
+        </div>
 	</div>
 }
 

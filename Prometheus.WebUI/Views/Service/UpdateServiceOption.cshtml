@@ -9,7 +9,7 @@
 		{
 			new KeyValuePair<string, string>("Home", "Home"),
 			new KeyValuePair<string, string>("Services", "Service/Index"),
-			new KeyValuePair<string, string>(Model.ServiceName, "Service/Show/Options/" + Model.Option.ServiceId),
+			new KeyValuePair<string, string>(Model.ServiceName, "Service/Show/Options/" + Model.ServiceId),
 			new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 		};
 }
@@ -21,9 +21,21 @@
 	
 	@using (Html.BeginForm("SaveOptionsItem", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 	{
-		<div class="make-space-top">
-			@Html.Partial("PartialViews/ServiceOptionEditor", Model.Option)
-		</div>
+	    <div class="make-space-top">
+            <div class="dd">
+                <input type="hidden" name="serviceId" value="@Model.ServiceId"/>
+
+                           @Html.Partial("PartialViews/ServiceOptionEditor", Model.Option)
+
+                    <div class="dd-row">
+                        <div class="dt-cell">Category</div>
+                        <div class="dd-cell">
+                            @Html.Action("GetCategoryDropdown", new { id = Model.Option.Id, categoryId = Model.Option.ServiceOptionCategoryId, serviceId = Model.ServiceId })
+                            @Html.ValidationMessage("ServiceOptionCategoryId")
+                        </div>
+                    </div>
+                </div>
+            </div>
 		<div class="flex-container">
 			<div class="panel-footer">
 				<div class="float-right-div">
@@ -33,7 +45,7 @@
 					}
 					else
 					{
-						@Html.ActionLink("Back", "Show", new { id = Model.Option.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
+						@Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
 					}
 					<input type="submit" value="Save" id="Save" class="btn btn-primary" />
 				</div>

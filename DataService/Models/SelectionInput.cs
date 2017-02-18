@@ -6,8 +6,6 @@ namespace DataService.Models
 	{
 		public int Id { get; set; }
 
-		public int ServiceOptionId { get; set; }
-
 		public string DisplayName { get; set; }
 		
 		public string HelpToolTip { get; set; }

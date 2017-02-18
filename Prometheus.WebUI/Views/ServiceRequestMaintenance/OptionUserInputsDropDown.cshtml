@@ -1,0 +1,18 @@
+﻿@model IEnumerable<SelectListItem>
+
+@if (Model != null)
+{
+    @Html.DropDownList("UserInputs", Model, new {placeholder = "User Inputs...", multiple = "multiple", @class = "form-control"})
+
+    <script type="text/javascript" language="javascript">
+        $('#UserInputs')
+			.selectize({
+				plugins: ['remove_button'],
+				persist: false
+			});
+    </script>
+}
+else
+{
+    <text>No user inputs available </text>
+}

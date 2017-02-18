@@ -6,6 +6,8 @@
     int userId; /* determine user ID for permissions */
     try { userId = int.Parse(Session["Id"].ToString()); }
     catch { return; } /*abort rendering */
+
+    bool addOptionAvail = false;    /* check if any category is created to add options to */
 }
 <div class="flex-container-center">
     <div class="panel-div panel-inset-div">
@@ -27,40 +29,11 @@
                 </thead>
                 <tbody>
 
-                    @foreach (IOffering item in Model.Options)
+                    @foreach (ICatalogPublishable item in Model.Options)
                     {
-                        if (item is IServiceOptionDto)
+                        if (item is IServiceOptionCategoryDto)
                         {
-                            var option = (IServiceOptionDto)item;
-                            <tr>
-                                <td></td>
-                                <td>@Html.ActionLink(item.Name, "ShowServiceOption", new { id = item.Id })</td>
-                                <td>@($"{option.Cost:C}")</td>
-                                <td>@($"{option.PriceUpFront:C}")</td>
-                                <td>@($"{option.PriceMonthly:C}")</td>
-                                <td>@($"{(calc.CalculatePw(option.PriceUpFront, option.PriceMonthly) - option.Cost):C}")</td>
-                                <td>
-                                    @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
-                                    {
-                                        <div class="btn-group">
-                                            <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                                                <span aria-hidden="true">&#x25BC;</span>
-                                            </div>
-                                            <ul class="dropdown-menu">
-                                                <li>
-                                                    @Html.ActionLink("Update", "UpdateServiceOption", new { id = item.Id })
-                                                </li>
-                                                <li>
-                                                    @Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = item.Id })
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    }
-                                </td>
-                            </tr>
-                        }
-                        else if (item is IOptionCategoryDto)
-                        {
+                            addOptionAvail = true;  /*a category exists */
                             <tr class="highlight">
                                 <td></td>
                                 <td colspan="5">Category: @Html.ActionLink(item.Name, "ShowOptionCategory", new { id = item.Id })</td>
@@ -69,16 +42,16 @@
                                         <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
                                             <span aria-hidden="true">&#x25BC;</span>
                                         </div>
-                                        <div class="dropdown-menu">
-                                            <ul class="ul-menu">
+
+                                            <ul class="dropdown-menu">
                                                 <li>@Html.ActionLink("Update", "UpdateOptionCategoryItem", new { id = item.Id })</li>
-                                                <li>@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new { id = item.Id })</li>
+                                                <li>@Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new {id = item.Id})</li>
+                                                <li>@Html.ActionLink("Add Option", "AddServiceOption", new {id = Model.ServiceId, categoryId = item.Id})</li>
                                             </ul>
                                         </div>
-                                    </div>
                                 </td>
                             </tr>
-                            var category = (IOptionCategoryDto)item;
+                            var category = (IServiceOptionCategoryDto)item;
                             if (category.ServiceOptions != null)
                             {
                                 foreach (var option in category.ServiceOptions)
@@ -96,8 +69,7 @@
                                                 <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
                                                     <span aria-hidden="true">&#x25BC;</span>
                                                 </div>
-                                                <div class="dropdown-menu">
-                                                    <ul class="ul-menu">
+                                                    <ul class="dropdown-menu">
                                                         <li>
                                                             @Html.ActionLink("Update", "UpdateServiceOption", new { id = subOption.Id })
                                                         </li>
@@ -105,7 +77,6 @@
                                                             @Html.ActionLink("Delete", "ConfirmDeleteServiceOption", new { id = subOption.Id })
                                                         </li>
                                                     </ul>
-                                                </div>
                                             </div>
 
                                         </td>
@@ -120,7 +91,7 @@
             <div class="note">*@calc.PwCalculationToString()</div>}
         else
         {
-            <div class="alert alert-warning alert-message">No options exist. @Html.ActionLink("Add", "AddServiceOption", new { id = Model.ServiceId })</div>}
+            <div class="alert alert-warning alert-message">No options or categories exist. @Html.ActionLink("Add", "AddOptionCategory", new { id = Model.ServiceId })</div>}
     </div>
 </div>
 @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails) || Model.TotalPages > 0)
@@ -130,9 +101,10 @@
             <div class="float-right-div">
                 @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
                 {
-
-                    @Html.ActionLink("Add Option", "AddServiceOption", new { id = Model.ServiceId }, new { @class = "btn btn-primary", style = "margin-left:5px;" })
-
+                    if (addOptionAvail)
+                    {
+                        @Html.ActionLink("Add Option", "AddServiceOption", new {id = Model.ServiceId}, new {@class = "btn btn-primary", style = "margin-right:5px;"})
+                    }
                     @Html.ActionLink("Add Cateogory", "AddOptionCategory", new { id = Model.ServiceId }, new { @class = "btn btn-primary" })
                 }
             </div>

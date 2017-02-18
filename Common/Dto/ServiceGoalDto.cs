@@ -1,8 +1,7 @@
-﻿using Common.Enums;
+﻿using Common.Enums.Entities;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
-using Common.Enums.Entities;
 
 
 namespace Common.Dto
@@ -24,7 +23,7 @@ namespace Common.Dto
 		/// Unique descriptive name
 		/// </summary>
 		[Display(Order = 1)]
-        [Required(ErrorMessage = "Name is required")]
+		[Required(ErrorMessage = "Name is required")]
 		public string Name { get; set; }
 
 		/// <summary>
@@ -38,10 +37,10 @@ namespace Common.Dto
 		/// </summary>
 		public ServiceGoalType Type { get; set; }
 
-        [Display(Name = "Start Date")]
+		[Display(Name = "Start Date")]
 		public DateTime? StartDate { get; set; }
 
-        [Display(Name = "End Date")]
+		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
 		#endregion
 	}

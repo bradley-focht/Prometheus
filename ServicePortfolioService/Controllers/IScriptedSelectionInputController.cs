@@ -1,4 +1,5 @@
-﻿using Common.Dto;
+﻿using System.Collections.Generic;
+using Common.Dto;
 using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
@@ -12,7 +13,9 @@ namespace ServicePortfolioService.Controllers
 		/// <returns></returns>
 		IScriptedSelectionInputDto GetScriptedSelectionInput(int scriptedSelection);
 
-		/// <summary>
+
+	    IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs();
+            /// <summary>
 		/// Modifies the text input in the database
 		/// </summary>
 		/// <param name="scriptedSelection"></param>

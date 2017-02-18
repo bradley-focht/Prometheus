@@ -1,0 +1,9 @@
+﻿@model Prometheus.WebUI.Models.Shared.LinkListModel
+<div>
+		@foreach (var s in Model.ListItems)
+		{
+			<div class="@(Model.SelectedItemId == s.Item1 ? "bg-primary" : "bg-default")">
+				@Html.ActionLink(s.Item2, "ShowServices", new { id = s.Item1 })
+			</div>
+		}
+</div>

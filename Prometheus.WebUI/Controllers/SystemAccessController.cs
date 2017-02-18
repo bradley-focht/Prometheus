@@ -78,7 +78,7 @@ namespace Prometheus.WebUI.Controllers
             model.SelectedItemId = id;
             try
             {
-                model.ListItems = from r in _userManager.GetRoles(uid)
+                model.ListItems = from r in _userManager.GetRoles(uid)  /*put users & Guids into tuples */
                     select new Tuple<int, string>(r.Id, r.Name);
             }
             catch (Exception exception)
@@ -251,11 +251,6 @@ namespace Prometheus.WebUI.Controllers
                 //TODO: AD string displayName = searcher.GetUserDisplayName(user.AdGuid);  //name resolution
                 string displayName = "honey bunny"; //debugging with no AD
 
-                if (displayName == null)
-                {
-                    displayName = "not found";
-                }
-
                 modelUsers.Add(new UserDetailsModel {UserDto = user, DisplayName = displayName});
             }
             modelUsers = modelUsers.OrderBy(o => o.DisplayName).ToList();
@@ -282,11 +277,13 @@ namespace Prometheus.WebUI.Controllers
             model.Controls = controls;
             controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
 
-            List<Tuple<Guid, string>> users;
+            List<Tuple<Guid, string>> directoryUsers;
+            List<Tuple<Guid, ICollection<RoleDto>>> existingUsers;
             try
             {
                 model.Roles = _userManager.GetRoles(uid).ToList();
-                users = _userManager.SearchUsers(searchString).ToList();
+                directoryUsers = _userManager.SearchUsers(searchString).ToList();
+                existingUsers = (from u in _userManager.GetUsers(uid) select new Tuple<Guid, ICollection<RoleDto>>(u.AdGuid, u.Roles)).ToList();
             }
             catch (Exception exception)
             {
@@ -295,13 +292,18 @@ namespace Prometheus.WebUI.Controllers
                 return View("ManageUsers", model);
             }
 
-            foreach (var user in users)
+            foreach (var user in directoryUsers)
             {
+                //other users
                 model.Users.Add(new UserDetailsModel
                 {
-                    UserDto = new UserDto {AdGuid = user.Item1},
+                    UserDto = new UserDto { AdGuid = user.Item1 },
                     DisplayName = user.Item2
                 });
+
+                var roles = (from u in existingUsers where u.Item1 == user.Item1 select u.Item2).FirstOrDefault() ;
+                if (roles != null)
+                    model.Users.Last().UserDto.Roles = roles;
             }
 
             return View("ManageUsers", model);

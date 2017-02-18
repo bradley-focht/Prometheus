@@ -8,7 +8,12 @@ namespace Prometheus.WebUI.Models.Service
 		/// The option DTO
 		/// </summary>
         public ServiceOptionDto Option { get; set; }
+
+        /// <summary>
+        /// For back links
+        /// </summary>
         public string ServiceName { get; set; }
+        public int ServiceId { get; set; }
 
 		/// <summary>
 		/// Contention is to use Update or Add

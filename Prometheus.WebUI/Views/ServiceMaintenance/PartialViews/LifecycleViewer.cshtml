@@ -1,20 +1,21 @@
 ﻿@model Common.Dto.ILifecycleStatusDto
 
-<div class="panel-heading">@ViewBag.Title</div>
-<div class="panel">
-    <table>
+    <div class="dd">
         @foreach (var property in ViewData.ModelMetadata.Properties)
         {
-            if (property.PropertyName.Contains("Id") || property.PropertyName.Contains("Date"))
+            switch (property.PropertyName)
             {
-                continue;
-            }
-            <tr>
-                <td class="dt-cell">@(property.DisplayName ?? property.PropertyName)</td>
-                @switch (property.PropertyName)
-                {
-                    case "CatalogVisible":
-                        <td class="dd-cell">
+                case "Position":
+                case "Name":
+                    <div class="dd-row">
+                        <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                        <div class="dd-cell">@property.Model</div>
+                    </div>
+                    break;
+                case "CatalogVisible":
+                    <div class="dd-row">
+                        <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+                        <div class="dd-cell">
                             @if (property.Model.Equals(true))
                             {
                                 <text>Yes</text>
@@ -23,33 +24,12 @@
                             {
                                 <text>No</text>
                             }
-                        </td>
-                        break;
-                    case "Position":
-                        <td class="dd-cell">
-                            @Model.Position
-                        </td>
-                        break;
-                    default:
-                        <td class="dd-cell">
-                            @property.Model
-                        </td>
-                        break;
-                }
-            </tr>
+                        </div>
+                    </div>
+                    break;
+
+                default:
+                    continue;
+            }
         }
-    </table>
-</div>
-
-<div class="flex-container">
-    <div class="panel-footer">
-        <div class="float-right-div">
-	        @Html.ActionLink("Back", "ShowLifecycle", new { id = 0 }, new { @class = "btn btn-default btn-back" })
-			@Html.ActionLink("Update", "UpdateLifecycle", new { id = Model.Id }, new { @class = "btn btn-primary" })
-            @Html.ActionLink("Delete", "ConfirmDeleteLifecycle", new {id = Model.Id}, new { @class = "btn btn-danger" })
-
-            
-        </div>
-
     </div>
-</div>

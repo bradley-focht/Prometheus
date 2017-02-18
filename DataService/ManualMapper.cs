@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Common.Dto;
+using DataService.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using Common.Dto;
-using DataService.Models;
 
 namespace DataService
 {
@@ -49,25 +49,25 @@ namespace DataService
 
 			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(() => new ServiceOptionDto
 			{
-				Id = src.Id,
-				CategoryId = src.OptionCategoryId,
-				Popularity = src.Popularity,
-				Description = src.Description,
-				ServiceId = src.ServiceId,
-				Name = src.Name,
-				Features = src.Features,
-				Benefits = src.Benefits,
-				Support = src.Support,
 				BusinessValue = src.BusinessValue,
+				Cost = src.Cost,
+				Description = src.Description,
+				Details = src.Details,
+				Id = src.Id,
+				Included = src.Included,
+				Name = src.Name,
+				Procurement = src.Procurement,
+				Picture = src.Picture,
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
-				Cost = src.Cost,
-				Picture = src.Picture,
 				PictureMimeType = src.PictureMimeType,
-				Usage = src.Usage,
+				Popularity = src.Popularity,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
+				Utilization = src.Utilization,
+
 				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
-				ScriptedSelecentionInputs = new List<IScriptedSelectionInputDto>()
+				ScriptedSelectionInputs = new List<IScriptedSelectionInputDto>()
 			});
 
 			// text inputs
@@ -89,11 +89,11 @@ namespace DataService
 			}
 
 			// scripted selection inputs
-			if (src.ScriptedSelecentionInputs != null)
+			if (src.ScriptedSelectionInputs != null)
 			{
-				foreach (var t in src.ScriptedSelecentionInputs)
+				foreach (var t in src.ScriptedSelectionInputs)
 				{
-					option.Value.ScriptedSelecentionInputs.Add(MapScriptedSelectionInputToDto(t));
+					option.Value.ScriptedSelectionInputs.Add(MapScriptedSelectionInputToDto(t));
 				}
 			}
 
@@ -111,30 +111,23 @@ namespace DataService
 
 			ServiceOption serviceOption = new ServiceOption
 			{
-				Id = src.Id,
-				OptionCategoryId = src.CategoryId,
-				Popularity = src.Popularity,
+				BusinessValue = src.BusinessValue,
+				Cost = src.Cost,
 				Description = src.Description,
-				ServiceId = src.ServiceId,
+				Details = src.Details,
+				Id = src.Id,
+				Included = src.Included,
 				Name = src.Name,
-				Features = src.Features,
-				Benefits = src.Benefits,
-				Support = src.Support,
+				Procurement = src.Procurement,
+				Picture = src.Picture,
 				PriceMonthly = src.PriceMonthly,
 				PriceUpFront = src.PriceUpFront,
-				Cost = src.Cost,
-				BusinessValue = src.BusinessValue,
-				Picture = src.Picture,
 				PictureMimeType = src.PictureMimeType,
-				Usage = src.Usage
+				Popularity = src.Popularity,
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
+				Utilization = src.Utilization
 			};
 
-			if (src.TextInputs != null)                                 //deal with text inputs
-			{
-				serviceOption.TextInputs = new List<TextInput>();
-				foreach (var t in src.TextInputs)
-					serviceOption.TextInputs.Add(MapDtoToTextInput(t));
-			}
 			return serviceOption;
 		}
 		public static Service MapDtoToService(IServiceDto src)
@@ -146,15 +139,14 @@ namespace DataService
 				Id = src.Id,
 				Name = src.Name,
 				Description = src.Description,
+				BusinessValue = src.BusinessValue,
 				BusinessOwner = src.BusinessOwner,
 				ServiceOwner = src.ServiceOwner,
 				LifecycleStatusId = src.LifecycleStatusId,
 				ServiceTypeProvision = src.ServiceTypeProvision,
 				ServiceTypeRole = src.ServiceTypeRole,
 				ServiceBundleId = src.ServiceBundleId,
-				Popularity = src.Popularity,
-				ServiceIds = src.ServiceIds,
-
+				Popularity = src.Popularity
 			};
 		}
 
@@ -173,13 +165,13 @@ namespace DataService
 				Name = src.Name,
 				Description = src.Description,
 				BusinessOwner = src.BusinessOwner,
+				BusinessValue = src.BusinessValue,
 				ServiceOwner = src.ServiceOwner,
 				LifecycleStatusId = src.LifecycleStatusId,
 				ServiceTypeProvision = src.ServiceTypeProvision,
 				ServiceTypeRole = src.ServiceTypeRole,
 				ServiceBundleId = src.ServiceBundleId,
 				Popularity = src.Popularity,
-				ServiceIds = src.ServiceIds,
 				LifecycleStatusDto = MapLifecycleStatusToDto(src.LifecycleStatus)
 			});
 
@@ -243,23 +235,14 @@ namespace DataService
 				}
 			}
 
-			//Options
-			if (src.ServiceOptions != null)
-			{
-				serviceDto.Value.ServiceOptions = new List<IServiceOptionDto>();
-				foreach (var option in src.ServiceOptions)
-				{
-					serviceDto.Value.ServiceOptions.Add(MapServiceOptionToDto(option));
-				}
-			}
 			//Categories
-			if (src.OptionCategories != null)
+			if (src.ServiceOptionCategories != null)
 			{
-				serviceDto.Value.OptionCategories = new List<IOptionCategoryDto>();
+				serviceDto.Value.ServiceOptionCategories = new List<IServiceOptionCategoryDto>();
 
-				foreach (var category in src.OptionCategories)
+				foreach (var category in src.ServiceOptionCategories)
 				{
-					serviceDto.Value.OptionCategories.Add(MapOptionCategoryToDto(category));
+					serviceDto.Value.ServiceOptionCategories.Add(MapOptionCategoryToDto(category));
 				}
 			}
 
@@ -569,7 +552,7 @@ namespace DataService
 				 Responsibilities = src.Responsibilities,
 				 Name = src.Name,
 				 Department = src.Department
-				 
+
 			 });
 			return unit.Value;
 		}
@@ -589,11 +572,11 @@ namespace DataService
 			};
 		}
 
-		public static OptionCategoryDto MapOptionCategoryToDto(IOptionCategory src)
+		public static ServiceOptionCategoryDto MapOptionCategoryToDto(IServiceOptionCategory src)
 		{
 			if (src == null) { return null; }
 
-			var categoryDto = new OptionCategoryDto
+			var categoryDto = new ServiceOptionCategoryDto
 			{
 				Id = src.Id,
 				ServiceId = src.ServiceId,
@@ -602,11 +585,12 @@ namespace DataService
 				Benefits = src.Benefits,
 				Support = src.Support,
 				Name = src.Name,
+				Quantifiable = src.Quantifiable,
 				BusinessValue = src.BusinessValue
 			};
 			if (src.ServiceOptions != null)
 			{
-				categoryDto.ServiceOptions = new List<ServiceOptionDto>();
+				categoryDto.ServiceOptions = new List<IServiceOptionDto>();
 				foreach (var option in src.ServiceOptions)
 				{
 					categoryDto.ServiceOptions.Add(MapServiceOptionToDto(option));
@@ -616,11 +600,11 @@ namespace DataService
 
 		}
 
-		public static OptionCategory MapDtoToOptionCategory(IOptionCategoryDto src)
+		public static ServiceOptionCategory MapDtoToOptionCategory(IServiceOptionCategoryDto src)
 		{
 			if (src == null) { return null; }
 
-			OptionCategory category = new OptionCategory
+			ServiceOptionCategory category = new ServiceOptionCategory()
 			{
 				Id = src.Id,
 				Popularity = src.Popularity,
@@ -629,6 +613,7 @@ namespace DataService
 				Features = src.Features,
 				Benefits = src.Benefits,
 				Support = src.Support,
+				Quantifiable = src.Quantifiable,
 				BusinessValue = src.BusinessValue
 			};
 			return category;
@@ -678,14 +663,13 @@ namespace DataService
 		/// </summary>
 		/// <param name="src">source entity</param>
 		/// <returns></returns>
-		public static TextInputDto MapTextInputToDto(ITextInput src)
+		public static ITextInputDto MapTextInputToDto(ITextInput src)
 		{
 			if (src == null) return null;
 			Lazy<TextInputDto> textInput = new Lazy<TextInputDto>(() => new TextInputDto
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
-				ServiceOptionId = src.ServiceOptionId,
 				MultiLine = src.MultiLine,
 				HelpToolTip = src.HelpToolTip
 			});
@@ -705,13 +689,12 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
-				ServiceOptionId = src.ServiceOptionId,
 				MultiLine = src.MultiLine,
 				HelpToolTip = src.HelpToolTip
 			};
 		}
 
-		public static SelectionInputDto MapSelectionInputToDto(ISelectionInput src)
+		public static ISelectionInputDto MapSelectionInputToDto(ISelectionInput src)
 		{
 			if (src == null) return null;
 			Lazy<SelectionInputDto> input = new Lazy<SelectionInputDto>(() => new SelectionInputDto
@@ -722,7 +705,6 @@ namespace DataService
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				SelectItems = src.SelectItems,
-				ServiceOptionId = src.ServiceOptionId
 			});
 
 			return input.Value;
@@ -740,15 +722,14 @@ namespace DataService
 			{
 				DisplayName = src.DisplayName,
 				Id = src.Id,
-				Delimiter =  src.Delimiter,
+				Delimiter = src.Delimiter,
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
-				SelectItems = src.SelectItems,
-				ServiceOptionId = src.ServiceOptionId
+				SelectItems = src.SelectItems
 			};
 		}
 
-		public static ScriptedSelectionInputDto MapScriptedSelectionInputToDto(IScriptedSelectionInput src)
+		public static IScriptedSelectionInputDto MapScriptedSelectionInputToDto(ScriptedSelectionInput src)
 		{
 			if (src == null) return null;
 			Lazy<ScriptedSelectionInputDto> input = new Lazy<ScriptedSelectionInputDto>(() => new ScriptedSelectionInputDto
@@ -759,7 +740,6 @@ namespace DataService
 				NumberToSelect = src.NumberToSelect,
 				ExecutionEnabled = src.ExecutionEnabled,
 				Script = src.Script,
-				ServiceOptionId = src.ServiceOptionId
 			});
 
 			return input.Value;
@@ -781,7 +761,6 @@ namespace DataService
 				NumberToSelect = src.NumberToSelect,
 				ExecutionEnabled = src.ExecutionEnabled,
 				Script = src.Script,
-				ServiceOptionId = src.ServiceOptionId
 			};
 		}
 		#endregion
@@ -815,6 +794,218 @@ namespace DataService
 				Id = src.Id,
 				Roles = roles,
 				AdGuid = src.AdGuid
+			};
+		}
+
+		public static IServiceRequestPackageDto MapServiceRequestPackageToDto(ServiceRequestPackage src)
+		{
+			if (src == null) return null;
+
+			List<IServiceOptionCategoryTagDto> serviceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
+			if (src.ServiceOptionCategoryTags != null)
+			{
+				foreach (var tag in src.ServiceOptionCategoryTags)
+				{
+					serviceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto
+					{
+						Id = tag.Id,
+						Order = tag.Order,
+						ServiceOptionCategoryId = tag.ServiceOptionCategoryId,
+						ServiceOptionCategory = MapOptionCategoryToDto(tag.ServiceOptionCategory)
+					});
+				}
+			}
+
+
+			return new ServiceRequestPackageDto()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ServiceOptionCategoryTags = serviceOptionCategoryTags
+			};
+		}
+
+		public static ServiceRequestPackage MapDtoToServiceRequestPackage(IServiceRequestPackageDto src)
+		{
+			if (src == null) return null;
+			return new ServiceRequestPackage
+			{
+				Id = src.Id,
+				Name = src.Name
+			};
+		}
+
+		public static ServiceRequest MapDtoToServiceRequest(IServiceRequestDto src)
+		{
+			if (src == null) return null;
+			return new ServiceRequest
+			{
+				Id = src.Id,
+				State = src.State,
+				ApprovalDate = src.ApprovalDate,
+				ApproverUserId = src.ApproverUserId,
+				Comments = src.Comments,
+				CreationDate = src.CreationDate,
+				Officeuse = src.Officeuse,
+				RequestedByUserId = src.RequestedByUserId,
+				SubmissionDate = src.SubmissionDate,
+				RequestedForDate = src.RequestedForDate,
+				ServiceOptionId = src.ServiceOptionId
+			};
+		}
+
+		public static IServiceRequestDto MapServiceRequestToDto(ServiceRequest src)
+		{
+			if (src == null) return null;
+
+			List<IServiceRequestOptionDto> serviceRequestOptions = new List<IServiceRequestOptionDto>();
+			if (src.ServiceRequestOptions != null)
+			{
+				foreach (var serviceRequestOption in src.ServiceRequestOptions)
+				{
+					serviceRequestOptions.Add(MapServiceRequestOptionToDto(serviceRequestOption));
+				}
+			}
+
+			return new ServiceRequestDto()
+			{
+				Id = src.Id,
+				State = src.State,
+				ApprovalDate = src.ApprovalDate,
+				ApproverUserId = src.ApproverUserId,
+				Comments = src.Comments,
+				CreationDate = src.CreationDate,
+				Officeuse = src.Officeuse,
+				RequestedByUserId = src.RequestedByUserId,
+				SubmissionDate = src.SubmissionDate,
+				ServiceRequestOptions = serviceRequestOptions,
+				RequestedForDate = src.RequestedForDate,
+				ServiceOptionId = src.ServiceOptionId
+			};
+		}
+
+		private static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)
+		{
+			if (src == null) return null;
+
+			var serviceRequestOptionScriptedSelectionInputs =
+				src.ServiceRequestOptionScriptedSelectionInputs.Select(x => MapServiceRequestOptionScriptedSelectionInputToDto(x)).ToList();
+
+			var serviceRequestOptionSelectionInputs =
+				src.ServiceRequestOptionSelectionInputs.Select(x => MapServiceRequestOptionSelectionInputToDto(x)).ToList();
+
+			var serviceRequestOptionTextInputs =
+				src.ServiceRequestOptionTextInputs.Select(x => MapServiceRequestOptionTextInputToDto(x)).ToList();
+
+			return new ServiceRequestOptionDto()
+			{
+				Id = src.Id,
+				ApproverUserId = src.ApproverUserId,
+				RequestedByUserId = src.RequestedByUserId,
+				ServiceOptionId = src.ServiceOptionId,
+				ServiceRequestId = src.ServiceRequestId,
+				ServiceOption = MapServiceOptionToDto(src.ServiceOption),
+				ServiceRequest = MapServiceRequestToDto(src.ServiceRequest),
+				ServiceRequestOptionScriptedSelectionInputs = serviceRequestOptionScriptedSelectionInputs,
+				ServiceRequestOptionSelectionInputs = serviceRequestOptionSelectionInputs,
+				ServiceRequestOptionTextInputs = serviceRequestOptionTextInputs
+			};
+		}
+
+		public static ServiceRequestOption MapDtoToServiceRequestOption(IServiceRequestOptionDto src)
+		{
+			if (src == null) return null;
+			return new ServiceRequestOption
+			{
+				Id = src.Id,
+				ApproverUserId = src.ApproverUserId,
+				RequestedByUserId = src.RequestedByUserId,
+				ServiceOptionId = src.ServiceOptionId,
+				ServiceRequestId = src.ServiceRequestId
+			};
+		}
+
+		private static IServiceRequestOptionScriptedSelectionInputDto MapServiceRequestOptionScriptedSelectionInputToDto(ServiceRequestOptionScriptedSelectionInput src)
+		{
+			if (src == null) return null;
+
+			return new ServiceRequestOptionScriptedSelectionInputDto()
+			{
+				Id = src.Id,
+				ScriptedSelectionInputId = src.ScriptedSelectionInputId,
+				ServiceRequestOptionId = src.ServiceRequestOptionId,
+				Value = src.Value,
+				ScriptedSelectionInput = MapScriptedSelectionInputToDto(src.ScriptedSelectionInput),
+				ServiceRequestOption = MapServiceRequestOptionToDto(src.ServiceRequestOption)
+			};
+		}
+
+		public static ServiceRequestOptionScriptedSelectionInput MapDtoToServiceRequestOptionScriptedSelectionInput(IServiceRequestOptionScriptedSelectionInputDto src)
+		{
+			if (src == null) return null;
+
+			return new ServiceRequestOptionScriptedSelectionInput
+			{
+				Id = src.Id,
+				ScriptedSelectionInputId = src.ScriptedSelectionInputId,
+				ServiceRequestOptionId = src.ServiceRequestOptionId,
+				Value = src.Value
+			};
+		}
+
+		private static IServiceRequestOptionSelectionInputDto MapServiceRequestOptionSelectionInputToDto(ServiceRequestOptionSelectionInput src)
+		{
+			if (src == null) return null;
+
+			return new ServiceRequestOptionSelectionInputDto()
+			{
+				Id = src.Id,
+				SelectionInputId = src.SelectionInputId,
+				ServiceRequestOptionId = src.ServiceRequestOptionId,
+				Value = src.Value,
+				SelectionInput = MapSelectionInputToDto(src.SelectionInput),
+				ServiceRequestOption = MapServiceRequestOptionToDto(src.ServiceRequestOption)
+			};
+		}
+
+		public static ServiceRequestOptionSelectionInput MapDtoToServiceRequestOptionSelectionInput(IServiceRequestOptionSelectionInputDto src)
+		{
+			if (src == null) return null;
+
+			return new ServiceRequestOptionSelectionInput
+			{
+				Id = src.Id,
+				SelectionInputId = src.SelectionInputId,
+				ServiceRequestOptionId = src.ServiceRequestOptionId,
+				Value = src.Value
+			};
+		}
+
+		private static IServiceRequestOptionTextInputDto MapServiceRequestOptionTextInputToDto(ServiceRequestOptionTextInput src)
+		{
+			if (src == null) return null;
+
+			return new ServiceRequestOptionTextInputDto()
+			{
+				Id = src.Id,
+				TextInputId = src.TextInputId,
+				ServiceRequestOptionId = src.ServiceRequestOptionId,
+				Value = src.Value,
+				TextInput = MapTextInputToDto(src.TextInput),
+				ServiceRequestOption = MapServiceRequestOptionToDto(src.ServiceRequestOption)
+			};
+		}
+
+		public static ServiceRequestOptionTextInput MapDtoToServiceRequestOptionTextInput(IServiceRequestOptionTextInputDto src)
+		{
+			if (src == null) return null;
+
+			return new ServiceRequestOptionTextInput
+			{
+				Id = src.Id,
+				TextInputId = src.TextInputId,
+				ServiceRequestOptionId = src.ServiceRequestOptionId,
+				Value = src.Value
 			};
 		}
 	}

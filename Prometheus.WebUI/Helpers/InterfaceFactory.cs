@@ -15,25 +15,27 @@ namespace Prometheus.WebUI.Helpers
         /// <param name="userId"></param>
         /// <returns></returns>
 		public static PortfolioService CreatePortfolioService(int userId)
-		{
-			return new PortfolioService(userId,
-				new ServiceBundleController(),
-				new ServiceController(),
-				new LifecycleStatusController(),
-				new ServiceSwotController(),
-				new SwotActivityController(),
-				new ServiceDocumentController(),
-				new ServiceGoalController(),
-				new ServiceContractController(),
-				new ServiceWorkUnitController(),
-				new ServiceMeasureController(),
-				new ServiceOptionController(),
-				new OptionCategoryController(),
-				new ServiceProcessController(),
-				new TextInputController(),
-				new SelectionInputController(),
-				new ScriptedSelectionInputController());
-		}
+        {
+            return new PortfolioService(userId,
+                new ServiceBundleController(),
+                new ServiceController(),
+                new LifecycleStatusController(),
+                new ServiceSwotController(),
+                new SwotActivityController(),
+                new ServiceDocumentController(),
+                new ServiceGoalController(),
+                new ServiceContractController(),
+                new ServiceWorkUnitController(),
+                new ServiceMeasureController(),
+                new ServiceOptionController(),
+                new ServiceOptionCategoryController(),
+                new ServiceProcessController(),
+                new TextInputController(),
+                new SelectionInputController(),
+                new ScriptedSelectionInputController(),
+                new ServiceRequestPackageController(),
+                new ServiceRequestController());
+        }
 
         /// <summary>
         /// Create a Catalog Controller, no interface

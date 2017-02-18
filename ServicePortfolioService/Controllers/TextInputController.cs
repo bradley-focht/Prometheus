@@ -1,8 +1,9 @@
 ﻿using Common.Dto;
-using Common.Enums;
+using Common.Enums.Entities;
 using DataService;
 using DataService.DataAccessLayer;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
@@ -35,6 +36,18 @@ namespace ServicePortfolioService.Controllers
 			using (var context = new PrometheusContext())
 			{
 				return ManualMapper.MapTextInputToDto(context.TextInputs.Find(textInputId));
+			}
+		}
+
+		public IEnumerable<ITextInputDto> GetTextInputs()
+		{
+			using (var context = new PrometheusContext())
+			{
+				var inputs = context.TextInputs;
+				foreach (var input in inputs)
+				{
+					yield return ManualMapper.MapTextInputToDto(input);
+				}
 			}
 		}
 

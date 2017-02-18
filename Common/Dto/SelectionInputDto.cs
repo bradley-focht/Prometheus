@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace Common.Dto
@@ -8,9 +7,6 @@ namespace Common.Dto
 	{
 		[HiddenInput]
 		public int Id { get; set; }
-
-		public int ServiceOptionId { get; set; }
-
 		[Display(Order = 1, Name="Display Name")]
 		[Required(ErrorMessage = "Display Name is required")]
 		public string DisplayName { get; set; }

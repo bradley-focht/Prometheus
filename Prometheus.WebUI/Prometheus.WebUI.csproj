@@ -71,6 +71,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.PowerShell.5.ReferenceAssemblies.1.0.0\lib\net4\System.Management.Automation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web" />
     <Reference Include="System.Configuration" />
     <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
@@ -176,7 +181,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\aes-min.js" />
     <Content Include="Scripts\bootstrap-datepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -312,6 +316,7 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\spinner.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -319,6 +324,7 @@
   <ItemGroup>
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ScriptController.cs" />
     <Compile Include="Controllers\ServiceCatalogController.cs" />
     <Compile Include="Controllers\ServiceController.cs" />
     <Compile Include="Controllers\ServiceMaintenanceController.cs" />
@@ -327,8 +333,11 @@
     <Compile Include="Controllers\ServiceRequestMaintenanceController.cs" />
     <Compile Include="Controllers\SystemAccessController.cs" />
     <Compile Include="Controllers\UserAccountController.cs" />
+    <Compile Include="Helpers\AbbreviatedEntityUpdate.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
     <Compile Include="Helpers\Enums\ServiceCatalogs.cs" />
+    <Compile Include="Helpers\Enums\ServiceRequestMode.cs" />
+    <Compile Include="Helpers\ServicePackageHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
     <Compile Include="Helpers\FinancialCalculator.cs" />
@@ -337,6 +346,7 @@
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="Helpers\Enums\WebMessageType.cs" />
     <Compile Include="Helpers\UiPermissionHelper.cs" />
+    <Compile Include="Helpers\UserInputHelper.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
@@ -345,16 +355,28 @@
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogControlsModel.cs" />
+    <Compile Include="Models\ServiceCatalog\PublishableCatalogItemModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceCatalogSearcher.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceSummary.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
+    <Compile Include="Models\ServiceRequestApproval\ServiceRequestApprovalControls.cs" />
+    <Compile Include="Models\ServiceRequestApproval\ServiceRequestApprovalModel.cs" />
+    <Compile Include="Models\ServiceRequestApproval\ServiceRequestTableItemModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ConfirmDeleteModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\PackageModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\ServiceAbbreviatedModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\ServiceCategoryAbbreviatedModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\ServiceOptionAbbreviatedModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestCategoryModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\UserInputsLinkListModel.cs" />
+    <Compile Include="Models\ServiceRequest\ServiceRequestFormReturnModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestNavigationModel.cs" />
+    <Compile Include="Models\ServiceRequest\UserInputModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
@@ -370,19 +392,15 @@
     <Compile Include="Models\Service\SwotActivityItemModel.cs" />
     <Compile Include="Models\Service\SwotTableModel.cs" />
     <Compile Include="Models\Shared\DeleteModel.cs" />
-    <Compile Include="Models\Shared\ScriptedSelectionInputModel.cs" />
-    <Compile Include="Models\Shared\SelectionInputModel.cs" />
     <Compile Include="Models\Shared\ServiceNavModel.cs" />
     <Compile Include="Models\Service\ServiceModel.cs" />
     <Compile Include="Models\Shared\LinkListModel.cs" />
     <Compile Include="Models\ServiceMaintenance\LifecycleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
     <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
-    <Compile Include="Models\Shared\ServiceRequest.cs" />
-    <Compile Include="Models\Shared\ServiceRequestOption.cs" />
+    <Compile Include="Models\ServiceRequest\ServiceRequestInfoReturnModel.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
-    <Compile Include="Models\Shared\TextInputModel.cs" />
-    <Compile Include="Models\Shared\UserInput.cs" />
+    <Compile Include="Models\Shared\InputModel.cs" />
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
     <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
@@ -419,7 +437,6 @@
     <Content Include="Views\Service\AddService.cshtml" />
     <Content Include="Views\Shared\PartialViews\_ServiceNav.cshtml" />
     <Content Include="Views\Service\Show.cshtml" />
-    <Content Include="Views\ServiceMaintenance\ConfirmDelete.cshtml" />
     <Content Include="Views\ServiceMaintenance\ConfirmDeleteLifecycle.cshtml" />
     <Content Include="Views\Service\PartialViews\_TableViewer.cshtml" />
     <Content Include="Views\Service\PartialViews\UpdateGeneral.cshtml" />
@@ -463,8 +480,8 @@
     <Content Include="Views\ServiceCatalog\PartialViews\OptionView.cshtml" />
     <Content Include="Views\ServiceCatalog\ServiceOptions.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\RolesEditor.cshtml" />
-    <Content Include="Views\ServiceRequestMaintenance\Index.cshtml" />
-    <Content Include="Views\ServiceRequestMaintenance\GetServiceNames.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ShowServices.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\GetServiceNames.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowServiceOption.cshtml" />
     <Content Include="Views\ServiceRequest\ServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\EditUserInput.cshtml" />
@@ -483,7 +500,6 @@
     <Content Include="Views\SystemAccess\PartialViews\ConfirmDeleteMessage.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ShowUserInput.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputViewer.cshtml" />
-    <Content Include="Views\ServiceRequest\SubmitNewServiceRequest.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\ConfirmDeleteUserInput.cshtml" />
     <Content Include="Views\ServiceRequestApproval\Index.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\UserControls.cshtml" />
@@ -492,6 +508,26 @@
     <Content Include="Views\Shared\PartialViews\_TextInput.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestNavigation.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\StatusCountDropDown.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestInfo.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\Index.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\ShowPublishable.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\UpdatePublishable.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\UpdateService.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ShowServiceOptionCategory.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\UpdateServiceOption.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\UpdateServiceCategory.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ShowPackages.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\PackageEditor.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\PackageViewer.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\UpdatePackage.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\AddPackage.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\ConfirmDeletePackage.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\PartialViews\UserInputsLinkList.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestFormSelect.cshtml" />
+    <Content Include="Views\ServiceRequestMaintenance\OptionUserInputsDropDown.cshtml" />
+    <Content Include="Views\ServiceRequestApproval\PartialViews\ServiceRequestApprovalControls.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestFormInput.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_ScriptedSelectionInput.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -504,6 +540,7 @@
     <Folder Include="Content\Selectize\js\standalone\" />
     <Folder Include="ServiceDocs\" />
     <Folder Include="ServiceOptionPics\" />
+    <Folder Include="Views\Script\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

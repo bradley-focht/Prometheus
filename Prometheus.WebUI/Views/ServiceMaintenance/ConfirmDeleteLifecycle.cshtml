@@ -6,8 +6,6 @@
                                                              new KeyValuePair<string, string>("Lifecycle Statuses", "ServiceMaintenance/ShowLifecycle"),
                                                              new KeyValuePair<string, string>(Model.Name, "ServiceMaintenance/ShowLifecycle/" + Model.Id),
                                                              new KeyValuePair<string, string>(ViewBag.Title, "#")};
-
-
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
@@ -20,15 +18,11 @@
     {
         @Html.Partial("PartialViews/ConfirmDelete", Model)
 
-        <div class="flex-container">
+        <div class="flex-container-col">
             <div class="panel-footer">
-
                 <div class="float-right-div">
-                    <input type="submit" value="Confirm Delete" class="btn btn-danger"/>
-                </div>
-
-                <div class="float-left-div">
-                    @Html.ActionLink("Back", "ShowLifecycle", new {id = Model.Id}, new {@class = "btn btn-default"})
+                       @Html.ActionLink("Back", "ShowLifecycle", new {id = Model.Id}, new {@class = "btn btn-default btn-back"})
+                    <input type="submit" value="Confirm Delete" class="btn btn-danger"/>               
                 </div>
             </div>
         </div>

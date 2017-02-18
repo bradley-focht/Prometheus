@@ -1,5 +1,6 @@
 ﻿@model Prometheus.WebUI.Models.ServiceCatalog.CatalogModel
 @using Prometheus.WebUI.Helpers.Enums
+@using Prometheus.WebUI.Models.ServiceCatalog
 @{
 	ViewBag.Title = Model.Catalog == ServiceCatalogs.Business ? "Business Catalog" : "Technical Catalog";
 
@@ -19,7 +20,7 @@
 	foreach (var r in Model.CatalogItems)
 	{
 
-		@Html.Partial("PartialViews/SummarizedCatalogableView", r)
+		@Html.Partial("PartialViews/SummarizedCatalogableView", new PublishableCatalogItemModel {Item = r, Catalog = Model.Catalog})
 	}
 }
 else

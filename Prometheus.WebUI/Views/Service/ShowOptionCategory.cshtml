@@ -38,7 +38,7 @@
 
                 @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
                 {
-                    @Html.ActionLink("Update", "UpdateOptionCategoryItem", new {id = Model.OptionCategory.Id}, new {@class = "btn btn-primary"})
+                    @Html.ActionLink("Update", "UpdateOptionCategoryItem", new {id = Model.OptionCategory.Id}, new {@class = "btn btn-primary", style="margin-right: 5px;"})
 
                     @Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new {id = Model.OptionCategory.Id}, new {@class = "btn btn-danger"})
                 }

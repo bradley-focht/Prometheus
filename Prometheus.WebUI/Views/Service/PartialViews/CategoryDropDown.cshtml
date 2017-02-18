@@ -1,2 +1,16 @@
 ﻿@model IEnumerable<SelectListItem>
-@Html.DropDownList("CategoryId", Model, new { placeholder = "Category..." })
+@if (Model == null || !Model.Any())
+{
+    <text>No categories exist.</text>
+}
+else
+{
+    @Html.DropDownList("ServiceOptionCategoryId", Model, new { placeholder = "Category..." })
+
+    <script type="text/javascript" language="javascript">
+        $('#ServiceOptionCategoryId')
+            .selectize({
+                maxItems: 1
+            });
+    </script>
+}

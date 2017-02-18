@@ -1,119 +1,77 @@
 ﻿@model Common.Dto.IServiceOptionDto
-@{
-	bool catMsgShown = false;
-}
+
 <input type="hidden" name="Id" value="@Model.Id" />
-<input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
-<div class="dd">
-	@foreach (var property in ViewData.ModelMetadata.Properties)
-	{
-		switch (property.PropertyName)
-		{
-			case "Id":  /*do nothing for these attributes */
-			case "ServiceId":
-			case "DateCreated":
-			case "DateUpdated":
-			case "CreatedByUserId":
-			case "UpdatedByUserId":
-			case "PictureMimeType":
-			case "Popularity":
-				continue;
-		}
-		<div class="dd-row">
-			<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+    @foreach (var property in ViewData.ModelMetadata.Properties)
+    {
+        switch (property.PropertyName)
+        {
+            case "Id":  /*do nothing for these attributes */
+            case "ServiceId":
+            case "DateCreated":
+            case "DateUpdated":
+            case "CreatedByUserId":
+            case "UpdatedByUserId":
+            case "PictureMimeType":
+            case "TextInputs":
+            case "ScriptedSelectionInputs":
+            case "SelectionInputs":
+            case "ServiceOptionCategoryId":
+            case "Popularity":
+            case "Usage":
+            case "Picture":
+            case "Details":
+            case "BusinessValue":
+                continue;
+        }
+        <div class="dd-row">
+            <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 
-			@switch (property.PropertyName)
-			{
-				case "Name":	/*standard textbox */
-				case "Usage":
-					<div class="dd-cell">
-						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
-						@Html.ValidationMessage(property.PropertyName)
-					</div>
-					break;
-				case "CategoryId":
-					<div class="dd-cell">
-						@Html.Action("GetCategoryDropdown", new { id = Model.Id, serviceId = Model.ServiceId })
-					</div>
-							break;
-						case "Features":	/*ck editor */
-						case "Benefits":
-						case "Support":
-	
-					<div class="dd-cell">
-						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
-						@Html.ValidationMessage(property.PropertyName)
-					</div>
-						break;
-					case "Cost":		/*money */
-					<div class="dd-cell">
-						<div class="input-group">
-							<span class="input-group-addon">
-								<i class="fa fa-usd" aria-hidden="true"></i>
-							</span>
-							@Html.TextBox("Cost", $"{property.Model:0.00}", new { @class = "form-control form-money" })
+            @switch (property.PropertyName)
+            {
+                case "Name":    /*standard textbox */
+                case "Utilization":
+                    <div class="dd-cell">
+                        @Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control"})
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>
+                    break;
+                case "Includes":    /*ck editor */
+                case "Procurement":
+                    <div class="dd-cell">
+                        @Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>    break;
+                case "Cost":        /*money */
+                    <div class="dd-cell">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-usd" aria-hidden="true"></i>
+                            </span>
+                            @Html.TextBox("Cost", $"{property.Model:0.00}", new { @class = "form-control form-money" })
 
-						</div>
-						@Html.ValidationMessage(property.PropertyName)
-					</div>
-						break;
-					case "PriceUpFront":
-					case "PriceMonthly":
-					<div class="dd-cell">
-						<div class="input-group">
-							<span class="input-group-addon">
-								<i class="fa fa-usd" aria-hidden="true"></i>
-							</span>
-							@Html.TextBox(property.PropertyName, $"{property.Model:0.00}", new {@class = "form-control form-money"})
-						</div>
-						@Html.ValidationMessage(property.PropertyName)
-						</div>
+                        </div>
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>    break;
+                case "PriceUpFront":
+                case "PriceMonthly":
+                    <div class="dd-cell">
+                        <div class="input-group">
+                            <span class="input-group-addon">
+                                <i class="fa fa-usd" aria-hidden="true"></i>
+                            </span>
+                            @Html.TextBox(property.PropertyName, $"{property.Model:0.00}", new { @class = "form-control form-money" })
+                        </div>
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>    break;
+                case "Description":     /*ck editor + service catalog visible */
+                case "Included":
+                    <div class="dd-cell">
+                        @Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+                        @Html.ValidationMessage(property.PropertyName)
+                    </div>    break;
 
-					if (!catMsgShown)
-					{
-						<div class="highlight-cell-top">&nbsp;</div>
-						<div class="dd-cell-base small-message">
-							*Visible in service catalog
-						</div>
-						catMsgShown = true;
-					}
-					else { <div class="highlight-cell">&nbsp;</div> }
-					break;
-				case "Description":		/*ck editor + service catalog visible */
-				case "BusinessValue":
-					<div class="dd-cell">
-						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
-						@Html.ValidationMessage(property.PropertyName)
-					</div>
-					<div class="highlight-cell">&nbsp;</div>
-						break;
-					case "Picture":		/*Picture */
-					<div class="dd-cell">
-						<input type="hidden" name="Picture" value="@Model.Picture"/>
+            }
 
-						<div style="position: relative">
-							<a class="btn" href="javascript:;">
-								Choose file
-								<input type="file" name="Image" size="40" style="position: absolute; z-index: 2; top: 0; left: 0; filter: alpha(opacity=0); opacity: 0; background-color: transparent; color: transparent;" onchange='$("#upload-file-info").html($(this).val());'/>
-							</a>
-							<span class="label label-info" id="upload-file-info"></span>
-						</div>
-						<div>
-							@if (Model.Picture == null)
-							{
-								<div class="form-control-static">No Image</div>
-							}
-							else
-							{
-								<img class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", new {id = Model.Id})"/>
-							}
-						</div>
-					</div>
-					<div class="highlight-cell-bottom"></div>
-					break;
-			}
-
-		</div>
-	}
-</div>
+        </div>
+    }
