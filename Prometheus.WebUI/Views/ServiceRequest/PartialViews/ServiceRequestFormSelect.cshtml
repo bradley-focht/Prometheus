@@ -14,13 +14,17 @@
 					@if (category.Quantifiable)
 					{
 						<div class="input-group spinner" style="max-width: 50px;">
-							@Html.TextBox("Quantity", "0", new { min = "0", max = "99", @class = "form-control numberSelect", id = $"quantity_{option.Id}" })
+							@Html.TextBox("Quantity", "0", new {min = "0", max = "99", @class = "form-control numberSelect", id = $"quantity_{option.Id}"})
 
 							<div class="input-group-btn-vertical">
 								<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
 								<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
 							</div>
 						</div>
+					}
+					else
+					{
+						<input type="hidden" id="quantity_@(option.Id)" value="0" />
 					}
 				</div>
 				<div class="dd-cell-base" style="width: 91%">
@@ -70,95 +74,4 @@
 			</div>
 		}
 	</div>
-
-	<script language="javascript" type="text/javascript">
-
-		function UpdateOptions(id) {
-			var input = document.getElementById("quantity_" + id);
-			var inputs = [];
-			@foreach (var input in Model.GetUserInputList())
-			{
-				<text>
-					inputs[inputs.length] = {name:'@(StringHelper.RemoveSpaces(input.DisplayName))', used:false};
-				</text>
-			}
-			@foreach (var option in Model.UserInputs)
-			{
-				<text>
-				if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true)
-				{
-					@foreach (var input in option.UserInputs.GetUserInputs())
-					{
-						<text>
-						var j;
-						for (j = 0; j < inputs.length; j++) {
-							if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
-								inputs[j].used = true;
-							}
-						}
-						</text>
-					}
-				}
-				</text>
-			}
-
-			if (document.getElementById("option_" + id).checked) {
-				input.value = 1;
-				input.min = 1;
-				input.max = 99;
-
-				@foreach (var option in Model.UserInputs)
-				{
-					<text>
-				if (id === @(option.ServiceOption.Id))
-					{
-						@foreach (var input in option.UserInputs.GetUserInputs())
-						{
-							<text>
-						var j;
-						for (j = 0; j < inputs.length; j++) {
-							if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
-									inputs[j].used = true;
-							}
-						}
-							</text>
-					}
-
-					}
-					</text>
-				}
-
-
-
-		} else {
-				input.value = 0;
-		input.min = 0;
-		input.max = 0;
-		}
-
-		var i;
-		for (i = 0; i < inputs.length; i++) {
-			if (!inputs[i].used) {
-				document.getElementById('div_' + inputs[i].name).style.display = 'none';
-				document.getElementById(inputs[i].name).value = '';
-			} else {
-				document.getElementById('div_' + inputs[i].name).style.display = '';
-			}
-		}
-
-		}
-
-		@if (Model.ServiceOptionId > 0)
-			{
-		<text>
-		$(document).ready(function(){
-
-			document.getElementById("option_@(Model.ServiceOptionId)").checked = true;
-			UpdateOptions(@Model.ServiceOptionId);
-
-		});
-		</text>
-			}
-
-	</script>
 }

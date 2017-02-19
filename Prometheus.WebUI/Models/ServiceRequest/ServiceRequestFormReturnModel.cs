@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using Common.Dto;
 using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequest
@@ -24,9 +26,20 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// </summary>
 		public ICollection<int> Quantity { get; set; }
 
-        /// <summary>
-        /// Index of package that was just submitted
-        /// </summary>
-	    public int CurrentIndex { get; set; }
+		/// <summary>
+		/// Index of package that was just submitted
+		/// </summary>
+		public int CurrentIndex { get; set; }
+
+		public IEnumerable<ServiceRequestOptionDto> GetServiceRequestOptions()
+		{
+			List<ServiceRequestOptionDto> returnOptions = new List<ServiceRequestOptionDto>();
+			var options = Options.ToArray();
+			var quantity = Quantity.ToArray();
+
+			returnOptions.AddRange(options.Select((t, i) => new ServiceRequestOptionDto { Id = t, Quantity = quantity[i], ServiceRequestId = Id, ServiceOptionId = options[i] }));
+
+			return returnOptions;
+		}
 	}
 }

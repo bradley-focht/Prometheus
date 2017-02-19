@@ -8,14 +8,23 @@ using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Models.ServiceRequest;
+using RequestService.Controllers;
 using ServicePortfolioService;
+using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceRequestController : Controller
 	{
 		private IPortfolioService _ps;
+		private IServiceRequestOptionController _rs;
 		private int dummyId = 0;
+
+		public ServiceRequestController()
+		{
+			//na atm
+		}
+
 		/// <summary>
 		/// Begin a new Service Request
 		/// </summary>
@@ -111,14 +120,15 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveFormSelection(ServiceRequestFormReturnModel form, int submit)
 		{
+			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_rs = InterfaceFactory.CreateServiceRequestOptionController(dummyId);
 			/* STEP ONE - Get the Service Package and SR */
-			ServiceRequestModel model = new ServiceRequestModel	//used to hold all the data until redirecting
+			ServiceRequestModel model = new ServiceRequestModel //used to hold all the data until redirecting
 			{
 				CurrentIndex = submit,
 				ServiceRequestId = form.Id,
 				Mode = ServiceRequestMode.Selection
 			};
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
 			try
 			{
 				model.ServiceRequest = _ps.GetServiceRequest(form.Id); //SR
@@ -139,45 +149,44 @@ namespace Prometheus.WebUI.Controllers
 
 			/* STEP THREE - add/remove options in the SR */
 			{
-				var tempOptions = model.ServiceRequest.ServiceRequestOptions; //use temp list to avoid concurrency issues
-				var changesMade = false;
-				foreach (var option in currentCategory.ServiceOptions)
-				{
-					if (form.Options.Contains(option.Id) &&
-						!(from o in model.ServiceRequest.ServiceRequestOptions where o.Id == option.Id select true).FirstOrDefault())
-					{
-						tempOptions.Add(new ServiceRequestOptionDto { ServiceOptionId = option.Id });
-						changesMade = true;
-					}
-					else if (!form.Options.Contains(option.Id) &&
-							 (from o in model.ServiceRequest.ServiceRequestOptions where o.Id == option.Id select true).FirstOrDefault())
-					{
-						tempOptions.Remove(
-							(from o in model.ServiceRequest.ServiceRequestOptions where o.Id == option.Id select o).FirstOrDefault());
-						changesMade = true;
-					}
-				}
-				model.ServiceRequest.ServiceRequestOptions = tempOptions;
+				ICollection<ServiceRequestOptionDto> formOptions;
+				if (form.Options == null) { formOptions = new List<ServiceRequestOptionDto>(); }    //need to avoid a null pointer exception here
+				else { formOptions = form.GetServiceRequestOptions().ToList(); }
+				if (model.ServiceRequest.ServiceRequestOptions == null)
+				{ model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>(); }
 				try
 				{
-					
-					_ps.ModifyServiceRequest(model.ServiceRequest, EntityModification.Update);
+					foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
+					{
+						var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+						var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+
+						if (formDto != null && srDto == null)		//add condition
+						{
+							_rs.ModifyServiceRequestOption((from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
+						}
+						else if (formDto == null && srDto != null) //remove condition
+						{
+							_rs.ModifyServiceRequestOption((from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
+						}
+						else if (formDto != null && srDto != null)	//update condition
+						{
+							_rs.ModifyServiceRequestOption(srDto, EntityModification.Delete);
+							_rs.ModifyServiceRequestOption(formDto, EntityModification.Create);
+						}                                                                                                       /* done \*/
+					}
 				}
-				catch (Exception exception)
+				catch (Exception exception)		//what, a problem?
 				{
 					TempData["MessageType"] = WebMessageType.Failure;
 					TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
 					model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
 					return View("ServiceRequest", model);
 				}
-				if (changesMade)
-				{
-					TempData["MessageType"] = WebMessageType.Success;
-					TempData["Message"] = "Successfully saved changes to Service Request";
-				}
 			}
+			/* STEP FOUR - add/remove user input data */
 
-			/* STEP FOUR - navigation */
+			/* STEP FIVE - navigation */
 			if (submit >= 9999)
 			{
 				//TODO: Change state after saving
@@ -187,7 +196,7 @@ namespace Prometheus.WebUI.Controllers
 			model.CurrentIndex = submit;
 
 			model.Mode = ServiceRequestMode.Selection;
-			return RedirectToAction("Form", new {id = model.ServiceRequestId, index = model.CurrentIndex, mode = model.Mode});
+			return RedirectToAction("Form", new { id = model.ServiceRequestId, index = model.CurrentIndex, mode = model.Mode });
 
 		}
 
@@ -223,11 +232,15 @@ namespace Prometheus.WebUI.Controllers
 			}
 			else if (index < model.Package.ServiceOptionCategoryTags.Count && index < 999)
 			{
-				model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;	
+				model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
 				foreach (var option in model.OptionCategory.ServiceOptions)
 				{
-					optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = 
-						_ps.GetInputsForServiceOptions(new List<IServiceOptionDto> {option})}); 
+					optionInputList.Add(new ServiceOptionTag
+					{
+						ServiceOption = option,
+						UserInputs =
+						_ps.GetInputsForServiceOptions(new List<IServiceOptionDto> { option })
+					});
 				}
 			}
 

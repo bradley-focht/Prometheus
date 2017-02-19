@@ -900,15 +900,28 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-			var serviceRequestOptionScriptedSelectionInputs =
-				src.ServiceRequestOptionScriptedSelectionInputs.Select(x => MapServiceRequestOptionScriptedSelectionInputToDto(x)).ToList();
+			/*		List<IServiceRequestOptionScriptedSelectionInputDto> serviceRequestOptionScriptedSelectionInputs = null;
+					List<IServiceRequestOptionSelectionInputDto> serviceRequestOptionSelectionInputs = null;
+					List<IServiceRequestOptionTextInputDto> serviceRequestOptionTextInputs = null;
 
-			var serviceRequestOptionSelectionInputs =
-				src.ServiceRequestOptionSelectionInputs.Select(x => MapServiceRequestOptionSelectionInputToDto(x)).ToList();
+					if (src.ServiceRequestOptionScriptedSelectionInputs != null)	//Stack. Overflow. (literally)
+					{
+						serviceRequestOptionScriptedSelectionInputs =
+							src.ServiceRequestOptionScriptedSelectionInputs.Select(x => MapServiceRequestOptionScriptedSelectionInputToDto(x))
+								.ToList();
+					}
+					if (src.ServiceRequestOptionSelectionInputs != null)
+					{
+						serviceRequestOptionSelectionInputs =
+							src.ServiceRequestOptionSelectionInputs.Select(x => MapServiceRequestOptionSelectionInputToDto(x)).ToList();
+					}
+					if (src.ServiceRequestOptionTextInputs != null)
+					{
+						serviceRequestOptionTextInputs =
+							src.ServiceRequestOptionTextInputs.Select(x => MapServiceRequestOptionTextInputToDto(x)).ToList();
+					}
 
-			var serviceRequestOptionTextInputs =
-				src.ServiceRequestOptionTextInputs.Select(x => MapServiceRequestOptionTextInputToDto(x)).ToList();
-
+			*/
 			return new ServiceRequestOptionDto()
 			{
 				Id = src.Id,
@@ -916,12 +929,12 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				ServiceOptionId = src.ServiceOptionId,
 				Quantity = src.Quantity,
-				ServiceRequestId = src.ServiceRequestId,
-				ServiceOption = MapServiceOptionToDto(src.ServiceOption),
-				ServiceRequest = MapServiceRequestToDto(src.ServiceRequest),
-				ServiceRequestOptionScriptedSelectionInputs = serviceRequestOptionScriptedSelectionInputs,
-				ServiceRequestOptionSelectionInputs = serviceRequestOptionSelectionInputs,
-				ServiceRequestOptionTextInputs = serviceRequestOptionTextInputs
+				ServiceRequestId = src.ServiceRequestId
+				//ServiceOption = MapServiceOptionToDto(src.ServiceOption),		//I'm just gonna do without this... 
+			//	ServiceRequest = MapServiceRequestToDto(src.ServiceRequest),
+			//	ServiceRequestOptionScriptedSelectionInputs = serviceRequestOptionScriptedSelectionInputs,
+			//	ServiceRequestOptionSelectionInputs = serviceRequestOptionSelectionInputs,
+			//	ServiceRequestOptionTextInputs = serviceRequestOptionTextInputs
 			};
 		}
 

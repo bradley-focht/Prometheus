@@ -1,4 +1,5 @@
-﻿@using Prometheus.WebUI.Helpers.Enums
+﻿@using Prometheus.WebUI.Helpers
+@using Prometheus.WebUI.Helpers.Enums
 @using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 @{
@@ -58,31 +59,132 @@
 			}
 		}
     </div>
-        <div class="flex-container-col">
-            <div class="make-space-bottom" style="display: flex; justify-content: flex-end; margin-right: 40px;">
+	<div class="flex-container-col">
+		<div class="make-space-bottom" style="display: flex; justify-content: flex-end; margin-right: 40px;">
 
-                @if (Model.CurrentIndex >= 0)
-                {
-                    <div class="make-space-right">
-                        <button name="submit" value="@(Model.CurrentIndex - 1)" class="btn btn-default"><i class="fa fa-chevron-left" style="font-size: 0.8em; font-weight: 100;"  aria-hidden="true"></i> Back</button>
-                    </div>
-                }
+			@if (Model.CurrentIndex >= 0)
+			{
+				<div class="make-space-right">
+					<button name="submit" value="@(Model.CurrentIndex - 1)" class="btn btn-default"><i class="fa fa-chevron-left" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i> Back</button>
+				</div>
+			}
 
 
-                    <div>
-                        <button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>
-                    </div>
+			<div>
+				<button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>
+			</div>
 
-            </div>
+		</div>
 
-            <div class="panel-footer">
-                <div class="float-right-div">
-                    @Html.ActionLink("Cancel Request", "CancelRequest", new { id = Model.ServiceRequestId }, new { @class = "btn btn-danger" })
-                    @if (Model.ServiceRequestId > 0)
-                    {
-                        <button type="submit" value="9999" name="submit" class="btn btn-primary">Submit Request</button>
-                    }
-                </div>
-            </div>
-        </div>
+		<div class="panel-footer">
+			<div class="float-right-div">
+				@Html.ActionLink("Cancel Request", "CancelRequest", new {id = Model.ServiceRequestId}, new {@class = "btn btn-danger"})
+				@if (Model.ServiceRequestId > 0)
+				{
+					<button type="submit" value="9999" name="submit" class="btn btn-primary">Submit Request</button>
+				}
+			</div>
+		</div>
+	</div>
+
+
+	<script language="javascript" type="text/javascript">
+
+		function UpdateOptions(id) {
+			var input = document.getElementById("quantity_" + id);
+			var inputs = [];
+			@foreach (var input in Model.GetUserInputList())
+			{
+				<text>
+			inputs[inputs.length] = {name:'@(StringHelper.RemoveSpaces(input.DisplayName))', used:false};
+			</text>
+			}
+			@foreach (var option in Model.UserInputs)
+			{
+				<text>
+			if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true)
+			{
+				@foreach (var input in option.UserInputs.GetUserInputs())
+					{
+						<text>
+				var j;
+				for (j = 0; j < inputs.length; j++) {
+					if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
+						inputs[j].used = true;
+					}
+				}
+				</text>
+					}
+			}
+			</text>
+			}
+
+			if (document.getElementById("option_" + id).checked) {
+				input.value = 1;
+				input.min = 1;
+				input.max = 99;
+
+				@foreach (var option in Model.UserInputs)
+				{
+					<text>
+				if (id === @(option.ServiceOption.Id))
+				{
+					@foreach (var input in option.UserInputs.GetUserInputs())
+						{
+							<text>
+						var j;
+				for (j = 0; j < inputs.length; j++) {
+					if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
+						inputs[j].used = true;
+					}
+				}
+				</text>
+					}
+
+			}
+			</text>
+				}
+
+
+
+		} else {
+				input.value = 0;
+		input.min = 0;
+		input.max = 0;
+		}
+
+		var i;
+		for (i = 0; i < inputs.length; i++) {
+			if (!inputs[i].used) {
+				document.getElementById('div_' + inputs[i].name).style.display = 'none';
+				document.getElementById(inputs[i].name).value = '';
+			} else {
+				document.getElementById('div_' + inputs[i].name).style.display = '';
+			}
+		}
+			return;
+		}
+
+		$(document).ready(function(){
+
+
+
+			@if (Model.ServiceRequest.ServiceRequestOptions != null)
+			{
+			foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
+			{
+				<text>
+				document.getElementById('option_@(option.ServiceOptionId)').checked = true;
+			UpdateOptions(@option.ServiceOptionId);
+
+
+</text>
+			}
+			}
+
+		});
+
+
+
+	</script>
 }

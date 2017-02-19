@@ -59,5 +59,13 @@ namespace Prometheus.WebUI.Helpers
 				);
 		}
 
+		/// <summary>
+		/// Create a new Service Request Interface/Controller
+		/// </summary>
+		/// <returns></returns>
+		public static ServiceRequestOptionController CreateServiceRequestOptionController(int userId)
+		{
+			return new ServiceRequestOptionController(userId);
+		}
 	}
 }
