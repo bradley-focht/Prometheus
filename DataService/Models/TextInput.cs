@@ -1,4 +1,6 @@
-﻿namespace DataService.Models
+﻿using System.Collections.Generic;
+
+namespace DataService.Models
 {
 	public class TextInput : ITextInput
 	{
@@ -6,5 +8,6 @@
 		public string DisplayName { get; set; }
 		public string HelpToolTip { get; set; }
 		public bool MultiLine { get; set; }
+		public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
 	}
 }

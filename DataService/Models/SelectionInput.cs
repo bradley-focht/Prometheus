@@ -12,5 +12,6 @@ namespace DataService.Models
 		public int NumberToSelect { get; set; }
 		public string SelectItems { get; set; }
 		public string Delimiter { get; set; }
+		public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
 	}
 }

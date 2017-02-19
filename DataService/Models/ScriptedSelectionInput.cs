@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
 namespace DataService.Models
@@ -15,5 +16,7 @@ namespace DataService.Models
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
 		public int NumberToSelect { get; set; }
+
+		public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
 	}
 }

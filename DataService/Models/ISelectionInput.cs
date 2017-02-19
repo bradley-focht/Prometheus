@@ -7,5 +7,7 @@ namespace DataService.Models
 	{
 		string SelectItems { get; set; }
 		string Delimiter { get; set; }
+
+		ICollection<ServiceOption> ServiceOptions { get; set; }
 	}
 }
