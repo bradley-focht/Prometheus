@@ -8,7 +8,6 @@ namespace DataService
 {
 	/// <summary>
 	/// Lazy loading from entities in the dataservice layer to DTOs
-	/// 
 	/// </summary>
 	public class ManualMapper
 	{
@@ -1035,5 +1034,28 @@ namespace DataService
 				Value = src.Value
 			};
 		}
+
+		public static Script MapDtoToScript(IScript src)
+		{
+			if (src == null)
+				return null;
+
+			return new Script
+			{
+				Id = src.Id
+			};
+		}
+
+		public static ScriptDto MapScriptToDto(IScript src)
+		{
+			if (src == null)
+				return null;
+
+			return new ScriptDto
+			{
+				Id = src.Id
+			};
+		}
+
 	}
 }

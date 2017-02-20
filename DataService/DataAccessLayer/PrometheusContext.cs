@@ -42,6 +42,9 @@ namespace DataService.DataAccessLayer
 		public DbSet<User> Users { get; set; }
 		public DbSet<Role> Roles { get; set; }
 
+		//Scripting
+		public DbSet<Script> Scripts { get; set; }
+
 		/// <summary>
 		/// Add or remove EF conventions in this function
 		/// </summary>
