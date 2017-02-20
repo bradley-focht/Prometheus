@@ -53,7 +53,7 @@
     <Compile Include="Dto\InputGroupDto.cs" />
     <Compile Include="Dto\IInputGroupDto.cs" />
     <Compile Include="Dto\IScriptDto.cs" />
-    <Compile Include="Dto\IServiceRequestUserInput.cs" />
+    <Compile Include="Dto\IServiceRequestUserInputDto.cs" />
     <Compile Include="Dto\ScriptDto.cs" />
     <Compile Include="Dto\ServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\IServiceOptionCategoryTagDto.cs" />
