@@ -9,20 +9,20 @@
 <div class="dd tq-width">
 	@foreach (var input in Model.GetUserInputList())
 	{
-		<div class="dd-row" id="div_@StringHelper.RemoveSpaces(input.DisplayName)">
+		<div class="dd-row" id="div_@StringHelper.RemoveSpaces(input.DisplayName)" style="display: none;">
 			<div class="dt-cell">@input.DisplayName</div>
 			<div class="dd-cell">
 				@if (input is ITextInputDto)
 				{
-					@Html.Partial("PartialViews/_TextInput", new InputModel<TextInputDto> {Control = (TextInputDto) input, ControlName = $"form."})
-				}
+					@Html.Partial("PartialViews/_TextInput", new InputModel<TextInputDto> {Control = (TextInputDto) input, ControlName = $"form.UserInput[{index}]."})
+			   }
 				else if (input is ISelectionInputDto)
-				{
-					@Html.Partial("PartialViews/_SelectionInput", new InputModel<SelectionInputDto> {Control = (SelectionInputDto) input, ControlName = "abc"})
+					{
+					@Html.Partial("PartialViews/_SelectionInput", new InputModel<SelectionInputDto> {Control = (SelectionInputDto) input, ControlName = $"form.UserInput[{index}]." })
 				}
 				else if (input is IScriptedSelectionInputDto)
 				{
-					@Html.Partial("PartialViews/_ScriptedSelectionInput", new InputModel<ScriptedSelectionInputDto> {Control = (ScriptedSelectionInputDto) input, ControlName = "abc"})
+					@Html.Partial("PartialViews/_ScriptedSelectionInput", new InputModel<ScriptedSelectionInputDto> {Control = (ScriptedSelectionInputDto) input, ControlName = $"form.UserInput[{index}]."})
 				}
 			</div>
 		</div>

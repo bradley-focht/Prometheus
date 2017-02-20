@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Common.Dto;
-using Prometheus.WebUI.Helpers.Enums;
+
 
 namespace Prometheus.WebUI.Models.ServiceRequest
 {
@@ -30,6 +30,8 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// Index of package that was just submitted
 		/// </summary>
 		public int CurrentIndex { get; set; }
+
+		public List<UserInputReturnModel> UserInput { get; set; }
 
 		public IEnumerable<ServiceRequestOptionDto> GetServiceRequestOptions()
 		{

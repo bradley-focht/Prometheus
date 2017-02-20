@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Common.Dto;
-using Common.Enums;
+﻿using Common.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequest
 {
@@ -12,9 +7,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 	/// </summary>
 	public class UserInputReturnModel
 	{
+		public string Id { get; set; }
 		public string Name { get; set; }
 		public string Value { get; set; }
-		public UserInputTypes ControlType { get; set; }
+		public UserInputTypes Type { get; set; }
 		public int InputId { get; set; }
 
 	}

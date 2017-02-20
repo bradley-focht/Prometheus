@@ -32,14 +32,14 @@
         <div class="dt-cell">Date Required</div>
         <div class="dd-cell">
             <div class="input-group date">
-                @Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date"})
+                @Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id= "formRequestedDate" })
                 <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
-            @Html.ValidationMessage("RequestedDate")
+            @Html.ValidationMessage("formRequestedDate")
 
             <script language="javascript" type="text/javascript">
                 $(function() {
-                    $('#RequestedDate')
+                    $('#formRequestedDate')
                         .datepicker({
                             autoclose: true,
                             format: "mm-dd-yyyy"
@@ -52,12 +52,12 @@
 <div class="dd-row">
     <div class="dt-cell">Comments</div>
     <div class="dd-cell">
-        @Html.TextArea("Comments", Model.Comments, new { @class = "ckeditor" })
+        @Html.TextArea("form.Comments", Model.Comments, new { @class = "ckeditor" })
         <div class="note">additional requests in comments will not be honoured</div>
     </div>
 </div>
 <div class="dd-row">
     <div class="dt-cell">Office-Use</div>
-    <div class="dd-cell">@Html.TextBox("OfficeUse", Model.OfficeUse, new { @class = "form-control" })</div>
+    <div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new { @class = "form-control" })</div>
 </div>
 </div>

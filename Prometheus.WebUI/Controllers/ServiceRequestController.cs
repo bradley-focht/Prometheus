@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
@@ -10,7 +9,6 @@ using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Models.ServiceRequest;
 using RequestService.Controllers;
 using ServicePortfolioService;
-using ServicePortfolioService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -42,15 +40,18 @@ namespace Prometheus.WebUI.Controllers
 
 
 		/// <summary>
-		/// Cancel an already started SR
+		/// Cancel an already started SR before it has been submitted for approval
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
+		[HttpPost]
 		public ActionResult CancelRequest(int id = 0)
 		{
-			//hell if i know what to do right now...
+			if (id == 0)
+				return RedirectToAction("Index", "ServiceRequestApproval");
 
-
+			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_ps.ModifyServiceRequest(new ServiceRequestDto {Id = id}, EntityModification.Delete);
 			return RedirectToAction("Index", "ServiceRequestApproval");
 		}
 
@@ -169,7 +170,7 @@ namespace Prometheus.WebUI.Controllers
 						{
 							_rs.ModifyServiceRequestOption((from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
 						}
-						else if (formDto != null && srDto != null)	//update condition
+						else if (formDto != null /* && srDto != null */)	//update condition
 						{
 							_rs.ModifyServiceRequestOption(srDto, EntityModification.Delete);
 							_rs.ModifyServiceRequestOption(formDto, EntityModification.Create);
@@ -192,12 +193,10 @@ namespace Prometheus.WebUI.Controllers
 				//TODO: Change state after saving
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
-
 			model.CurrentIndex = submit;
 
 			model.Mode = ServiceRequestMode.Selection;
 			return RedirectToAction("Form", new { id = model.ServiceRequestId, index = model.CurrentIndex, mode = model.Mode });
-
 		}
 
 		/// <summary>
@@ -247,7 +246,5 @@ namespace Prometheus.WebUI.Controllers
 
 			return View("ServiceRequest", model);
 		}
-
-
 	}
 }

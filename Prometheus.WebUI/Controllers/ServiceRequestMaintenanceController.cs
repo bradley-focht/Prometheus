@@ -307,12 +307,14 @@ namespace Prometheus.WebUI.Controllers
 					option.Picture = tempOption.Picture;
 					option.PictureMimeType = tempOption.PictureMimeType;
 				}
-			}  
+			}
 			/*end of dealing with pictures */
+			/* deal with user inputs */
+			_ps.RemoveInputsFromServiceOption(option.Id, _ps.GetInputsForServiceOptions(new[] {new ServiceOptionDto {Id = option.Id} }));
 			if (userInputs != null)
 			{
 				var inputGroup = UserInputHelper.MakeInputGroup(userInputs);
-				_ps.AddInputsToServiceOption(_dummyId, inputGroup);
+				_ps.AddInputsToServiceOption(option.Id, inputGroup);
 			}
 			try
 				{
@@ -899,7 +901,7 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("ShowUserInput", new { id = 0 });
 		}
 		
-		public ActionResult GetOptionUserInputsDropDown(int id)
+		public ActionResult GetOptionUserInputsDropDown(int id, bool readOnly=false)
 		{
 			_ps = InterfaceFactory.CreatePortfolioService(_dummyId);
 			List<SelectListItem> inputDropDownList = new List<SelectListItem>();
@@ -917,27 +919,50 @@ namespace Prometheus.WebUI.Controllers
 				inputs.AddRange(from i in scriptedInputs select (IUserInput)i);
 			inputs = inputs.OrderByDescending(i => i.DisplayName).ToList();         //sort all the data by display name
 																					//need to find already selected items
-
+			//user inputs for this user input
+			IInputGroupDto optionInputs = _ps.GetInputsForServiceOptions(new List<IServiceOptionDto> {new ServiceOptionDto {Id = id}});
 
 			//now convert it to a select list for the drop down list
+
 			foreach (var input in inputs)
 			{
+				var selected = false;		//drop down list selection
 				string type = null;
 				if (input is TextInputDto)
+				{
 					type = "textInput";
+					if (optionInputs.TextInputs.Any() && (from i in optionInputs.TextInputs where i.Id == input.Id select true).FirstOrDefault())
+						selected = true;
+				}
 				else if (input is SelectionInputDto)
+				{
 					type = "selectionInput";
+					if (optionInputs.SelectionInputs.Any() && (from i in optionInputs.SelectionInputs where i.Id == input.Id select true).FirstOrDefault())
+						selected = true;
+				}
 				else if (input is ScriptedSelectionInputDto)
+				{
 					type = "scriptedSelectionInput";
+					if (optionInputs.ScriptedSelectionInputs.Any() && (from i in optionInputs.ScriptedSelectionInputs where i.Id == input.Id select true).FirstOrDefault())
+						selected = true;
+				}
 
 				inputDropDownList.Add(new SelectListItem
 				{
 					Value = $"{type}_{input.Id}",
-					Text = input.DisplayName
+					Text = input.DisplayName, 
+					Selected = selected
 				});
-			}
-			
+			}		
 			return View("OptionUserInputsDropDown", inputDropDownList);
+		}
+
+		public ActionResult GetOptionUserInputsText(int id)
+		{
+			_ps = InterfaceFactory.CreatePortfolioService(_dummyId);
+			var model = _ps.GetInputsForServiceOptions(new List<IServiceOptionDto> {new ServiceOptionDto {Id = id}});
+
+			return View(model);
 		}
 
 	}

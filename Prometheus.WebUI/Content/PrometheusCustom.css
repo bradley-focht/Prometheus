@@ -989,3 +989,7 @@
     background-color: transparent;
     color: transparent;
 }
+
+.hide-me {
+	display: none;
+}

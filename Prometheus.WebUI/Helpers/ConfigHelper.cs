@@ -60,5 +60,19 @@ namespace Prometheus.WebUI.Helpers
 	    {
 		    return ConfigurationManager.AppSettings["Delimiter"];
 	    }
+
+	    public static string GetScTopAmount()
+	    {
+			return ConfigurationManager.AppSettings["ScTopAmount"];
+		}
+
+		/// <summary>
+		/// Current Domain
+		/// </summary>
+		/// <returns></returns>
+	    public static string GetDomain()
+	    {
+		    return ConfigurationManager.AppSettings["Domain"];
+	    }
     }
 }

@@ -88,103 +88,66 @@
 	</div>
 
 
-	<script language="javascript" type="text/javascript">
+<script language="javascript" type="text/javascript">
+function UpdateOptions() {
+	var inputs = [];
+	@foreach (var input in Model.GetUserInputList())
+	{
+		<text>inputs[inputs.length] = { name: '@(StringHelper.RemoveSpaces(input.DisplayName))', used: false };</text>
+	}
 
-		function UpdateOptions(id) {
-			var input = document.getElementById("quantity_" + id);
-			var inputs = [];
-			@foreach (var input in Model.GetUserInputList())
-			{
-				<text>
-			inputs[inputs.length] = {name:'@(StringHelper.RemoveSpaces(input.DisplayName))', used:false};
-			</text>
-			}
-			@foreach (var option in Model.GetOptions())
-			{
-				<text>
-			if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true)
-			{
-				@foreach (var input in option.UserInputs.GetUserInputs())
-					{
-						<text>
-				var j;
-				for (j = 0; j < inputs.length; j++) {
-					if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
-						inputs[j].used = true;
-					}
-				}
-				</text>
-					}
-			}
-			</text>
-			}
+	@foreach (var option in Model.GetOptions())
+	{
+		<text>
+	var q;
+	if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true) {
+		document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = false;
+		document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = false;
+		q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
+		q.disabled = false;
+		if (q.value == 0) {
+			 q.value = 1;
+		}
+		q.min = 1;
 
-			if (document.getElementById("option_" + id).checked) {
-				input.value = 1;
-				input.min = 1;
-				input.max = 99;
-
-				@foreach (var option in Model.GetOptions())
+			var j;
+			for (j = 0; j < inputs.length; j++) {
+				@foreach (var input in option.UserInputs.UserInputs)
 				{
 					<text>
-				if (id === @(option.ServiceOption.Id))
-				{
-					@foreach (var input in option.UserInputs.GetUserInputs())
-						{
-							<text>
-						var j;
-				for (j = 0; j < inputs.length; j++) {
-					if (inputs[j].name == '@(StringHelper.RemoveSpaces(input.DisplayName))') {
-						inputs[j].used = true;
-					}
+				if (inputs[j].name === '@(StringHelper.RemoveSpaces(input.DisplayName))') {
+					inputs[j].used = true;
+					continue;
 				}
 				</text>
-					}
-
 			}
-			</text>
-				}
+		}
 
+		} else if (document.getElementById("option_@(option.ServiceOption.Id)").checked === false) {
+			document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = true;
+			document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = true;
+			q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
+			q.disabled = true
+			q.value = 0;
 
+	}
+		</text>
+	}
 
+	var i;
+	for (i = 0; i < inputs.length; i++) {
+		if (inputs[i].used === true) {
+			document.getElementById("div_" + inputs[i].name).style.display = '';
+			document.getElementById(inputs[i].name).value = '';
 		} else {
-				input.value = 0;
-		input.min = 0;
-		input.max = 0;
+			document.getElementById("div_" + inputs[i].name).style.display = 'none';
+
 		}
+	}
+};
 
-		var i;
-		for (i = 0; i < inputs.length; i++) {
-			if (!inputs[i].used) {
-				document.getElementById('div_' + inputs[i].name).style.display = 'none';
-				document.getElementById(inputs[i].name).value = '';
-			} else {
-				document.getElementById('div_' + inputs[i].name).style.display = '';
-			}
-		}
-			return;
-		}
-
-		$(document).ready(function(){
-
-
-
-			@if (Model.ServiceRequest.ServiceRequestOptions != null)
-			{
-			foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
-			{
-				<text>
-				document.getElementById('option_@(option.ServiceOptionId)').checked = true;
-			UpdateOptions(@option.ServiceOptionId);
-
-
-</text>
-			}
-			}
-
-		});
-
-
-
-	</script>
+$(document).ready(function() {
+	UpdateOptions();
+});
+</script>
 }

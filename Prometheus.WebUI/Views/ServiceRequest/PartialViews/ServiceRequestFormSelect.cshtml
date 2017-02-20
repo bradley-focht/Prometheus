@@ -17,8 +17,8 @@
 							@Html.TextBox("form.Quantity", "0", new {min = "0", max = "99", @class = "form-control numberSelect", id = $"quantity_{option.Id}"})
 
 							<div class="input-group-btn-vertical">
-								<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-								<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+								<button class="btn btn-default" type="button" id="quantity_up_@(option.Id)"><i class="fa fa-caret-up"></i></button>
+								<button class="btn btn-default" type="button" id="quantity_down_@(option.Id)"><i class="fa fa-caret-down"></i></button>
 							</div>
 						</div>
 					}
@@ -29,7 +29,7 @@
 				</div>
 				<div class="dd-cell-base" style="width: 91%">
 					<div class="checkbox checkbox-primary">
-						<input value="@option.Id" type="checkbox" id="option_@(option.Id)" name="form.Options" onchange="UpdateOptions(@option.Id)">
+						<input value="@option.Id" type="checkbox" id="option_@(option.Id)" name="form.Options" onchange="UpdateOptions()">
 						<label for="option_@(option.Id)">
 							@option.Name
 						</label>
