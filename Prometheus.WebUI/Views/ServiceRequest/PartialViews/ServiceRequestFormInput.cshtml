@@ -2,6 +2,9 @@
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Models.Shared
 @model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
+	@{
+		int index = 0;
+	}
 
 <div class="dd tq-width">
 	@foreach (var input in Model.GetUserInputList())
@@ -11,7 +14,7 @@
 			<div class="dd-cell">
 				@if (input is ITextInputDto)
 				{
-					@Html.Partial("PartialViews/_TextInput", new InputModel<TextInputDto> {Control = (TextInputDto) input, ControlName = "abc"})
+					@Html.Partial("PartialViews/_TextInput", new InputModel<TextInputDto> {Control = (TextInputDto) input, ControlName = $"form."})
 				}
 				else if (input is ISelectionInputDto)
 				{
@@ -23,5 +26,6 @@
 				}
 			</div>
 		</div>
+		index++;
 	}
 </div>

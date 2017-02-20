@@ -58,11 +58,11 @@ namespace Prometheus.WebUI.Controllers
 		/// <summary>
 		/// Save the info portion of a service request.
 		/// </summary>
-		/// <param name="serviceRequest"></param>
+		/// <param name="form"></param>
 		/// <param name="submit">submit buttn id</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveInfo(ServiceRequestInfoReturnModel serviceRequest, int submit)
+		public ActionResult SaveInfo(ServiceRequestInfoReturnModel form, int submit)
 		{
 			ServiceRequestModel model = new ServiceRequestModel();      //data to be sent to next view
 			if (!ModelState.IsValid)
@@ -74,14 +74,14 @@ namespace Prometheus.WebUI.Controllers
 			// data ok from here on
 			ServiceRequestDto request = new ServiceRequestDto
 			{
-				Id = serviceRequest.Id,
+				Id = form.Id,
 				RequestedByUserId = int.Parse(Session["Id"].ToString()),
-				Comments = serviceRequest.Comments,
-				Officeuse = serviceRequest.OfficeUse,
+				Comments = form.Comments,
+				Officeuse = form.OfficeUse,
 				SubmissionDate = DateTime.Now,
 				CreationDate = DateTime.Now,
-				ServiceOptionId = serviceRequest.ServiceOptionId,
-				RequestedForDate = serviceRequest.RequestedDate
+				ServiceOptionId = form.ServiceOptionId,
+				RequestedForDate = form.RequestedDate
 			};
 
 			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
@@ -145,7 +145,7 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP TWO - figure out what category to work with */
 			var currentCategory =
 				_ps.GetServiceOptionCategory(
-					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategoryId);
+					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 
 			/* STEP THREE - add/remove options in the SR */
 			{
@@ -238,8 +238,7 @@ namespace Prometheus.WebUI.Controllers
 					optionInputList.Add(new ServiceOptionTag
 					{
 						ServiceOption = option,
-						UserInputs =
-						_ps.GetInputsForServiceOptions(new List<IServiceOptionDto> { option })
+						UserInputs = _ps.GetInputsForServiceOptions(new List<IServiceOptionDto> { option })
 					});
 				}
 			}

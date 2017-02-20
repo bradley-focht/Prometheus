@@ -49,14 +49,13 @@
                         @Html.Raw(property.Model)
                     </div>    break;
                 case "ServiceOptions":
-                    var options = property.Model as List<ServiceOptionDto>;
+                    var options = (IEnumerable<IServiceOptionDto>)property.Model;
                     if (options != null)
                     {
                         foreach (var option in options)
                         {
-                            <div>@Html.ActionLink(option.Name, "ShowServiceOption", new { id = option.Id, type = CatalogableTypes.Option })</div>}
-
-                    }
+                            <div>@Html.ActionLink(option.Name, "ShowServiceOption", new { id = option.Id })</div>}
+						}
                     break;
                 default:
                     <div class="dd-cell">@Html.Raw(property.Model)</div>    break;

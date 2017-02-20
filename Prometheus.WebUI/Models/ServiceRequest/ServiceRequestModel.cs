@@ -90,10 +90,23 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 					{
 						inputList.AddRange(option.UserInputs.UserInputs);
 					}
+					inputList = inputList.GroupBy(m => m.DisplayName).Select(g=>g.First()).ToList();	//keep unique only
 					return inputList;
 				}
-				return null;
+				return inputList;
 			}
+		}
+
+		/// <summary>
+		/// Avoid null pointer exceptions in razor
+		/// </summary>
+		/// <returns></returns>
+		public List<ServiceOptionTag> GetOptions()
+		{
+			if (UserInputs == null)
+				return new List<ServiceOptionTag>();
+			
+			return UserInputs;
 		}
 	}
 }

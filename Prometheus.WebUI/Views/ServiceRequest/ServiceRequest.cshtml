@@ -15,10 +15,10 @@
 
 @using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
 {
-    <input type="hidden" name="ServiceOptionId" value="@Model.ServiceOptionId" />
-    <input type="hidden" name="Id" value="@Model.ServiceRequestId" />
-    <input type="hidden" name="CurrentIndex" value="@Model.CurrentIndex"/>
-	<input type="hidden" name="Mode" value="@Model.Mode"/>
+    <input type="hidden" name="form.ServiceOptionId" value="@Model.ServiceOptionId" />
+    <input type="hidden" name="form.Id" value="@Model.ServiceRequestId" />
+    <input type="hidden" name="form.CurrentIndex" value="@Model.CurrentIndex"/>
+	<input type="hidden" name="form.Mode" value="@Model.Mode"/>
 
     <div class="panel panel-default flex-container-row make-space-bottom">
         <div class="dd full-width">
@@ -99,7 +99,7 @@
 			inputs[inputs.length] = {name:'@(StringHelper.RemoveSpaces(input.DisplayName))', used:false};
 			</text>
 			}
-			@foreach (var option in Model.UserInputs)
+			@foreach (var option in Model.GetOptions())
 			{
 				<text>
 			if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true)
@@ -124,7 +124,7 @@
 				input.min = 1;
 				input.max = 99;
 
-				@foreach (var option in Model.UserInputs)
+				@foreach (var option in Model.GetOptions())
 				{
 					<text>
 				if (id === @(option.ServiceOption.Id))

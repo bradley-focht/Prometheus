@@ -52,6 +52,9 @@
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Dto\InputGroupDto.cs" />
     <Compile Include="Dto\IInputGroupDto.cs" />
+    <Compile Include="Dto\IScriptDto.cs" />
+    <Compile Include="Dto\IServiceRequestUserInput.cs" />
+    <Compile Include="Dto\ScriptDto.cs" />
     <Compile Include="Dto\ServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\IServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionScriptedSelectionInputDto.cs" />
@@ -137,6 +140,8 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="ServiceCatalogEntities.cd" />
+    <None Include="UsersAndRoles.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

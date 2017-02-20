@@ -14,7 +14,7 @@
 					@if (category.Quantifiable)
 					{
 						<div class="input-group spinner" style="max-width: 50px;">
-							@Html.TextBox("Quantity", "0", new {min = "0", max = "99", @class = "form-control numberSelect", id = $"quantity_{option.Id}"})
+							@Html.TextBox("form.Quantity", "0", new {min = "0", max = "99", @class = "form-control numberSelect", id = $"quantity_{option.Id}"})
 
 							<div class="input-group-btn-vertical">
 								<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
@@ -24,12 +24,12 @@
 					}
 					else
 					{
-						<input type="hidden" id="quantity_@(option.Id)" value="0" />
+						<input type="hidden" id="quantity_@(option.Id)" name="form.Quantity" value="1" />
 					}
 				</div>
 				<div class="dd-cell-base" style="width: 91%">
 					<div class="checkbox checkbox-primary">
-						<input value="@option.Id" type="checkbox" id="option_@(option.Id)" name="Options" onchange="UpdateOptions(@option.Id)">
+						<input value="@option.Id" type="checkbox" id="option_@(option.Id)" name="form.Options" onchange="UpdateOptions(@option.Id)">
 						<label for="option_@(option.Id)">
 							@option.Name
 						</label>

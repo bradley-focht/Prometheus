@@ -378,7 +378,7 @@
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestNavigationModel.cs" />
     <Compile Include="Models\ServiceRequest\UserInputModel.cs" />
-    <Compile Include="Models\ServiceRequest\UserInputTag.cs" />
+    <Compile Include="Models\ServiceRequest\UserInputReturnModel.cs" />
     <Compile Include="Models\Service\DocumentsTableModel.cs" />
     <Compile Include="Models\Service\OptionsTableModel.cs" />
     <Compile Include="Models\Service\ConfirmDeleteSectionItemModel.cs" />
