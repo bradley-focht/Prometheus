@@ -118,7 +118,14 @@ namespace Prometheus.WebUI.Controllers
 					{
 						i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList());
 					}
-					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
+					int take;
+					try
+					{
+						take = int.Parse(ConfigHelper.GetScTopAmount());
+					}
+					catch(Exception) { take = 3; }
+
+					i.Options = i.Options.OrderBy(o => o.Name).Take(take).ToList();
 
 					model.CatalogItems.Add(i);
 				}

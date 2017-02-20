@@ -1,0 +1,9 @@
+﻿@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
+<div>
+	@foreach (var item in Model.Package.ServiceOptionCategoryTags)
+	{
+		@item.ServiceOptionCategory.Name
+
+	}
+
+</div>

@@ -1,0 +1,26 @@
+﻿@using Common.Dto
+@model IInputGroupDto
+@if (Model != null)
+{
+	foreach (var input in Model.UserInputs)
+	{
+		string inputType = null;
+		if (input is ITextInputDto)
+		{
+			inputType = "Text";
+		}
+		else if (input is IScriptedSelectionInputDto)
+		{
+			inputType = "ScriptedSelection";
+		}
+		else if (input is ISelectionInputDto)
+		{
+			inputType = "Selection";
+		}
+
+		<div>
+			@Html.ActionLink(input.DisplayName, "ShowUserInput", new { id = input.Id, type = inputType })
+		</div>
+	}
+
+}

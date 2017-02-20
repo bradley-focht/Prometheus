@@ -3,8 +3,6 @@
 @model dynamic
 
 
-
-<div class="dd">
     @foreach (var property in ViewData.ModelMetadata.Properties)
     {
         if (property.Model == null)
@@ -20,9 +18,6 @@
             case "DateCreated":
             case "DateUpdated":
             case "CreatedByUserId":
-            case "TextInputs":
-            case "ScriptedSelectionInputs":
-            case "SelectionInputs":
             case "UpdatedByUserId":
             case "PictureMimeType":
             case "Popularity":
@@ -62,4 +57,3 @@
             }
         </div>
     }
-</div>

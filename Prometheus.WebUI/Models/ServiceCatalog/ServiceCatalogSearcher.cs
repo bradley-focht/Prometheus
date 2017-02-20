@@ -4,10 +4,7 @@ using System.Linq;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
-using RequestService;
 using RequestService.Controllers;
-using UserManager;
-using UserManager.Controllers;
 
 namespace Prometheus.WebUI.Models.ServiceCatalog
 {
@@ -44,7 +41,7 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 			}
 			//since search is performed on names only, there isn't much point weighting results. 
 			//sorting first by name only
-			searchresults = searchresults.OrderByDescending(a => a.Name).ToList();
+			searchresults = searchresults.OrderByDescending(a => a.Popularity).ToList();
 			return searchresults;
 		}
 

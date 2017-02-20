@@ -21,7 +21,9 @@
 <div>Rejecting? then fill this out</div>
 <div>@Html.TextArea("RejectNotes", "", new { @class = "ckeditor" })</div>
 
-
+<div> make this collapsable?
+@Html.Partial("PartialViews/ServiceRequestSummary", Model.ServiceRequest)
+</div>
 
 
 <div class="flex-container-col">
