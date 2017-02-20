@@ -12,17 +12,20 @@ namespace Common.Dto
 		/// Return a list of all associated user inputs in one, nice, list
 		/// </summary>
 		/// <returns></returns>
-		public List<IUserInput> GetUserInputs()
+		public IEnumerable<IUserInput> UserInputs
 		{
-			List<IUserInput> userInputs = new List<IUserInput>();
-			if (TextInputs!=null)
-				userInputs.AddRange(TextInputs);
-			if(SelectionInputs!=null)
-				userInputs.AddRange(SelectionInputs);
-			if(ScriptedSelectionInputs!=null)
-				userInputs.AddRange(ScriptedSelectionInputs);
+			get
+			{
+				List<IUserInput> userInputs = new List<IUserInput>();
+				if (TextInputs != null)
+					userInputs.AddRange(TextInputs);
+				if (SelectionInputs != null)
+					userInputs.AddRange(SelectionInputs);
+				if (ScriptedSelectionInputs != null)
+					userInputs.AddRange(ScriptedSelectionInputs);
 
-			return userInputs;
+				return userInputs;
+			}
 		}
 	}
 }

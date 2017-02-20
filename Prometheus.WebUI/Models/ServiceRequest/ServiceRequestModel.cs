@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Helpers.Enums;
@@ -90,7 +88,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 				{
 					foreach (var option in UserInputs)
 					{
-						inputList.AddRange(option.UserInputs.GetUserInputs());
+						inputList.AddRange(option.UserInputs.UserInputs);
 					}
 					inputList = inputList.GroupBy(m => m.DisplayName).Select(g=>g.First()).ToList();	//keep unique only
 					return inputList;
