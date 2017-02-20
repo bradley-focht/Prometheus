@@ -1,11 +1,12 @@
 ﻿namespace Common.Enums
 {
 	/// <summary>
-	/// Change these states later but this is what I thought of for now
+	/// Applicable states for a Service Request to be in
 	/// </summary>
 	public enum ServiceRequestState
 	{
-		PendingApproval,
+		Incomplete,
+		Submitted,
 		Approved,
 		Cancelled,
 		Denied,

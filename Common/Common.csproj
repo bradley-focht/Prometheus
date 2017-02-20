@@ -114,6 +114,7 @@
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\TextInputDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
+    <Compile Include="Enums\ApprovalResult.cs" />
     <Compile Include="Enums\ServiceRequestState.cs" />
     <Compile Include="Enums\UserInputTypes.cs" />
     <Compile Include="Enums\Entities\CatalogableTypes.cs" />
@@ -130,6 +131,7 @@
     <Compile Include="Enums\Permissions\ServiceRequestSubmission.cs" />
     <Compile Include="Enums\Permissions\SupportCatalog.cs" />
     <Compile Include="Enums\Permissions\UserRoleAssignment.cs" />
+    <Compile Include="Exceptions\ServiceRequestStateException.cs" />
     <Compile Include="Exceptions\PermissionException.cs" />
     <Compile Include="Exceptions\EntityNotFoundException.cs" />
     <Compile Include="Exceptions\ModificationException.cs" />
