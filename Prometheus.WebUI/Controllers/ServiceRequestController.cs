@@ -96,8 +96,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 			if (submit >= 9999)
 			{
-				//TODO: Change state after saving
-				return RedirectToAction("Index", "ServiceRequestApproval");
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
 			}
 
 			return RedirectToAction("Form", new { id = request.Id, index = submit });

@@ -1,5 +1,4 @@
 ﻿@using Prometheus.WebUI.Helpers
-@using Prometheus.WebUI.Helpers.Enums
 @using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 @{
@@ -21,18 +20,23 @@
 	<input type="hidden" name="form.Mode" value="@Model.Mode"/>
 
     <div class="panel panel-default flex-container-row make-space-bottom">
-        <div class="dd full-width">
+        <div class="dd">
             <div class="dd-row">
-                <div class="dt-font">Service Request @Model.Package.Name</div>
-                <div class="dt-font">Status @Model.ServiceRequest.State</div>
+                <div class="dt-font">Service Request </div>
+	            <div class="dd-cell-base">@Model.Package.Name</div>
+
             </div>
-            <div class="dd-row">
-                <div class="dt-cell"></div>
-                @if (Model.ServiceRequestId > 0)
-                {
-                    <div class="dt-cell-font">Service Request Id @Model.ServiceRequestId</div>
-                }
-            </div>
+	        <div class="dd-row">
+		        @if (Model.ServiceRequestId > 0)
+		        {
+			        <div class="dt-font">Id</div>
+			        <div class="dd-cell-base">@Model.ServiceRequestId</div>
+		        }
+	        </div>
+	        <div class="dd-row">
+		        <div class="dt-font">Status</div>
+				<div class="dd-cell-base">@Model.ServiceRequest.State</div>
+	        </div>
         </div>
     </div>
 
