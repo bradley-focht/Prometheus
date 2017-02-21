@@ -15,7 +15,7 @@ else
 		<input type="hidden" name="@(Model.ControlName)InputId" value="@(Model.Control.Id))" />
 		@Html.TextBox(Model.ControlName + "Value", null, new {@class = "form-control", id = StringHelper.RemoveSpaces(Model.Control.DisplayName)})
 		<span class="input-group-btn">
-            <span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
+            <a class="btn btn-primary" data-html="true" data-toggle="tooltip" data-placement="top" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></a>
         </span>
 	</div>
 
