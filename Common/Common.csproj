@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
+    <Compile Include="Dto\ApprovalDto.cs" />
+    <Compile Include="Dto\IApprovalDto.cs" />
     <Compile Include="Dto\InputGroupDto.cs" />
     <Compile Include="Dto\IInputGroupDto.cs" />
     <Compile Include="Dto\IScriptDto.cs" />
