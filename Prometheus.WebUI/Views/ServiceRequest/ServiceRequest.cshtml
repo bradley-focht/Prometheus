@@ -23,18 +23,14 @@
     <div class="panel panel-default flex-container-row make-space-bottom">
         <div class="dd full-width">
             <div class="dd-row">
-                <div class="dt-cell">Service Request</div>
-                <div class="dd-cell-multicol">@Model.Package.Name</div>
-                <div class="dt-cell">Status</div>
-                <div class="dd-cell-multicol">@Model.ServiceRequest.State</div>
+                <div class="dt-font">Service Request @Model.Package.Name</div>
+                <div class="dt-font">Status @Model.ServiceRequest.State</div>
             </div>
             <div class="dd-row">
                 <div class="dt-cell"></div>
-                <div class="dd-cell-multicol"></div>
                 @if (Model.ServiceRequestId > 0)
                 {
-                    <div class="dt-cell">Service Request Id</div>
-                    <div class="dd-cell-multicol">@Model.ServiceRequestId</div>
+                    <div class="dt-cell-font">Service Request Id @Model.ServiceRequestId</div>
                 }
             </div>
         </div>
@@ -69,16 +65,17 @@
 				</div>
 			}
 
-
-			<div>
-				<button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>
-			</div>
-
+			@if (Model.CurrentIndex < (Model.Package.ServiceOptionCategoryTags.Count - 1))
+			{
+				<div>
+					<button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>
+				</div>
+			}
 		</div>
 
 		<div class="panel-footer">
 			<div class="float-right-div">
-				@Html.ActionLink("Cancel Request", "CancelRequest", new {id = Model.ServiceRequestId}, new {@class = "btn btn-danger"})
+				<button type="submit" value="99999" name="submit" class="btn btn-danger">Cancel Request</button>
 				@if (Model.ServiceRequestId > 0)
 				{
 					<button type="submit" value="9999" name="submit" class="btn btn-primary">Submit Request</button>

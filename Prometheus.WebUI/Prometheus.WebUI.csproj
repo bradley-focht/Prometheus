@@ -362,8 +362,11 @@
     <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
+    <Compile Include="Models\ServiceRequestApproval\DisplayListModelItem.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestApprovalControls.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestApprovalModel.cs" />
+    <Compile Include="Models\ServiceRequestApproval\DisplayListModel.cs" />
+    <Compile Include="Models\ServiceRequestApproval\ServiceRequestStateChangeModel.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestTableItemModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ConfirmDeleteModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\PackageModel.cs" />
@@ -531,8 +534,8 @@
     <Content Include="Views\ServiceRequestApproval\PartialViews\ServiceRequestApprovalControls.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestFormInput.cshtml" />
     <Content Include="Views\Shared\PartialViews\_ScriptedSelectionInput.cshtml" />
-    <Content Include="Views\ServiceRequest\PartialViews\ServiceRequestSummary.cshtml" />
-    <Content Include="Views\ServiceRequest\ConfirmServiceRequestStateChange.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_ServiceRequestSummary.cshtml" />
+    <Content Include="Views\ServiceRequestApproval\ConfirmServiceRequestStateChange.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetOptionUserInputsText.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

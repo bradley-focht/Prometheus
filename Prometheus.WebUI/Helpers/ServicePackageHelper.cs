@@ -32,11 +32,15 @@ namespace Prometheus.WebUI.Helpers
                 package = new ServiceRequestPackageDto();
                 package.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
                     //it consists of just the option category
-                package.ServiceOptionCategoryTags.Add(
+	            int categoryId = portfolioService.GetServiceOption(optionId).ServiceOptionCategoryId;
+
+				package.ServiceOptionCategoryTags.Add(
                     new ServiceOptionCategoryTagDto
-                    { ServiceOptionCategory = portfolioService.GetServiceOptionCategory(
-                                portfolioService.GetServiceOption(optionId).ServiceOptionCategoryId)
+                    {
+	                    ServiceOptionCategory = portfolioService.GetServiceOptionCategory(categoryId), 
+	                    ServiceOptionCategoryId = categoryId
                     });
+				
             }
 
             package.Name = package.ServiceOptionCategoryTags.First().ServiceOptionCategory.Name;

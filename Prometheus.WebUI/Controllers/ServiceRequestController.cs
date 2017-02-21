@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
+using Common.Enums;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
@@ -38,24 +39,6 @@ namespace Prometheus.WebUI.Controllers
 			return View("ServiceRequest", model);
 		}
 
-
-		/// <summary>
-		/// Cancel an already started SR before it has been submitted for approval
-		/// </summary>
-		/// <param name="id"></param>
-		/// <returns></returns>
-		[HttpPost]
-		public ActionResult CancelRequest(int id = 0)
-		{
-			if (id == 0)
-				return RedirectToAction("Index", "ServiceRequestApproval");
-
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
-			_ps.ModifyServiceRequest(new ServiceRequestDto {Id = id}, EntityModification.Delete);
-			return RedirectToAction("Index", "ServiceRequestApproval");
-		}
-
-
 		/// <summary>
 		/// Save the info portion of a service request.
 		/// </summary>
@@ -65,6 +48,11 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveInfo(ServiceRequestInfoReturnModel form, int submit)
 		{
+			if (submit == 9999 && form.Id == 0)
+			{
+				return RedirectToAction("Index", "ServiceRequestApproval");
+			}
+
 			ServiceRequestModel model = new ServiceRequestModel();      //data to be sent to next view
 			if (!ModelState.IsValid)
 			{
@@ -102,6 +90,10 @@ namespace Prometheus.WebUI.Controllers
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved Service Request";
+			if (submit >= 99999)
+			{
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
+			}
 			if (submit >= 9999)
 			{
 				//TODO: Change state after saving

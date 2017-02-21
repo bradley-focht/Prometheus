@@ -1,0 +1,42 @@
+﻿@using Common.Enums
+@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestStateChangeModel
+@{
+	ViewBag.Title = "Service Request";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("Service Request", $"ServiceRequest/Form/{Model.ServiceRequestModel.ServiceRequest.Id}/-1/Selection"),
+		new KeyValuePair<string, string>("Confirm ? change ", "#")
+	};
+
+}
+
+<div class="title-div">Confirm
+@switch (Model.NextState)
+{
+	case ServiceRequestState.Cancelled:
+		<text>Cancelling Service Request</text>
+		break;
+		case ServiceRequestState.Approved:
+		<text>Submitting Service Request for Approval</text>
+		break;
+}
+</div>
+<div class="panel-div">
+	
+	<div>	
+		@Html.Partial("PartialViews/_ServiceRequestSummary", Model)
+	</div>
+	<div>Approver Comments</div>
+	<div>@Html.TextArea("RejectNotes", "", new { @class = "ckeditor" })</div>
+
+</div>
+<div class="flex-container-col">
+	<div class="panel-footer">
+		<div class="float-right-div">
+			@Html.ActionLink("Back", "Form", "ServiceRequest", null, new { @class = "btn btn-default btn-back" })
+			<input type="submit" value="?" class="btn btn-primary" />
+		</div>
+	</div>
+</div>
