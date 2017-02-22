@@ -1,4 +1,5 @@
-﻿using Common.Dto;
+﻿using System.Data.Entity;
+using Common.Dto;
 using Common.Enums;
 using Common.Exceptions;
 using DataService;
@@ -62,7 +63,7 @@ namespace RequestService
 			return request;
 		}
 
-		public IServiceRequestDto ApproveRequest(int userId, int requestId, ApprovalResult approval, string comments)
+		public IServiceRequestDto ApproveRequest(int userId, int requestId, ApprovalResult approvalResult, string comments)
 		{
 			IServiceRequestDto request = RequestFromId(requestId);
 
@@ -72,10 +73,43 @@ namespace RequestService
 					   string.Format("Cannot change the state of a Service Request to \"{0}\". " +
 									 "Service Request is in the \"{1}\" state and must be in the " +
 									 "\"{2}\" state to perform this action.", 
-									 approval, request.State, ServiceRequestState.Submitted));
+									 approvalResult, request.State, ServiceRequestState.Submitted));
 			}
-				
+
+			if (UserCanApproveRequest(userId, requestId))
+			{
+				using (var context = new PrometheusContext())
+				{
+					//Build and save approval transaction
+					Approval approval = new Approval()
+					{
+						ApproverId = userId,
+						Comments = comments,
+						RequestorId = request.RequestedByUserId,
+						ServiceRequestId = request.Id,
+						Result = approvalResult
+					};
+					context.Approvals.Add(approval);
+					context.SaveChanges(userId);
+					
+					//Change state of the entity
+					var requestEntity = context.ServiceRequests.Find(requestId);
+					requestEntity.State = approvalResult == ApprovalResult.Approved
+						? ServiceRequestState.Approved
+						: ServiceRequestState.Denied;
+					context.Entry(requestEntity).State = EntityState.Modified;
+					context.SaveChanges(userId);
+					request = ManualMapper.MapServiceRequestToDto(requestEntity);
+				}
+			}
+
 			return request;
+		}
+
+		private bool UserCanApproveRequest(int userId, int requestId)
+		{
+			//TODO: Do this Sean
+			return true;
 		}
 
 		public IServiceRequestDto FulfillRequest(int userId, int requestId, string comments)
