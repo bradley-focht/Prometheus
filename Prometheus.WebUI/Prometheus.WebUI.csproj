@@ -112,6 +112,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\favicon.ico" />
+    <Content Include="Content\Images\globe.png" />
     <Content Include="Content\Images\invest.png" />
     <Content Include="Content\Images\pad.png" />
     <Content Include="Content\Images\people-network.png" />

@@ -9,7 +9,7 @@ namespace Common.Dto
 		public int Id { get; set; }
 
         /// <summary>
-        /// For temporary use while SR is pending approval
+        /// Temporary use to rebuild a Service Package and have their option pre-selected
         /// </summary>
 		public int? ServiceOptionId { get; set; }
 

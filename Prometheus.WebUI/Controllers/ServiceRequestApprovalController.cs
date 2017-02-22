@@ -6,6 +6,7 @@ using Common.Enums;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Models.ServiceRequest;
 using Prometheus.WebUI.Models.ServiceRequestApproval;
+using RequestService;
 using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
@@ -14,9 +15,11 @@ namespace Prometheus.WebUI.Controllers
     {
         private IPortfolioService _ps;
         private readonly int _pageSize;
+	    private IRequestManager _rm;
 
         public ServiceRequestApprovalController()
         {
+	        _rm = InterfaceFactory.CreateRequestManager();
             try
             {
                 _pageSize = ConfigHelper.GetPaginationSize();
@@ -63,6 +66,40 @@ namespace Prometheus.WebUI.Controllers
             model.ServiceRequests = requests;
             return View(model);
         }
+
+	    /// <summary>
+	    /// performs a ServiceRequest State change
+	    /// </summary>
+	    /// <param name="id"></param>
+	    /// <param name="state"></param>
+	    /// <param name="message"></param>
+	    /// <returns></returns>
+	    public ActionResult ChangeState(int id, ServiceRequestState state, string message)
+		{
+			int userId;				 //user info
+			try { userId = int.Parse(Session["Id"].ToString()); }     //login is very required
+			catch(Exception) { return null; }
+
+		    try
+		    {
+			    switch (state)
+			    {
+				    case ServiceRequestState.Cancelled:
+					    _rm.CancelRequest(userId, id, message);
+					    break;
+			    }
+		    }
+		    catch (Exception exception)
+		    {
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to set Service Request to {state}, {exception}";
+				return RedirectToAction("Index");
+			}
+		    TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = $"Successfully {state} Service Request";
+			
+			return RedirectToAction("Index");
+		}
 
 		/// <summary>
 		/// Generic state change screen, will adjust to the state

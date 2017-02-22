@@ -35,7 +35,7 @@
                 @Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id= "formRequestedDate" })
                 <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
-            @Html.ValidationMessage("formRequestedDate")
+            @Html.ValidationMessage("form.RequestedDate")
 
             <script language="javascript" type="text/javascript">
                 $(function() {

@@ -14,10 +14,12 @@ namespace DataService.Models
         // see http://stackoverflow.com/questions/14062216/introducing-foreign-key-constraint-fk-dbo-models-dbo-makes-makeid-on-table-mo
         // prevent a cycle in a cascading delete
         // the fk is for temporary use until request is approved
+
+			//TODO: after Approval, wipe this field  (it is only used to create the SRS forms UI)
         public int? ServiceOptionId { get; set; }
 
 		public int RequestedByUserId { get; set; }
-		public string Comments { get; set; }    /*fields added by brad */
+		public string Comments { get; set; }   
 		public string Officeuse { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime? SubmissionDate { get; set; }

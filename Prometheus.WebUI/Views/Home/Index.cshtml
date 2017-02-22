@@ -87,15 +87,26 @@
                     }
                     @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanViewServiceDetails))
                     {
-                        <div class="flex-col content-cell">
-                            <div style="height: 80px;">
-                                <a href="@Url.Action("Index", "ServiceMaintenance")">
-                                    <img src="~/Content/Images/stack.png" alt="Service Maintenance" style="height: 70px; width: 75px;"/>
-                                </a>
-                            </div>
-                            <div>@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance", null, new {@class = "font-home-link"})</div>
-                        </div>
-                    }
+	                    <div class="flex-col content-cell">
+		                    <div style="height: 80px;">
+			                    <a href="@Url.Action("Index", "ServiceMaintenance")">
+				                    <img src="~/Content/Images/stack.png" alt="Service Maintenance" style="height: 70px; width: 75px;"/>
+			                    </a>
+		                    </div>
+		                    <div>@Html.ActionLink("Services Maintenance", "Index", "ServiceMaintenance", null, new {@class = "font-home-link"})</div>
+	                    </div>
+
+						<div class="flex-col content-cell">
+							<div style="height: 80px;">
+								<a href="@Url.Action("Index", "Script")">
+									
+								</a>
+							</div>
+							<div>@Html.ActionLink("Kim's Stuff goes here", "Index", "Script", null, new { @class = "font-home-link" })</div>
+						</div>
+
+
+					}
                 </div>
             </div>
         </div>

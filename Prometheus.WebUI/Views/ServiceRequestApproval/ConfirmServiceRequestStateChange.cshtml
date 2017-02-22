@@ -23,20 +23,28 @@
 		break;
 }
 </div>
-<div class="panel-div">
-	
-	<div>	
-		@Html.Partial("PartialViews/_ServiceRequestSummary", Model)
-	</div>
-	<div>Approver Comments</div>
-	<div>@Html.TextArea("RejectNotes", "", new { @class = "ckeditor" })</div>
 
-</div>
-<div class="flex-container-col">
-	<div class="panel-footer">
-		<div class="float-right-div">
-			@Html.ActionLink("Back", "Form", "ServiceRequest", null, new { @class = "btn btn-default btn-back" })
-			<input type="submit" value="?" class="btn btn-primary" />
+@using (Html.BeginForm($"ChangeState", "ServiceRequestApproval", FormMethod.Post))
+{
+	<div class="panel-div">
+		<div>
+			@Html.Partial("PartialViews/_ServiceRequestSummary", Model)
+		</div>
+		<div>Approver Comments if needed </div>
+		<div>@Html.TextArea("Message", "", new { @class = "ckeditor" })</div>
+
+	</div>
+	<input type="hidden" value="@Model.ServiceRequestModel.ServiceRequest.Id" name="id"/>
+	
+	<div class="flex-container-col">
+		<div class="panel-footer">
+			<div class="float-right-div">
+				@Html.ActionLink("Back", "Form", "ServiceRequest", null, new {@class = "btn btn-default btn-back"})
+				@if (Model.NextState == ServiceRequestState.Cancelled)
+				{
+					<button type="submit" value="@(ServiceRequestState.Cancelled)" name="state" class="btn btn-danger">Cancel</button>
+				}				
+			</div>
 		</div>
 	</div>
-</div>
+}

@@ -8,7 +8,7 @@
         catch { return; } /*abort rendering */
     }
 <div class="panel panel-default">
-	<div class="flex-row" style="justify-content: space-around">
+	<div class="flex-row" style="justify-content: space-around; padding: 10px;">
 
 		@if (Model.CatalogType == ServiceCatalogs.Business && UiPermissionHelper.HasPermission(userId, BusinessCatalog.CanViewCatalog))
 		{
