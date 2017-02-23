@@ -1,8 +1,8 @@
-﻿using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Common.Enums;
 
 namespace DataService.Models
 {
@@ -11,12 +11,12 @@ namespace DataService.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-        // see http://stackoverflow.com/questions/14062216/introducing-foreign-key-constraint-fk-dbo-models-dbo-makes-makeid-on-table-mo
-        // prevent a cycle in a cascading delete
-        // the fk is for temporary use until request is approved
+		// see http://stackoverflow.com/questions/14062216/introducing-foreign-key-constraint-fk-dbo-models-dbo-makes-makeid-on-table-mo
+		// prevent a cycle in a cascading delete
+		// the fk is for temporary use until request is approved
 
 			//TODO: after Approval, wipe this field  (it is only used to create the SRS forms UI)
-        public int? ServiceOptionId { get; set; }
+		public int? ServiceOptionId { get; set; }
 
 		public int RequestedByUserId { get; set; }
 		public string Comments { get; set; }   
@@ -35,5 +35,6 @@ namespace DataService.Models
 
 		public virtual ServiceOption ServiceOption { get; set; }
 		public virtual ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
+		public virtual ICollection<ServiceRequestUserInput> ServiceRequestUserInputs { get; set; }
 	}
 }

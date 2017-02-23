@@ -1,6 +1,6 @@
-﻿using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Common.Enums;
 
 namespace DataService.Models
 {
@@ -22,5 +22,6 @@ namespace DataService.Models
 
 		int? ServiceOptionId { get; set; }
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
+		ICollection<ServiceRequestUserInput> ServiceRequestUserInputs { get; set; }
 	}
 }

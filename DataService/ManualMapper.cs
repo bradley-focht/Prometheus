@@ -878,6 +878,15 @@ namespace DataService
 				}
 			}
 
+			List<IServiceRequestUserInputDto> serviceRequestInputs = new List<IServiceRequestUserInputDto>();
+			if (src.ServiceRequestUserInputs != null)
+			{
+				foreach (var userInput in src.ServiceRequestUserInputs)
+				{
+					serviceRequestInputs.Add(MapServiceRequestUserInputToDto(userInput));
+				}
+			}
+
 			return new ServiceRequestDto()
 			{
 				Id = src.Id,
@@ -889,9 +898,10 @@ namespace DataService
 				Officeuse = src.Officeuse,
 				RequestedByUserId = src.RequestedByUserId,
 				SubmissionDate = src.SubmissionDate,
-				ServiceRequestOptions = serviceRequestOptions,
 				RequestedForDate = src.RequestedForDate,
-				ServiceOptionId = src.ServiceOptionId
+				ServiceOptionId = src.ServiceOptionId,
+				ServiceRequestOptions = serviceRequestOptions,
+				ServiceRequestUserInputs = serviceRequestInputs
 			};
 		}
 

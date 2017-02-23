@@ -1,6 +1,6 @@
-﻿using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Common.Enums;
 
 namespace Common.Dto
 {
@@ -8,21 +8,21 @@ namespace Common.Dto
 	{
 		public int Id { get; set; }
 
-        /// <summary>
-        /// Temporary use to rebuild a Service Package and have their option pre-selected
-        /// </summary>
+		/// <summary>
+		/// Temporary use to rebuild a Service Package and have their option pre-selected
+		/// </summary>
 		public int? ServiceOptionId { get; set; }
 
-        /// <summary>
-        /// User Making the request, the requestor
-        /// </summary>
+		/// <summary>
+		/// User Making the request, the requestor
+		/// </summary>
 		public int RequestedByUserId { get; set; }
 		public string Comments { get; set; }    /*fields added by brad */
 
-        /// <summary>
-        /// In office use such as billing code
-        /// </summary>
-        public string Officeuse { get; set; }
+		/// <summary>
+		/// In office use such as billing code
+		/// </summary>
+		public string Officeuse { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime RequestedForDate { get; set; }
 		public DateTime? SubmissionDate { get; set; }
@@ -35,5 +35,6 @@ namespace Common.Dto
 		public int UpdatedByUserId { get; set; }
 
 		public virtual ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
+		public virtual ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
 	}
 }
