@@ -11,93 +11,96 @@ using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
-    public class ServiceRequestApprovalController : Controller
-    {
-        private IPortfolioService _ps;
-        private readonly int _pageSize;
-	    private IRequestManager _rm;
+	public class ServiceRequestApprovalController : Controller
+	{
+		private IPortfolioService _ps;
+		private readonly int _pageSize;
+		private IRequestManager _rm;
 
-        public ServiceRequestApprovalController()
-        {
-	        _rm = InterfaceFactory.CreateRequestManager();
-            try
-            {
-                _pageSize = ConfigHelper.GetPaginationSize();
-            }
-            catch (Exception) { _pageSize = 12; }       //just in case
-        }
-        
-		/// <summary>
-        /// display the home/portal page
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index(string filterBy, string filterArgs, int pageId = 0)
-        {
-            int userId;     //user info
-            try { userId = int.Parse(Session["Id"].ToString()); }                   //login is required
-            catch (Exception) { return RedirectToAction("Index", "UserAccount");  }  //some login issue
-
-            ServiceRequestApprovalModel model = new ServiceRequestApprovalModel {Controls = new ServiceRequestApprovalControls {CurrentPage = pageId} };
-
-            _ps = InterfaceFactory.CreatePortfolioService(userId);
-            List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
-
-            var srList = _ps.GetServiceRequestsForRequestorId(userId).ToList();      //for pagination
-            if (srList.Count > _pageSize)
-            {
-                model.Controls.TotalPages = (srList.Count + _pageSize - 1) / _pageSize;
-                srList = srList.Skip(_pageSize * pageId).Take(_pageSize).ToList();
-            }
-
-            foreach (var item in srList)
-            {
-                if (item.ServiceOptionId != null)       //if null than this isn't an SR that can be reconstructed in a form
-                {
-                    requests.Add(new ServiceRequestTableItemModel
-                    {
-                        Id = item.Id,
-                        State = item.State,
-                        PackageName = ServicePackageHelper.GetPackage(_ps, item.ServiceOptionId).Name,
-                        DateRequired = item.RequestedForDate,
-                        DateSubmitted = item.SubmissionDate
-                    });
-                }
-            }
-            model.ServiceRequests = requests;
-            return View(model);
-        }
-
-	    /// <summary>
-	    /// performs a ServiceRequest State change
-	    /// </summary>
-	    /// <param name="id"></param>
-	    /// <param name="state"></param>
-	    /// <param name="message"></param>
-	    /// <returns></returns>
-	    public ActionResult ChangeState(int id, ServiceRequestState state, string message)
+		public ServiceRequestApprovalController()
 		{
-			int userId;				 //user info
-			try { userId = int.Parse(Session["Id"].ToString()); }     //login is very required
-			catch(Exception) { return null; }
+			_rm = InterfaceFactory.CreateRequestManager();
+			try
+			{
+				_pageSize = ConfigHelper.GetPaginationSize();
+			}
+			catch (Exception) { _pageSize = 12; }       //just in case
+		}
 
-		    try
-		    {
-			    switch (state)
-			    {
-				    case ServiceRequestState.Cancelled:
-					    _rm.CancelRequest(userId, id, message);
-					    break;
-			    }
-		    }
-		    catch (Exception exception)
-		    {
+		/// <summary>
+		/// display the home/portal page
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Index(string filterBy, string filterArgs, int pageId = 0)
+		{
+			int userId;     //user info
+			try { userId = int.Parse(Session["Id"].ToString()); }                   //login is required
+			catch (Exception) { return RedirectToAction("Index", "UserAccount"); }  //some login issue
+
+			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls { CurrentPage = pageId } };
+
+			_ps = InterfaceFactory.CreatePortfolioService(userId);
+			List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
+
+			var srList = _ps.GetServiceRequestsForRequestorId(userId).ToList();      //for pagination
+			if (srList.Count > _pageSize)
+			{
+				model.Controls.TotalPages = (srList.Count + _pageSize - 1) / _pageSize;
+				srList = srList.Skip(_pageSize * pageId).Take(_pageSize).ToList();
+			}
+
+			foreach (var item in srList)
+			{
+				if (item.ServiceOptionId != null)       //if null than this isn't an SR that can be reconstructed in a form
+				{
+					requests.Add(new ServiceRequestTableItemModel
+					{
+						Id = item.Id,
+						State = item.State,
+						PackageName = ServicePackageHelper.GetPackage(_ps, item.ServiceOptionId).Name,
+						DateRequired = item.RequestedForDate,
+						DateSubmitted = item.SubmissionDate
+					});
+				}
+			}
+			model.ServiceRequests = requests;
+			return View(model);
+		}
+
+		/// <summary>
+		/// performs a ServiceRequest State change
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="state"></param>
+		/// <param name="message"></param>
+		/// <returns></returns>
+		public ActionResult ChangeState(int id, ServiceRequestState state, string message)
+		{
+			int userId;              //user info
+			try { userId = int.Parse(Session["Id"].ToString()); }     //login is very required
+			catch (Exception) { return null; }
+
+			try
+			{
+				switch (state)
+				{
+					case ServiceRequestState.Cancelled:
+						_rm.CancelRequest(userId, id, message);
+						break;
+					case ServiceRequestState.Submitted:
+						_rm.SubmitRequest(userId, id, message);
+						break;
+				}
+			}
+			catch (Exception exception)
+			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to set Service Request to {state}, {exception}";
 				return RedirectToAction("Index");
 			}
-		    TempData["MessageType"] = WebMessageType.Success;
+			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully {state} Service Request";
-			
+
 			return RedirectToAction("Index");
 		}
 
@@ -111,9 +114,9 @@ namespace Prometheus.WebUI.Controllers
 		{
 			int userId;
 			try { userId = int.Parse(Session["Id"].ToString()); }
-			catch(Exception) { return null; }
+			catch (Exception) { return null; }
 
-			ServiceRequestStateChangeModel model = new ServiceRequestStateChangeModel {NextState = nextState};
+			ServiceRequestStateChangeModel model = new ServiceRequestStateChangeModel { NextState = nextState };
 
 			_ps = InterfaceFactory.CreatePortfolioService(userId);
 			model.ServiceRequestModel = new ServiceRequestModel();
@@ -124,18 +127,18 @@ namespace Prometheus.WebUI.Controllers
 
 			foreach (var category in model.ServiceRequestModel.Package.ServiceOptionCategoryTags)
 			{
-				DisplayListModel listItem = new DisplayListModel {Category = category.ServiceOptionCategory, Options = new List<DisplayListModelItem>()};
-				
+				DisplayListModel listItem = new DisplayListModel { Category = category.ServiceOptionCategory, Options = new List<DisplayListModelItem>() };
+
 				foreach (var option in _ps.GetServiceOptionCategory(category.ServiceOptionCategoryId).ServiceOptions)
 				{
 					foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)
 					{
 						if (serviceRequestOption.ServiceOptionId == option.Id)
 						{
-							listItem.Options.Add(new DisplayListModelItem {ServiceOption = option, ServiceRequestOption = serviceRequestOption});
-							
+							listItem.Options.Add(new DisplayListModelItem { ServiceOption = option, ServiceRequestOption = serviceRequestOption });
+
 						}
-						
+
 					}
 				}
 				displayList.Add(listItem);

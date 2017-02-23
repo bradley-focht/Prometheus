@@ -61,6 +61,10 @@ namespace Prometheus.WebUI.Helpers
 		    return ConfigurationManager.AppSettings["Delimiter"];
 	    }
 
+		/// <summary>
+		/// Number of Service Catalog results to be assumed "the top"
+		/// </summary>
+		/// <returns></returns>
 	    public static string GetScTopAmount()
 	    {
 			return ConfigurationManager.AppSettings["ScTopAmount"];
@@ -73,6 +77,20 @@ namespace Prometheus.WebUI.Helpers
 	    public static string GetDomain()
 	    {
 		    return ConfigurationManager.AppSettings["Domain"];
+	    }
+
+		public  static string GetServiceDocsPath()
+		{
+			return ConfigurationManager.AppSettings["ServiceDocsPath"];
+		}
+
+		/// <summary>
+		/// Script files location
+		/// </summary>
+		/// <returns></returns>
+	    public static string GetScriptPath()
+	    {
+		    return ConfigurationManager.AppSettings["ScriptPath"];
 	    }
     }
 }

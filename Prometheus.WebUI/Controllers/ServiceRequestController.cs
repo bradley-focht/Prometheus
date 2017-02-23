@@ -186,6 +186,15 @@ namespace Prometheus.WebUI.Controllers
 			}
 			model.CurrentIndex = submit;
 
+						if (submit >= 99999)
+			{
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
+			}
+			if (submit >= 9999)
+			{
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
+			}
+
 			model.Mode = ServiceRequestMode.Selection;
 			return RedirectToAction("Form", new { id = model.ServiceRequestId, index = model.CurrentIndex, mode = model.Mode });
 		}

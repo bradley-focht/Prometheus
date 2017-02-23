@@ -7,7 +7,7 @@
 				<div class="dd-row">
 					<div class="dd-cell-base dt-font">Requestor</div>
 					<div class="dd-cell-base"> name </div>
-					<div class="dd-cell-nostyle" style="width: 20%;"></div>
+					<div></div>
 					<div class="dd-cell-base dt-font">Service Request</div>
 					<div class="dd-cell-base">@Model.ServiceRequestModel.Package.Name</div>
 
@@ -15,7 +15,7 @@
 				<div class="dd-row">
 					<div class="dd-cell-base dt-font">Requested For</div>
 					<div class="dd-cell-base"> hopefully not too many names in here</div>
-					<div class="dd-cell-nostyle" style="width: 20%;"></div>
+					<div></div>
 					<div class="dd-cell-base dt-font">Id</div>
 					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Id</div>
 				</div>
@@ -25,54 +25,84 @@
 					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base"></div>
-
 					<div class="dd-cell-base dt-font">Status</div>
 					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.State</div>
 				</div>
+				<div class="dd-row">
+					<div class="dd-cell-base"></div>
+					<div class="dd-cell-base"></div>
+					<div class="dd-cell-base"></div>
+					<div class="dd-cell-base dt-font">Office-Use</div>
+					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Officeuse</div>				
+				</div>
 			</div>
 		</div>
-		<div class="panel-body"> <span class="subsubtitle-div">Dates</span>
+		<div class="panel-body">
+			<span class="subsubtitle-div">Dates</span>
 			<input id="drop-checkbox-dates" type="checkbox" class="drop-checkbox-request">
 			<label for="drop-checkbox-dates" id="example" class="drop-text-request" data-toggle="collapse" data-target="#drop-dates">Show details</label>
 			<div class="collapse" id="drop-dates">
+				<div class="dd-row">
+					<div class="dd-cell-base dt-font">Requested For</div>
+					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.RequestedForDate.ToString("d")</div>
+				</div>
 				<div class="dd">
 					<div class="dd-row">
 						<div class="dd-cell-base dt-font">Date Started</div>
-						<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.CreationDate.ToString("d")</div>
+						<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.CreationDate.ToString("g")</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
-
 		<div class="panel-body">
-			<span class="subsubtitle-div">Details</span>
-			<input id="drop-checkbox-details" type="checkbox" class="drop-checkbox-request">
-			<label for="drop-checkbox-details" id="example" class="drop-text-request" data-toggle="collapse" data-target="#drop-details">Show details</label>
-			<div class="collapse" id="drop-details">
-				<div class="dd">
-					@foreach (var displayItem in Model.DisplayList)
-					{
-						<div class="dd-row">
-							<div class="dd-cell-base dt-font">@displayItem.Category.Name</div>
+			<span class="subsubtitle-div">Comments</span>
+			<input id="drop-checkbox-comments" type="checkbox" class="drop-checkbox-request">
+			<label for="drop-checkbox-comments" id="example" class="drop-text-request" data-toggle="collapse" data-target="#drop-comments">Show details</label>
+			<div class="collapse" id="drop-comments">
+				<div class="dd full-width">
+					<div class="dd-row">
+						<div class="dd-cell-base dt-font">Requestor Comments</div>
+
+						<div class="dd-cell-base dt-font">Approver Comments</div>
+
 						</div>
-						<div class="dd-row">
-							@foreach (var option in displayItem.Options)
+					</div>
+				<div class="dd-row">
+					<div class="dd-cell-base">@Html.Raw(Model.ServiceRequestModel.ServiceRequest.Comments)</div>
+					<div class="dd-cell-base">
+						<i>will go here...</i>
+					</div>
+				</div>
+			</div>
+			</div>
+				<div class="panel-body">
+					<span class="subsubtitle-div">Details</span>
+					<input id="drop-checkbox-details" type="checkbox" class="drop-checkbox-request">
+					<label for="drop-checkbox-details" id="example" class="drop-text-request" data-toggle="collapse" data-target="#drop-details">Show details</label>
+					<div class="collapse" id="drop-details">
+						<div class="dd">
+							@foreach (var displayItem in Model.DisplayList)
 							{
-								<div class="dd-cell-base">@option.ServiceRequestOption.Quantity @option.ServiceOption.Name</div>
+								<div class="dd-row">
+									<div class="dd-cell-base dt-font">@displayItem.Category.Name</div>
+								</div>
+								<div class="dd-row">
+									@foreach (var option in displayItem.Options)
+									{
+										<div class="dd-cell-base">@option.ServiceRequestOption.Quantity @option.ServiceOption.Name</div>
+									}
+								</div>
+
+								<div class="dd">
+									<div class="dd-row">
+										<div class="dd-cell-base"></div>
+
+									</div>
+								</div>
+
 							}
 						</div>
-
-						<div class="dd">
-							<div class="dd-row">
-								<div class="dd-cell-base"></div>
-
-							</div>
-						</div>
-
-					}
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-</div>
