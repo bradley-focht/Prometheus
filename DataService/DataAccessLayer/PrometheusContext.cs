@@ -38,6 +38,7 @@ namespace DataService.DataAccessLayer
 		public DbSet<ServiceRequestPackage> ServiceRequestPackages { get; set; }
 		public DbSet<ServiceRequest> ServiceRequests { get; set; }
 		public DbSet<ServiceRequestOption> ServiceRequestOptions { get; set; }
+		public DbSet<ServiceRequestUserInput> ServiceRequestUserInputs { get; set; }
 		public DbSet<Approval> Approvals { get; set; }
 
 		//User Manager Entities

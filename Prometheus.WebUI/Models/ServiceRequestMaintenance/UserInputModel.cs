@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Common.Dto;
+﻿using Common.Dto;
 using Common.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
@@ -17,7 +16,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 		/// <summary>
 		/// Input type used for linking
 		/// </summary>
-		public UserInputTypes InputType { get; set; }
+		public UserInputType InputType { get; set; }
 		/// <summary>
 		/// User Input object to be used in the editor
 		/// </summary>

@@ -168,19 +168,19 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="type"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Details(ServiceCatalogs catalog, CatalogableTypes type, int id)
+		public ActionResult Details(ServiceCatalogs catalog, CatalogableType type, int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService(_dummId);
 			int serviceId = 0;
 			switch (type)
 			{
-				case CatalogableTypes.Option:
+				case CatalogableType.Option:
 					serviceId = ps.GetServiceOptionCategory(ps.GetServiceOption(id).ServiceOptionCategoryId).ServiceId;
 					break;
-				case CatalogableTypes.Category:
+				case CatalogableType.Category:
 					serviceId = ps.GetServiceOptionCategory(id).ServiceId;
 					break;
-				case CatalogableTypes.Service:
+				case CatalogableType.Service:
 					serviceId = id;
 					break;
 			}
@@ -189,9 +189,9 @@ namespace Prometheus.WebUI.Controllers
 			if (service != null)
 			{
 				OptionModel model = new OptionModel { Catalog = catalog };                  //pack a list of options and categories
-				if (type == CatalogableTypes.Category)
+				if (type == CatalogableType.Category)
 					model.Option = service.ServiceOptionCategories.FirstOrDefault(o => o.Id == id);
-				else if (type == CatalogableTypes.Option)
+				else if (type == CatalogableType.Option)
 					model.Option = (ICatalogPublishable) service.ServiceOptions.FirstOrDefault(s => s.Id == id);
 
 				model.ServiceId = service.Id;
