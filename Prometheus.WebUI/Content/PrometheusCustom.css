@@ -838,7 +838,7 @@
     .sr-navigation li {
         float: left;
         background-color: #999;
-                 display: inline-block;
+        display: inline-block;
     }
 
         .sr-navigation li button {
@@ -846,7 +846,7 @@
             text-decoration: none;
             position: relative;
             display: inline-block;
-        background-color: #999;
+			background-color: #999;
             float: left;
             padding: 5px 0 5px 35px;
             border: 0;
@@ -854,9 +854,8 @@
         }
 
             .sr-navigation li :after {
-                content: " ";
-               
-               border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
+                content: " ";         
+			    border-top: 50px solid transparent; /* Go big on the size, and let overflow hide */
                 border-bottom: 50px solid transparent;
                 border-left: 30px solid  #999;
                 position: absolute;
@@ -993,3 +992,8 @@
 .hide-me {
 	display: none;
 }
+
+.standard-padding {
+	padding: 10px;
+}
+

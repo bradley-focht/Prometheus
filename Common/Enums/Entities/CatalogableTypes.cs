@@ -3,7 +3,7 @@
 	/// <summary>
 	/// Used to keep track of type when reflection isn't possible (e.g. back links)
 	/// </summary>
-	public enum CatalogableTypes
+	public enum CatalogableType
 	{
 		Service,
 		Category,

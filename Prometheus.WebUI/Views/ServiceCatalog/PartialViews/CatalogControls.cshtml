@@ -8,14 +8,16 @@
         catch { return; } /*abort rendering */
     }
 <div class="panel panel-default">
-	<div class="flex-row" style="justify-content: space-around">
+	<div class="flex-row" style="justify-content: space-around; padding: 10px;">
 
 		@if (Model.CatalogType == ServiceCatalogs.Business && UiPermissionHelper.HasPermission(userId, BusinessCatalog.CanViewCatalog))
 		{
 			<div><span class="btn btn-default active">Business Catalog</span></div>
-			<div>@Html.ActionLink("Technical Catalog", "Index", new { type = ServiceCatalogs.Technical }, new { @class = "btn btn-primary" })</div>
+			if  (UiPermissionHelper.HasPermission(userId, SupportCatalog.CanViewCatalog)) {
+				<div>@Html.ActionLink("Technical Catalog", "Index", new {type = ServiceCatalogs.Technical}, new {@class = "btn btn-primary"})</div>
+			}
 		}
-		else if (UiPermissionHelper.HasPermission(userId, SupportCatalog.CanViewCatalog))
+		else if ((Model.CatalogType == ServiceCatalogs.Technical || Model.CatalogType == ServiceCatalogs.Both) && UiPermissionHelper.HasPermission(userId, SupportCatalog.CanViewCatalog))
 		{
 			<div>@Html.ActionLink("Business Catalog", "Index", new { type = ServiceCatalogs.Business }, new { @class = "btn btn-primary" })</div>
 			<div><span class="btn btn-default active">Technical Catalog</span></div>

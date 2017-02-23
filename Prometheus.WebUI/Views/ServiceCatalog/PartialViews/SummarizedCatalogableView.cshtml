@@ -2,15 +2,15 @@
 @using Common.Enums.Entities
 @model Prometheus.WebUI.Models.ServiceCatalog.PublishableCatalogItemModel
 @{
-	CatalogableTypes optionType;
+	CatalogableType optionType;
 
 	if (Model.Item is IServiceOptionCategoryDto)
 	{
-		optionType = CatalogableTypes.Category;
+		optionType = CatalogableType.Category;
 	}
 	else    //need a default case
 	{
-		optionType = CatalogableTypes.Option;
+		optionType = CatalogableType.Option;
 	}
 }
 
@@ -66,7 +66,7 @@
 										{
 
 											<div class="dd-row">
-												<div class="dd-cell-base" style="width: 75%">@Html.ActionLink(item.Name, "Details", new {catalog = Model.Catalog, id = item.Id, type = CatalogableTypes.Option}, new {@class = "font-title2"})</div>
+												<div class="dd-cell-base" style="width: 75%">@Html.ActionLink(item.Name, "Details", new {catalog = Model.Catalog, id = item.Id, type = CatalogableType.Option}, new {@class = "font-title2"})</div>
 												<div class="dd-cell-nostyle" style="width:20%"></div>
 												<div class="dd-cell-nostyle" style="width: 5%; vertical-align: top; text-align: right; width: 10%;">
 													<a href="@Url.Action("Begin", "ServiceRequest", new {id = item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>

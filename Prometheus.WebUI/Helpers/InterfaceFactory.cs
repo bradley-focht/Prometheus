@@ -1,4 +1,5 @@
-﻿using RequestService.Controllers;
+﻿using RequestService;
+using RequestService.Controllers;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
 using UserManager;
@@ -66,6 +67,15 @@ namespace Prometheus.WebUI.Helpers
 		public static ServiceRequestOptionController CreateServiceRequestOptionController(int userId)
 		{
 			return new ServiceRequestOptionController(userId);
+		}
+
+		/// <summary>
+		/// Service Request Management interface
+		/// </summary>
+		/// <returns></returns>
+		public static RequestManager CreateRequestManager()
+		{
+			return new RequestManager();
 		}
 	}
 }

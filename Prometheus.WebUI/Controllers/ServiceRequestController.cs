@@ -96,8 +96,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 			if (submit >= 9999)
 			{
-				//TODO: Change state after saving
-				return RedirectToAction("Index", "ServiceRequestApproval");
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
 			}
 
 			return RedirectToAction("Form", new { id = request.Id, index = submit });
@@ -186,6 +185,15 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
 			model.CurrentIndex = submit;
+
+						if (submit >= 99999)
+			{
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
+			}
+			if (submit >= 9999)
+			{
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
+			}
 
 			model.Mode = ServiceRequestMode.Selection;
 			return RedirectToAction("Form", new { id = model.ServiceRequestId, index = model.CurrentIndex, mode = model.Mode });

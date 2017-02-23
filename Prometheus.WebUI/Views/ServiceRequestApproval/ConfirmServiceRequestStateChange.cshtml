@@ -2,41 +2,67 @@
 @model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestStateChangeModel
 @{
 	ViewBag.Title = "Service Request";
+	string buttonText = null;
+
+	switch (Model.NextState)
+	{
+		case ServiceRequestState.Submitted:
+			ViewBag.SubTitle = "Submitting Service Request for Approval";
+			break;
+		case ServiceRequestState.Cancelled:
+			ViewBag.SubTitle = "Cancelling Service Request";
+			break;
+		case ServiceRequestState.Approved:
+			ViewBag.SubTitle = "Approving Service Request";
+			break;
+	}
+
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Links = new List<KeyValuePair<string, string>>
 	{
 		new KeyValuePair<string, string>("Home", "Home"),
 		new KeyValuePair<string, string>("Service Request", $"ServiceRequest/Form/{Model.ServiceRequestModel.ServiceRequest.Id}/-1/Selection"),
-		new KeyValuePair<string, string>("Confirm ? change ", "#")
+		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 	};
 
 }
 
-<div class="title-div">Confirm
-@switch (Model.NextState)
-{
-	case ServiceRequestState.Cancelled:
-		<text>Cancelling Service Request</text>
-		break;
-		case ServiceRequestState.Approved:
-		<text>Submitting Service Request for Approval</text>
-		break;
-}
-</div>
-<div class="panel-div">
-	
-	<div>	
-		@Html.Partial("PartialViews/_ServiceRequestSummary", Model)
-	</div>
-	<div>Approver Comments</div>
-	<div>@Html.TextArea("RejectNotes", "", new { @class = "ckeditor" })</div>
+<div class="title-div">@ViewBag.SubTitle</div>
 
-</div>
-<div class="flex-container-col">
-	<div class="panel-footer">
-		<div class="float-right-div">
-			@Html.ActionLink("Back", "Form", "ServiceRequest", null, new { @class = "btn btn-default btn-back" })
-			<input type="submit" value="?" class="btn btn-primary" />
+@using (Html.BeginForm($"ChangeState", "ServiceRequestApproval", FormMethod.Post))
+{
+	<div class="panel-div">
+		<div>
+			@Html.Partial("PartialViews/_ServiceRequestSummary", Model)
+		</div>
+		<div>Approver Comments if needed </div>
+		<div>@Html.TextArea("Message", "", new { @class = "ckeditor" })</div>
+
+	</div>
+	<input type="hidden" value="@Model.ServiceRequestModel.ServiceRequest.Id" name="id"/>
+	
+	<div class="flex-container-col">
+		<div class="panel-footer">
+			<div class="float-right-div">
+				@Html.ActionLink("Back", "Index", null, new {@class = "btn btn-default btn-back"})
+				@Html.ActionLink("Back", "Form", "ServiceRequest", null, new {@class = "btn btn-default btn-back"})
+				@switch (Model.NextState)
+				{
+					case ServiceRequestState.Submitted:
+						<button type="submit" value="@(Model.NextState)" name="state" class="btn btn-primary">Submit</button>
+						break;
+					case ServiceRequestState.Cancelled:
+						<button type="submit" value="@(Model.NextState)" name="state" class="btn btn-danger">Cancel</button>
+						break;
+					case ServiceRequestState.Approved:
+						<button type="submit" value="@ServiceRequestState.Denied" name="state" class="btn btn-danger">Deny</button>
+						<button type="submit" value="@ServiceRequestState.Approved" name="state" class="btn btn-primary">Approve</button>
+						break;
+				}
+
+
+
+			</div>
 		</div>
 	</div>
-</div>
+}

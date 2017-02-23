@@ -1,5 +1,4 @@
 ﻿@using Prometheus.WebUI.Helpers
-@using Prometheus.WebUI.Helpers.Enums
 @using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 @{
@@ -20,24 +19,29 @@
     <input type="hidden" name="form.CurrentIndex" value="@Model.CurrentIndex"/>
 	<input type="hidden" name="form.Mode" value="@Model.Mode"/>
 
-    <div class="panel panel-default flex-container-row make-space-bottom">
-        <div class="dd full-width">
+    <div class="panel panel-default flex-container-row standard-padding">
+        <div class="dd">
             <div class="dd-row">
-                <div class="dt-font">Service Request @Model.Package.Name</div>
-                <div class="dt-font">Status @Model.ServiceRequest.State</div>
+                <div class="dt-font">Service Request </div>
+	            <div class="dd-cell-base">@Model.Package.Name</div>
+
             </div>
-            <div class="dd-row">
-                <div class="dt-cell"></div>
-                @if (Model.ServiceRequestId > 0)
-                {
-                    <div class="dt-cell-font">Service Request Id @Model.ServiceRequestId</div>
-                }
-            </div>
+	        <div class="dd-row">
+		        @if (Model.ServiceRequestId > 0)
+		        {
+			        <div class="dt-font">Id</div>
+			        <div class="dd-cell-base">@Model.ServiceRequestId</div>
+		        }
+	        </div>
+	        <div class="dd-row">
+		        <div class="dt-font">Status</div>
+				<div class="dd-cell-base">@Model.ServiceRequest.State</div>
+	        </div>
         </div>
     </div>
-
-    @Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.Package.ServiceOptionCategoryTags })
-
+	<div class="make-space-top">
+		@Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.Package.ServiceOptionCategoryTags })
+	</div>
     <div class="panel-div full-width"> @*partial view selected by index && mode*@
         @if (Model.CurrentIndex < 0)
         {
@@ -98,11 +102,13 @@ function UpdateOptions() {
 		<text>
 	var q;
 	if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true) {
-		document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = false;
-		document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = false;
+		if(document.getElementById("quantity_up_" + @(option.ServiceOption.Id)))
+			document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = false;
+		if(document.getElementById("quantity_down_" + @(option.ServiceOption.Id)))
+			document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = false;
 		q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
 		q.disabled = false;
-		if (q.value == 0) {
+		if (q.value === 0) {
 			 q.value = 1;
 		}
 		q.min = 1;
@@ -121,8 +127,10 @@ function UpdateOptions() {
 		}
 
 		} else if (document.getElementById("option_@(option.ServiceOption.Id)").checked === false) {
-			document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = true;
-			document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = true;
+			if (document.getElementById("quantity_up_" + @(option.ServiceOption.Id)))
+				document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = true;
+			if(document.getElementById("quantity_down_" + @(option.ServiceOption.Id)))
+				document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = true;
 			q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
 			q.disabled = true
 			q.value = 0;

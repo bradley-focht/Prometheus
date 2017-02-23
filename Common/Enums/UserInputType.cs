@@ -1,6 +1,6 @@
 ﻿namespace Common.Enums
 {
-	public enum UserInputTypes
+	public enum UserInputType
 	{
 		Text,
 		Selection,

@@ -50,6 +50,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
+    <Compile Include="Dto\ApprovalDto.cs" />
+    <Compile Include="Dto\IApprovalDto.cs" />
     <Compile Include="Dto\InputGroupDto.cs" />
     <Compile Include="Dto\IInputGroupDto.cs" />
     <Compile Include="Dto\IScriptDto.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Dto\ServiceRequestOptionSelectionInputDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionTextInputDto.cs" />
     <Compile Include="Dto\ServiceRequestPackageDto.cs" />
+    <Compile Include="Dto\ServiceRequestUserInputDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
@@ -116,7 +119,7 @@
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Enums\ApprovalResult.cs" />
     <Compile Include="Enums\ServiceRequestState.cs" />
-    <Compile Include="Enums\UserInputTypes.cs" />
+    <Compile Include="Enums\UserInputType.cs" />
     <Compile Include="Enums\Entities\CatalogableTypes.cs" />
     <Compile Include="Enums\Entities\EntityModification.cs" />
     <Compile Include="Enums\Entities\Pricing.cs" />
@@ -140,8 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="ServiceCatalogEntities.cd" />
-    <None Include="UsersAndRoles.cd" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

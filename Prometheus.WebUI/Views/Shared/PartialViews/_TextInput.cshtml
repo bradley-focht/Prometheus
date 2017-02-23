@@ -2,6 +2,10 @@
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.TextInputDto>
 
+<input type="hidden" name="@(Model.ControlName)Name" value="@(StringHelper.RemoveSpaces(Model.Control.DisplayName))"/>
+<input type="hidden" name="@(Model.ControlName)Type" value="@(UserInputType.Text)"/>
+<input type="hidden" name="@(Model.ControlName)Id" value="@(Model.Id)"/>
+<input type="hidden" name="@(Model.ControlName)InputId" value="@(Model.Control.Id)" />
 @if (Model.Control.MultiLine)
 {
 	@Html.TextArea(Model.ControlName, null, new { @class = "ckeditor" })
@@ -9,13 +13,9 @@
 else
 {
 	<div class="input-group">
-		<input type="hidden" name="@(Model.ControlName)Name" value="@(StringHelper.RemoveSpaces(Model.Control.DisplayName))"/>
-		<input type="hidden" name="@(Model.ControlName)Type" value="@(UserInputTypes.Text))"/>
-		<input type="hidden" name="@(Model.ControlName)Id" value="@(Model.Id))"/>
-		<input type="hidden" name="@(Model.ControlName)InputId" value="@(Model.Control.Id))" />
 		@Html.TextBox(Model.ControlName + "Value", null, new {@class = "form-control", id = StringHelper.RemoveSpaces(Model.Control.DisplayName)})
 		<span class="input-group-btn">
-            <span class="btn btn-primary" data-html="true" data-toggle="tooltip" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
+            <a class="btn btn-primary" data-html="true" data-toggle="tooltip" data-placement="top" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></a>
         </span>
 	</div>
 

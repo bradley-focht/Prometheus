@@ -22,13 +22,13 @@
 		<div class="panel-div">
 			@switch (Model.InputType)
 			{
-				case UserInputTypes.Text:
+				case UserInputType.Text:
 					@Html.Partial("PartialViews/UserInputEditor", (ITextInputDto)Model.UserInput)
 					break;
-				case UserInputTypes.Selection:
+				case UserInputType.Selection:
 					@Html.Partial("PartialViews/UserInputEditor", (ISelectionInputDto)Model.UserInput)
 					break;
-				case UserInputTypes.ScriptedSelection:
+				case UserInputType.ScriptedSelection:
 					@Html.Partial("PartialViews/UserInputEditor", (IScriptedSelectionInputDto)Model.UserInput)
 					break;
 			}

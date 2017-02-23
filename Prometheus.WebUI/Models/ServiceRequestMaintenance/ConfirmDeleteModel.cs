@@ -9,7 +9,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 		public string Name { get; set; }
 		public string DeleteAction { get; set; }
 		public string ReturnAction { get; set; }
-		public UserInputTypes Type { get; set; }
+		public UserInputType Type { get; set; }
 		public int Id { get; set; }
 
 		public int ServiceId { get; set; }

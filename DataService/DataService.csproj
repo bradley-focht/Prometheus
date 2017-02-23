@@ -81,6 +81,9 @@
     <Compile Include="DataAccessLayer\PrometheusContext.cs" />
     <Compile Include="DataAccessLayer\PrometheusInitializer.cs" />
     <Compile Include="ManualMapper.cs" />
+    <Compile Include="Models\Approval.cs" />
+    <Compile Include="Models\IServiceRequestUserInput.cs" />
+    <Compile Include="Models\IApproval.cs" />
     <Compile Include="Models\IScript.cs" />
     <Compile Include="Models\Script.cs" />
     <Compile Include="Models\ServiceOptionCategoryTag.cs" />
@@ -133,6 +136,7 @@
     <Compile Include="Models\ServiceMeasure.cs" />
     <Compile Include="Models\ServiceProcess.cs" />
     <Compile Include="Models\ServiceOption.cs" />
+    <Compile Include="Models\ServiceRequestUserInput.cs" />
     <Compile Include="Models\ServiceSwot.cs" />
     <Compile Include="Models\ServiceWorkUnit.cs" />
     <Compile Include="Models\SwotActivity.cs" />
@@ -143,11 +147,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="ClassDiagram1.cd" />
-    <None Include="ClassDiagram3.cd" />
     <None Include="packages.config" />
-    <None Include="sdp.cd" />
-    <None Include="UserInputs.cd" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

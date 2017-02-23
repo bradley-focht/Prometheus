@@ -39,7 +39,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 			var options = Options.ToArray();
 			var quantity = Quantity.ToArray();
 
-			returnOptions.AddRange(options.Select((t, i) => new ServiceRequestOptionDto { Id = t, Quantity = quantity[i], ServiceRequestId = Id, ServiceOptionId = options[i] }));
+			returnOptions.AddRange(options.Select((t, i) => new ServiceRequestOptionDto { Id = 0, Quantity = quantity[i], ServiceRequestId = Id, ServiceOptionId = options[i] }));
 
 			return returnOptions;
 		}

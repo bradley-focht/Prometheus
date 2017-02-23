@@ -23,18 +23,18 @@
         <div class="flex-container-col" style="padding-top: 5px; padding-bottom: 5px;">
             @if (Model.Options != null)
             {
-                CatalogableTypes selectedType = Model.Option is IServiceOptionDto ? CatalogableTypes.Option : CatalogableTypes.Category;
+                CatalogableType selectedType = Model.Option is IServiceOptionDto ? CatalogableType.Option : CatalogableType.Category;
 
                 foreach (var option in Model.Options)
                 {
-                    CatalogableTypes optionType = CatalogableTypes.Option; //initialize with a default value
+                    CatalogableType optionType = CatalogableType.Option; //initialize with a default value
                     if (option is IServiceOptionCategoryDto)
                     {
-                        optionType = CatalogableTypes.Category;
+                        optionType = CatalogableType.Category;
                     }
                     else if (option is IServiceOptionDto)
                     {
-                        optionType = CatalogableTypes.Option;
+                        optionType = CatalogableType.Option;
                     }
 
 

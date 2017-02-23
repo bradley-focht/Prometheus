@@ -112,6 +112,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\favicon.ico" />
+    <Content Include="Content\Images\globe.png" />
     <Content Include="Content\Images\invest.png" />
     <Content Include="Content\Images\pad.png" />
     <Content Include="Content\Images\people-network.png" />
@@ -547,6 +548,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Selectize\js\standalone\" />
+    <Folder Include="PoshScripts\" />
     <Folder Include="ServiceDocs\" />
     <Folder Include="ServiceOptionPics\" />
     <Folder Include="Views\Script\" />

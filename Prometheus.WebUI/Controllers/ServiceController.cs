@@ -1405,7 +1405,7 @@ namespace Prometheus.WebUI.Controllers
 													   //file path location comes from the Web.config file
 					try
 					{
-						var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], newFileName.ToString());
+						var path = Path.Combine(ConfigHelper.GetServiceDocsPath(), newFileName.ToString());
 						file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
 						ps.ModifyServiceDocument(new ServiceDocumentDto
 						{
