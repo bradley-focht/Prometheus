@@ -1057,5 +1057,36 @@ namespace DataService
 			};
 		}
 
+		public static IServiceRequestUserInputDto MapServiceRequestUserInputToDto(ServiceRequestUserInput src)
+		{
+			if (src == null)
+				return null;
+
+			return new ServiceRequestUserInputDto()
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ServiceRequestId = src.ServiceRequestId,
+				InputId = src.InputId,
+				UserInputType = src.UserInputType,
+				Value = src.Value
+			};
+		}
+
+		public static ServiceRequestUserInput MapDtoToServiceRequestUserInput(IServiceRequestUserInputDto src)
+		{
+			if (src == null)
+				return null;
+
+			return new ServiceRequestUserInput
+			{
+				Id = src.Id,
+				Name = src.Name,
+				ServiceRequestId = src.ServiceRequestId,
+				InputId = src.InputId,
+				UserInputType = src.UserInputType,
+				Value = src.Value
+			};
+		}
 	}
 }
