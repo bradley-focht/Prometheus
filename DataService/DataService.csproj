@@ -82,6 +82,7 @@
     <Compile Include="DataAccessLayer\PrometheusInitializer.cs" />
     <Compile Include="ManualMapper.cs" />
     <Compile Include="Models\Approval.cs" />
+    <Compile Include="Models\IServiceRequestUserInput.cs" />
     <Compile Include="Models\IApproval.cs" />
     <Compile Include="Models\IScript.cs" />
     <Compile Include="Models\Script.cs" />
@@ -135,6 +136,7 @@
     <Compile Include="Models\ServiceMeasure.cs" />
     <Compile Include="Models\ServiceProcess.cs" />
     <Compile Include="Models\ServiceOption.cs" />
+    <Compile Include="Models\ServiceRequestUserInput.cs" />
     <Compile Include="Models\ServiceSwot.cs" />
     <Compile Include="Models\ServiceWorkUnit.cs" />
     <Compile Include="Models\SwotActivity.cs" />

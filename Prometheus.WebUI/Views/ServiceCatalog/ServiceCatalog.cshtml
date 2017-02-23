@@ -34,7 +34,7 @@
 				<ul class="cat-ul">                                             @* display service options *@
 					@foreach (var item in service.Options)          
 					{
-						var optionType = item is IServiceOptionCategoryDto ? CatalogableTypes.Category : CatalogableTypes.Option;
+						var optionType = item is IServiceOptionCategoryDto ? CatalogableType.Category : CatalogableType.Option;
 						<li>
 							<span>@Html.ActionLink(item.Name, "Details", new {catalog = Model.Catalog, type = optionType, serviceId = service.Id, id = item.Id })</span>
 						</li>
