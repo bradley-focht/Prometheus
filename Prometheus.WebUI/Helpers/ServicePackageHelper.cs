@@ -20,12 +20,11 @@ namespace Prometheus.WebUI.Helpers
         public static IServiceRequestPackageDto GetPackage(IPortfolioService portfolioService, int optionId)
         {
             IServiceRequestPackageDto package = null;
-
-            try
+			try
             {
                 package = portfolioService.GetServiceRequestPackagesForServiceOption(optionId).FirstOrDefault();
             }
-            catch (Exception) { /* dealt with below */}
+            catch (Exception) { /* situation is dealt with below */}
 
             if (package == null) //make new default package if necessary
             {

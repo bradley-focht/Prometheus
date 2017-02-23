@@ -16,7 +16,6 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// </summary>
 		[Required]
 		public int Id { get; set; }
-
 		/// <summary>
 		/// What options were selected
 		/// </summary>

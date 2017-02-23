@@ -435,9 +435,12 @@ namespace Prometheus.WebUI.Controllers
 			newPackage.Name = package.Name;
 			newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
 			newPackage.Id = package.Id;
+
+			int i = 1;		//used to order the category tags in a package
 			foreach (var category in package.Associations)      //build new package
 			{
-				newPackage.ServiceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto { ServiceOptionCategoryId = category });
+				newPackage.ServiceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto { ServiceOptionCategoryId = category, Order = i});
+				i++;
 			}
 			try
 			{

@@ -1522,7 +1522,7 @@ namespace Prometheus.WebUI.Controllers
 
 			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename + doc.FileExtension);     //suggest file name to browser
 
-			var path = Path.Combine(ConfigurationManager.AppSettings["ServiceDocsPath"], doc.StorageNameGuid.ToString());
+			var path = Path.Combine(ConfigHelper.GetServiceDocsPath(), doc.StorageNameGuid.ToString());
 
 			return new FilePathResult(path, doc.MimeType);
 		}

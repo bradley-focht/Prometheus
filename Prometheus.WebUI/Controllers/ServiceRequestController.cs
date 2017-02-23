@@ -17,7 +17,7 @@ namespace Prometheus.WebUI.Controllers
 	{
 		private IPortfolioService _ps;
 		private IServiceRequestOptionController _rs;
-		private int dummyId = 0;
+		private int dummyId = 1;
 
 		public ServiceRequestController()
 		{

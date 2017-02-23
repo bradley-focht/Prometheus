@@ -108,7 +108,7 @@ function UpdateOptions() {
 			document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = false;
 		q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
 		q.disabled = false;
-		if (q.value === 0) {
+		if (q.value == 0) {
 			 q.value = 1;
 		}
 		q.min = 1;
@@ -132,7 +132,7 @@ function UpdateOptions() {
 			if(document.getElementById("quantity_down_" + @(option.ServiceOption.Id)))
 				document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = true;
 			q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
-			q.disabled = true
+			q.disabled = true;
 			q.value = 0;
 
 	}
@@ -151,8 +151,16 @@ function UpdateOptions() {
 	}
 };
 
-$(document).ready(function() {
-	UpdateOptions();
+	$(document).ready(function() {
+		@foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
+		{
+			<text>
+		if (document.getElementById("option_@(option.ServiceOptionId)"))
+				document.getElementById("option_@(option.ServiceOptionId)").checked = true;
+			</text>
+		}
+
+		UpdateOptions();
 });
 </script>
 }
