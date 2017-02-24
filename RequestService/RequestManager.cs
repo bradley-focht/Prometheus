@@ -44,6 +44,24 @@ namespace RequestService
 									 ServiceRequestState.Submitted, request.State, ServiceRequestState.Incomplete));
 			}
 
+			//TODO: ADD PERMISSION CHECK
+			if (UserCanSubmitRequest(userId, requestId))
+			{
+				using (var context = new PrometheusContext())
+				{
+					var requestEntity = context.ServiceRequests.Find(requestId);
+
+					//Change state of the entity
+					ClearTemporaryFields(requestEntity);
+					requestEntity.State = ServiceRequestState.Submitted;
+
+					//Save
+					context.Entry(requestEntity).State = EntityState.Modified;
+					context.SaveChanges(userId);
+					request = ManualMapper.MapServiceRequestToDto(requestEntity);
+				}
+			}
+
 			return request;
 		}
 
@@ -58,6 +76,23 @@ namespace RequestService
 								  "Service Request is in the \"{1}\" state and must be in the " +
 								  "\"{2}\" or \"{3}\" state to perform this action.",
 								  ServiceRequestState.Cancelled, request.State, ServiceRequestState.Incomplete, ServiceRequestState.Submitted));
+			}
+
+			//TODO: ADD PERMISSION CHECK
+			if (UserCanCancelRequest(userId, requestId))
+			{
+				using (var context = new PrometheusContext())
+				{
+					var requestEntity = context.ServiceRequests.Find(requestId);
+
+					//Change state of the entity
+					requestEntity.State = ServiceRequestState.Cancelled;
+
+					//Save
+					context.Entry(requestEntity).State = EntityState.Modified;
+					context.SaveChanges(userId);
+					request = ManualMapper.MapServiceRequestToDto(requestEntity);
+				}
 			}
 
 			return request;
@@ -106,11 +141,6 @@ namespace RequestService
 			return request;
 		}
 
-		private bool UserCanApproveRequest(int userId, int requestId)
-		{
-			//TODO: Do this Sean
-			return true;
-		}
 
 		public IServiceRequestDto FulfillRequest(int userId, int requestId, string comments)
 		{
@@ -124,8 +154,51 @@ namespace RequestService
 								  "\"{2}\" state to perform this action.",
 								  ServiceRequestState.Fulfilled, request.State, ServiceRequestState.Approved));
 			}
-			
+
+			//TODO: ADD PERMISSION CHECK
+			if (UserCanFulfillRequest(userId, requestId))
+			{
+				using (var context = new PrometheusContext())
+				{
+					var requestEntity = context.ServiceRequests.Find(requestId);
+
+					//Change state of the entity
+					requestEntity.State = ServiceRequestState.Fulfilled;
+
+					//Save
+					context.Entry(requestEntity).State = EntityState.Modified;
+					context.SaveChanges(userId);
+					request = ManualMapper.MapServiceRequestToDto(requestEntity);
+				}
+			}
+
 			return request;
+		}
+
+		private void ClearTemporaryFields(IServiceRequest requestEntity)
+		{
+			requestEntity.ServiceOptionId = null;
+		}
+
+		private bool UserCanSubmitRequest(int userId, int requestId)
+		{
+			//TODO: ADD PERMISSION AND STATE CHECK
+			return true;
+		}
+
+		private bool UserCanCancelRequest(int userId, int requestId)
+		{
+			return true;
+		}
+		private bool UserCanApproveRequest(int userId, int requestId)
+		{
+			//TODO: Do this Sean
+			return true;
+		}
+
+		private bool UserCanFulfillRequest(int userId, int requestId)
+		{
+			return true;
 		}
 
 		private IServiceRequestDto RequestFromId(int requestId)
