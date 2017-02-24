@@ -110,6 +110,9 @@ namespace UserManager
 			return _userController.GetUser(performingUserId, userId);
 		}
 
+		public int GuestId { get { return _userController.GuestId; } }
+		public int AdministratorId { get { return _userController.AdministratorId; } }
+
 		public IRoleDto ModifyRole(int performingUserId, IRoleDto roleDto, EntityModification modification)
 		{
 			return _roleController.ModifyRole(performingUserId, roleDto, modification);

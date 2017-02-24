@@ -52,6 +52,42 @@ namespace UserManager.Controllers
 			}
 		}
 
+		private int _guestId;
+		public int GuestId
+		{
+			get
+			{
+				if (_guestId == 0)
+				{
+					using (var context = new PrometheusContext())
+					{
+						var guest = context.Users.FirstOrDefault(x => x.Name == "Guest");
+						if (guest != null)
+							_guestId = guest.Id;
+					}
+				}
+				return _guestId;
+			}
+		}
+
+		private int _administratorId;
+		public int AdministratorId
+		{
+			get
+			{
+				if (_administratorId == 0)
+				{
+					using (var context = new PrometheusContext())
+					{
+						var administrator = context.Users.FirstOrDefault(x => x.Name == "Guest");
+						if (administrator != null)
+							_administratorId = administrator.Id;
+					}
+				}
+				return _administratorId;
+			}
+		}
+
 		protected override IUserDto Create(int performingUserId, IUserDto userDto)
 		{
 			using (var context = new PrometheusContext())
