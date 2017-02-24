@@ -12,25 +12,7 @@ namespace ServicePortfolioService.Controllers
 {
 	public class TextInputController : EntityController<ITextInputDto>, ITextInputController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public TextInputController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public TextInputController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public ITextInputDto GetTextInput(int textInputId)
+		public ITextInputDto GetTextInput(int performingUserId, int textInputId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -38,7 +20,7 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IEnumerable<ITextInputDto> GetTextInputs()
+		public IEnumerable<ITextInputDto> GetTextInputs(int performingUserId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -50,12 +32,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
+		public ITextInputDto ModifyTextInput(int performingUserId, ITextInputDto textInput, EntityModification modification)
 		{
-			return base.ModifyEntity(textInput, modification);
+			return base.ModifyEntity(performingUserId, textInput, modification);
 		}
 
-		protected override ITextInputDto Create(ITextInputDto entity)
+		protected override ITextInputDto Create(int performingUserId, ITextInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -65,12 +47,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Measure with ID {0} already exists.", entity.Id));
 				}
 				var savedMeasure = context.TextInputs.Add(ManualMapper.MapDtoToTextInput(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapTextInputToDto(savedMeasure);
 			}
 		}
 
-		protected override ITextInputDto Update(ITextInputDto entity)
+		protected override ITextInputDto Update(int performingUserId, ITextInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -82,18 +64,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedTextInput = ManualMapper.MapDtoToTextInput(entity);
 				context.TextInputs.Attach(updatedTextInput);
 				context.Entry(updatedTextInput).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapTextInputToDto(updatedTextInput);
 			}
 		}
 
-		protected override ITextInputDto Delete(ITextInputDto entity)
+		protected override ITextInputDto Delete(int performingUserId, ITextInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.TextInputs.Find(entity.Id);
 				context.TextInputs.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

@@ -11,7 +11,7 @@ namespace RequestService.Controllers
 {
 	public class ServiceRequestUserInputController : EntityController<IServiceRequestUserInputDto>, IServiceRequestUserInputController
 	{
-		public IServiceRequestUserInputDto GetServiceRequestUserInput(int userInputId)
+		public IServiceRequestUserInputDto GetServiceRequestUserInput(int performingUser, int userInputId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -21,12 +21,12 @@ namespace RequestService.Controllers
 				return null;
 			}
 		}
-		public IServiceRequestUserInputDto ModifyServiceRequestUserInput(IServiceRequestUserInputDto userInput, EntityModification modification)
+		public IServiceRequestUserInputDto ModifyServiceRequestUserInput(int performingUser, IServiceRequestUserInputDto userInput, EntityModification modification)
 		{
-			return base.ModifyEntity(userInput, modification);
+			return base.ModifyEntity(performingUser, userInput, modification);
 		}
 
-		protected override IServiceRequestUserInputDto Create(IServiceRequestUserInputDto entity)
+		protected override IServiceRequestUserInputDto Create(int performingUser, IServiceRequestUserInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -36,13 +36,12 @@ namespace RequestService.Controllers
 					throw new InvalidOperationException(string.Format("Service Request User Input with ID {0} already exists.", entity.Id));
 				}
 				var savedInput = context.ServiceRequestUserInputs.Add(ManualMapper.MapDtoToServiceRequestUserInput(entity));
-				//TODO: ADD USER ID TO SAVECHANGES
-				context.SaveChanges();
+				context.SaveChanges(performingUser);
 				return ManualMapper.MapServiceRequestUserInputToDto(savedInput);
 			}
 		}
 
-		protected override IServiceRequestUserInputDto Update(IServiceRequestUserInputDto userInputDto)
+		protected override IServiceRequestUserInputDto Update(int performingUser, IServiceRequestUserInputDto userInputDto)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -53,22 +52,26 @@ namespace RequestService.Controllers
 				var updated = ManualMapper.MapDtoToServiceRequestUserInput(userInputDto);
 				context.ServiceRequestUserInputs.Attach(updated);
 				context.Entry(updated).State = EntityState.Modified;
-				//TODO: ADD USER ID TO SAVECHANGES
-				context.SaveChanges();
+				context.SaveChanges(performingUser);
 				return ManualMapper.MapServiceRequestUserInputToDto(updated);
 			}
 		}
 
-		protected override IServiceRequestUserInputDto Delete(IServiceRequestUserInputDto entity)
+		protected override IServiceRequestUserInputDto Delete(int performingUser, IServiceRequestUserInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceRequestUserInputs.Find(entity.Id);
 				context.ServiceRequestUserInputs.Remove(toDelete);
-				//TODO: ADD USER ID TO SAVECHANGES
-				context.SaveChanges();
+				context.SaveChanges(performingUser);
 			}
 			return null;
+		}
+
+		protected override bool UserHasPermissionToModify(int performingUserId, EntityModification modification, out object permission)
+		{
+			permission = null;
+			return true;
 		}
 	}
 }

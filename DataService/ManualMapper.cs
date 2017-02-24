@@ -878,6 +878,15 @@ namespace DataService
 				}
 			}
 
+			List<IServiceRequestUserInputDto> serviceRequestInputs = new List<IServiceRequestUserInputDto>();
+			if (src.ServiceRequestUserInputs != null)
+			{
+				foreach (var userInput in src.ServiceRequestUserInputs)
+				{
+					serviceRequestInputs.Add(MapServiceRequestUserInputToDto(userInput));
+				}
+			}
+
 			return new ServiceRequestDto()
 			{
 				Id = src.Id,
@@ -889,9 +898,10 @@ namespace DataService
 				Officeuse = src.Officeuse,
 				RequestedByUserId = src.RequestedByUserId,
 				SubmissionDate = src.SubmissionDate,
-				ServiceRequestOptions = serviceRequestOptions,
 				RequestedForDate = src.RequestedForDate,
-				ServiceOptionId = src.ServiceOptionId
+				ServiceOptionId = src.ServiceOptionId,
+				ServiceRequestOptions = serviceRequestOptions,
+				ServiceRequestUserInputs = serviceRequestInputs
 			};
 		}
 
@@ -951,90 +961,6 @@ namespace DataService
 			};
 		}
 
-		private static IServiceRequestOptionScriptedSelectionInputDto MapServiceRequestOptionScriptedSelectionInputToDto(ServiceRequestOptionScriptedSelectionInput src)
-		{
-			if (src == null) return null;
-
-			return new ServiceRequestOptionScriptedSelectionInputDto()
-			{
-				Id = src.Id,
-				ScriptedSelectionInputId = src.ScriptedSelectionInputId,
-				ServiceRequestOptionId = src.ServiceRequestOptionId,
-				Value = src.Value,
-				ScriptedSelectionInput = MapScriptedSelectionInputToDto(src.ScriptedSelectionInput),
-				ServiceRequestOption = MapServiceRequestOptionToDto(src.ServiceRequestOption)
-			};
-		}
-
-		public static ServiceRequestOptionScriptedSelectionInput MapDtoToServiceRequestOptionScriptedSelectionInput(IServiceRequestOptionScriptedSelectionInputDto src)
-		{
-			if (src == null) return null;
-
-			return new ServiceRequestOptionScriptedSelectionInput
-			{
-				Id = src.Id,
-				ScriptedSelectionInputId = src.ScriptedSelectionInputId,
-				ServiceRequestOptionId = src.ServiceRequestOptionId,
-				Value = src.Value
-			};
-		}
-
-		private static IServiceRequestOptionSelectionInputDto MapServiceRequestOptionSelectionInputToDto(ServiceRequestOptionSelectionInput src)
-		{
-			if (src == null) return null;
-
-			return new ServiceRequestOptionSelectionInputDto()
-			{
-				Id = src.Id,
-				SelectionInputId = src.SelectionInputId,
-				ServiceRequestOptionId = src.ServiceRequestOptionId,
-				Value = src.Value,
-				SelectionInput = MapSelectionInputToDto(src.SelectionInput),
-				ServiceRequestOption = MapServiceRequestOptionToDto(src.ServiceRequestOption)
-			};
-		}
-
-		public static ServiceRequestOptionSelectionInput MapDtoToServiceRequestOptionSelectionInput(IServiceRequestOptionSelectionInputDto src)
-		{
-			if (src == null) return null;
-
-			return new ServiceRequestOptionSelectionInput
-			{
-				Id = src.Id,
-				SelectionInputId = src.SelectionInputId,
-				ServiceRequestOptionId = src.ServiceRequestOptionId,
-				Value = src.Value
-			};
-		}
-
-		private static IServiceRequestOptionTextInputDto MapServiceRequestOptionTextInputToDto(ServiceRequestOptionTextInput src)
-		{
-			if (src == null) return null;
-
-			return new ServiceRequestOptionTextInputDto()
-			{
-				Id = src.Id,
-				TextInputId = src.TextInputId,
-				ServiceRequestOptionId = src.ServiceRequestOptionId,
-				Value = src.Value,
-				TextInput = MapTextInputToDto(src.TextInput),
-				ServiceRequestOption = MapServiceRequestOptionToDto(src.ServiceRequestOption)
-			};
-		}
-
-		public static ServiceRequestOptionTextInput MapDtoToServiceRequestOptionTextInput(IServiceRequestOptionTextInputDto src)
-		{
-			if (src == null) return null;
-
-			return new ServiceRequestOptionTextInput
-			{
-				Id = src.Id,
-				TextInputId = src.TextInputId,
-				ServiceRequestOptionId = src.ServiceRequestOptionId,
-				Value = src.Value
-			};
-		}
-
 		public static Script MapDtoToScript(IScript src)
 		{
 			if (src == null)
@@ -1042,8 +968,15 @@ namespace DataService
 
 			return new Script
 			{
-				Id = src.Id
-			};
+				Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                Version = src.Version,
+                Filename = src.Filename,
+                ScriptFile = src.ScriptFile,
+                MimeType = src.MimeType,
+                UploadDate = src.UploadDate
+            };
 		}
 
 		public static ScriptDto MapScriptToDto(IScript src)
@@ -1053,7 +986,15 @@ namespace DataService
 
 			return new ScriptDto
 			{
-				Id = src.Id
+				Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                Version = src.Version,
+                Filename = src.Filename,
+                ScriptFile = src.ScriptFile,
+                MimeType = src.MimeType,
+                UploadDate = src.UploadDate
+
 			};
 		}
 

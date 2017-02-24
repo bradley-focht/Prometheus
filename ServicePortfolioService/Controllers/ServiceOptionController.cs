@@ -14,25 +14,7 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceOptionController : EntityController<IServiceOptionDto>, IServiceOptionController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceOptionController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceOptionController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceOptionDto GetServiceOption(int serviceOptionId)
+		public IServiceOptionDto GetServiceOption(int performingUserId, int serviceOptionId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -43,12 +25,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceOptionDto ModifyServiceOption(IServiceOptionDto serviceOptionId, EntityModification modification)
+		public IServiceOptionDto ModifyServiceOption(int performingUserId, IServiceOptionDto serviceOptionId, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceOptionId, modification);
+			return base.ModifyEntity(performingUserId, serviceOptionId, modification);
 		}
 
-		protected override IServiceOptionDto Create(IServiceOptionDto entity)
+		protected override IServiceOptionDto Create(int performingUserId, IServiceOptionDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -58,12 +40,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Option with ID {0} already exists.", entity.Id));
 				}
 				var savedOption = context.ServiceOptions.Add(ManualMapper.MapDtoToServiceOption(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceOptionToDto(savedOption);
 			}
 		}
 
-		protected override IServiceOptionDto Update(IServiceOptionDto entity)
+		protected override IServiceOptionDto Update(int performingUserId, IServiceOptionDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -74,23 +56,23 @@ namespace ServicePortfolioService.Controllers
 				var updatedOption = ManualMapper.MapDtoToServiceOption(entity);
 				context.ServiceOptions.Attach(updatedOption);
 				context.Entry(updatedOption).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceOptionToDto(updatedOption);
 			}
 		}
 
-		protected override IServiceOptionDto Delete(IServiceOptionDto entity)
+		protected override IServiceOptionDto Delete(int performingUserId, IServiceOptionDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceOptions.Find(entity.Id);
 				context.ServiceOptions.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}
 
-		public IInputGroupDto GetInputsForServiceOptions(IEnumerable<IServiceOptionDto> serviceOptions)
+		public IInputGroupDto GetInputsForServiceOptions(int performingUserId, IEnumerable<IServiceOptionDto> serviceOptions)
 		{
 			if (serviceOptions == null)
 				base.ThrowArgumentNullError(nameof(serviceOptions));
@@ -120,7 +102,7 @@ namespace ServicePortfolioService.Controllers
 			return inputGroup;
 		}
 
-		public IServiceOptionDto AddInputsToServiceOption(int serviceOptionId, IInputGroupDto inputsToAdd)
+		public IServiceOptionDto AddInputsToServiceOption(int performingUserId, int serviceOptionId, IInputGroupDto inputsToAdd)
 		{
 			if (inputsToAdd == null)
 				base.ThrowArgumentNullError(nameof(inputsToAdd));
@@ -149,12 +131,12 @@ namespace ServicePortfolioService.Controllers
 						serviceOption.ScriptedSelectionInputs.Add(context.ScriptedSelectionInputs.Find(scriptedSelectionInputToAdd.Id));
 				}
 
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceOptionToDto(serviceOption);
 			}
 		}
 
-		public IServiceOptionDto RemoveInputsFromServiceOption(int serviceOptionId, IInputGroupDto inputsToRemove)
+		public IServiceOptionDto RemoveInputsFromServiceOption(int performingUserId, int serviceOptionId, IInputGroupDto inputsToRemove)
 		{
 			if (inputsToRemove == null)
 				base.ThrowArgumentNullError(nameof(inputsToRemove));
@@ -183,7 +165,7 @@ namespace ServicePortfolioService.Controllers
 						serviceOption.ScriptedSelectionInputs.Remove(context.ScriptedSelectionInputs.Find(scriptedSelectionInputToRemove.Id));
 				}
 
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceOptionToDto(serviceOption);
 			}
 		}

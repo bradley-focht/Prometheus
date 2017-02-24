@@ -9,22 +9,24 @@ namespace RequestService.Controllers
 		/// <summary>
 		/// Retrieve a single script
 		/// </summary>
+		/// <param name="performingUserId"></param>
 		/// <param name="id">script id</param>
 		/// <returns></returns>
-		ScriptDto GetScript(int id);
+		IScriptDto GetScript(int performingUserId, int id);
 
 		/// <summary>
 		/// return all scripts
 		/// </summary>
 		/// <returns></returns>
-		IEnumerable<ScriptDto> GetScripts();
+		IEnumerable<IScriptDto> GetScripts(int performingUserId);
 
 		/// <summary>
 		/// Modify a script
 		/// </summary>
+		/// <param name="performingUserId"></param>
 		/// <param name="script">script to modify</param>
 		/// <param name="modification">change to make</param>
 		/// <returns></returns>
-		ScriptDto ModifyScript(IScriptDto script, EntityModification modification);
+		IScriptDto ModifyScript(int performingUserId, IScriptDto script, EntityModification modification);
 	}
 }

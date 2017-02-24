@@ -2,7 +2,7 @@
 @using Prometheus.WebUI.Helpers.Enums
 @using Prometheus.WebUI.Models.ServiceCatalog
 @{
-	ViewBag.Title = Model.Catalog == ServiceCatalogs.Business ? "Business Catalog" : "Technical Catalog";
+	ViewBag.Title = Model.Catalog == ServiceCatalog.Business ? "Business Catalog" : "Technical Catalog";
 
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Links = new List<KeyValuePair<string, string>>

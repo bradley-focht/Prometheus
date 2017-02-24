@@ -91,14 +91,7 @@
     <Compile Include="Models\ServiceRequest.cs" />
     <Compile Include="Models\IServiceRequest.cs" />
     <Compile Include="Models\IServiceRequestOption.cs" />
-    <Compile Include="Models\IServiceRequestOptionInput.cs" />
-    <Compile Include="Models\IServiceRequestOptionScriptedSelectionInput.cs" />
-    <Compile Include="Models\IServiceRequestOptionSelectionInput.cs" />
-    <Compile Include="Models\ServiceRequestOptionTextInput.cs" />
-    <Compile Include="Models\IServiceRequestOptionTextInput.cs" />
     <Compile Include="Models\ServiceRequestOption.cs" />
-    <Compile Include="Models\ServiceRequestOptionScriptedSelectionInput.cs" />
-    <Compile Include="Models\ServiceRequestOptionSelectionInput.cs" />
     <Compile Include="Models\ServiceRequestPackage.cs" />
     <Compile Include="Models\ICreatedEntity.cs" />
     <Compile Include="Models\ILifecycleStatus.cs" />

@@ -2,18 +2,18 @@
 
 namespace Prometheus.WebUI.Models.Service
 {
-    public class ServiceOptionModel
-    {
+	public class ServiceOptionModel
+	{
 		/// <summary>
 		/// The option DTO
 		/// </summary>
-        public ServiceOptionDto Option { get; set; }
+		public IServiceOptionDto Option { get; set; }
 
-        /// <summary>
-        /// For back links
-        /// </summary>
-        public string ServiceName { get; set; }
-        public int ServiceId { get; set; }
+		/// <summary>
+		/// For back links
+		/// </summary>
+		public string ServiceName { get; set; }
+		public int ServiceId { get; set; }
 
 		/// <summary>
 		/// Contention is to use Update or Add

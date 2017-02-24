@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
 using Common.Enums.Permissions;
@@ -12,7 +13,7 @@ using DataService.Models;
 
 namespace UserManager.Controllers
 {
-	public class RoleController : UMEntityController<IRoleDto>, IRoleController
+	public class RoleController : EntityController<IRoleDto>, IRoleController
 	{
 		private readonly IPermissionController _permissionController;
 
@@ -146,7 +147,7 @@ namespace UserManager.Controllers
 		}
 
 		//TODO: Sean - permission checks are needed
-		public IEnumerable<RoleDto> GetRoles(int performingUserId)
+		public IEnumerable<IRoleDto> GetRoles(int performingUserId)
 		{
 			 
 			using (var context = new PrometheusContext())
@@ -160,7 +161,7 @@ namespace UserManager.Controllers
 		}
 
 		//TODO: Sean i don't want to deal with this either... yours truly, Brad.
-		public RoleDto GetRole(int performingUserId, int roleId)
+		public IRoleDto GetRole(int performingUserId, int roleId)
 		{
 			//TODO: Sean > permission things go here <
 			using (var context = new PrometheusContext())

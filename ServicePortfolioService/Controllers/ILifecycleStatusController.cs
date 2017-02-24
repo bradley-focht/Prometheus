@@ -1,10 +1,10 @@
-﻿using Common.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Common.Dto;
 
 namespace ServicePortfolioService.Controllers
 {
-	public interface ILifecycleStatusController : IUserController
+	public interface ILifecycleStatusController
 	{
 		/// <summary>
 		/// Finds lifecycle status with identifier provided and returns its DTO

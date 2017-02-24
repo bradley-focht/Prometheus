@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -24,8 +23,5 @@ namespace DataService.Models
 
 		public virtual ServiceOption ServiceOption { get; set; }
 		public virtual ServiceRequest ServiceRequest { get; set; }
-		public virtual ICollection<ServiceRequestOptionScriptedSelectionInput> ServiceRequestOptionScriptedSelectionInputs { get; set; }
-		public virtual ICollection<ServiceRequestOptionSelectionInput> ServiceRequestOptionSelectionInputs { get; set; }
-		public virtual ICollection<ServiceRequestOptionTextInput> ServiceRequestOptionTextInputs { get; set; }
 	}
 }

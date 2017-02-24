@@ -1,36 +1,17 @@
-﻿using Common.Dto;
-using Common.Enums;
-using DataService;
-using DataService.DataAccessLayer;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
+using Common.Dto;
 using Common.Enums.Entities;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class ServiceContractController : EntityController<IServiceContractDto>, IServiceContractController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceContractController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceContractController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceContractDto GetServiceContract(int serviceContractId)
+		public IServiceContractDto GetServiceContract(int performingUserId, int serviceContractId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -38,12 +19,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceContractDto ModifyServiceContract(IServiceContractDto serviceContract, EntityModification modification)
+		public IServiceContractDto ModifyServiceContract(int performingUserId, IServiceContractDto serviceContract, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceContract, modification);
+			return base.ModifyEntity(performingUserId, serviceContract, modification);
 		}
 
-		protected override IServiceContractDto Create(IServiceContractDto entity)
+		protected override IServiceContractDto Create(int performingUserId, IServiceContractDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -53,12 +34,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Contract with ID {0} already exists.", entity.Id));
 				}
 				var savedContract = context.ServiceContracts.Add(ManualMapper.MapDtoToServiceContract(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceContractToDto(savedContract);
 			}
 		}
 
-		protected override IServiceContractDto Update(IServiceContractDto entity)
+		protected override IServiceContractDto Update(int performingUserId, IServiceContractDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -70,18 +51,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedServiceContract = ManualMapper.MapDtoToServiceContract(entity);
 				context.ServiceContracts.Attach(updatedServiceContract);
 				context.Entry(updatedServiceContract).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceContractToDto(updatedServiceContract);
 			}
 		}
 
-		protected override IServiceContractDto Delete(IServiceContractDto entity)
+		protected override IServiceContractDto Delete(int performingUserId, IServiceContractDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceContracts.Find(entity.Id);
 				context.ServiceContracts.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

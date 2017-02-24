@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
-using Common.Controllers;
 using DataService;
 using DataService.DataAccessLayer;
 
 namespace RequestService.Controllers
 {
-	class ScriptFileController : EntityController<ScriptDto>, IScriptFileController
+	public class ScriptFileController : EntityController<IScriptDto>, IScriptFileController
 	{
-		public ScriptDto GetScript(int id)
+		public IScriptDto GetScript(int performingUserId, int id)
 		{
 			throw new NotImplementedException();
 		}
@@ -19,7 +19,7 @@ namespace RequestService.Controllers
 		/// Retrieve all scripts
 		/// </summary>
 		/// <returns></returns>
-		public IEnumerable<ScriptDto> GetScripts()
+		public IEnumerable<IScriptDto> GetScripts(int performingUserId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -32,22 +32,22 @@ namespace RequestService.Controllers
 			}
 		}
 
-		public ScriptDto ModifyScript(IScriptDto script, EntityModification modification)
+		public IScriptDto ModifyScript(int performingUserId, IScriptDto script, EntityModification modification)
 		{
 			throw new NotImplementedException();
 		}
 
-		protected override ScriptDto Create(ScriptDto entity)
+		protected override IScriptDto Create(int performingUserId, IScriptDto entity)
 		{
 			throw new NotImplementedException();
 		}
 
-		protected override ScriptDto Update(ScriptDto entity)
+		protected override IScriptDto Update(int performingUserId, IScriptDto entity)
 		{
 			throw new NotImplementedException();
 		}
 
-		protected override ScriptDto Delete(ScriptDto entity)
+		protected override IScriptDto Delete(int performingUserId, IScriptDto entity)
 		{
 			throw new NotImplementedException();
 		}

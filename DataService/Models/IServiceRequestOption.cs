@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DataService.Models
+﻿namespace DataService.Models
 {
 	public interface IServiceRequestOption : IUserCreatedEntity
 	{
@@ -14,8 +12,5 @@ namespace DataService.Models
 
 		ServiceOption ServiceOption { get; set; }
 		ServiceRequest ServiceRequest { get; set; }
-		ICollection<ServiceRequestOptionScriptedSelectionInput> ServiceRequestOptionScriptedSelectionInputs { get; set; }
-		ICollection<ServiceRequestOptionSelectionInput> ServiceRequestOptionSelectionInputs { get; set; }
-		ICollection<ServiceRequestOptionTextInput> ServiceRequestOptionTextInputs { get; set; }
 	}
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
 using Common.Exceptions;
@@ -11,7 +12,7 @@ using DataService.Models;
 
 namespace UserManager.Controllers
 {
-	public class UserController : UMEntityController<IUserDto>, IUserController
+	public class UserController : EntityController<IUserDto>, IUserController
 	{
 
 		public IUserDto ModifyUser(int performingUserId, IUserDto userDto, EntityModification modification)
@@ -19,7 +20,7 @@ namespace UserManager.Controllers
 			return base.ModifyEntity(performingUserId, userDto, modification);
 		}
 
-		public IEnumerable<UserDto> GetUsers(int performingUserId)
+		public IEnumerable<IUserDto> GetUsers(int performingUserId)
 		{
 			//TODO: Sean -  need to check permissions...
 			{
@@ -29,7 +30,7 @@ namespace UserManager.Controllers
 					var users = context.Users;
 					foreach (var user in users)
 					{
-						yield return (UserDto)ManualMapper.MapUserToDto(user);
+						yield return ManualMapper.MapUserToDto(user);
 					}
 				}
 			}
@@ -37,7 +38,7 @@ namespace UserManager.Controllers
 
 
 
-		public UserDto GetUser(int performingUserId, int userId)
+		public IUserDto GetUser(int performingUserId, int userId)
 		{
 			//TODO: Sean - need to do permissions stuff here
 
@@ -47,7 +48,43 @@ namespace UserManager.Controllers
 							where u.Id == userId
 							select u).FirstOrDefault();
 
-				return (UserDto)ManualMapper.MapUserToDto(user);				//will return null if user not found
+				return ManualMapper.MapUserToDto(user);				//will return null if user not found
+			}
+		}
+
+		private int _guestId;
+		public int GuestId
+		{
+			get
+			{
+				if (_guestId == 0)
+				{
+					using (var context = new PrometheusContext())
+					{
+						var guest = context.Users.FirstOrDefault(x => x.Name == "Guest");
+						if (guest != null)
+							_guestId = guest.Id;
+					}
+				}
+				return _guestId;
+			}
+		}
+
+		private int _administratorId;
+		public int AdministratorId
+		{
+			get
+			{
+				if (_administratorId == 0)
+				{
+					using (var context = new PrometheusContext())
+					{
+						var administrator = context.Users.FirstOrDefault(x => x.Name == "Guest");
+						if (administrator != null)
+							_administratorId = administrator.Id;
+					}
+				}
+				return _administratorId;
 			}
 		}
 

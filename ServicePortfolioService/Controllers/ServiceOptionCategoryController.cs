@@ -11,25 +11,7 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceOptionCategoryController : EntityController<IServiceOptionCategoryDto>, IServiceOptionCategoryController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceOptionCategoryController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceOptionCategoryController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceOptionCategoryDto GetServiceOptionCategory(int optionCaegoryId)
+		public IServiceOptionCategoryDto GetServiceOptionCategory(int performingUserId, int optionCaegoryId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -40,12 +22,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceOptionCategoryDto ModifyServiceOptionCategory(IServiceOptionCategoryDto optionCaegoryId, EntityModification modification)
+		public IServiceOptionCategoryDto ModifyServiceOptionCategory(int performingUserId, IServiceOptionCategoryDto optionCaegoryId, EntityModification modification)
 		{
-			return base.ModifyEntity(optionCaegoryId, modification);
+			return base.ModifyEntity(performingUserId, optionCaegoryId, modification);
 		}
 
-		protected override IServiceOptionCategoryDto Create(IServiceOptionCategoryDto entity)
+		protected override IServiceOptionCategoryDto Create(int performingUserId, IServiceOptionCategoryDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -55,12 +37,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Option with ID {0} already exists.", entity.Id));
 				}
 				var savedOption = context.OptionCategories.Add(ManualMapper.MapDtoToOptionCategory(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapOptionCategoryToDto(savedOption);
 			}
 		}
 
-		protected override IServiceOptionCategoryDto Update(IServiceOptionCategoryDto entity)
+		protected override IServiceOptionCategoryDto Update(int performingUserId, IServiceOptionCategoryDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -71,18 +53,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedOption = ManualMapper.MapDtoToOptionCategory(entity);
 				context.OptionCategories.Attach(updatedOption);
 				context.Entry(updatedOption).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapOptionCategoryToDto(updatedOption);
 			}
 		}
 
-		protected override IServiceOptionCategoryDto Delete(IServiceOptionCategoryDto entity)
+		protected override IServiceOptionCategoryDto Delete(int performingUserId, IServiceOptionCategoryDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.OptionCategories.Find(entity.Id);
 				context.OptionCategories.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

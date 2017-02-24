@@ -32,7 +32,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 
 		public List<UserInputReturnModel> UserInput { get; set; }
 
-		public IEnumerable<ServiceRequestOptionDto> GetServiceRequestOptions()
+		public IEnumerable<IServiceRequestOptionDto> GetServiceRequestOptions()
 		{
 			List<ServiceRequestOptionDto> returnOptions = new List<ServiceRequestOptionDto>();
 			var options = Options.ToArray();

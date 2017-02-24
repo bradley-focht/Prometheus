@@ -337,7 +337,7 @@
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Helpers\AbbreviatedEntityUpdate.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
-    <Compile Include="Helpers\Enums\ServiceCatalogs.cs" />
+    <Compile Include="Helpers\Enums\ServiceCatalog.cs" />
     <Compile Include="Helpers\Enums\ServiceRequestMode.cs" />
     <Compile Include="Helpers\ServicePackageHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />

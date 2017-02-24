@@ -17,7 +17,6 @@ namespace Prometheus.WebUI.Controllers
 	{
 		private IPortfolioService _ps;
 		private IServiceRequestOptionController _rs;
-		private int dummyId = 1;
 
 		public ServiceRequestController()
 		{
@@ -32,7 +31,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Begin(int id)
 		{
 			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id } };   //start new SR
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 
 			model.Package = ServicePackageHelper.GetPackage(_ps, id);
 			model.CurrentIndex = -1;            /* index for info tab */
@@ -48,6 +47,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveInfo(ServiceRequestInfoReturnModel form, int submit)
 		{
+
 			if (submit == 9999 && form.Id == 0)
 			{
 				return RedirectToAction("Index", "ServiceRequestApproval");
@@ -73,12 +73,12 @@ namespace Prometheus.WebUI.Controllers
 				RequestedForDate = form.RequestedDate
 			};
 
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 
 			model.CurrentIndex = 0;
 			try
 			{
-				request = (ServiceRequestDto)_ps.ModifyServiceRequest(request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+				request = (ServiceRequestDto)_ps.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{
@@ -92,11 +92,11 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = "Successfully saved Service Request";
 			if (submit >= 99999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
 			}
 			if (submit >= 9999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
 			}
 
 			return RedirectToAction("Form", new { id = request.Id, index = submit });
@@ -112,8 +112,8 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveFormSelection(ServiceRequestFormReturnModel form, int submit)
 		{
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
-			_rs = InterfaceFactory.CreateServiceRequestOptionController(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
+			_rs = InterfaceFactory.CreateServiceRequestOptionController();
 			/* STEP ONE - Get the Service Package and SR */
 			ServiceRequestModel model = new ServiceRequestModel //used to hold all the data until redirecting
 			{
@@ -123,7 +123,7 @@ namespace Prometheus.WebUI.Controllers
 			};
 			try
 			{
-				model.ServiceRequest = _ps.GetServiceRequest(form.Id); //SR
+				model.ServiceRequest = _ps.GetServiceRequest(UserId, form.Id); //SR
 				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId); //Package
 			}
 			catch (Exception exception)
@@ -136,83 +136,74 @@ namespace Prometheus.WebUI.Controllers
 
 			/* STEP TWO - figure out what category to work with */
 			var currentCategory =
-				_ps.GetServiceOptionCategory(
+				_ps.GetServiceOptionCategory(UserId, 
 					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 
 			/* STEP THREE - add/remove options in the SR */
-			ICollection<IServiceRequestOptionDto> removedOptions = new List<IServiceRequestOptionDto>(); 
-			ICollection<ServiceRequestOptionDto> formOptions;
-			if (form.Options == null) { formOptions = new List<ServiceRequestOptionDto>(); }    //need to avoid a null pointer exception here
-			else { formOptions = form.GetServiceRequestOptions().ToList(); }
-			if (model.ServiceRequest.ServiceRequestOptions == null)
-			{ model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>(); }
-			try
 			{
-				foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
+				ICollection<IServiceRequestOptionDto> formOptions;
+				if (form.Options == null)
 				{
-					var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
-					var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
-
-					if (formDto != null && srDto == null)       //add condition
-					{
-						_rs.ModifyServiceRequestOption((from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
-					}
-					else if (formDto == null && srDto != null) //remove condition
-					{
-						removedOptions.Add(srDto);
-						_rs.ModifyServiceRequestOption((from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
-					}
-					else if (formDto != null /* && srDto != null */)    //update condition
-					{
-						_rs.ModifyServiceRequestOption(srDto, EntityModification.Delete);
-						_rs.ModifyServiceRequestOption(formDto, EntityModification.Create);
-					}                                                                                                       /* done \*/
+					formOptions = new List<IServiceRequestOptionDto>();
+				} //need to avoid a null pointer exception here
+				else
+				{
+					formOptions = form.GetServiceRequestOptions().ToList();
 				}
-			}
-			catch (Exception exception)     //what, a problem?
-			{
-				TempData["MessageType"] = WebMessageType.Failure;
-				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
-				model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
-				return View("ServiceRequest", model);
+				if (model.ServiceRequest.ServiceRequestOptions == null)
+				{									   
+					model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>();
+				}
+
+				
+
+				try
+				{
+					foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
+					{
+						var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+						var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+
+						if (formDto != null && srDto == null)		//add condition
+						{
+							_rs.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
+						}
+						else if (formDto == null && srDto != null) //remove condition
+						{
+							_rs.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
+						}
+						else if (formDto != null /* && srDto != null */)	//update condition
+						{
+							_rs.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
+							_rs.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
+						}                                                                                                       /* done \*/
+					}
+				}
+				catch (Exception exception)		//what, a problem?
+				{
+					TempData["MessageType"] = WebMessageType.Failure;
+					TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
+					model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
+					return View("ServiceRequest", model);
+				}
 			}
 			/* STEP FOUR - add/remove user input data */
-			IServiceRequestUserInputController userInputController = InterfaceFactory.CreateServiceRequestUserInputController();
-			if (form.UserInput != null)
-			{
-				List<ServiceRequestUserInputDto> userDataList = (from u in form.UserInput where u.Value != null
-																 select new ServiceRequestUserInputDto
-																 { Id = u.Id, Name = u.Name, UserInputType = u.Type, ServiceRequestId = form.Id,
-																	 Value = u.Value, InputId = u.InputId }).ToList();
-				foreach (var userData in userDataList)
-				{
-					try
-					{
-						userInputController.ModifyServiceRequestUserInput(userData, userData.Id > 0 ? EntityModification.Update : EntityModification.Create);
-						//removal?
-					}
-					catch (Exception exception)
-					{
-						TempData["MessageType"] = WebMessageType.Failure;
-						TempData["Message"] = $"Failed to save user input data, error: {exception.Message}";
-						return View("ServiceRequest", model);
-					}
-				}
-			}
+
 			/* STEP FIVE - navigation */
 			if (submit >= 9999)
 			{
+				//TODO: Change state after saving
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
 			model.CurrentIndex = submit;
 
-			if (submit >= 99999)
+						if (submit >= 99999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
 			}
 			if (submit >= 9999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
 			}
 
 			model.Mode = ServiceRequestMode.Selection;
@@ -228,13 +219,13 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Form(int id, int index, ServiceRequestMode mode = ServiceRequestMode.Selection)
 		{
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = index, ServiceRequestId = id, Mode = mode };
 
 			/* STEP ONE - get SR and get package */
 			try
 			{
-				model.ServiceRequest = _ps.GetServiceRequest(id);       //get db info
+				model.ServiceRequest = _ps.GetServiceRequest(UserId, id);       //get db info
 				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId);
 			}
 			catch (Exception exception)
@@ -244,6 +235,7 @@ namespace Prometheus.WebUI.Controllers
 				return View("ServiceRequest", model);
 			}
 			/* STEP TWO - get any user inputs & associate with the option */
+			//TODO BRAD, IS THERE A REASON YOURE NOT USING THE DTO HERE?
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
 			if (index < 0)
 			{
@@ -257,7 +249,7 @@ namespace Prometheus.WebUI.Controllers
 					optionInputList.Add(new ServiceOptionTag
 					{
 						ServiceOption = option,
-						UserInputs = _ps.GetInputsForServiceOptions(new List<IServiceOptionDto> { option })
+						UserInputs = _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option })
 					});
 				}
 			}
@@ -266,5 +258,7 @@ namespace Prometheus.WebUI.Controllers
 
 			return View("ServiceRequest", model);
 		}
+
+		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

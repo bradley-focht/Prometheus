@@ -14,9 +14,9 @@ namespace Prometheus.WebUI.Helpers
 		/// </summary>
 		/// <param name="userId"></param>
 		/// <returns></returns>
-		public static PortfolioService CreatePortfolioService(int userId)
+		public static PortfolioService CreatePortfolioService()
 		{
-			return new PortfolioService(userId,
+			return new PortfolioService(
 				new ServiceBundleController(),
 				new ServiceController(),
 				new LifecycleStatusController(),
@@ -42,7 +42,7 @@ namespace Prometheus.WebUI.Helpers
 		/// </summary>
 		/// <param name="dummyId"></param>
 		/// <returns></returns>
-		public static ICatalogController CreateCatalogController(int dummyId)
+		public static ICatalogController CreateCatalogController()
 		{
 			return new CatalogController(CreateUserManagerService());
 		}
@@ -64,9 +64,9 @@ namespace Prometheus.WebUI.Helpers
 		/// Create a new Service Request Interface/Controller
 		/// </summary>
 		/// <returns></returns>
-		public static ServiceRequestOptionController CreateServiceRequestOptionController(int userId)
+		public static ServiceRequestOptionController CreateServiceRequestOptionController()
 		{
-			return new ServiceRequestOptionController(userId);
+			return new ServiceRequestOptionController();
 		}
 
 		/// <summary>

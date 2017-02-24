@@ -1,6 +1,6 @@
-﻿using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Common.Enums;
 
 namespace Common.Dto
 {
@@ -28,5 +28,6 @@ namespace Common.Dto
 		int UpdatedByUserId { get; set; }
 
 		ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
+		ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
 	}
 }

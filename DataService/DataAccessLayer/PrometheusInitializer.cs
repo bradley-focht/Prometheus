@@ -1,6 +1,7 @@
-﻿using Common.Enums.Permissions;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Common.Enums.Permissions;
 using DataService.Models;
-using System.Collections.Generic;
 
 namespace DataService.DataAccessLayer
 {
@@ -10,6 +11,10 @@ namespace DataService.DataAccessLayer
 	{
 		protected override void Seed(PrometheusContext context)
 		{
+			SeedDefaultPermissions(context);
+			AddGuestUser(context);
+			AddAdministrator(context);
+
 			//Populate Users
 			var users = new List<User>
 			{
@@ -57,7 +62,28 @@ namespace DataService.DataAccessLayer
 			});
 			context.SaveChanges();
 
-			SeedDefaultPermissions(context);
+		}
+
+		private void AddAdministrator(PrometheusContext context)
+		{
+			var admin = new User()
+			{
+				Name = "Administrator"
+			};
+
+			admin.Roles.Add(context.Roles.First(x => x.Name == "Administrator"));
+			context.Users.Add(admin);
+		}
+
+		private void AddGuestUser(PrometheusContext context)
+		{
+			var guest = new User()
+			{
+				Name = "Guest"
+			};
+
+			guest.Roles.Add(context.Roles.First(x => x.Name == "Guest"));
+			context.Users.Add(guest);
 		}
 
 		public void SeedDefaultPermissions(PrometheusContext context)

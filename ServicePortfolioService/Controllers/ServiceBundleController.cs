@@ -1,32 +1,15 @@
-﻿using Common.Dto;
-using DataService;
-using DataService.DataAccessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Dto;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class ServiceBundleController : IServiceBundleController
 	{
-		private int _userId;
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceBundleController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceBundleController(int userId)
-		{
-			_userId = userId;
-		}
-
 		public IServiceBundleDto GetServiceBundle(int serviceBundleId)
 		{
 			using (var context = new PrometheusContext())
@@ -75,7 +58,8 @@ namespace ServicePortfolioService.Controllers
 
 				//var savedServiceBundle = context.ServiceBundles.Add(Mapper.Map<ServiceBundle>(serviceBundle));
 				var savedServiceBundle = context.ServiceBundles.Add(ManualMapper.MapDtoToServiceBundle(serviceBundle));
-				context.SaveChanges(_userId);
+				//TODO SAVE FOR USER
+				context.SaveChanges();
 				//return Mapper.Map<ServiceBundleDto>(savedServiceBundle);
 				return ManualMapper.MapServiceBundleToDto(savedServiceBundle);
 				//}
@@ -97,7 +81,8 @@ namespace ServicePortfolioService.Controllers
 				var updatedServiceBundle = ManualMapper.MapDtoToServiceBundle(serviceBundle);
 				context.ServiceBundles.Attach(updatedServiceBundle);
 				context.Entry(updatedServiceBundle).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				//TODO SAVE FOR USER
+				context.SaveChanges();
 				return ManualMapper.MapServiceBundleToDto(updatedServiceBundle);
 			}
 		}
@@ -108,7 +93,8 @@ namespace ServicePortfolioService.Controllers
 			{
 				var toDelete = context.ServiceBundles.Find(serviceBundleId);
 				context.ServiceBundles.Remove(toDelete);
-				context.SaveChanges(_userId);
+				//TODO SAVE FOR USER
+				context.SaveChanges();
 			}
 			return true;
 		}

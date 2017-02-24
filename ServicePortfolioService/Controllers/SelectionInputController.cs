@@ -1,36 +1,18 @@
-﻿using Common.Dto;
-using DataService;
-using DataService.DataAccessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
+using Common.Dto;
 using Common.Enums.Entities;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class SelectionInputController : EntityController<ISelectionInputDto>, ISelectionInputController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public SelectionInputController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public SelectionInputController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public ISelectionInputDto GetSelectionInput(int textInputId)
+		public ISelectionInputDto GetSelectionInput(int performingUserId, int textInputId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -38,7 +20,7 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-	    public IEnumerable<ISelectionInputDto> GetSelectionInputs()
+	    public IEnumerable<ISelectionInputDto> GetSelectionInputs(int performingUserId)
 	    {
 	        using (var context = new PrometheusContext())
 	        {
@@ -50,12 +32,12 @@ namespace ServicePortfolioService.Controllers
 	        }
 	    }
 
-	    public ISelectionInputDto ModifySelectionInput(ISelectionInputDto textInput, EntityModification modification)
+	    public ISelectionInputDto ModifySelectionInput(int performingUserId, ISelectionInputDto textInput, EntityModification modification)
 		{
-			return base.ModifyEntity(textInput, modification);
+			return base.ModifyEntity(performingUserId, textInput, modification);
 		}
 
-		protected override ISelectionInputDto Create(ISelectionInputDto entity)
+		protected override ISelectionInputDto Create(int performingUserId, ISelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -65,12 +47,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Measure with ID {0} already exists.", entity.Id));
 				}
 				var savedMeasure = context.SelectionInputs.Add(ManualMapper.MapDtoToSelectionInput(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapSelectionInputToDto(savedMeasure);
 			}
 		}
 
-		protected override ISelectionInputDto Update(ISelectionInputDto entity)
+		protected override ISelectionInputDto Update(int performingUserId, ISelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -82,18 +64,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedSelectionInput = ManualMapper.MapDtoToSelectionInput(entity);
 				context.SelectionInputs.Attach(updatedSelectionInput);
 				context.Entry(updatedSelectionInput).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapSelectionInputToDto(updatedSelectionInput);
 			}
 		}
 
-		protected override ISelectionInputDto Delete(ISelectionInputDto entity)
+		protected override ISelectionInputDto Delete(int performingUserId, ISelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.SelectionInputs.Find(entity.Id);
 				context.SelectionInputs.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

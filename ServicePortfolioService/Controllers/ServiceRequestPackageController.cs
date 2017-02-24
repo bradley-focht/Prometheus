@@ -13,25 +13,7 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceRequestPackageController : EntityController<IServiceRequestPackageDto>, IServiceRequestPackageController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceRequestPackageController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceRequestPackageController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceRequestPackageDto GetServiceRequestPackage(int servicePackageId)
+		public IServiceRequestPackageDto GetServiceRequestPackage(int performingUserId, int servicePackageId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -42,12 +24,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceRequestPackageDto ModifyServiceRequestPackage(IServiceRequestPackageDto servicePackage, EntityModification modification)
+		public IServiceRequestPackageDto ModifyServiceRequestPackage(int performingUserId, IServiceRequestPackageDto servicePackage, EntityModification modification)
 		{
-			return base.ModifyEntity(servicePackage, modification);
+			return base.ModifyEntity(performingUserId, servicePackage, modification);
 		}
 
-		protected override IServiceRequestPackageDto Create(IServiceRequestPackageDto entity)
+		protected override IServiceRequestPackageDto Create(int performingUserId, IServiceRequestPackageDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -67,12 +49,12 @@ namespace ServicePortfolioService.Controllers
 
 				savedPackage.ServiceOptionCategoryTags = tags;
 
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceRequestPackageToDto(savedPackage);
 			}
 		}
 
-		protected override IServiceRequestPackageDto Update(IServiceRequestPackageDto entity)
+		protected override IServiceRequestPackageDto Update(int performingUserId, IServiceRequestPackageDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -93,18 +75,18 @@ namespace ServicePortfolioService.Controllers
 
 				context.ServiceRequestPackages.Attach(updatedPackage);
 				context.Entry(updatedPackage).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceRequestPackageToDto(updatedPackage);
 			}
 		}
 
-		protected override IServiceRequestPackageDto Delete(IServiceRequestPackageDto entity)
+		protected override IServiceRequestPackageDto Delete(int performingUserId, IServiceRequestPackageDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceRequestPackages.Find(entity.Id);
 				context.ServiceRequestPackages.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}
@@ -123,7 +105,7 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int serviceOptionId)
+		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId)
 		{
 			using (var context = new PrometheusContext())
 			{

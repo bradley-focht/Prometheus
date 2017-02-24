@@ -5,7 +5,7 @@
 @model CatalogModel
 
 @{
-	ViewBag.Title = (Model.Catalog == ServiceCatalogs.Both ? "Service" : $"{Model.Catalog}") + " Catalog";
+	ViewBag.Title = (Model.Catalog == ServiceCatalog.Both ? "Service" : $"{Model.Catalog}") + " Catalog";
 
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	ViewBag.Links = new List<KeyValuePair<string, string>>

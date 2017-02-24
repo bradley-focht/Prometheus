@@ -13,13 +13,12 @@ namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceCatalogController : Controller
 	{
-		private readonly int _dummId = 1;
 		private readonly int _pageSize;
 		private readonly ICatalogController _requestService;
 
 		public ServiceCatalogController()
 		{
-			_requestService = InterfaceFactory.CreateCatalogController(_dummId);
+			_requestService = InterfaceFactory.CreateCatalogController();
 			try { _pageSize = ConfigHelper.GetPaginationSize(); }       //set pagination size
 			catch (Exception) { _pageSize = 12;     /*just in case */  }
 		}
@@ -31,7 +30,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="type"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult CatalogSearch(string searchString, ServiceCatalogs type)
+		public ActionResult CatalogSearch(string searchString, ServiceCatalog type)
 		{
 			searchString = searchString?.ToLower();                                          //compare everything in lowercase
 			
@@ -40,7 +39,7 @@ namespace Prometheus.WebUI.Controllers
 
 			ServiceCatalogSearcher searcher = new ServiceCatalogSearcher();
 
-			List<ICatalogPublishable> searchresults = searcher.Search(type, searchString, _dummId);
+			List<ICatalogPublishable> searchresults = searcher.Search(type, searchString, UserId);
 			//pagination
 			if (searchresults.Count > _pageSize)
 			{
@@ -60,7 +59,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="pageId"></param>
 		/// <returns></returns>
 		[HttpGet]
-		public ActionResult CatalogSearch(string searchString, ServiceCatalogs type, int pageId)
+		public ActionResult CatalogSearch(string searchString, ServiceCatalog type, int pageId)
 		{
 			searchString = searchString?.ToLower() ?? "";                                          //compare everything in lowercase
 
@@ -72,7 +71,7 @@ namespace Prometheus.WebUI.Controllers
 
 			var searcher = new ServiceCatalogSearcher();
 
-			var searchresults = searcher.Search(type, searchString, _dummId);
+			var searchresults = searcher.Search(type, searchString, UserId);
 			//pagination
 			if (searchresults.Count > _pageSize)
 			{
@@ -90,16 +89,16 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="type"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Index(ServiceCatalogs type = ServiceCatalogs.Business, int id = 0)
+		public ActionResult Index(ServiceCatalog type = ServiceCatalog.Business, int id = 0)
 		{
 			CatalogModel model = new CatalogModel { Catalog = type, CatalogItems = new List<ICatalogPublishable>() };
 			model.Controls = new CatalogControlsModel { SearchString = "", CatalogType = type };         //setup info for the controls
 
 			IEnumerable<IServiceDto> services;                                                           //lazy loaded data for filtering and use later
 
-			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Business)                       //add things from the business catalog
+			if (type == ServiceCatalog.Both || type == ServiceCatalog.Business)                       //add things from the business catalog
 			{
-				services = (from s in _requestService.RequestBusinessCatalog(_dummId) select s).ToList();
+				services = (from s in _requestService.RequestBusinessCatalog(UserId) select s).ToList();
 				foreach (var service in services)                                                       //add services to the catalog model
 				{
 					var i = new ServiceSummary
@@ -132,9 +131,9 @@ namespace Prometheus.WebUI.Controllers
 
 			}
 
-			if (type == ServiceCatalogs.Both || type == ServiceCatalogs.Technical)                  //add things from the tech catalog	
+			if (type == ServiceCatalog.Both || type == ServiceCatalog.Technical)                  //add things from the tech catalog	
 			{
-				services = (from s in _requestService.RequestSupportCatalog(_dummId) select s).ToList();
+				services = (from s in _requestService.RequestSupportCatalog(UserId) select s).ToList();
 				foreach (var service in services)                                                   //add services to the catalog model
 				{
 					var i = new ServiceSummary
@@ -168,17 +167,17 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="type"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public ActionResult Details(ServiceCatalogs catalog, CatalogableType type, int id)
+		public ActionResult Details(ServiceCatalog catalog, CatalogableType type, int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(_dummId);
+			var ps = InterfaceFactory.CreatePortfolioService();
 			int serviceId = 0;
 			switch (type)
 			{
 				case CatalogableType.Option:
-					serviceId = ps.GetServiceOptionCategory(ps.GetServiceOption(id).ServiceOptionCategoryId).ServiceId;
+					serviceId = ps.GetServiceOptionCategory(UserId, ps.GetServiceOption(UserId, id).ServiceOptionCategoryId).ServiceId;
 					break;
 				case CatalogableType.Category:
-					serviceId = ps.GetServiceOptionCategory(id).ServiceId;
+					serviceId = ps.GetServiceOptionCategory(UserId, id).ServiceId;
 					break;
 				case CatalogableType.Service:
 					serviceId = id;
@@ -221,17 +220,17 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="type"></param>
 		/// <param name="serviceId"></param>
 		/// <returns></returns>
-		public ActionResult ServiceOptions(ServiceCatalogs type, int serviceId)
+		public ActionResult ServiceOptions(ServiceCatalog type, int serviceId)
 		{
 			var model = new ServiceOptionsModel { Catalog = type, ServiceId = serviceId };
 			model.Controls = new CatalogControlsModel();
 
 			IList<IServiceDto> services = null;
 
-			if (type == ServiceCatalogs.Business || type == ServiceCatalogs.Business)               //create list of available services to view
-				services = _requestService.RequestBusinessCatalog(_dummId).ToList();
-			else if (type == ServiceCatalogs.Technical || type == ServiceCatalogs.Technical)
-				services = _requestService.RequestSupportCatalog(_dummId).ToList();
+			if (type == ServiceCatalog.Business || type == ServiceCatalog.Business)               //create list of available services to view
+				services = _requestService.RequestBusinessCatalog(UserId).ToList();
+			else if (type == ServiceCatalog.Technical || type == ServiceCatalog.Technical)
+				services = _requestService.RequestSupportCatalog(UserId).ToList();
 
 			if (services != null)
 			{
@@ -251,5 +250,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 			return View(model);
 		}
+
+		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

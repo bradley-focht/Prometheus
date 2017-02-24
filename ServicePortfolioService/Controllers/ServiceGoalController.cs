@@ -11,25 +11,7 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceGoalController : EntityController<IServiceGoalDto>, IServiceGoalController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceGoalController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceGoalController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceGoalDto GetServiceGoal(int serviceGoalId)
+		public IServiceGoalDto GetServiceGoal(int performingUserId, int serviceGoalId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -37,12 +19,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceGoalDto ModifyServiceGoal(IServiceGoalDto serviceGoal, EntityModification modification)
+		public IServiceGoalDto ModifyServiceGoal(int performingUserId, IServiceGoalDto serviceGoal, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceGoal, modification);
+			return base.ModifyEntity(performingUserId, serviceGoal, modification);
 		}
 
-		protected override IServiceGoalDto Create(IServiceGoalDto entity)
+		protected override IServiceGoalDto Create(int performingUserId, IServiceGoalDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -52,12 +34,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Goal with ID {0} already exists.", entity.Id));
 				}
 				var savedGoal = context.ServiceGoals.Add(ManualMapper.MapDtoToServiceGoal(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceGoalToDto(savedGoal);
 			}
 		}
 
-		protected override IServiceGoalDto Update(IServiceGoalDto entity)
+		protected override IServiceGoalDto Update(int performingUserId, IServiceGoalDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -69,18 +51,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedServiceGoal = ManualMapper.MapDtoToServiceGoal(entity);
 				context.ServiceGoals.Attach(updatedServiceGoal);
 				context.Entry(updatedServiceGoal).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceGoalToDto(updatedServiceGoal);
 			}
 		}
 
-		protected override IServiceGoalDto Delete(IServiceGoalDto entity)
+		protected override IServiceGoalDto Delete(int performingUserId, IServiceGoalDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceGoals.Find(entity.Id);
 				context.ServiceGoals.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}
