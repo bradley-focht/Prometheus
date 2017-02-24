@@ -59,11 +59,6 @@
     <Compile Include="Dto\ScriptDto.cs" />
     <Compile Include="Dto\ServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\IServiceOptionCategoryTagDto.cs" />
-    <Compile Include="Dto\ServiceRequestOptionScriptedSelectionInputDto.cs" />
-    <Compile Include="Dto\IServiceRequestOptionInputDto.cs" />
-    <Compile Include="Dto\IServiceRequestOptionScriptedSelectionInputDto.cs" />
-    <Compile Include="Dto\IServiceRequestOptionSelectionInput.cs" />
-    <Compile Include="Dto\IServiceRequestOptionTextInputDto.cs" />
     <Compile Include="Dto\ServiceRequestOptionDto.cs" />
     <Compile Include="Dto\IServiceRequestOptionDto.cs" />
     <Compile Include="Dto\ServiceRequestDto.cs" />
@@ -108,8 +103,6 @@
     <Compile Include="Dto\ServiceMeasureDto.cs" />
     <Compile Include="Dto\ServiceProcessDto.cs" />
     <Compile Include="Dto\ServiceOptionDto.cs" />
-    <Compile Include="Dto\ServiceRequestOptionSelectionInputDto.cs" />
-    <Compile Include="Dto\ServiceRequestOptionTextInputDto.cs" />
     <Compile Include="Dto\ServiceRequestPackageDto.cs" />
     <Compile Include="Dto\ServiceRequestUserInputDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />

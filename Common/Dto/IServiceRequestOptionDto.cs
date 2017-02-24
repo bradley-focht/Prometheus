@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Common.Dto
 {
@@ -22,8 +21,5 @@ namespace Common.Dto
 
 		IServiceOptionDto ServiceOption { get; set; }
 		IServiceRequestDto ServiceRequest { get; set; }
-		ICollection<IServiceRequestOptionScriptedSelectionInputDto> ServiceRequestOptionScriptedSelectionInputs { get; set; }
-		ICollection<IServiceRequestOptionSelectionInputDto> ServiceRequestOptionSelectionInputs { get; set; }
-		ICollection<IServiceRequestOptionTextInputDto> ServiceRequestOptionTextInputs { get; set; }
 	}
 }

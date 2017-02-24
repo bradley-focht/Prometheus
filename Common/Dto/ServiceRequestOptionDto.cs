@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Common.Dto
 {
@@ -20,8 +19,5 @@ namespace Common.Dto
 
 		public virtual IServiceOptionDto ServiceOption { get; set; }
 		public virtual IServiceRequestDto ServiceRequest { get; set; }
-		public virtual ICollection<IServiceRequestOptionScriptedSelectionInputDto> ServiceRequestOptionScriptedSelectionInputs { get; set; }
-		public virtual ICollection<IServiceRequestOptionSelectionInputDto> ServiceRequestOptionSelectionInputs { get; set; }
-		public virtual ICollection<IServiceRequestOptionTextInputDto> ServiceRequestOptionTextInputs { get; set; }
 	}
 }

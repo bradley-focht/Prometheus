@@ -615,7 +615,7 @@ namespace Prometheus.WebUI.Controllers
 				}
 				entityId = ps.ModifySelectionInput(input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
 			}
-			catch (Exception exception)
+			catch
 			{
 
 				if (input.Id == 0)                              //depending on user action at the time
