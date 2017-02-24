@@ -38,5 +38,8 @@ namespace UserManager.Controllers
 		/// <param name="userId">user requested</param>
 		/// <returns></returns>
 		IUserDto GetUser(int performingUserId, int userId);
+
+		int GuestId { get; }
+		int AdministratorId { get; }
 	}
 }

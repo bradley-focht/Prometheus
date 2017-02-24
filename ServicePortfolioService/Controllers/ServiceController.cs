@@ -1,36 +1,18 @@
-﻿using AutoMapper;
-using Common.Dto;
-using Common.Enums;
-using Common.Exceptions;
-using DataService;
-using DataService.DataAccessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using AutoMapper;
+using Common.Dto;
 using Common.Enums.Entities;
+using Common.Exceptions;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class ServiceController : IServiceController
 	{
-		private int _userId;
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceController(int userId)
-		{
-			_userId = userId;
-		}
-
 		public IServiceDto GetService(int serviceId)
 		{
 			using (var context = new PrometheusContext())
@@ -81,7 +63,8 @@ namespace ServicePortfolioService.Controllers
 				{
 					//var savedService = context.Services.Add(Mapper.Map<Service>(service));
 					var savedService = context.Services.Add(ManualMapper.MapDtoToService(service));
-					context.SaveChanges(_userId);
+					//TODO SAVE FOR USER
+					context.SaveChanges();
 					return ManualMapper.MapServiceToDto(savedService);
 					//return Mapper.Map<ServiceDto>(savedService);
 				}
@@ -103,7 +86,8 @@ namespace ServicePortfolioService.Controllers
 				var updatedService = ManualMapper.MapDtoToService(service);
 				context.Services.Attach(updatedService);
 				context.Entry(updatedService).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				//TODO SAVE FOR USER
+				context.SaveChanges();
 				return ManualMapper.MapServiceToDto(updatedService);
 			}
 		}
@@ -114,7 +98,8 @@ namespace ServicePortfolioService.Controllers
 			{
 				var toDelete = context.Services.Find(serviceId);
 				context.Services.Remove(toDelete);
-				context.SaveChanges(_userId);
+				//TODO SAVE FOR USER
+				context.SaveChanges();
 			}
 			return true;
 		}

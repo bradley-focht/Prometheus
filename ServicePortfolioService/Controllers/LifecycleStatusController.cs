@@ -1,33 +1,15 @@
-﻿using Common.Dto;
-using DataService;
-using DataService.DataAccessLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Dto;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class LifecycleStatusController : ILifecycleStatusController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public LifecycleStatusController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public LifecycleStatusController(int userId)
-		{
-			_userId = userId;
-		}
-
 		//TODO: remove man mapper
 		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames()
 		{
@@ -76,7 +58,8 @@ namespace ServicePortfolioService.Controllers
 				{
 					//var savedStatus = context.LifecycleStatuses.Add(Mapper.Map<LifecycleStatus>(lifecycleStatus));
 					var savedStatus = context.LifecycleStatuses.Add(ManualMapper.MapDtoToLifecycleStatus(lifecycleStatus));
-					context.SaveChanges(_userId);
+					//TODO ADD USER TO SAVE CHANGES
+					context.SaveChanges();
 					//return Mapper.Map<LifecycleStatusDto>(savedStatus);
 					return ManualMapper.MapLifecycleStatusToDto(savedStatus);
 				}
@@ -103,8 +86,8 @@ namespace ServicePortfolioService.Controllers
 				var updatedStatus = ManualMapper.MapDtoToLifecycleStatus(lifecycleStatus);
 				context.LifecycleStatuses.Attach(updatedStatus);
 				context.Entry(updatedStatus).State = EntityState.Modified;
-
-				context.SaveChanges(_userId);
+				//TODO ADD USER TO SAVECHANGES
+				context.SaveChanges();
 				return ManualMapper.MapLifecycleStatusToDto(updatedStatus);
 			}
 		}
@@ -115,7 +98,8 @@ namespace ServicePortfolioService.Controllers
 			{
 				var toDelete = context.LifecycleStatuses.Find(lifecycleStatusId);
 				context.LifecycleStatuses.Remove(toDelete);
-				context.SaveChanges(_userId);
+				//TODO ADD USER TO SAVE CHANGES
+				context.SaveChanges();
 			}
 			return true;
 		}

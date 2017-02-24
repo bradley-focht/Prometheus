@@ -1,12 +1,11 @@
-﻿using Common.Dto;
-using Common.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Common.Dto;
 using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {
-	public interface IServiceController : IUserController
+	public interface IServiceController
 	{
 		/// <summary>
 		/// Finds service with identifier provided and returns its DTO

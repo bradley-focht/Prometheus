@@ -4,7 +4,7 @@ using Common.Dto;
 
 namespace ServicePortfolioService.Controllers
 {
-	public interface IServiceBundleController : IUserController
+	public interface IServiceBundleController
 	{
 		/// <summary>
 		/// Finds service bundle with identifier provided and returns its DTO
