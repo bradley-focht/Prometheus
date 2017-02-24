@@ -968,8 +968,15 @@ namespace DataService
 
 			return new Script
 			{
-				Id = src.Id
-			};
+				Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                Version = src.Version,
+                Filename = src.Filename,
+                ScriptFile = src.ScriptFile,
+                MimeType = src.MimeType,
+                UploadDate = src.UploadDate
+            };
 		}
 
 		public static ScriptDto MapScriptToDto(IScript src)
@@ -979,7 +986,15 @@ namespace DataService
 
 			return new ScriptDto
 			{
-				Id = src.Id
+				Id = src.Id,
+                Name = src.Name,
+                Description = src.Description,
+                Version = src.Version,
+                Filename = src.Filename,
+                ScriptFile = src.ScriptFile,
+                MimeType = src.MimeType,
+                UploadDate = src.UploadDate
+
 			};
 		}
 
