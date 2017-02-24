@@ -31,7 +31,7 @@ namespace Prometheus.WebUI.Controllers
 			if (filterArg == null)
 				filterArg = "All";
 			ServiceViewModel model = new ServiceViewModel { ControlsModel = new ServiceViewControlsModel { FilterBy = filterBy, FilterArg = filterArg, PageNumber = pageId } };
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
 			ServiceIndexHelper helper = new ServiceIndexHelper(ps.GetServices());   //apply filters
 			model.ControlsModel.FilterMenu = helper.GetControlsModel();
@@ -119,13 +119,14 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Show(string section, int id=0, int pageId = 0)
 		{
+			//TODO I HAVE NO IDEA WHAT YOUR COMMENT MEANS BUT CAN YOU MAKE THIS AREA MESH WITH NEW STYLE FOR USERID?
 			int userId;
 			try{ userId = int.Parse(Session["Id"].ToString()); }            //this page is an entry point, possible userId may not exist
 			catch { return View();}
 
 			ServiceModel sm = new ServiceModel { CurrentPage = pageId };
 
-			var ps = InterfaceFactory.CreatePortfolioService(userId);
+			var ps = InterfaceFactory.CreatePortfolioService();
 			sm.Service = ps.GetService(id);
 			sm.SelectedSection = section;
 
@@ -138,7 +139,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AddService()
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			ServiceSectionModel model = new ServiceSectionModel();
 			model.ServiceBundleNames = ps.GetServiceBundleNames().Select(b =>
 						new SelectListItem
@@ -165,7 +166,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="newService"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveService(ServiceDto newService)
+		public ActionResult SaveService(IServiceDto newService)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -174,7 +175,7 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("AddService");
 			}
 			//save service
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			int newId;
 			try
 			{
@@ -200,7 +201,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="swotItem"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveSwotItem(ServiceSwotDto swotItem)
+		public ActionResult SaveSwotItem(IServiceSwotDto swotItem)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -209,10 +210,10 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("UpdateServiceSectionItem", new { id = swotItem.ServiceId, section = "Swot" });
 			}
 
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				ps.ModifyServiceSwot(swotItem, swotItem.Id <= 0 ? EntityModification.Create : EntityModification.Update);
+				ps.ModifyServiceSwot(UserId, swotItem, swotItem.Id <= 0 ? EntityModification.Create : EntityModification.Update);
 			}
 			catch (Exception e)
 			{
@@ -232,7 +233,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="workUnit"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveWorkUnitsItem(ServiceWorkUnitDto workUnit)
+		public ActionResult SaveWorkUnitsItem(IServiceWorkUnitDto workUnit)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -241,10 +242,10 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("UpdateServiceSectionItem", new { section = "WorkUnits", id = workUnit.ServiceId });
 			}
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				ps.ModifyServiceWorkUnit(workUnit, workUnit.Id < 1 ? EntityModification.Create : EntityModification.Update);
+				ps.ModifyServiceWorkUnit(UserId, workUnit, workUnit.Id < 1 ? EntityModification.Create : EntityModification.Update);
 			}
 			catch (Exception exception)
 			{
@@ -259,7 +260,7 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult SaveServiceGoalItem(ServiceGoalDto goal)
+		public ActionResult SaveServiceGoalItem(IServiceGoalDto goal)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -268,8 +269,8 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("AddService");
 			}
 			//save service
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyServiceGoal(goal, EntityModification.Create);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifyServiceGoal(UserId, goal, EntityModification.Create);
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"New service {goal.Name} saved successfully";
@@ -278,7 +279,7 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult SaveMeasuresItem(ServiceMeasureDto measure)
+		public ActionResult SaveMeasuresItem(IServiceMeasureDto measure)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -287,8 +288,8 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("AddService");
 			}
 			//save service
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyServiceMeasure(measure, measure.Id < 1 ? EntityModification.Create : EntityModification.Update);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifyServiceMeasure(UserId, measure, measure.Id < 1 ? EntityModification.Create : EntityModification.Update);
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"{measure.Method} saved successfully";
@@ -302,7 +303,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="activity"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveSwotActivityItem(SwotActivityDto activity)
+		public ActionResult SaveSwotActivityItem(ISwotActivityDto activity)
 		{
 			if (!ModelState.IsValid)    //server side validation
 			{
@@ -311,9 +312,9 @@ namespace Prometheus.WebUI.Controllers
 				return View("UpdateSwotActivityItem", new SwotActivityItemModel(activity));
 			}
 
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifySwotActivity(activity, activity.Id <= 0 ? EntityModification.Create : EntityModification.Update);
-			var activityParent = ps.GetServiceSwot(activity.ServiceSwotId);
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifySwotActivity(UserId, activity, activity.Id <= 0 ? EntityModification.Create : EntityModification.Update);
+			var activityParent = ps.GetServiceSwot(UserId, activity.ServiceSwotId);
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully saved {activity.Name}";
@@ -333,8 +334,8 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("UpdateServiceSectionItem", new { id = contract.ServiceId, section = "Contracts" });
 			}
 			//save service
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyServiceContract(contract, contract.Id > 0 ? EntityModification.Update : EntityModification.Create);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifyServiceContract(UserId, contract, contract.Id > 0 ? EntityModification.Update : EntityModification.Create);
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Contract {contract.ContractNumber} saved successfully";
@@ -358,7 +359,7 @@ namespace Prometheus.WebUI.Controllers
 				ServiceId = id
 			};
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			var service = ps.GetService(id);
 
 			if (service.ServiceGoals != null && service.ServiceGoals.Any())
@@ -397,7 +398,7 @@ namespace Prometheus.WebUI.Controllers
 				ServiceId = id
 			};
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			var service = ps.GetService(id);
 
 			if (service.ServiceContracts != null && service.ServiceContracts.Any())
@@ -439,7 +440,7 @@ namespace Prometheus.WebUI.Controllers
 			tblModel.UpdateAction = "UpdateServiceSectionItem";
 
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			var service = ps.GetService(id);
 			var workUnits = service.ServiceWorkUnits;
 			tblModel.ServiceId = service.Id;
@@ -477,7 +478,7 @@ namespace Prometheus.WebUI.Controllers
 			tblModel.ConfirmDeleteAction = "ConfirmDeleteServiceMeasuresItem";
 			tblModel.UpdateAction = "UpdateServiceSectionItem";
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			var service = ps.GetService(id);
 			var measures = service.ServiceMeasures;
 			tblModel.ServiceId = service.Id;
@@ -532,8 +533,8 @@ namespace Prometheus.WebUI.Controllers
 			UpdateAction = "UpdateSwotActivityItem",
 			ConfirmDeleteAction = "ConfirmDeleteSwotActivityItem" };
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var swot = ps.GetServiceSwot(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var swot = ps.GetServiceSwot(UserId, id);
 
 			foreach (var activity in swot.SwotActivities)
 			{
@@ -546,9 +547,9 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult ConfirmDeleteSwotActivityItem(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var activity = ps.GetSwotActivity(id);
-			var swot = ps.GetServiceSwot(activity.ServiceSwotId);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var activity = ps.GetSwotActivity(UserId, id);
+			var swot = ps.GetServiceSwot(UserId, activity.ServiceSwotId);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -570,9 +571,9 @@ namespace Prometheus.WebUI.Controllers
 			TempData["messageType"] = WebMessageType.Success;
 			TempData["message"] = "Successfully deleted " + model.FriendlyName;
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			int swotId = ps.GetSwotActivity(model.Id).ServiceSwotId;
-			ps.ModifySwotActivity(new SwotActivityDto { Id = model.Id }, EntityModification.Delete);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			int swotId = ps.GetSwotActivity(UserId, model.Id).ServiceSwotId;
+			ps.ModifySwotActivity(UserId, new SwotActivityDto { Id = model.Id }, EntityModification.Delete);
 
 			return RedirectToAction("ShowServiceSectionItem",
 				new { id = swotId, serviceId = model.ServiceId, section = "Swot" });
@@ -597,7 +598,7 @@ namespace Prometheus.WebUI.Controllers
 				Controller = "Service"
 			};
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
 			var items = ps.GetService(id).ServiceProcesses;
 			if (items != null && items.Any())
@@ -622,7 +623,7 @@ namespace Prometheus.WebUI.Controllers
 		[ChildActionOnly]
 		public ActionResult ShowServiceOptions(int id, int pageId = 0)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			OptionsTableModel model = new OptionsTableModel { Options = new List<ICatalogPublishable>(), ServiceId = id, CurrentPage = pageId };
 			var service = ps.GetService(id);
 			if (service.ServiceOptionCategories != null)
@@ -663,9 +664,9 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="serviceId">service Id</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveOptionsItem(ServiceOptionDto option, int serviceId)
+		public ActionResult SaveOptionsItem(IServiceOptionDto option, int serviceId)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			if (!ModelState.IsValid) /* Server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
@@ -676,14 +677,14 @@ namespace Prometheus.WebUI.Controllers
 			//save valid service, file is already uploaded		
 			if (option.Id > 0)      //existing record, need to not save over service catalog info
 			{
-				ServiceOptionDto existing = (ServiceOptionDto) ps.GetServiceOption(option.Id);
+				var existing = ps.GetServiceOption(UserId, option.Id);
 				option = AbbreviatedEntityUpdate.UpdateServiceOption(existing, option);
 			}
-			ps.ModifyServiceOption(option, option.Id < 1 ? EntityModification.Create : EntityModification.Update);
+			ps.ModifyServiceOption(UserId, option, option.Id < 1 ? EntityModification.Create : EntityModification.Update);
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"New option {option.Name} saved successfully";
 
-			return RedirectToAction("Show", new { id = ps.GetServiceOptionCategory(option.ServiceOptionCategoryId).ServiceId, section = "Options" });
+			return RedirectToAction("Show", new { id = ps.GetServiceOptionCategory(UserId, option.ServiceOptionCategoryId).ServiceId, section = "Options" });
 		}
 
 		/// <summary>
@@ -692,7 +693,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="process"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveProcessesItem(ServiceProcessDto process)
+		public ActionResult SaveProcessesItem(IServiceProcessDto process)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -700,8 +701,8 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = "Failed to save option due to invalid data";
 				return RedirectToAction("UpdateServiceSectionItem", new { serviceId = process.ServiceId, section = "Processes" });
 			}
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyServiceProcess(process, process.Id < 1 ? EntityModification.Create : EntityModification.Update);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifyServiceProcess(UserId, process, process.Id < 1 ? EntityModification.Create : EntityModification.Update);
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Process {process.Name} saved successfully";
@@ -717,7 +718,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="options">Ids of options</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveOptionCategory(ServiceOptionCategoryDto category, ICollection<int> options)
+		public ActionResult SaveOptionCategory(IServiceOptionCategoryDto category, ICollection<int> options)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -728,12 +729,12 @@ namespace Prometheus.WebUI.Controllers
 			//save new category		
 			try
 			{
-				var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+				var ps = InterfaceFactory.CreatePortfolioService();
 				if (category.Id > 0) //need to preserve catalog data on the entity
 				{
-					category = AbbreviatedEntityUpdate.UpdateServiceCategory(ps.GetServiceOptionCategory(category.Id), category);
+					category = AbbreviatedEntityUpdate.UpdateServiceCategory(ps.GetServiceOptionCategory(UserId, category.Id), category);
 				}
-				category.Id = ps.ModifyServiceOptionCategory(category, category.Id < 1 ? EntityModification.Create : EntityModification.Update).Id;    //make sure it has the new id if is new
+				category.Id = ps.ModifyServiceOptionCategory(UserId, category, category.Id < 1 ? EntityModification.Create : EntityModification.Update).Id;    //make sure it has the new id if is new
 			}
 			catch (Exception exception)
 			{
@@ -756,7 +757,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult UpdateGeneral(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			ServiceSectionModel model = new ServiceSectionModel();
 			model.Service = ps.GetService(id);
 			model.ServiceBundleNames = ps.GetServiceBundleNames().Select(b =>
@@ -786,7 +787,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="service"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveGeneralItem(ServiceDto service)
+		public ActionResult SaveGeneralItem(IServiceDto service)
 		{
 			if (ModelState.IsValid)
 			{
@@ -797,7 +798,7 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = $"{service.Name} has been saved";
 
 			//perform the save
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			service = AbbreviatedEntityUpdate.UpdateService(ps.GetService(service.Id), service);         //preserve data updated from ICatalogPublishable interface
 
 			ps.ModifyService(service, EntityModification.Update);   //perform the update
@@ -817,8 +818,8 @@ namespace Prometheus.WebUI.Controllers
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Sucessfully saved goal";
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyServiceGoal(goal, goal.Id < 1 ? EntityModification.Create : EntityModification.Update);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifyServiceGoal(UserId, goal, goal.Id < 1 ? EntityModification.Create : EntityModification.Update);
 
 			return RedirectToAction("show", new { section = "Goals", id = goal.ServiceId });
 		}
@@ -834,7 +835,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceSectionItem(int serviceId, string section, int id)
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
 
 			model.Service = ps.GetService(serviceId);
 
@@ -860,7 +861,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult UpdateServiceSectionItem(string section, int serviceId, int id)
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
 			model.Section = section;
 			model.SectionItemId = id;
 			model.Service = ps.GetService(serviceId);
@@ -875,21 +876,21 @@ namespace Prometheus.WebUI.Controllers
 		[ChildActionOnly]
 		public ActionResult UpdateSwotItem(int id)
 		{
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
 
-			return View("PartialViews/UpdateSwotItem", ps.GetServiceSwot(id));
+			return View("PartialViews/UpdateSwotItem", ps.GetServiceSwot(UserId, id));
 		}
 
 		public ActionResult UpdateOptionCategoryItem(int id)
 		{
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var cat = ps.GetServiceOptionCategory(id);                                 //temp category for referencing
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
+			var cat = ps.GetServiceOptionCategory(UserId, id);                                 //temp category for referencing
 			var model = new UpdateOptionCategoryModel
 			{
 				ServiceName = ps.GetService(cat.ServiceId).Name,
 				Action = "Update",
 				ServiceId = cat.ServiceId,
-				OptionCategory = (ServiceOptionCategoryDto)cat
+				OptionCategory = cat
 			};
 
 			//add all items to the list
@@ -908,7 +909,7 @@ namespace Prometheus.WebUI.Controllers
 			model.Action = "Add";
 			try
 			{
-				IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+				IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
 				model.ServiceName = ps.GetService(model.ServiceId).Name;
 			}
 			catch (Exception exception)
@@ -922,9 +923,9 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult UpdateServiceOption(int id)
 		{
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var model = new ServiceOptionModel { Option = (ServiceOptionDto)ps.GetServiceOption(id) };
-			model.ServiceId = ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId;
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
+			var model = new ServiceOptionModel { Option = ps.GetServiceOption(UserId, id) };
+			model.ServiceId = ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId;
 
 			model.ServiceName = ps.GetService(model.ServiceId).Name;
 			model.Action = "Update";
@@ -934,10 +935,10 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult UpdateSwotActivityItem(int id)
 		{
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
 			var model = new SwotActivityItemModel(new SwotActivityDto { ServiceSwotId = id });
-			ISwotActivityDto swotActivity = ps.GetSwotActivity(id);
-			var swotItem = ps.GetServiceSwot(swotActivity.ServiceSwotId);
+			ISwotActivityDto swotActivity = ps.GetSwotActivity(UserId, id);
+			var swotItem = ps.GetServiceSwot(UserId, swotActivity.ServiceSwotId);
 			model.SwotName = swotItem.Item;
 			model.ServiceId = swotItem.ServiceId;
 			model.ServiceName = ps.GetService(swotItem.ServiceId).Name;
@@ -954,8 +955,8 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult AddSwotActivityItem(int id)
 		{
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var swot = ps.GetServiceSwot(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var swot = ps.GetServiceSwot(UserId, id);
 
 			var model = new SwotActivityItemModel(new SwotActivityDto { ServiceSwotId = id });
 			model.ServiceName = ps.GetService(swot.ServiceId).Name;
@@ -973,7 +974,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AddOptionCategory(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
 			UpdateOptionCategoryModel model = new UpdateOptionCategoryModel { Action = "Add" };
 			model.ServiceId = id;
@@ -985,9 +986,9 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult ShowOptionCategory(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
-			ShowOptionCategoryModel model = new ShowOptionCategoryModel { OptionCategory = ps.GetServiceOptionCategory(id) };
+			ShowOptionCategoryModel model = new ShowOptionCategoryModel { OptionCategory = ps.GetServiceOptionCategory(UserId, id) };
 			model.ServiceId = model.OptionCategory.ServiceId;
 			model.ServiceName = ps.GetService(model.OptionCategory.ServiceId).Name;
 
@@ -1006,7 +1007,7 @@ namespace Prometheus.WebUI.Controllers
 			var model = new ServiceSectionModel();
 			model.Section = section;
 
-			IPortfolioService ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			IPortfolioService ps = InterfaceFactory.CreatePortfolioService();
 			model.Service = ps.GetService(id);
 
 
@@ -1020,8 +1021,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceGoalsItem(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var goal = ps.GetServiceGoal(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var goal = ps.GetServiceGoal(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -1043,8 +1044,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceMeasuresItem(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var measure = ps.GetServiceMeasure(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var measure = ps.GetServiceMeasure(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -1067,8 +1068,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceSwotItem(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var item = ps.GetServiceSwot(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var item = ps.GetServiceSwot(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -1088,8 +1089,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceContractsItem(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var item = ps.GetServiceContract(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var item = ps.GetServiceContract(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -1109,8 +1110,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceWorkUnitsItem(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var item = ps.GetServiceWorkUnit(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var item = ps.GetServiceWorkUnit(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -1130,8 +1131,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceOption(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var item = ps.GetServiceOption(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var item = ps.GetServiceOption(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -1139,7 +1140,7 @@ namespace Prometheus.WebUI.Controllers
 				Name = item.Name,
 				Section = "Options"
 			};
-			model.Service = ps.GetService(ps.GetServiceOptionCategory(item.ServiceOptionCategoryId).ServiceId).Name;
+			model.Service = ps.GetService(ps.GetServiceOptionCategory(UserId, item.ServiceOptionCategoryId).ServiceId).Name;
 			return View("ConfirmDeleteSection", model);
 		}
 
@@ -1150,8 +1151,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteOptionCategory(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var item = ps.GetServiceOptionCategory(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var item = ps.GetServiceOptionCategory(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Id = id,
@@ -1170,8 +1171,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceProcessesItem(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var item = ps.GetServiceProcess(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var item = ps.GetServiceProcess(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
 				Service = ps.GetService(item.ServiceId).Name,
@@ -1191,10 +1192,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult DeleteServiceProcessesItem(DeleteSectionItemModel model)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				ps.ModifyServiceProcess(new ServiceProcessDto { Id = model.Id }, EntityModification.Delete);
+				ps.ModifyServiceProcess(UserId, new ServiceProcessDto { Id = model.Id }, EntityModification.Delete);
 			}
 			catch (Exception exception)
 			{
@@ -1217,17 +1218,17 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteOptionCategory(DeleteSectionItemModel model)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var options = ps.GetServiceOptionCategory(model.Id).ServiceOptions;
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var options = ps.GetServiceOptionCategory(UserId, model.Id).ServiceOptions;
 
 			try
 			{
 				if (options != null)                        //delete service options in the category prior to deleting category
 					foreach (var option in options)
 					{
-						ps.ModifyServiceOption(option, EntityModification.Delete);
+						ps.ModifyServiceOption(UserId, option, EntityModification.Delete);
 					}                                       //delete the category
-				ps.ModifyServiceOptionCategory(new ServiceOptionCategoryDto { Id = model.Id }, EntityModification.Delete);
+				ps.ModifyServiceOptionCategory(UserId, new ServiceOptionCategoryDto { Id = model.Id }, EntityModification.Delete);
 			}
 			catch (Exception exception)                     //may fail on fk
 			{
@@ -1251,12 +1252,12 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceOption(DeleteSectionItemModel model)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			int serviceId = 0;
 			try
 			{
-				ps.ModifyServiceOption(new ServiceOptionDto { Id = model.Id }, EntityModification.Delete);
-				serviceId = ps.GetServiceOptionCategory(model.Id).ServiceId;
+				ps.ModifyServiceOption(UserId, new ServiceOptionDto { Id = model.Id }, EntityModification.Delete);
+				serviceId = ps.GetServiceOptionCategory(UserId, model.Id).ServiceId;
 			}
 			catch (Exception exception)
 			{
@@ -1282,8 +1283,8 @@ namespace Prometheus.WebUI.Controllers
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully deleted " + model.FriendlyName;
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyServiceSwot(new ServiceSwotDto { Id = model.Id }, EntityModification.Delete);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifyServiceSwot(UserId, new ServiceSwotDto { Id = model.Id }, EntityModification.Delete);
 
 			return RedirectToAction("Show", new { id = model.ServiceId, section = "Swot" });
 		}
@@ -1298,8 +1299,8 @@ namespace Prometheus.WebUI.Controllers
 		{
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully deleted " + model.FriendlyName;
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ps.ModifyServiceGoal(new ServiceGoalDto { Id = model.Id }, EntityModification.Delete);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ps.ModifyServiceGoal(UserId, new ServiceGoalDto { Id = model.Id }, EntityModification.Delete);
 
 			return RedirectToAction("Show", new { id = model.ServiceId, section = "Goals" });
 		}
@@ -1312,10 +1313,10 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceWorkUnit(DeleteSectionItemModel model)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				ps.ModifyServiceWorkUnit(new ServiceWorkUnitDto() { Id = model.Id }, EntityModification.Delete);
+				ps.ModifyServiceWorkUnit(UserId, new ServiceWorkUnitDto() { Id = model.Id }, EntityModification.Delete);
 			}
 			catch (Exception e)
 			{
@@ -1339,10 +1340,10 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceContract(DeleteSectionItemModel model)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				ps.ModifyServiceContract(new ServiceContractDto { Id = model.Id }, EntityModification.Delete);
+				ps.ModifyServiceContract(UserId, new ServiceContractDto { Id = model.Id }, EntityModification.Delete);
 			}
 			catch (Exception e)
 			{
@@ -1365,10 +1366,10 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceMeasure(DeleteSectionItemModel model)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				ps.ModifyServiceMeasure(new ServiceMeasureDto() { Id = model.Id }, EntityModification.Delete);
+				ps.ModifyServiceMeasure(UserId, new ServiceMeasureDto() { Id = model.Id }, EntityModification.Delete);
 			}
 			catch (Exception e)
 			{
@@ -1397,7 +1398,7 @@ namespace Prometheus.WebUI.Controllers
 			if (Request.Files.Count > 0)
 			{
 				var fileName = Path.GetFileName(file.FileName);
-				var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+				var ps = InterfaceFactory.CreatePortfolioService();
 
 				if (fileName != null)
 				{
@@ -1407,7 +1408,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						var path = Path.Combine(ConfigHelper.GetServiceDocsPath(), newFileName.ToString());
 						file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-						ps.ModifyServiceDocument(new ServiceDocumentDto
+						ps.ModifyServiceDocument(UserId, new ServiceDocumentDto
 						{
 							MimeType = file.ContentType,
 							ServiceId = id,
@@ -1437,7 +1438,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			DocumentsTableModel model = new DocumentsTableModel { ServiceId = id, CurrentPage = pageId };
 
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
 			var documents = ps.GetServiceDocuments(id).ToList();
 			
@@ -1466,12 +1467,12 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("UpdateServiceDocument", new { id = document.StorageNameGuid });
 			}
 			//perform the save
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var doc = ps.GetServiceDocument(document.Id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var doc = ps.GetServiceDocument(UserId, document.Id);
 			doc.Filename = document.Filename;
 			try
 			{
-				ps.ModifyServiceDocument(doc, EntityModification.Update);
+				ps.ModifyServiceDocument(UserId, doc, EntityModification.Update);
 			}
 			catch (Exception e)
 			{
@@ -1495,8 +1496,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult UpdateServiceDocument(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var doc = ps.GetServiceDocument(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var doc = ps.GetServiceDocument(UserId, id);
 			var service = ps.GetService(doc.ServiceId);
 
 			ServiceSectionModel md = new ServiceSectionModel
@@ -1517,8 +1518,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public FileResult DownloadServiceDocument(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var doc = ps.GetServiceDocument(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var doc = ps.GetServiceDocument(UserId, id);
 
 			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename + doc.FileExtension);     //suggest file name to browser
 
@@ -1535,10 +1536,10 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceDocument(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var file = ps.GetServiceDocument(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var file = ps.GetServiceDocument(UserId, id);
 
-			ps.ModifyServiceDocument(ps.GetServiceDocument(id), EntityModification.Delete);
+			ps.ModifyServiceDocument(UserId, ps.GetServiceDocument(UserId, id), EntityModification.Delete);
 
 			//don't forget to delete the document in the file system		
 			try
@@ -1566,8 +1567,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceDocument(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			var document = ps.GetServiceDocument(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var document = ps.GetServiceDocument(UserId, id);
 			var service = ps.GetService(document.ServiceId);
 
 			var model = new ConfirmDeleteSectionItemModel
@@ -1594,7 +1595,7 @@ namespace Prometheus.WebUI.Controllers
 		[ChildActionOnly]
 		public ActionResult ShowServiceList(int id = 0)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
 			//create the model 
 			LinkListModel servicesModel = new LinkListModel
@@ -1619,9 +1620,9 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowSwotActivity(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(id);
-			var model = new SwotActivityItemModel((SwotActivityDto)ps.GetSwotActivity(id));
-			var swot = ps.GetServiceSwot(model.SwotId);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			var model = new SwotActivityItemModel(ps.GetSwotActivity(UserId, id));
+			var swot = ps.GetServiceSwot(UserId, model.SwotId);
 			model.SwotName = swot.Item;
 			model.SwotId = swot.Id;
 			model.ServiceId = swot.ServiceId;
@@ -1637,11 +1638,11 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowServiceOption(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
 			var model = new ServiceOptionModel();
 
-			model.Option = (ServiceOptionDto)ps.GetServiceOption(id);
-			model.ServiceId = ps.GetServiceOptionCategory(model.Option.ServiceOptionCategoryId).ServiceId;
+			model.Option = ps.GetServiceOption(UserId, id);
+			model.ServiceId = ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId;
 			var service = ps.GetService(model.ServiceId);
 
 			model.ServiceName = service.Name;
@@ -1662,7 +1663,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult GetCategoryDropdown(int id = 0, int categoryId = 0, int serviceId = 0)
 		{
 			IEnumerable<SelectListItem> model = new List<SelectListItem>();
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
 			if (serviceId > 0)
 			{
@@ -1670,7 +1671,7 @@ namespace Prometheus.WebUI.Controllers
 
 				if (id > 0)     /* if a categoryId is already associated with option */
 				{
-					selectedCategory = ps.GetServiceOption(id).ServiceOptionCategoryId;
+					selectedCategory = ps.GetServiceOption(UserId, id).ServiceOptionCategoryId;
 				}
 
 				var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Category..." } };
@@ -1693,7 +1694,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult GetServicesDropDown(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
+			var ps = InterfaceFactory.CreatePortfolioService();
 
 			//ICollection<int> selectedOptions = (from o in ps.GetOptionCategory(id).ServiceOptions select o.Id).ToList();
 
@@ -1718,8 +1719,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult GetOptionsDropDown(int serviceId, int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(int.Parse(Session["Id"].ToString()));
-			ICollection<int> selectedOptions = id != 0 ? (from o in ps.GetServiceOptionCategory(id).ServiceOptions select o.Id).ToList() : new List<int>();
+			var ps = InterfaceFactory.CreatePortfolioService();
+			ICollection<int> selectedOptions = id != 0 ? (from o in ps.GetServiceOptionCategory(UserId, id).ServiceOptions select o.Id).ToList() : new List<int>();
 			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Options..." } };
 
 			var options = ps.GetService(serviceId).ServiceOptions;
@@ -1746,8 +1747,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public FileContentResult GetOptionPicture(int id)
 		{
-			var ps = InterfaceFactory.CreatePortfolioService(id);
-			IServiceOptionDto option = ps.GetServiceOption(id);
+			var ps = InterfaceFactory.CreatePortfolioService();
+			IServiceOptionDto option = ps.GetServiceOption(UserId, id);
 
 			if (option.Picture == null)
 				return null;
@@ -1762,5 +1763,6 @@ namespace Prometheus.WebUI.Controllers
 			return File(fileData, option.PictureMimeType);
 		}
 
+		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

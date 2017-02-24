@@ -6,15 +6,15 @@ using Common.Dto;
 
 namespace Prometheus.WebUI.Models.Service
 {
-    public class UpdateOptionCategoryModel
-    {
-        public ServiceOptionCategoryDto OptionCategory { get; set; }
-        public int ServiceId { get; set; }
-        public string ServiceName { get; set; }
-        public string Action { get; set; }
+	public class UpdateOptionCategoryModel
+	{
+		public IServiceOptionCategoryDto OptionCategory { get; set; }
+		public int ServiceId { get; set; }
+		public string ServiceName { get; set; }
+		public string Action { get; set; }
 		public IEnumerable<SelectListItem> Options { get; set; }
 
 		[Required(ErrorMessage = "Name is required")]
-	    public string Name => OptionCategory.Name;
-    }
+		public string Name => OptionCategory.Name;
+	}
 }

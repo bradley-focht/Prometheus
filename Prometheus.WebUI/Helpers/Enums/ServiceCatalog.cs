@@ -1,6 +1,6 @@
 ﻿namespace Prometheus.WebUI.Helpers.Enums
 {
-	public enum ServiceCatalogs
+	public enum ServiceCatalog
 	{
 		Business,
 		Technical,

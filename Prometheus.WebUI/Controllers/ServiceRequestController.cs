@@ -17,7 +17,6 @@ namespace Prometheus.WebUI.Controllers
 	{
 		private IPortfolioService _ps;
 		private IServiceRequestOptionController _rs;
-		private int dummyId = 1;
 
 		public ServiceRequestController()
 		{
@@ -32,7 +31,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Begin(int id)
 		{
 			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id } };   //start new SR
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 
 			model.Package = ServicePackageHelper.GetPackage(_ps, id);
 			model.CurrentIndex = -1;            /* index for info tab */
@@ -48,6 +47,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveInfo(ServiceRequestInfoReturnModel form, int submit)
 		{
+
 			if (submit == 9999 && form.Id == 0)
 			{
 				return RedirectToAction("Index", "ServiceRequestApproval");
@@ -73,12 +73,12 @@ namespace Prometheus.WebUI.Controllers
 				RequestedForDate = form.RequestedDate
 			};
 
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 
 			model.CurrentIndex = 0;
 			try
 			{
-				request = (ServiceRequestDto)_ps.ModifyServiceRequest(request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+				request = (ServiceRequestDto)_ps.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{
@@ -112,8 +112,8 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveFormSelection(ServiceRequestFormReturnModel form, int submit)
 		{
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
-			_rs = InterfaceFactory.CreateServiceRequestOptionController(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
+			_rs = InterfaceFactory.CreateServiceRequestOptionController();
 			/* STEP ONE - Get the Service Package and SR */
 			ServiceRequestModel model = new ServiceRequestModel //used to hold all the data until redirecting
 			{
@@ -123,7 +123,7 @@ namespace Prometheus.WebUI.Controllers
 			};
 			try
 			{
-				model.ServiceRequest = _ps.GetServiceRequest(form.Id); //SR
+				model.ServiceRequest = _ps.GetServiceRequest(UserId, form.Id); //SR
 				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId); //Package
 			}
 			catch (Exception exception)
@@ -136,16 +136,27 @@ namespace Prometheus.WebUI.Controllers
 
 			/* STEP TWO - figure out what category to work with */
 			var currentCategory =
-				_ps.GetServiceOptionCategory(
+				_ps.GetServiceOptionCategory(UserId, 
 					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 
 			/* STEP THREE - add/remove options in the SR */
 			{
-				ICollection<ServiceRequestOptionDto> formOptions;
-				if (form.Options == null) { formOptions = new List<ServiceRequestOptionDto>(); }    //need to avoid a null pointer exception here
-				else { formOptions = form.GetServiceRequestOptions().ToList(); }
+				ICollection<IServiceRequestOptionDto> formOptions;
+				if (form.Options == null)
+				{
+					formOptions = new List<IServiceRequestOptionDto>();
+				} //need to avoid a null pointer exception here
+				else
+				{
+					formOptions = form.GetServiceRequestOptions().ToList();
+				}
 				if (model.ServiceRequest.ServiceRequestOptions == null)
-				{ model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>(); }
+				{									   
+					model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>();
+				}
+
+				
+
 				try
 				{
 					foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
@@ -155,16 +166,16 @@ namespace Prometheus.WebUI.Controllers
 
 						if (formDto != null && srDto == null)		//add condition
 						{
-							_rs.ModifyServiceRequestOption((from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
+							_rs.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
 						}
 						else if (formDto == null && srDto != null) //remove condition
 						{
-							_rs.ModifyServiceRequestOption((from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
+							_rs.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
 						}
 						else if (formDto != null /* && srDto != null */)	//update condition
 						{
-							_rs.ModifyServiceRequestOption(srDto, EntityModification.Delete);
-							_rs.ModifyServiceRequestOption(formDto, EntityModification.Create);
+							_rs.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
+							_rs.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
 						}                                                                                                       /* done \*/
 					}
 				}
@@ -208,13 +219,13 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Form(int id, int index, ServiceRequestMode mode = ServiceRequestMode.Selection)
 		{
-			_ps = InterfaceFactory.CreatePortfolioService(dummyId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = index, ServiceRequestId = id, Mode = mode };
 
 			/* STEP ONE - get SR and get package */
 			try
 			{
-				model.ServiceRequest = _ps.GetServiceRequest(id);       //get db info
+				model.ServiceRequest = _ps.GetServiceRequest(UserId, id);       //get db info
 				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId);
 			}
 			catch (Exception exception)
@@ -224,6 +235,7 @@ namespace Prometheus.WebUI.Controllers
 				return View("ServiceRequest", model);
 			}
 			/* STEP TWO - get any user inputs & associate with the option */
+			//TODO BRAD, IS THERE A REASON YOURE NOT USING THE DTO HERE?
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
 			if (index < 0)
 			{
@@ -237,7 +249,7 @@ namespace Prometheus.WebUI.Controllers
 					optionInputList.Add(new ServiceOptionTag
 					{
 						ServiceOption = option,
-						UserInputs = _ps.GetInputsForServiceOptions(new List<IServiceOptionDto> { option })
+						UserInputs = _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option })
 					});
 				}
 			}
@@ -246,5 +258,7 @@ namespace Prometheus.WebUI.Controllers
 
 			return View("ServiceRequest", model);
 		}
+
+		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

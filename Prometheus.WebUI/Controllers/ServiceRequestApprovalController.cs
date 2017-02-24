@@ -33,16 +33,17 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(string filterBy, string filterArgs, int pageId = 0)
 		{
-			int userId;     //user info
-			try { userId = int.Parse(Session["Id"].ToString()); }                   //login is required
-			catch (Exception) { return RedirectToAction("Index", "UserAccount"); }  //some login issue
+			//TODO BRAD CAN YOU INCORPORATE THIS INTO THE USERID PROPERTY I ADDED? IDK IF YOU CAN
+			//int userId;     //user info
+			//try { userId = int.Parse(Session["Id"].ToString()); }                   //login is required
+			//catch (Exception) { return RedirectToAction("Index", "UserAccount"); }  //some login issue
 
 			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls { CurrentPage = pageId } };
 
-			_ps = InterfaceFactory.CreatePortfolioService(userId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 			List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
 
-			var srList = _ps.GetServiceRequestsForRequestorId(userId).ToList();      //for pagination
+			var srList = _ps.GetServiceRequestsForRequestorId(UserId, UserId).ToList();      //for pagination
 			if (srList.Count > _pageSize)
 			{
 				model.Controls.TotalPages = (srList.Count + _pageSize - 1) / _pageSize;
@@ -112,15 +113,11 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmServiceRequestStateChange(int id, ServiceRequestState nextState)
 		{
-			int userId;
-			try { userId = int.Parse(Session["Id"].ToString()); }
-			catch (Exception) { return null; }
-
 			ServiceRequestStateChangeModel model = new ServiceRequestStateChangeModel { NextState = nextState };
 
-			_ps = InterfaceFactory.CreatePortfolioService(userId);
+			_ps = InterfaceFactory.CreatePortfolioService();
 			model.ServiceRequestModel = new ServiceRequestModel();
-			model.ServiceRequestModel.ServiceRequest = _ps.GetServiceRequest(id);
+			model.ServiceRequestModel.ServiceRequest = _ps.GetServiceRequest(UserId, id);
 			model.ServiceRequestModel.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequestModel.ServiceOptionId);
 
 			List<DisplayListModel> displayList = new List<DisplayListModel>();
@@ -129,7 +126,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				DisplayListModel listItem = new DisplayListModel { Category = category.ServiceOptionCategory, Options = new List<DisplayListModelItem>() };
 
-				foreach (var option in _ps.GetServiceOptionCategory(category.ServiceOptionCategoryId).ServiceOptions)
+				foreach (var option in _ps.GetServiceOptionCategory(UserId, category.ServiceOptionCategoryId).ServiceOptions)
 				{
 					foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)
 					{
@@ -147,5 +144,14 @@ namespace Prometheus.WebUI.Controllers
 			return View(model);
 		}
 
+		public int UserId
+		{
+			get
+			{
+				/*try*/ { return int.Parse(Session["Id"].ToString()); }                   //login is required
+				//catch (Exception) { return RedirectToAction("Index", "UserAccount"); }  //some login issue
+				//return int.Parse(Session["Id"].ToString());
+			}
+		}
 	}
 }
