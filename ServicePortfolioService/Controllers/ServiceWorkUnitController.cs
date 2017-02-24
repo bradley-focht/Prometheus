@@ -1,36 +1,17 @@
-using Common.Dto;
-using Common.Enums;
-using DataService;
-using DataService.DataAccessLayer;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
+using Common.Dto;
 using Common.Enums.Entities;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class ServiceWorkUnitController : EntityController<IServiceWorkUnitDto>, IServiceWorkUnitController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceWorkUnitController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceWorkUnitController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceWorkUnitDto GetServiceWorkUnit(int serviceWorkUnitId)
+		public IServiceWorkUnitDto GetServiceWorkUnit(int performingUserId, int serviceWorkUnitId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -38,12 +19,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceWorkUnitDto ModifyServiceWorkUnit(IServiceWorkUnitDto serviceWorkUnit, EntityModification modification)
+		public IServiceWorkUnitDto ModifyServiceWorkUnit(int performingUserId, IServiceWorkUnitDto serviceWorkUnit, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceWorkUnit, modification);
+			return base.ModifyEntity(performingUserId, serviceWorkUnit, modification);
 		}
 
-		protected override IServiceWorkUnitDto Create(IServiceWorkUnitDto entity)
+		protected override IServiceWorkUnitDto Create(int performingUserId, IServiceWorkUnitDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -53,12 +34,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service WorkUnit with ID {0} already exists.", entity.Id));
 				}
 				var savedWorkUnit = context.ServiceWorkUnits.Add(ManualMapper.MapDtoToServiceWorkUnit(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceWorkUnitToDto(savedWorkUnit);
 			}
 		}
 
-		protected override IServiceWorkUnitDto Update(IServiceWorkUnitDto entity)
+		protected override IServiceWorkUnitDto Update(int performingUserId, IServiceWorkUnitDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -70,18 +51,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedServiceWorkUnit = ManualMapper.MapDtoToServiceWorkUnit(entity);
 				context.ServiceWorkUnits.Attach(updatedServiceWorkUnit);
 				context.Entry(updatedServiceWorkUnit).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceWorkUnitToDto(updatedServiceWorkUnit);
 			}
 		}
 
-		protected override IServiceWorkUnitDto Delete(IServiceWorkUnitDto entity)
+		protected override IServiceWorkUnitDto Delete(int performingUserId, IServiceWorkUnitDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceWorkUnits.Find(entity.Id);
 				context.ServiceWorkUnits.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

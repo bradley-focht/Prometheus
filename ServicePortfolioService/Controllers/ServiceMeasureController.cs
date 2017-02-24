@@ -1,36 +1,17 @@
-﻿using Common.Dto;
-using Common.Enums;
-using DataService;
-using DataService.DataAccessLayer;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
+using Common.Dto;
 using Common.Enums.Entities;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class ServiceMeasureController : EntityController<IServiceMeasureDto>, IServiceMeasureController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceMeasureController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceMeasureController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceMeasureDto GetServiceMeasure(int serviceMeasureId)
+		public IServiceMeasureDto GetServiceMeasure(int performingUserId, int serviceMeasureId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -38,12 +19,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceMeasureDto ModifyServiceMeasure(IServiceMeasureDto serviceMeasure, EntityModification modification)
+		public IServiceMeasureDto ModifyServiceMeasure(int performingUserId, IServiceMeasureDto serviceMeasure, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceMeasure, modification);
+			return base.ModifyEntity(performingUserId, serviceMeasure, modification);
 		}
 
-		protected override IServiceMeasureDto Create(IServiceMeasureDto entity)
+		protected override IServiceMeasureDto Create(int performingUserId, IServiceMeasureDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -53,12 +34,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Measure with ID {0} already exists.", entity.Id));
 				}
 				var savedMeasure = context.ServiceMeasures.Add(ManualMapper.MapDtoToServiceMeasure(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceMeasureToDto(savedMeasure);
 			}
 		}
 
-		protected override IServiceMeasureDto Update(IServiceMeasureDto entity)
+		protected override IServiceMeasureDto Update(int performingUserId, IServiceMeasureDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -70,18 +51,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedServiceMeasure = ManualMapper.MapDtoToServiceMeasure(entity);
 				context.ServiceMeasures.Attach(updatedServiceMeasure);
 				context.Entry(updatedServiceMeasure).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceMeasureToDto(updatedServiceMeasure);
 			}
 		}
 
-		protected override IServiceMeasureDto Delete(IServiceMeasureDto entity)
+		protected override IServiceMeasureDto Delete(int performingUserId, IServiceMeasureDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceMeasures.Find(entity.Id);
 				context.ServiceMeasures.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

@@ -12,25 +12,7 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceRequestController : EntityController<IServiceRequestDto>, IServiceRequestController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceRequestController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceRequestController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceRequestDto GetServiceRequest(int serviceRequestId)
+		public IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -41,12 +23,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceRequestDto ModifyServiceRequest(IServiceRequestDto serviceRequest, EntityModification modification)
+		public IServiceRequestDto ModifyServiceRequest(int performingUserId, IServiceRequestDto serviceRequest, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceRequest, modification);
+			return base.ModifyEntity(performingUserId, serviceRequest, modification);
 		}
 
-		protected override IServiceRequestDto Create(IServiceRequestDto serviceRequestDto)
+		protected override IServiceRequestDto Create(int performingUserId, IServiceRequestDto serviceRequestDto)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -56,12 +38,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Request with ID {0} already exists.", serviceRequestDto.Id));
 				}
 				var saved = context.ServiceRequests.Add(ManualMapper.MapDtoToServiceRequest(serviceRequestDto));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceRequestToDto(saved);
 			}
 		}
 
-		protected override IServiceRequestDto Update(IServiceRequestDto serviceRequestDto)
+		protected override IServiceRequestDto Update(int performingUserId, IServiceRequestDto serviceRequestDto)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -72,23 +54,23 @@ namespace ServicePortfolioService.Controllers
 				var updated = ManualMapper.MapDtoToServiceRequest(serviceRequestDto);
 				context.ServiceRequests.Attach(updated);
 				context.Entry(updated).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceRequestToDto(updated);
 			}
 		}
 
-		protected override IServiceRequestDto Delete(IServiceRequestDto serviceRequestDto)
+		protected override IServiceRequestDto Delete(int performingUserId, IServiceRequestDto serviceRequestDto)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceRequests.Find(serviceRequestDto.Id);
 				context.ServiceRequests.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}
 
-		public IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int requestorUserId)
+		public IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId)
 		{
 			using (var context = new PrometheusContext())
 			{

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
 using Common.Exceptions;
@@ -11,7 +12,7 @@ using DataService.Models;
 
 namespace UserManager.Controllers
 {
-	public class UserController : UMEntityController<IUserDto>, IUserController
+	public class UserController : EntityController<IUserDto>, IUserController
 	{
 
 		public IUserDto ModifyUser(int performingUserId, IUserDto userDto, EntityModification modification)

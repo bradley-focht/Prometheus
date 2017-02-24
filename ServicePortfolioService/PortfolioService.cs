@@ -1,8 +1,8 @@
-﻿using Common.Dto;
+﻿using System;
+using System.Collections.Generic;
+using Common.Dto;
 using Common.Enums.Entities;
 using ServicePortfolioService.Controllers;
-using System;
-using System.Collections.Generic;
 
 namespace ServicePortfolioService
 {
@@ -29,24 +29,9 @@ namespace ServicePortfolioService
 		private readonly IScriptedSelectionController _scriptedSelectionController;
 		private readonly IServiceRequestPackageController _serviceRequestPackageController;
 		private readonly IServiceRequestController _serviceRequestController;
-
-
-
-		//TODO: Add check for valid user being set
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set
-			{
-				_userId = value;
-				SetControllerUsers(_userId);
-			}
-		}
-
+		
 		//Lol I'll make a factory for constructing this
-		public PortfolioService(int userId, IServiceBundleController serviceBundleController,
+		public PortfolioService(IServiceBundleController serviceBundleController,
 			IServiceController serviceController, ILifecycleStatusController lifecycleStatusController,
 			IServiceSwotController serviceSwotController, ISwotActivityController swotActivityController,
 			IServiceDocumentController serviceDocumentController, IServiceGoalController serviceGoalController,
@@ -75,25 +60,6 @@ namespace ServicePortfolioService
 			_scriptedSelectionController = scriptedSelectionController;
 			_serviceRequestPackageController = serviceRequestPackageController;
 			_serviceRequestController = serviceRequestController;
-
-			UserId = userId;
-		}
-
-		private void SetControllerUsers(int userId)
-		{
-			_serviceBundleController.UserId = userId;
-			_serviceController.UserId = userId;
-			_lifecycleStatusController.UserId = userId;
-			_serviceSwotController.UserId = userId;
-			_swotActivityController.UserId = userId;
-			_serviceDocumentController.UserId = userId;
-			_serviceGoalController.UserId = userId;
-			_serviceContractController.UserId = userId;
-			_serviceWorkUnitController.UserId = userId;
-			_serviceMeasureController.UserId = userId;
-			_serviceOptionController.UserId = userId;
-			_serviceRequestPackageController.UserId = userId;
-			_serviceRequestController.UserId = userId;
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
@@ -182,14 +148,14 @@ namespace ServicePortfolioService
 			return _serviceController.GetServiceDocuments(serviceId);
 		}
 
-		public IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto document, EntityModification modification)
+		public IServiceDocumentDto ModifyServiceDocument(int performingUserId, IServiceDocumentDto document, EntityModification modification)
 		{
-			return _serviceDocumentController.ModifyServiceDocument(document, modification);
+			return _serviceDocumentController.ModifyServiceDocument(performingUserId, document, modification);
 		}
 
-		public IServiceDocumentDto GetServiceDocument(int documentGuid)
+		public IServiceDocumentDto GetServiceDocument(int performingUserId, int documentGuid)
 		{
-			return _serviceDocumentController.GetServiceDocument(documentGuid);
+			return _serviceDocumentController.GetServiceDocument(performingUserId, documentGuid);
 		}
 
 		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
@@ -197,166 +163,166 @@ namespace ServicePortfolioService
 			return _serviceBundleController.UpdateServiceBundle(serviceBundle);
 		}
 
-		public IServiceSwotDto GetServiceSwot(int serviceSwotId)
+		public IServiceSwotDto GetServiceSwot(int performingUserId, int serviceSwotId)
 		{
-			return _serviceSwotController.GetServiceSwot(serviceSwotId);
+			return _serviceSwotController.GetServiceSwot(performingUserId, serviceSwotId);
 		}
 
-		public IServiceSwotDto ModifyServiceSwot(IServiceSwotDto serviceSwot, EntityModification modification)
+		public IServiceSwotDto ModifyServiceSwot(int performingUserId, IServiceSwotDto serviceSwot, EntityModification modification)
 		{
-			return _serviceSwotController.ModifyServiceSwot(serviceSwot, modification);
+			return _serviceSwotController.ModifyServiceSwot(performingUserId, serviceSwot, modification);
 		}
 
-		public ISwotActivityDto GetSwotActivity(int swotActivityId)
+		public ISwotActivityDto GetSwotActivity(int performingUserId, int swotActivityId)
 		{
-			return _swotActivityController.GetSwotActivity(swotActivityId);
+			return _swotActivityController.GetSwotActivity(performingUserId, swotActivityId);
 		}
 
-		public ISwotActivityDto ModifySwotActivity(ISwotActivityDto swotActivity, EntityModification modification)
+		public ISwotActivityDto ModifySwotActivity(int performingUserId, ISwotActivityDto swotActivity, EntityModification modification)
 		{
-			return _swotActivityController.ModifySwotActivity(swotActivity, modification);
+			return _swotActivityController.ModifySwotActivity(performingUserId, swotActivity, modification);
 		}
 
-		public IServiceGoalDto GetServiceGoal(int serviceGoalId)
+		public IServiceGoalDto GetServiceGoal(int performingUserId, int serviceGoalId)
 		{
-			return _serviceGoalController.GetServiceGoal(serviceGoalId);
+			return _serviceGoalController.GetServiceGoal(performingUserId, serviceGoalId);
 		}
 
-		public IServiceGoalDto ModifyServiceGoal(IServiceGoalDto serviceGoal, EntityModification modification)
+		public IServiceGoalDto ModifyServiceGoal(int performingUserId, IServiceGoalDto serviceGoal, EntityModification modification)
 		{
-			return _serviceGoalController.ModifyServiceGoal(serviceGoal, modification);
+			return _serviceGoalController.ModifyServiceGoal(performingUserId, serviceGoal, modification);
 		}
 
-		public IServiceContractDto GetServiceContract(int serviceContractId)
+		public IServiceContractDto GetServiceContract(int performingUserId, int serviceContractId)
 		{
-			return _serviceContractController.GetServiceContract(serviceContractId);
+			return _serviceContractController.GetServiceContract(performingUserId, serviceContractId);
 		}
 
-		public IServiceContractDto ModifyServiceContract(IServiceContractDto serviceContract, EntityModification modification)
+		public IServiceContractDto ModifyServiceContract(int performingUserId, IServiceContractDto serviceContract, EntityModification modification)
 		{
-			return _serviceContractController.ModifyServiceContract(serviceContract, modification);
+			return _serviceContractController.ModifyServiceContract(performingUserId, serviceContract, modification);
 		}
 
-		public IServiceWorkUnitDto GetServiceWorkUnit(int serviceWorkUnitId)
+		public IServiceWorkUnitDto GetServiceWorkUnit(int performingUserId, int serviceWorkUnitId)
 		{
-			return _serviceWorkUnitController.GetServiceWorkUnit(serviceWorkUnitId);
+			return _serviceWorkUnitController.GetServiceWorkUnit(performingUserId, serviceWorkUnitId);
 		}
 
-		public IServiceWorkUnitDto ModifyServiceWorkUnit(IServiceWorkUnitDto serviceWorkUnit, EntityModification modification)
+		public IServiceWorkUnitDto ModifyServiceWorkUnit(int performingUserId, IServiceWorkUnitDto serviceWorkUnit, EntityModification modification)
 		{
-			return _serviceWorkUnitController.ModifyServiceWorkUnit(serviceWorkUnit, modification);
+			return _serviceWorkUnitController.ModifyServiceWorkUnit(performingUserId, serviceWorkUnit, modification);
 		}
 
-		public IServiceMeasureDto GetServiceMeasure(int serviceMeasureId)
+		public IServiceMeasureDto GetServiceMeasure(int performingUserId, int serviceMeasureId)
 		{
-			return _serviceMeasureController.GetServiceMeasure(serviceMeasureId);
+			return _serviceMeasureController.GetServiceMeasure(performingUserId, serviceMeasureId);
 		}
 
-		public IServiceMeasureDto ModifyServiceMeasure(IServiceMeasureDto serviceMeasure, EntityModification modification)
+		public IServiceMeasureDto ModifyServiceMeasure(int performingUserId, IServiceMeasureDto serviceMeasure, EntityModification modification)
 		{
-			return _serviceMeasureController.ModifyServiceMeasure(serviceMeasure, modification);
+			return _serviceMeasureController.ModifyServiceMeasure(performingUserId, serviceMeasure, modification);
 		}
 
-		public IServiceOptionDto GetServiceOption(int serviceOptionId)
+		public IServiceOptionDto GetServiceOption(int performingUserId, int serviceOptionId)
 		{
-			return _serviceOptionController.GetServiceOption(serviceOptionId);
+			return _serviceOptionController.GetServiceOption(performingUserId, serviceOptionId);
 		}
 
-		public IServiceOptionDto ModifyServiceOption(IServiceOptionDto serviceOption, EntityModification modification)
+		public IServiceOptionDto ModifyServiceOption(int performingUserId, IServiceOptionDto serviceOption, EntityModification modification)
 		{
-			return _serviceOptionController.ModifyServiceOption(serviceOption, modification);
+			return _serviceOptionController.ModifyServiceOption(performingUserId, serviceOption, modification);
 		}
 
-		public IInputGroupDto GetInputsForServiceOptions(IEnumerable<IServiceOptionDto> serviceOptions)
+		public IInputGroupDto GetInputsForServiceOptions(int performingUserId, IEnumerable<IServiceOptionDto> serviceOptions)
 		{
-			return _serviceOptionController.GetInputsForServiceOptions(serviceOptions);
+			return _serviceOptionController.GetInputsForServiceOptions(performingUserId, serviceOptions);
 		}
 
-		public IServiceOptionDto AddInputsToServiceOption(int serviceOptionId, IInputGroupDto inputsToAdd)
+		public IServiceOptionDto AddInputsToServiceOption(int performingUserId, int serviceOptionId, IInputGroupDto inputsToAdd)
 		{
-			return _serviceOptionController.AddInputsToServiceOption(serviceOptionId, inputsToAdd);
+			return _serviceOptionController.AddInputsToServiceOption(performingUserId, serviceOptionId, inputsToAdd);
 		}
 
-		public IServiceOptionDto RemoveInputsFromServiceOption(int serviceOptionId, IInputGroupDto inputsToRemove)
+		public IServiceOptionDto RemoveInputsFromServiceOption(int performingUserId, int serviceOptionId, IInputGroupDto inputsToRemove)
 		{
-			return _serviceOptionController.RemoveInputsFromServiceOption(serviceOptionId, inputsToRemove);
+			return _serviceOptionController.RemoveInputsFromServiceOption(performingUserId, serviceOptionId, inputsToRemove);
 		}
 
-		public IServiceProcessDto GetServiceProcess(int serviceProcessId)
+		public IServiceProcessDto GetServiceProcess(int performingUserId, int serviceProcessId)
 		{
-			return _serviceProcessController.GetServiceProcess(serviceProcessId);
+			return _serviceProcessController.GetServiceProcess(performingUserId, serviceProcessId);
 		}
 
-		public IServiceProcessDto ModifyServiceProcess(IServiceProcessDto serviceProcess, EntityModification modification)
+		public IServiceProcessDto ModifyServiceProcess(int performingUserId, IServiceProcessDto serviceProcess, EntityModification modification)
 		{
-			return _serviceProcessController.ModifyServiceProcess(serviceProcess, modification);
+			return _serviceProcessController.ModifyServiceProcess(performingUserId, serviceProcess, modification);
 		}
 
-		public IServiceOptionCategoryDto GetServiceOptionCategory(int optionCategoryId)
+		public IServiceOptionCategoryDto GetServiceOptionCategory(int performingUserId, int optionCategoryId)
 		{
-			return _optionCategoryController.GetServiceOptionCategory(optionCategoryId);
+			return _optionCategoryController.GetServiceOptionCategory(performingUserId, optionCategoryId);
 		}
 
-		public IServiceOptionCategoryDto ModifyServiceOptionCategory(IServiceOptionCategoryDto optionCategory, EntityModification modification)
+		public IServiceOptionCategoryDto ModifyServiceOptionCategory(int performingUserId, IServiceOptionCategoryDto optionCategory, EntityModification modification)
 		{
-			return _optionCategoryController.ModifyServiceOptionCategory(optionCategory, modification);
+			return _optionCategoryController.ModifyServiceOptionCategory(performingUserId, optionCategory, modification);
 		}
 
-		public ITextInputDto GetTextInput(int textInputId)
+		public ITextInputDto GetTextInput(int performingUserId, int textInputId)
 		{
-			return _textInputController.GetTextInput(textInputId);
+			return _textInputController.GetTextInput(performingUserId, textInputId);
 		}
 
-		public IEnumerable<ITextInputDto> GetTextInputs()
+		public IEnumerable<ITextInputDto> GetTextInputs(int performingUserId)
 		{
-			return _textInputController.GetTextInputs();
+			return _textInputController.GetTextInputs(performingUserId);
 		}
 
-		public ITextInputDto ModifyTextInput(ITextInputDto textInput, EntityModification modification)
+		public ITextInputDto ModifyTextInput(int performingUserId, ITextInputDto textInput, EntityModification modification)
 		{
-			return _textInputController.ModifyTextInput(textInput, modification);
+			return _textInputController.ModifyTextInput(performingUserId, textInput, modification);
 		}
 
-		public ISelectionInputDto GetSelectionInput(int selectionInputId)
+		public ISelectionInputDto GetSelectionInput(int performingUserId, int selectionInputId)
 		{
-			return _selectionInputController.GetSelectionInput(selectionInputId);
+			return _selectionInputController.GetSelectionInput(performingUserId, selectionInputId);
 		}
 
-		public IEnumerable<ISelectionInputDto> GetSelectionInputs()
+		public IEnumerable<ISelectionInputDto> GetSelectionInputs(int performingUserId)
 		{
-			return _selectionInputController.GetSelectionInputs();
+			return _selectionInputController.GetSelectionInputs(performingUserId);
 		}
 
-		public ISelectionInputDto ModifySelectionInput(ISelectionInputDto selectionInput, EntityModification modification)
+		public ISelectionInputDto ModifySelectionInput(int performingUserId, ISelectionInputDto selectionInput, EntityModification modification)
 		{
-			return _selectionInputController.ModifySelectionInput(selectionInput, modification);
+			return _selectionInputController.ModifySelectionInput(performingUserId, selectionInput, modification);
 		}
 
-		public IScriptedSelectionInputDto GetScriptedSelectionInput(int scriptedSelection)
+		public IScriptedSelectionInputDto GetScriptedSelectionInput(int performingUserId, int scriptedSelection)
 		{
-			return _scriptedSelectionController.GetScriptedSelectionInput(scriptedSelection);
+			return _scriptedSelectionController.GetScriptedSelectionInput(performingUserId, scriptedSelection);
 		}
 
-		public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs()
+		public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs(int performingUserId)
 		{
-			return _scriptedSelectionController.GetScriptedSelectionInputs();
+			return _scriptedSelectionController.GetScriptedSelectionInputs(performingUserId);
 		}
 
-		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(IScriptedSelectionInputDto scriptedSelection,
+		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(int performingUserId, IScriptedSelectionInputDto scriptedSelection,
 			EntityModification modification)
 		{
-			return _scriptedSelectionController.ModifyScriptedSelectionInput(scriptedSelection, modification);
+			return _scriptedSelectionController.ModifyScriptedSelectionInput(performingUserId, scriptedSelection, modification);
 		}
 
-		public IServiceRequestPackageDto GetServiceRequestPackage(int servicePackageId)
+		public IServiceRequestPackageDto GetServiceRequestPackage(int performingUserId, int servicePackageId)
 		{
-			return _serviceRequestPackageController.GetServiceRequestPackage(servicePackageId);
+			return _serviceRequestPackageController.GetServiceRequestPackage(performingUserId, servicePackageId);
 		}
 
-		public IServiceRequestPackageDto ModifyServiceRequestPackage(IServiceRequestPackageDto servicePackage,
+		public IServiceRequestPackageDto ModifyServiceRequestPackage(int performingUserId, IServiceRequestPackageDto servicePackage,
 			EntityModification modification)
 		{
-			return _serviceRequestPackageController.ModifyServiceRequestPackage(servicePackage, modification);
+			return _serviceRequestPackageController.ModifyServiceRequestPackage(performingUserId, servicePackage, modification);
 		}
 
 		public IEnumerable<IServiceRequestPackageDto> AllServiceRequestPackages
@@ -364,24 +330,24 @@ namespace ServicePortfolioService
 			get { return _serviceRequestPackageController.AllServiceRequestPackages; }
 		}
 
-		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int serviceOptionId)
+		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId)
 		{
-			return _serviceRequestPackageController.GetServiceRequestPackagesForServiceOption(serviceOptionId);
+			return _serviceRequestPackageController.GetServiceRequestPackagesForServiceOption(performingUserId, serviceOptionId);
 		}
 
-		public IServiceRequestDto GetServiceRequest(int serviceRequestId)
+		public IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId)
 		{
-			return _serviceRequestController.GetServiceRequest(serviceRequestId);
+			return _serviceRequestController.GetServiceRequest(performingUserId, serviceRequestId);
 		}
 
-		public IServiceRequestDto ModifyServiceRequest(IServiceRequestDto serviceRequest, EntityModification modification)
+		public IServiceRequestDto ModifyServiceRequest(int performingUserId, IServiceRequestDto serviceRequest, EntityModification modification)
 		{
-			return _serviceRequestController.ModifyServiceRequest(serviceRequest, modification);
+			return _serviceRequestController.ModifyServiceRequest(performingUserId, serviceRequest, modification);
 		}
 
-		public IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int requestorUserId)
+		public IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId)
 		{
-			return _serviceRequestController.GetServiceRequestsForRequestorId(requestorUserId);
+			return _serviceRequestController.GetServiceRequestsForRequestorId(performingUserId, requestorUserId);
 		}
 	}
 }

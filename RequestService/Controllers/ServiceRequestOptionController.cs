@@ -10,20 +10,7 @@ namespace RequestService.Controllers
 {
 	public class ServiceRequestOptionController : EntityController<IServiceRequestOptionDto>, IServiceRequestOptionController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceRequestOptionController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceRequestOptionDto GetServiceRequestOption(int optionId)
+		public IServiceRequestOptionDto GetServiceRequestOption(int performingUserId, int optionId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -34,12 +21,12 @@ namespace RequestService.Controllers
 			}
 		}
 
-		public IServiceRequestOptionDto ModifyServiceRequestOption(IServiceRequestOptionDto requestOption, EntityModification modification)
+		public IServiceRequestOptionDto ModifyServiceRequestOption(int performingUserId, IServiceRequestOptionDto requestOption, EntityModification modification)
 		{
-			return base.ModifyEntity(requestOption, modification);
+			return base.ModifyEntity(performingUserId, requestOption, modification);
 		}
 
-		protected override IServiceRequestOptionDto Create(IServiceRequestOptionDto entity)
+		protected override IServiceRequestOptionDto Create(int performingUserId, IServiceRequestOptionDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -49,23 +36,23 @@ namespace RequestService.Controllers
 					throw new InvalidOperationException(string.Format("Service Request Option with ID {0} already exists.", entity.Id));
 				}
 				var savedOption = context.ServiceRequestOptions.Add(ManualMapper.MapDtoToServiceRequestOption(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceRequestOptionToDto(savedOption);
 			}
 		}
 
-		protected override IServiceRequestOptionDto Update(IServiceRequestOptionDto entity)
+		protected override IServiceRequestOptionDto Update(int performingUserId, IServiceRequestOptionDto entity)
 		{
 			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Request Options. They can only be created and deleted.", EntityModification.Update));
 		}
 
-		protected override IServiceRequestOptionDto Delete(IServiceRequestOptionDto entity)
+		protected override IServiceRequestOptionDto Delete(int performingUserId, IServiceRequestOptionDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceRequestOptions.Find(entity.Id);
 				context.ServiceRequestOptions.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

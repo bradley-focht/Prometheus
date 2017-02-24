@@ -1,36 +1,17 @@
-using Common.Dto;
-using Common.Enums;
-using DataService;
-using DataService.DataAccessLayer;
 using System;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
+using Common.Dto;
 using Common.Enums.Entities;
+using DataService;
+using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class ServiceSwotController : EntityController<IServiceSwotDto>, IServiceSwotController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceSwotController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceSwotController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceSwotDto GetServiceSwot(int serviceSwotId)
+		public IServiceSwotDto GetServiceSwot(int performingUserId, int serviceSwotId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -41,12 +22,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceSwotDto ModifyServiceSwot(IServiceSwotDto serviceSwotId, EntityModification modification)
+		public IServiceSwotDto ModifyServiceSwot(int performingUserId, IServiceSwotDto serviceSwotId, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceSwotId, modification);
+			return base.ModifyEntity(performingUserId, serviceSwotId, modification);
 		}
 
-		protected override IServiceSwotDto Create(IServiceSwotDto entity)
+		protected override IServiceSwotDto Create(int performingUserId, IServiceSwotDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -56,12 +37,12 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service SWOT with ID {0} already exists.", entity.Id));
 				}
 				var savedSwot = context.ServiceSwots.Add(ManualMapper.MapDtoToServiceSwot(entity));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceSwotToDto(savedSwot);
 			}
 		}
 
-		protected override IServiceSwotDto Update(IServiceSwotDto entity)
+		protected override IServiceSwotDto Update(int performingUserId, IServiceSwotDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -72,18 +53,18 @@ namespace ServicePortfolioService.Controllers
 				var updatedSwot = ManualMapper.MapDtoToServiceSwot(entity);
 				context.ServiceSwots.Attach(updatedSwot);
 				context.Entry(updatedSwot).State = EntityState.Modified;
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceSwotToDto(updatedSwot);
 			}
 		}
 
-		protected override IServiceSwotDto Delete(IServiceSwotDto entity)
+		protected override IServiceSwotDto Delete(int performingUserId, IServiceSwotDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceSwots.Find(entity.Id);
 				context.ServiceSwots.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

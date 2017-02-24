@@ -1,36 +1,17 @@
-﻿using Common.Dto;
-using Common.Enums;
+﻿using System;
+using System.Linq;
+using Common.Controllers;
+using Common.Dto;
+using Common.Enums.Entities;
 using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
-using System;
-using System.Linq;
-using Common.Controllers;
-using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {
 	public class ServiceDocumentController : EntityController<IServiceDocumentDto>, IServiceDocumentController
 	{
-		private int _userId;
-
-		public int UserId
-		{
-			get { return _userId; }
-			set { _userId = value; }
-		}
-
-		public ServiceDocumentController()
-		{
-			_userId = PortfolioService.GuestUserId;
-		}
-
-		public ServiceDocumentController(int userId)
-		{
-			_userId = userId;
-		}
-
-		public IServiceDocumentDto GetServiceDocument(int serviceDocumentId)
+		public IServiceDocumentDto GetServiceDocument(int performingUserId, int serviceDocumentId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -39,12 +20,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceDocumentDto ModifyServiceDocument(IServiceDocumentDto serviceDocument, EntityModification modification)
+		public IServiceDocumentDto ModifyServiceDocument(int performingUserId, IServiceDocumentDto serviceDocument, EntityModification modification)
 		{
-			return base.ModifyEntity(serviceDocument, modification);
+			return base.ModifyEntity(performingUserId, serviceDocument, modification);
 		}
 
-		protected override IServiceDocumentDto Create(IServiceDocumentDto serviceDocument)
+		protected override IServiceDocumentDto Create(int performingUserId, IServiceDocumentDto serviceDocument)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -54,23 +35,23 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Document with ID {0} already exists.", serviceDocument.StorageNameGuid));
 				}
 				var savedDocument = context.ServiceDocuments.Add(ManualMapper.MapDtoToServiceDocument(serviceDocument));
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceDocumentToDto(savedDocument);
 			}
 		}
 
-		protected override IServiceDocumentDto Update(IServiceDocumentDto entity)
+		protected override IServiceDocumentDto Update(int performingUserId, IServiceDocumentDto entity)
 		{
 			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Documents.", EntityModification.Update));
 		}
 
-		protected override IServiceDocumentDto Delete(IServiceDocumentDto document)
+		protected override IServiceDocumentDto Delete(int performingUserId, IServiceDocumentDto document)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.ServiceDocuments.ToList().FirstOrDefault(x => x.Id == document.Id);
 				context.ServiceDocuments.Remove(toDelete);
-				context.SaveChanges(_userId);
+				context.SaveChanges(performingUserId);
 			}
 			return null;
 		}

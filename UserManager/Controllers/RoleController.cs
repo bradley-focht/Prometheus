@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
 using Common.Enums.Permissions;
@@ -12,7 +13,7 @@ using DataService.Models;
 
 namespace UserManager.Controllers
 {
-	public class RoleController : UMEntityController<IRoleDto>, IRoleController
+	public class RoleController : EntityController<IRoleDto>, IRoleController
 	{
 		private readonly IPermissionController _permissionController;
 
