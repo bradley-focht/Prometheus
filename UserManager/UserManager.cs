@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Authentication;
 using Common.Dto;
 using Common.Enums.Entities;
 using DataService;
@@ -101,12 +100,12 @@ namespace UserManager
 			return _userController.ModifyUser(performingUserId, userDto, modification);
 		}
 
-		public IEnumerable<UserDto> GetUsers(int performingUserId)
+		public IEnumerable<IUserDto> GetUsers(int performingUserId)
 		{
 			return _userController.GetUsers(performingUserId);
 		}
 
-		public UserDto GetUser(int performingUserId, int userId)
+		public IUserDto GetUser(int performingUserId, int userId)
 		{
 			return _userController.GetUser(performingUserId, userId);
 		}
@@ -126,12 +125,12 @@ namespace UserManager
 			return _roleController.RemoveRoleFromUsers(performingUserId, roleDto, users);
 		}
 
-		public IEnumerable<RoleDto> GetRoles(int performingUserId)
+		public IEnumerable<IRoleDto> GetRoles(int performingUserId)
 		{
 			return _roleController.GetRoles(performingUserId);
 		}
 
-		public RoleDto GetRole(int performingUserId, int roleId)
+		public IRoleDto GetRole(int performingUserId, int roleId)
 		{
 			return _roleController.GetRole(performingUserId, roleId);
 		}

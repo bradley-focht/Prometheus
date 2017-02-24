@@ -19,7 +19,7 @@ namespace UserManager.Controllers
 			return base.ModifyEntity(performingUserId, userDto, modification);
 		}
 
-		public IEnumerable<UserDto> GetUsers(int performingUserId)
+		public IEnumerable<IUserDto> GetUsers(int performingUserId)
 		{
 			//TODO: Sean -  need to check permissions...
 			{
@@ -29,7 +29,7 @@ namespace UserManager.Controllers
 					var users = context.Users;
 					foreach (var user in users)
 					{
-						yield return (UserDto)ManualMapper.MapUserToDto(user);
+						yield return ManualMapper.MapUserToDto(user);
 					}
 				}
 			}
@@ -37,7 +37,7 @@ namespace UserManager.Controllers
 
 
 
-		public UserDto GetUser(int performingUserId, int userId)
+		public IUserDto GetUser(int performingUserId, int userId)
 		{
 			//TODO: Sean - need to do permissions stuff here
 
@@ -47,7 +47,7 @@ namespace UserManager.Controllers
 							where u.Id == userId
 							select u).FirstOrDefault();
 
-				return (UserDto)ManualMapper.MapUserToDto(user);				//will return null if user not found
+				return ManualMapper.MapUserToDto(user);				//will return null if user not found
 			}
 		}
 

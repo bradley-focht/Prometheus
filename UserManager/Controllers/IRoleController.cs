@@ -38,14 +38,14 @@ namespace UserManager.Controllers
 		/// </summary>
 		/// <param name="performingUserId">user requesting the action</param>
 		/// <returns></returns>
-		IEnumerable<RoleDto> GetRoles(int performingUserId);
+		IEnumerable<IRoleDto> GetRoles(int performingUserId);
 		/// <summary>
 		/// Retrieve a single role
 		/// </summary>
 		/// <param name="performingUserId">user making hte request</param>
 		/// <param name="roleId">role to retrieve</param>
 		/// <returns></returns>
-		RoleDto GetRole(int performingUserId, int roleId);
+		IRoleDto GetRole(int performingUserId, int roleId);
 
 	}
 }

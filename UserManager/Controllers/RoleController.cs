@@ -146,7 +146,7 @@ namespace UserManager.Controllers
 		}
 
 		//TODO: Sean - permission checks are needed
-		public IEnumerable<RoleDto> GetRoles(int performingUserId)
+		public IEnumerable<IRoleDto> GetRoles(int performingUserId)
 		{
 			 
 			using (var context = new PrometheusContext())
@@ -160,7 +160,7 @@ namespace UserManager.Controllers
 		}
 
 		//TODO: Sean i don't want to deal with this either... yours truly, Brad.
-		public RoleDto GetRole(int performingUserId, int roleId)
+		public IRoleDto GetRole(int performingUserId, int roleId)
 		{
 			//TODO: Sean > permission things go here <
 			using (var context = new PrometheusContext())

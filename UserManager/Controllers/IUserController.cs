@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Common.Dto;
 using Common.Enums.Entities;
 
@@ -30,7 +29,7 @@ namespace UserManager.Controllers
 		/// </summary>
 		/// <param name="performingUserId">user id of requestor</param>
 		/// <returns></returns>
-		IEnumerable<UserDto> GetUsers(int performingUserId);
+		IEnumerable<IUserDto> GetUsers(int performingUserId);
 
 		/// <summary>
 		/// get a specific user
@@ -38,6 +37,6 @@ namespace UserManager.Controllers
 		/// <param name="performingUserId">user making the request</param>
 		/// <param name="userId">user requested</param>
 		/// <returns></returns>
-		UserDto GetUser(int performingUserId, int userId);
+		IUserDto GetUser(int performingUserId, int userId);
 	}
 }
