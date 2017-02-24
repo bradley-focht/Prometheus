@@ -152,12 +152,22 @@ function UpdateOptions() {
 };
 
 	$(document).ready(function() {
-		@foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
+		@if (Model.ServiceRequest.ServiceRequestOptions != null)
 		{
-			<text>
+			foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
+			{
+				<text>
 		if (document.getElementById("option_@(option.ServiceOptionId)"))
-				document.getElementById("option_@(option.ServiceOptionId)").checked = true;
-			</text>
+			document.getElementById("option_@(option.ServiceOptionId)").checked = true;
+		</text>
+			}
+			if (Model.ServiceRequest.ServiceRequestOptions == null || !Model.ServiceRequest.ServiceRequestOptions.Any()) // relying on short-circuit here
+			 {
+				 <text>
+		if (document.getElementById("option_@(Model.ServiceRequest.ServiceOptionId)"))
+			document.getElementById("option_@(Model.ServiceRequest.ServiceOptionId)").checked = true;
+		</text>
+			 }
 		}
 
 		UpdateOptions();

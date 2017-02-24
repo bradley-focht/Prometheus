@@ -77,5 +77,14 @@ namespace Prometheus.WebUI.Helpers
 		{
 			return new RequestManager();
 		}
+
+		/// <summary>
+		/// Create a new Service Request User Input Controller
+		/// </summary>
+		/// <returns></returns>
+		public static ServiceRequestUserInputController CreateServiceRequestUserInputController()
+		{
+			return new ServiceRequestUserInputController();
+		}
 	}
 }

@@ -35,6 +35,6 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         /// </summary>
         public ICollection<IServiceDto> Services { get; set; }
 
-        public ICollection<int> SelectedCategories { get; set; }
+        public IEnumerable<int> SelectedCategories { get; set; }
     }
 }

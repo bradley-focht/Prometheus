@@ -7,7 +7,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 	/// </summary>
 	public class UserInputReturnModel
 	{
-		public string Id { get; set; }
+		public int Id { get; set; }
 		public string Name { get; set; }
 		public string Value { get; set; }
 		public UserInputType Type { get; set; }

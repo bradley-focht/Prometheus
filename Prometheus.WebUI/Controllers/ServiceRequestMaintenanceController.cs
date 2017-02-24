@@ -101,7 +101,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				var package = (ServiceRequestPackageDto)_ps.GetServiceRequestPackage(id);
 				model.Name = package.Name;
-				//TODO: add in selected packages
+				model.SelectedCategories = from a in package.ServiceOptionCategoryTags select a.Id;
 			}
 			catch (Exception exception)
 			{

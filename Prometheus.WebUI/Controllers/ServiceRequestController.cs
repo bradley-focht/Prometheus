@@ -92,11 +92,11 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = "Successfully saved Service Request";
 			if (submit >= 99999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
 			}
 			if (submit >= 9999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
 			}
 
 			return RedirectToAction("Form", new { id = request.Id, index = submit });
@@ -140,59 +140,79 @@ namespace Prometheus.WebUI.Controllers
 					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 
 			/* STEP THREE - add/remove options in the SR */
+			ICollection<IServiceRequestOptionDto> removedOptions = new List<IServiceRequestOptionDto>(); 
+			ICollection<ServiceRequestOptionDto> formOptions;
+			if (form.Options == null) { formOptions = new List<ServiceRequestOptionDto>(); }    //need to avoid a null pointer exception here
+			else { formOptions = form.GetServiceRequestOptions().ToList(); }
+			if (model.ServiceRequest.ServiceRequestOptions == null)
+			{ model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>(); }
+			try
 			{
-				ICollection<ServiceRequestOptionDto> formOptions;
-				if (form.Options == null) { formOptions = new List<ServiceRequestOptionDto>(); }    //need to avoid a null pointer exception here
-				else { formOptions = form.GetServiceRequestOptions().ToList(); }
-				if (model.ServiceRequest.ServiceRequestOptions == null)
-				{ model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>(); }
-				try
+				foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
 				{
-					foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
-					{
-						var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
-						var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+					var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+					var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
 
-						if (formDto != null && srDto == null)		//add condition
-						{
-							_rs.ModifyServiceRequestOption((from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
-						}
-						else if (formDto == null && srDto != null) //remove condition
-						{
-							_rs.ModifyServiceRequestOption((from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
-						}
-						else if (formDto != null /* && srDto != null */)	//update condition
-						{
-							_rs.ModifyServiceRequestOption(srDto, EntityModification.Delete);
-							_rs.ModifyServiceRequestOption(formDto, EntityModification.Create);
-						}                                                                                                       /* done \*/
+					if (formDto != null && srDto == null)       //add condition
+					{
+						_rs.ModifyServiceRequestOption((from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
 					}
-				}
-				catch (Exception exception)		//what, a problem?
-				{
-					TempData["MessageType"] = WebMessageType.Failure;
-					TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
-					model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
-					return View("ServiceRequest", model);
+					else if (formDto == null && srDto != null) //remove condition
+					{
+						removedOptions.Add(srDto);
+						_rs.ModifyServiceRequestOption((from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
+					}
+					else if (formDto != null /* && srDto != null */)    //update condition
+					{
+						_rs.ModifyServiceRequestOption(srDto, EntityModification.Delete);
+						_rs.ModifyServiceRequestOption(formDto, EntityModification.Create);
+					}                                                                                                       /* done \*/
 				}
 			}
+			catch (Exception exception)     //what, a problem?
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
+				model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
+				return View("ServiceRequest", model);
+			}
 			/* STEP FOUR - add/remove user input data */
-
+			IServiceRequestUserInputController userInputController = InterfaceFactory.CreateServiceRequestUserInputController();
+			if (form.UserInput != null)
+			{
+				List<ServiceRequestUserInputDto> userDataList = (from u in form.UserInput where u.Value != null
+																 select new ServiceRequestUserInputDto
+																 { Id = u.Id, Name = u.Name, UserInputType = u.Type, ServiceRequestId = form.Id,
+																	 Value = u.Value, InputId = u.InputId }).ToList();
+				foreach (var userData in userDataList)
+				{
+					try
+					{
+						userInputController.ModifyServiceRequestUserInput(userData, userData.Id > 0 ? EntityModification.Update : EntityModification.Create);
+						//removal?
+					}
+					catch (Exception exception)
+					{
+						TempData["MessageType"] = WebMessageType.Failure;
+						TempData["Message"] = $"Failed to save user input data, error: {exception.Message}";
+						return View("ServiceRequest", model);
+					}
+				}
+			}
 			/* STEP FIVE - navigation */
 			if (submit >= 9999)
 			{
-				//TODO: Change state after saving
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
 			model.CurrentIndex = submit;
 
-						if (submit >= 99999)
+			if (submit >= 99999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
 			}
 			if (submit >= 9999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
 			}
 
 			model.Mode = ServiceRequestMode.Selection;

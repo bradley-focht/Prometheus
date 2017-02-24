@@ -84,24 +84,30 @@
 						<div class="dd">
 							@foreach (var displayItem in Model.DisplayList)
 							{
-								<div class="dd-row">
-									<div class="dd-cell-base dt-font">@displayItem.Category.Name</div>
-								</div>
-								<div class="dd-row">
-									@foreach (var option in displayItem.Options)
-									{
-										<div class="dd-cell-base">@option.ServiceRequestOption.Quantity @option.ServiceOption.Name</div>
-									}
-								</div>
-
-								<div class="dd">
+								if (displayItem.Options != null && displayItem.Options.Any())
+								{
 									<div class="dd-row">
-										<div class="dd-cell-base"></div>
-
+										<div class="dd-cell-base dt-font">@displayItem.Category.Name</div>
 									</div>
-								</div>
-
+									<div class="dd-row">
+										@foreach (var option in displayItem.Options)
+										{
+											<div class="dd-cell-base">@option.ServiceRequestOption.Quantity @option.ServiceOption.Name</div>
+										}
+									</div>
+									<div class="dd">
+										<div class="dd-row">
+											<div class="dd-cell-base"></div>
+										</div>
+									</div>
+								}
 							}
+							<div class="dd-row">
+								<div class="dd-cell-base">
+							
+								</div>
+							</div>
+
 						</div>
 					</div>
 				</div>
