@@ -14,5 +14,7 @@ namespace Common.Dto
 		ServiceDetails ServiceDetailsAccess { get; set; }
 		ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
 		UserRoleAssignment UserRoleAssignmentAccess { get; set; }
+		ServiceCatalogMaintenance ServiceCatalogMaintenanceAccess { get; set; }
+		ServicePortfolio ServicePortfolioAccess { get; set; }
 	}
 }

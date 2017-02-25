@@ -1,5 +1,5 @@
-﻿using Common.Enums.Permissions;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Common.Enums.Permissions;
 
 namespace DataService.Models
 {
@@ -14,6 +14,8 @@ namespace DataService.Models
 		ServiceDetails ServiceDetailsAccess { get; set; }
 		ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
 		UserRoleAssignment UserRoleAssignmentAccess { get; set; }
+		ServiceCatalogMaintenance ServiceCatalogMaintenanceAccess { get; set; }
+		ServicePortfolio ServicePortfolioAccess { get; set; }
 
 		ICollection<User> Users { get; set; }
 	}

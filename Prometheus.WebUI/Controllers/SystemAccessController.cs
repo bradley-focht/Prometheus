@@ -278,12 +278,12 @@ namespace Prometheus.WebUI.Controllers
 			controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
 
 			List<Tuple<Guid, string>> directoryUsers;
-			List<Tuple<Guid, ICollection<RoleDto>>> existingUsers;
+			List<Tuple<Guid, ICollection<IRoleDto>>> existingUsers;
 			try
 			{
 				model.Roles = _userManager.GetRoles(uid).ToList();
 				directoryUsers = _userManager.SearchUsers(searchString).ToList();
-				existingUsers = (from u in _userManager.GetUsers(uid) select new Tuple<Guid, ICollection<RoleDto>>(u.AdGuid, u.Roles)).ToList();
+				existingUsers = (from u in _userManager.GetUsers(uid) select new Tuple<Guid, ICollection<IRoleDto>>(u.AdGuid, u.Roles)).ToList();
 			}
 			catch (Exception exception)
 			{

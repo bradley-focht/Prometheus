@@ -53,7 +53,29 @@ namespace UserManager.Controllers
 				return UserCanAssignRoles(userId, (UserRoleAssignment)(object)permission);
 			}
 
+			if (permission is ServicePortfolio)
+			{
+				return UserCanAccessServicePortfolio(userId, (ServicePortfolio)(object)permission);
+			}
+
+			if (permission is ServiceCatalogMaintenance)
+			{
+				return UserCanMaintainServiceCatalog(userId, (ServiceCatalogMaintenance)(object)permission);
+			}
+
 			return false;
+		}
+
+		private bool UserCanMaintainServiceCatalog(int userId, ServiceCatalogMaintenance permission)
+		{
+			var userRoles = GetUserRoles(userId);
+			return userRoles.Any(role => role.ServiceCatalogMaintenanceAccess >= permission);
+		}
+
+		private bool UserCanAccessServicePortfolio(int userId, ServicePortfolio permission)
+		{
+			var userRoles = GetUserRoles(userId);
+			return userRoles.Any(role => role.ServicePortfolioAccess >= permission);
 		}
 
 		private bool UserCanAssignRoles(int userId, UserRoleAssignment permission)
@@ -102,7 +124,8 @@ namespace UserManager.Controllers
 		{
 			return typeof(T).IsEnum &&
 				   (en is ApproveServiceRequest || en is BusinessCatalog || en is RolePermissionAdustment || en is ServiceDetails
-					|| en is ServiceRequestSubmission || en is SupportCatalog || en is UserRoleAssignment);
+					|| en is ServiceRequestSubmission || en is SupportCatalog || en is UserRoleAssignment || en is ServicePortfolio
+					|| en is ServiceCatalogMaintenance);
 		}
 
 		private IEnumerable<IRoleDto> GetUserRoles(int userId)

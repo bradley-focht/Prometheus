@@ -111,6 +111,8 @@
     <Compile Include="Dto\TextInputDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Enums\ApprovalResult.cs" />
+    <Compile Include="Enums\Permissions\ServicePortfolio.cs" />
+    <Compile Include="Enums\Permissions\ServiceCatalogMaintenance.cs" />
     <Compile Include="Enums\ServiceRequestState.cs" />
     <Compile Include="Enums\UserInputType.cs" />
     <Compile Include="Enums\Entities\CatalogableTypes.cs" />
