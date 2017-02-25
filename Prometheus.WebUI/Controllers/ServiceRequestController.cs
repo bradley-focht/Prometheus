@@ -15,12 +15,12 @@ namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceRequestController : Controller
 	{
-		private IPortfolioService _ps;
+		private readonly IPortfolioService _ps;
 		private IServiceRequestOptionController _rs;
 
 		public ServiceRequestController()
 		{
-			//na atm
+			_ps = InterfaceFactory.CreatePortfolioService();
 		}
 
 		/// <summary>
@@ -31,9 +31,9 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Begin(int id)
 		{
 			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id } };   //start new SR
-			_ps = InterfaceFactory.CreatePortfolioService();
+			
 
-			model.Package = ServicePackageHelper.GetPackage(_ps, id);
+			model.Package = ServicePackageHelper.GetPackage(UserId, _ps, id);
 			model.CurrentIndex = -1;            /* index for info tab */
 			return View("ServiceRequest", model);
 		}
@@ -73,8 +73,6 @@ namespace Prometheus.WebUI.Controllers
 				RequestedForDate = form.RequestedDate
 			};
 
-			_ps = InterfaceFactory.CreatePortfolioService();
-
 			model.CurrentIndex = 0;
 			try
 			{
@@ -112,7 +110,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveFormSelection(ServiceRequestFormReturnModel form, int submit)
 		{
-			_ps = InterfaceFactory.CreatePortfolioService();
 			_rs = InterfaceFactory.CreateServiceRequestOptionController();
 			/* STEP ONE - Get the Service Package and SR */
 			ServiceRequestModel model = new ServiceRequestModel //used to hold all the data until redirecting
@@ -124,7 +121,7 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.ServiceRequest = _ps.GetServiceRequest(UserId, form.Id); //SR
-				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId); //Package
+				model.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId); //Package
 			}
 			catch (Exception exception)
 			{
@@ -154,8 +151,6 @@ namespace Prometheus.WebUI.Controllers
 				{									   
 					model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>();
 				}
-
-				
 
 				try
 				{
@@ -188,7 +183,27 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 			/* STEP FOUR - add/remove user input data */
-
+			IServiceRequestUserInputController userInputController = InterfaceFactory.CreateServiceRequestUserInputController();
+			if (form.UserInput != null)
+			{
+				List<ServiceRequestUserInputDto> userDataList = (from u in form.UserInput where u.Value != null
+																 select new ServiceRequestUserInputDto { Id = u.Id, Name = u.Name, UserInputType = u.Type,
+																	 ServiceRequestId = form.Id, Value = u.Value, InputId = u.InputId }).ToList();
+				foreach (var userData in userDataList)
+				{
+					try
+					{
+						userInputController.ModifyServiceRequestUserInput(UserId, userData, userData.Id > 0 ? EntityModification.Update : EntityModification.Create);
+						//removal?
+					}
+					catch (Exception exception)
+					{
+						TempData["MessageType"] = WebMessageType.Failure;
+						TempData["Message"] = $"Failed to save user input data, error: {exception.Message}";
+						return View("ServiceRequest", model);
+					}
+				}
+			}
 			/* STEP FIVE - navigation */
 			if (submit >= 9999)
 			{
@@ -219,14 +234,13 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Form(int id, int index, ServiceRequestMode mode = ServiceRequestMode.Selection)
 		{
-			_ps = InterfaceFactory.CreatePortfolioService();
 			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = index, ServiceRequestId = id, Mode = mode };
 
 			/* STEP ONE - get SR and get package */
 			try
 			{
 				model.ServiceRequest = _ps.GetServiceRequest(UserId, id);       //get db info
-				model.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequest.ServiceOptionId);
+				model.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
 			}
 			catch (Exception exception)
 			{
@@ -235,7 +249,6 @@ namespace Prometheus.WebUI.Controllers
 				return View("ServiceRequest", model);
 			}
 			/* STEP TWO - get any user inputs & associate with the option */
-			//TODO BRAD, IS THERE A REASON YOURE NOT USING THE DTO HERE?
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
 			if (index < 0)
 			{
@@ -252,10 +265,10 @@ namespace Prometheus.WebUI.Controllers
 						UserInputs = _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option })
 					});
 				}
+				
 			}
 
 			model.UserInputs = optionInputList;
-
 			return View("ServiceRequest", model);
 		}
 

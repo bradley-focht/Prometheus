@@ -31,13 +31,8 @@ namespace Prometheus.WebUI.Controllers
 		/// display the home/portal page
 		/// </summary>
 		/// <returns></returns>
-		public ActionResult Index(string filterBy, string filterArgs, int pageId = 0)
+		public ActionResult Index(int pageId = 0)
 		{
-			//TODO BRAD CAN YOU INCORPORATE THIS INTO THE USERID PROPERTY I ADDED? IDK IF YOU CAN
-			//int userId;     //user info
-			//try { userId = int.Parse(Session["Id"].ToString()); }                   //login is required
-			//catch (Exception) { return RedirectToAction("Index", "UserAccount"); }  //some login issue
-
 			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls { CurrentPage = pageId } };
 
 			_ps = InterfaceFactory.CreatePortfolioService();
@@ -58,7 +53,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						Id = item.Id,
 						State = item.State,
-						PackageName = ServicePackageHelper.GetPackage(_ps, item.ServiceOptionId).Name,
+						PackageName = ServicePackageHelper.GetPackage(UserId, _ps, item.ServiceOptionId).Name,
 						DateRequired = item.RequestedForDate,
 						DateSubmitted = item.SubmissionDate
 					});
@@ -66,6 +61,28 @@ namespace Prometheus.WebUI.Controllers
 			}
 			model.ServiceRequests = requests;
 			return View(model);
+		}
+
+		/// <summary>
+		/// Filter by state
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="pageId"></param>
+		/// <returns></returns>
+		public ActionResult FilterStatus(ServiceRequestState state, int pageId )
+		{
+			return View("Index");
+		}
+
+		public ActionResult FilterGroupStatus(ServiceRequestState state, int pageId)
+		{
+			return View("Index");
+		}
+
+
+		public ActionResult FilterGroupRequestor(int userId, int pageId)
+		{
+			return View("Index");
 		}
 
 		/// <summary>
@@ -118,7 +135,7 @@ namespace Prometheus.WebUI.Controllers
 			_ps = InterfaceFactory.CreatePortfolioService();
 			model.ServiceRequestModel = new ServiceRequestModel();
 			model.ServiceRequestModel.ServiceRequest = _ps.GetServiceRequest(UserId, id);
-			model.ServiceRequestModel.Package = ServicePackageHelper.GetPackage(_ps, model.ServiceRequestModel.ServiceOptionId);
+			model.ServiceRequestModel.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequestModel.ServiceOptionId);
 
 			List<DisplayListModel> displayList = new List<DisplayListModel>();
 
@@ -135,7 +152,6 @@ namespace Prometheus.WebUI.Controllers
 							listItem.Options.Add(new DisplayListModelItem { ServiceOption = option, ServiceRequestOption = serviceRequestOption });
 
 						}
-
 					}
 				}
 				displayList.Add(listItem);

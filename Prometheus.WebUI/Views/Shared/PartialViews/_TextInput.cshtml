@@ -2,10 +2,6 @@
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.TextInputDto>
 
-<input type="hidden" name="@(Model.ControlName)Name" value="@(StringHelper.RemoveSpaces(Model.Control.DisplayName))"/>
-<input type="hidden" name="@(Model.ControlName)Type" value="@(UserInputType.Text)"/>
-<input type="hidden" name="@(Model.ControlName)Id" value="@(Model.Id)"/>
-<input type="hidden" name="@(Model.ControlName)InputId" value="@(Model.Control.Id)" />
 @if (Model.Control.MultiLine)
 {
 	@Html.TextArea(Model.ControlName, null, new { @class = "ckeditor" })

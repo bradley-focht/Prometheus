@@ -47,11 +47,12 @@ namespace Prometheus.WebUI.Helpers
 			return package;
 		}
 
-		public static IServiceRequestPackageDto GetPackage(IPortfolioService portfolioService, int? serviceOptionId)
+		public static IServiceRequestPackageDto GetPackage(int userId, IPortfolioService portfolioService, int? serviceOptionId)	//overload
 		{
 			if (serviceOptionId.HasValue)               //invalid input
 			{
-				return GetPackage(portfolioService, serviceOptionId.Value);
+
+				return GetPackage(userId, portfolioService, serviceOptionId.Value);
 			}
 				throw new Exception("Cannot retrieve package, Invalid Service Option parameter");           //you have reached a dangerous place    
 		}

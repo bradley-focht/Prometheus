@@ -46,12 +46,27 @@
 									<div class="dd-cell-nostyle" style="width: 20%">
 										<div class="dd full-width">
 											<div class="dd-row">
-												<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
+												@if (option.PriceUpFront > 0)
+												{
+													<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
+												}
+												else { <div class="dd-cell-nostyle"></div> }
+											@if (option.PriceMonthly > 0)
+											{
 												<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Monthly</div>
+												}
+										   else { <div class="dd-cell-nostyle"></div> }
 											</div>
+
 											<div class="dd-row">
-												<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceUpFront}")</div>
-												<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceMonthly}")</div>
+												@if (option.PriceUpFront > 0)
+												{
+													<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceUpFront}")</div>
+												} else { <div class="dd-cell-nostyle"></div> }
+												@if (option.PriceMonthly > 0)
+												{
+													<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceMonthly}")</div>
+												} else { <div class="dd-cell-nostyle"></div> }
 											</div>
 										</div>
 									</div>

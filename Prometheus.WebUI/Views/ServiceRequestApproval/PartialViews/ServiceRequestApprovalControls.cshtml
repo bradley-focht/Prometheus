@@ -1,9 +1,18 @@
-﻿@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestApprovalControls
+﻿@using Common.Enums
+@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
+@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestApprovalControls
+	@{
+		int userId;
+		try { userId = int.Parse(Session["Id"].ToString()); }
+		catch(Exception) {  return; }
+
+	}
 <div class="panel panel-default">
 <div class="flex-col" style="padding: 10px;">
     <div class="flex-row">
-        <div class="dropdown">
-            <button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Filter and Sort</button>
+        <div class="dropdown make-space-right">
+            <button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Requests</button>
 
             <ul class="dropdown-menu">
                 <li>@Html.ActionLink("All", "Index", null, new { @class = "dropdown-item" })</li>
@@ -12,30 +21,48 @@
                 <li class="dropdown-submenu">
                     <a tabindex="-1" href="#">Status</a>
 
-                    <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("Pending", "Index")</li>
-                    </ul>
-                </li>
-
-                <li class="dropdown-submenu">
-                    <a tabindex="-1" href="#">Requestor</a>
-
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Pending", "Index")</li>
-                    </ul>
-                </li>
-                <li class="divider"></li>
-                <li class="dropdown-submenu">
-                    <a tabindex="-1" href="#">Sort By</a>
-
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Pending", "Index")</li>
-                    </ul>
+	                <ul class="dropdown-menu">
+						@foreach (var state in Enum.GetValues(typeof(ServiceRequestState)))
+						{
+							<li>@Html.ActionLink(state.ToString(), "Index")</li>
+						}
+	                </ul>
                 </li>
             </ul>
         </div>
 
-        <div class="btn-group make-space-left">
+		@if (UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests))
+		{
+			<div class="dropdown">
+				<button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ministry Requests</button>
+
+				<ul class="dropdown-menu">
+					<li>@Html.ActionLink("All", "Index", null, new {@class = "dropdown-item"})</li>
+					<li class="divider"></li>
+					<li class="dropdown-submenu">
+						<a tabindex="-1" href="#">Status</a>
+
+						<ul class="dropdown-menu">
+							@foreach (var state in Enum.GetValues(typeof(ServiceRequestState)))
+							{
+								<li>@Html.ActionLink(state.ToString(), "Index")</li>
+							}
+						</ul>
+					</li>
+					<li class="dropdown-submenu">
+						<a tabindex="-1" href="#">Requestor</a>
+
+						<ul class="dropdown-menu">
+							<li>@Html.ActionLink("Pending", "Index")</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		}
+
+
+
+	    <div class="btn-group make-space-left">
             @if (Model.TotalPages > 1)
             {
                 for (int i = 0; i < Model.TotalPages; i++)
@@ -54,3 +81,4 @@
     </div>
 </div>
 </div>
+

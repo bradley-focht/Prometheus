@@ -337,7 +337,9 @@
     <Compile Include="Controllers\UserAccountController.cs" />
     <Compile Include="Helpers\AbbreviatedEntityUpdate.cs" />
     <Compile Include="Helpers\ConfigHelper.cs" />
+    <Compile Include="Helpers\Enums\DataAction.cs" />
     <Compile Include="Helpers\Enums\ServiceCatalog.cs" />
+    <Compile Include="Helpers\Enums\ServiceRequestDataArg.cs" />
     <Compile Include="Helpers\Enums\ServiceRequestMode.cs" />
     <Compile Include="Helpers\ServicePackageHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
@@ -538,6 +540,7 @@
     <Content Include="Views\Shared\PartialViews\_ServiceRequestSummary.cshtml" />
     <Content Include="Views\ServiceRequestApproval\ConfirmServiceRequestStateChange.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetOptionUserInputsText.cshtml" />
+    <Content Include="Views\Script\Index.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -551,7 +554,6 @@
     <Folder Include="PoshScripts\" />
     <Folder Include="ServiceDocs\" />
     <Folder Include="ServiceOptionPics\" />
-    <Folder Include="Views\Script\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">

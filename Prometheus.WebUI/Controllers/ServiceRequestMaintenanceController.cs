@@ -65,12 +65,12 @@ namespace Prometheus.WebUI.Controllers
 		{
 			_ps = InterfaceFactory.CreatePortfolioService();
 
-			IServiceRequestPackageDto srp = null;        //determine if one is selected or not
+			IServiceRequestPackageDto model = null;        //determine if one is selected or not
 			if (id > 0)
 			{
 				try
 				{
-					srp = _ps.GetServiceRequestPackage(UserId, id);
+					model = _ps.GetServiceRequestPackage(UserId, id);
 				}
 				catch (Exception exception)
 				{
@@ -79,11 +79,11 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 
-			if (srp == null)                       //send an empty object if nothing selected, razor will handle
+			if (model == null)                       //send an empty object if nothing selected, razor will handle
 			{
-				srp = new ServiceRequestPackageDto();
+				model = new ServiceRequestPackageDto();
 			}
-			return View(srp);
+			return View(model);
 		}
 
 		/// <summary>

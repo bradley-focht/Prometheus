@@ -8,6 +8,15 @@ namespace Prometheus.WebUI.Controllers
 {
     public class ScriptController : Controller
     {
+		/// <summary>
+		/// Default page of Scripting
+		/// </summary>
+		/// <returns></returns>
+	    public ActionResult Index()
+	    {
+		    return View();
+	    }
+
         // GET: Script
         public JsonResult People()
         {

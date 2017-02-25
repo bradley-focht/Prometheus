@@ -79,7 +79,7 @@ namespace UserManager.Controllers
 				{
 					using (var context = new PrometheusContext())
 					{
-						var administrator = context.Users.FirstOrDefault(x => x.Name == "Guest");
+						var administrator = context.Users.FirstOrDefault(x => x.Name == "Administrator");
 						if (administrator != null)
 							_administratorId = administrator.Id;
 					}

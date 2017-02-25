@@ -17,7 +17,6 @@ namespace DataService.Models
 
 			//TODO: after Approval, wipe this field  (it is only used to create the SRS forms UI)
 		public int? ServiceOptionId { get; set; }
-
 		public int RequestedByUserId { get; set; }
 		public string Comments { get; set; }   
 		public string Officeuse { get; set; }

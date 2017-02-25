@@ -23,7 +23,7 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 				searchresults.AddRange(from s in services where searchString != null && s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
 				foreach (var service in services)
 				{
-					searchresults.AddRange(from o in service.ServiceOptions where searchString != null && o.Name.ToLower().Contains(searchString) select (ICatalogPublishable)o);
+					//searchresults.AddRange(from o in service.ServiceOptions where searchString != null && o.Name.ToLower().Contains(searchString) select (ICatalogPublishable)o);
 					searchresults.AddRange(from c in service.ServiceOptionCategories where searchString != null && c.Name.ToLower().Contains(searchString) select (ICatalogPublishable)c);
 				}
 			}
@@ -34,7 +34,7 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 				searchresults.AddRange(from s in services where searchString != null && s.Name.ToLower().Contains(searchString) select (ICatalogPublishable)s);
 				foreach (var service in services)
 				{
-					searchresults.AddRange(from o in service.ServiceOptions where searchString != null && o.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)o);
+					//searchresults.AddRange(from o in service.ServiceOptions where searchString != null && o.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)o);
 					searchresults.AddRange(from c in service.ServiceOptionCategories where searchString != null && c.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)c);
 				}
 			}

@@ -11,6 +11,7 @@ using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
+	[Authorize]
 	public class ServiceCatalogController : Controller
 	{
 		private readonly int _pageSize;
@@ -115,7 +116,7 @@ namespace Prometheus.WebUI.Controllers
 					}
 					if (service.ServiceOptions != null)
 					{
-						i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList());
+						//i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable) o).ToList()); removed upon request
 					}
 					int take;
 					try

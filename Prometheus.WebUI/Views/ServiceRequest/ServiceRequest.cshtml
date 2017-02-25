@@ -90,28 +90,28 @@
 
 
 <script language="javascript" type="text/javascript">
-function UpdateOptions() {
-	var inputs = [];
-	@foreach (var input in Model.GetUserInputList())
+	function UpdateOptions() {
+		var inputs = [];
+		@foreach (var input in Model.GetUserInputList())
 	{
 		<text>inputs[inputs.length] = { name: '@(StringHelper.RemoveSpaces(input.DisplayName))', used: false };</text>
 	}
 
-	@foreach (var option in Model.GetOptions())
+		@foreach (var option in Model.GetOptions())
 	{
 		<text>
-	var q;
-	if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true) {
-		if(document.getElementById("quantity_up_" + @(option.ServiceOption.Id)))
-			document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = false;
-		if(document.getElementById("quantity_down_" + @(option.ServiceOption.Id)))
-			document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = false;
-		q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
-		q.disabled = false;
-		if (q.value == 0) {
-			 q.value = 1;
-		}
-		q.min = 1;
+		var q;
+		if (document.getElementById("option_@(option.ServiceOption.Id)").checked === true) {
+			if(document.getElementById("quantity_up_" + @(option.ServiceOption.Id)))
+				document.getElementById("quantity_up_" + @(option.ServiceOption.Id)).disabled = false;
+			if(document.getElementById("quantity_down_" + @(option.ServiceOption.Id)))
+				document.getElementById("quantity_down_" + @(option.ServiceOption.Id)).disabled = false;
+			q = document.getElementById("quantity_" + @(option.ServiceOption.Id));
+			q.disabled = false;
+			if (q.value == 0) {
+				q.value = 1;
+			}
+			q.min = 1;
 
 			var j;
 			for (j = 0; j < inputs.length; j++) {
@@ -124,7 +124,7 @@ function UpdateOptions() {
 				}
 				</text>
 			}
-		}
+			}
 
 		} else if (document.getElementById("option_@(option.ServiceOption.Id)").checked === false) {
 			if (document.getElementById("quantity_up_" + @(option.ServiceOption.Id)))
@@ -135,42 +135,51 @@ function UpdateOptions() {
 			q.disabled = true;
 			q.value = 0;
 
-	}
+		}
 		</text>
 	}
 
-	var i;
-	for (i = 0; i < inputs.length; i++) {
-		if (inputs[i].used === true) {
-			document.getElementById("div_" + inputs[i].name).style.display = '';
-			document.getElementById(inputs[i].name).value = '';
-		} else {
-			document.getElementById("div_" + inputs[i].name).style.display = 'none';
+		var i;
+		for (i = 0; i < inputs.length; i++) {
+			if (inputs[i].used === true) {
+				document.getElementById("div_" + inputs[i].name).style.display = '';
+				document.getElementById(inputs[i].name).value = '';
+			} else {
+				document.getElementById("div_" + inputs[i].name).style.display = 'none';
 
+			}
 		}
-	}
-};
+	};
 
 	$(document).ready(function() {
 		@if (Model.ServiceRequest.ServiceRequestOptions != null)
 		{
 			foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
 			{
-				<text>
+		<text>
 		if (document.getElementById("option_@(option.ServiceOptionId)"))
 			document.getElementById("option_@(option.ServiceOptionId)").checked = true;
 		</text>
 			}
 			if (Model.ServiceRequest.ServiceRequestOptions == null || !Model.ServiceRequest.ServiceRequestOptions.Any()) // relying on short-circuit here
 			 {
-				 <text>
+			<text>
 		if (document.getElementById("option_@(Model.ServiceRequest.ServiceOptionId)"))
 			document.getElementById("option_@(Model.ServiceRequest.ServiceOptionId)").checked = true;
 		</text>
 			 }
 		}
-
 		UpdateOptions();
-});
+
+		@foreach (var userData in Model.ServiceRequest.ServiceRequestUserInputs)
+		{
+			<text>
+		if (document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))"))
+			document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Value';
+			</text>
+		}
+
+
+	});
 </script>
 }

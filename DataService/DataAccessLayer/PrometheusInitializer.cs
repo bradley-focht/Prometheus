@@ -14,6 +14,7 @@ namespace DataService.DataAccessLayer
 			SeedDefaultPermissions(context);
 			AddGuestUser(context);
 			AddAdministrator(context);
+			AddItilLifecycleStatus(context);
 
 			//Populate Users
 			var users = new List<User>
@@ -35,33 +36,33 @@ namespace DataService.DataAccessLayer
 					new Service
 					{
 						Name = "First Service",
-						LifecycleStatus = new LifecycleStatus()
-						{
-							CatalogVisible = true,
-							Name = "Operational"
-						}/*, TODO: Sean - sorry but the null references these create are a bit of an issue
-						ServiceRequestOptions = new List<ServiceOption>
-						{
-							new ServiceOption(),
-							new ServiceOption()
-						} */
+						LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
 					},
 					new Service
 					{
-						Name = "Second Service",LifecycleStatus = new LifecycleStatus()
-						{
-							Name = "Chartered"
-						}/*,
-						ServiceRequestOptions = new List<ServiceOption>
-						{
-							new ServiceOption(),
-							new ServiceOption()
-						} */
+						Name = "Second Service",LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
 					}
 				}
 			});
 			context.SaveChanges();
 
+		}
+
+		private void AddItilLifecycleStatus(PrometheusContext context)
+		{
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Requirements", CatalogVisible = false, Position = 1});
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Defined", CatalogVisible = false, Position = 2 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Analyzed", CatalogVisible = false, Position = 3 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Approved", CatalogVisible = false, Position = 4 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Chartered", CatalogVisible = false, Position = 5 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Designed", CatalogVisible = false, Position = 6 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Developed", CatalogVisible = false, Position = 7 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Built", CatalogVisible = false, Position = 8 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Released", CatalogVisible = false, Position = 9 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Operational", CatalogVisible = true, Position = 10 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Test", CatalogVisible = true, Position = 11 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Retired", CatalogVisible = false, Position = 9 });
+			context.SaveChanges();
 		}
 
 		private void AddAdministrator(PrometheusContext context)
@@ -71,8 +72,11 @@ namespace DataService.DataAccessLayer
 				Name = "Administrator"
 			};
 
+			admin.Roles = new List<Role>();
 			admin.Roles.Add(context.Roles.First(x => x.Name == "Administrator"));
+			
 			context.Users.Add(admin);
+			context.SaveChanges();
 		}
 
 		private void AddGuestUser(PrometheusContext context)
@@ -81,9 +85,10 @@ namespace DataService.DataAccessLayer
 			{
 				Name = "Guest"
 			};
-
-			guest.Roles.Add(context.Roles.First(x => x.Name == "Guest"));
+			guest.Roles = new List<Role>();
+			guest.Roles.Add(context.Roles.First(x=>x.Name == "Guest"));
 			context.Users.Add(guest);
+			context.SaveChanges();
 		}
 
 		public void SeedDefaultPermissions(PrometheusContext context)

@@ -1,6 +1,13 @@
 ﻿@using Common.Dto
+@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Models.ServiceCatalog
 @model PublishableCatalogItemModel
+@{
+	int userId;
+	try { userId = int.Parse(Session["Id"].ToString()); }
+	catch (Exception) { return; }
+}
 <div class="dd full-width">
 	<div class="dd-row">
 		<div class="dd-cell-nostyle">
@@ -11,7 +18,10 @@
 					@if (Model.Item is IRequestableDto)
 					{
 						<div class="dd-cell-nostyle" style="vertical-align: top; text-align: right; width: 5%;">
-							<a href="@Url.Action("Begin", "ServiceRequest", new {id = Model.Item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+							@if (UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+							{
+								<a href="@Url.Action("Begin", "ServiceRequest", new {id = Model.Item.Id})" , class="btn btn-primary">Request <i class="fa fa-chevron-right" aria-hidden="true"></i></a>
+							}
 						</div>
 					}
 				</div>
@@ -22,21 +32,33 @@
 							@Html.Raw(Model.Item.BusinessValue)
 						</div>
 					</div>
-}
-                else if (Model.Item is IServiceOptionDto)
-                {
-                    var option = (IServiceOptionDto)Model.Item;
+				}
+				else if (Model.Item is IServiceOptionDto)
+				{
+					var option = (IServiceOptionDto)Model.Item;
 					<div class="dd-row">
 						<div class="dd-cell-base" style="width:75%">@Html.Raw(option.BusinessValue)</div>
 						<div class="dd-cell-nostyle" style="width:20%">
 							<div class="dd full-width">
 								<div class="dd-row">
-									<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
-									<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Monthly</div>
+									@if (option.PriceUpFront > 0)
+									{
+										<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
+									}
+									@if (option.PriceMonthly > 0)
+									{
+										<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Monthly</div>
+									}
 								</div>
 								<div class="dd-row">
-									<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceUpFront}")</div>
-									<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceMonthly}")</div>
+									@if (option.PriceUpFront > 0)
+									{
+										<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceUpFront}")</div>
+									}
+									@if (option.PriceMonthly > 0)
+									{
+										<div class="dd-cell note" style="padding: 5px;">@($"${option.PriceMonthly}")</div>
+									}
 								</div>
 							</div>
 						</div>
@@ -54,17 +76,17 @@
 					</div>
 
 				}
-				</div>
 			</div>
 		</div>
 	</div>
+</div>
 
 @if (Model.Item is IServiceOptionCategoryDto)
 {
-    IServiceOptionCategoryDto category = (IServiceOptionCategoryDto)Model.Item;
+	IServiceOptionCategoryDto category = (IServiceOptionCategoryDto)Model.Item;
 
-    foreach (var option in category.ServiceOptions)
-    {
-		@Html.Partial("PartialViews/OptionView", new PublishableCatalogItemModel {Item = (ICatalogPublishable)option, Catalog = Model.Catalog})
+	foreach (var option in category.ServiceOptions)
+	{
+		@Html.Partial("PartialViews/OptionView", new PublishableCatalogItemModel { Item = (ICatalogPublishable)option, Catalog = Model.Catalog })
 	}
 }

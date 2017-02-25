@@ -1,4 +1,5 @@
 ﻿@using Common.Dto
+@using Common.Enums
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Models.Shared
 @model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestModel
@@ -12,13 +13,17 @@
 		<div class="dd-row" id="div_@StringHelper.RemoveSpaces(input.DisplayName)" style="display: none;">
 			<div class="dt-cell">@input.DisplayName</div>
 			<div class="dd-cell">
+				<input type="hidden" name="@($"form.UserInput[{index}].Id")" value="@(input.Id)" />
+				<input type="hidden" name="@($"form.UserInput[{index}].InputId")" value="@(input.Id)"/>
+				<input type="hidden" name="@($"form.UserInput[{index}].Name")" value="@(StringHelper.RemoveSpaces(input.DisplayName))" />
 				@if (input is ITextInputDto)
 				{
+					<input type="hidden" name="@($"form.UserInput[{index}].Type")" value="@(UserInputType.Text)"/>
 					@Html.Partial("PartialViews/_TextInput", new InputModel<TextInputDto> {Control = (TextInputDto) input, ControlName = $"form.UserInput[{index}]."})
-			   }
+				}
 				else if (input is ISelectionInputDto)
-					{
-					@Html.Partial("PartialViews/_SelectionInput", new InputModel<SelectionInputDto> {Control = (SelectionInputDto) input, ControlName = $"form.UserInput[{index}]." })
+				{
+					@Html.Partial("PartialViews/_SelectionInput", new InputModel<SelectionInputDto> {Control = (SelectionInputDto) input, ControlName = $"form.UserInput[{index}]."})
 				}
 				else if (input is IScriptedSelectionInputDto)
 				{

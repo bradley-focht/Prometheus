@@ -58,7 +58,7 @@ namespace Prometheus.WebUI.Controllers
 	        if (user != null && user.Id > 0)
             {
                 FormsAuthentication.SetAuthCookie(user.Name, true);                             //enter data in session cookie
-               
+				
                 Session["DisplayName"] = user.Name;
                 Session["Guid"] = user.AdGuid;
                 Session["Id"] = user.Id;
@@ -75,21 +75,30 @@ namespace Prometheus.WebUI.Controllers
         /// Login as Guest
         /// </summary>
         /// <returns></returns>
-        [ValidateAntiForgeryToken]
         [HttpPost]
         public ActionResult LoginGuest()
-        {
+        {		
             FormsAuthentication.SetAuthCookie("Guest", true);
             Session["DisplayName"] = "Guest";
-            Session["Id"] = 1;
+	        Session["Id"] = _userManager.GuestId;
             return RedirectToAction("Index", "Home");
         }
 
-        /// <summary>
-        /// Destroys the session
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Logout()
+		[HttpPost]
+		public ActionResult LoginAdmin()
+		{
+			FormsAuthentication.SetAuthCookie("Admin", true);
+			Session["DisplayName"] = "Administrator";
+			Session["Id"] = _userManager.AdministratorId;
+			return RedirectToAction("Index", "Home");
+		}
+
+
+		/// <summary>
+		/// Destroys the session
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Logout()
         {
             FormsAuthentication.SignOut();
             

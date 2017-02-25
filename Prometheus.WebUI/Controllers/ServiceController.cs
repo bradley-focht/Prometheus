@@ -119,17 +119,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Show(string section, int id=0, int pageId = 0)
 		{
-			//TODO I HAVE NO IDEA WHAT YOUR COMMENT MEANS BUT CAN YOU MAKE THIS AREA MESH WITH NEW STYLE FOR USERID?
-			int userId;
-			try{ userId = int.Parse(Session["Id"].ToString()); }            //this page is an entry point, possible userId may not exist
-			catch { return View();}
-
 			ServiceModel sm = new ServiceModel { CurrentPage = pageId };
-
 			var ps = InterfaceFactory.CreatePortfolioService();
 			sm.Service = ps.GetService(id);
 			sm.SelectedSection = section;
-
 			return View(sm);
 		}
 
@@ -233,7 +226,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="workUnit"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveWorkUnitsItem(IServiceWorkUnitDto workUnit)
+		public ActionResult SaveWorkUnitsItem(ServiceWorkUnitDto workUnit)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -260,7 +253,7 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult SaveServiceGoalItem(IServiceGoalDto goal)
+		public ActionResult SaveServiceGoalItem(ServiceGoalDto goal)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -279,7 +272,7 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public ActionResult SaveMeasuresItem(IServiceMeasureDto measure)
+		public ActionResult SaveMeasuresItem(ServiceMeasureDto measure)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -303,7 +296,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="activity"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveSwotActivityItem(ISwotActivityDto activity)
+		public ActionResult SaveSwotActivityItem(SwotActivityDto activity)
 		{
 			if (!ModelState.IsValid)    //server side validation
 			{
@@ -545,6 +538,11 @@ namespace Prometheus.WebUI.Controllers
 			return View("PartialViews/_TableViewer", model);
 		}
 
+		/// <summary>
+		/// confirm deletion of a swot activity
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult ConfirmDeleteSwotActivityItem(int id)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService();
@@ -564,7 +562,11 @@ namespace Prometheus.WebUI.Controllers
 
 			return View("ConfirmDeleteSwotActivityItem", model);
 		}
-
+		/// <summary>
+		/// complete deltion of a swot activity
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult DeleteSwotActivity(DeleteSectionItemModel model)
 		{
@@ -664,7 +666,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="serviceId">service Id</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveOptionsItem(IServiceOptionDto option, int serviceId)
+		public ActionResult SaveOptionsItem(ServiceOptionDto option, int serviceId)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService();
 			if (!ModelState.IsValid) /* Server side validation */
@@ -678,7 +680,7 @@ namespace Prometheus.WebUI.Controllers
 			if (option.Id > 0)      //existing record, need to not save over service catalog info
 			{
 				var existing = ps.GetServiceOption(UserId, option.Id);
-				option = AbbreviatedEntityUpdate.UpdateServiceOption(existing, option);
+				option = (ServiceOptionDto) AbbreviatedEntityUpdate.UpdateServiceOption(existing, option);
 			}
 			ps.ModifyServiceOption(UserId, option, option.Id < 1 ? EntityModification.Create : EntityModification.Update);
 			TempData["MessageType"] = WebMessageType.Success;
@@ -693,7 +695,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="process"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveProcessesItem(IServiceProcessDto process)
+		public ActionResult SaveProcessesItem(ServiceProcessDto process)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -718,7 +720,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="options">Ids of options</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveOptionCategory(IServiceOptionCategoryDto category, ICollection<int> options)
+		public ActionResult SaveOptionCategory(ServiceOptionCategoryDto category, ICollection<int> options)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -732,7 +734,7 @@ namespace Prometheus.WebUI.Controllers
 				var ps = InterfaceFactory.CreatePortfolioService();
 				if (category.Id > 0) //need to preserve catalog data on the entity
 				{
-					category = AbbreviatedEntityUpdate.UpdateServiceCategory(ps.GetServiceOptionCategory(UserId, category.Id), category);
+					category = (ServiceOptionCategoryDto) AbbreviatedEntityUpdate.UpdateServiceCategory(ps.GetServiceOptionCategory(UserId, category.Id), category);
 				}
 				category.Id = ps.ModifyServiceOptionCategory(UserId, category, category.Id < 1 ? EntityModification.Create : EntityModification.Update).Id;    //make sure it has the new id if is new
 			}
@@ -787,7 +789,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="service"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveGeneralItem(IServiceDto service)
+		public ActionResult SaveGeneralItem(ServiceDto service)
 		{
 			if (ModelState.IsValid)
 			{
@@ -799,7 +801,7 @@ namespace Prometheus.WebUI.Controllers
 
 			//perform the save
 			var ps = InterfaceFactory.CreatePortfolioService();
-			service = AbbreviatedEntityUpdate.UpdateService(ps.GetService(service.Id), service);         //preserve data updated from ICatalogPublishable interface
+			service = (ServiceDto) AbbreviatedEntityUpdate.UpdateService(ps.GetService(service.Id), service);         //preserve data updated from ICatalogPublishable interface
 
 			ps.ModifyService(service, EntityModification.Update);   //perform the update
 
