@@ -109,5 +109,38 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 			
 			return UserInputs;
 		}
+	
+		/// <summary>
+		/// calculate the up front price
+		/// </summary>
+		public double PriceUpFront
+		{
+			get
+			{
+				if (ServiceRequest.ServiceRequestOptions == null)
+					return 0d;
+				double price = 0;
+				foreach (var option in ServiceRequest.ServiceRequestOptions)
+				{
+					price += option.Quantity*option.ServiceOption.PriceUpFront;
+				}
+					return price;
+			}
+		}
+
+		public double PriceMonthly
+		{
+			get
+			{
+				if (ServiceRequest.ServiceRequestOptions == null)
+					return 0d;
+				double price = 0;
+				foreach (var option in ServiceRequest.ServiceRequestOptions)
+				{
+					price += option.Quantity * option.ServiceOption.PriceMonthly;
+				}
+				return price;
+			}
+		}
 	}
 }

@@ -67,8 +67,8 @@
                 </div>
 
                 <div class="flex-container-row">
-                    @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
-                    {
+                    @if (UiPermissionHelper.HasPermission(userId, ServiceCatalogMaintenance.CanEdit))
+					{
                         <div class="flex-col content-cell">
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "ServiceRequestMaintenance")"><img src="~/Content/Images/pad.png" alt="Service " style="height: 90px; width: 74px;"></a>
@@ -85,7 +85,7 @@
                             <div>@Html.ActionLink("System Access", "Index", "SystemAccess", null, new {@class = "font-home-link"})</div>
                         </div>
                     }
-                    @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanViewServiceDetails))
+                    @if (UiPermissionHelper.HasPermission(userId, ServiceCatalogMaintenance.CanEdit))
                     {
 	                    <div class="flex-col content-cell">
 		                    <div style="height: 80px;">

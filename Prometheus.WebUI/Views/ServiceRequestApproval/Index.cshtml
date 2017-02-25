@@ -1,4 +1,5 @@
-﻿@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestApprovalModel
+﻿@using Common.Enums
+@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestApprovalModel
 @{
 	ViewBag.Title = "Service Requests";
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,42 +11,51 @@
 	};
 }
 @Html.Partial("PartialViews/ServiceRequestApprovalControls", Model.Controls)
+@if (Model.ServiceRequests != null && Model.ServiceRequests.Any())
+{
+	<table class="table table-hover">
+		<thead>
+		<tr>
+			<th>Id</th>
+			<th>Request</th>
+			<th>Status</th>
+			<th>Date Submitted</th>
+			<th>Date Required</th>
+			<th>Name</th>
+			<th></th>
+		</tr>
+		</thead>
+		@* Build SR Table *@
 
-<table class="table table-hover">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Request</th>
-        <th>Status</th>
-        <th>Date Submitted</th>
-        <th>Date Required</th>
-        <th>Name</th>
-        <th></th>
-    </tr>
-    </thead>
-    @* Build SR Table *@
-    @foreach (var item in Model.ServiceRequests)
-    {
-        <tr>
-            <td>@item.Id</td>
-            <td>@Html.ActionLink(@item.PackageName, "Form", "ServiceRequest", new {id = item.Id, index = -1}, null )</td>
-            <td>@item.State</td>
-            <td>@item.DateSubmitted</td>
-            <td>@item.DateRequired.ToString("d")</td>
-            <td></td>
+		@foreach (var item in Model.ServiceRequests)
+		{
+			<tr>
+				<td>@item.Id</td>
+				<td>@Html.ActionLink(@item.PackageName, "Form", "ServiceRequest", new {id = item.Id, index = -1}, null)</td>
+				<td>@item.State</td>
+				<td>@item.DateSubmitted</td>
+				<td>@item.DateRequired.ToString("d")</td>
+				<td></td>
 
-            <td>
-                <div class="btn-group">
-                    <div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-                        <span aria-hidden="true">&#x25BC;</span>
-                    </div>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("Approve", "Approve")</li>
-                        <li>@Html.ActionLink("Cancel", "AddServiceSectionItem") </li>
-                        <li>@Html.ActionLink("Reject", "ConfirmDeleteServiceSwotItem")</li>
-                    </ul>
-                </div>
-            </td>
-        </tr>
-    }
-</table>
+				<td>
+					<div class="btn-group">
+						<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+							<span aria-hidden="true">&#x25BC;</span>
+						</div>
+						<ul class="dropdown-menu">
+							<li>@Html.ActionLink("Cancel", "AddServiceSectionItem") </li>
+
+							<li>@Html.ActionLink("Approve", "ChangeState", new {nextState = ServiceRequestState.Approved})</li>
+
+							<li>@Html.ActionLink("Reject", "ConfirmDeleteServiceSwotItem")</li>
+						</ul>
+					</div>
+				</td>
+			</tr>
+		}
+	</table>
+}
+else
+{
+	
+}

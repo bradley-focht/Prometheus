@@ -205,14 +205,9 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 			/* STEP FIVE - navigation */
-			if (submit >= 9999)
-			{
-				//TODO: Change state after saving
-				return RedirectToAction("Index", "ServiceRequestApproval");
-			}
-			model.CurrentIndex = submit;
 
-						if (submit >= 99999)
+			model.CurrentIndex = submit;
+			if (submit >= 99999)
 			{
 				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
 			}
@@ -236,7 +231,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = index, ServiceRequestId = id, Mode = mode };
 
-			/* STEP ONE - get SR and get package */
+			/* STEP ONE - get SR, get package, and enough  */
 			try
 			{
 				model.ServiceRequest = _ps.GetServiceRequest(UserId, id);       //get db info
@@ -266,6 +261,15 @@ namespace Prometheus.WebUI.Controllers
 					});
 				}
 				
+			}
+
+			//for each SR option in the SR get the option {monthly price, up front price }
+			if (model.ServiceRequest?.ServiceRequestOptions != null)
+			{
+				foreach (var option in model.ServiceRequest.ServiceRequestOptions)
+				{
+					option.ServiceOption = _ps.GetServiceOption(UserId, option.ServiceOptionId);
+				}
 			}
 
 			model.UserInputs = optionInputList;
