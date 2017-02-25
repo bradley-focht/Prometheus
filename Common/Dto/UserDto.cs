@@ -18,7 +18,7 @@ namespace Common.Dto
         #endregion
 
         #region Navigation properties
-        public ICollection<RoleDto> Roles { get; set; }
+        public ICollection<IRoleDto> Roles { get; set; }
         #endregion
     }
 }

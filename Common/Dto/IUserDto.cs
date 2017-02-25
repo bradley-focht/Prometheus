@@ -8,6 +8,6 @@ namespace Common.Dto
 		int Id { get; set; }
 		string Name { get; set; }
 		Guid AdGuid { get; set; }
-        ICollection<RoleDto> Roles { get; set; }
-    }
+		ICollection<IRoleDto> Roles { get; set; }
+	}
 }

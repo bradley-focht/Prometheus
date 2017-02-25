@@ -99,7 +99,9 @@ namespace DataService.DataAccessLayer
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.CanAdustRolePermissions,
 					ServiceDetailsAccess = ServiceDetails.CanEditServiceDetails,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanAssignRoles
+					UserRoleAssignmentAccess = UserRoleAssignment.CanAssignRoles,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.CanEdit,
+					ServicePortfolioAccess = ServicePortfolio.CanEdit
 				},
 				new Role()
 				{
@@ -110,7 +112,9 @@ namespace DataService.DataAccessLayer
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					UserRoleAssignmentAccess = UserRoleAssignment.CanAssignRoles,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
-					ServiceDetailsAccess = ServiceDetails.CanEditServiceDetails
+					ServiceDetailsAccess = ServiceDetails.CanEditServiceDetails,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.CanEdit,
+					ServicePortfolioAccess = ServicePortfolio.CanEdit
 				},
 				new Role()
 				{
@@ -121,7 +125,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.NoAccess,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.CanView
 				},
 				new Role()
 				{
@@ -132,7 +138,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.CanViewServiceDetails,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.CanView
 				},new Role()
 				{
 					Name = "External Executive",
@@ -142,7 +150,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.NoAccess,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.CanView
 				},new Role()
 				{
 					Name = "Internal Executive",
@@ -152,7 +162,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.CanViewServiceDetails,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.NoAccess,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.CanView
 				},new Role()
 				{
 					Name = "Support Staff",
@@ -162,7 +174,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.NoAccess
 				},new Role()
 				{
 					Name = "Approver",
@@ -172,7 +186,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.NoAccess,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.NoAccess
 				},new Role()
 				{
 					Name = "Authorized User",
@@ -182,7 +198,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.NoAccess,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.NoAccess
 				},new Role()
 				{
 					Name = "Guest",
@@ -192,7 +210,9 @@ namespace DataService.DataAccessLayer
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
 					SupportCatalogAccess = SupportCatalog.NoAccess,
-					ServiceRequestSubmissionAccess = ServiceRequestSubmission.NoAccess
+					ServiceRequestSubmissionAccess = ServiceRequestSubmission.NoAccess,
+					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
+					ServicePortfolioAccess = ServicePortfolio.NoAccess
 				},
 			});
 			context.SaveChanges();

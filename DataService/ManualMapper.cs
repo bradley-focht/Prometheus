@@ -618,7 +618,7 @@ namespace DataService
 			return category;
 		}
 
-		public static RoleDto MapRoleToDto(IRole src)
+		public static IRoleDto MapRoleToDto(IRole src)
 		{
 			if (src == null) { return null; }
 
@@ -632,7 +632,9 @@ namespace DataService
 				ServiceDetailsAccess = src.ServiceDetailsAccess,
 				ServiceRequestSubmissionAccess = src.ServiceRequestSubmissionAccess,
 				SupportCatalogAccess = src.SupportCatalogAccess,
-				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess
+				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess,
+				ServiceCatalogMaintenanceAccess = src.ServiceCatalogMaintenanceAccess,
+				ServicePortfolioAccess = src.ServicePortfolioAccess
 
 			};
 		}
@@ -651,7 +653,9 @@ namespace DataService
 				ServiceDetailsAccess = src.ServiceDetailsAccess,
 				ServiceRequestSubmissionAccess = src.ServiceRequestSubmissionAccess,
 				SupportCatalogAccess = src.SupportCatalogAccess,
-				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess
+				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess,
+				ServiceCatalogMaintenanceAccess = src.ServiceCatalogMaintenanceAccess,
+				ServicePortfolioAccess = src.ServicePortfolioAccess
 			};
 		}
 
@@ -779,7 +783,7 @@ namespace DataService
 		{
 			if (src == null) return null;
 
-			List<RoleDto> roles = new List<RoleDto>();
+			List<IRoleDto> roles = new List<IRoleDto>();
 			if (src.Roles != null)
 			{
 				foreach (var role in src.Roles)
@@ -969,14 +973,14 @@ namespace DataService
 			return new Script
 			{
 				Id = src.Id,
-                Name = src.Name,
-                Description = src.Description,
-                Version = src.Version,
-                Filename = src.Filename,
-                ScriptFile = src.ScriptFile,
-                MimeType = src.MimeType,
-                UploadDate = src.UploadDate
-            };
+				Name = src.Name,
+				Description = src.Description,
+				Version = src.Version,
+				Filename = src.Filename,
+				ScriptFile = src.ScriptFile,
+				MimeType = src.MimeType,
+				UploadDate = src.UploadDate
+			};
 		}
 
 		public static ScriptDto MapScriptToDto(IScript src)
@@ -987,13 +991,13 @@ namespace DataService
 			return new ScriptDto
 			{
 				Id = src.Id,
-                Name = src.Name,
-                Description = src.Description,
-                Version = src.Version,
-                Filename = src.Filename,
-                ScriptFile = src.ScriptFile,
-                MimeType = src.MimeType,
-                UploadDate = src.UploadDate
+				Name = src.Name,
+				Description = src.Description,
+				Version = src.Version,
+				Filename = src.Filename,
+				ScriptFile = src.ScriptFile,
+				MimeType = src.MimeType,
+				UploadDate = src.UploadDate
 
 			};
 		}
