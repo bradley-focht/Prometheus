@@ -541,6 +541,7 @@
     <Content Include="Views\ServiceRequestApproval\ConfirmServiceRequestStateChange.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetOptionUserInputsText.cshtml" />
     <Content Include="Views\Script\Index.cshtml" />
+    <Content Include="Views\Script\Add.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -551,7 +552,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Content\Selectize\js\standalone\" />
-    <Folder Include="PoshScripts\" />
+    <Folder Include="PoShScriptsFiles\" />
     <Folder Include="ServiceDocs\" />
     <Folder Include="ServiceOptionPics\" />
   </ItemGroup>

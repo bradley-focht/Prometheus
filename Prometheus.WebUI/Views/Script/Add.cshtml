@@ -1,0 +1,40 @@
+﻿@model Common.Dto.ScriptDto
+
+@{
+    ViewBag.Title = "Add";
+    ViewBag.SubTitle = "Add and Upload Scripts";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+}
+
+<h2>Add</h2>
+
+@section Content {
+    <div class="title-div">@ViewBag.SubTitle</div> @* title *@
+
+    @using (Html.BeginForm("SaveScript", "Script", FormMethod.Post))
+    {
+
+        <div class="panel-div">
+            @* content *@
+            @* Html.Partial("some partial view ") *@
+        </div>
+
+
+
+        <div class="flex-container-col">
+            @* control buttons at the bottom *@
+            <div class="panel-footer">
+                <div class="float-right-div">
+                    @Html.ActionLink("Back", "Index", new {}, new {@class = "btn btn-default btn-back"})
+                    <input type="submit" value="Save" id="Save" class="btn btn-primary"/>
+                </div>
+            </div>
+        </div>
+
+
+    }
+}
+
+@section Sidebar{
+
+}

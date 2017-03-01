@@ -1,8 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Management.Automation;
+using System.Management.Automation.Language;
 using System.Management.Automation.Runspaces;
 using System.Web.Mvc;
+using DataService.Models;
+using Prometheus.WebUI.Models.Shared;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -16,6 +19,31 @@ namespace Prometheus.WebUI.Controllers
 	    {
 		    return View();
 	    }
+
+        /// <summary>
+        /// For adding scripts scripts
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult SaveScript(int id)
+        {
+            return View();
+        }
+
+        /// <summary>
+        /// To get a specific entry
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public ActionResult GetScript(int id)
+        {
+            LinkListModel model = new LinkListModel();
+            return View("PartialViews/_LinkList", model);
+        }
+
+        public ActionResult Add()
+        {
+            return View();
+        }
 
         // GET: Script
         public JsonResult People()
@@ -42,5 +70,6 @@ namespace Prometheus.WebUI.Controllers
             return Json(people, JsonRequestBehavior.AllowGet);
 
         }
+
     }
 }

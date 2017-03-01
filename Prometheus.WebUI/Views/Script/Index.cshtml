@@ -1,7 +1,6 @@
 ﻿@model Common.Dto.ScriptDto
 @{
 	ViewBag.Title = "Scripts";
-	ViewBag.SubTitle = "Template for Add & Update ";
 	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
 	ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -14,30 +13,12 @@
 }
 
 @section Content {
-	<div class="title-div">@ViewBag.SubTitle</div>   @* title *@
-
-@using (Html.BeginForm("SaveScript", "Script", FormMethod.Post))	
-{
-
-	<div class="panel">								@* content *@
-		@* Html.Partial("some partial view ") *@
-	</div>
+    <div class="title-div">@ViewBag.Title</div> @* title *@
 
 
-
-	<div class="flex-container-col">				@* control buttons at the bottom *@
-		<div class="panel-footer">
-			<div class="float-right-div">
-				@Html.ActionLink("Back", "Index", new {}, new {@class = "btn btn-default btn-back"})
-				<input type="submit" value="Save" id="Save" class="btn btn-primary"/>
-			</div>
-		</div>
-	</div>
-
-
+    }
 }
 
-
-
-	@section Sidebar
-	{ }
+@section Sidebar{
+    
+}
