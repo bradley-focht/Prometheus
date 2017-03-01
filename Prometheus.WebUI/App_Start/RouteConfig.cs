@@ -130,14 +130,15 @@ namespace Prometheus.WebUI
 
             #region Service Request Approvals
 
-            routes.MapRoute(name: "ServiceRequestApprovals",
-                url: "ServiceRequestApproval/Index/{filterBy}/{filterArg}/{pageId}",
-                defaults: new {controller = "ServiceRequest", action="Index", filterBy= UrlParameter.Optional, filterArg = UrlParameter.Optional, pageId = UrlParameter.Optional});
-            
-            #endregion
+
+	        routes.MapRoute(name: "ConfirmServiceRequestStateChange",
+		        url: "ServiceRequestApproval/ConfirmServiceRequestStateChange/{id}/{nextState}",
+		        defaults: new {controller = "ServiceRequestApproval", action = "ConfirmServiceRequestStateChange"});
+
+			#endregion
 
 
-            routes.MapRoute(
+			routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }

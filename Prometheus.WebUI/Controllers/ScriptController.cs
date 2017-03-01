@@ -3,10 +3,11 @@ using System.Collections.ObjectModel;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using System.Web.Mvc;
+using Prometheus.WebUI.Infrastructure;
 
 namespace Prometheus.WebUI.Controllers
 {
-    public class ScriptController : Controller
+    public class ScriptController : PrometheusController
     {
 		/// <summary>
 		/// Default page of Scripting

@@ -8,14 +8,13 @@ namespace Prometheus.WebUI.Infrastructure
 		/// <summary>
 		/// Return current user id from session
 		/// </summary>
-		protected int Userid
+		protected int UserId
 		{
 			get
 			{
-				int userId = 0;
 				try
 				{
-					return userId = int.Parse(Session["Id"].ToString());
+					return int.Parse(Session["Id"].ToString());
 				}
 				catch (Exception)
 				{

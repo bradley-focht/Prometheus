@@ -15,7 +15,7 @@
 			<div class="dd-cell">
 				<input type="hidden" name="@($"form.UserInput[{index}].Id")" value="0" id="data_id_@(StringHelper.RemoveSpaces(input.DisplayName))"/>
 				<input type="hidden" name="@($"form.UserInput[{index}].InputId")" value="@(input.Id)" />
-				<input type="hidden" name="@($"form.UserInput[{index}].Name")" value="@(StringHelper.RemoveSpaces(input.DisplayName))" />
+				<input type="hidden" name="@($"form.UserInput[{index}].Name")" value="@(StringHelper.RemoveSpaces(input.DisplayName))"/>
 				@if (input is ITextInputDto)
 				{
 					<input type="hidden" name="@($"form.UserInput[{index}].UserInputType")" value="@(UserInputType.Text)"/>
