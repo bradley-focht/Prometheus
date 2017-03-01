@@ -351,6 +351,7 @@
     <Compile Include="Helpers\Enums\WebMessageType.cs" />
     <Compile Include="Helpers\UiPermissionHelper.cs" />
     <Compile Include="Helpers\UserInputHelper.cs" />
+    <Compile Include="Helpers\UserInputTag.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
@@ -358,6 +359,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\PrometheusController.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogControlsModel.cs" />
     <Compile Include="Models\ServiceCatalog\PublishableCatalogItemModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceCatalogSearcher.cs" />

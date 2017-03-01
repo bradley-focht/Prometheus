@@ -13,20 +13,22 @@
 		<div class="dd-row" id="div_@StringHelper.RemoveSpaces(input.DisplayName)" style="display: none;">
 			<div class="dt-cell">@input.DisplayName</div>
 			<div class="dd-cell">
-				<input type="hidden" name="@($"form.UserInput[{index}].Id")" value="@(input.Id)" />
-				<input type="hidden" name="@($"form.UserInput[{index}].InputId")" value="@(input.Id)"/>
+				<input type="hidden" name="@($"form.UserInput[{index}].Id")" value="0" id="data_id_@(StringHelper.RemoveSpaces(input.DisplayName))"/>
+				<input type="hidden" name="@($"form.UserInput[{index}].InputId")" value="@(input.Id)" />
 				<input type="hidden" name="@($"form.UserInput[{index}].Name")" value="@(StringHelper.RemoveSpaces(input.DisplayName))" />
 				@if (input is ITextInputDto)
 				{
-					<input type="hidden" name="@($"form.UserInput[{index}].Type")" value="@(UserInputType.Text)"/>
+					<input type="hidden" name="@($"form.UserInput[{index}].UserInputType")" value="@(UserInputType.Text)"/>
 					@Html.Partial("PartialViews/_TextInput", new InputModel<TextInputDto> {Control = (TextInputDto) input, ControlName = $"form.UserInput[{index}]."})
 				}
 				else if (input is ISelectionInputDto)
 				{
+					<input type="hidden" name="@($"form.UserInput[{index}].UserInputType")" value="@(UserInputType.Selection)" />
 					@Html.Partial("PartialViews/_SelectionInput", new InputModel<SelectionInputDto> {Control = (SelectionInputDto) input, ControlName = $"form.UserInput[{index}]."})
 				}
 				else if (input is IScriptedSelectionInputDto)
 				{
+					<input type="hidden" name="@($"form.UserInput[{index}].UserInputType")" value="@(UserInputType.ScriptedSelection)" />
 					@Html.Partial("PartialViews/_ScriptedSelectionInput", new InputModel<ScriptedSelectionInputDto> {Control = (ScriptedSelectionInputDto) input, ControlName = $"form.UserInput[{index}]."})
 				}
 			</div>

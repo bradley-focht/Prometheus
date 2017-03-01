@@ -31,9 +31,9 @@
     <div class="dd-row">
         <div class="dt-cell">Date Required</div>
         <div class="dd-cell">
-            <div class="input-group date">
+            <div class="input-group date"  data-provide="datepicker">
                 @Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id= "formRequestedDate" })
-                <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
+                <span class="input-group-addon" id="formRequestedDateButton" ><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
             @Html.ValidationMessage("form.RequestedDate")
 
@@ -44,7 +44,8 @@
                             autoclose: true,
                             format: "mm-dd-yyyy"
                         });
-                });
+
+                }); 
             </script>
 
         </div>

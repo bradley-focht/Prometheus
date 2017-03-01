@@ -1,2 +1,25 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Prometheus.WebUI.Models.ServiceRequest.UserInputReturnModel">
+    <Position X="6.5" Y="0.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAABAAAAAAAAAAAAAAQAAAAAAAAAAQAgAAAAAAA=</HashCode>
+      <FileName>Models\ServiceRequest\UserInputReturnModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Prometheus.WebUI.Models.ServiceRequest.ServiceRequestFormReturnModel">
+    <Position X="0.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAABAAAAgAAAABAAAAAAAAAAgABAAAA=</HashCode>
+      <FileName>Models\ServiceRequest\ServiceRequestFormReturnModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Prometheus.WebUI.Models.ServiceRequest.ServiceRequestInfoReturnModel">
+    <Position X="3.5" Y="0.5" Width="2.5" />
+    <TypeIdentifier>
+      <HashCode>AAAiAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAMQAAIAA=</HashCode>
+      <FileName>Models\ServiceRequest\ServiceRequestInfoReturnModel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

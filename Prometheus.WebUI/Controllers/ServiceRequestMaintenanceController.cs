@@ -593,7 +593,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="input">input dto</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveSelectionInput(ISelectionInputDto input)
+		public ActionResult SaveSelectionInput(SelectionInputDto input)
 		{
 			if (!ModelState.IsValid)                            //server side validation
 			{
