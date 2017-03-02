@@ -1,6 +1,8 @@
-﻿@model Common.Dto.ScriptDto
+﻿@model IEnumerable<Common.Dto.ScriptDto>
+
 @{
 	ViewBag.Title = "Scripts";
+    ViewBag.SubTitle = "Scripts";
 	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
 	ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -13,12 +15,41 @@
 }
 
 @section Content {
-    <div class="title-div">@ViewBag.Title</div> @* title *@
+    <div class="title-div">@ViewBag.SubTitle</div> @* title *@
+    
+    @if (Model != null)
+    {
 
-
+        foreach (var item in Model)
+        {
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Name)
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Name)
+                    </td>
+                </tr>
+            </table>
+        }
     }
+    else
+    {
+        <p> No Scripts available </p>
+    }
+}
 }
 
 @section Sidebar{
-    
+    <div class="flex-container-col">
+    @* control buttons at the bottom *@
+    <div class="panel-footer">
+        <div class="float-right-div">
+            @Html.ActionLink("Add", "Add", new { }, new { @class = "btn btn-primary" })
+        </div>
+    </div>
+</div>
 }
