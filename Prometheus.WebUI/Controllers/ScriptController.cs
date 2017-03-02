@@ -12,10 +12,11 @@ using Common.Enums.Entities;
 using DataService.Models;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 
 namespace Prometheus.WebUI.Controllers
 {
-    public class ScriptController : Controller
+    public class ScriptController : PrometheusController
     {
 		/// <summary>
 		/// Default page of Scripting
