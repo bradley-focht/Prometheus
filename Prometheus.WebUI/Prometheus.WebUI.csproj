@@ -415,6 +415,7 @@
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
     <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
+    <Compile Include="Models\SystemAccess\ServiceQueueModel.cs" />
     <Compile Include="Models\SystemAccess\UserControlsModel.cs" />
     <Compile Include="Models\SystemAccess\UserDetailsModel.cs" />
     <Compile Include="Models\SystemAccess\ManageUsersModel.cs" />
@@ -543,6 +544,8 @@
     <Content Include="Views\ServiceRequestApproval\ConfirmServiceRequestStateChange.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetOptionUserInputsText.cshtml" />
     <Content Include="Views\Script\Index.cshtml" />
+    <Content Include="Views\SystemAccess\ShowQueues.cshtml" />
+    <Content Include="Views\SystemAccess\ConfirmDeleteServiceQueue.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

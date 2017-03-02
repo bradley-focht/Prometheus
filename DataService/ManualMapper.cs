@@ -1033,5 +1033,29 @@ namespace DataService
 				Value = src.Value
 			};
 		}
+
+		public static Department MapDtoToDepartment(IDepartmentDto src)
+		{
+			if (src == null)
+				return null; 
+
+			return new Department
+			{
+				Id = src.Id,
+				Name = src.Name
+			};
+		}
+
+		public static DepartmentDto MapDepartmentDto(IDepartment src)
+		{
+			if (src == null)
+				return null;
+
+			return new DepartmentDto
+			{
+				Id = src.Id,
+				Name = src.Name
+			};
+		}
 	}
 }

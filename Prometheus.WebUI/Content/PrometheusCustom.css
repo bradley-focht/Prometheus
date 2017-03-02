@@ -111,11 +111,15 @@
 }
 
 .form-number {
-    max-width: 50px;
+    max-width: 60px;
 }
 
 .form-date {
     max-width: 150px;
+}
+
+.form-short-text {
+	max-width: 100px;
 }
 
 .font-home-link {
@@ -183,6 +187,11 @@
 
 .flex-row {
     flex: 1;
+    display: flex;
+}
+
+.flex-cell {
+	flex: 1;
     display: flex;
 }
 
@@ -417,6 +426,7 @@
     border-radius: 2px;
     border: 1px solid transparent;
     background-color: #f5f5f5;
+	display: inline-block;
 }
 
 .panel-div {
@@ -997,3 +1007,11 @@
 	padding: 10px;
 }
 
+.login-panel {
+	max-width: 600px;
+	box-shadow: 10px 10px 5px #666;
+}
+
+.shadow {
+	box-shadow: 10px 10px 5px #666;
+}

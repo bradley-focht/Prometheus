@@ -82,6 +82,8 @@
     <Compile Include="DataAccessLayer\PrometheusInitializer.cs" />
     <Compile Include="ManualMapper.cs" />
     <Compile Include="Models\Approval.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\IDepartment.cs" />
     <Compile Include="Models\IServiceRequestUserInput.cs" />
     <Compile Include="Models\IApproval.cs" />
     <Compile Include="Models\IScript.cs" />

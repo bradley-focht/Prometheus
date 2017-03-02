@@ -5,7 +5,7 @@
     ViewBag.Links = new List<KeyValuePair<string, string>>
     {
         new KeyValuePair<string, string>("Home", "Home"),
-        new KeyValuePair<string, string>(ViewBag.Title, "SystemAccess/Index")
+        new KeyValuePair<string, string>(ViewBag.Title, "#")
     };
 }
 
@@ -15,4 +15,5 @@
 <div class="panel">
 	<div>@Html.ActionLink("Manage Users", "ManageUsers")</div>
 	<div>@Html.ActionLink("Permissions and Roles", "PermissionsAndRoles")</div>
+	<div>@Html.ActionLink("Service Request Approval Queues", "ShowQueues")</div>
 </div>
