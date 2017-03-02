@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 
 namespace Prometheus.WebUI.Helpers
 {
@@ -92,5 +93,6 @@ namespace Prometheus.WebUI.Helpers
 	    {
 		    return ConfigurationManager.AppSettings["ScriptPath"];
 	    }
+
     }
 }

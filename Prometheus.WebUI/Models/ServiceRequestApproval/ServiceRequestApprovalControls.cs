@@ -9,5 +9,6 @@ namespace Prometheus.WebUI.Models.ServiceRequestApproval
     {
         public int CurrentPage { get; set; }
         public int TotalPages { get; set; }
+		public string FilterText { get; set; }
     }
 }

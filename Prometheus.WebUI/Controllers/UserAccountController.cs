@@ -26,6 +26,7 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -40,7 +41,7 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult Login(UserAccountModel userLogin)
         {
             if (!ModelState.IsValid)
-                return View("Index");
+                return RedirectToAction("Index", "UserAccount");
 
             //validate login, create session cookie
             

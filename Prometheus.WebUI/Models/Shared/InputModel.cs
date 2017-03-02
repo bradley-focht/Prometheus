@@ -1,4 +1,6 @@
-﻿namespace Prometheus.WebUI.Models.Shared
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Prometheus.WebUI.Models.Shared
 {
 	/// <summary>
 	/// Send data to display user inputs
@@ -17,6 +19,7 @@
 		/// <summary>
 		/// Name to be prepended to the user control name
 		/// </summary>
+		[Required(ErrorMessage = "Required")]
         public string ControlName { get; set; }
     }
 }

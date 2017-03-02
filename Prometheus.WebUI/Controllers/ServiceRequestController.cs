@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
+using Ninject.Infrastructure.Language;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Models.ServiceRequest;
@@ -31,7 +32,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Begin(int id)
 		{
 			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id } };   //start new SR
-			
+
 
 			model.Package = ServicePackageHelper.GetPackage(UserId, _ps, id);
 			model.CurrentIndex = -1;            /* index for info tab */
@@ -90,11 +91,11 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = "Successfully saved Service Request";
 			if (submit >= 99999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
 			}
 			if (submit >= 9999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
 			}
 
 			return RedirectToAction("Form", new { id = request.Id, index = submit });
@@ -133,7 +134,7 @@ namespace Prometheus.WebUI.Controllers
 
 			/* STEP TWO - figure out what category to work with */
 			var currentCategory =
-				_ps.GetServiceOptionCategory(UserId, 
+				_ps.GetServiceOptionCategory(UserId,
 					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 
 			/* STEP THREE - add/remove options in the SR */
@@ -148,7 +149,7 @@ namespace Prometheus.WebUI.Controllers
 					formOptions = form.GetServiceRequestOptions().ToList();
 				}
 				if (model.ServiceRequest.ServiceRequestOptions == null)
-				{									   
+				{
 					model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>();
 				}
 
@@ -159,7 +160,7 @@ namespace Prometheus.WebUI.Controllers
 						var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
 						var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
 
-						if (formDto != null && srDto == null)		//add condition
+						if (formDto != null && srDto == null)       //add condition
 						{
 							_rs.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
 						}
@@ -167,14 +168,15 @@ namespace Prometheus.WebUI.Controllers
 						{
 							_rs.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
 						}
-						else if (formDto != null /* && srDto != null */)	//update condition
+						else if (formDto != null /* && srDto != null */)    //update condition
 						{
 							_rs.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
 							_rs.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
 						}                                                                                                       /* done \*/
 					}
+					model.ServiceRequest = _ps.GetServiceRequest(UserId, form.Id); // refresh the data in the model now
 				}
-				catch (Exception exception)		//what, a problem?
+				catch (Exception exception)     //what, a problem?
 				{
 					TempData["MessageType"] = WebMessageType.Failure;
 					TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
@@ -183,18 +185,21 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 			/* STEP FOUR - add/remove user input data */
+			//update and add
 			IServiceRequestUserInputController userInputController = InterfaceFactory.CreateServiceRequestUserInputController();
 			if (form.UserInput != null)
 			{
-				List<ServiceRequestUserInputDto> userDataList = (from u in form.UserInput where u.Value != null
-																 select new ServiceRequestUserInputDto { Id = u.Id, Name = u.Name, UserInputType = u.Type,
-																	 ServiceRequestId = form.Id, Value = u.Value, InputId = u.InputId }).ToList();
+				List<ServiceRequestUserInputDto> userDataList = (from u in form.UserInput
+																 where u.Value != null
+																 select new ServiceRequestUserInputDto
+																 {
+																	 Id = u.Id, Name = u.Name, UserInputType = u.UserInputType, 
+																	 ServiceRequestId = form.Id, Value = u.Value, InputId = u.InputId}).ToList();
 				foreach (var userData in userDataList)
 				{
 					try
 					{
 						userInputController.ModifyServiceRequestUserInput(UserId, userData, userData.Id > 0 ? EntityModification.Update : EntityModification.Create);
-						//removal?
 					}
 					catch (Exception exception)
 					{
@@ -204,16 +209,61 @@ namespace Prometheus.WebUI.Controllers
 					}
 				}
 			}
+			var userInputs = (from u in form.UserInput select new UserInputTag { UserInput = u, Required = false }).ToList();
+			var options = from o in model.ServiceRequest.ServiceRequestOptions select new ServiceOptionDto { Id = o.ServiceOptionId };
+			var requiredInputs = _ps.GetInputsForServiceOptions(UserId, options);
+			//clean up - figure out what can be removed
+			foreach (var userData in userInputs)
+			{
+				if (userData.UserInput.UserInputType == UserInputType.ScriptedSelection)
+				{
+					foreach (var input in (from s in requiredInputs.UserInputs where s is IScriptedSelectionInputDto select s))
+					{
+						if (userData.UserInput.UserInputType == UserInputType.ScriptedSelection & userData.UserInput.InputId == input.Id)
+						{
+							userData.Required = true;
+						}
+					}
+				}
+				else if (userData.UserInput.UserInputType == UserInputType.Selection)
+				{
+					foreach (var input in (from s in requiredInputs.UserInputs where s is ISelectionInputDto select s))
+					{
+						if (userData.UserInput.UserInputType == UserInputType.Selection & userData.UserInput.InputId == input.Id)
+						{
+							userData.Required = true;
+						}
+					}
+				} else {
+				foreach (var input in (from s in requiredInputs.UserInputs where s is ITextInputDto select s))
+				{
+					if (userData.UserInput.UserInputType == UserInputType.Text & userData.UserInput.InputId == input.Id)
+					{
+						userData.Required = true;
+					}
+				}
+			}
+		}
+
+			//do the removals
+			foreach (var userData in userInputs)
+			{
+				if (!userData.Required && userData.UserInput.Id > 0) //avoid the new
+				{
+					userInputController.ModifyServiceRequestUserInput(UserId, new ServiceRequestUserInputDto {Id = userData.UserInput.Id}, EntityModification.Delete);
+				}
+			}
+
 			/* STEP FIVE - navigation */
 
 			model.CurrentIndex = submit;
 			if (submit >= 99999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id =form.Id, nextState= ServiceRequestState.Cancelled});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
 			}
 			if (submit >= 9999)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = form.Id, nextState= ServiceRequestState.Submitted});
+				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
 			}
 
 			model.Mode = ServiceRequestMode.Selection;
@@ -260,7 +310,7 @@ namespace Prometheus.WebUI.Controllers
 						UserInputs = _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option })
 					});
 				}
-				
+
 			}
 
 			//for each SR option in the SR get the option {monthly price, up front price }

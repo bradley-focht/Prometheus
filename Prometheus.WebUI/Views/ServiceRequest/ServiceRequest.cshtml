@@ -1,4 +1,5 @@
-﻿@using Prometheus.WebUI.Helpers
+﻿@using Common.Enums
+@using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 @{
@@ -165,11 +166,14 @@
 			var i;
 			for (i = 0; i < inputs.length; i++) {
 				if (inputs[i].used === true) {
-					document.getElementById("div_" + inputs[i].name).style.display = '';
-					document.getElementById(inputs[i].name).value = '';
+					var div = document.getElementById("div_" + inputs[i].name);
+					if (div.style.display != '') {
+						div.style.display = '';
+						document.getElementById(inputs[i].name).value = '';
+					}
+
 				} else {
 					document.getElementById("div_" + inputs[i].name).style.display = 'none';
-
 				}
 			}
 		};
@@ -194,15 +198,29 @@
 		}
 			UpdateOptions();
 			@if (Model.ServiceRequest.ServiceRequestUserInputs != null)
-		{
-			foreach (var userData in Model.ServiceRequest.ServiceRequestUserInputs)
 			{
-				<text>
-			if (document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))"))
-				document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Value';
-			</text>
+				foreach (var userData in Model.ServiceRequest.ServiceRequestUserInputs)
+				{
+					<text>
+			if (document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))")) {
+				@if (userData.UserInputType == UserInputType.Selection || userData.UserInputType == UserInputType.ScriptedSelection)
+				{
+					<text>
+				document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").selectize.setValue('@userData.Value', 0);
+				</text>
+				}
+				else
+				{
+					<text>
+					document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Value';
+					</text>
+				}
+
+				document.getElementById("data_id_@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Id ';
 			}
-		}
+			</text>
+				}
+			}
 		});
 	</script>
 }
