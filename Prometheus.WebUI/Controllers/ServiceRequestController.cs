@@ -8,13 +8,14 @@ using Common.Enums.Entities;
 using Ninject.Infrastructure.Language;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequest;
 using RequestService.Controllers;
 using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
-	public class ServiceRequestController : Controller
+	public class ServiceRequestController : PrometheusController
 	{
 		private readonly IPortfolioService _ps;
 		private IServiceRequestOptionController _rs;
@@ -326,6 +327,6 @@ namespace Prometheus.WebUI.Controllers
 			return View("ServiceRequest", model);
 		}
 
-		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
+
 	}
 }

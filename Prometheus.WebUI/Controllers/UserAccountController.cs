@@ -3,12 +3,13 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.UserAccount;
 using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
-    public class UserAccountController : Controller
+    public class UserAccountController :PrometheusController
     {
         /// <summary>
         /// user manager functions for security
