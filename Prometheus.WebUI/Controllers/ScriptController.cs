@@ -1,11 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Management.Automation;
 using System.Management.Automation.Language;
 using System.Management.Automation.Runspaces;
+using System.Web;
 using System.Web.Mvc;
+using Common.Dto;
+using Common.Enums.Entities;
 using DataService.Models;
 using Prometheus.WebUI.Models.Shared;
+using Prometheus.WebUI.Helpers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -21,16 +27,7 @@ namespace Prometheus.WebUI.Controllers
 	    }
 
         /// <summary>
-        /// For adding scripts scripts
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult SaveScript(int id)
-        {
-            return View();
-        }
-
-        /// <summary>
-        /// To get a specific entry
+        /// To get a specific script entry
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -40,8 +37,90 @@ namespace Prometheus.WebUI.Controllers
             return View("PartialViews/_LinkList", model);
         }
 
+        /// <summary>
+        /// To get all scripts
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult GetAllScripts()
+        {
+            // think this should be the general index page
+            return View();
+        }
+
+        /// <summary>
+        /// GET: Script/Add
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Add()
         {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SaveScript(IScriptDto newScript)
+        {
+            if (!ModelState.IsValid) /* Server side validation */
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to save script due to invalid data";
+                return RedirectToAction("Add");
+            }
+
+            //save script
+            var ps = InterfaceFactory.CreatePortfolioService();
+            int newId;
+            try
+            {
+                newId = ps.ModifyService(newScript, EntityModification.Create).Id;
+            }
+            catch (Exception e)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save service {newScript.Name}, error: {e}";
+                return RedirectToAction("Add");
+            }
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"New service {newScript.Name} saved successfully";
+
+            //return to a vew that will let the user now add to the SDP of the service
+            return RedirectToAction("Index");
+        }
+
+        /// <summary>
+        /// For adding scripts
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult UploadScriptFile(HttpPostedFileBase file, int id)
+        {
+            if (Request.Files.Count > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+                var ps = InterfaceFactory.CreatePortfolioService();
+
+                if (fileName != null)
+                {
+                    Guid newFileName = Guid.NewGuid(); //to rename document			
+                                                       //file path location comes from the Web.config file
+                    try
+                    {
+                        var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+                        file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
+                        ps.ModifyServiceDocument(UserId, new ScriptDto()
+                        {
+                            MimeType = file.ContentType,
+                            Filename = Path.GetFileNameWithoutExtension(fileName),
+                            ScriptFile = newFileName,
+                            UploadDate = DateTime.Now,
+                        }, EntityModification.Create);
+                    }
+                    catch (Exception exception)
+                    {
+                        TempData["MessageType"] = WebMessageType.Failure;
+                        TempData["Message"] = $"Failed to upload document, error: {exception.Message}";
+                    }
+                }
+            }
             return View();
         }
 

@@ -4,6 +4,13 @@
     ViewBag.Title = "Script";
     ViewBag.SubTitle = "Add and Upload Scripts";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("Scripts", "Script/Index"),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+    };
 }
 
 <h2>Add</h2>
@@ -13,98 +20,64 @@
 
     @using (Html.BeginForm("SaveScript", "Script", FormMethod.Post))
     {
+        @*if (Model != null)
+        {*@
+            <div class="panel-div">
+                @* content *@
+                @* Html.Partial("some partial view ") *@
 
-        <div class="panel-div">
-            @* content *@
-            @* Html.Partial("some partial view ") *@
-            
-            @using (Html.BeginForm())
-            {
-                @Html.AntiForgeryToken()
-
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger"})
-                    
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.Name, new {htmlAttributes = new { @class = "form-control"} })
-                            @Html.ValidationMessageFor(model => model.Name, "", new {@class = "text-danger"})
-                        </div>
+                <div class="dd-row">
+                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.Name) </div>
+                    <div class="dd-cell">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-6" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                        </div>
+                <div class="dd-row">
+                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.Description) </div>
+                    <div class="dd-cell">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Version, htmlAttributes: new { @class = "control-label col-md-6" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
-                        </div>
+                <div class="dd-row">
+                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.Version) </div>
+                    <div class="dd-cell">
+                        @Html.EditorFor(model => model.Version, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Filename, htmlAttributes: new { @class = "control-label col-md-6" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.Filename, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.Filename, "", new { @class = "text-danger" })
-                        </div>
+                <div class="dd-row">
+                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.Filename) </div>
+                    <div class="dd-cell">
+                        @Html.EditorFor(model => model.Filename, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Filename, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.ScriptFile, htmlAttributes: new { @class = "control-label col-md-6" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.ScriptFile, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.ScriptFile, "", new { @class = "text-danger" })
-                        </div>
+                <div class="dd-row">
+                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.ScriptFile) </div>
+                    <div class="dd-cell">
+                        @Html.EditorFor(model => model.ScriptFile, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ScriptFile, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MimeType, htmlAttributes: new { @class = "control-label col-md-6" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.MimeType, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.MimeType, "", new { @class = "text-danger" })
-                        </div>
+                <div class="dd-row">
+                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.MimeType) </div>
+                    <div class="dd-cell">
+                        @Html.EditorFor(model => model.MimeType, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MimeType, "", new { @class = "text-danger" })
                     </div>
                 </div>
-                <div class="form-horizontal">
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.UploadDate, htmlAttributes: new { @class = "control-label col-md-6" })
-                        <div class="col-md-12">
-                            @Html.EditorFor(model => model.UploadDate, new { htmlAttributes = new { @class = "form-control" } })
-                            @Html.ValidationMessageFor(model => model.UploadDate, "", new { @class = "text-danger" })
-                        </div>
+                <div class="dd-row">
+                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.UploadDate) </div>
+                    <div class="dd-cell">
+                        @Html.EditorFor(model => model.UploadDate, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.UploadDate, "", new { @class = "text-danger" })
                     </div>
                 </div>
-            }
-        </div>
-
-
-
-        <div class="flex-container-col">
+            </div>
+        @*}*@
+       <div class="flex-container-col">
             @* control buttons at the bottom *@
             <div class="panel-footer">
                 <div class="float-right-div">

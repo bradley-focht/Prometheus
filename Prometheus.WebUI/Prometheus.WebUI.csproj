@@ -555,6 +555,7 @@
     <Folder Include="PoShScriptsFiles\" />
     <Folder Include="ServiceDocs\" />
     <Folder Include="ServiceOptionPics\" />
+    <Folder Include="Views\Script\PartialViews\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
