@@ -13,6 +13,7 @@ using DataService.Models;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
+using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -54,11 +55,11 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Add()
         {
-            return View();
+            return View(new ScriptDto());
         }
 
         [HttpPost]
-        public ActionResult SaveScript(IScriptDto newScript)
+        public ActionResult SaveScript(IScriptDto newScript, HttpPostedFileBase file)
         {
             if (!ModelState.IsValid) /* Server side validation */
             {
@@ -72,7 +73,7 @@ namespace Prometheus.WebUI.Controllers
             int newId;
             try
             {
-                newId = ps.ModifyService(newScript, EntityModification.Create).Id;
+                newId = new ScriptFileController().ModifyScript(UserId, newScript, EntityModification.Create).Id;
             }
             catch (Exception e)
             {
@@ -107,7 +108,7 @@ namespace Prometheus.WebUI.Controllers
                     {
                         var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
                         file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-                        ps.ModifyServiceDocument(UserId, new ScriptDto()
+                        new ScriptFileController().ModifyScript(UserId, new ScriptDto()
                         {
                             MimeType = file.ContentType,
                             Filename = Path.GetFileNameWithoutExtension(fileName),

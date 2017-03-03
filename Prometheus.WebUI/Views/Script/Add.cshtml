@@ -29,7 +29,7 @@
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Name) </div>
                     <div class="dd-cell">
-                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                   w     @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -57,27 +57,25 @@
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.ScriptFile) </div>
                     <div class="dd-cell">
-                        @Html.EditorFor(model => model.ScriptFile, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.ScriptFile, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="dd-row">
-                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.MimeType) </div>
-                    <div class="dd-cell">
-                        @Html.EditorFor(model => model.MimeType, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.MimeType, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="dd-row">
-                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.UploadDate) </div>
-                    <div class="dd-cell">
-                        @Html.EditorFor(model => model.UploadDate, new { htmlAttributes = new { @class = "form-control" } })
-                        @Html.ValidationMessageFor(model => model.UploadDate, "", new { @class = "text-danger" })
+                        <div class="float-right-div">
+                            <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
+                                <span class="fileupload-preview"></span>
+                                <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
+                                <span class="btn btn-primary btn-file">
+                                    <span class="fileupload-new">Select file</span>
+                                    <span class="fileupload-exists">Change</span>         <input type="file" name="file" />
+
+                                </span>
+                                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
+
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         @*}*@
-       <div class="flex-container-col">
+       <div class="flex-container-col">s
             @* control buttons at the bottom *@
             <div class="panel-footer">
                 <div class="float-right-div">
