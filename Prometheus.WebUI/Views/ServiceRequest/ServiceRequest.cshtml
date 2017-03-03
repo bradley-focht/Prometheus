@@ -24,7 +24,7 @@
 		<div class="dd ful">
 			<div class="dd-row">
 				<div class="dd-cell-base dt-font">Service Request </div>
-				<div class="dd-cell-base">@Model.Package.Name</div>
+				<div class="dd-cell-base">@Model.ServiceRequest.Name</div>
 				@if (Model.PriceMonthly > 0 || Model.PriceUpFront > 0)
 				{
 					<div class="dd-cell-base dt-font">Price</div>
@@ -48,13 +48,6 @@
 					</div>
 				}
 
-			</div>
-			<div class="dd-row">
-				@if (Model.ServiceRequestId > 0)
-				{
-					<div class="dd-cell-base dt-font">Id</div>
-					<div class="dd-cell-base">@Model.ServiceRequestId</div>
-				}
 			</div>
 			<div class="dd-row">
 				<div class="dd-cell-base dt-font">Status</div>

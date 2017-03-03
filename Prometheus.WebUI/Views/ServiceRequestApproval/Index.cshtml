@@ -16,7 +16,6 @@
 	<table class="table table-hover">
 		<thead>
 		<tr>
-			<th>Id</th>
 			<th>Request</th>
 			<th>Status</th>
 			<th>Date Submitted</th>
@@ -30,8 +29,7 @@
 		@foreach (var item in Model.ServiceRequests)
 		{
 			<tr>
-				<td>@item.Id</td>
-				<td>@Html.ActionLink(@item.PackageName, "ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = item.Id, index = -1}, null)</td>
+				<td>@Html.ActionLink(item.Name, "ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = item.Id, index = -1}, null)</td>
 				<td>@item.State</td>
 				<td>@item.DateSubmitted</td>
 				<td>@item.DateRequired.ToString("d")</td>
@@ -59,5 +57,5 @@
 }
 else
 {
-	
+	<div class="alert make-space-top">No service requests found</div>
 }

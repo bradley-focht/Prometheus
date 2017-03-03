@@ -37,10 +37,10 @@
                     @if (UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveBasicRequests))
                     {
                         <div class="flex-col content-cell">
-                            <div style="height: 80px;">
-                                <a href="@Url.Action("Index", "ServiceRequestApproval")"><img src="~/Content/Images/shake.png" alt="Service Request Approvals" style="height: 70px; width: 88px;"></a>
-                                @Html.ActionLink("Service Request Approvals", "Index", "ServiceRequestApproval", null, new {@class = "font-home-link"})
-                            </div>
+	                        <div style="height: 80px;">
+								<a href="@Url.Action("Index", "ServiceRequestApproval")"><img src="~/Content/Images/shake.png" alt="Service Request Approvals" style="height: 70px; width: 88px;"></a></div>
+		                        @Html.ActionLink("My Service Requests", "Index", "ServiceRequestApproval", null, new {@class = "font-home-link"})
+	                        
                         </div>
                     }
 

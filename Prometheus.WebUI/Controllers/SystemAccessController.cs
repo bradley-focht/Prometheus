@@ -495,5 +495,11 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = "Successfully deleted queue";
 			return RedirectToAction("ShowQueues");
 		}
+
+		public ActionResult UserDepartments()
+		{
+			return View();
+		}
+
 	}
 }

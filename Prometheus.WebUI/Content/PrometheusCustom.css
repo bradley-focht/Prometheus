@@ -122,6 +122,11 @@
 	max-width: 100px;
 }
 
+.form-code {
+	text-transform: uppercase;
+	max-width: 120px;
+
+}
 .font-home-link {
     color: #19A7F8;
     font-weight: 600;
@@ -1015,3 +1020,4 @@
 .shadow {
 	box-shadow: 10px 10px 5px #666;
 }
+
