@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Common.Dto;
 using Common.Enums;
 using Prometheus.WebUI.Models.ServiceRequest;
 using Prometheus.WebUI.Models.ServiceRequestApproval;
+using RequestService.Controllers;
 using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Helpers
@@ -17,11 +17,12 @@ namespace Prometheus.WebUI.Helpers
 		/// Create hte model
 		/// </summary>
 		/// <param name="ps">portfolio service</param>
+		/// <param name="srController">service request controller</param>
 		/// <param name="nextState"></param>
 		/// <param name="userId"></param>
 		/// <param name="serviceRequestId"></param>
 		/// <returns></returns>
-		public static ServiceRequestStateChangeModel CreateStateChangeModel(IPortfolioService ps,
+		public static ServiceRequestStateChangeModel CreateStateChangeModel(IPortfolioService ps, IServiceRequestController srController,
 			ServiceRequestState nextState, int userId, int serviceRequestId)
 		{
 			var model = new ServiceRequestStateChangeModel
@@ -29,13 +30,13 @@ namespace Prometheus.WebUI.Helpers
 				NextState = nextState,
 				ServiceRequestModel = new ServiceRequestModel()
 			};
-			model.ServiceRequestModel.ServiceRequest = ps.GetServiceRequest(userId, serviceRequestId);
+			model.ServiceRequestModel.ServiceRequest = srController.GetServiceRequest(userId, serviceRequestId);
 
-			List<DisplayListOption> displayList = new List<DisplayListOption>();	
-			foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)	//add the option name
+			List<DisplayListOption> displayList = new List<DisplayListOption>();
+			foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)    //add the option name
 			{
 				var listOption = new DisplayListOption { ServiceRequestOption = serviceRequestOption, UserInputs = new List<DisplayListUserInput>() };
-				listOption.ServiceOption = ps.GetServiceOption(userId, serviceRequestOption.ServiceOptionId);		
+				listOption.ServiceOption = ps.GetServiceOption(userId, serviceRequestOption.ServiceOptionId);
 
 				var userInputs = ps.GetInputsForServiceOptions(userId,
 					new IServiceOptionDto[1] { new ServiceOptionDto { Id = serviceRequestOption.ServiceOptionId } });//get user inputs
@@ -50,7 +51,7 @@ namespace Prometheus.WebUI.Helpers
 							{
 								if (userInput.Id == userData.InputId)
 								{
-									var displayUserInput = new DisplayListUserInput {DisplayName = userInput.DisplayName};
+									var displayUserInput = new DisplayListUserInput { DisplayName = userInput.DisplayName };
 									displayUserInput.ServiceRequestUserInput = userData;
 									listOption.UserInputs.Add(displayUserInput);
 								}
@@ -67,7 +68,8 @@ namespace Prometheus.WebUI.Helpers
 									listOption.UserInputs.Add(displayUserInput);
 								}
 							}
-						} else if (userData.UserInputType == UserInputType.ScriptedSelection)
+						}
+						else if (userData.UserInputType == UserInputType.ScriptedSelection)
 						{
 							foreach (var userInput in userInputs.ScriptedSelectionInputs)
 							{

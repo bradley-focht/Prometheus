@@ -13,6 +13,8 @@ namespace Common.Dto
 		/// </summary>
 		public int? ServiceOptionId { get; set; }
 
+		public int DepartmentId { get; set; }
+
 		/// <summary>
 		/// User Making the request, the requestor
 		/// </summary>

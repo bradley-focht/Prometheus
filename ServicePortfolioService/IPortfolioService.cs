@@ -6,7 +6,7 @@ namespace ServicePortfolioService
 		IServiceSwotController, ISwotActivityController, IServiceDocumentController, IServiceGoalController,
 		IServiceContractController, IServiceWorkUnitController, IServiceMeasureController, IServiceOptionController,
 		IServiceProcessController, IServiceOptionCategoryController, ITextInputController, ISelectionInputController,
-		IScriptedSelectionController, IServiceRequestPackageController, IServiceRequestController
+		IScriptedSelectionController, IServiceRequestPackageController
 	{
 	}
 }

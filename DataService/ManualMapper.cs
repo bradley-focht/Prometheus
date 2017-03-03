@@ -871,7 +871,8 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
-				ServiceOptionId = src.ServiceOptionId
+				ServiceOptionId = src.ServiceOptionId,
+				DepartmentId = src.DepartmentId
 			};
 		}
 
@@ -912,7 +913,8 @@ namespace DataService
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
 				ServiceRequestOptions = serviceRequestOptions,
-				ServiceRequestUserInputs = serviceRequestInputs
+				ServiceRequestUserInputs = serviceRequestInputs,
+				DepartmentId = src.DepartmentId
 			};
 		}
 

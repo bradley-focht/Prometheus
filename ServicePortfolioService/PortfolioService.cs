@@ -28,8 +28,7 @@ namespace ServicePortfolioService
 		private readonly ISelectionInputController _selectionInputController;
 		private readonly IScriptedSelectionController _scriptedSelectionController;
 		private readonly IServiceRequestPackageController _serviceRequestPackageController;
-		private readonly IServiceRequestController _serviceRequestController;
-		
+
 		//Lol I'll make a factory for constructing this
 		public PortfolioService(IServiceBundleController serviceBundleController,
 			IServiceController serviceController, ILifecycleStatusController lifecycleStatusController,
@@ -39,8 +38,7 @@ namespace ServicePortfolioService
 			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController,
 			IServiceOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController,
 			ITextInputController textInputController, ISelectionInputController selectionInputController,
-			IScriptedSelectionController scriptedSelectionController, IServiceRequestPackageController serviceRequestPackageController,
-			IServiceRequestController serviceRequestController)
+			IScriptedSelectionController scriptedSelectionController, IServiceRequestPackageController serviceRequestPackageController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;
@@ -59,7 +57,6 @@ namespace ServicePortfolioService
 			_selectionInputController = selectionInputController;
 			_scriptedSelectionController = scriptedSelectionController;
 			_serviceRequestPackageController = serviceRequestPackageController;
-			_serviceRequestController = serviceRequestController;
 		}
 
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
@@ -333,21 +330,6 @@ namespace ServicePortfolioService
 		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId)
 		{
 			return _serviceRequestPackageController.GetServiceRequestPackagesForServiceOption(performingUserId, serviceOptionId);
-		}
-
-		public IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId)
-		{
-			return _serviceRequestController.GetServiceRequest(performingUserId, serviceRequestId);
-		}
-
-		public IServiceRequestDto ModifyServiceRequest(int performingUserId, IServiceRequestDto serviceRequest, EntityModification modification)
-		{
-			return _serviceRequestController.ModifyServiceRequest(performingUserId, serviceRequest, modification);
-		}
-
-		public IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId)
-		{
-			return _serviceRequestController.GetServiceRequestsForRequestorId(performingUserId, requestorUserId);
 		}
 	}
 }
