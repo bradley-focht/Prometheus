@@ -27,15 +27,27 @@ namespace Prometheus.WebUI.Helpers
 			var model = new ServiceRequestStateChangeModel
 			{
 				NextState = nextState,
-				ServiceRequestModel = new ServiceRequestModel()
+				ServiceRequestModel = new ServiceRequestModel(),
+				ConfirmNextState = true
+			};
+		
+			return model;
+		}
+
+		public static ServiceRequestStateChangeModel CreateStateChangeModel(IPortfolioService ps, int userId,
+			int serviceRequestId)
+		{
+			var model = new ServiceRequestStateChangeModel { 
+				ServiceRequestModel = new ServiceRequestModel(),
+				ConfirmNextState = false
 			};
 			model.ServiceRequestModel.ServiceRequest = ps.GetServiceRequest(userId, serviceRequestId);
 
-			List<DisplayListOption> displayList = new List<DisplayListOption>();	
-			foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)	//add the option name
+			List<DisplayListOption> displayList = new List<DisplayListOption>();
+			foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)    //add the option name
 			{
 				var listOption = new DisplayListOption { ServiceRequestOption = serviceRequestOption, UserInputs = new List<DisplayListUserInput>() };
-				listOption.ServiceOption = ps.GetServiceOption(userId, serviceRequestOption.ServiceOptionId);		
+				listOption.ServiceOption = ps.GetServiceOption(userId, serviceRequestOption.ServiceOptionId);
 
 				var userInputs = ps.GetInputsForServiceOptions(userId,
 					new IServiceOptionDto[1] { new ServiceOptionDto { Id = serviceRequestOption.ServiceOptionId } });//get user inputs
@@ -50,7 +62,7 @@ namespace Prometheus.WebUI.Helpers
 							{
 								if (userInput.Id == userData.InputId)
 								{
-									var displayUserInput = new DisplayListUserInput {DisplayName = userInput.DisplayName};
+									var displayUserInput = new DisplayListUserInput { DisplayName = userInput.DisplayName };
 									displayUserInput.ServiceRequestUserInput = userData;
 									listOption.UserInputs.Add(displayUserInput);
 								}
@@ -67,7 +79,77 @@ namespace Prometheus.WebUI.Helpers
 									listOption.UserInputs.Add(displayUserInput);
 								}
 							}
-						} else if (userData.UserInputType == UserInputType.ScriptedSelection)
+						}
+						else if (userData.UserInputType == UserInputType.ScriptedSelection)
+						{
+							foreach (var userInput in userInputs.ScriptedSelectionInputs)
+							{
+								if (userInput.Id == userData.InputId)
+								{
+									var displayUserInput = new DisplayListUserInput { DisplayName = userInput.DisplayName };
+									displayUserInput.ServiceRequestUserInput = userData;
+									listOption.UserInputs.Add(displayUserInput);
+								}
+							}
+						}
+					}
+				}
+				displayList.Add(listOption);
+			}
+			model.DisplayList = displayList;
+			return model;
+		}
+
+		/// <summary>
+		/// Common behaviour of methods in this class
+		/// </summary>
+		/// <param name="model"></param>
+		/// <param name="ps"></param>
+		/// <param name="userId"></param>
+		/// <param name="serviceRequestId"></param>
+		/// <returns></returns>
+		public static ServiceRequestStateChangeModel AddModelData(ServiceRequestStateChangeModel model, IPortfolioService ps, int userId, int serviceRequestId)
+		{
+			model.ServiceRequestModel.ServiceRequest = ps.GetServiceRequest(userId, serviceRequestId);
+
+			List<DisplayListOption> displayList = new List<DisplayListOption>();
+			foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)    //add the option name
+			{
+				var listOption = new DisplayListOption { ServiceRequestOption = serviceRequestOption, UserInputs = new List<DisplayListUserInput>() };
+				listOption.ServiceOption = ps.GetServiceOption(userId, serviceRequestOption.ServiceOptionId);
+
+				var userInputs = ps.GetInputsForServiceOptions(userId,
+					new IServiceOptionDto[1] { new ServiceOptionDto { Id = serviceRequestOption.ServiceOptionId } });//get user inputs
+				if (userInputs != null)
+				{
+
+					foreach (var userData in model.ServiceRequestModel.ServiceRequest.ServiceRequestUserInputs)
+					{
+						if (userData.UserInputType == UserInputType.Text)
+						{
+							foreach (var userInput in userInputs.TextInputs)
+							{
+								if (userInput.Id == userData.InputId)
+								{
+									var displayUserInput = new DisplayListUserInput { DisplayName = userInput.DisplayName };
+									displayUserInput.ServiceRequestUserInput = userData;
+									listOption.UserInputs.Add(displayUserInput);
+								}
+							}
+						}
+						else if (userData.UserInputType == UserInputType.Selection)
+						{
+							foreach (var userInput in userInputs.SelectionInputs)
+							{
+								if (userInput.Id == userData.InputId)
+								{
+									var displayUserInput = new DisplayListUserInput { DisplayName = userInput.DisplayName };
+									displayUserInput.ServiceRequestUserInput = userData;
+									listOption.UserInputs.Add(displayUserInput);
+								}
+							}
+						}
+						else if (userData.UserInputType == UserInputType.ScriptedSelection)
 						{
 							foreach (var userInput in userInputs.ScriptedSelectionInputs)
 							{

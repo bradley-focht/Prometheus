@@ -27,7 +27,7 @@ namespace DataService.DataAccessLayer
 				{
 					new Service
 					{
-						Name = "First Service",
+						Name = "Hardware",
 						LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
 					},
 					new Service

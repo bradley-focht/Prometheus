@@ -2,86 +2,100 @@
 @model ServiceRequestModel
 
 <div class="dd">
-    <div class="dd-row">
-        <div class="dt-cell">Requestor</div>
-        <div class="dd-cell">@Session["Displayname"]
-        <input type="hidden" value="@Session["Id"].ToString())" name="Requestor"/>
+	<div class="dd-row">
+		<div class="dt-cell">Action</div>
+		<div class="dd-cell">
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-default" id="ActionAdd">
+					@Html.RadioButton("Action", "Add", false) Add
+				</label>
+
+				<label class="btn btn-default" id="ActionRemove">
+					@Html.RadioButton("Action", "Remove", false) Remove
+				</label>
+			</div>
 		</div>
-    </div>
-    <div class="dd-row">
-        <div class="dt-cell">
-            Requested For
-        </div>
-	    <div class="dd-cell">
+	</div> 
+	<div class="dd-row">
+		<div class="dt-cell">Requestor</div>
+		<div class="dd-cell">@Session["Displayname"]
+			<input type="hidden" value="@Session["Id"].ToString())" name="Requestor"/>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">
+			Requested For
+		</div>
+		<div class="dd-cell">
 
 			<div class="btn-group" data-toggle="buttons">
 				<label class="btn btn-default" id="RequesteeMe">
-					@Html.RadioButton("Requestees", Session["Id"].ToString() , false) Me
+					@Html.RadioButton("Requestees", Session["Id"].ToString(), false) Me
 				</label>
 
 				<label class="btn btn-default" id="RequesteeOther">
-					@Html.RadioButton("ServiceTypeRole", "Other" , false) Someone else
+					@Html.RadioButton("ServiceTypeRole", "Other", false) Someone else
 				</label>
 			</div>
 
-		    <select name="Requestees" id="RequesteesSelect" style="width: 200px">
-			    <option>Select Users</option>
-		    </select>
-		    <script type="text/javascript" language="javascript">
-				var $select = $(document.getElementById('RequesteesSelect')).selectize({maxItems: 1});
+			<select name="Requestees" id="RequesteesSelect" style="width: 200px">
+				<option>Select Users</option>
+			</select>
+			<script type="text/javascript" language="javascript">
+				var $select = $(document.getElementById('RequesteesSelect')).selectize({ maxItems: 1 });
 				var selectize = $select[0].selectize;
 				selectize.addOption({ value: 1, text: 'foo' });
 				selectize.addItem(1);
 				selectize.refreshOptions();
 				/*
 
-    			$(document)
-    				.ready(function() {
-    						$.get('/Script/People',
-    							function(data) {
-    								console.log(data);
-    								$.each(data,
-    									function(index, value) {
-    										console.log(index + value);
-    										$('<option>').val(value).text(value).appendTo('#RequesteesSelect');
-    									});
-    							});
-    					}
-    				) */
-    		</script>
-	    </div>
-    </div>
-    <div class="dd-row">
-        <div class="dt-cell">Date Required</div>
-        <div class="dd-cell">
-            <div class="input-group date"  data-provide="datepicker">
-                @Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id= "formRequestedDate" })
-                <span class="input-group-addon" id="formRequestedDateButton" ><i class="fa fa-calendar" aria-hidden="true"></i></span>
-            </div>
-            @Html.ValidationMessage("form.RequestedDate")
+			    $(document)
+				    .ready(function() {
+						    $.get('/Script/People',
+							    function(data) {
+								    console.log(data);
+								    $.each(data,
+									    function(index, value) {
+										    console.log(index + value);
+										    $('<option>').val(value).text(value).appendTo('#RequesteesSelect');
+									    });
+							    });
+					    }
+				    ) */
+			</script>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Date Required</div>
+		<div class="dd-cell">
+			<div class="input-group date" data-provide="datepicker">
+				@Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id = "formRequestedDate"})
+				<span class="input-group-addon" id="formRequestedDateButton" ><i class="fa fa-calendar" aria-hidden="true"></i></span>
+			</div>
+			@Html.ValidationMessage("form.RequestedDate")
 
-            <script language="javascript" type="text/javascript">
-	            $(function() {
-		            $('#formRequestedDate')
-			            .datepicker({
-				            autoclose: true,
-				            format: "mm-dd-yyyy"
-			            });
+			<script language="javascript" type="text/javascript">
+				$(function() {
+					$('#formRequestedDate')
+						.datepicker({
+							autoclose: true,
+							format: "mm-dd-yyyy"
+						});
 
-	            }); 
-            </script>
+				});
+			</script>
 
-        </div>
-    </div>
-<div class="dd-row">
-    <div class="dt-cell">Comments</div>
-    <div class="dd-cell">
-        @Html.TextArea("form.Comments", Model.Comments, new { @class = "ckeditor" })
-        <div class="note">additional requests in comments will not be honoured</div>
-    </div>
-</div>
-<div class="dd-row">
-    <div class="dt-cell">Office-Use</div>
-    <div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new { @class = "form-control" })</div>
-</div>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Comments</div>
+		<div class="dd-cell">
+			@Html.TextArea("form.Comments", Model.Comments, new {@class = "ckeditor"})
+			<div class="note">additional requests in comments will not be honoured</div>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Office-Use</div>
+		<div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new {@class = "form-control"})</div>
+	</div>
 </div>

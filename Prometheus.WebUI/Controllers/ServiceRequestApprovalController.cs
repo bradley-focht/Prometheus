@@ -124,6 +124,13 @@ namespace Prometheus.WebUI.Controllers
 			return View(model);
 		}
 
+		public ActionResult ShowServiceRequest(int id)
+		{
+			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_ps, UserId, id);
+
+
+			return View("ConfirmServiceRequestStateChange", model);
+		}
 		
 	}
 }

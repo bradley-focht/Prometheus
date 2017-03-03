@@ -12,6 +12,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestApproval
 		public ServiceRequestModel ServiceRequestModel { get; set; }
 		public IEnumerable<DisplayListOption> DisplayList { get; set; }
 		public ServiceRequestState NextState { get; set; }
+		public bool ConfirmNextState { get; set; }
 
 	}
 }
