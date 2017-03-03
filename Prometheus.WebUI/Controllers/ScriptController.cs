@@ -69,8 +69,8 @@ namespace Prometheus.WebUI.Controllers
             }
 
             //save script
-            var ps = InterfaceFactory.CreatePortfolioService();
             int newId;
+
             try
             {
                 newId = new ScriptFileController().ModifyScript(UserId, newScript, EntityModification.Create).Id;
@@ -78,11 +78,12 @@ namespace Prometheus.WebUI.Controllers
             catch (Exception e)
             {
                 TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to save service {newScript.Name}, error: {e}";
+                TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
                 return RedirectToAction("Add");
             }
+
             TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"New service {newScript.Name} saved successfully";
+            TempData["Message"] = $"New script {newScript.Name} saved successfully";
 
             if (Request.Files.Count > 0)
             {
@@ -112,12 +113,12 @@ namespace Prometheus.WebUI.Controllers
                 }
             }
 
-            //return to a vew that will let the user now add to the SDP of the service
+            //return to index
             return RedirectToAction("Index");
         }
 
         /// <summary>
-        /// For adding scripts
+        /// Use for uploading scripts
         /// </summary>
         /// <returns></returns>
         [HttpPost]
