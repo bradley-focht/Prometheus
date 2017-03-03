@@ -48,7 +48,7 @@ namespace UserManager.Controllers
 							where u.Id == userId
 							select u).FirstOrDefault();
 
-				return ManualMapper.MapUserToDto(user);				//will return null if user not found
+				return ManualMapper.MapUserToDto(user);             //will return null if user not found
 			}
 		}
 
@@ -88,6 +88,7 @@ namespace UserManager.Controllers
 			}
 		}
 
+		//dur
 		protected override IUserDto Create(int performingUserId, IUserDto userDto)
 		{
 			using (var context = new PrometheusContext())
