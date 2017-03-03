@@ -88,7 +88,6 @@ namespace UserManager.Controllers
 			}
 		}
 
-		//dur
 		protected override IUserDto Create(int performingUserId, IUserDto userDto)
 		{
 			using (var context = new PrometheusContext())
