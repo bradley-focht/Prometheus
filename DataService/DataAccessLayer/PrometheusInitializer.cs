@@ -9,23 +9,15 @@ namespace DataService.DataAccessLayer
 	//https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application
 	public class PrometheusInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<PrometheusContext>
 	{
+		private readonly string _temporaryDepartmentName = "SUPER_DUPER_DEPARTMENT_LAND";
+
 		protected override void Seed(PrometheusContext context)
 		{
+			SeedTemporaryDepartment(context);
 			SeedDefaultPermissions(context);
 			AddGuestUser(context);
 			AddAdministrator(context);
 			AddItilLifecycleStatus(context);
-
-			//Populate Users
-			var users = new List<User>
-			{
-				new User()
-			};
-			foreach (var user in users)
-			{
-				context.Users.Add(user);
-			}
-			context.SaveChanges();
 
 			//Add a sample service bundle with services and service request options
 			context.ServiceBundles.Add(new ServiceBundle
@@ -50,7 +42,7 @@ namespace DataService.DataAccessLayer
 
 		private void AddItilLifecycleStatus(PrometheusContext context)
 		{
-			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Requirements", CatalogVisible = false, Position = 1});
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Requirements", CatalogVisible = false, Position = 1 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Defined", CatalogVisible = false, Position = 2 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Analyzed", CatalogVisible = false, Position = 3 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Approved", CatalogVisible = false, Position = 4 });
@@ -67,31 +59,35 @@ namespace DataService.DataAccessLayer
 
 		private void AddAdministrator(PrometheusContext context)
 		{
+			var department = context.Departments.First();
 			var admin = new User()
 			{
-				Name = "Administrator"
+				Name = "Administrator",
+				Department = department
 			};
 
 			admin.Roles = new List<Role>();
 			admin.Roles.Add(context.Roles.First(x => x.Name == "Administrator"));
-			
+
 			context.Users.Add(admin);
 			context.SaveChanges();
 		}
 
 		private void AddGuestUser(PrometheusContext context)
 		{
+			var department = context.Departments.First();
 			var guest = new User()
 			{
-				Name = "Guest"
+				Name = "Guest",
+				Department = department
 			};
 			guest.Roles = new List<Role>();
-			guest.Roles.Add(context.Roles.First(x=>x.Name == "Guest"));
+			guest.Roles.Add(context.Roles.First(x => x.Name == "Guest"));
 			context.Users.Add(guest);
 			context.SaveChanges();
 		}
 
-		public void SeedDefaultPermissions(PrometheusContext context)
+		private void SeedDefaultPermissions(PrometheusContext context)
 		{
 			context.Roles.AddRange(new List<Role>()
 			{
@@ -219,6 +215,15 @@ namespace DataService.DataAccessLayer
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
 					ServicePortfolioAccess = ServicePortfolio.NoAccess
 				},
+			});
+			context.SaveChanges();
+		}
+
+		private void SeedTemporaryDepartment(PrometheusContext context)
+		{
+			context.Departments.Add(new Department()
+			{
+				Name = _temporaryDepartmentName
 			});
 			context.SaveChanges();
 		}

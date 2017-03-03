@@ -12,6 +12,9 @@ namespace DataService.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
+		//FK
+		public int DepartmentId { get; set; }
+
 		#region Fields
 		public string Name { get; set; }
 		public Guid AdGuid { get; set; }
@@ -20,9 +23,10 @@ namespace DataService.Models
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 		#endregion
-		#region Navigation properties
-		public virtual ICollection<Role> Roles { get; set; }
 
+		#region Navigation properties
+		public virtual Department Department { get; set; }
+		public virtual ICollection<Role> Roles { get; set; }
 		#endregion
 	}
 }
