@@ -58,6 +58,10 @@
     display: inline-block;
 }
 
+.bold {
+	font-weight: 500;
+}
+
 .copyright-notice {
     font-size: 0.8em;
     color: #aaaaaa;

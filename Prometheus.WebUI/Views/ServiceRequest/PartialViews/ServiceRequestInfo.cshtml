@@ -4,29 +4,52 @@
 <div class="dd">
     <div class="dd-row">
         <div class="dt-cell">Requestor</div>
-        <div class="dd-cell">@Session["Displayname"]</div>
+        <div class="dd-cell">@Session["Displayname"]
+        <input type="hidden" value="@Session["Id"].ToString())" name="Requestor"/>
+		</div>
     </div>
     <div class="dd-row">
         <div class="dt-cell">
             Requested For
         </div>
-        <div class="dd-cell">
-            <select id="Requestees" style="width:200px">
-                <option>Select Users</option>
-            </select>
-            <script type="text/javascript" language="javascript">
-                $(document).ready(function () {
-                    $.get('/Script/People', function (data) {
-                        console.log(data);
-                        $.each(data, function (index, value) {
-                            console.log(index + value);
-                            $('<option>').val(value).text(value).appendTo('#Requestees');
-                        });
-                    });
-                }
-                )
-            </script>
-        </div>
+	    <div class="dd-cell">
+
+			<div class="btn-group" data-toggle="buttons">
+				<label class="btn btn-default" id="RequesteeMe">
+					@Html.RadioButton("Requestees", Session["Id"].ToString() , false) Me
+				</label>
+
+				<label class="btn btn-default" id="RequesteeOther">
+					@Html.RadioButton("ServiceTypeRole", "Other" , false) Someone else
+				</label>
+			</div>
+
+		    <select name="Requestees" id="RequesteesSelect" style="width: 200px">
+			    <option>Select Users</option>
+		    </select>
+		    <script type="text/javascript" language="javascript">
+				var $select = $(document.getElementById('RequesteesSelect')).selectize({maxItems: 1});
+				var selectize = $select[0].selectize;
+				selectize.addOption({ value: 1, text: 'foo' });
+				selectize.addItem(1);
+				selectize.refreshOptions();
+				/*
+
+    			$(document)
+    				.ready(function() {
+    						$.get('/Script/People',
+    							function(data) {
+    								console.log(data);
+    								$.each(data,
+    									function(index, value) {
+    										console.log(index + value);
+    										$('<option>').val(value).text(value).appendTo('#RequesteesSelect');
+    									});
+    							});
+    					}
+    				) */
+    		</script>
+	    </div>
     </div>
     <div class="dd-row">
         <div class="dt-cell">Date Required</div>
@@ -38,14 +61,14 @@
             @Html.ValidationMessage("form.RequestedDate")
 
             <script language="javascript" type="text/javascript">
-                $(function() {
-                    $('#formRequestedDate')
-                        .datepicker({
-                            autoclose: true,
-                            format: "mm-dd-yyyy"
-                        });
+	            $(function() {
+		            $('#formRequestedDate')
+			            .datepicker({
+				            autoclose: true,
+				            format: "mm-dd-yyyy"
+			            });
 
-                }); 
+	            }); 
             </script>
 
         </div>
