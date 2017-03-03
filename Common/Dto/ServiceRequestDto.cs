@@ -23,6 +23,7 @@ namespace Common.Dto
 		/// In office use such as billing code
 		/// </summary>
 		public string Officeuse { get; set; }
+		public string Name { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime RequestedForDate { get; set; }
 		public DateTime? SubmissionDate { get; set; }

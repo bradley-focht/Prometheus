@@ -30,7 +30,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// </summary>
 		public int CurrentIndex { get; set; }
 
-		public List<UserInputReturnModel> UserInput { get; set; }
+		public List<ServiceRequestUserInputDto> UserInput { get; set; }
 
 		public IEnumerable<IServiceRequestOptionDto> GetServiceRequestOptions()
 		{

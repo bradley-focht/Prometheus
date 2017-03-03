@@ -301,7 +301,6 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
-    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\LocalHost.pubxml" />
     <None Include="Properties\PublishProfiles\PROM Server.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -341,7 +340,9 @@
     <Compile Include="Helpers\Enums\ServiceCatalog.cs" />
     <Compile Include="Helpers\Enums\ServiceRequestDataArg.cs" />
     <Compile Include="Helpers\Enums\ServiceRequestMode.cs" />
+    <Compile Include="Helpers\ServiceRequestApprovalHelper.cs" />
     <Compile Include="Helpers\ServicePackageHelper.cs" />
+    <Compile Include="Helpers\ServiceRequestSummaryHelper.cs" />
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
     <Compile Include="Helpers\FinancialCalculator.cs" />
@@ -351,6 +352,7 @@
     <Compile Include="Helpers\Enums\WebMessageType.cs" />
     <Compile Include="Helpers\UiPermissionHelper.cs" />
     <Compile Include="Helpers\UserInputHelper.cs" />
+    <Compile Include="Helpers\UserInputTag.cs" />
     <Compile Include="HtmlHelpers\CustomHelpers.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicePortfolioController.cs" />
@@ -358,6 +360,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
+    <Compile Include="Infrastructure\PrometheusController.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogControlsModel.cs" />
     <Compile Include="Models\ServiceCatalog\PublishableCatalogItemModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceCatalogSearcher.cs" />
@@ -365,10 +368,10 @@
     <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
-    <Compile Include="Models\ServiceRequestApproval\DisplayListModelItem.cs" />
+    <Compile Include="Models\ServiceRequestApproval\DisplayListOption.cs" />
+    <Compile Include="Models\ServiceRequestApproval\DisplayListUserInput.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestApprovalControls.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestApprovalModel.cs" />
-    <Compile Include="Models\ServiceRequestApproval\DisplayListModel.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestStateChangeModel.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestTableItemModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ConfirmDeleteModel.cs" />
@@ -412,7 +415,9 @@
     <Compile Include="Models\Shared\InputModel.cs" />
     <Compile Include="Models\SystemAccess\ConfirmDeleteModel.cs" />
     <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
+    <Compile Include="Models\SystemAccess\ManageUserDepartmentModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
+    <Compile Include="Models\SystemAccess\ServiceQueueModel.cs" />
     <Compile Include="Models\SystemAccess\UserControlsModel.cs" />
     <Compile Include="Models\SystemAccess\UserDetailsModel.cs" />
     <Compile Include="Models\SystemAccess\ManageUsersModel.cs" />
@@ -541,6 +546,9 @@
     <Content Include="Views\ServiceRequestApproval\ConfirmServiceRequestStateChange.cshtml" />
     <Content Include="Views\ServiceRequestMaintenance\GetOptionUserInputsText.cshtml" />
     <Content Include="Views\Script\Index.cshtml" />
+    <Content Include="Views\SystemAccess\ShowQueues.cshtml" />
+    <Content Include="Views\SystemAccess\ConfirmDeleteServiceQueue.cshtml" />
+    <Content Include="Views\SystemAccess\UserDepartments.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

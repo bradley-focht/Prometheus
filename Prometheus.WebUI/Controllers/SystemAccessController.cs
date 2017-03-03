@@ -5,6 +5,7 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;
 using UserManager;
@@ -13,10 +14,9 @@ using UserManager.AdService;
 namespace Prometheus.WebUI.Controllers
 {
 	//[Authorize]
-	public class SystemAccessController : Controller
+	public class SystemAccessController : PrometheusController
 	{
 		private readonly IUserManager _userManager;
-		private int uid = 1;
 		private readonly int _userPageSize;
 
 		public SystemAccessController()
@@ -53,7 +53,7 @@ namespace Prometheus.WebUI.Controllers
 			IRoleDto role = null;
 			try
 			{
-				role = _userManager.GetRole(uid, id);
+				role = _userManager.GetRole(UserId, id);
 			}
 			catch (Exception exception)
 			{
@@ -78,7 +78,7 @@ namespace Prometheus.WebUI.Controllers
 			model.SelectedItemId = id;
 			try
 			{
-				model.ListItems = from r in _userManager.GetRoles(uid)  /*put users & Guids into tuples */
+				model.ListItems = from r in _userManager.GetRoles(UserId)  /*put users & Guids into tuples */
 					select new Tuple<int, string>(r.Id, r.Name);
 			}
 			catch (Exception exception)
@@ -108,7 +108,7 @@ namespace Prometheus.WebUI.Controllers
 			var model = new RoleModel {Action = "Update"};
 			try
 			{
-				model.Role = _userManager.GetRole(uid, id);
+				model.Role = _userManager.GetRole(UserId, id);
 			}
 			catch (Exception exception)
 			{
@@ -139,7 +139,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 			try
 			{
-				_userManager.ModifyRole(uid, role, role.Id > 0 ? EntityModification.Update : EntityModification.Create);
+				_userManager.ModifyRole(UserId, role, role.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{
@@ -167,7 +167,7 @@ namespace Prometheus.WebUI.Controllers
 			IRoleDto role = null;
 			try
 			{
-				role = _userManager.GetRole(uid, id);
+				role = _userManager.GetRole(UserId, id);
 				if (role == null)
 					throw new Exception("Role not found");
 			}
@@ -197,7 +197,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			try
 			{
-				_userManager.ModifyRole(uid, new RoleDto {Id = model.Id}, EntityModification.Delete);
+				_userManager.ModifyRole(UserId, new RoleDto {Id = model.Id}, EntityModification.Delete);
 			}
 			catch (Exception exception)
 			{
@@ -218,7 +218,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ManageUsers()
 		{
 			UserControlsModel controls = new UserControlsModel();
-			controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
+			controls.Roles = from r in _userManager.GetRoles(UserId) select new Tuple<int, string>(r.Id, r.Name);
 
 			return View("ManageUsers", new ManageUsersModel {Controls = controls, ReturningSearch = false});
 		}
@@ -233,15 +233,15 @@ namespace Prometheus.WebUI.Controllers
 		{
 			UserControlsModel controls = new UserControlsModel {CurrentPage = pageId, SelectedRole = id}; /*construct model for view */
 			var model = new ManageUsersModel {Controls = controls, ReturningSearch = false};
-			model.Roles = _userManager.GetRoles(uid).ToList(); //stop forgetting these roles, ok?
+			model.Roles = _userManager.GetRoles(UserId).ToList(); //stop forgetting these roles, ok?
 
-			controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
+			controls.Roles = from r in _userManager.GetRoles(UserId) select new Tuple<int, string>(r.Id, r.Name);
 
 			IEnumerable<IUserDto> users = new List<UserDto>();
 			if ( id == 0)
-				users = (from u in _userManager.GetUsers(uid) select u);
+				users = (from u in _userManager.GetUsers(UserId) select u);
 			else if (id > 0)
-				users = (from u in _userManager.GetUsers(uid) where u.Roles.Any(role => role.Id == id) select u);
+				users = (from u in _userManager.GetUsers(UserId) where u.Roles.Any(role => role.Id == id) select u);
 
 			List<UserDetailsModel> modelUsers = new List<UserDetailsModel>();
 
@@ -275,15 +275,15 @@ namespace Prometheus.WebUI.Controllers
 			var model = new ManageUsersModel {ReturningSearch = true, Users = new List<UserDetailsModel>()};
 			var controls = new UserControlsModel();
 			model.Controls = controls;
-			controls.Roles = from r in _userManager.GetRoles(uid) select new Tuple<int, string>(r.Id, r.Name);
+			controls.Roles = from r in _userManager.GetRoles(UserId) select new Tuple<int, string>(r.Id, r.Name);
 
 			List<Tuple<Guid, string>> directoryUsers;
 			List<Tuple<Guid, ICollection<IRoleDto>>> existingUsers;
 			try
 			{
-				model.Roles = _userManager.GetRoles(uid).ToList();
+				model.Roles = _userManager.GetRoles(UserId).ToList();
 				directoryUsers = _userManager.SearchUsers(searchString).ToList();
-				existingUsers = (from u in _userManager.GetUsers(uid) select new Tuple<Guid, ICollection<IRoleDto>>(u.AdGuid, u.Roles)).ToList();
+				existingUsers = (from u in _userManager.GetUsers(UserId) select new Tuple<Guid, ICollection<IRoleDto>>(u.AdGuid, u.Roles)).ToList();
 			}
 			catch (Exception exception)
 			{
@@ -349,8 +349,8 @@ namespace Prometheus.WebUI.Controllers
 
 			if (users != null && roles != null && users.Any() && roles.Any())
 			{
-				var userList = _userManager.GetUsers(uid).ToList(); //get the user list to check new users in
-				var roleList = _userManager.GetRoles(uid).ToList();
+				var userList = _userManager.GetUsers(UserId).ToList(); //get the user list to check new users in
+				var roleList = _userManager.GetRoles(UserId).ToList();
 
 				foreach (var user in users)
 				{
@@ -358,12 +358,13 @@ namespace Prometheus.WebUI.Controllers
 					{
 						try
 						{
-							_userManager.ModifyUser(uid, new UserDto {AdGuid = user}, EntityModification.Create);
+							_userManager.ModifyUser(UserId, new UserDto {AdGuid = user}, EntityModification.Create);
 						}
 						catch (Exception exception)
 						{
 							TempData["MessageType"] = WebMessageType.Failure;
 							TempData["Message"] = $"Failed to save a user, error: {exception.Message}";
+							return RedirectToAction("ManageUsers");
 						}
 					}
 					IUserDto userDto = (from u in userList where u.AdGuid == user select u).FirstOrDefault();
@@ -373,7 +374,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						try
 						{
-							_userManager.RemoveRoleFromUsers(uid, role, new List<IUserDto> {userDto});
+							_userManager.RemoveRoleFromUsers(UserId, role, new List<IUserDto> {userDto});
 						}
 						catch (Exception) { } //ignore if user did not have role                      
 					}
@@ -382,13 +383,14 @@ namespace Prometheus.WebUI.Controllers
 						try
 						{
 							if (userDto != null) //userDto may have been deleted already 
-								_userManager.AddRolesToUser(uid, userDto.Id,
+								_userManager.AddRolesToUser(UserId, userDto.Id,
 									new List<IRoleDto> {new RoleDto {Id = role}});
 						}
 						catch (Exception exception)
 						{
 							TempData["MessageType"] = WebMessageType.Failure;
 							TempData["Message"] = $"Failed to save user changes, error: {exception.Message}";
+							return RedirectToAction("ManageUsers");
 						}
 				}
 
@@ -410,8 +412,8 @@ namespace Prometheus.WebUI.Controllers
 			{
 				foreach (var user in users)
 				{
-					int id = (from u in _userManager.GetUsers(uid) where u.AdGuid == user select u.Id).FirstOrDefault(); //need the user Id
-					_userManager.ModifyUser(uid, new UserDto {Id = id}, EntityModification.Delete);     //perform the deletion
+					int id = (from u in _userManager.GetUsers(UserId) where u.AdGuid == user select u.Id).FirstOrDefault(); //need the user Id
+					_userManager.ModifyUser(UserId, new UserDto {Id = id}, EntityModification.Delete);     //perform the deletion
 				}
 			}
 			catch (Exception exception)
@@ -425,5 +427,79 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = "Successfully removed users";
 			return RedirectToAction("ManageUsers");
 		}
+
+		public ActionResult ShowQueues()
+		{
+			ServiceQueueModel model = new ServiceQueueModel();
+
+			//get all queues
+
+			return View(model);
+		}
+
+		public ActionResult AddServiceQueue()
+		{
+			ServiceQueueModel model = new ServiceQueueModel {EnableAdd = true};
+			
+			// get all queues again
+
+			return View("ShowQueues", model);
+		}
+
+		/// <summary>
+		/// Save changes to a queue
+		/// </summary>
+		/// <param name="queue">queue to add or update</param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult SaveServiceQueue(DepartmentDto queue)
+		{
+			if (!ModelState.IsValid)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to save queue due to invalid data";
+				return RedirectToAction("ShowQueues");
+			}
+
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Successfully saved queue";
+
+			return RedirectToAction("ShowQueues");
+		}
+
+		public ActionResult UpdateServiceQueue(int id)
+		{
+			ServiceQueueModel model = new ServiceQueueModel { SelectedQueue = new DepartmentDto {Id = id} };
+
+			// get all queues again
+			return View("ShowQueues", model);
+		}
+		public ActionResult ConfirmDeleteServiceQueue(int id)
+		{
+			DepartmentDto model = new DepartmentDto();
+
+			// get all queues again
+
+			return View(model);
+		}
+		/// <summary>
+		/// Confirm delete of a queue
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult DeleteQueue(int id)
+		{
+
+			TempData["MessageType"] = WebMessageType.Success; //successful assumed now
+			TempData["Message"] = "Successfully deleted queue";
+			return RedirectToAction("ShowQueues");
+		}
+
+		public ActionResult UserDepartments()
+		{
+			return View();
+		}
+
 	}
 }

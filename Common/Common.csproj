@@ -52,10 +52,12 @@
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Dto\ApprovalDto.cs" />
     <Compile Include="Dto\IApprovalDto.cs" />
+    <Compile Include="Dto\IDepartmentDto.cs" />
     <Compile Include="Dto\InputGroupDto.cs" />
     <Compile Include="Dto\IInputGroupDto.cs" />
     <Compile Include="Dto\IScriptDto.cs" />
     <Compile Include="Dto\IServiceRequestUserInputDto.cs" />
+    <Compile Include="Dto\DepartmentDto.cs" />
     <Compile Include="Dto\ScriptDto.cs" />
     <Compile Include="Dto\ServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\IServiceOptionCategoryTagDto.cs" />

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Common.Enums;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequest;
 using Prometheus.WebUI.Models.ServiceRequestApproval;
 using RequestService;
@@ -11,7 +12,7 @@ using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
-	public class ServiceRequestApprovalController : Controller
+	public class ServiceRequestApprovalController : PrometheusController
 	{
 		private IPortfolioService _ps;
 		private readonly int _pageSize;
@@ -20,6 +21,7 @@ namespace Prometheus.WebUI.Controllers
 		public ServiceRequestApprovalController()
 		{
 			_rm = InterfaceFactory.CreateRequestManager();
+			_ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
 				_pageSize = ConfigHelper.GetPaginationSize();
@@ -33,48 +35,32 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls { CurrentPage = pageId } };
-
-			_ps = InterfaceFactory.CreatePortfolioService();
-			List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
-
-			var srList = _ps.GetServiceRequestsForRequestorId(UserId, UserId).ToList();      //for pagination
-			if (srList.Count > _pageSize)
-			{
-				model.Controls.TotalPages = (srList.Count + _pageSize - 1) / _pageSize;
-				srList = srList.Skip(_pageSize * pageId).Take(_pageSize).ToList();
-			}
-
-			foreach (var item in srList)
-			{
-				if (item.ServiceOptionId != null)       //if null than this isn't an SR that can be reconstructed in a form
-				{
-					requests.Add(new ServiceRequestTableItemModel
-					{
-						Id = item.Id,
-						State = item.State,
-						PackageName = ServicePackageHelper.GetPackage(UserId, _ps, item.ServiceOptionId).Name,
-						DateRequired = item.RequestedForDate,
-						DateSubmitted = item.SubmissionDate
-					});
-				}
-			}
-			model.ServiceRequests = requests;
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_ps, UserId, pageId, _pageSize, ServiceRequestState.Incomplete);
 			return View(model);
 		}
 
 		/// <summary>
-		/// Filter by state
+		/// Filter My Service Requests by state
 		/// </summary>
 		/// <param name="state"></param>
 		/// <param name="pageId"></param>
 		/// <returns></returns>
-		public ActionResult FilterStatus(ServiceRequestState state, int pageId )
+		public ActionResult FilterStatus(ServiceRequestState state, int pageId=0)
 		{
-			return View("Index");
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_ps, UserId, pageId, _pageSize, state);
+			model.Controls.FilterAction = "FilterStatus";
+			model.Controls.FilterStateRequired = true;
+			return View("Index", model);
 		}
 
-		public ActionResult FilterGroupStatus(ServiceRequestState state, int pageId)
+		public ActionResult AllServiceRequests(int pageId = 0)
+		{
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllRequests(_ps, UserId, pageId, _pageSize);
+			model.Controls.FilterText = "AllServiceRequests";
+			return View("Index", model);
+		}
+
+		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId)
 		{
 			return View("Index");
 		}
@@ -94,19 +80,22 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ChangeState(int id, ServiceRequestState state, string message)
 		{
-			int userId;              //user info
-			try { userId = int.Parse(Session["Id"].ToString()); }     //login is very required
-			catch (Exception) { return null; }
-
 			try
 			{
 				switch (state)
 				{
 					case ServiceRequestState.Cancelled:
-						_rm.CancelRequest(userId, id, message);
+						_rm.CancelRequest(UserId, id, message);
 						break;
+
 					case ServiceRequestState.Submitted:
-						_rm.SubmitRequest(userId, id, message);
+						_rm.SubmitRequest(UserId, id, message);
+						break;
+					case ServiceRequestState.Approved:
+						_rm.ApproveRequest(UserId, id, ApprovalResult.Approved, message);
+						break;
+					case ServiceRequestState.Denied:
+						_rm.ApproveRequest(UserId, id, ApprovalResult.Denied, message);
 						break;
 				}
 			}
@@ -118,7 +107,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully {state} Service Request";
-
+			
 			return RedirectToAction("Index");
 		}
 
@@ -130,44 +119,11 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmServiceRequestStateChange(int id, ServiceRequestState nextState)
 		{
-			ServiceRequestStateChangeModel model = new ServiceRequestStateChangeModel { NextState = nextState };
+			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_ps, nextState, UserId, id);
 
-			_ps = InterfaceFactory.CreatePortfolioService();
-			model.ServiceRequestModel = new ServiceRequestModel();
-			model.ServiceRequestModel.ServiceRequest = _ps.GetServiceRequest(UserId, id);
-			model.ServiceRequestModel.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequestModel.ServiceOptionId);
-
-			List<DisplayListModel> displayList = new List<DisplayListModel>();
-
-			foreach (var category in model.ServiceRequestModel.Package.ServiceOptionCategoryTags)
-			{
-				DisplayListModel listItem = new DisplayListModel { Category = category.ServiceOptionCategory, Options = new List<DisplayListModelItem>() };
-
-				foreach (var option in _ps.GetServiceOptionCategory(UserId, category.ServiceOptionCategoryId).ServiceOptions)
-				{
-					foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)
-					{
-						if (serviceRequestOption.ServiceOptionId == option.Id)
-						{
-							listItem.Options.Add(new DisplayListModelItem { ServiceOption = option, ServiceRequestOption = serviceRequestOption });
-
-						}
-					}
-				}
-				displayList.Add(listItem);
-			}
-			model.DisplayList = displayList;
 			return View(model);
 		}
 
-		public int UserId
-		{
-			get
-			{
-				/*try*/ { return int.Parse(Session["Id"].ToString()); }                   //login is required
-				//catch (Exception) { return RedirectToAction("Index", "UserAccount"); }  //some login issue
-				//return int.Parse(Session["Id"].ToString());
-			}
-		}
+		
 	}
 }

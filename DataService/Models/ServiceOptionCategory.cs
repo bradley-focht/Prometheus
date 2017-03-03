@@ -16,6 +16,7 @@ namespace DataService.Models
 		public string Features { get; set; }
 		public string Benefits { get; set; }
 		public string Support { get; set; }
+		public string Code { get; set; }
 		public string Description { get; set; }
 	    public bool Quantifiable { get; set; }
 	    public string BusinessValue { get; set; }

@@ -10,31 +10,35 @@
 	}
 <div class="panel panel-default">
 <div class="flex-col" style="padding: 10px;">
-    <div class="flex-row">
-        <div class="dropdown make-space-right">
-            <button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Requests</button>
+	<div class="flex-row">
+		<div class="dropdown make-space-right">
+			<button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Requests</button>
 
-            <ul class="dropdown-menu">
-                <li>@Html.ActionLink("All", "Index", null, new { @class = "dropdown-item" })</li>
-                <li class="divider"></li>
+			<ul class="dropdown-menu">
+				<li>@Html.ActionLink("All", "AllServiceRequests", null, new {@class = "dropdown-item"})</li>
+				<li class="divider"></li>
 
-                <li class="dropdown-submenu">
-                    <a tabindex="-1" href="#">Status</a>
+				<li class="dropdown-submenu">
+					<a tabindex="-1" href="#">Status</a>
 
-	                <ul class="dropdown-menu">
+					<ul class="dropdown-menu">
 						@foreach (var state in Enum.GetValues(typeof(ServiceRequestState)))
 						{
-							<li>@Html.ActionLink(state.ToString(), "Index")</li>
+							var stateString = state.ToString();
+							if (stateString != "Cancelled")
+							{
+								<li>@Html.ActionLink(state.ToString(), "FilterStatus", new {state = stateString})</li>
+							}
 						}
-	                </ul>
-                </li>
-            </ul>
-        </div>
+					</ul>
+				</li>
+			</ul>
+		</div>
 
-		@if (UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests))
+		@if (UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests) || UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveAnyRequests))
 		{
 			<div class="dropdown">
-				<button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Ministry Requests</button>
+				<button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department Requests</button>
 
 				<ul class="dropdown-menu">
 					<li>@Html.ActionLink("All", "Index", null, new {@class = "dropdown-item"})</li>
@@ -45,7 +49,11 @@
 						<ul class="dropdown-menu">
 							@foreach (var state in Enum.GetValues(typeof(ServiceRequestState)))
 							{
-								<li>@Html.ActionLink(state.ToString(), "Index")</li>
+								var stateString = state.ToString();
+								if (stateString != "Cancelled")
+								{
+									<li>@Html.ActionLink(stateString, "Index")</li>
+								}
 							}
 						</ul>
 					</li>
@@ -60,25 +68,24 @@
 			</div>
 		}
 
-
-
-	    <div class="btn-group make-space-left">
-            @if (Model.TotalPages > 1)
-            {
-                for (int i = 0; i < Model.TotalPages; i++)
-                {
-                    if (Model.CurrentPage == i)
-                    {
-                        <span class="btn btn-default active">@(i + 1)</span>
-                    }
-                    else
-                    {
-                        @Html.ActionLink((i + 1).ToString(), "Index", "ServiceRequestApproval", new { pageId = i }, new { @class = "btn btn-default" })
-                    }
-                }
-            }
-        </div>
-    </div>
+		<div class="btn-group make-space-left">
+			@if (Model.TotalPages > 1)
+			{
+				for (int i = 0; i < Model.TotalPages; i++)
+				{
+					if (Model.CurrentPage == i)
+					{
+						<span class="btn btn-default active">@(i + 1)</span>
+					}
+					else
+					{
+						@Html.ActionLink((i + 1).ToString(), Model.FilterAction, "ServiceRequestApproval", new {pageId = i }, new {@class = "btn btn-default"})
+					}
+				}
+			}
+		</div>
+	</div>
+	<div class="make-space-top">@Model.FilterText</div>
 </div>
 </div>
 

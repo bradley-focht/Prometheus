@@ -9,6 +9,7 @@ using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
@@ -16,7 +17,7 @@ using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
-	public class ServiceRequestMaintenanceController : Controller
+	public class ServiceRequestMaintenanceController : PrometheusController
 	{
 		private readonly ICatalogController _requestService;
 		private IPortfolioService _ps;
@@ -46,7 +47,10 @@ namespace Prometheus.WebUI.Controllers
 		{
 			IServiceDto model;
 
-			if (id == 0) { model = new ServiceDto(); }  //return no selected item
+			if (id == 0)
+			{
+				model = new ServiceDto();
+			} //return no selected item
 			else
 			{
 				_ps = InterfaceFactory.CreatePortfolioService();
@@ -65,7 +69,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			_ps = InterfaceFactory.CreatePortfolioService();
 
-			IServiceRequestPackageDto model = null;        //determine if one is selected or not
+			IServiceRequestPackageDto model = null; //determine if one is selected or not
 			if (id > 0)
 			{
 				try
@@ -79,7 +83,7 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 
-			if (model == null)                       //send an empty object if nothing selected, razor will handle
+			if (model == null) //send an empty object if nothing selected, razor will handle
 			{
 				model = new ServiceRequestPackageDto();
 			}
@@ -96,9 +100,9 @@ namespace Prometheus.WebUI.Controllers
 			_ps = InterfaceFactory.CreatePortfolioService();
 			PackageModel model = new PackageModel();
 
-			try		//try and get a package
+			try //try and get a package
 			{
-				var package = (ServiceRequestPackageDto)_ps.GetServiceRequestPackage(UserId, id);
+				var package = (ServiceRequestPackageDto) _ps.GetServiceRequestPackage(UserId, id);
 				model.Name = package.Name;
 				model.SelectedCategories = from a in package.ServiceOptionCategoryTags select a.Id;
 			}
@@ -155,7 +159,12 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeletePackage(int id)
 		{
-			ConfirmDeleteModel model = new ConfirmDeleteModel {Id = id, DeleteAction = "DeletePackage", ReturnAction = "ShowPackage"};
+			ConfirmDeleteModel model = new ConfirmDeleteModel
+			{
+				Id = id,
+				DeleteAction = "DeletePackage",
+				ReturnAction = "ShowPackage"
+			};
 			_ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
@@ -166,9 +175,10 @@ namespace Prometheus.WebUI.Controllers
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to retrieve service request package, error: {exception.Message}";
 			}
-			
+
 			return View("ConfirmDeletePackage", model);
 		}
+
 		[HttpPost]
 		public ActionResult DeletePackage(DeleteModel model)
 		{
@@ -178,7 +188,7 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = "Failed to delete, incomplete data sent";
 				return RedirectToAction("ConfirmDeletePackage", new {id = model.Id});
 			}
-			
+
 			try
 			{
 				_ps = InterfaceFactory.CreatePortfolioService();
@@ -225,17 +235,18 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult SaveService(ServiceAbbreviatedModel service)
 		{
 			IServiceDto newService;
-			if (!ModelState.IsValid)            //validate model
+			if (!ModelState.IsValid) //validate model
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save changes to service";
 			}
 
-			try                                 //update state
+			try //update state
 			{
 				_ps = InterfaceFactory.CreatePortfolioService();
 
-				newService = AbbreviatedEntityUpdate.UpdateService(service, _ps.GetService(service.Id));    //preserve service design documentation
+				newService = AbbreviatedEntityUpdate.UpdateService(service, _ps.GetService(service.Id));
+					//preserve service design documentation
 				_ps.ModifyService(newService, EntityModification.Update);
 			}
 			catch (Exception exception)
@@ -260,10 +271,12 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="image"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveServiceOption(ServiceOptionAbbreviatedModel option, ICollection<string> userInputs = null, HttpPostedFileBase image = null)
-		{	/*there is way too much code in this controller */
+		public ActionResult SaveServiceOption(ServiceOptionAbbreviatedModel option, ICollection<string> userInputs = null,
+			HttpPostedFileBase image = null)
+		{
+			/*there is way too much code in this controller */
 			_ps = InterfaceFactory.CreatePortfolioService();
-			var existingOption = _ps.GetServiceOption(UserId, option.Id);       //option to amend
+			var existingOption = _ps.GetServiceOption(UserId, option.Id); //option to amend
 			if (image != null)
 			{
 				if (existingOption.Picture != null) /* deal with previous picture by deleting it */
@@ -309,25 +322,26 @@ namespace Prometheus.WebUI.Controllers
 			}
 			/*end of dealing with pictures */
 			/* deal with user inputs */
-			_ps.RemoveInputsFromServiceOption(UserId, option.Id, _ps.GetInputsForServiceOptions(UserId, new[] {new ServiceOptionDto {Id = option.Id} }));
+			_ps.RemoveInputsFromServiceOption(UserId, option.Id,
+				_ps.GetInputsForServiceOptions(UserId, new[] {new ServiceOptionDto {Id = option.Id}}));
 			if (userInputs != null)
 			{
 				var inputGroup = UserInputHelper.MakeInputGroup(userInputs);
 				_ps.AddInputsToServiceOption(UserId, option.Id, inputGroup);
 			}
 			try
-				{
-					existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
-					_ps.ModifyServiceOption(UserId, existingOption, EntityModification.Update);
-				}
-				catch (Exception exception)
-				{
-					TempData["MessageType"] = WebMessageType.Failure;
-					TempData["Message"] = $"Failed to save option, error: {exception.Message}";
-					return RedirectToAction("ShowServiceOption", new {id = option.Id});
-				}
-			
-			return RedirectToAction("ShowServiceOption", new { id = option.Id });
+			{
+				existingOption = AbbreviatedEntityUpdate.UpdateServiceOption(option, existingOption);
+				_ps.ModifyServiceOption(UserId, existingOption, EntityModification.Update);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to save option, error: {exception.Message}";
+				return RedirectToAction("ShowServiceOption", new {id = option.Id});
+			}
+
+			return RedirectToAction("ShowServiceOption", new {id = option.Id});
 
 		}
 
@@ -341,7 +355,7 @@ namespace Prometheus.WebUI.Controllers
 			_ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				var existingCategory = _ps.GetServiceOptionCategory(UserId, category.Id);//category to amend
+				var existingCategory = _ps.GetServiceOptionCategory(UserId, category.Id); //category to amend
 				existingCategory = AbbreviatedEntityUpdate.UpdateServiceCategory(category, existingCategory);
 				_ps.ModifyServiceOptionCategory(UserId, existingCategory, EntityModification.Update);
 			}
@@ -349,9 +363,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to save category, error: {exception.Message}";
-				return RedirectToAction("UpdateServiceCategory", new { id = category.Id });
+				return RedirectToAction("UpdateServiceCategory", new {id = category.Id});
 			}
-			return RedirectToAction("ShowOptionCategory", new { id = category.Id });
+			return RedirectToAction("ShowOptionCategory", new {id = category.Id});
 		}
 
 		/// <summary>
@@ -366,15 +380,15 @@ namespace Prometheus.WebUI.Controllers
 			if (catalog == "Business" || catalog == "Both")
 			{
 				services.AddRange(from s in _requestService.RequestBusinessCatalog(UserId)
-								  select new Tuple<int, string>(s.Id, s.Name));
+					select new Tuple<int, string>(s.Id, s.Name));
 			}
 
 			if (catalog == "Support" || catalog == "Both")
 			{
 				services.AddRange(from s in _requestService.RequestSupportCatalog(UserId)
-								  select new Tuple<int, string>(s.Id, s.Name));
+					select new Tuple<int, string>(s.Id, s.Name));
 			}
-			LinkListModel model = new LinkListModel { SelectedItemId = id, ListItems = services };
+			LinkListModel model = new LinkListModel {SelectedItemId = id, ListItems = services};
 			return PartialView("PartialViews/GetServiceNames", model);
 		}
 
@@ -399,7 +413,7 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				items = from s in _ps.AllServiceRequestPackages
-						select new Tuple<int, string>(s.Id, s.Name);
+					select new Tuple<int, string>(s.Id, s.Name);
 			}
 			catch (Exception exception)
 			{
@@ -426,24 +440,29 @@ namespace Prometheus.WebUI.Controllers
 				{
 					return RedirectToAction("AddPackage");
 				}
-				return RedirectToAction("UpdatePackage", new { id = package.Id });
+				return RedirectToAction("UpdatePackage", new {id = package.Id});
 			}
 
 			_ps = InterfaceFactory.CreatePortfolioService();
-			IServiceRequestPackageDto newPackage = new ServiceRequestPackageDto();      //transfer data to new package
+			IServiceRequestPackageDto newPackage = new ServiceRequestPackageDto(); //transfer data to new package
 			newPackage.Name = package.Name;
 			newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
 			newPackage.Id = package.Id;
 
-			int i = 1;		//used to order the category tags in a package
-			foreach (var category in package.Associations)      //build new package
+			int i = 1; //used to order the category tags in a package
+			foreach (var category in package.Associations) //build new package
 			{
-				newPackage.ServiceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto { ServiceOptionCategoryId = category, Order = i});
+				newPackage.ServiceOptionCategoryTags.Add(new ServiceOptionCategoryTagDto
+				{
+					ServiceOptionCategoryId = category,
+					Order = i
+				});
 				i++;
 			}
 			try
 			{
-				_ps.ModifyServiceRequestPackage(UserId, newPackage, newPackage.Id > 0 ? EntityModification.Update : EntityModification.Create);
+				_ps.ModifyServiceRequestPackage(UserId, newPackage,
+					newPackage.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{
@@ -454,7 +473,7 @@ namespace Prometheus.WebUI.Controllers
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved package";
 
-			return RedirectToAction("ShowPackages", new { id = 0 });
+			return RedirectToAction("ShowPackages", new {id = 0});
 		}
 
 		/// <summary>
@@ -492,8 +511,9 @@ namespace Prometheus.WebUI.Controllers
 			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				model.Option = ps.GetServiceOption(UserId, id);                 //get data for back links
-				model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId).Name;
+				model.Option = ps.GetServiceOption(UserId, id); //get data for back links
+				model.ServiceName =
+					ps.GetService(ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId).Name;
 				model.ServiceId = ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId;
 
 			}
@@ -518,8 +538,9 @@ namespace Prometheus.WebUI.Controllers
 			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				model.Option = ps.GetServiceOption(UserId, id);                 //get data for back links
-				model.ServiceName = ps.GetService(ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId).Name;
+				model.Option = ps.GetServiceOption(UserId, id); //get data for back links
+				model.ServiceName =
+					ps.GetService(ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId).Name;
 				model.ServiceId = ps.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId;
 
 			}
@@ -542,7 +563,7 @@ namespace Prometheus.WebUI.Controllers
 			var ps = InterfaceFactory.CreatePortfolioService();
 			try
 			{
-				model.Category = ps.GetServiceOptionCategory(UserId, id);                 //get data for back links
+				model.Category = ps.GetServiceOptionCategory(UserId, id); //get data for back links
 				model.ServiceName = ps.GetService(model.Category.ServiceId).Name;
 				model.ServiceId = model.Category.ServiceId;
 
@@ -574,10 +595,10 @@ namespace Prometheus.WebUI.Controllers
 					input = new ScriptedSelectionInputDto();
 					break;
 				case UserInputType.Selection:
-					input = new SelectionInputDto { Delimiter = "," };  //set the default to comma
+					input = new SelectionInputDto {Delimiter = ","}; //set the default to comma
 					break;
-				default:                                                //need a default
-					input = null;                                       //null is ok, razor will handle
+				default: //need a default
+					input = null; //null is ok, razor will handle
 					break;
 			}
 
@@ -593,38 +614,39 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="input">input dto</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveSelectionInput(ISelectionInputDto input)
+		public ActionResult SaveSelectionInput(SelectionInputDto input)
 		{
-			if (!ModelState.IsValid)                            //server side validation
+			if (!ModelState.IsValid) //server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save new User Input due to invalid data";
-				if (input.Id == 0)                              //depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputType.Selection });
-				return RedirectToAction("UpdateUserInput", new { type = UserInputType.Text, id = input.Id });
+				if (input.Id == 0) //depending on user action at the time
+					return RedirectToAction("AddUserInput", new {type = UserInputType.Selection});
+				return RedirectToAction("UpdateUserInput", new {type = UserInputType.Text, id = input.Id});
 			}
 
 			var ps = InterfaceFactory.CreatePortfolioService();
-			int entityId;           //returning id
-				try
+			int entityId; //returning id
+			try
 			{
 				if (input.Id == 0)
 				{
 					input.Delimiter = ConfigHelper.GetDelimiter();
 				}
-				entityId = ps.ModifySelectionInput(UserId, input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
+				entityId =
+					ps.ModifySelectionInput(UserId, input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
 			}
 			catch
 			{
 
-				if (input.Id == 0)                              //depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputType.Selection });
-				return RedirectToAction("UpdateUserInput", new { type = UserInputType.Selection, id = input.Id });
+				if (input.Id == 0) //depending on user action at the time
+					return RedirectToAction("AddUserInput", new {type = UserInputType.Selection});
+				return RedirectToAction("UpdateUserInput", new {type = UserInputType.Selection, id = input.Id});
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved new User Input";
 
-			return RedirectToAction("ShowUserInput", new { id = entityId, type = UserInputType.Selection });
+			return RedirectToAction("ShowUserInput", new {id = entityId, type = UserInputType.Selection});
 		}
 
 		/// <summary>
@@ -635,33 +657,35 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveScriptedSelectionInput(ScriptedSelectionInputDto input)
 		{
-			if (!ModelState.IsValid)                            //server side validation
+			if (!ModelState.IsValid) //server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save new User Input due to invalid data";
-				if (input.Id == 0)                              //depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputType.ScriptedSelection });
-				return RedirectToAction("UpdateUserInput", new { type = UserInputType.ScriptedSelection, id = input.Id });
+				if (input.Id == 0) //depending on user action at the time
+					return RedirectToAction("AddUserInput", new {type = UserInputType.ScriptedSelection});
+				return RedirectToAction("UpdateUserInput", new {type = UserInputType.ScriptedSelection, id = input.Id});
 			}
 
 			var ps = InterfaceFactory.CreatePortfolioService();
-			int entityId;               //get returning id
+			int entityId; //get returning id
 			try
 			{
-				entityId = ps.ModifyScriptedSelectionInput(UserId, input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
+				entityId =
+					ps.ModifyScriptedSelectionInput(UserId, input, input.Id > 0 ? EntityModification.Update : EntityModification.Create)
+						.Id;
 			}
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to save new User Input, error: {exception.Message}";
-				if (input.Id == 0)                              //depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputType.ScriptedSelection });
-				return RedirectToAction("UpdateUserInput", new { type = UserInputType.ScriptedSelection, id = input.Id });
+				if (input.Id == 0) //depending on user action at the time
+					return RedirectToAction("AddUserInput", new {type = UserInputType.ScriptedSelection});
+				return RedirectToAction("UpdateUserInput", new {type = UserInputType.ScriptedSelection, id = input.Id});
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved new User Input";
 
-			return RedirectToAction("ShowUserInput", new { id = entityId, type = UserInputType.ScriptedSelection });
+			return RedirectToAction("ShowUserInput", new {id = entityId, type = UserInputType.ScriptedSelection});
 		}
 
 		/// <summary>
@@ -672,33 +696,34 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveTextInput(TextInputDto input)
 		{
-			if (!ModelState.IsValid)                            //server side validation
+			if (!ModelState.IsValid) //server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save new User Input due to invalid data";
-				if (input.Id == 0)                              //depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputType.Text });
-				return RedirectToAction("UpdateUserInput", new { type = UserInputType.Text, id = input.Id });
+				if (input.Id == 0) //depending on user action at the time
+					return RedirectToAction("AddUserInput", new {type = UserInputType.Text});
+				return RedirectToAction("UpdateUserInput", new {type = UserInputType.Text, id = input.Id});
 			}
 
 			var ps = InterfaceFactory.CreatePortfolioService();
-			int entityId;         //new id of entity if not existing
+			int entityId; //new id of entity if not existing
 			try
 			{
-				entityId = ps.ModifyTextInput(UserId, input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
+				entityId =
+					ps.ModifyTextInput(UserId, input, input.Id > 0 ? EntityModification.Update : EntityModification.Create).Id;
 			}
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to save new User Input, error: {exception.Message}";
-				if (input.Id == 0)                              //depending on user action at the time
-					return RedirectToAction("AddUserInput", new { type = UserInputType.Text });
-				return RedirectToAction("UpdateUserInput", new { type = UserInputType.Text, id = input.Id });
+				if (input.Id == 0) //depending on user action at the time
+					return RedirectToAction("AddUserInput", new {type = UserInputType.Text});
+				return RedirectToAction("UpdateUserInput", new {type = UserInputType.Text, id = input.Id});
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved new User Input";
 
-			return RedirectToAction("ShowUserInput", new { id = entityId, UserInputType.Text });
+			return RedirectToAction("ShowUserInput", new {id = entityId, UserInputType.Text});
 		}
 
 		/// <summary>
@@ -746,7 +771,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteUserInput(UserInputType type, int id)
 		{
-			ConfirmDeleteModel model = new ConfirmDeleteModel { Type = type, Id = id };
+			ConfirmDeleteModel model = new ConfirmDeleteModel {Type = type, Id = id};
 			model.DeleteAction = "DeleteUserInput";
 			model.ReturnAction = "ShowUserInput";
 
@@ -770,7 +795,7 @@ namespace Prometheus.WebUI.Controllers
 			}
 			catch (Exception exception)
 			{
-				TempData["MessageType"] = WebMessageType.Failure;               //return incomplete data with an error message
+				TempData["MessageType"] = WebMessageType.Failure; //return incomplete data with an error message
 				TempData["Message"] = $"Failed to find user input, error: {exception.Message}";
 				return View(model);
 			}
@@ -788,22 +813,30 @@ namespace Prometheus.WebUI.Controllers
 		[ChildActionOnly]
 		public ActionResult GetUserInputs(UserInputType type = UserInputType.Text, int id = 0)
 		{
-			UserInputsLinkListModel itemList = new UserInputsLinkListModel { SelectedInputId = id, SelectedInputType = type, Action = "ShowUserInput" };
+			UserInputsLinkListModel itemList = new UserInputsLinkListModel
+			{
+				SelectedInputId = id,
+				SelectedInputType = type,
+				Action = "ShowUserInput"
+			};
 			_ps = InterfaceFactory.CreatePortfolioService();
 
-			List<Tuple<UserInputType, int, string>> items = new List<Tuple<UserInputType, int, string>>();    //for the model
+			List<Tuple<UserInputType, int, string>> items = new List<Tuple<UserInputType, int, string>>(); //for the model
 
 			try
 			{
-				var textInputs = _ps.GetTextInputs(UserId);                                   //store temporarily to check for nulls after
+				var textInputs = _ps.GetTextInputs(UserId); //store temporarily to check for nulls after
 				var selectionInputs = _ps.GetSelectionInputs(UserId);
 				var scriptedInputs = _ps.GetScriptedSelectionInputs(UserId);
-				if (textInputs != null)                                                //
-					items.AddRange(from s in textInputs select new Tuple<UserInputType, int, string>(UserInputType.Text, s.Id, s.DisplayName));
+				if (textInputs != null) //
+					items.AddRange(from s in textInputs
+						select new Tuple<UserInputType, int, string>(UserInputType.Text, s.Id, s.DisplayName));
 				if (textInputs != null)
-					items.AddRange(from s in selectionInputs select new Tuple<UserInputType, int, string>(UserInputType.Selection, s.Id, s.DisplayName));
+					items.AddRange(from s in selectionInputs
+						select new Tuple<UserInputType, int, string>(UserInputType.Selection, s.Id, s.DisplayName));
 				if (textInputs != null)
-					items.AddRange(from s in scriptedInputs select new Tuple<UserInputType, int, string>(UserInputType.ScriptedSelection, s.Id, s.DisplayName));
+					items.AddRange(from s in scriptedInputs
+						select new Tuple<UserInputType, int, string>(UserInputType.ScriptedSelection, s.Id, s.DisplayName));
 			}
 			catch (Exception exception)
 			{
@@ -826,7 +859,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowUserInput(UserInputType type = UserInputType.Text, int id = 0)
 		{
 			var ps = InterfaceFactory.CreatePortfolioService();
-			var model = new UserInputModel { InputType = type };
+			var model = new UserInputModel {InputType = type};
 			IUserInput input;
 
 			if (id > 0)
@@ -854,12 +887,12 @@ namespace Prometheus.WebUI.Controllers
 				{
 					TempData["MessageType"] = WebMessageType.Failure;
 					TempData["Message"] = $"Failed to retreive user input, error: {exception.Message}";
-					input = new TextInputDto();     //some default where id = 0
+					input = new TextInputDto(); //some default where id = 0
 				}
 			}
 			else
 			{
-				input = new TextInputDto();     //some default where id = 0
+				input = new TextInputDto(); //some default where id = 0
 			}
 			//input.ServiceOptionId = id;
 			model.UserInput = input;
@@ -881,13 +914,14 @@ namespace Prometheus.WebUI.Controllers
 				switch (deleteModel.Type)
 				{
 					case UserInputType.Text:
-						ps.ModifyTextInput(UserId, new TextInputDto { Id = deleteModel.Id }, EntityModification.Delete);
+						ps.ModifyTextInput(UserId, new TextInputDto {Id = deleteModel.Id}, EntityModification.Delete);
 						break;
 					case UserInputType.ScriptedSelection:
-						ps.ModifyScriptedSelectionInput(UserId, new ScriptedSelectionInputDto { Id = deleteModel.Id }, EntityModification.Delete);
+						ps.ModifyScriptedSelectionInput(UserId, new ScriptedSelectionInputDto {Id = deleteModel.Id},
+							EntityModification.Delete);
 						break;
 					case UserInputType.Selection:
-						ps.ModifySelectionInput(UserId, new SelectionInputDto { Id = deleteModel.Id }, EntityModification.Delete);
+						ps.ModifySelectionInput(UserId, new SelectionInputDto {Id = deleteModel.Id}, EntityModification.Delete);
 						break;
 				}
 			}
@@ -900,62 +934,66 @@ namespace Prometheus.WebUI.Controllers
 			TempData["Message"] = "Successfully deleted user input";
 
 
-			return RedirectToAction("ShowUserInput", new { id = 0 });
+			return RedirectToAction("ShowUserInput", new {id = 0});
 		}
-		
-		public ActionResult GetOptionUserInputsDropDown(int id, bool readOnly=false)
+
+		public ActionResult GetOptionUserInputsDropDown(int id, bool readOnly = false)
 		{
 			_ps = InterfaceFactory.CreatePortfolioService();
 			List<SelectListItem> inputDropDownList = new List<SelectListItem>();
 			List<IUserInput> inputs = new List<IUserInput>();
 
-			var textInputs = _ps.GetTextInputs(UserId);       //store temporarily to check for nulls after
+			var textInputs = _ps.GetTextInputs(UserId); //store temporarily to check for nulls after
 			var selectionInputs = _ps.GetSelectionInputs(UserId);
 			var scriptedInputs = _ps.GetScriptedSelectionInputs(UserId);
 
 			if (textInputs != null)
-				inputs.AddRange(from  i in textInputs select (IUserInput)i);
+				inputs.AddRange(from i in textInputs select (IUserInput) i);
 			if (selectionInputs != null)
-				inputs.AddRange(from i in selectionInputs select (IUserInput)i);
-			if(scriptedInputs != null)
-				inputs.AddRange(from i in scriptedInputs select (IUserInput)i);
-			inputs = inputs.OrderByDescending(i => i.DisplayName).ToList();         //sort all the data by display name
-																					//need to find already selected items
+				inputs.AddRange(from i in selectionInputs select (IUserInput) i);
+			if (scriptedInputs != null)
+				inputs.AddRange(from i in scriptedInputs select (IUserInput) i);
+			inputs = inputs.OrderByDescending(i => i.DisplayName).ToList(); //sort all the data by display name
+			//need to find already selected items
 			//user inputs for this user input
-			IInputGroupDto optionInputs = _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> {new ServiceOptionDto {Id = id}});
+			IInputGroupDto optionInputs = _ps.GetInputsForServiceOptions(UserId,
+				new List<IServiceOptionDto> {new ServiceOptionDto {Id = id}});
 
 			//now convert it to a select list for the drop down list
 
 			foreach (var input in inputs)
 			{
-				var selected = false;		//drop down list selection
+				var selected = false; //drop down list selection
 				string type = null;
 				if (input is TextInputDto)
 				{
 					type = "textInput";
-					if (optionInputs.TextInputs.Any() && (from i in optionInputs.TextInputs where i.Id == input.Id select true).FirstOrDefault())
+					if (optionInputs.TextInputs.Any() &&
+					    (from i in optionInputs.TextInputs where i.Id == input.Id select true).FirstOrDefault())
 						selected = true;
 				}
 				else if (input is SelectionInputDto)
 				{
 					type = "selectionInput";
-					if (optionInputs.SelectionInputs.Any() && (from i in optionInputs.SelectionInputs where i.Id == input.Id select true).FirstOrDefault())
+					if (optionInputs.SelectionInputs.Any() &&
+					    (from i in optionInputs.SelectionInputs where i.Id == input.Id select true).FirstOrDefault())
 						selected = true;
 				}
 				else if (input is ScriptedSelectionInputDto)
 				{
 					type = "scriptedSelectionInput";
-					if (optionInputs.ScriptedSelectionInputs.Any() && (from i in optionInputs.ScriptedSelectionInputs where i.Id == input.Id select true).FirstOrDefault())
+					if (optionInputs.ScriptedSelectionInputs.Any() &&
+					    (from i in optionInputs.ScriptedSelectionInputs where i.Id == input.Id select true).FirstOrDefault())
 						selected = true;
 				}
 
 				inputDropDownList.Add(new SelectListItem
 				{
 					Value = $"{type}_{input.Id}",
-					Text = input.DisplayName, 
+					Text = input.DisplayName,
 					Selected = selected
 				});
-			}		
+			}
 			return View("OptionUserInputsDropDown", inputDropDownList);
 		}
 
@@ -966,8 +1004,5 @@ namespace Prometheus.WebUI.Controllers
 
 			return View(model);
 		}
-
-		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
-
 	}
 }

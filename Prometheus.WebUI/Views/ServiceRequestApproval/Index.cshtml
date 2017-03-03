@@ -16,12 +16,11 @@
 	<table class="table table-hover">
 		<thead>
 		<tr>
-			<th>Id</th>
 			<th>Request</th>
 			<th>Status</th>
 			<th>Date Submitted</th>
 			<th>Date Required</th>
-			<th>Name</th>
+			<th>Requestor</th>
 			<th></th>
 		</tr>
 		</thead>
@@ -30,8 +29,7 @@
 		@foreach (var item in Model.ServiceRequests)
 		{
 			<tr>
-				<td>@item.Id</td>
-				<td>@Html.ActionLink(@item.PackageName, "Form", "ServiceRequest", new {id = item.Id, index = -1}, null)</td>
+				<td>@Html.ActionLink(item.Name, "ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = item.Id, index = -1}, null)</td>
 				<td>@item.State</td>
 				<td>@item.DateSubmitted</td>
 				<td>@item.DateRequired.ToString("d")</td>
@@ -43,11 +41,13 @@
 							<span aria-hidden="true">&#x25BC;</span>
 						</div>
 						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Cancel", "AddServiceSectionItem") </li>
+							<li>@Html.ActionLink("Cancel", "ConfirmServiceRequestStateChange", new {id = item.Id, nextState = ServiceRequestState.Cancelled}) </li>
 
-							<li>@Html.ActionLink("Approve", "ChangeState", new {nextState = ServiceRequestState.Approved})</li>
+							<li>@Html.ActionLink("Submit", "ConfirmServiceRequestStateChange", new { id = item.Id, nextState = ServiceRequestState.Submitted })</li>
 
-							<li>@Html.ActionLink("Reject", "ConfirmDeleteServiceSwotItem")</li>
+							<li>@Html.ActionLink("Approve", "ConfirmServiceRequestStateChange", new {id = item.Id, nextState = ServiceRequestState.Approved})</li>
+
+							<li>@Html.ActionLink("Reject", "ConfirmServiceRequestStateChange")</li>
 						</ul>
 					</div>
 				</td>
@@ -57,5 +57,5 @@
 }
 else
 {
-	
+	<div class="alert make-space-top">No service requests found</div>
 }

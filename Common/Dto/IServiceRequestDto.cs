@@ -19,6 +19,7 @@ namespace Common.Dto
 		DateTime RequestedForDate { get; set; }
 
 		string Officeuse { get; set; }
+		string Name { get; set; }
 		ServiceRequestState State { get; set; }
 		DateTime? SubmissionDate { get; set; }
 

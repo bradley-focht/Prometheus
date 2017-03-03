@@ -3,12 +3,13 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.UserAccount;
 using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
-    public class UserAccountController : Controller
+    public class UserAccountController :PrometheusController
     {
         /// <summary>
         /// user manager functions for security
@@ -26,6 +27,7 @@ namespace Prometheus.WebUI.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
+
             return View();
         }
 
@@ -40,7 +42,7 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult Login(UserAccountModel userLogin)
         {
             if (!ModelState.IsValid)
-                return View("Index");
+                return RedirectToAction("Index", "UserAccount");
 
             //validate login, create session cookie
             

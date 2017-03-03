@@ -43,6 +43,7 @@ namespace Prometheus.WebUI.Helpers
 		{
 			target.BusinessValue = src.BusinessValue;
 			target.Popularity = src.Popularity;
+			target.Code = src.Code.ToUpper();
 			target.Quantifiable = src.Quantifiable;
 
 			return target;
@@ -58,6 +59,7 @@ namespace Prometheus.WebUI.Helpers
 		{
 			target.BusinessValue = src.BusinessValue;
 			target.Popularity = src.Popularity;
+			target.Code = src.Code.ToUpper();
 			target.Quantifiable = src.Quantifiable;
 
 			return target;

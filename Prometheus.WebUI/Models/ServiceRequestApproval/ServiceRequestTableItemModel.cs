@@ -13,7 +13,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestApproval
         /// <summary>
         /// Service Request "name"
         /// </summary>
-        public string PackageName { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// Display Name
         /// </summary>

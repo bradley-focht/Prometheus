@@ -6,13 +6,14 @@ using Common.Dto;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceCatalog;
 using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
 	[Authorize]
-	public class ServiceCatalogController : Controller
+	public class ServiceCatalogController : PrometheusController
 	{
 		private readonly int _pageSize;
 		private readonly ICatalogController _requestService;
@@ -252,6 +253,5 @@ namespace Prometheus.WebUI.Controllers
 			return View(model);
 		}
 
-		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

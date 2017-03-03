@@ -9,7 +9,12 @@
 else
 {
 	<div class="input-group">
-		@Html.TextBox(Model.ControlName + "Value", null, new {@class = "form-control", id = StringHelper.RemoveSpaces(Model.Control.DisplayName)})
+		@Html.TextBox(Model.ControlName + "Value", null, new
+   {
+	   @class = "form-control", id = StringHelper.RemoveSpaces(Model.Control.DisplayName),
+	   data_val_required = "Required"
+   })
+		@Html.ValidationMessage($"{Model.ControlName}Value")
 		<span class="input-group-btn">
             <a class="btn btn-primary" data-html="true" data-toggle="tooltip" data-placement="top" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></a>
         </span>

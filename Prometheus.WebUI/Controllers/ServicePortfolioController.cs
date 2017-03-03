@@ -1,12 +1,13 @@
 ﻿using System.Web.Mvc;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServicePortfolio;
 using Prometheus.WebUI.Models.Shared;
 
 namespace Prometheus.WebUI.Controllers
 {
-	public class ServicePortfolioController : Controller
+	public class ServicePortfolioController : PrometheusController
 	{
 		/// <summary>
 		/// Main page to display all Service Bundles
@@ -142,7 +143,5 @@ namespace Prometheus.WebUI.Controllers
 
 			return PartialView("PartialViews/_LinkList", serviceBundleModel);
 		}
-
-		public int UserId {get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

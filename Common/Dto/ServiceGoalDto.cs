@@ -35,6 +35,7 @@ namespace Common.Dto
 		/// <summary>
 		/// Identify if short term or long term
 		/// </summary>
+		[Required(ErrorMessage = "Goal type is required")]
 		public ServiceGoalType Type { get; set; }
 
 		[Display(Name = "Start Date")]

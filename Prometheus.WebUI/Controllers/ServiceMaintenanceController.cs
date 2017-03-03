@@ -3,12 +3,13 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 
 namespace Prometheus.WebUI.Controllers
 {
 	[Authorize]
-	public class ServiceMaintenanceController : Controller
+	public class ServiceMaintenanceController : PrometheusController
 	{
 		/// <summary>
 		/// Returns main scree, this is the menu options
@@ -37,7 +38,7 @@ namespace Prometheus.WebUI.Controllers
 			if (model == null)
 				model = new ServiceDto { Id = 0 };
 
-			return View(model);
+			return View(model as ServiceDto);
 		}
 
 		/// <summary>
@@ -74,7 +75,7 @@ namespace Prometheus.WebUI.Controllers
 			var model = ps.GetLifecycleStatus(id);
 			if (model == null)
 				model = new LifecycleStatusDto { Id = 0 };
-			return View(model);
+			return View(model as LifecycleStatusDto);
 		}
 
 		/// <summary>
@@ -233,6 +234,5 @@ namespace Prometheus.WebUI.Controllers
 			return View("PartialViews/StatusCountDropDown", optionsList);
 		}
 
-		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

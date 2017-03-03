@@ -1,4 +1,5 @@
-﻿@using Prometheus.WebUI.Helpers
+﻿@using Common.Enums
+@using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 @{
@@ -23,7 +24,7 @@
 		<div class="dd ful">
 			<div class="dd-row">
 				<div class="dd-cell-base dt-font">Service Request </div>
-				<div class="dd-cell-base">@Model.Package.Name</div>
+				<div class="dd-cell-base">@Model.ServiceRequest.Name</div>
 				@if (Model.PriceMonthly > 0 || Model.PriceUpFront > 0)
 				{
 					<div class="dd-cell-base dt-font">Price</div>
@@ -47,13 +48,6 @@
 					</div>
 				}
 
-			</div>
-			<div class="dd-row">
-				@if (Model.ServiceRequestId > 0)
-				{
-					<div class="dd-cell-base dt-font">Id</div>
-					<div class="dd-cell-base">@Model.ServiceRequestId</div>
-				}
 			</div>
 			<div class="dd-row">
 				<div class="dd-cell-base dt-font">Status</div>
@@ -103,7 +97,7 @@
 		<div class="panel-footer">
 			<div class="float-right-div">
 				<button type="submit" value="99999" name="submit" class="btn btn-danger">Cancel Request</button>
-				@if (Model.ServiceRequestId > 0 && Model.ServiceRequest.ServiceRequestOptions.Count > 0)
+				@if (Model.ServiceRequestId > 0)
 				{
 					<button type="submit" value="9999" name="submit" class="btn btn-primary">Submit Request</button>
 				}
@@ -165,11 +159,14 @@
 			var i;
 			for (i = 0; i < inputs.length; i++) {
 				if (inputs[i].used === true) {
-					document.getElementById("div_" + inputs[i].name).style.display = '';
-					document.getElementById(inputs[i].name).value = '';
+					var div = document.getElementById("div_" + inputs[i].name);
+					if (div.style.display != '') {
+						div.style.display = '';
+						document.getElementById(inputs[i].name).value = '';
+					}
+
 				} else {
 					document.getElementById("div_" + inputs[i].name).style.display = 'none';
-
 				}
 			}
 		};
@@ -194,15 +191,29 @@
 		}
 			UpdateOptions();
 			@if (Model.ServiceRequest.ServiceRequestUserInputs != null)
-		{
-			foreach (var userData in Model.ServiceRequest.ServiceRequestUserInputs)
 			{
-				<text>
-			if (document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))"))
-				document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Value';
-			</text>
+				foreach (var userData in Model.ServiceRequest.ServiceRequestUserInputs)
+				{
+					<text>
+			if (document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))")) {
+				@if (userData.UserInputType == UserInputType.Selection || userData.UserInputType == UserInputType.ScriptedSelection)
+				{
+					<text>
+				document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").selectize.setValue('@userData.Value', 0);
+				</text>
+				}
+				else
+				{
+					<text>
+					document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Value';
+					</text>
+				}
+
+				document.getElementById("data_id_@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Id ';
 			}
-		}
+			</text>
+				}
+			}
 		});
 	</script>
 }

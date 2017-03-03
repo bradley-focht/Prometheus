@@ -581,6 +581,7 @@ namespace DataService
 				ServiceId = src.ServiceId,
 				Popularity = src.Popularity,
 				Features = src.Features,
+				Code = src.Code,
 				Benefits = src.Benefits,
 				Support = src.Support,
 				Name = src.Name,
@@ -607,6 +608,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Popularity = src.Popularity,
+				Code = src.Code,
 				ServiceId = src.ServiceId,
 				Name = src.Name,
 				Features = src.Features,
@@ -856,6 +858,7 @@ namespace DataService
 			return new ServiceRequest
 			{
 				Id = src.Id,
+				Name = src.Name,
 				State = src.State,
 				ApprovalDate = src.ApprovalDate,
 				ApproverUserId = src.ApproverUserId,
@@ -894,6 +897,7 @@ namespace DataService
 			return new ServiceRequestDto()
 			{
 				Id = src.Id,
+				Name = src.Name,
 				State = src.State,
 				ApprovalDate = src.ApprovalDate,
 				ApproverUserId = src.ApproverUserId,
@@ -1031,6 +1035,30 @@ namespace DataService
 				InputId = src.InputId,
 				UserInputType = src.UserInputType,
 				Value = src.Value
+			};
+		}
+
+		public static Department MapDtoToDepartment(IDepartmentDto src)
+		{
+			if (src == null)
+				return null; 
+
+			return new Department
+			{
+				Id = src.Id,
+				Name = src.Name
+			};
+		}
+
+		public static DepartmentDto MapDepartmentDto(IDepartment src)
+		{
+			if (src == null)
+				return null;
+
+			return new DepartmentDto
+			{
+				Id = src.Id,
+				Name = src.Name
 			};
 		}
 	}

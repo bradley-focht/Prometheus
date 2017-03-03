@@ -1,12 +1,13 @@
 ﻿@model dynamic
     @foreach (var property in ViewData.ModelMetadata.Properties)
-    {
-        switch (property.PropertyName)
-        {
-            case "Details":
-            case "Name":
-            case "Popularity":
-            case "BusinessValue":
+	{
+		switch (property.PropertyName)
+		{
+			case "Details":
+			case "Name":
+			case "Popularity":
+			case "Code":
+			case "BusinessValue":
                 <div class="dd-row">
                     <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
                     <div class="dd-cell">@Html.Raw(property.Model)</div>

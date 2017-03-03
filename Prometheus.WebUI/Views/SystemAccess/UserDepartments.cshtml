@@ -1,0 +1,36 @@
+﻿@model Prometheus.WebUI.Models.SystemAccess.ManageUserDepartmentModel
+
+@{
+	ViewBag.Title = "System Access";
+	ViewBag.SubTitle = "Manage User Departments";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
+		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+	};
+}
+
+<div class="dd" style="width: 60%;">
+	<div class="dd-row">
+
+		@if (Model.Users != null && Model.Users.Any())
+		{
+			<div class="dd-cell-nostyle" style="margin-right: 10px; width: 50%">
+				<div class="title-div">Users</div>
+			</div>
+			<div class="dd-cell-nostyle" style="width: 50%;">
+				<div class="title-div make-space-left">Roles</div>
+			</div>
+		}
+		else
+		{
+			<div class="dd-cell-nostyle" style="width: 50%;"></div>
+		}
+	</div>
+</div>
+
+
+

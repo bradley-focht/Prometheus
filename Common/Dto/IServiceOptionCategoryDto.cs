@@ -6,6 +6,7 @@ namespace Common.Dto
 	public interface IServiceOptionCategoryDto : ICatalogPublishable
 	{
 		IServiceDto Service { get; set; }
+		string Code { get; set; }
 		int ServiceId { get; set; }
 		string Features { get; set; }
 		string Benefits { get; set; }

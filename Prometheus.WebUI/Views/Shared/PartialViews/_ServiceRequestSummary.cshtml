@@ -9,31 +9,24 @@
 					<div class="dd-cell-base"> name </div>
 					<div></div>
 					<div class="dd-cell-base dt-font">Service Request</div>
-					<div class="dd-cell-base">@Model.ServiceRequestModel.Package.Name</div>
+					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Name</div>
 
 				</div>
 				<div class="dd-row">
 					<div class="dd-cell-base dt-font">Requested For</div>
 					<div class="dd-cell-base"> hopefully not too many names in here</div>
 					<div></div>
-					<div class="dd-cell-base dt-font">Id</div>
-					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Id</div>
-				</div>
-
-				<div class="dd-row">
-
-					<div class="dd-cell-base"></div>
-					<div class="dd-cell-base"></div>
-					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base dt-font">Status</div>
 					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.State</div>
 				</div>
+
 				<div class="dd-row">
+
 					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base dt-font">Office-Use</div>
-					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Officeuse</div>				
+					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Officeuse</div>
 				</div>
 			</div>
 		</div>
@@ -75,41 +68,54 @@
 					</div>
 				</div>
 			</div>
-			</div>
-				<div class="panel-body">
-					<span class="subsubtitle-div">Details</span>
-					<input id="drop-checkbox-details" type="checkbox" class="drop-checkbox-request">
-					<label for="drop-checkbox-details" id="example" class="drop-text-request" data-toggle="collapse" data-target="#drop-details">Show details</label>
-					<div class="collapse" id="drop-details">
-						<div class="dd">
-							@foreach (var displayItem in Model.DisplayList)
-							{
-								if (displayItem.Options != null && displayItem.Options.Any())
-								{
-									<div class="dd-row">
-										<div class="dd-cell-base dt-font">@displayItem.Category.Name</div>
-									</div>
-									<div class="dd-row">
-										@foreach (var option in displayItem.Options)
-										{
-											<div class="dd-cell-base">@option.ServiceRequestOption.Quantity @option.ServiceOption.Name</div>
-										}
-									</div>
-									<div class="dd">
-										<div class="dd-row">
-											<div class="dd-cell-base"></div>
-										</div>
-									</div>
-								}
-							}
+		</div>
+		<div class="panel-body">
+			<span class="subsubtitle-div">Details</span>
+			<input id="drop-checkbox-details" type="checkbox" class="drop-checkbox-request">
+			<label for="drop-checkbox-details" id="example" class="drop-text-request" data-toggle="collapse" data-target="#drop-details">Show details</label>
+			<div class="collapse" id="drop-details">
+				<div class="dd">
+					@if (Model.DisplayList != null)
+					{
+						foreach (var displayOption in Model.DisplayList)
+						{
 							<div class="dd-row">
-								<div class="dd-cell-base">
-							
+								<div class="dd-cell-base dt-font">
+									@displayOption.ServiceOption.Name
+									@if (displayOption.ServiceRequestOption.Quantity > 1)
+									{
+										<span>(@displayOption.ServiceRequestOption.Quantity)</span>
+									}
 								</div>
 							</div>
+							foreach (var userData in displayOption.UserInputs)
+							{
+								<div class="dd-row">
+									<div class="dd-cell-base">
+										<span class="make-space-left make-space-right bold">
+											@userData.DisplayName
+										</span>
+										<span>@userData.ServiceRequestUserInput.Value</span>
+									</div>
+								</div>
+							}
+						}
+					}
+				</div>
 
-						</div>
+
+				<div class="dd">
+					<div class="dd-row">
+						<div class="dd-cell-base">Price Upfront</div>
+						<div class="dd-cell-base">$</div>
+					</div>
+
+					<div class="dd-row">
+						<div class="dd-cell-base">Price Monthly</div>
+						<div class="dd-cell-base"></div>
 					</div>
 				</div>
 			</div>
 		</div>
+	</div>
+</div>
