@@ -84,6 +84,34 @@ namespace Prometheus.WebUI.Controllers
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"New service {newScript.Name} saved successfully";
 
+            if (Request.Files.Count > 0)
+            {
+                var fileName = Path.GetFileName(file.FileName);
+
+                if (fileName != null)
+                {
+                    Guid newFileName = Guid.NewGuid(); //to rename document			
+                                                       //file path location comes from the Web.config file
+                    try
+                    {
+                        var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+                        file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
+                        new ScriptFileController().ModifyScript(UserId, new ScriptDto()
+                        {
+                            MimeType = file.ContentType,
+                            Filename = Path.GetFileNameWithoutExtension(fileName),
+                            ScriptFile = newFileName,
+                            UploadDate = DateTime.Now,
+                        }, EntityModification.Create);
+                    }
+                    catch (Exception exception)
+                    {
+                        TempData["MessageType"] = WebMessageType.Failure;
+                        TempData["Message"] = $"Failed to upload document, error: {exception.Message}";
+                    }
+                }
+            }
+
             //return to a vew that will let the user now add to the SDP of the service
             return RedirectToAction("Index");
         }
@@ -98,7 +126,7 @@ namespace Prometheus.WebUI.Controllers
             if (Request.Files.Count > 0)
             {
                 var fileName = Path.GetFileName(file.FileName);
-                var ps = InterfaceFactory.CreatePortfolioService();
+                // var ps = InterfaceFactory.CreatePortfolioService();
 
                 if (fileName != null)
                 {

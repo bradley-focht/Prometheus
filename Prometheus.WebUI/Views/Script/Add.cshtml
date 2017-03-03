@@ -29,7 +29,7 @@
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Name) </div>
                     <div class="dd-cell">
-                   w     @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
+                        @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -75,7 +75,7 @@
                 </div>
             </div>
         @*}*@
-       <div class="flex-container-col">s
+       <div class="flex-container-col">
             @* control buttons at the bottom *@
             <div class="panel-footer">
                 <div class="float-right-div">

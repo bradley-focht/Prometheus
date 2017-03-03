@@ -35,20 +35,18 @@
             </table>
         }
     }
-    else
-    {
-        <p> No Scripts available </p>
-    }
+
 }
 }
 
 @section Sidebar{
     <div class="flex-container-col">
-    @* control buttons at the bottom *@
-    <div class="panel-footer">
-        <div class="float-right-div">
-            @Html.ActionLink("Add", "Add", new { }, new { @class = "btn btn-primary" })
+        <p> No Scripts available </p>
+        @* control buttons at the bottom *@
+        <div class="panel-footer">
+            <div class="float-right-div">
+                @Html.ActionLink("Add", "Add", new {}, new {@class = "btn btn-primary"})
+            </div>
         </div>
     </div>
-</div>
 }
