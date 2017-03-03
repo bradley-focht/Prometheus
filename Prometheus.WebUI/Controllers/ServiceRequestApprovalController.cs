@@ -35,46 +35,32 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls { CurrentPage = pageId } };
-
-			
-			List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
-
-			var srList = _ps.GetServiceRequestsForRequestorId(UserId, UserId).ToList();      //for pagination
-			if (srList.Count > _pageSize)
-			{
-				model.Controls.TotalPages = (srList.Count + _pageSize - 1) / _pageSize;
-				srList = srList.Skip(_pageSize * pageId).Take(_pageSize).ToList();
-			}
-
-			foreach (var item in srList)
-			{
-
-					requests.Add(new ServiceRequestTableItemModel
-					{
-						Id = item.Id,
-						State = item.State,
-						PackageName =  "SR", //ServicePackageHelper.GetPackage(UserId, _ps, item.ServiceOptionId).Name,
-						DateRequired = item.RequestedForDate,
-						DateSubmitted = item.SubmissionDate
-					});
-			}
-			model.ServiceRequests = requests;
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_ps, UserId, pageId, _pageSize, ServiceRequestState.Incomplete);
 			return View(model);
 		}
 
 		/// <summary>
-		/// Filter by state
+		/// Filter My Service Requests by state
 		/// </summary>
 		/// <param name="state"></param>
 		/// <param name="pageId"></param>
 		/// <returns></returns>
-		public ActionResult FilterStatus(ServiceRequestState state, int pageId )
+		public ActionResult FilterStatus(ServiceRequestState state, int pageId=0)
 		{
-			return View("Index");
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_ps, UserId, pageId, _pageSize, state);
+			model.Controls.FilterAction = "FilterStatus";
+			model.Controls.FilterStateRequired = true;
+			return View("Index", model);
 		}
 
-		public ActionResult FilterGroupStatus(ServiceRequestState state, int pageId)
+		public ActionResult AllServiceRequests(int pageId = 0)
+		{
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllRequests(_ps, UserId, pageId, _pageSize);
+			model.Controls.FilterText = "AllServiceRequests";
+			return View("Index", model);
+		}
+
+		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId)
 		{
 			return View("Index");
 		}

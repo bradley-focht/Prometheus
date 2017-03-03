@@ -1,11 +1,11 @@
-﻿@model Common.Dto.IServiceGoalDto
+﻿@model Common.Dto.ServiceGoalDto
 
 @using Common.Enums.Entities
 
 <input type="hidden" name="Id" value="@Model.Id" />
 <input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
-<div class="dd">
+<div class="dd make-space-top">
 
     <div class="dd-row">
         <div class="dt-cell">Name</div>
@@ -40,7 +40,7 @@
     <div class="dd-row">
         <div class="dt-cell">Start Date</div>
         <div class="dd-cell">
-            <div class="input-group date">
+            <div class="input-group date" data-provide="datepicker">
                 @Html.TextBox("StartDate", Model.StartDate?.ToString("MM/dd/yyyy") ?? "", new { @class = "form-control" })
                 <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>
@@ -50,7 +50,7 @@
     <div class="dd-row">
         <div class="dt-cell">End Date</div>
         <div class="dd-cell">
-            <div class="input-group date">
+            <div class="input-group date" data-provide="datepicker">
                 @Html.TextBox("EndDate", Model.StartDate?.ToString("d") ?? "", new { @class = "form-control" })
                 <span class="input-group-addon"><i class="fa fa-calendar" aria-hidden="true"></i></span>
             </div>

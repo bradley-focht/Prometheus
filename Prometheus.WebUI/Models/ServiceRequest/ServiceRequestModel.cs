@@ -44,7 +44,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// <summary>
 		/// who is this request for
 		/// </summary>
-		[Required(ErrorMessage = "At least one rrequestee is required")]
+		[Required(ErrorMessage = "At least one requestee is required")]
 		public IEnumerable<string> Requestees { get; set; }
 
 		/// <summary>

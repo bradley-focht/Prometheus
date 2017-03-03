@@ -13,6 +13,7 @@ namespace DataService.Models
 
 		string Comments { get; set; }
 		string Officeuse { get; set; }
+		string Name { get; set; }
 		DateTime CreationDate { get; set; }
 		DateTime? SubmissionDate { get; set; }
 		DateTime? ApprovalDate { get; set; }

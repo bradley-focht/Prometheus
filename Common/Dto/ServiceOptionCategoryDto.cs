@@ -20,6 +20,11 @@ namespace Common.Dto
 		public int ServiceId { get; set; }
 
 		/// <summary>
+		/// SR name code
+		/// </summary>
+		[Display(Order = 2)]
+		public string Code { get; set; }
+		/// <summary>
 		/// Used for sorting in service catalog
 		/// Inherited from ICatalogable
 		/// </summary>

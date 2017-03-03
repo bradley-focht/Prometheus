@@ -3,6 +3,9 @@ using System.Web.Mvc;
 
 namespace Prometheus.WebUI.Infrastructure
 {
+	/// <summary>
+	/// Implement session
+	/// </summary>
 	public abstract class PrometheusController : Controller
 	{
 		/// <summary>

@@ -7,12 +7,12 @@
 
 <table>
 	<tr>
-	<td class="dt-cell">Name</td>
-	<td class="dd-cell">
+		<td class="dt-cell">Name</td>
+		<td class="dd-cell">
 			@Html.TextBox("Name", Model.Name, new { @class = "form-control" })
-		@Html.ValidationMessage("Name")
-	</td>
-</tr>
+			@Html.ValidationMessage("Name")
+		</td>
+	</tr>
 </table>
 
 <div class="flex-container-col">
@@ -46,6 +46,17 @@
 		{
 			<label class="btn btn-default" id="SupportingCatalog@(permission)">
 				@Html.RadioButton("SupportCatalogAccess", permission, false)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+	<div class="dt-text make-space-top">Service Catalaog Maintenance</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (ServiceCatalogMaintenance permission in Enum.GetValues(typeof(ServiceCatalogMaintenance)))
+		{
+			<label class="btn btn-default" id="ServiceCatalogMaintenance@(permission)">
+				@Html.RadioButton("ServiceCatalogMaintenance", permission, false)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
@@ -108,8 +119,8 @@
 	$('#RolePermissionAdjustment@(Model.RolePermissionAdjustmentAccess)').button('toggle');
 	$('#ServiceRequestSubmission@(Model.ServiceRequestSubmissionAccess)').button('toggle');
 	$('#UserRoleAssignment@(Model.UserRoleAssignmentAccess)').button('toggle');
+	$('#ServiceCatalogMaintenance@(Model.ServiceCatalogMaintenanceAccess)').button('toggle');
+
 
 	
-
-
 </script>

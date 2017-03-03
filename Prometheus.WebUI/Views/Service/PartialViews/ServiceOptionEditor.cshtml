@@ -3,27 +3,28 @@
 <input type="hidden" name="Id" value="@Model.Id" />
 
     @foreach (var property in ViewData.ModelMetadata.Properties)
-    {
-        switch (property.PropertyName)
-        {
-            case "Id":  /*do nothing for these attributes */
-            case "ServiceId":
-            case "DateCreated":
-            case "DateUpdated":
-            case "CreatedByUserId":
-            case "UpdatedByUserId":
-            case "PictureMimeType":
-            case "TextInputs":
-            case "ScriptedSelectionInputs":
-            case "SelectionInputs":
-            case "ServiceOptionCategoryId":
-            case "Popularity":
-            case "Usage":
-            case "Picture":
-            case "Details":
-            case "BusinessValue":
-                continue;
-        }
+	{
+		switch (property.PropertyName)
+		{
+			case "Id":  /*do nothing for these attributes */
+			case "ServiceId":
+			case "DateCreated":
+			case "DateUpdated":
+			case "CreatedByUserId":
+			case "UpdatedByUserId":
+			case "PictureMimeType":
+			case "TextInputs":
+			case "ScriptedSelectionInputs":
+			case "SelectionInputs":
+			case "ServiceOptionCategoryId":
+			case "Popularity":
+			case "Usage":
+			case "Code":
+			case "Picture":
+			case "Details":
+			case "BusinessValue":
+				continue;
+		}
         <div class="dd-row">
             <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 

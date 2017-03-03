@@ -15,8 +15,12 @@ namespace DataService.Models
 		// prevent a cycle in a cascading delete
 		// the fk is for temporary use until request is approved
 
-			//TODO: after Approval, wipe this field  (it is only used to create the SRS forms UI)
+		/// <summary>
+		///  after Approval, this field is removed and is no longer valid
+		/// </summary>
 		public int? ServiceOptionId { get; set; }
+
+		public string Name { get; set; }
 		public int RequestedByUserId { get; set; }
 		public string Comments { get; set; }   
 		public string Officeuse { get; set; }

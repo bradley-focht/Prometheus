@@ -9,6 +9,7 @@ using Common.Dto;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
 using ServicePortfolioService;
@@ -16,7 +17,7 @@ using ServicePortfolioService;
 namespace Prometheus.WebUI.Controllers
 {
 	[Authorize]
-	public class ServiceController : Controller
+	public class ServiceController : PrometheusController
 	{
 		private const int ServicePageSize = 12;
 
@@ -1764,7 +1765,5 @@ namespace Prometheus.WebUI.Controllers
 			catch { /* ignored */}
 			return File(fileData, option.PictureMimeType);
 		}
-
-		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
 	}
 }

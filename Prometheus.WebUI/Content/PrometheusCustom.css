@@ -58,6 +58,10 @@
     display: inline-block;
 }
 
+.bold {
+	font-weight: 500;
+}
+
 .copyright-notice {
     font-size: 0.8em;
     color: #aaaaaa;
@@ -111,13 +115,22 @@
 }
 
 .form-number {
-    max-width: 50px;
+    max-width: 60px;
 }
 
 .form-date {
     max-width: 150px;
 }
 
+.form-short-text {
+	max-width: 100px;
+}
+
+.form-code {
+	text-transform: uppercase;
+	max-width: 120px;
+
+}
 .font-home-link {
     color: #19A7F8;
     font-weight: 600;
@@ -183,6 +196,11 @@
 
 .flex-row {
     flex: 1;
+    display: flex;
+}
+
+.flex-cell {
+	flex: 1;
     display: flex;
 }
 
@@ -417,6 +435,7 @@
     border-radius: 2px;
     border: 1px solid transparent;
     background-color: #f5f5f5;
+	display: inline-block;
 }
 
 .panel-div {
@@ -995,5 +1014,14 @@
 
 .standard-padding {
 	padding: 10px;
+}
+
+.login-panel {
+	max-width: 600px;
+	box-shadow: 10px 10px 5px #666;
+}
+
+.shadow {
+	box-shadow: 10px 10px 5px #666;
 }
 

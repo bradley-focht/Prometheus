@@ -1,5 +1,4 @@
 ﻿@using Common.Dto
-@using Common.Enums.Entities
 @model dynamic
 
 
@@ -25,14 +24,13 @@
 				case "TextInputs":
 				case "ScriptedSelectionInputs":
 				case "SelectionInputs":
-
+				case "Code":
 
 				continue;
 			}
 
 		<div class="dd-row">
             <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-
 
 			@switch (property.PropertyName)
 	{

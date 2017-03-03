@@ -8,13 +8,14 @@ using Common.Enums.Entities;
 using Ninject.Infrastructure.Language;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
+using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequest;
 using RequestService.Controllers;
 using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
-	public class ServiceRequestController : Controller
+	public class ServiceRequestController : PrometheusController
 	{
 		private readonly IPortfolioService _ps;
 		private IServiceRequestOptionController _rs;
@@ -48,7 +49,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveInfo(ServiceRequestInfoReturnModel form, int submit)
 		{
-
 			if (submit == 9999 && form.Id == 0)
 			{
 				return RedirectToAction("Index", "ServiceRequestApproval");
@@ -73,11 +73,16 @@ namespace Prometheus.WebUI.Controllers
 				ServiceOptionId = form.ServiceOptionId,
 				RequestedForDate = form.RequestedDate
 			};
-
+			
 			model.CurrentIndex = 0;
 			try
 			{
 				request = (ServiceRequestDto)_ps.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+
+				//make sr name & save it
+				if (request.ServiceOptionId != null)
+					request.Name = $"{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}_{request.Id}" ;
+				_ps.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{
@@ -209,7 +214,10 @@ namespace Prometheus.WebUI.Controllers
 					}
 				}
 			}
-			var userInputs = (from u in form.UserInput select new UserInputTag { UserInput = u, Required = false }).ToList();
+			ICollection<UserInputTag> userInputs;
+			if (form.UserInput == null) { userInputs = new List<UserInputTag>(); }
+			else { userInputs = (from u in form.UserInput select new UserInputTag { UserInput = u, Required = false }).ToList(); }
+
 			var options = from o in model.ServiceRequest.ServiceRequestOptions select new ServiceOptionDto { Id = o.ServiceOptionId };
 			var requiredInputs = _ps.GetInputsForServiceOptions(UserId, options);
 			//clean up - figure out what can be removed
@@ -326,6 +334,6 @@ namespace Prometheus.WebUI.Controllers
 			return View("ServiceRequest", model);
 		}
 
-		public int UserId { get { return int.Parse(Session["Id"].ToString()); } }
+
 	}
 }

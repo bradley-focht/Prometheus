@@ -18,5 +18,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         public string BusinessValue { get; set; }
         [Required]
         public bool Quantifiable { get; set; }
+		[Required]
+		public string Code { get; set; }
     }
 }

@@ -1,0 +1,93 @@
+﻿@model Prometheus.WebUI.Models.SystemAccess.ServiceQueueModel
+@{
+	ViewBag.Title = "System Access";
+	ViewBag.SubTitle = "Queues";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	ViewBag.Links = new List<KeyValuePair<string, string>>
+	{
+		new KeyValuePair<string, string>("Home", "Home"),
+		new KeyValuePair<string, string>("System Access", "SystemAccess/Index"),
+	new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+	};
+
+}
+
+<div class="title-div">@ViewBag.SubTitle</div>
+<div class="panel-div">
+
+	<div class="flex-container-col" style="flex-direction: column">
+		<div class="dd">
+			<div class="dd-row">
+				<div class="dd-cell-base dt-font">Queue</div>
+				<div class="dd-cell-base dt-font">Name</div>
+			</div>
+		</div>
+
+		<div class="make-space-top">
+			<div class="dd">
+				<div class="dd-row">
+					<div class="dd-cell-base" style="width: 70px;">1</div>
+					<div class="dd-cell-base" style="width: 50px;">SSE</div>
+					<div class="dd-cell-base">
+						<div class="btn-group">
+							<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
+								<span aria-hidden="true">&#x25BC;</span>
+							</div>
+							<ul class="dropdown-menu">
+								<li>@Html.ActionLink("Update", "UpdateServiceQueue", new {id = 1})</li>
+								<li>@Html.ActionLink("Delete", "ConfirmDeleteServiceQueue", new {id = 1})</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			</div>
+		@if (Model.Queues != null && Model.Queues.Any())
+		{
+
+
+
+		}
+
+		else if (!Model.EnableAdd)
+		{
+			<div class="alert-message alert alert-warning">No queues exist. @Html.ActionLink("Add", "AddServiceQueue")</div>
+		}
+
+		@if (Model.EnableAdd)
+		{
+			using (Html.BeginForm("SaveServiceQueue", "SystemAccess", FormMethod.Post))
+			{
+				<div class="dd make-space-top">
+					<div class="dd-row">
+						<div class="dt-cell">
+							Name
+						</div>
+						<div class="dd-cell">
+							@Html.TextBox("Name", "", new { @class = "form-control form-short-text" })
+							@Html.ValidationMessage("Name")
+						</div>
+					</div>
+					<div class="dd-row">
+						<div class="dt-cell"></div>
+						<div class="dd-cell">
+							<input type="submit" value="Save" class="btn btn-primary" />
+						</div>
+					</div>
+				</div>
+
+
+			}
+		}
+
+	</div>
+</div>
+<div class="flex-container-col">
+	<div class="panel-footer">
+		<div class="float-right-div">
+			@Html.ActionLink("Add", "AddServiceQueue", null, new { @class = "btn btn-default" })
+		</div>
+	</div>
+</div>

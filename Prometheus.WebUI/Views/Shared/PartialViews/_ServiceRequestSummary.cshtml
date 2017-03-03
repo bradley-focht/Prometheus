@@ -9,26 +9,19 @@
 					<div class="dd-cell-base"> name </div>
 					<div></div>
 					<div class="dd-cell-base dt-font">Service Request</div>
-					<div class="dd-cell-base">SR</div>
+					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Name</div>
 
 				</div>
 				<div class="dd-row">
 					<div class="dd-cell-base dt-font">Requested For</div>
 					<div class="dd-cell-base"> hopefully not too many names in here</div>
 					<div></div>
-					<div class="dd-cell-base dt-font">Id</div>
-					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.Id</div>
-				</div>
-
-				<div class="dd-row">
-
-					<div class="dd-cell-base"></div>
-					<div class="dd-cell-base"></div>
-					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base dt-font">Status</div>
 					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.State</div>
 				</div>
+
 				<div class="dd-row">
+
 					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base"></div>
 					<div class="dd-cell-base"></div>
@@ -98,10 +91,11 @@
 							foreach (var userData in displayOption.UserInputs)
 							{
 								<div class="dd-row">
-									<div class="dd-cell-base subsubtitle-div">
-										<span class="make-space-left">
+									<div class="dd-cell-base">
+										<span class="make-space-left make-space-right bold">
 											@userData.DisplayName
 										</span>
+										<span>@userData.ServiceRequestUserInput.Value</span>
 									</div>
 								</div>
 							}

@@ -8,6 +8,7 @@ namespace DataService.Models
 		Service Service { get; set; }
 		int ServiceId { get; set; }
 		string Features { get; set; }
+		string Code { get; set; }
 		string Benefits { get; set; }
 		string Support { get; set; }
 		string Description { get; set; }
