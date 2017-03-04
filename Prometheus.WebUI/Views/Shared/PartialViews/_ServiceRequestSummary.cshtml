@@ -3,6 +3,7 @@
 	<div class="panel panel-default">
 		<div class="panel-heading">
 			<span class="subsubtitle-div">Service Request Summary</span>
+			<div class="float-right-div">@Html.ActionLink("Edit Service Request", "Form", "ServiceRequest", new { id = Model.ServiceRequestModel.ServiceRequest.Id, index = -1}, null)</div>
 			<div class="dd full-width">
 				<div class="dd-row">
 					<div class="dd-cell-base dt-font">Requestor</div>

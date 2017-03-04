@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Common.Enums;
 
 namespace Common.Dto
@@ -13,6 +14,7 @@ namespace Common.Dto
 		/// </summary>
 		public int? ServiceOptionId { get; set; }
 
+		[Required(ErrorMessage = "Approval Department is required")]
 		public int DepartmentId { get; set; }
 
 		/// <summary>
@@ -27,6 +29,7 @@ namespace Common.Dto
 		public string Officeuse { get; set; }
 		public string Name { get; set; }
 		public DateTime CreationDate { get; set; }
+		[Required(ErrorMessage = "Requested for date is required")]
 		public DateTime RequestedForDate { get; set; }
 		public DateTime? SubmissionDate { get; set; }
 		public DateTime? ApprovalDate { get; set; } /* end here */

@@ -54,25 +54,25 @@ namespace Prometheus.WebUI.Controllers
 			{
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
-
 			ServiceRequestModel model = new ServiceRequestModel();      //data to be sent to next view
-			if (!ModelState.IsValid)
+			if (!ModelState.IsValid)									//server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save Service Request due to invalid data";
 				return View("ServiceRequest", model);
 			}
 			// data ok from here on
-			ServiceRequestDto request = new ServiceRequestDto
+			ServiceRequestDto request = new ServiceRequestDto	//need an adapter
 			{
-				Id = form.Id,
+				Id = form.Id,			
 				RequestedByUserId = int.Parse(Session["Id"].ToString()),
 				Comments = form.Comments,
 				Officeuse = form.OfficeUse,
 				SubmissionDate = DateTime.Now,
 				CreationDate = DateTime.Now,
 				ServiceOptionId = form.ServiceOptionId,
-				RequestedForDate = form.RequestedDate
+				RequestedForDate = form.RequestedDate,
+				DepartmentId = form.DepartmentId
 			};
 
 			model.CurrentIndex = 0;

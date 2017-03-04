@@ -20,6 +20,12 @@ namespace Prometheus.WebUI.Controllers
 	public class ServiceController : PrometheusController
 	{
 		private const int ServicePageSize = 12;
+		private IPortfolioService _ps;
+
+		public ServiceController()
+		{
+			_ps = InterfaceFactory.CreatePortfolioService();
+		}
 
 		/// <summary>
 		/// Default page 
@@ -32,9 +38,9 @@ namespace Prometheus.WebUI.Controllers
 			if (filterArg == null)
 				filterArg = "All";
 			ServiceViewModel model = new ServiceViewModel { ControlsModel = new ServiceViewControlsModel { FilterBy = filterBy, FilterArg = filterArg, PageNumber = pageId } };
-			var ps = InterfaceFactory.CreatePortfolioService();
+			
 
-			ServiceIndexHelper helper = new ServiceIndexHelper(ps.GetServices());   //apply filters
+			ServiceIndexHelper helper = new ServiceIndexHelper(_ps.GetServices());   //apply filters
 			model.ControlsModel.FilterMenu = helper.GetControlsModel();
 
 			if (filterBy != "All")		//one of several applied filters
@@ -121,8 +127,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult Show(string section, int id=0, int pageId = 0)
 		{
 			ServiceModel sm = new ServiceModel { CurrentPage = pageId };
-			var ps = InterfaceFactory.CreatePortfolioService();
-			sm.Service = ps.GetService(id);
+			sm.Service = _ps.GetService(id);
 			sm.SelectedSection = section;
 			return View(sm);
 		}

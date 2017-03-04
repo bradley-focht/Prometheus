@@ -6,26 +6,27 @@
 <input type="hidden" name="Id" value="@Model.Id" />
 <input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
-<div class="dd">
+<div class="dd make-space-top">
     @foreach (var property in ViewData.ModelMetadata.Properties)
-    {
-        switch (property.PropertyName)
-        {
-            case "Id":  /*do nothing for these attributes */
-            case "ServiceId":
-            case "DateCreated":
-            case "DateUpdated":
-            case "CreatedByUserId":
-            case "UpdatedByUserId":
-            case "PictureMimeType":
-            case "Popularity":
-            case "ServiceOptions":
-            case "BusinessValue":
-            case "ServiceRequestPackages":
-            case "Service":
-            case "Quantifiable":
-                continue;
-        }
+	{
+		switch (property.PropertyName)
+		{
+			case "Id":  /*do nothing for these attributes */
+			case "ServiceId":
+			case "DateCreated":
+			case "DateUpdated":
+			case "Code":
+			case "CreatedByUserId":
+			case "UpdatedByUserId":
+			case "PictureMimeType":
+			case "Popularity":
+			case "ServiceOptions":
+			case "BusinessValue":
+			case "ServiceRequestPackages":
+			case "Service":
+			case "Quantifiable":
+				continue;
+		}
         <div class="dd-row">
             <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 

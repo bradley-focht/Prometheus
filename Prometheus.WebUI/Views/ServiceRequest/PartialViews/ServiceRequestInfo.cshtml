@@ -3,6 +3,15 @@
 
 <div class="dd">
 	<div class="dd-row">
+		<div class="dt-cell">
+			Approval Department
+		</div>
+		<div class="dd-cell">
+			@Html.TextBox("form.DepartmentId", "1", new {@class="form-control", id="formDepartmentId"})
+		</div>
+	</div>
+
+	<div class="dd-row">
 		<div class="dt-cell">Action</div>
 		<div class="dd-cell">
 			<div class="btn-group" data-toggle="buttons">
@@ -15,11 +24,11 @@
 				</label>
 			</div>
 		</div>
-	</div> 
+	</div>
 	<div class="dd-row">
 		<div class="dt-cell">Requestor</div>
 		<div class="dd-cell">@Session["Displayname"]
-			<input type="hidden" value="@Session["Id"].ToString())" name="Requestor"/>
+			<input type="hidden" value="@Session["Id"].ToString())" name="form.Requestor"/>
 		</div>
 	</div>
 	<div class="dd-row">

@@ -60,6 +60,30 @@ namespace Prometheus.WebUI.Helpers
 		}
 
 		/// <summary>
+		/// Get all Department requests except cancelled, for an approver
+		/// </summary>
+		/// <param name="srController"></param>
+		/// <param name="userId"></param>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <returns></returns>
+		public static ServiceRequestApprovalModel GetAllDepartmentRequests(IServiceRequestController srController, int userId,
+			int currentPage, int pageSize)
+		{
+			var model = new ServiceRequestApprovalModel() {Controls = new ServiceRequestApprovalControls()};
+			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
+				where s.State != ServiceRequestState.Cancelled
+				orderby s.Id
+				select s).ToList();
+			model.ServiceRequests = ConvertToTableModel(srList);
+			Paginate(model, currentPage, pageSize);
+
+			model.Controls.FilterText = "All Department Requests";
+
+			return model;
+		}
+
+		/// <summary>
 		/// Filter to only current page and add pagination data to controls
 		/// </summary>
 		/// <param name="model"></param>

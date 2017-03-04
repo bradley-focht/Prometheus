@@ -53,6 +53,12 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		[Required(ErrorMessage = "Requested date is required")]
 		public DateTime RequestedDate => ServiceRequest.RequestedForDate;
 
+		/// <summary>
+		/// Department Queue to which SR will be submitted
+		/// </summary>
+		[Required(ErrorMessage = "Approval Department is required")]
+		public int DepartmentId => ServiceRequest.DepartmentId;
+
 		public string Comments => ServiceRequest.Comments;
 		public string OfficeUse => ServiceRequest.Officeuse;
 

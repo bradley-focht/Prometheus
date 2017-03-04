@@ -38,6 +38,8 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         [Required]
 		public DateTime RequestedDate { get; set; }
 
+		[Required]
+		public int DepartmentId { get; set; }
 	    public ServiceRequestMode Mode { get; set; }
     }
 }

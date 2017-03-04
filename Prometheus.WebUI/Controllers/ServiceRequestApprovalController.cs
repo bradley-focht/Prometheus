@@ -12,20 +12,17 @@ namespace Prometheus.WebUI.Controllers
 {
 	public class ServiceRequestApprovalController : PrometheusController
 	{
-		private IPortfolioService _ps;
-		private IServiceRequestController _srController;
+		private readonly IPortfolioService _ps;
+		private readonly IServiceRequestController _srController;
 		private readonly int _pageSize;
-		private IRequestManager _rm;
+		private readonly IRequestManager _rm;
 
 		public ServiceRequestApprovalController()
 		{
 			_rm = InterfaceFactory.CreateRequestManager();
 			_ps = InterfaceFactory.CreatePortfolioService();
 			_srController = InterfaceFactory.CreateServiceRequestController();
-			try
-			{
-				_pageSize = ConfigHelper.GetPaginationSize();
-			}
+			try { _pageSize = ConfigHelper.GetPaginationSize(); }
 			catch (Exception) { _pageSize = 12; }       //just in case
 		}
 
@@ -53,6 +50,11 @@ namespace Prometheus.WebUI.Controllers
 			return View("Index", model);
 		}
 
+		/// <summary>
+		/// Filter My Requests, all (except cancelled)
+		/// </summary>
+		/// <param name="pageId"></param>
+		/// <returns></returns>
 		public ActionResult AllServiceRequests(int pageId = 0)
 		{
 			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllRequests(_srController, UserId, pageId, _pageSize);
@@ -62,6 +64,7 @@ namespace Prometheus.WebUI.Controllers
 
 		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId)
 		{
+			
 			return View("Index");
 		}
 
