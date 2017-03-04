@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
-using Ninject.Infrastructure.Language;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
@@ -18,11 +17,13 @@ namespace Prometheus.WebUI.Controllers
 	public class ServiceRequestController : PrometheusController
 	{
 		private readonly IPortfolioService _ps;
+		private readonly IServiceRequestController _srController;
 		private IServiceRequestOptionController _rs;
 
 		public ServiceRequestController()
 		{
 			_ps = InterfaceFactory.CreatePortfolioService();
+			_srController = InterfaceFactory.CreateServiceRequestController();
 		}
 
 		/// <summary>
@@ -73,16 +74,16 @@ namespace Prometheus.WebUI.Controllers
 				ServiceOptionId = form.ServiceOptionId,
 				RequestedForDate = form.RequestedDate
 			};
-			
+
 			model.CurrentIndex = 0;
 			try
 			{
-				request = (ServiceRequestDto)_ps.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+				request = (ServiceRequestDto)_srController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 
 				//make sr name & save it
 				if (request.ServiceOptionId != null)
-					request.Name = $"{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}_{request.Id}" ;
-				_ps.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+					request.Name = $"{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}_{request.Id}";
+				_srController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{
@@ -126,7 +127,7 @@ namespace Prometheus.WebUI.Controllers
 			};
 			try
 			{
-				model.ServiceRequest = _ps.GetServiceRequest(UserId, form.Id); //SR
+				model.ServiceRequest = _srController.GetServiceRequest(UserId, form.Id); //SR
 				model.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId); //Package
 			}
 			catch (Exception exception)
@@ -179,7 +180,7 @@ namespace Prometheus.WebUI.Controllers
 							_rs.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
 						}                                                                                                       /* done \*/
 					}
-					model.ServiceRequest = _ps.GetServiceRequest(UserId, form.Id); // refresh the data in the model now
+					model.ServiceRequest = _srController.GetServiceRequest(UserId, form.Id); // refresh the data in the model now
 				}
 				catch (Exception exception)     //what, a problem?
 				{
@@ -198,8 +199,13 @@ namespace Prometheus.WebUI.Controllers
 																 where u.Value != null
 																 select new ServiceRequestUserInputDto
 																 {
-																	 Id = u.Id, Name = u.Name, UserInputType = u.UserInputType, 
-																	 ServiceRequestId = form.Id, Value = u.Value, InputId = u.InputId}).ToList();
+																	 Id = u.Id,
+																	 Name = u.Name,
+																	 UserInputType = u.UserInputType,
+																	 ServiceRequestId = form.Id,
+																	 Value = u.Value,
+																	 InputId = u.InputId
+																 }).ToList();
 				foreach (var userData in userDataList)
 				{
 					try
@@ -242,23 +248,25 @@ namespace Prometheus.WebUI.Controllers
 							userData.Required = true;
 						}
 					}
-				} else {
-				foreach (var input in (from s in requiredInputs.UserInputs where s is ITextInputDto select s))
+				}
+				else
 				{
-					if (userData.UserInput.UserInputType == UserInputType.Text & userData.UserInput.InputId == input.Id)
+					foreach (var input in (from s in requiredInputs.UserInputs where s is ITextInputDto select s))
 					{
-						userData.Required = true;
+						if (userData.UserInput.UserInputType == UserInputType.Text & userData.UserInput.InputId == input.Id)
+						{
+							userData.Required = true;
+						}
 					}
 				}
 			}
-		}
 
 			//do the removals
 			foreach (var userData in userInputs)
 			{
 				if (!userData.Required && userData.UserInput.Id > 0) //avoid the new
 				{
-					userInputController.ModifyServiceRequestUserInput(UserId, new ServiceRequestUserInputDto {Id = userData.UserInput.Id}, EntityModification.Delete);
+					userInputController.ModifyServiceRequestUserInput(UserId, new ServiceRequestUserInputDto { Id = userData.UserInput.Id }, EntityModification.Delete);
 				}
 			}
 
@@ -292,7 +300,7 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP ONE - get SR, get package, and enough  */
 			try
 			{
-				model.ServiceRequest = _ps.GetServiceRequest(UserId, id);       //get db info
+				model.ServiceRequest = _srController.GetServiceRequest(UserId, id);       //get db info
 				model.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
 			}
 			catch (Exception exception)

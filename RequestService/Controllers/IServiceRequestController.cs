@@ -2,7 +2,7 @@
 using Common.Dto;
 using Common.Enums.Entities;
 
-namespace ServicePortfolioService.Controllers
+namespace RequestService.Controllers
 {
 	public interface IServiceRequestController
 	{
@@ -30,5 +30,12 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="requestorUserId"></param>
 		/// <returns></returns>
 		IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId);
+
+		/// <summary>
+		/// Retrieves the service requests for an approver based on their department
+		/// </summary>
+		/// <param name="approverId">ID of approver</param>
+		/// <returns></returns>
+		IEnumerable<IServiceRequestDto> GetServiceRequestsForApproverId(int approverId);
 	}
 }

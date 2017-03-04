@@ -10,6 +10,8 @@ namespace Common.Dto
 
 		int? ServiceOptionId { get; set; }
 
+		int DepartmentId { get; set; }
+
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }
 

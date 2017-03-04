@@ -8,6 +8,7 @@ namespace DataService.Models
 	{
 		int Id { get; set; }
 
+		int DepartmentId { get; set; }
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }
 
@@ -22,6 +23,8 @@ namespace DataService.Models
 		ServiceRequestState State { get; set; }
 
 		int? ServiceOptionId { get; set; }
+
+		Department Department { get; set; }
 		ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 		ICollection<ServiceRequestUserInput> ServiceRequestUserInputs { get; set; }
 	}

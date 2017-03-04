@@ -18,5 +18,6 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 
 		public virtual ICollection<User> Users { get; set; }
+		public virtual ICollection<ServiceRequest> ServiceRequests { get; set; }
 	}
 }

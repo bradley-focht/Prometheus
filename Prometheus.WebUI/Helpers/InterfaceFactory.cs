@@ -33,8 +33,7 @@ namespace Prometheus.WebUI.Helpers
 				new TextInputController(),
 				new SelectionInputController(),
 				new ScriptedSelectionInputController(),
-				new ServiceRequestPackageController(),
-				new ServiceRequestController());
+				new ServiceRequestPackageController());
 		}
 
 		/// <summary>
@@ -85,6 +84,14 @@ namespace Prometheus.WebUI.Helpers
 		public static ServiceRequestUserInputController CreateServiceRequestUserInputController()
 		{
 			return new ServiceRequestUserInputController();
+		}
+		/// <summary>
+		/// Create a new Service Request Controller
+		/// </summary>
+		/// <returns></returns>
+		public static ServiceRequestController CreateServiceRequestController()
+		{
+			return new ServiceRequestController(CreateUserManagerService());
 		}
 	}
 }

@@ -8,5 +8,6 @@ namespace DataService.Models
 		string Name { get; set; }
 
 		ICollection<User> Users { get; set; }
+		ICollection<ServiceRequest> ServiceRequests { get; set; }
 	}
 }

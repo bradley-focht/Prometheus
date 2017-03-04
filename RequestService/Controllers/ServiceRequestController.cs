@@ -4,14 +4,24 @@ using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
 using Common.Dto;
+using Common.Enums;
 using Common.Enums.Entities;
+using Common.Enums.Permissions;
+using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
+using UserManager;
 
-namespace ServicePortfolioService.Controllers
+namespace RequestService.Controllers
 {
 	public class ServiceRequestController : EntityController<IServiceRequestDto>, IServiceRequestController
 	{
+		private readonly IUserManager _userManager;
+		public ServiceRequestController(IUserManager userManager)
+		{
+			_userManager = userManager;
+		}
+
 		public IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId)
 		{
 			using (var context = new PrometheusContext())
@@ -79,6 +89,38 @@ namespace ServicePortfolioService.Controllers
 				{
 					yield return ManualMapper.MapServiceRequestToDto(userRequestestRequest);
 				}
+			}
+		}
+
+		public IEnumerable<IServiceRequestDto> GetServiceRequestsForApproverId(int approverId)
+		{
+			using (var context = new PrometheusContext())
+			{
+
+				if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveAnyRequests))
+				{
+					//Get all approvable requests
+					return context.ServiceRequests.Where(x => x.State == ServiceRequestState.Submitted)
+							.Select(x => ManualMapper.MapServiceRequestToDto(x));
+				}
+
+				if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveMinistryRequests))
+				{
+					//Will never be null. UserHasPermission will catch that
+					var approverDepartmentId = context.Users.Find(approverId).DepartmentId;
+
+					return context.ServiceRequests.Where(x => x.State == ServiceRequestState.Submitted && x.DepartmentId == approverDepartmentId)
+							.Select(x => ManualMapper.MapServiceRequestToDto(x));
+				}
+
+				//TODO: Still requires discussion
+				if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveBasicRequests))
+				{
+					return new List<IServiceRequestDto>();
+				}
+
+				throw new PermissionException("Cannot Approve Service Requests",
+					approverId, ApproveServiceRequest.ApproveMinistryRequests);
 			}
 		}
 	}
