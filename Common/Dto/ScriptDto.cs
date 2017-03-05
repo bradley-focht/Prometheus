@@ -25,19 +25,19 @@ namespace Common.Dto
         /// <summary>
         /// Original name of the script file
         /// </summary>
-        [Required(ErrorMessage = "Filename is required")]
         public string Filename { get; set; }
 
         /// <summary>
         /// The replacement name used in the file system
         /// </summary>
+        [Display(Name="Script File")]
         public Guid ScriptFile { get; set; }
         public string MimeType { get; set; }
 
         /// <summary>
         /// Date when file was uploaded
         /// </summary>
-        public DateTime UploadDate { get; set; }
+        public DateTime? UploadDate { get; set; }
 		/*
 		 * don't forget to annotate
 		 */

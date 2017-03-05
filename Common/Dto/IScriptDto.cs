@@ -11,6 +11,6 @@ namespace Common.Dto
         string Filename { get; set; }
         Guid ScriptFile { get; set; }
         string MimeType { get; set; }
-        DateTime UploadDate { get; set; }
+        DateTime? UploadDate { get; set; }
 	}
 }
