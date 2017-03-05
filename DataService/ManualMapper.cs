@@ -777,7 +777,8 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
-				AdGuid = src.AdGuid
+				AdGuid = src.AdGuid,
+				DepartmentId = src.DepartmentId
 			};
 		}
 
@@ -798,7 +799,9 @@ namespace DataService
 			{
 				Id = src.Id,
 				Roles = roles,
-				AdGuid = src.AdGuid
+				AdGuid = src.AdGuid,
+				DepartmentId = src.DepartmentId,
+				Department = MapDepartmentToDto(src.Department)
 			};
 		}
 
@@ -868,7 +871,8 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
-				ServiceOptionId = src.ServiceOptionId
+				ServiceOptionId = src.ServiceOptionId,
+				DepartmentId = src.DepartmentId
 			};
 		}
 
@@ -909,6 +913,7 @@ namespace DataService
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
 				ServiceRequestOptions = serviceRequestOptions,
+				DepartmentId = src.DepartmentId,
 				ServiceRequestUserInputs = serviceRequestInputs
 			};
 		}
@@ -948,10 +953,10 @@ namespace DataService
 				Quantity = src.Quantity,
 				ServiceRequestId = src.ServiceRequestId
 				//ServiceOption = MapServiceOptionToDto(src.ServiceOption),		//I'm just gonna do without this... 
-			//	ServiceRequest = MapServiceRequestToDto(src.ServiceRequest),
-			//	ServiceRequestOptionScriptedSelectionInputs = serviceRequestOptionScriptedSelectionInputs,
-			//	ServiceRequestOptionSelectionInputs = serviceRequestOptionSelectionInputs,
-			//	ServiceRequestOptionTextInputs = serviceRequestOptionTextInputs
+				//	ServiceRequest = MapServiceRequestToDto(src.ServiceRequest),
+				//	ServiceRequestOptionScriptedSelectionInputs = serviceRequestOptionScriptedSelectionInputs,
+				//	ServiceRequestOptionSelectionInputs = serviceRequestOptionSelectionInputs,
+				//	ServiceRequestOptionTextInputs = serviceRequestOptionTextInputs
 			};
 		}
 
@@ -1041,7 +1046,7 @@ namespace DataService
 		public static Department MapDtoToDepartment(IDepartmentDto src)
 		{
 			if (src == null)
-				return null; 
+				return null;
 
 			return new Department
 			{
@@ -1050,7 +1055,7 @@ namespace DataService
 			};
 		}
 
-		public static DepartmentDto MapDepartmentDto(IDepartment src)
+		public static IDepartmentDto MapDepartmentToDto(Department src)
 		{
 			if (src == null)
 				return null;
@@ -1058,7 +1063,8 @@ namespace DataService
 			return new DepartmentDto
 			{
 				Id = src.Id,
-				Name = src.Name
+				Name = src.Name,
+				Users = src.Users.Select(x => MapUserToDto(x)).ToList()
 			};
 		}
 	}

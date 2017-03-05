@@ -20,9 +20,11 @@ namespace DataService.Models
 		/// </summary>
 		public int? ServiceOptionId { get; set; }
 
+		public int DepartmentId { get; set; }
+
 		public string Name { get; set; }
 		public int RequestedByUserId { get; set; }
-		public string Comments { get; set; }   
+		public string Comments { get; set; }
 		public string Officeuse { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime? SubmissionDate { get; set; }
@@ -37,6 +39,7 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 
 		public virtual ServiceOption ServiceOption { get; set; }
+		public virtual Department Department { get; set; }
 		public virtual ICollection<ServiceRequestOption> ServiceRequestOptions { get; set; }
 		public virtual ICollection<ServiceRequestUserInput> ServiceRequestUserInputs { get; set; }
 	}

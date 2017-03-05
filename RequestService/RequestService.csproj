@@ -43,7 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\CatalogController.cs" />
+    <Compile Include="Controllers\IServiceRequestController.cs" />
     <Compile Include="Controllers\IServiceRequestUserInputController.cs" />
     <Compile Include="Controllers\IScriptFileController.cs" />
     <Compile Include="Controllers\IServiceRequestOptionController.cs" />

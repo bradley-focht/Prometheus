@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using Common.Dto;
 using Common.Enums;
 using Prometheus.WebUI.Models.ServiceRequestApproval;
-using ServicePortfolioService;
+using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Helpers
 {
@@ -17,19 +15,20 @@ namespace Prometheus.WebUI.Helpers
 		/// <summary>
 		/// Returns all service request approval model for the user Id, filtered, and ordered by id
 		/// </summary>
-		/// <param name="ps">portfolio service</param>
+		/// <param name="srController">service request controller</param>
 		/// <param name="userId">requesting user</param>
 		/// <param name="currentPage">current page</param>
 		/// <param name="pageSize">page size</param>
 		/// <param name="state">state to filter by</param>
 		/// <returns></returns>
-		public static ServiceRequestApprovalModel GetMyRequests(IPortfolioService ps, int userId, int currentPage, int pageSize, ServiceRequestState state)
+		public static ServiceRequestApprovalModel GetMyRequests(IServiceRequestController srController, int userId, int currentPage, int pageSize, ServiceRequestState state)
 		{
-			var model = new ServiceRequestApprovalModel {Controls = new ServiceRequestApprovalControls() };
+			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			// retrieve filtered data
-			var srList = (from s in ps.GetServiceRequestsForRequestorId(userId, userId)
+			var srList = (from s in srController.GetServiceRequestsForRequestorId(userId, userId)
 						  where s.State == state && s.State != ServiceRequestState.Cancelled
-						  orderby s.Id select s).ToList();
+						  orderby s.Id
+						  select s).ToList();
 
 			model.ServiceRequests = ConvertToTableModel(srList);
 			Paginate(model, currentPage, pageSize);
@@ -42,20 +41,44 @@ namespace Prometheus.WebUI.Helpers
 		/// <summary>
 		/// Returns all service request approval model for the user Id, ordered by Id
 		/// </summary>
-		/// <param name="ps">portfolio service</param>
+		/// <param name="srController">service request controller</param>
 		/// <param name="userId">requesting user</param>
 		/// <param name="currentPage">current page</param>
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
-		public static ServiceRequestApprovalModel GetAllRequests(IPortfolioService ps, int userId, int currentPage,
+		public static ServiceRequestApprovalModel GetAllRequests(IServiceRequestController srController, int userId, int currentPage,
 			int pageSize)
 		{
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
-			var srList = (from s in ps.GetServiceRequestsForRequestorId(userId, userId) where s.State != ServiceRequestState.Cancelled orderby s.Id select s).ToList();
+			var srList = (from s in srController.GetServiceRequestsForRequestorId(userId, userId) where s.State != ServiceRequestState.Cancelled orderby s.Id select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(srList);
 			Paginate(model, currentPage, pageSize);
 
 			model.Controls.FilterText = "All My Service Requests";
+
+			return model;
+		}
+
+		/// <summary>
+		/// Get all Department requests except cancelled, for an approver
+		/// </summary>
+		/// <param name="srController"></param>
+		/// <param name="userId"></param>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <returns></returns>
+		public static ServiceRequestApprovalModel GetAllDepartmentRequests(IServiceRequestController srController, int userId,
+			int currentPage, int pageSize)
+		{
+			var model = new ServiceRequestApprovalModel() {Controls = new ServiceRequestApprovalControls()};
+			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
+				where s.State != ServiceRequestState.Cancelled
+				orderby s.Id
+				select s).ToList();
+			model.ServiceRequests = ConvertToTableModel(srList);
+			Paginate(model, currentPage, pageSize);
+
+			model.Controls.FilterText = "All Department Requests";
 
 			return model;
 		}
@@ -69,12 +92,12 @@ namespace Prometheus.WebUI.Helpers
 		/// <returns></returns>
 		public static ServiceRequestApprovalModel Paginate(ServiceRequestApprovalModel model, int currentPage, int pageSize)
 		{
-			model.Controls.CurrentPage = currentPage;	//set current page
+			model.Controls.CurrentPage = currentPage;   //set current page
 
-			if (model.ServiceRequests.Count > pageSize) 
+			if (model.ServiceRequests.Count > pageSize)
 			{
-				model.Controls.TotalPages = (model.ServiceRequests.Count + pageSize - 1) / pageSize;	//number of pages
-				model.ServiceRequests = model.ServiceRequests.Skip(pageSize * currentPage).Take(pageSize).ToList();	//select current page
+				model.Controls.TotalPages = (model.ServiceRequests.Count + pageSize - 1) / pageSize;    //number of pages
+				model.ServiceRequests = model.ServiceRequests.Skip(pageSize * currentPage).Take(pageSize).ToList(); //select current page
 			}
 			return model;
 

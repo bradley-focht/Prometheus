@@ -44,6 +44,7 @@ namespace DataService.DataAccessLayer
 		//User Manager Entities
 		public DbSet<User> Users { get; set; }
 		public DbSet<Role> Roles { get; set; }
+		public DbSet<Department> Departments { get; set; }
 
 		//Scripting
 		public DbSet<Script> Scripts { get; set; }

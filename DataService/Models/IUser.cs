@@ -7,8 +7,11 @@ namespace DataService.Models
 	{
 		int Id { get; set; }
 
+		int DepartmentId { get; set; }
 		string Name { get; set; }
 		Guid AdGuid { get; set; }
+
+		Department Department { get; set; }
 		ICollection<Role> Roles { get; set; }
 	}
 }

@@ -56,7 +56,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controllers\IServiceRequestController.cs" />
     <Compile Include="Controllers\IServiceRequestPackageController.cs" />
     <Compile Include="Controllers\ILifecycleStatusController.cs" />
     <Compile Include="Controllers\ISelectionInputController.cs" />
@@ -82,7 +81,6 @@
     <Compile Include="Controllers\SelectionInputController.cs" />
     <Compile Include="Controllers\ScriptedSelectionInputController.cs" />
     <Compile Include="Controllers\ServiceGoalController.cs" />
-    <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\ServiceRequestPackageController.cs" />
     <Compile Include="Controllers\TextInputController.cs" />
     <Compile Include="Controllers\ServiceMeasureController.cs" />
@@ -105,6 +103,10 @@
     <ProjectReference Include="..\DataService\DataService.csproj">
       <Project>{7757884F-C8D9-48AC-A4D6-6238D0203431}</Project>
       <Name>DataService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserManager\UserManager.csproj">
+      <Project>{1A415A6A-0658-40D7-9BA2-938EF6E3210E}</Project>
+      <Name>UserManager</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
