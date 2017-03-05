@@ -30,13 +30,25 @@ namespace Prometheus.WebUI.Controllers
 		/// Begin a new Service Request
 		/// </summary>
 		/// <param name="id">selected option Id</param>
+		/// <param name="serviceRequestAction"></param>
 		/// <returns></returns>
-		public ActionResult Begin(int id)
+		public ActionResult Begin(int id, ServiceRequestAction serviceRequestAction = ServiceRequestAction.New)
 		{
-			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id } };   //start new SR
+			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id }, SelectedAction = serviceRequestAction};   //start new SR
+			
+			model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.New);
+			model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.Remove);
 
+			if (model.NewPackage == null && model.RemovePackage != null)
+			{
+				model.SelectedAction = ServiceRequestAction.Remove;
+			}
 
-			model.Package = ServicePackageHelper.GetPackage(UserId, _ps, id);
+			if (model.NewPackage == null && model.RemovePackage == null)
+			{
+				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, id);
+			}
+
 			model.CurrentIndex = -1;            /* index for info tab */
 			return View("ServiceRequest", model);
 		}
@@ -67,6 +79,7 @@ namespace Prometheus.WebUI.Controllers
 				Id = form.Id,			
 				RequestedByUserId = int.Parse(Session["Id"].ToString()),
 				Comments = form.Comments,
+				Action = form.Action,
 				Officeuse = form.OfficeUse,
 				SubmissionDate = DateTime.Now,
 				CreationDate = DateTime.Now,
@@ -128,7 +141,26 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.ServiceRequest = _srController.GetServiceRequest(UserId, form.Id); //SR
-				model.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId); //Package
+				if (model.ServiceRequest.Action == ServiceRequestAction.New)			//Package
+				{
+					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId,
+						ServiceRequestAction.New); //package
+					model.SelectedAction = ServiceRequestAction.New;	//new package
+					if (model.NewPackage == null)
+					{
+						model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
+					}
+				}
+				else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
+				{
+					model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId,
+						ServiceRequestAction.Remove);
+						model.SelectedAction = ServiceRequestAction.Remove;	//remove package
+					if (model.NewPackage == null && model.RemovePackage == null)
+					{
+						model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
+					}
+				}
 			}
 			catch (Exception exception)
 			{
@@ -141,7 +173,7 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP TWO - figure out what category to work with */
 			var currentCategory =
 				_ps.GetServiceOptionCategory(UserId,
-					model.Package.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+					model.NewPackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 
 			/* STEP THREE - add/remove options in the SR */
 			{
@@ -301,7 +333,10 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.ServiceRequest = _srController.GetServiceRequest(UserId, id);       //get db info
-				model.Package = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
+				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action);
+				//deal with no package by making one
+				if (model.NewPackage == null)
+					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
 			}
 			catch (Exception exception)
 			{
@@ -309,15 +344,17 @@ namespace Prometheus.WebUI.Controllers
 				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
 				return View("ServiceRequest", model);
 			}
+
+
 			/* STEP TWO - get any user inputs & associate with the option */
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
 			if (index < 0)
 			{
 				//not much to do here, eh...
 			}
-			else if (index < model.Package.ServiceOptionCategoryTags.Count && index < 999)
+			else if (index < model.NewPackage.ServiceOptionCategoryTags.Count && index < 999)
 			{
-				model.OptionCategory = model.Package.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
+				model.OptionCategory = model.NewPackage.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
 				foreach (var option in model.OptionCategory.ServiceOptions)
 				{
 					optionInputList.Add(new ServiceOptionTag

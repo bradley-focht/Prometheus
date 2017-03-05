@@ -50,7 +50,7 @@ namespace DataService.DataAccessLayer
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Designed", CatalogVisible = false, Position = 6 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Developed", CatalogVisible = false, Position = 7 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Built", CatalogVisible = false, Position = 8 });
-			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Released", CatalogVisible = false, Position = 9 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Released", CatalogVisible = true, Position = 9 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Operational", CatalogVisible = true, Position = 10 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Test", CatalogVisible = true, Position = 11 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Retired", CatalogVisible = false, Position = 9 });

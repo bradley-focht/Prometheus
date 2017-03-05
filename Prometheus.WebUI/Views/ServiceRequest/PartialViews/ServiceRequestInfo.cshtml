@@ -1,30 +1,52 @@
-﻿@using Prometheus.WebUI.Models.ServiceRequest
+﻿@using Common.Enums
+@using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 
 <div class="dd">
+	@if (Model.ServiceRequest.Id <= 0)
+			{
+	<div class="dd-row">
+		<div class="dt-cell">Action</div>	@*determine action *@
+		<div class="dd-cell">
+			<input type="hidden" name="form.Action" value="@(Model.SelectedAction)" />
+			@if ((Model.NewPackage == null && Model.RemovePackage == null) || (Model.NewPackage != null && Model.RemovePackage == null))
+			{
+			
+			<span>New</span>
+
+			}
+			else if (Model.NewPackage != null && Model.RemovePackage != null)
+			{
+				<div class="btn-group">
+					<label class="btn btn-default" id="New">
+						@Html.ActionLink("New", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.New}, new {style="color:#000;"})
+					</label>
+					<label class="btn btn-default" id="Remove">
+						@Html.ActionLink("Remove", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Remove}, new { style = "color:#000;" })
+					</label>
+				</div>
+
+				<script type="text/javascript" language="javascript">
+					$('#@(Model.SelectedAction)').button('toggle');
+				</script>
+			}
+			else if (Model.NewPackage == null && Model.RemovePackage != null)
+			{
+				<span>Remove</span>
+			}
+		</div>
+	</div>
+	}
 	<div class="dd-row">
 		<div class="dt-cell">
 			Approval Department
 		</div>
 		<div class="dd-cell">
-			@Html.TextBox("form.DepartmentId", "1", new {@class="form-control", id="formDepartmentId"})
+			<input type="hidden" name="form.DepartmentId" value="1"/>
+			[ dept name ]
 		</div>
 	</div>
 
-	<div class="dd-row">
-		<div class="dt-cell">Action</div>
-		<div class="dd-cell">
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-default" id="ActionAdd">
-					@Html.RadioButton("Action", "Add", false) Add
-				</label>
-
-				<label class="btn btn-default" id="ActionRemove">
-					@Html.RadioButton("Action", "Remove", false) Remove
-				</label>
-			</div>
-		</div>
-	</div>
 	<div class="dd-row">
 		<div class="dt-cell">Requestor</div>
 		<div class="dd-cell">@Session["Displayname"]

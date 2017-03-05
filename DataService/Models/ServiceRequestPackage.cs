@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Common.Enums;
 
 namespace DataService.Models
 {
@@ -10,6 +11,7 @@ namespace DataService.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+		public ServiceRequestAction Action { get; set; }
 
 		public string Name { get; set; }
 		public DateTime? DateCreated { get; set; }

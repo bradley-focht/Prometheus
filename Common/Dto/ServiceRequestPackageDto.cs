@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Common.Enums;
 
 
 namespace Common.Dto
@@ -8,6 +9,7 @@ namespace Common.Dto
 	{
 
 		public int Id { get; set; }
+		public ServiceRequestAction Action { get; set; }
 
 		public string Name { get; set; }
 		public DateTime? DateCreated { get; set; }

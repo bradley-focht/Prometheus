@@ -26,7 +26,7 @@ namespace ServicePortfolioService.Controllers
 
 				var nameList = new List<Tuple<int, string>>();
 				nameList.AddRange(statuses.OrderBy(x=>x.Position).Select(x => new Tuple<int, string>(x.Id, x.Name)));
-				return nameList.OrderBy(x => x.Item2);
+				return nameList.OrderBy(x => x.Item1);
 			}
 		}
 

@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
+using Common.Enums;
 using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequest
@@ -73,10 +74,14 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		public List<ServiceOptionTag> UserInputs { get; set; }
 
 		/// <summary>
-		/// index, title
+		/// Available packages to choose from
 		/// </summary>
-		public IServiceRequestPackageDto Package { get; set; }
-
+		public IServiceRequestPackageDto NewPackage { get; set; }
+		public IServiceRequestPackageDto RemovePackage { get; set; }
+		/// <summary>
+		/// One action must be selected
+		/// </summary>
+		public ServiceRequestAction SelectedAction { get; set; }
 		/// <summary>
 		/// Display the SR
 		/// </summary>

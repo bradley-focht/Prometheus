@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Common.Enums;
 
 namespace Common.Dto
 {
@@ -17,7 +18,7 @@ namespace Common.Dto
 		/// </summary>
 		[HiddenInput]
 		int Id { get; set; }
-
+		ServiceRequestAction Action { get; set; }
 		/// <summary>
 		/// Unique name
 		/// </summary>

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 using Common.Dto;
+using Common.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 {
@@ -30,6 +31,11 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         [Required(ErrorMessage = "At least one association is required")]
         public ICollection<int> Associations { get; set; }
 
+		/// <summary>
+		/// Action to which this package is relavent
+		/// </summary>
+		[Required (ErrorMessage = "Action is required")]
+		public ServiceRequestAction Action { get; set; }
         /// <summary>
         /// services for selection
         /// </summary>

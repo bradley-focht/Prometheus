@@ -127,6 +127,10 @@ namespace Prometheus.WebUI
 				url: "ServiceRequest/Form/{id}/{index}/{mode}",
 				defaults: new { controller = "ServiceRequest", action = "Form", mode = UrlParameter.Optional });
 
+			routes.MapRoute(name: "ServiceRequestBegin",
+				url: "ServiceRequest/Begin/{id}/{serviceRequestAction}",
+				defaults: new { controller = "ServiceRequest", action = "Begin", serviceRequestAction = UrlParameter.Optional });
+
 			#endregion
 
 			#region Service Request Approvals
@@ -136,9 +140,9 @@ namespace Prometheus.WebUI
 				url: "ServiceRequestApproval/ConfirmServiceRequestStateChange/{id}/{nextState}",
 				defaults: new { controller = "ServiceRequestApproval", action = "ConfirmServiceRequestStateChange" });
 
-			routes.MapRoute(name: "FilterServiceRequestApprovals", 
+			routes.MapRoute(name: "FilterServiceRequestApprovals",
 				url: "ServiceRequestApproval/FilterStatus/{state}",
-				defaults: new {controller="ServiceRequestApproval", action = "FilterStatus", state = UrlParameter.Optional});
+				defaults: new { controller = "ServiceRequestApproval", action = "FilterStatus", state = UrlParameter.Optional });
 
 			#endregion
 

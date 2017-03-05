@@ -15,6 +15,8 @@ namespace DataService.Models
 		// prevent a cycle in a cascading delete
 		// the fk is for temporary use until request is approved
 
+		public ServiceRequestAction Action { get; set; }
+
 		/// <summary>
 		///  after Approval, this field is removed and is no longer valid
 		/// </summary>

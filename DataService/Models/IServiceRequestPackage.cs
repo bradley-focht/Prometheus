@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Common.Enums;
 
 namespace DataService.Models
 {
@@ -6,6 +7,7 @@ namespace DataService.Models
 	{
 		int Id { get; set; }
 		string Name { get; set; }
+		ServiceRequestAction Action { get; set; }
 		ICollection<ServiceOptionCategoryTag> ServiceOptionCategoryTags { get; set; }
 	}
 }

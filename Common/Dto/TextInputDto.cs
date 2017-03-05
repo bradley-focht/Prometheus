@@ -26,7 +26,10 @@ namespace Common.Dto
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
 
-		/// <summary>
+	    public bool AvailableOnAdd { get; set; }
+	    public bool AvailableOnRemove { get; set; }
+
+	    /// <summary>
 		/// false for Textbox, true for Textarea
 		/// </summary>
 		[Display(Order = 3, Name="Multi Line")]

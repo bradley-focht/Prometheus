@@ -12,7 +12,7 @@ namespace Common.Dto
 		/// Script to execute
 		/// </summary>
 		[Display(Order = 5, Name="Script")]
-		public string Script { get; set; }
+		public int ScriptId { get; set; }
 
 		/// <summary>
 		/// Disallow the execution of the script
@@ -37,6 +37,9 @@ namespace Common.Dto
 		[Display(Order = 2, Name = "Help Tool Tip")]
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
+
+		public bool AvailableOnAdd { get; set; }
+		public bool AvailableOnRemove { get; set; }
 
 		/// <summary>
 		/// Maximum number of items that can be selected

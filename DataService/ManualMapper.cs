@@ -744,7 +744,7 @@ namespace DataService
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				ExecutionEnabled = src.ExecutionEnabled,
-				Script = src.Script,
+				ScriptId = src.ScriptId,
 			});
 
 			return input.Value;
@@ -765,7 +765,7 @@ namespace DataService
 				HelpToolTip = src.HelpToolTip,
 				NumberToSelect = src.NumberToSelect,
 				ExecutionEnabled = src.ExecutionEnabled,
-				Script = src.Script,
+				ScriptId = src.ScriptId,
 			};
 		}
 		#endregion
@@ -829,6 +829,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
+				Action = src.Action,
 				ServiceOptionCategoryTags = serviceOptionCategoryTags
 			};
 		}
@@ -851,6 +852,7 @@ namespace DataService
 			return new ServiceRequestPackage
 			{
 				Id = src.Id,
+				Action = src.Action,
 				Name = src.Name
 			};
 		}
@@ -862,6 +864,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
+				Action = src.Action,
 				State = src.State,
 				ApprovalDate = src.ApprovalDate,
 				ApproverUserId = src.ApproverUserId,
@@ -876,32 +879,15 @@ namespace DataService
 			};
 		}
 
-		public static IServiceRequestDto MapServiceRequestToDto(ServiceRequest src)
+		public static ServiceRequestDto MapServiceRequestToDto(IServiceRequest src)
 		{
 			if (src == null) return null;
 
-			List<IServiceRequestOptionDto> serviceRequestOptions = new List<IServiceRequestOptionDto>();
-			if (src.ServiceRequestOptions != null)
-			{
-				foreach (var serviceRequestOption in src.ServiceRequestOptions)
-				{
-					serviceRequestOptions.Add(MapServiceRequestOptionToDto(serviceRequestOption));
-				}
-			}
-
-			List<IServiceRequestUserInputDto> serviceRequestInputs = new List<IServiceRequestUserInputDto>();
-			if (src.ServiceRequestUserInputs != null)
-			{
-				foreach (var userInput in src.ServiceRequestUserInputs)
-				{
-					serviceRequestInputs.Add(MapServiceRequestUserInputToDto(userInput));
-				}
-			}
-
-			return new ServiceRequestDto()
+			Lazy<ServiceRequestDto> serviceRequest = new Lazy<ServiceRequestDto>(() => new ServiceRequestDto
 			{
 				Id = src.Id,
 				Name = src.Name,
+				Action = src.Action,
 				State = src.State,
 				ApprovalDate = src.ApprovalDate,
 				ApproverUserId = src.ApproverUserId,
@@ -912,38 +898,41 @@ namespace DataService
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
-				ServiceRequestOptions = serviceRequestOptions,
-				DepartmentId = src.DepartmentId,
-				ServiceRequestUserInputs = serviceRequestInputs
-			};
+				DepartmentId = src.DepartmentId
+			});
+			
+			//options
+				List <IServiceRequestOptionDto> serviceRequestOptions = new List<IServiceRequestOptionDto>();
+			if (src.ServiceRequestOptions != null)
+			{
+				foreach (var serviceRequestOption in src.ServiceRequestOptions)
+				{
+					serviceRequestOptions.Add(MapServiceRequestOptionToDto(serviceRequestOption));
+				}
+			}
+			//user input data
+			List<IServiceRequestUserInputDto> serviceRequestInputs = new List<IServiceRequestUserInputDto>();
+			if (src.ServiceRequestUserInputs != null)
+			{
+				foreach (var userInput in src.ServiceRequestUserInputs)
+				{
+					serviceRequestInputs.Add(MapServiceRequestUserInputToDto(userInput));
+				}
+			}
+
+			serviceRequest.Value.ServiceRequestOptions = serviceRequestOptions;
+			serviceRequest.Value.ServiceRequestUserInputs = serviceRequestInputs;
+
+			//approval comments
+			
+
+			return serviceRequest.Value;
 		}
 
 		public static IServiceRequestOptionDto MapServiceRequestOptionToDto(ServiceRequestOption src)
 		{
 			if (src == null) return null;
 
-			/*		List<IServiceRequestOptionScriptedSelectionInputDto> serviceRequestOptionScriptedSelectionInputs = null;
-					List<IServiceRequestOptionSelectionInputDto> serviceRequestOptionSelectionInputs = null;
-					List<IServiceRequestOptionTextInputDto> serviceRequestOptionTextInputs = null;
-
-					if (src.ServiceRequestOptionScriptedSelectionInputs != null)	//Stack. Overflow. (literally)
-					{
-						serviceRequestOptionScriptedSelectionInputs =
-							src.ServiceRequestOptionScriptedSelectionInputs.Select(x => MapServiceRequestOptionScriptedSelectionInputToDto(x))
-								.ToList();
-					}
-					if (src.ServiceRequestOptionSelectionInputs != null)
-					{
-						serviceRequestOptionSelectionInputs =
-							src.ServiceRequestOptionSelectionInputs.Select(x => MapServiceRequestOptionSelectionInputToDto(x)).ToList();
-					}
-					if (src.ServiceRequestOptionTextInputs != null)
-					{
-						serviceRequestOptionTextInputs =
-							src.ServiceRequestOptionTextInputs.Select(x => MapServiceRequestOptionTextInputToDto(x)).ToList();
-					}
-
-			*/
 			return new ServiceRequestOptionDto()
 			{
 				Id = src.Id,
@@ -952,11 +941,6 @@ namespace DataService
 				ServiceOptionId = src.ServiceOptionId,
 				Quantity = src.Quantity,
 				ServiceRequestId = src.ServiceRequestId
-				//ServiceOption = MapServiceOptionToDto(src.ServiceOption),		//I'm just gonna do without this... 
-				//	ServiceRequest = MapServiceRequestToDto(src.ServiceRequest),
-				//	ServiceRequestOptionScriptedSelectionInputs = serviceRequestOptionScriptedSelectionInputs,
-				//	ServiceRequestOptionSelectionInputs = serviceRequestOptionSelectionInputs,
-				//	ServiceRequestOptionTextInputs = serviceRequestOptionTextInputs
 			};
 		}
 

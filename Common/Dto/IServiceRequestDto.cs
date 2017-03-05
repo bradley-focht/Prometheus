@@ -23,6 +23,7 @@ namespace Common.Dto
 		string Officeuse { get; set; }
 		string Name { get; set; }
 		ServiceRequestState State { get; set; }
+		ServiceRequestAction Action { get; set; }
 		DateTime? SubmissionDate { get; set; }
 
 		DateTime? DateCreated { get; set; }

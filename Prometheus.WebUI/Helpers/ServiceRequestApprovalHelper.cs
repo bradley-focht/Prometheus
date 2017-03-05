@@ -70,15 +70,28 @@ namespace Prometheus.WebUI.Helpers
 		public static ServiceRequestApprovalModel GetAllDepartmentRequests(IServiceRequestController srController, int userId,
 			int currentPage, int pageSize)
 		{
-			var model = new ServiceRequestApprovalModel() {Controls = new ServiceRequestApprovalControls()};
+			var model = new ServiceRequestApprovalModel {Controls = new ServiceRequestApprovalControls()};
 			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
 				where s.State != ServiceRequestState.Cancelled
 				orderby s.Id
 				select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(srList);
 			Paginate(model, currentPage, pageSize);
+			
 
-			model.Controls.FilterText = "All Department Requests";
+			return model;
+		}
+
+		public static ServiceRequestApprovalModel GetDepartmentRequests(IServiceRequestController srController, int userId,
+			int currentPage, int pageSize, ServiceRequestState state)
+		{
+			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
+			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
+						  where s.State != ServiceRequestState.Cancelled
+						  orderby s.Id
+						  select s).ToList();
+			model.ServiceRequests = ConvertToTableModel(srList);
+			Paginate(model, currentPage, pageSize);
 
 			return model;
 		}

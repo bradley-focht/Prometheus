@@ -58,20 +58,30 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult AllServiceRequests(int pageId = 0)
 		{
 			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllRequests(_srController, UserId, pageId, _pageSize);
-			model.Controls.FilterText = "AllServiceRequests";
 			return View("Index", model);
 		}
 
-		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId)
+		/// <summary>
+		/// Get all
+		/// </summary>
+		/// <param name="pageId"></param>
+		/// <returns></returns>
+		public ActionResult AllDepartmentServiceRequests(int pageId = 0)
 		{
-			
-			return View("Index");
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllDepartmentRequests(_srController, UserId, pageId, _pageSize);
+			return View("Index", model);
 		}
 
-
-		public ActionResult FilterGroupRequestor(int userId, int pageId)
+		/// <summary>
+		/// Filter by State
+		/// </summary>
+		/// <param name="state"></param>
+		/// <param name="pageId"></param>
+		/// <returns></returns>
+		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId=0)
 		{
-			return View("Index");
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetDepartmentRequests(_srController, UserId, pageId, _pageSize, state);
+			return View("Index", model);
 		}
 
 		/// <summary>
@@ -127,6 +137,15 @@ namespace Prometheus.WebUI.Controllers
 			return View(model);
 		}
 
-
+		/// <summary>
+		/// Show a single SR summary with all available next actions
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult ShowServiceRequest(int id)
+		{
+			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_ps, UserId, _srController, id);
+			return View("ConfirmServiceRequestStateChange", model);
+		}
 	}
 }

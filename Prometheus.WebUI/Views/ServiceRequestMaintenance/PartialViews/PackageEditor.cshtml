@@ -1,16 +1,35 @@
-﻿@model Prometheus.WebUI.Models.ServiceRequestMaintenance.PackageModel
+﻿@using Common.Enums
+@model Prometheus.WebUI.Models.ServiceRequestMaintenance.PackageModel
 @if (Model != null)
 {
     @Html.Hidden("Id", Model.Id)
     <div class="dd">
-        <div class="dd-row">
-            <div class="dt-cell">Name</div>
-            <div class="dd-cell">
-                @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
-                @Html.ValidationMessage("Name")
-            </div>
-    </div>
-    <div class="dd-row">
+	    <div class="dd-row">
+		    <div class="dt-cell">Name</div>
+		    <div class="dd-cell">
+			    @Html.TextBox("Name", Model.Name, new {@class = "form-control"})
+			    @Html.ValidationMessage("Name")
+		    </div>
+	    </div>
+	    <div class="dd-row">
+		    <div class="dt-cell">Action</div>
+		    <div class="dd-cell">
+			    <div class="btn-group" data-toggle="buttons">
+				    <label class="btn btn-default" id="New">
+					    @Html.RadioButton("Action", ServiceRequestAction.New, false) Add
+				    </label>
+
+				    <label class="btn btn-default" id="Remove">
+					    @Html.RadioButton("Action", ServiceRequestAction.Remove, false) Remove
+				    </label>
+			    </div>
+			    <script type="text/javascript" language="javascript">
+					$('#@(Model.Action)').button('toggle');
+    			</script>
+		    </div>
+	    </div>
+
+	    <div class="dd-row">
         <div class="dt-cell"><label for="Associations">Associations</label></div>
         <div class="dd-cell">
             <select id="Associations" name="Associations" placeholder="Add Associations..." multiple="multiple">
@@ -22,10 +41,18 @@
                         <optgroup label="@(service.Name)">
                             @if (service.ServiceOptionCategories != null)
                             {
-                                foreach (var category in service.ServiceOptionCategories)
-                                {
-                                    <option value="@(category.Id)">@category.Name</option>
-                                }
+	                            foreach (var category in service.ServiceOptionCategories)
+	                            {
+									
+		                            if (Model.SelectedCategories != null && Model.SelectedCategories.Any() && Model.SelectedCategories.Contains(category.Id))
+		                            {
+			                            <option value="@(category.Id)" selected="selected">@category.Name</option>
+		                            }
+		                            else
+		                            {
+			                            <option value="@(category.Id)"> @category.Name</option>
+		                            }
+	                            }
                             }
                         </optgroup>
                     }
@@ -33,9 +60,9 @@
             </select>
             @Html.ValidationMessage("Associations")
             <script language="javascript" type="text/javascript">
-            $('#Associations').selectize({
-                plugins: ['remove_button']
-            });
+	            $('#Associations').selectize({
+		            plugins: ['remove_button']
+	            });
             </script>
         </div>
 

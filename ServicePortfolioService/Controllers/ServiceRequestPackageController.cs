@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
 using Common.Dto;
+using Common.Enums;
 using Common.Enums.Entities;
 using DataService;
 using DataService.DataAccessLayer;
@@ -105,7 +106,7 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId)
+		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId, ServiceRequestAction action)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -115,7 +116,8 @@ namespace ServicePortfolioService.Controllers
 
 				//All packages where the service option exists in the first category of the package
 				var packages = context.ServiceRequestPackages.Where(
-					x => x.ServiceOptionCategoryTags.Any(
+					x=>x.Action == action && 
+					x.ServiceOptionCategoryTags.Any(
 						y => y.Order == 1 && y.ServiceOptionCategory.ServiceOptions.Any(
 							z => z.Id == serviceOptionId)));
 

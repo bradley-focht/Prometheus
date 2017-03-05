@@ -31,6 +31,11 @@ namespace Common.Dto
 		public DateTime CreationDate { get; set; }
 		[Required(ErrorMessage = "Requested for date is required")]
 		public DateTime RequestedForDate { get; set; }
+
+		/// <summary>
+		/// Action being performed
+		/// </summary>
+		public ServiceRequestAction Action { get; set; }
 		public DateTime? SubmissionDate { get; set; }
 		public DateTime? ApprovalDate { get; set; } /* end here */
 		public int ApproverUserId { get; set; }

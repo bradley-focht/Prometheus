@@ -5,7 +5,7 @@ namespace DataService.Models
 {
 	public interface IScriptedSelectionInput : ISelectable
 	{
-		string Script { get; set; }
+		int ScriptId { get; set; }
 		bool ExecutionEnabled { get; set; }
 
 		ICollection<ServiceOption> ServiceOptions { get; set; }
