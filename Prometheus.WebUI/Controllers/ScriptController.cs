@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Language;
 using System.Management.Automation.Runspaces;
@@ -25,6 +26,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 	    public ActionResult Index()
 	    {
+            // TO DO:
+            // retrieve all available scripts
 		    return View();
 	    }
 
@@ -36,17 +39,9 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult GetScript(int id)
         {
             LinkListModel model = new LinkListModel();
-            return View("PartialViews/_LinkList", model);
-        }
 
-        /// <summary>
-        /// To get all scripts
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult GetAllScripts()
-        {
-            // think this should be the general index page
-            return View();
+
+            return View("PartialViews/_LinkList", model);
         }
 
         /// <summary>
@@ -59,8 +54,9 @@ namespace Prometheus.WebUI.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveScript(IScriptDto newScript, HttpPostedFileBase file)
+        public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
         {
+
             if (!ModelState.IsValid) /* Server side validation */
             {
                 TempData["MessageType"] = WebMessageType.Failure;

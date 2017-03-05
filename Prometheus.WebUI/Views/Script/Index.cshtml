@@ -14,29 +14,9 @@
 }
 
 @section Content {
-    <div class="title-div">@ViewBag.SubTitle</div> @* title *@
-    
-    @if (Model != null)
-    {
+    <div class="title-div">@ViewBag.SubTitle</div>
 
-        foreach (var item in Model)
-        {
-            <table class="table">
-                <tr>
-                    <th>
-                        @Html.DisplayNameFor(model => model.Name)
-                    </th>
-                </tr>
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Name)
-                    </td>
-                </tr>
-            </table>
-        }
     }
-
-}
 }
 
 @section Sidebar{
@@ -44,8 +24,27 @@
         <!--
         TO DO:
         - List scripts
-            -->
-        <p> No Scripts available </p>
+        -->
+        @if (Model != null)
+    {
+
+        foreach (var item in Model)
+        {
+                <table class="table">
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Name)
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                    </tr>
+                </table>
+            }
+        }
+        
         @* control buttons at the bottom *@
         <div class="panel-footer">
             <div class="float-right-div">
