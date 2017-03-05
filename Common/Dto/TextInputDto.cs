@@ -25,9 +25,10 @@ namespace Common.Dto
 		[Display(Order = 2, Name="Help Tip")]
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
-
+		[Display(Order = 4, Name="Available on Add")]
 	    public bool AvailableOnAdd { get; set; }
-	    public bool AvailableOnRemove { get; set; }
+		[Display(Order = 5, Name = "Available on Remove")]
+		public bool AvailableOnRemove { get; set; }
 
 	    /// <summary>
 		/// false for Textbox, true for Textarea

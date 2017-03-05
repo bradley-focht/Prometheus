@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Common.Dto;
 
 namespace Prometheus.WebUI.Helpers
@@ -49,6 +50,39 @@ namespace Prometheus.WebUI.Helpers
 			group.ScriptedSelectionInputs = scriptedInputs;
 
 			return (InputGroupDto)group;
+		}
+
+		/// <summary>
+		/// Create an input group from an enumerable of IUserInputs
+		/// </summary>
+		/// <param name="userInputs"></param>
+		/// <returns></returns>
+		public static InputGroupDto MakeInputGroupDto(IEnumerable<IUserInput> userInputs)
+		{
+			if (userInputs == null)
+				return new InputGroupDto();
+
+			var scriptedSelectionInputs = new List<IScriptedSelectionInputDto>();
+			var selectionInputs = new List<ISelectionInputDto>();
+			var textInputs = new List<ITextInputDto>();
+
+			foreach (var input in userInputs)
+			{
+				if (input is ITextInputDto)
+				{
+					textInputs.Add((ITextInputDto)input);
+				}
+				else if (input is ISelectionInputDto)
+				{
+					selectionInputs.Add((ISelectionInputDto) input);
+				}
+				else if (input is IScriptedSelectionInputDto)
+				{
+					scriptedSelectionInputs.Add((IScriptedSelectionInputDto)input);
+				}
+			}
+			InputGroupDto inputGroup = new InputGroupDto {TextInputs = textInputs, SelectionInputs = selectionInputs, ScriptedSelectionInputs = scriptedSelectionInputs};
+			return inputGroup;
 		}
 	}
 }

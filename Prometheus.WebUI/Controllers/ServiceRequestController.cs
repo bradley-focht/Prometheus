@@ -14,6 +14,9 @@ using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
+	/// <summary>
+	/// MVC Service Requeset Controller
+	/// </summary>
 	public class ServiceRequestController : PrometheusController
 	{
 		private readonly IPortfolioService _ps;
@@ -171,9 +174,19 @@ namespace Prometheus.WebUI.Controllers
 			}
 
 			/* STEP TWO - figure out what category to work with */
-			var currentCategory =
-				_ps.GetServiceOptionCategory(UserId,
-					model.NewPackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+			IServiceOptionCategoryDto currentCategory = null;
+			if (model.ServiceRequest.Action == ServiceRequestAction.New)
+			{
+				if (model.NewPackage != null)
+					currentCategory = _ps.GetServiceOptionCategory(UserId,
+							model.NewPackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+			}
+			else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
+			{
+				if (model.RemovePackage != null)
+					currentCategory = _ps.GetServiceOptionCategory(UserId,
+							model.RemovePackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+			}
 
 			/* STEP THREE - add/remove options in the SR */
 			{
@@ -230,13 +243,8 @@ namespace Prometheus.WebUI.Controllers
 				List<ServiceRequestUserInputDto> userDataList = (from u in form.UserInput
 																 where u.Value != null
 																 select new ServiceRequestUserInputDto
-																 {
-																	 Id = u.Id,
-																	 Name = u.Name,
-																	 UserInputType = u.UserInputType,
-																	 ServiceRequestId = form.Id,
-																	 Value = u.Value,
-																	 InputId = u.InputId
+																 { Id = u.Id, Name = u.Name, UserInputType = u.UserInputType,
+																	 ServiceRequestId = form.Id, Value = u.Value, InputId = u.InputId
 																 }).ToList();
 				foreach (var userData in userDataList)
 				{
@@ -253,43 +261,42 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 			ICollection<UserInputTag> userInputs;
-			if (form.UserInput == null) { userInputs = new List<UserInputTag>(); }
-			else { userInputs = (from u in form.UserInput select new UserInputTag { UserInput = u, Required = false }).ToList(); }
+			userInputs = form.UserInput == null ? new List<UserInputTag>() : (from u in form.UserInput select new UserInputTag { UserInput = u, Required = false }).ToList();
 
 			var options = from o in model.ServiceRequest.ServiceRequestOptions select new ServiceOptionDto { Id = o.ServiceOptionId };
 			var requiredInputs = _ps.GetInputsForServiceOptions(UserId, options);
 			//clean up - figure out what can be removed
 			foreach (var userData in userInputs)
 			{
-				if (userData.UserInput.UserInputType == UserInputType.ScriptedSelection)
+				switch (userData.UserInput.UserInputType)
 				{
-					foreach (var input in (from s in requiredInputs.UserInputs where s is IScriptedSelectionInputDto select s))
-					{
-						if (userData.UserInput.UserInputType == UserInputType.ScriptedSelection & userData.UserInput.InputId == input.Id)
+					case UserInputType.ScriptedSelection:
+						foreach (var input in (from s in requiredInputs.UserInputs where s is IScriptedSelectionInputDto select s))
 						{
-							userData.Required = true;
+							if (userData.UserInput.UserInputType == UserInputType.ScriptedSelection & userData.UserInput.InputId == input.Id)
+							{
+								userData.Required = true;
+							}
 						}
-					}
-				}
-				else if (userData.UserInput.UserInputType == UserInputType.Selection)
-				{
-					foreach (var input in (from s in requiredInputs.UserInputs where s is ISelectionInputDto select s))
-					{
-						if (userData.UserInput.UserInputType == UserInputType.Selection & userData.UserInput.InputId == input.Id)
+						break;
+					case UserInputType.Selection:
+						foreach (var input in (from s in requiredInputs.UserInputs where s is ISelectionInputDto select s))
 						{
-							userData.Required = true;
+							if (userData.UserInput.UserInputType == UserInputType.Selection & userData.UserInput.InputId == input.Id)
+							{
+								userData.Required = true;
+							}
 						}
-					}
-				}
-				else
-				{
-					foreach (var input in (from s in requiredInputs.UserInputs where s is ITextInputDto select s))
-					{
-						if (userData.UserInput.UserInputType == UserInputType.Text & userData.UserInput.InputId == input.Id)
+						break;
+					default:
+						foreach (var input in (from s in requiredInputs.UserInputs where s is ITextInputDto select s))
 						{
-							userData.Required = true;
+							if (userData.UserInput.UserInputType == UserInputType.Text & userData.UserInput.InputId == input.Id)
+							{
+								userData.Required = true;
+							}
 						}
-					}
+						break;
 				}
 			}
 
@@ -333,10 +340,9 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.ServiceRequest = _srController.GetServiceRequest(UserId, id);       //get db info
-				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action);
+				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action) ??
+				                   ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
 				//deal with no package by making one
-				if (model.NewPackage == null)
-					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
 			}
 			catch (Exception exception)
 			{
@@ -357,13 +363,20 @@ namespace Prometheus.WebUI.Controllers
 				model.OptionCategory = model.NewPackage.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
 				foreach (var option in model.OptionCategory.ServiceOptions)
 				{
-					optionInputList.Add(new ServiceOptionTag
+					IEnumerable<IUserInput> inputs = null;
+					if (model.ServiceRequest.Action == ServiceRequestAction.New)
 					{
-						ServiceOption = option,
-						UserInputs = _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option })
-					});
+						inputs = from i in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> {option}).UserInputs
+							where i.AvailableOnAdd select i;
+					}
+					else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
+					{
+						inputs = from j in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> {option}).UserInputs
+							where j.AvailableOnRemove
+							select j;
+					}
+					optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = UserInputHelper.MakeInputGroupDto(inputs) });            //possible null is ok, razor views will handle like they always do
 				}
-
 			}
 
 			//for each SR option in the SR get the option {monthly price, up front price }
@@ -378,7 +391,5 @@ namespace Prometheus.WebUI.Controllers
 			model.UserInputs = optionInputList;
 			return View("ServiceRequest", model);
 		}
-
-
 	}
 }

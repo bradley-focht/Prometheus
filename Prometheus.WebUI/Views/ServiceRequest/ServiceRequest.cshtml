@@ -19,7 +19,10 @@
 	<input type="hidden" name="form.Id" value="@Model.ServiceRequestId" />
 	<input type="hidden" name="form.CurrentIndex" value="@Model.CurrentIndex" />
 	<input type="hidden" name="form.Mode" value="@Model.Mode" />
-
+	if (Model.ServiceRequest.Id > 0)
+	{
+		<input type="hidden" name="form.Action" value="@(Model.ServiceRequest.Action)" />
+	}
 	<div class="panel panel-default flex-container-row standard-padding">
 		<div class="dd ful">
 			<div class="dd-row">
@@ -41,7 +44,7 @@
 							{
 								<div class="dd-row">
 									<div class="dd-cell-base">Monthly</div>
-									<div class="dd-cell-base">@($"{Model.PriceMonthly:C}")</div>
+									<div class="dd-cell-base">@($"{Model.PriceMonthly:C}") </div>
 								</div>
 							}
 						</div>
@@ -53,6 +56,13 @@
 				<div class="dd-cell-base dt-font">Status</div>
 				<div class="dd-cell-base">@Model.ServiceRequest.State</div>
 			</div>
+			@if (Model.ServiceRequest.Id > 0)
+			{
+				<div class="dd-row">
+					<div class="dd-cell-base dt-font">Action</div>
+					<div class="dd-cell-base">@Model.ServiceRequest.Action</div>
+				</div>
+			}
 		</div>
 	</div>
 	<div class="make-space-top">
@@ -96,7 +106,14 @@
 
 		<div class="panel-footer">
 			<div class="float-right-div">
-				<button type="submit" value="99999" name="submit" class="btn btn-danger">Cancel Request</button>
+				@if (Model.ServiceRequest.Id > 0)
+				{
+					<button type="submit" value="99999" name="submit" class="btn btn-danger">Cancel Request</button>
+				}
+				else //bypass data validation
+				{
+					@Html.ActionLink("Cancel Request", "Index", "ServiceRequestApproval", null, new {@class = "btn btn-danger"})
+				}
 				@if (Model.ServiceRequestId > 0)
 				{
 					<button type="submit" value="9999" name="submit" class="btn btn-primary">Submit Request</button>

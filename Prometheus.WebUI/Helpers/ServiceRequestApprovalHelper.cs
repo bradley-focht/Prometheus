@@ -21,7 +21,8 @@ namespace Prometheus.WebUI.Helpers
 		/// <param name="pageSize">page size</param>
 		/// <param name="state">state to filter by</param>
 		/// <returns></returns>
-		public static ServiceRequestApprovalModel GetMyRequests(IServiceRequestController srController, int userId, int currentPage, int pageSize, ServiceRequestState state)
+		public static ServiceRequestApprovalModel GetMyRequests(IServiceRequestController srController, 
+			int userId, int currentPage, int pageSize, ServiceRequestState state)
 		{
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			// retrieve filtered data
@@ -34,6 +35,8 @@ namespace Prometheus.WebUI.Helpers
 			Paginate(model, currentPage, pageSize);
 
 			model.Controls.FilterText = $"Filtered My Service Requests by {state}";
+			model.Controls.FilterState = state;		//hints to pagination
+			model.Controls.FilterStateRequired = true;
 
 			return model;
 		}
@@ -77,7 +80,6 @@ namespace Prometheus.WebUI.Helpers
 				select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(srList);
 			Paginate(model, currentPage, pageSize);
-			
 
 			return model;
 		}
