@@ -72,7 +72,16 @@
 					}
 					else
 					{
-						@Html.ActionLink((i + 1).ToString(), Model.FilterAction, "ServiceRequestApproval", new {pageId = i }, new {@class = "btn btn-default"})
+						if (Model.FilterStateRequired)
+						{
+							@Html.ActionLink((i + 1).ToString(), Model.FilterAction, "ServiceRequestApproval", new {state = Model.FilterState, pageId = i }, new { @class = "btn btn-default" })
+						}
+						else
+						{
+							@Html.ActionLink((i + 1).ToString(), Model.FilterAction, "ServiceRequestApproval", new { pageId = i }, new { @class = "btn btn-default" })
+						}
+
+
 					}
 				}
 			}

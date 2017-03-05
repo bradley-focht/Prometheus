@@ -82,6 +82,15 @@ namespace Prometheus.WebUI.Helpers
 			return model;
 		}
 
+		/// <summary>
+		/// Get Department Request approvals and filter
+		/// </summary>
+		/// <param name="srController"></param>
+		/// <param name="userId"></param>
+		/// <param name="currentPage"></param>
+		/// <param name="pageSize"></param>
+		/// <param name="state"></param>
+		/// <returns></returns>
 		public static ServiceRequestApprovalModel GetDepartmentRequests(IServiceRequestController srController, int userId,
 			int currentPage, int pageSize, ServiceRequestState state)
 		{
