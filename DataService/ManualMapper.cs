@@ -969,7 +969,7 @@ namespace DataService
 			};
 		}
 
-		public static Script MapDtoToScript(IScript src)
+		public static Script MapDtoToScript(IScriptDto src)
 		{
 			if (src == null)
 				return null;
