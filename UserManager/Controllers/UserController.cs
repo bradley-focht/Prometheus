@@ -150,6 +150,7 @@ namespace UserManager.Controllers
 					throw new EntityNotFoundException("Could not add Roles to User.", typeof(User), adjustedUserId);
 
 				var updatedUser = context.Users.Find(adjustedUserId);
+				updatedUser.Roles = new List<Role>();
 				context.Users.Attach(updatedUser);
 
 				foreach (var role in rolesToAdd)

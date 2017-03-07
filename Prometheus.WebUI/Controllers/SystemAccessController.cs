@@ -251,8 +251,23 @@ namespace Prometheus.WebUI.Controllers
 			IAdSearch searcher = new AdSearch();
 			foreach (var user in users)
 			{
-				//TODO: AD string displayName = searcher.GetUserDisplayName(user.AdGuid);  //name resolution
-				string displayName = "honey bunny"; //debugging with no AD
+				string displayName = null; //debugging with no AD
+				if (user.Name == null)
+				{
+					try
+					{
+						displayName = searcher.GetUserDisplayName(user.AdGuid);
+					}
+					catch
+					{
+						displayName = user.AdGuid.ToString();
+					}
+				}
+				else
+				{
+					displayName = user.Name;
+				}
+				
 
 				modelUsers.Add(new UserDetailsModel { UserDto = user, DisplayName = displayName });
 			}
@@ -346,9 +361,6 @@ namespace Prometheus.WebUI.Controllers
 
 			if (users != null && roles != null && users.Any() && roles.Any())
 			{
-				var userList = _userManager.GetUsers(UserId).ToList(); //get the user list to check new users in
-				var roleList = _userManager.GetRoles(UserId).ToList();
-
 				foreach (var user in users)
 				{
 					IUserDto userDto = null;        //the dto, user is just the guid
@@ -386,7 +398,7 @@ namespace Prometheus.WebUI.Controllers
 					foreach (var role in roles)
 						try
 						{
-							_userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = role } });
+							var updatedUser = _userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = role } });
 						}
 						catch (Exception exception)
 						{

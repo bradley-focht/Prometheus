@@ -14,8 +14,8 @@ namespace UserManager
 	public class UserManagerService : IUserManager
 	{
 		private readonly IPermissionController _permissionController;
-		private IUserController _userController;
-		private IRoleController _roleController;
+		private readonly IUserController _userController;
+		private readonly IRoleController _roleController;
 		private const string AuthorizedUserRoleName = "Authorized User";
 
 		public UserManagerService(IPermissionController permissionController, IUserController userController, IRoleController roleController)
@@ -45,7 +45,7 @@ namespace UserManager
 					{
 						user = GetUser(adUser.UserGuid);
 					}
-					catch (Exception) { 					}
+					catch (Exception) { /* user does not exist */ }
 					
 					if (user != null)
 					{

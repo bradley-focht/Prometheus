@@ -104,7 +104,7 @@ namespace Prometheus.WebUI.Controllers
 
 				//make sr name & save it
 				if (request.ServiceOptionId != null)
-					request.Name = $"{request.Action.ToString().Substring(0, 3)}_{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}_{request.Id}";
+					request.Name = $"{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}{request.Action.ToString().Substring(0, 3).ToUpper()}{request.Id}";
 				_srController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
