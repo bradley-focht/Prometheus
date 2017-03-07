@@ -1,15 +1,23 @@
 ﻿using System.Data.Entity;
 using Common.Dto;
 using Common.Enums;
+using Common.Enums.Permissions;
 using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 using DataService.Models;
+using UserManager.Controllers;
 
 namespace RequestService
 {
 	public class RequestManager : IRequestManager
 	{
+		private readonly IPermissionController _permissionController;
+		public RequestManager(IPermissionController permissionController)
+		{
+			_permissionController = permissionController;
+		}
+
 		public IServiceRequestDto ChangeRequestState(int userId, int requestId, ServiceRequestState state, string comments = null)
 		{
 			IServiceRequestDto request = RequestFromId(requestId);
@@ -180,25 +188,44 @@ namespace RequestService
 			requestEntity.ServiceOptionId = null;
 		}
 
-		private bool UserCanSubmitRequest(int userId, int requestId)
+		public bool UserCanSubmitRequest(int userId, int requestId)
 		{
-			//TODO: ADD PERMISSION AND STATE CHECK
+			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+			{
+				return RequestFromId(requestId).RequestedByUserId == userId;
+			}
+			return false;
+		}
+
+		public bool UserCanCancelRequest(int userId, int requestId)
+		{
+			return true;
+		}
+		public bool UserCanApproveRequest(int userId, int requestId)
+		{
 			return true;
 		}
 
-		private bool UserCanCancelRequest(int userId, int requestId)
+		public bool UserCanFulfillRequest(int userId, int requestId)
 		{
-			return true;
-		}
-		private bool UserCanApproveRequest(int userId, int requestId)
-		{
-			//TODO: Do this Sean
 			return true;
 		}
 
-		private bool UserCanFulfillRequest(int userId, int requestId)
+		public bool UserCanEditRequest(int userId, int requestId)
 		{
-			return true;
+			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+			{
+				var request = RequestFromId(requestId);
+
+				//Requestor or Approver and SUBMITTED
+				if (request.State == ServiceRequestState.Submitted && (request.RequestedByUserId == userId || request.ApproverUserId == userId))
+					return true;
+
+				//Requestor and INCOMPLETE
+				if (request.State == ServiceRequestState.Incomplete && request.RequestedByUserId == userId)
+					return true;
+			}
+			return false;
 		}
 
 		private IServiceRequestDto RequestFromId(int requestId)

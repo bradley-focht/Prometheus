@@ -23,6 +23,8 @@ namespace RequestService
 		/// <returns>Service Request after Submition is attempted</returns>
 		IServiceRequestDto SubmitRequest(int userId, int requestId);
 
+		bool UserCanSubmitRequest(int userId, int requestId);
+
 		/// <summary>
 		/// Changes the state of a service request to Cancelled if the action is possible.
 		/// </summary>
@@ -31,6 +33,7 @@ namespace RequestService
 		/// <param name="comments">Optional: Comments tied to the submission if applicable</param>
 		/// <returns>Service Request after Cancellation is attempted</returns>
 		IServiceRequestDto CancelRequest(int userId, int requestId, string comments);
+		bool UserCanCancelRequest(int userId, int requestId);
 
 		/// <summary>
 		/// Changes the state of a service request to the result of the Approval if the action is possible.
@@ -41,6 +44,7 @@ namespace RequestService
 		/// <param name="comments">Optional: Comments tied to the Approval if applicable</param>
 		/// <returns>Service Request after Approval is attempted</returns>
 		IServiceRequestDto ApproveRequest(int userId, int requestId, ApprovalResult approval, string comments);
+		bool UserCanApproveRequest(int userId, int requestId);
 
 		/// <summary>
 		/// Changes the state of a service request to Fulfilled if the action is possible.
@@ -50,5 +54,8 @@ namespace RequestService
 		/// <param name="comments">Optional: Comments tied to the Fulfillment if applicable</param>
 		/// <returns>Service Request after Fulfillment is attempted</returns>
 		IServiceRequestDto FulfillRequest(int userId, int requestId, string comments);
+		bool UserCanFulfillRequest(int userId, int requestId);
+
+		bool UserCanEditRequest(int userId, int requestId);
 	}
 }

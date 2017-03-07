@@ -167,7 +167,7 @@ namespace UserManager.Controllers
 			}
 		}
 
-		protected override bool UserHasPermissionToModify(int performingUserId, EntityModification modification, out object permission)
+		protected override bool UserHasPermissionToModify(int performingUserId, IUserDto user, EntityModification modification, out object permission)
 		{
 			permission = null;
 			return true;

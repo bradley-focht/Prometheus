@@ -50,7 +50,7 @@ namespace RESTAPI.Controllers
 		// PUT: api/Request/5
 		public void Put(int id, [FromBody]string value)
 		{
-			var rm = new RequestManager();
+			var rm = new RequestManager(new PermissionController());
 			var um = new UserManagerService(
 				new PermissionController(),
 				new UserController(),

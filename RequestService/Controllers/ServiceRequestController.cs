@@ -17,9 +17,12 @@ namespace RequestService.Controllers
 	public class ServiceRequestController : EntityController<IServiceRequestDto>, IServiceRequestController
 	{
 		private readonly IUserManager _userManager;
-		public ServiceRequestController(IUserManager userManager)
+		private readonly IRequestManager _requestManager;
+
+		public ServiceRequestController(IUserManager userManager, IRequestManager requestManager)
 		{
 			_userManager = userManager;
+			_requestManager = requestManager;
 		}
 
 		public IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId)
@@ -132,6 +135,21 @@ namespace RequestService.Controllers
 
 			throw new PermissionException("Cannot Approve Service Requests",
 				approverId, ApproveServiceRequest.ApproveMinistryRequests);
+		}
+
+		protected override bool UserHasPermissionToModify(int performingUserId, IServiceRequestDto request, EntityModification modification, out object permission)
+		{
+			permission = ServiceRequestSubmission.CanSubmitRequests;
+			switch (modification)
+			{
+				case EntityModification.Create:
+					return _userManager.UserHasPermission(performingUserId, (ServiceRequestSubmission)permission);
+				case EntityModification.Update:
+					return _requestManager.UserCanEditRequest(performingUserId, request.Id);
+				case EntityModification.Delete:
+					return _userManager.UserHasPermission(performingUserId, (ServiceRequestSubmission)permission);
+			}
+			return false;
 		}
 	}
 }
