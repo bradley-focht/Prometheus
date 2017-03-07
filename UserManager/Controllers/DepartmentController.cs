@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
@@ -16,6 +17,17 @@ namespace UserManager.Controllers
 			using (var context = new PrometheusContext())
 			{
 				return ManualMapper.MapDepartmentToDto(context.Departments.FirstOrDefault(x => x.Id == departmentId));
+			}
+		}
+
+		public IEnumerable<IDepartmentDto> GetDepartments(int performingUserId)
+		{
+			using (var context = new PrometheusContext())
+			{
+				foreach (var department in context.Departments)
+				{
+					yield return ManualMapper.MapDepartmentToDto(department);
+				}
 			}
 		}
 

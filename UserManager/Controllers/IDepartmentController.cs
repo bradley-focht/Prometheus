@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Common.Dto;
 using Common.Enums.Entities;
 
@@ -12,6 +13,13 @@ namespace UserManager.Controllers
 		/// <param name="departmentId">department to retrieve</param>
 		/// <returns></returns>
 		IDepartmentDto GetDepartment(int performingUserId, int departmentId);
+
+		/// <summary>
+		/// Retrieves all departments
+		/// </summary>
+		/// <param name="performingUserId">user making the request</param>
+		/// <returns></returns>
+		IEnumerable<IDepartmentDto> GetDepartments(int performingUserId);
 
 		/// <summary>
 		/// Modifies the Department in the database
