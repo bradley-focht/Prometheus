@@ -52,6 +52,18 @@ namespace UserManager.Controllers
 			}
 		}
 
+		public IUserDto GetUser(Guid userGuid)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var user = (from u in context.Users
+							where u.AdGuid == userGuid
+							select u).FirstOrDefault();
+
+				return ManualMapper.MapUserToDto(user);             //will return null if user not found
+			}
+		}
+
 		private int _guestId;
 		public int GuestId
 		{

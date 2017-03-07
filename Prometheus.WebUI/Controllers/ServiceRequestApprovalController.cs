@@ -11,6 +11,7 @@ using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
+	[Authorize]
 	public class ServiceRequestApprovalController : PrometheusController
 	{
 		private readonly int _pageSize;
@@ -34,7 +35,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult Index(int pageId = 0)
-		{
+		{	//default of my service requests filtered by incomplete
 			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_srController, UserId, pageId, _pageSize, ServiceRequestState.Incomplete);
 			return View(model);
 		}

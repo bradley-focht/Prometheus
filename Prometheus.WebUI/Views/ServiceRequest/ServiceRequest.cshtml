@@ -10,7 +10,23 @@
 		new KeyValuePair<string, string>("Home", "Home"),
 		new KeyValuePair<string, string>("Service Request", "#")
 	};
-	var submitAction = Model.CurrentIndex < 0 ? "SaveInfo" : $"SaveForm{Model.Mode}";            //post operation to perform
+	//where to post back to post back to
+	var submitAction = Model.CurrentIndex < 0 ? "SaveInfo" : $"SaveForm{Model.Mode}";
+	//navigation partial view tabs
+	var navModel = new ServiceRequestNavigationModel {SelectedIndex = Model.CurrentIndex};
+	if (Model.SelectedAction == ServiceRequestAction.Change)
+	{
+		navModel.Titles = Model.ChangePackage.ServiceOptionCategoryTags;
+	}
+	else if (Model.SelectedAction == ServiceRequestAction.New)
+	{
+		navModel.Titles = Model.NewPackage.ServiceOptionCategoryTags;
+	}
+	else if (Model.SelectedAction == ServiceRequestAction.Remove)
+	{
+		navModel.Titles = Model.RemovePackage.ServiceOptionCategoryTags;
+	}
+
 }
 
 @using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
@@ -66,7 +82,7 @@
 		</div>
 	</div>
 	<div class="make-space-top">
-		@Html.Partial("PartialViews/ServiceRequestNavigation", new ServiceRequestNavigationModel { SelectedIndex = Model.CurrentIndex, Titles = Model.SelectedAction == ServiceRequestAction.New ? Model.NewPackage.ServiceOptionCategoryTags : Model.RemovePackage.ServiceOptionCategoryTags })
+		@Html.Partial("PartialViews/ServiceRequestNavigation", navModel)
 	</div>
 	<div class="panel-div full-width">
 		@*partial view selected by index && mode*@
@@ -128,7 +144,7 @@
 			var inputs = [];
 			@foreach (var input in Model.GetUserInputList())
 	{
-		<text>inputs[inputs.length] = { name: '@(StringHelper.RemoveSpaces(input.DisplayName))', used: false };</text>
+		<text>inputs[inputs.length] = { name: '@(StringHelper.RemoveNonAlphaNum(input.DisplayName))', used: false };</text>
 	}
 
 			@foreach (var option in Model.GetOptions())
@@ -152,7 +168,7 @@
 					@foreach (var input in option.UserInputs.UserInputs)
 				{
 					<text>
-					if (inputs[j].name === '@(StringHelper.RemoveSpaces(input.DisplayName))') {
+					if (inputs[j].name === '@(StringHelper.RemoveNonAlphaNum(input.DisplayName))') {
 						inputs[j].used = true;
 						continue;
 					}
@@ -212,22 +228,22 @@
 				foreach (var userData in Model.ServiceRequest.ServiceRequestUserInputs)
 				{
 					<text>
-			if (document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))")) {
+			if (document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))")) {
 				@if (userData.UserInputType == UserInputType.Selection || userData.UserInputType == UserInputType.ScriptedSelection)
 				{
 					<text>
-				document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").selectize.setValue('@userData.Value', 0);
+				document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))").selectize.setValue('@userData.Value', 0);
 				</text>
 				}
 				else
 				{
 					<text>
-					document.getElementById("@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Value';
+					document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))").value = '@userData.Value';
 					</text>
 				}
 
-				document.getElementById("data_id_@(StringHelper.RemoveSpaces(userData.Name))").value = '@userData.Id ';
-			}
+				document.getElementById("data_id_@(StringHelper.RemoveNonAlphaNum(userData.Name))").value = '@userData.Id ';
+			}Re
 			</text>
 				}
 			}

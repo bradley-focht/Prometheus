@@ -18,7 +18,9 @@
 				    <label class="btn btn-default" id="New">
 					    @Html.RadioButton("Action", ServiceRequestAction.New, false) Add
 				    </label>
-
+					<label class="btn btn-default" id="Change">
+						@Html.RadioButton("Action", ServiceRequestAction.Change, false) Change
+					</label>
 				    <label class="btn btn-default" id="Remove">
 					    @Html.RadioButton("Action", ServiceRequestAction.Remove, false) Remove
 				    </label>

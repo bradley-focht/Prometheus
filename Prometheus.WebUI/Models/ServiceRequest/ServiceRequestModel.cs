@@ -77,6 +77,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// Available packages to choose from
 		/// </summary>
 		public IServiceRequestPackageDto NewPackage { get; set; }
+		public IServiceRequestPackageDto ChangePackage { get; set; }
 		public IServiceRequestPackageDto RemovePackage { get; set; }
 		/// <summary>
 		/// One action must be selected
