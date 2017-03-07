@@ -36,21 +36,21 @@
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Description) </div>
                     <div class="dd-cell">
-                        @Html.TextBox("Name", Model.Description, new { @class = "form-control" })
+                        @Html.TextBox("Description", Model.Description, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Version) </div>
                     <div class="dd-cell">
-                        @Html.TextBox("Name", Model.Version, new { @class = "form-control" })
+                        @Html.TextBox("Version", Model.Version, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Filename) </div>
                     <div class="dd-cell">
-                        @Html.TextBox("Name", Model.Filename, new { @class = "form-control" })
+                        @Html.TextBox("Filename", Model.Filename, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Filename, "", new { @class = "text-danger" })
                     </div>
                 </div>

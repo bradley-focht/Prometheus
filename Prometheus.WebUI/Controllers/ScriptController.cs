@@ -78,6 +78,8 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Add");
             }
 
+
+
             TempData["MessageType"] = WebMessageType.Success;
             TempData["Message"] = $"New script {newScript.Name} saved successfully";
 
@@ -95,6 +97,9 @@ namespace Prometheus.WebUI.Controllers
                         file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
                         new ScriptFileController().ModifyScript(UserId, new ScriptDto()
                         {
+                            Name = newScript.Name,
+                            Description = newScript.Description,
+                            Version = newScript.Version,
                             MimeType = file.ContentType,
                             Filename = Path.GetFileNameWithoutExtension(fileName),
                             ScriptFile = newFileName,
