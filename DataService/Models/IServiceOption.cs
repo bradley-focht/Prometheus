@@ -1,5 +1,5 @@
-﻿using Common.Dto;
-using System;
+﻿using System;
+using Common.Dto;
 
 
 namespace DataService.Models
@@ -9,7 +9,7 @@ namespace DataService.Models
 		int ServiceOptionCategoryId { get; set; }
 		Guid? Picture { get; set; }
 		string PictureMimeType { get; set; }
-
+		bool BasicRequest { get; set; }
 		double PriceUpFront { get; set; }
 		double PriceMonthly { get; set; }
 		double Cost { get; set; }

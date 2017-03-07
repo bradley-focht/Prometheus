@@ -20,9 +20,8 @@ namespace RequestService
 		/// </summary>
 		/// <param name="userId">ID of user Submitting the request</param>
 		/// <param name="requestId">ID of Service Request to Submit</param>
-		/// <param name="comments">Optional: Comments tied to the submission if applicable</param>
 		/// <returns>Service Request after Submition is attempted</returns>
-		IServiceRequestDto SubmitRequest(int userId, int requestId, string comments);
+		IServiceRequestDto SubmitRequest(int userId, int requestId);
 
 		/// <summary>
 		/// Changes the state of a service request to Cancelled if the action is possible.

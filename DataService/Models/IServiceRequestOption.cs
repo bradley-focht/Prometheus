@@ -6,6 +6,7 @@
 		int ServiceOptionId { get; set; }
 		int ServiceRequestId { get; set; }
 		int Quantity { get; set; }
+		bool BasicRequest { get; set; }
 
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }

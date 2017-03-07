@@ -21,6 +21,8 @@ namespace DataService.Models
 		DateTime RequestedForDate { get; set; }
 
 		ServiceRequestState State { get; set; }
+		bool BasicRequest { get; }
+
 		ServiceRequestAction Action { get; set; }
 		int? ServiceOptionId { get; set; }
 

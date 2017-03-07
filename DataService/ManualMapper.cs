@@ -42,11 +42,11 @@ namespace DataService
 		/// </summary>
 		/// <param name="src">source entity</param>
 		/// <returns></returns>
-		public static ServiceOptionDto MapServiceOptionToDto(IServiceOption src)
+		public static IServiceOptionDto MapServiceOptionToDto(IServiceOption src)
 		{
 			if (src == null) return null;
 
-			Lazy<ServiceOptionDto> option = new Lazy<ServiceOptionDto>(() => new ServiceOptionDto
+			Lazy<IServiceOptionDto> option = new Lazy<IServiceOptionDto>(() => new ServiceOptionDto
 			{
 				BusinessValue = src.BusinessValue,
 				Cost = src.Cost,
@@ -63,6 +63,7 @@ namespace DataService
 				Popularity = src.Popularity,
 				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
 				Utilization = src.Utilization,
+				BasicRequest = src.BasicRequest,
 
 				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
@@ -124,7 +125,8 @@ namespace DataService
 				PictureMimeType = src.PictureMimeType,
 				Popularity = src.Popularity,
 				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
-				Utilization = src.Utilization
+				Utilization = src.Utilization,
+				BasicRequest = src.BasicRequest
 			};
 
 			return serviceOption;
@@ -955,7 +957,10 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				ServiceOptionId = src.ServiceOptionId,
 				Quantity = src.Quantity,
-				ServiceRequestId = src.ServiceRequestId
+				ServiceRequestId = src.ServiceRequestId,
+				BasicRequest = src.BasicRequest,
+				ServiceOption = MapServiceOptionToDto(src.ServiceOption),
+				ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
 			};
 		}
 
@@ -969,7 +974,8 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				Quantity = src.Quantity,
 				ServiceOptionId = src.ServiceOptionId,
-				ServiceRequestId = src.ServiceRequestId
+				ServiceRequestId = src.ServiceRequestId,
+				BasicRequest = src.BasicRequest
 			};
 		}
 

@@ -13,13 +13,13 @@ namespace RequestService
 		public IServiceRequestDto ChangeRequestState(int userId, int requestId, ServiceRequestState state, string comments = null)
 		{
 			IServiceRequestDto request = RequestFromId(requestId);
-			
+
 			switch (state)
 			{
 				case ServiceRequestState.Incomplete:
 					throw new ServiceRequestStateException("Cannot change the state of a Service Request to Incomplete.");
 				case ServiceRequestState.Submitted:
-					return SubmitRequest(userId, requestId, comments);
+					return SubmitRequest(userId, requestId);
 				case ServiceRequestState.Approved:
 				case ServiceRequestState.Denied:
 					ApprovalResult approval = state == ServiceRequestState.Approved ? ApprovalResult.Approved : ApprovalResult.Denied;
@@ -32,7 +32,7 @@ namespace RequestService
 			return request;
 		}
 
-		public IServiceRequestDto SubmitRequest(int userId, int requestId, string comments)
+		public IServiceRequestDto SubmitRequest(int userId, int requestId)
 		{
 			IServiceRequestDto request = RequestFromId(requestId);
 			if (request.State != ServiceRequestState.Incomplete)
@@ -107,7 +107,7 @@ namespace RequestService
 				throw new ServiceRequestStateException(
 					   string.Format("Cannot change the state of a Service Request to \"{0}\". " +
 									 "Service Request is in the \"{1}\" state and must be in the " +
-									 "\"{2}\" state to perform this action.", 
+									 "\"{2}\" state to perform this action.",
 									 approvalResult, request.State, ServiceRequestState.Submitted));
 			}
 
@@ -126,7 +126,7 @@ namespace RequestService
 					};
 					context.Approvals.Add(approval);
 					context.SaveChanges(userId);
-					
+
 					//Change state of the entity
 					var requestEntity = context.ServiceRequests.Find(requestId);
 					requestEntity.State = approvalResult == ApprovalResult.Approved
