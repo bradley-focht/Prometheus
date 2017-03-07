@@ -1,4 +1,5 @@
-﻿using System.Data.Entity;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Permissions;
@@ -52,7 +53,6 @@ namespace RequestService
 									 ServiceRequestState.Submitted, request.State, ServiceRequestState.Incomplete));
 			}
 
-			//TODO: ADD PERMISSION CHECK
 			if (UserCanSubmitRequest(userId, requestId))
 			{
 				using (var context = new PrometheusContext())
@@ -73,6 +73,16 @@ namespace RequestService
 			return request;
 		}
 
+		public bool UserCanSubmitRequest(int userId, int requestId)
+		{
+			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+			{
+				var request = RequestFromId(requestId);
+				return request.RequestedByUserId == userId && request.State == ServiceRequestState.Incomplete;
+			}
+			return false;
+		}
+
 		public IServiceRequestDto CancelRequest(int userId, int requestId, string comments)
 		{
 			IServiceRequestDto request = RequestFromId(requestId);
@@ -86,7 +96,6 @@ namespace RequestService
 								  ServiceRequestState.Cancelled, request.State, ServiceRequestState.Incomplete, ServiceRequestState.Submitted));
 			}
 
-			//TODO: ADD PERMISSION CHECK
 			if (UserCanCancelRequest(userId, requestId))
 			{
 				using (var context = new PrometheusContext())
@@ -104,6 +113,18 @@ namespace RequestService
 			}
 
 			return request;
+		}
+
+		public bool UserCanCancelRequest(int userId, int requestId)
+		{
+			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+			{
+				var request = RequestFromId(requestId);
+
+				return request.RequestedByUserId == userId
+					   && (request.State == ServiceRequestState.Incomplete || request.State == ServiceRequestState.Submitted);
+			}
+			return false;
 		}
 
 		public IServiceRequestDto ApproveRequest(int userId, int requestId, ApprovalResult approvalResult, string comments)
@@ -149,6 +170,42 @@ namespace RequestService
 			return request;
 		}
 
+		public bool UserCanApproveRequest(int userId, int requestId)
+		{
+			var request = RequestFromId(requestId);
+
+			if (request.State == ServiceRequestState.Submitted)
+			{
+				if (_permissionController.UserHasPermission(userId, ApproveServiceRequest.ApproveAnyRequests))
+				{
+					//All submitted requests
+					return true;
+				}
+
+				if (_permissionController.UserHasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests))
+				{
+					//Submitted requests with the same department ID as the approver
+					using (var context = new PrometheusContext())
+					{
+						//DO NOT RETURN RESULT. What if this request was for another department but its a basic request? Proceed to next permission check
+						//Will never be null. UserHasPermission will catch that
+						if (context.Users.Find(userId).DepartmentId == request.DepartmentId)
+							return true;
+					}
+				}
+
+				if (_permissionController.UserHasPermission(userId, ApproveServiceRequest.ApproveBasicRequests))
+				{
+					//Basic Requests that the approver submitted
+					using (var context = new PrometheusContext())
+					{
+						return request.RequestedByUserId == userId && context.ServiceRequests.Find(requestId).BasicRequest;
+					}
+				}
+			}
+			return false;
+		}
+
 
 		public IServiceRequestDto FulfillRequest(int userId, int requestId, string comments)
 		{
@@ -183,29 +240,7 @@ namespace RequestService
 			return request;
 		}
 
-		private void ClearTemporaryFields(IServiceRequest requestEntity)
-		{
-			requestEntity.ServiceOptionId = null;
-		}
-
-		public bool UserCanSubmitRequest(int userId, int requestId)
-		{
-			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
-			{
-				return RequestFromId(requestId).RequestedByUserId == userId;
-			}
-			return false;
-		}
-
-		public bool UserCanCancelRequest(int userId, int requestId)
-		{
-			return true;
-		}
-		public bool UserCanApproveRequest(int userId, int requestId)
-		{
-			return true;
-		}
-
+		//TODO: ADD ONCE FULFILL PERMISSION IS ADDED
 		public bool UserCanFulfillRequest(int userId, int requestId)
 		{
 			return true;
@@ -228,6 +263,34 @@ namespace RequestService
 			return false;
 		}
 
+		public IEnumerable<ServiceRequestState> ValidStates(int userId, int requestId)
+		{
+			var states = new List<ServiceRequestState>();
+
+			if (UserCanApproveRequest(userId, requestId))
+			{
+				states.Add(ServiceRequestState.Approved);
+				states.Add(ServiceRequestState.Denied);
+			}
+
+			if (UserCanCancelRequest(userId, requestId))
+			{
+				states.Add(ServiceRequestState.Cancelled);
+			}
+
+			if (UserCanFulfillRequest(userId, requestId))
+			{
+				states.Add(ServiceRequestState.Fulfilled);
+			}
+
+			if (UserCanSubmitRequest(userId, requestId))
+			{
+				states.Add(ServiceRequestState.Submitted);
+			}
+
+			return states;
+		}
+
 		private IServiceRequestDto RequestFromId(int requestId)
 		{
 			IServiceRequestDto request;
@@ -240,6 +303,11 @@ namespace RequestService
 				throw new EntityNotFoundException("", typeof(ServiceRequest), requestId);
 
 			return request;
+		}
+
+		private void ClearTemporaryFields(IServiceRequest requestEntity)
+		{
+			requestEntity.ServiceOptionId = null;
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using Common.Dto;
+﻿using System.Collections.Generic;
+using Common.Dto;
 using Common.Enums;
 
 namespace RequestService
@@ -33,6 +34,7 @@ namespace RequestService
 		/// <param name="comments">Optional: Comments tied to the submission if applicable</param>
 		/// <returns>Service Request after Cancellation is attempted</returns>
 		IServiceRequestDto CancelRequest(int userId, int requestId, string comments);
+
 		bool UserCanCancelRequest(int userId, int requestId);
 
 		/// <summary>
@@ -44,6 +46,7 @@ namespace RequestService
 		/// <param name="comments">Optional: Comments tied to the Approval if applicable</param>
 		/// <returns>Service Request after Approval is attempted</returns>
 		IServiceRequestDto ApproveRequest(int userId, int requestId, ApprovalResult approval, string comments);
+
 		bool UserCanApproveRequest(int userId, int requestId);
 
 		/// <summary>
@@ -54,8 +57,23 @@ namespace RequestService
 		/// <param name="comments">Optional: Comments tied to the Fulfillment if applicable</param>
 		/// <returns>Service Request after Fulfillment is attempted</returns>
 		IServiceRequestDto FulfillRequest(int userId, int requestId, string comments);
+
 		bool UserCanFulfillRequest(int userId, int requestId);
 
+		/// <summary>
+		/// Determines if a user can Edit a request
+		/// </summary>
+		/// <param name="userId">ID of user editing request</param>
+		/// <param name="requestId">ID of request to be edited</param>
+		/// <returns></returns>
 		bool UserCanEditRequest(int userId, int requestId);
+
+		/// <summary>
+		/// Returns a list of all states that a user can change a service request to
+		/// </summary>
+		/// <param name="userId">ID of user changing states</param>
+		/// <param name="requestId">ID of request to be changed</param>
+		/// <returns></returns>
+		IEnumerable<ServiceRequestState> ValidStates(int userId, int requestId);
 	}
 }
