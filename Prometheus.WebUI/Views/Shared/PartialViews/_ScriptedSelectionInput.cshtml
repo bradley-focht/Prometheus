@@ -2,9 +2,9 @@
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.ScriptedSelectionInputDto>
 
-<input type="hidden" name="@(Model.ControlName)Name" value="@(StringHelper.RemoveSpaces(Model.Control.DisplayName))" />
+<input type="hidden" name="@(Model.ControlName)Name" value="@(StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName))" />
 <input type="hidden" name="@(Model.ControlName)Type" value="@(UserInputType.ScriptedSelection))" />
 <input type="hidden" name="@(Model.ControlName)Id" value="@(Model.Id))" />
 <input type="hidden" name="@(Model.ControlName)InputId" value="@(Model.Control.Id))"/>
 
-@Html.TextBox(Model.ControlName, null, new { id = StringHelper.RemoveSpaces(Model.Control.DisplayName), style = "max-width: 350px;", @class = "form-control" })
+@Html.TextBox(Model.ControlName, null, new { id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), style = "max-width: 350px;", @class = "form-control" })

@@ -301,6 +301,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
     <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="ClassDiagram1.cd" />
     <None Include="Properties\PublishProfiles\LocalHost.pubxml" />
     <None Include="Properties\PublishProfiles\PROM Server.pubxml" />
     <None Include="Scripts\jquery-3.1.1.intellisense.js" />
@@ -547,6 +548,8 @@
     <Content Include="Views\ServiceRequestMaintenance\GetOptionUserInputsText.cshtml" />
     <Content Include="Views\Script\Index.cshtml" />
     <Content Include="Views\Script\Add.cshtml" />
+    <Content Include="Views\SystemAccess\ShowQueues.cshtml" />
+    <Content Include="Views\SystemAccess\ConfirmDeleteServiceQueue.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

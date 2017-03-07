@@ -12,7 +12,7 @@
 <div class="flex-col" style="padding: 10px;">
 	<div class="flex-row">
 		<div class="dropdown make-space-right">
-			<button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Requests</button>
+			<button class="dropdown-toggle btn btn-default" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">My Requests</button>
 
 			<ul class="dropdown-menu">
 				<li>@Html.ActionLink("All", "AllServiceRequests", null, new {@class = "dropdown-item"})</li>
@@ -38,30 +38,23 @@
 		@if (UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests) || UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveAnyRequests))
 		{
 			<div class="dropdown">
-				<button class="dropdown-toggle btn btn-primary" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department Requests</button>
+				<button class="dropdown-toggle btn btn-default" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department Requests</button>
 
 				<ul class="dropdown-menu">
-					<li>@Html.ActionLink("All", "Index", null, new {@class = "dropdown-item"})</li>
+					<li>@Html.ActionLink("All", "AllDepartmentServiceRequests", null, new {@class = "dropdown-item"})</li>
 					<li class="divider"></li>
 					<li class="dropdown-submenu">
 						<a tabindex="-1" href="#">Status</a>
 
 						<ul class="dropdown-menu">
-							@foreach (var state in Enum.GetValues(typeof(ServiceRequestState)))
+							@foreach (var srState in Enum.GetValues(typeof(ServiceRequestState)))
 							{
-								var stateString = state.ToString();
-								if (stateString != "Cancelled")
+								var stateString = srState.ToString();
+								if (stateString != "Cancelled" && stateString != "Incomplete")
 								{
-									<li>@Html.ActionLink(stateString, "Index")</li>
+									<li>@Html.ActionLink(stateString, "FilterDepartmentStatus", new {state = srState })</li>
 								}
 							}
-						</ul>
-					</li>
-					<li class="dropdown-submenu">
-						<a tabindex="-1" href="#">Requestor</a>
-
-						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Pending", "Index")</li>
 						</ul>
 					</li>
 				</ul>
@@ -79,7 +72,16 @@
 					}
 					else
 					{
-						@Html.ActionLink((i + 1).ToString(), Model.FilterAction, "ServiceRequestApproval", new {pageId = i }, new {@class = "btn btn-default"})
+						if (Model.FilterStateRequired)
+						{
+							@Html.ActionLink((i + 1).ToString(), Model.FilterAction, "ServiceRequestApproval", new {state = Model.FilterState, pageId = i }, new { @class = "btn btn-default" })
+						}
+						else
+						{
+							@Html.ActionLink((i + 1).ToString(), Model.FilterAction, "ServiceRequestApproval", new { pageId = i }, new { @class = "btn btn-default" })
+						}
+
+
 					}
 				}
 			}

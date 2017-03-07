@@ -2,7 +2,7 @@
 {
 	public interface IScriptedSelectionInputDto : ISelectable
 	{
-		string Script { get; set; }
+		int ScriptId { get; set; }
 		bool ExecutionEnabled { get; set; }
 	}
 }

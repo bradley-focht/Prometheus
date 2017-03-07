@@ -27,7 +27,7 @@ namespace DataService.DataAccessLayer
 				{
 					new Service
 					{
-						Name = "First Service",
+						Name = "Hardware",
 						LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
 					},
 					new Service
@@ -50,7 +50,7 @@ namespace DataService.DataAccessLayer
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Designed", CatalogVisible = false, Position = 6 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Developed", CatalogVisible = false, Position = 7 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Built", CatalogVisible = false, Position = 8 });
-			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Released", CatalogVisible = false, Position = 9 });
+			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Released", CatalogVisible = true, Position = 9 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Operational", CatalogVisible = true, Position = 10 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Test", CatalogVisible = true, Position = 11 });
 			context.LifecycleStatuses.Add(new LifecycleStatus { Name = "Retired", CatalogVisible = false, Position = 9 });
@@ -146,7 +146,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "External Executive",
 					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -158,7 +158,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Internal Executive",
 					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.CanViewServiceDetails,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -170,7 +170,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Support Staff",
 					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -182,7 +182,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Approver",
 					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveMinistryRequests,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -194,7 +194,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Authorized User",
 					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveBasicRequests,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,

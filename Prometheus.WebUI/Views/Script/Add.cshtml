@@ -1,7 +1,7 @@
 ﻿@model Common.Dto.ScriptDto
 
 @{
-    ViewBag.Title = "Script";
+    ViewBag.Title = "Scripts";
     ViewBag.SubTitle = "Add and Upload Scripts";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
@@ -25,7 +25,7 @@
             <div class="panel-div">
                 @* content *@
                 @* Html.Partial("some partial view ") *@
-
+                <input type="hidden" name="Id" value="@Model.Id" />
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Name) </div>
                     <div class="dd-cell">
@@ -36,21 +36,21 @@
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Description) </div>
                     <div class="dd-cell">
-                        @Html.TextBox("Name", Model.Description, new { @class = "form-control" })
+                        @Html.TextBox("Description", Model.Description, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Version) </div>
                     <div class="dd-cell">
-                        @Html.TextBox("Name", Model.Version, new { @class = "form-control" })
+                        @Html.TextBox("Version", Model.Version, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                     </div>
                 </div>
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.Filename) </div>
                     <div class="dd-cell">
-                        @Html.TextBox("Name", Model.Filename, new { @class = "form-control" })
+                        @Html.TextBox("Filename", Model.Filename, new { @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Filename, "", new { @class = "text-danger" })
                     </div>
                 </div>
@@ -63,14 +63,12 @@
                                 <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
                                 <span class="btn btn-primary btn-file">
                                     <span class="fileupload-new">Select file</span>
-                                    <span class="fileupload-exists">Change</span>         <input type="file" name="file" />
-
+                                    <span class="fileupload-exists">Change</span>
+                                    <input type="file" name="file" />
                                 </span>
                                 <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
-
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>

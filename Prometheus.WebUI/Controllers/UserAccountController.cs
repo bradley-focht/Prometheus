@@ -62,8 +62,9 @@ namespace Prometheus.WebUI.Controllers
                 FormsAuthentication.SetAuthCookie(user.Name, true);                             //enter data in session cookie
 				
                 Session["DisplayName"] = user.Name;
-                Session["Guid"] = user.AdGuid;
+               // Session["Guid"] = user.AdGuid;
                 Session["Id"] = user.Id;
+	            Session["Department"] = user.DepartmentId;
                 return RedirectToAction("Index", "Home");
             }
 

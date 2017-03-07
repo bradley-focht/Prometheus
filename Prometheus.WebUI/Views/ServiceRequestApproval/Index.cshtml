@@ -29,7 +29,7 @@
 		@foreach (var item in Model.ServiceRequests)
 		{
 			<tr>
-				<td>@Html.ActionLink(item.Name, "ConfirmServiceRequestStateChange", "ServiceRequestApproval", new {id = item.Id, index = -1}, null)</td>
+				<td>@Html.ActionLink(item.Name, "ShowServiceRequest", "ServiceRequestApproval", new {id = item.Id}, null)</td>
 				<td>@item.State</td>
 				<td>@item.DateSubmitted</td>
 				<td>@item.DateRequired.ToString("d")</td>
@@ -47,7 +47,7 @@
 
 							<li>@Html.ActionLink("Approve", "ConfirmServiceRequestStateChange", new {id = item.Id, nextState = ServiceRequestState.Approved})</li>
 
-							<li>@Html.ActionLink("Reject", "ConfirmServiceRequestStateChange")</li>
+							<li>@Html.ActionLink("Deny", "ConfirmServiceRequestStateChange")</li>
 						</ul>
 					</div>
 				</td>

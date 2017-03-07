@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Common.Enums;
 using Prometheus.WebUI.Helpers.Enums;
 
 namespace Prometheus.WebUI.Models.ServiceRequest
@@ -37,7 +38,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// </summary>
         [Required]
 		public DateTime RequestedDate { get; set; }
-
+		[Required]
+		public int DepartmentId { get; set; }
 	    public ServiceRequestMode Mode { get; set; }
+		[Required]
+		public ServiceRequestAction Action { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Common.Dto;
 using Common.Enums.Entities;
 
@@ -39,6 +40,7 @@ namespace UserManager.Controllers
 		/// <returns></returns>
 		IUserDto GetUser(int performingUserId, int userId);
 
+		IUserDto GetUser(Guid userGuid);
 		int GuestId { get; }
 		int AdministratorId { get; }
 	}

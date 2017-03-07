@@ -1,87 +1,154 @@
-﻿@using Prometheus.WebUI.Models.ServiceRequest
+﻿@using Common.Enums
+@using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
-
+@{
+	int packageCount = 0;	//test if necessary to allow package selection
+	if (Model.NewPackage != null) { packageCount++; }
+	if (Model.ChangePackage != null) { packageCount++; }
+	if (Model.RemovePackage != null) { packageCount++; }
+}
 <div class="dd">
-    <div class="dd-row">
-        <div class="dt-cell">Requestor</div>
-        <div class="dd-cell">@Session["Displayname"]
-        <input type="hidden" value="@Session["Id"].ToString())" name="Requestor"/>
+	@if (Model.ServiceRequest.Id <= 0)
+			{
+	<div class="dd-row">
+		<div class="dt-cell">Action</div>	@*determine action *@
+		<div class="dd-cell">
+			<input type="hidden" name="form.Action" value="@(Model.SelectedAction)" />
+			@* Add only OR no package specified *@
+			@if (packageCount > 0)
+			{
+				<div class="btn-group">
+					@if (Model.NewPackage != null)
+					{
+						<label class="btn btn-primary" id="New">
+							@Html.ActionLink("New", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.New}, new {style = "color:#fff;"})
+						</label>
+					}
+					@if (Model.ChangePackage != null)
+					{
+						<label class="btn btn-primary" id="Change">
+							@Html.ActionLink("Change", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Change }, new { style = "color:#fff;" })
+						</label>
+					}
+					@if (Model.RemovePackage != null)
+					{
+					<label class="btn btn-primary" id="Remove">
+						@Html.ActionLink("Remove", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Remove}, new {style = "color:#fff;"})
+					</label>
+					}
+				</div>
+
+				<script type="text/javascript" language="javascript">
+					$('#@(Model.SelectedAction)').button('toggle');
+				</script>
+			}
 		</div>
-    </div>
-    <div class="dd-row">
-        <div class="dt-cell">
-            Requested For
-        </div>
-	    <div class="dd-cell">
+	</div>
+	}
+	<div class="dd-row">
+		<div class="dt-cell">
+			Approval Department
+		</div>
+		<div class="dd-cell">
+			<input type="hidden" name="form.DepartmentId" value="1"/>
+			[ dept name ]
+		</div>
+	</div>
+
+	<div class="dd-row">
+		<div class="dt-cell">Requestor</div>
+		<div class="dd-cell">@Session["Displayname"]
+			<input type="hidden" value="@Session["Id"].ToString())" name="form.Requestor"/>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">
+			Requested For
+		</div>
+		<div class="dd-cell">
 
 			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-default" id="RequesteeMe">
-					@Html.RadioButton("Requestees", Session["Id"].ToString() , false) Me
+				<label class="btn btn-default" id="RequesteeMe" onclick="EnableSelector(false)">
+					@Html.RadioButton("Requestees", Session["Id"].ToString(), false) Me
 				</label>
 
-				<label class="btn btn-default" id="RequesteeOther">
-					@Html.RadioButton("ServiceTypeRole", "Other" , false) Someone else
+				<label class="btn btn-default" id="RequesteeOther" onclick="EnableSelector(true)">
+					@Html.RadioButton("ServiceTypeRole", "Other", false) Someone else
 				</label>
 			</div>
 
-		    <select name="Requestees" id="RequesteesSelect" style="width: 200px">
-			    <option>Select Users</option>
-		    </select>
-		    <script type="text/javascript" language="javascript">
-				var $select = $(document.getElementById('RequesteesSelect')).selectize({maxItems: 1});
+			<select name="Requestees" id="RequesteesSelect" style="width: 200px">
+				<option>Select Users</option>
+			</select>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Date Required</div>
+		<div class="dd-cell">
+			<div class="input-group date" data-provide="datepicker">
+				@Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id = "formRequestedDate", data_val = "true", data_val_required = "Date is required" })
+				<span class="input-group-addon" id="formRequestedDateButton" ><i class="fa fa-calendar" aria-hidden="true"></i></span>
+			</div>
+			@Html.ValidationMessage("form.RequestedDate")
+
+			<script language="javascript" type="text/javascript">
+				$(function() {
+					$('#formRequestedDate')
+						.datepicker({
+							autoclose: true,
+							format: "mm-dd-yyyy"
+						});
+
+				});
+
+			</script>
+
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Comments</div>
+		<div class="dd-cell">
+			@Html.TextArea("form.Comments", Model.Comments, new {@class = "ckeditor"})
+			<div class="note">additional requests in comments will not be honoured</div>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Office-Use</div>
+		<div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new {@class = "form-control"})</div>
+	</div>
+</div>
+
+
+<script type="text/javascript" language="javascript">
+				function EnableSelector(enable) {
+					var select = document.getElementById('RequesteesSelect');
+
+					if (enable) {
+						select.selectize.enable();
+
+					} else {
+						select.selectize.disable();
+					}
+				}
+
+				var $select = $(document.getElementById('RequesteesSelect')).selectize({ maxItems: 1 });
 				var selectize = $select[0].selectize;
 				selectize.addOption({ value: 1, text: 'foo' });
 				selectize.addItem(1);
-				selectize.refreshOptions();
+				//selectize.refreshOptions();
 				/*
 
-    			$(document)
-    				.ready(function() {
-    						$.get('/Script/People',
-    							function(data) {
-    								console.log(data);
-    								$.each(data,
-    									function(index, value) {
-    										console.log(index + value);
-    										$('<option>').val(value).text(value).appendTo('#RequesteesSelect');
-    									});
-    							});
-    					}
-    				) */
-    		</script>
-	    </div>
-    </div>
-    <div class="dd-row">
-        <div class="dt-cell">Date Required</div>
-        <div class="dd-cell">
-            <div class="input-group date"  data-provide="datepicker">
-                @Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id= "formRequestedDate" })
-                <span class="input-group-addon" id="formRequestedDateButton" ><i class="fa fa-calendar" aria-hidden="true"></i></span>
-            </div>
-            @Html.ValidationMessage("form.RequestedDate")
-
-            <script language="javascript" type="text/javascript">
-	            $(function() {
-		            $('#formRequestedDate')
-			            .datepicker({
-				            autoclose: true,
-				            format: "mm-dd-yyyy"
-			            });
-
-	            }); 
-            </script>
-
-        </div>
-    </div>
-<div class="dd-row">
-    <div class="dt-cell">Comments</div>
-    <div class="dd-cell">
-        @Html.TextArea("form.Comments", Model.Comments, new { @class = "ckeditor" })
-        <div class="note">additional requests in comments will not be honoured</div>
-    </div>
-</div>
-<div class="dd-row">
-    <div class="dt-cell">Office-Use</div>
-    <div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new { @class = "form-control" })</div>
-</div>
-</div>
+			    $(document)
+				    .ready(function() {
+						    $.get('/Script/People',
+							    function(data) {
+								    console.log(data);
+								    $.each(data,
+									    function(index, value) {
+										    console.log(index + value);
+										    $('<option>').val(value).text(value).appendTo('#RequesteesSelect');
+									    });
+							    });
+					    }
+				    ) */
+</script>

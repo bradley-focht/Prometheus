@@ -1,14 +1,17 @@
 ﻿@model dynamic
 
-<div class="dd">
+
     @foreach (var property in ViewData.ModelMetadata.Properties)
-    {
-        switch (property.PropertyName)
-        {
-            case "Delimiter":
-                continue;
-            case "Id":
-            case "ServiceOptionId":
+	{
+		switch (property.PropertyName)
+		{
+			case "Delimiter":
+			case "AvailableOnAdd":
+			case "AvailableOnRemove":
+			case "AvailableOnChange":
+				continue;
+			case "Id":
+			case "ServiceOptionId":
                 <input type="hidden" value="@property.Model" name="@property.PropertyName" />  break;
 
             case "HelpToolTip":
@@ -45,19 +48,22 @@
                         @Html.ValidationMessage(property.PropertyName)
                     </div>
                 </div>  break;
-            case "MultiLine":
-                <div class="dd-row">
-                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-                    <div class="btn-group" data-toggle="buttons">
-                        <label class="btn btn-default" id="MultiLineTrue">
-                            @Html.RadioButton("MultiLine", "true", false) Multi Line
-                        </label>
 
-                        <label class="btn btn-default" id="MultiLineFalse">
-                            @Html.RadioButton("MultiLine", "false", false) Single Line
-                        </label>
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>
+			case "MultiLine":
+                <div class="dd-row">
+	                <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="dd-cell">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default" id="MultiLineTrue">
+								@Html.RadioButton(property.PropertyName, "true", false) Multi Line
+							</label>
+
+							<label class="btn btn-default" id="MultiLineFalse">
+								@Html.RadioButton(property.PropertyName, "false", false) Single Line
+							</label>
+						</div>
+						@Html.ValidationMessage(property.PropertyName)
+					</div>
                     <script type="text/javascript" language="javascript">
                         @if (int.Parse((from p in ViewData.ModelMetadata.Properties where p.PropertyName == "Id" select p.Model).First().ToString()) != 0)
 				        {
@@ -77,4 +83,3 @@
                 </div>  break;
         }
     }
-</div>

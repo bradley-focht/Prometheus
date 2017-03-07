@@ -33,9 +33,19 @@ namespace Prometheus.WebUI.Helpers
 		{
 			return Regex.Replace(input, @"\s+", "");
 		}
+		/// <summary>
+		/// Remove anything non alphaNumeric
+		/// Good for html tag Ids
+		/// </summary>
+		/// <param name="input"></param>
+		/// <returns></returns>
+		public static string RemoveNonAlphaNum(string input)
+		{
+			return Regex.Replace(input, @"[^a-zA-Z0-9]", "");
+		}
 
 		/// <summary>
-		/// 
+		/// Convert a delmited list to a javascript array
 		/// </summary>
 		/// <param name="input"></param>
 		/// <param name="delimiter">only one char is allowed</param>

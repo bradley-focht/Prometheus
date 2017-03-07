@@ -14,6 +14,14 @@ namespace Common.Dto
 		[Display(Order = 2, Name="Help Tool Tip")]
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
+		[Display(Order = 5, Name = "Available on Add")]
+		public bool AvailableOnAdd { get; set; }
+
+		public bool AvailableOnChange { get; set; }
+
+		[Display(Order = 6, Name = "Available on Remove")]
+		public bool AvailableOnRemove { get; set; }
+
 		[Display(Order = 3, Name = "Number of Selections")]
 		public int NumberToSelect { get; set; }
 		[Display(Order = 4, Name = "Selection Items")]

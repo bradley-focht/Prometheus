@@ -20,19 +20,50 @@
 	@using (Html.BeginForm("Save" + Model.InputType + "Input", "ServiceRequestMaintenance", FormMethod.Post))
 	{
 		<div class="panel-div">
-			@switch (Model.InputType)
-			{
-				case UserInputType.Text:
-					@Html.Partial("PartialViews/UserInputEditor", (ITextInputDto)Model.UserInput)
-					break;
-				case UserInputType.Selection:
-					@Html.Partial("PartialViews/UserInputEditor", (ISelectionInputDto)Model.UserInput)
-					break;
-				case UserInputType.ScriptedSelection:
-					@Html.Partial("PartialViews/UserInputEditor", (IScriptedSelectionInputDto)Model.UserInput)
-					break;
-			}
-		</div>
+			<div class="dd">
+				@switch (Model.InputType)
+				{
+					case UserInputType.Text:
+						@Html.Partial("PartialViews/UserInputEditor", (ITextInputDto) Model.UserInput)
+						break;
+					case UserInputType.Selection:
+						@Html.Partial("PartialViews/UserInputEditor", (ISelectionInputDto) Model.UserInput)
+						break;
+					case UserInputType.ScriptedSelection:
+						@Html.Partial("PartialViews/UserInputEditor", (IScriptedSelectionInputDto) Model.UserInput)
+						break;
+				}
+				<div class="dd-row">
+					<div class="dt-cell">
+						Actions
+					</div>
+					<div class="dd-cell">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default" id="AvailableOnAdd">
+								@Html.CheckBox("AvailableOnAdd", Model.UserInput.AvailableOnAdd, new {style = "display:none;"}) Add
+							</label>
+							<label class="btn btn-default" id="AvailableOnChange">
+								@Html.CheckBox("AvailableOnChange", Model.UserInput.AvailableOnChange, new { style = "display:none;" }) Change
+							</label>
+							<label class="btn btn-default" id="AvailableOnRemove">
+								@Html.CheckBox("AvailableOnRemove", Model.UserInput.AvailableOnRemove, new {style = "display:none;"}) Remove
+							</label>
+						</div>
+
+						<script type="text/javascript" language="javascript">
+                        @if (Model.UserInput.AvailableOnAdd)
+				        {
+							<text> $('#AvailableOnAdd').button('toggle'); </text>
+				        }
+						@if (Model.UserInput.AvailableOnRemove)
+						{
+							<text> $('#AvailableOnRemove').button('toggle'); </text>
+						}
+						</script>
+					</div>
+				</div>
+			</div>
+			</div>
 		<div class="flex-container-col">
 			<div class="panel-footer">
 				<div class="float-right-div">

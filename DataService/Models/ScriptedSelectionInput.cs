@@ -6,7 +6,7 @@ namespace DataService.Models
 {
 	public class ScriptedSelectionInput : IScriptedSelectionInput
 	{
-		public string Script { get; set; }
+		public int ScriptId { get; set; }
 		public bool ExecutionEnabled { get; set; }
 		public int Id { get; set; }
 		[Display(Order = 1, Name = "Display Name")]
@@ -15,6 +15,14 @@ namespace DataService.Models
 		[Display(Order = 2, Name = "Help Tool Tip")]
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
+		[Display(Order = 4, Name = "Available on Add")]
+		public bool AvailableOnAdd { get; set; }
+
+		public bool AvailableOnChange { get; set; }
+
+		[Display(Order = 5, Name = "Available on Remove")]
+		public bool AvailableOnRemove { get; set; }
+		[Display(Order = 3, Name = "Number to Select")]
 		public int NumberToSelect { get; set; }
 
 		public virtual ICollection<ServiceOption> ServiceOptions { get; set; }

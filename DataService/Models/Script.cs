@@ -25,7 +25,7 @@ namespace DataService.Models
         public string Filename { get; set; }
         public Guid ScriptFile { get; set; }
         public string MimeType { get; set; }
-        public DateTime UploadDate { get; set; }
+        public DateTime? UploadDate { get; set; }
 
         #endregion
 

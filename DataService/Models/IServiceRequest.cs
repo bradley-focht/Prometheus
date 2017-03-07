@@ -23,6 +23,7 @@ namespace DataService.Models
 		ServiceRequestState State { get; set; }
 		bool BasicRequest { get; }
 
+		ServiceRequestAction Action { get; set; }
 		int? ServiceOptionId { get; set; }
 
 		Department Department { get; set; }

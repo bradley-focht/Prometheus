@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Dto;
+using Common.Enums;
 using Common.Enums.Entities;
 using ServicePortfolioService.Controllers;
 
@@ -327,9 +328,9 @@ namespace ServicePortfolioService
 			get { return _serviceRequestPackageController.AllServiceRequestPackages; }
 		}
 
-		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId)
+		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId, ServiceRequestAction action)
 		{
-			return _serviceRequestPackageController.GetServiceRequestPackagesForServiceOption(performingUserId, serviceOptionId);
+			return _serviceRequestPackageController.GetServiceRequestPackagesForServiceOption(performingUserId, serviceOptionId, action);
 		}
 	}
 }

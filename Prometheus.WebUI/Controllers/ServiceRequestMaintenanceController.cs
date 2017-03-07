@@ -413,7 +413,7 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				items = from s in _ps.AllServiceRequestPackages
-					select new Tuple<int, string>(s.Id, s.Name);
+					select new Tuple<int, string>(s.Id, $"{s.Name} ({s.Action})");
 			}
 			catch (Exception exception)
 			{
@@ -446,6 +446,7 @@ namespace Prometheus.WebUI.Controllers
 			_ps = InterfaceFactory.CreatePortfolioService();
 			IServiceRequestPackageDto newPackage = new ServiceRequestPackageDto(); //transfer data to new package
 			newPackage.Name = package.Name;
+			newPackage.Action = package.Action;
 			newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
 			newPackage.Id = package.Id;
 
@@ -604,6 +605,7 @@ namespace Prometheus.WebUI.Controllers
 
 			model.InputType = type;
 			model.UserInput = input;
+			model.Action = "Add";
 
 			return View("EditUserInput", model);
 		}
@@ -758,7 +760,8 @@ namespace Prometheus.WebUI.Controllers
 			UserInputModel model = new UserInputModel
 			{
 				InputType = type,
-				UserInput = input
+				UserInput = input,
+				Action = "Update"
 			};
 			return View("EditUserInput", model);
 		}
@@ -937,6 +940,12 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("ShowUserInput", new {id = 0});
 		}
 
+		/// <summary>
+		/// Get properly populated user inputs for an option
+		/// </summary>
+		/// <param name="id"></param>
+		/// <param name="readOnly"></param>
+		/// <returns></returns>
 		public ActionResult GetOptionUserInputsDropDown(int id, bool readOnly = false)
 		{
 			_ps = InterfaceFactory.CreatePortfolioService();
@@ -997,6 +1006,11 @@ namespace Prometheus.WebUI.Controllers
 			return View("OptionUserInputsDropDown", inputDropDownList);
 		}
 
+		/// <summary>
+		/// Get the display names of a user input
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult GetOptionUserInputsText(int id)
 		{
 			_ps = InterfaceFactory.CreatePortfolioService();

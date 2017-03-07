@@ -2,7 +2,6 @@
 @model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestStateChangeModel
 @{
 	ViewBag.Title = "Service Request";
-	string buttonText = null;
 
 	switch (Model.NextState)
 	{
@@ -15,6 +14,9 @@
 		case ServiceRequestState.Approved:
 			ViewBag.SubTitle = "Approving Service Request";
 			break;
+		default:
+			ViewBag.SubTitle = "Service Request Summary";
+			break;
 	}
 
 	Layout = "~/Views/Shared/_Layout.cshtml";
@@ -25,7 +27,7 @@
 		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 	};
 
-}
+			}
 
 <div class="title-div">@ViewBag.SubTitle</div>
 
@@ -46,7 +48,7 @@
 			<div class="float-right-div">
 				@Html.ActionLink("Back", "Index", null, new {@class = "btn btn-default btn-back"})
 				@switch (Model.NextState)
-				{
+	{
 					case ServiceRequestState.Submitted:
 						<button type="submit" value="@(Model.NextState)" name="state" class="btn btn-primary">Submit</button>
 						break;
