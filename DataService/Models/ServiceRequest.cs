@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Common.Enums;
 
 namespace DataService.Models
@@ -37,6 +38,15 @@ namespace DataService.Models
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+
+		//This property is ignored in PrometheusContext.OnModelCreating()
+		/// <summary>
+		/// If all SROs on the SR are basic
+		/// </summary>
+		public bool BasicRequest
+		{
+			get { return this.ServiceRequestOptions.All(x => x.BasicRequest == true); }
+		}
 
 		public virtual ServiceOption ServiceOption { get; set; }
 		public virtual Department Department { get; set; }

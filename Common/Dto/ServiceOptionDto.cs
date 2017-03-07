@@ -24,61 +24,63 @@ namespace Common.Dto
 		[Display(Order = 1)]
 		public string Name { get; set; }
 
-        /// <summary>
-        /// service design package description
-        /// </summary>
-        [Display(Order = 2)]
-        [AllowHtml]
-        public string Description { get; set; }
+		/// <summary>
+		/// service design package description
+		/// </summary>
+		[Display(Order = 2)]
+		[AllowHtml]
+		public string Description { get; set; }
 
-        /// <summary>
-        /// technical details
-        /// </summary>
-        [Display(Order = 3)]
-        [AllowHtml]
-	    public string Details { get; set; }
+		/// <summary>
+		/// technical details
+		/// </summary>
+		[Display(Order = 3)]
+		[AllowHtml]
+		public string Details { get; set; }
 
-	    /// <summary>
-        /// Service Catalog display information
-        /// </summary>
-        [AllowHtml]
-        [Display(Order = 2, Name = "Business Value")]
-	    public string BusinessValue { get; set; }
+		/// <summary>
+		/// Service Catalog display information
+		/// </summary>
+		[AllowHtml]
+		[Display(Order = 2, Name = "Business Value")]
+		public string BusinessValue { get; set; }
 
-        [Required(ErrorMessage = "Category is required")]
-	    [Display(Order = 8, Name = "Category")]
+		[Required(ErrorMessage = "Category is required")]
+		[Display(Order = 8, Name = "Category")]
 		public int ServiceOptionCategoryId { get; set; }
 
 		[Display(Order = 8)]
 		public string Utilization { get; set; }
 
-        /// <summary>
-        /// Included in the price
-        /// </summary>
-        [AllowHtml]
-        [Display(Order = 3)]
-	    public string Included { get; set; }
+		/// <summary>
+		/// Included in the price
+		/// </summary>
+		[AllowHtml]
+		[Display(Order = 3)]
+		public string Included { get; set; }
 
-        /// <summary>
-        /// method of procuring
-        /// </summary>
-        [AllowHtml]
-        [Display(Order = 4)]
-	    public string Procurement { get; set; }
+		/// <summary>
+		/// method of procuring
+		/// </summary>
+		[AllowHtml]
+		[Display(Order = 4)]
+		public string Procurement { get; set; }
 
-	    /// <summary>
+		/// <summary>
 		/// Cost paid by the company to provide the option
 		/// </summary>
-		[Display(Order =5)]
+		[Display(Order = 5)]
 		public double Cost { get; set; }
 
 		/// <summary>
 		/// profit made
 		/// </summary>
-		[Display(Name = "Up Front Price", Order =6)]
+		[Display(Name = "Up Front Price", Order = 6)]
 		public double PriceUpFront { get; set; }
-		[Display(Name = "Monthly Price", Order =7)]
+		[Display(Name = "Monthly Price", Order = 7)]
 		public double PriceMonthly { get; set; }
+
+		public bool BasicRequest { get; set; }
 
 
 		/// <summary>

@@ -57,6 +57,11 @@ namespace DataService.DataAccessLayer
 		{
 			//Tables in DB will be named as User, ServiceBundle, etc. instead of Users, ServiceBundles, etc.
 			modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
+			base.OnModelCreating(modelBuilder);
+
+			//Does not map this field to the database
+			modelBuilder.Entity<ServiceRequest>().Ignore(x => x.BasicRequest);
 		}
 
 		/// <summary>
