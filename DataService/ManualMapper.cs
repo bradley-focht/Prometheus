@@ -678,6 +678,7 @@ namespace DataService
 				MultiLine = src.MultiLine,
 				HelpToolTip = src.HelpToolTip,
 				AvailableOnRemove = src.AvailableOnRemove,
+				AvailableOnChange = src.AvailableOnChange,
 				AvailableOnAdd = src.AvailableOnAdd
 			});
 
@@ -699,6 +700,7 @@ namespace DataService
 				MultiLine = src.MultiLine,
 				HelpToolTip = src.HelpToolTip,
 				AvailableOnRemove = src.AvailableOnRemove,
+				AvailableOnChange = src.AvailableOnChange,
 				AvailableOnAdd = src.AvailableOnAdd
 			};
 		}
@@ -1060,7 +1062,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
-				Users = src.Users.Select(x => MapUserToDto(x)).ToList()
+
 			};
 		}
 	}

@@ -6,6 +6,7 @@
 	public enum ServiceRequestAction
 	{
 		New,
+		Change,
 		Remove
 	}
 }

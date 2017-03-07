@@ -42,7 +42,9 @@
 							<label class="btn btn-default" id="AvailableOnAdd">
 								@Html.CheckBox("AvailableOnAdd", Model.UserInput.AvailableOnAdd, new {style = "display:none;"}) Add
 							</label>
-
+							<label class="btn btn-default" id="AvailableOnChange">
+								@Html.CheckBox("AvailableOnChange", Model.UserInput.AvailableOnChange, new { style = "display:none;" }) Change
+							</label>
 							<label class="btn btn-default" id="AvailableOnRemove">
 								@Html.CheckBox("AvailableOnRemove", Model.UserInput.AvailableOnRemove, new {style = "display:none;"}) Remove
 							</label>

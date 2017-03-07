@@ -8,6 +8,7 @@
 			case "Delimiter":
 			case "AvailableOnAdd":
 			case "AvailableOnRemove":
+			case "AvailableOnChange":
 				continue;
 			case "Id":
 			case "ServiceOptionId":
@@ -54,14 +55,14 @@
 					<div class="dd-cell">
 						<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-default" id="MultiLineTrue">
-								@Html.RadioButton("MultiLine", "true", false) Multi Line
+								@Html.RadioButton(property.PropertyName, "true", false) Multi Line
 							</label>
 
 							<label class="btn btn-default" id="MultiLineFalse">
-								@Html.RadioButton("MultiLine", "false", false) Single Line
+								@Html.RadioButton(property.PropertyName, "false", false) Single Line
 							</label>
-							@Html.ValidationMessage(property.PropertyName)
 						</div>
+						@Html.ValidationMessage(property.PropertyName)
 					</div>
                     <script type="text/javascript" language="javascript">
                         @if (int.Parse((from p in ViewData.ModelMetadata.Properties where p.PropertyName == "Id" select p.Model).First().ToString()) != 0)

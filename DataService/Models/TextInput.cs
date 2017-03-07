@@ -11,6 +11,7 @@ namespace DataService.Models
 		public virtual ICollection<ServiceOption> ServiceOptions { get; set; }
 
 		public bool AvailableOnAdd { get; set; }
+		public bool AvailableOnChange { get; set; }
 		public bool AvailableOnRemove { get; set; }
 	}
 }

@@ -5,6 +5,7 @@ using Common.Dto;
 using Common.Enums.Entities;
 using DataService;
 using DataService.DataAccessLayer;
+using DataService.Models;
 using UserManager.AdService;
 using UserManager.Controllers;
 
@@ -39,33 +40,35 @@ namespace UserManager
 				using (var context = new PrometheusContext())
 				{
 					//See if the user exists already
-					var user = context.Users.FirstOrDefault(x => x.AdGuid == adUser.UserGuid);
+					IUserDto user = null;
+					try
+					{
+						user = GetUser(adUser.UserGuid);
+					}
+					catch (Exception) { 					}
+					
 					if (user != null)
 					{
 						//If they existed retrun them
-						IUserDto userDto = ManualMapper.MapUserToDto(user); //name Resolution
-					    userDto.Name = GetDisplayName(userDto.AdGuid);
-					    return userDto;
+					    user.Name = GetDisplayName(user.AdGuid);
+					    return user;
 					}
 					else
 					{
 						//Otherwise add them with the authenticated role
-						var userDto = new UserDto()
-						{
-							AdGuid = adUser.UserGuid,
-							Name = adUser.DisplayName
-						};
+						var newUser = new UserDto{ AdGuid = adUser.UserGuid };
 
 						//Get the role that is to be added to the user
 						var authenticatedRole = context.Roles.FirstOrDefault(x => x.Name == AuthorizedUserRoleName);
 
 						//Add them and their role to the database
-						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(userDto));
-						savedUser.Roles.Add(authenticatedRole);
+						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(newUser));
+						savedUser.DepartmentId = 1;
+						savedUser.Roles = new List<Role> {authenticatedRole};
 						context.SaveChanges();
-						userDto = (UserDto)ManualMapper.MapUserToDto(savedUser);
-					    userDto.Name = GetDisplayName(userDto.AdGuid);      //Name resolution
-					    return userDto;
+						newUser = (UserDto)ManualMapper.MapUserToDto(savedUser);
+						newUser.Name = GetDisplayName(newUser.AdGuid);      //Name resolution
+					    return newUser;
 					}
 				}
 			}
@@ -77,6 +80,12 @@ namespace UserManager
 		{
 			IAdSearch userSearch = new AdSearch();
 			return userSearch.GetUserDisplayName(userGuid);
+		}
+
+		public IUserDto GetUser(Guid userGuid)
+		{
+			return _userController.GetUser(userGuid);
+
 		}
 
 		public ICollection<Tuple<Guid, string>> SearchUsers(string searchString)

@@ -39,6 +39,7 @@ namespace Common.Dto
 		public string HelpToolTip { get; set; }
 
 		public bool AvailableOnAdd { get; set; }
+		public bool AvailableOnChange { get; set; }
 		public bool AvailableOnRemove { get; set; }
 
 		/// <summary>

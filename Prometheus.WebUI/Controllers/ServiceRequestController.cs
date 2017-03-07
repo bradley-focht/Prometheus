@@ -17,6 +17,7 @@ namespace Prometheus.WebUI.Controllers
 	/// <summary>
 	/// MVC Service Requeset Controller
 	/// </summary>
+	[Authorize]
 	public class ServiceRequestController : PrometheusController
 	{
 		private readonly IPortfolioService _ps;
@@ -40,16 +41,21 @@ namespace Prometheus.WebUI.Controllers
 			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id }, SelectedAction = serviceRequestAction};   //start new SR
 			
 			model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.New);
+			model.ChangePackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.Change);
 			model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.Remove);
 
-			if (model.NewPackage == null && model.RemovePackage != null)
+			//add package only
+			if (model.NewPackage != null && model.ChangePackage == null  && model.RemovePackage == null)
+			{
+				model.SelectedAction = ServiceRequestAction.New;
+			} //change package only
+			else if (model.NewPackage == null && model.ChangePackage != null && model.RemovePackage == null)
+			{
+				model.SelectedAction = ServiceRequestAction.Change;
+			} //remove package only
+			else if (model.NewPackage == null && model.ChangePackage == null && model.RemovePackage != null)
 			{
 				model.SelectedAction = ServiceRequestAction.Remove;
-			}
-
-			if (model.NewPackage == null && model.RemovePackage == null)
-			{
-				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, id);
 			}
 
 			model.CurrentIndex = -1;            /* index for info tab */
@@ -98,7 +104,7 @@ namespace Prometheus.WebUI.Controllers
 
 				//make sr name & save it
 				if (request.ServiceOptionId != null)
-					request.Name = $"{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}_{request.Id}";
+					request.Name = $"{request.Action.ToString().Substring(0, 3)}_{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}_{request.Id}";
 				_srController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
@@ -181,6 +187,12 @@ namespace Prometheus.WebUI.Controllers
 					currentCategory = _ps.GetServiceOptionCategory(UserId,
 							model.NewPackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 			}
+			else if (model.ServiceRequest.Action == ServiceRequestAction.Change)
+			{
+				if (model.ChangePackage != null)
+					currentCategory = _ps.GetServiceOptionCategory(UserId,
+							model.ChangePackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+			}
 			else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
 			{
 				if (model.RemovePackage != null)
@@ -206,25 +218,26 @@ namespace Prometheus.WebUI.Controllers
 
 				try
 				{
-					foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
-					{
-						var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
-						var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+					if (currentCategory != null)
+						foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
+						{
+							var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+							var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
 
-						if (formDto != null && srDto == null)       //add condition
-						{
-							_rs.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
+							if (formDto != null && srDto == null)       //add condition
+							{
+								_rs.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
+							}
+							else if (formDto == null && srDto != null) //remove condition
+							{
+								_rs.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
+							}
+							else if (formDto != null /* && srDto != null */)    //update condition
+							{
+								_rs.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
+								_rs.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
+							}                                                                                                       /* done \*/
 						}
-						else if (formDto == null && srDto != null) //remove condition
-						{
-							_rs.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
-						}
-						else if (formDto != null /* && srDto != null */)    //update condition
-						{
-							_rs.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
-							_rs.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
-						}                                                                                                       /* done \*/
-					}
 					model.ServiceRequest = _srController.GetServiceRequest(UserId, form.Id); // refresh the data in the model now
 				}
 				catch (Exception exception)     //what, a problem?
@@ -351,31 +364,35 @@ namespace Prometheus.WebUI.Controllers
 				return View("ServiceRequest", model);
 			}
 
-
 			/* STEP TWO - get any user inputs & associate with the option */
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
-			if (index < 0)
-			{
-				//not much to do here, eh...
-			}
+			if (index < 0) { /*not much to do here, eh... */ }
 			else if (index < model.NewPackage.ServiceOptionCategoryTags.Count && index < 999)
 			{
 				model.OptionCategory = model.NewPackage.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
 				foreach (var option in model.OptionCategory.ServiceOptions)
 				{
-					IEnumerable<IUserInput> inputs = null;
-					if (model.ServiceRequest.Action == ServiceRequestAction.New)
+					IEnumerable<IUserInput> inputs = null;	//collect relavent inputs
+					if (model.ServiceRequest.Action == ServiceRequestAction.New)	//new
 					{
 						inputs = from i in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> {option}).UserInputs
 							where i.AvailableOnAdd select i;
 					}
-					else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
+					else if (model.ServiceRequest.Action == ServiceRequestAction.Change)	//change
+					{
+						inputs = from i in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
+								 where i.AvailableOnChange select i;
+					}
+					else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)		//remove
 					{
 						inputs = from j in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> {option}).UserInputs
 							where j.AvailableOnRemove
 							select j;
 					}
-					optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = UserInputHelper.MakeInputGroupDto(inputs) });            //possible null is ok, razor views will handle like they always do
+					if (inputs != null) //reduce chances of nulls getting to razor views
+					{
+						optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = UserInputHelper.MakeInputGroupDto(inputs) });			
+					}
 				}
 			}
 
@@ -387,7 +404,6 @@ namespace Prometheus.WebUI.Controllers
 					option.ServiceOption = _ps.GetServiceOption(UserId, option.ServiceOptionId);
 				}
 			}
-
 			model.UserInputs = optionInputList;
 			return View("ServiceRequest", model);
 		}

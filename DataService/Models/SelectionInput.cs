@@ -10,6 +10,7 @@ namespace DataService.Models
 		
 		public string HelpToolTip { get; set; }
 		public bool AvailableOnAdd { get; set; }
+		public bool AvailableOnChange { get; set; }
 		public bool AvailableOnRemove { get; set; }
 		public int NumberToSelect { get; set; }
 		public string SelectItems { get; set; }

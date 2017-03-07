@@ -10,7 +10,7 @@
 <div class="dd tq-width">
 	@foreach (var input in Model.GetUserInputList())
 	{
-		<div class="dd-row" id="div_@StringHelper.RemoveSpaces(input.DisplayName)" style="display: none;">
+		<div class="dd-row" id="div_@StringHelper.RemoveNonAlphaNum(input.DisplayName)" style="display: none;">
 			<div class="dt-cell">@input.DisplayName</div>
 			<div class="dd-cell">
 				<input type="hidden" name="@($"form.UserInput[{index}].Id")" value="0" id="data_id_@(StringHelper.RemoveSpaces(input.DisplayName))"/>

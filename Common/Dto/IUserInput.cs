@@ -7,6 +7,7 @@
 		string HelpToolTip { get; set; }
 
 		bool AvailableOnAdd { get; set; }
+		bool AvailableOnChange { get; set; }
 		bool AvailableOnRemove { get; set; }
 	}
 }

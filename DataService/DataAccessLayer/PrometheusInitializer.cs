@@ -146,7 +146,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "External Executive",
 					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -158,7 +158,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Internal Executive",
 					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.CanViewServiceDetails,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -170,7 +170,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Support Staff",
 					ApproveServiceRequestAccess = ApproveServiceRequest.NoAccess,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -182,7 +182,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Approver",
 					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveMinistryRequests,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
@@ -194,7 +194,7 @@ namespace DataService.DataAccessLayer
 				{
 					Name = "Authorized User",
 					ApproveServiceRequestAccess = ApproveServiceRequest.ApproveBasicRequests,
-					UserRoleAssignmentAccess = UserRoleAssignment.CanViewRoles,
+					UserRoleAssignmentAccess = UserRoleAssignment.NoAccess,
 					RolePermissionAdjustmentAccess = RolePermissionAdustment.NoAccess,
 					ServiceDetailsAccess = ServiceDetails.NoAccess,
 					BusinessCatalogAccess = BusinessCatalog.CanViewCatalog,
