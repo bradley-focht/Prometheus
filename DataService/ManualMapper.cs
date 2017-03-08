@@ -815,6 +815,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Roles = roles,
+				Name = src.Name,
 				AdGuid = src.AdGuid,
 				DepartmentId = src.DepartmentId,
 				Department = MapDepartmentToDto(src.Department)
@@ -994,7 +995,6 @@ namespace DataService
 				Name = src.Name,
 				Description = src.Description,
 				Version = src.Version,
-				Filename = src.Filename,
 				ScriptFile = src.ScriptFile,
 				MimeType = src.MimeType,
 				UploadDate = src.UploadDate
@@ -1012,7 +1012,6 @@ namespace DataService
 				Name = src.Name,
 				Description = src.Description,
 				Version = src.Version,
-				Filename = src.Filename,
 				ScriptFile = src.ScriptFile,
 				MimeType = src.MimeType,
 				UploadDate = src.UploadDate

@@ -20,11 +20,14 @@ namespace Prometheus.WebUI.Controllers
 {
     public class ScriptController : PrometheusController
     {
-		/// <summary>
-		/// Default page of Scripting
-		/// </summary>
-		/// <returns></returns>
-	    public ActionResult Index()
+
+        private ScriptFileController _scriptFile = new ScriptFileController();
+
+        /// <summary>
+        /// Default page of Scripting
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Index()
 	    {
             // TO DO:
             // retrieve all available scripts
@@ -39,8 +42,6 @@ namespace Prometheus.WebUI.Controllers
         public ActionResult GetScript(int id)
         {
             LinkListModel model = new LinkListModel();
-
-
             return View("PartialViews/_LinkList", model);
         }
 
@@ -56,7 +57,7 @@ namespace Prometheus.WebUI.Controllers
         [HttpPost]
         public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
         {
-
+            
             if (!ModelState.IsValid) /* Server side validation */
             {
                 TempData["MessageType"] = WebMessageType.Failure;
@@ -66,22 +67,6 @@ namespace Prometheus.WebUI.Controllers
 
             //save script
             int newId;
-
-            try
-            {
-                newId = new ScriptFileController().ModifyScript(UserId, newScript, EntityModification.Create).Id;
-            }
-            catch (Exception e)
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
-                return RedirectToAction("Add");
-            }
-
-
-
-            TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"New script {newScript.Name} saved successfully";
 
             if (Request.Files.Count > 0)
             {
@@ -95,24 +80,34 @@ namespace Prometheus.WebUI.Controllers
                     {
                         var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
                         file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-                        new ScriptFileController().ModifyScript(UserId, new ScriptDto()
+                        _scriptFile.ModifyScript(UserId, new ScriptDto()
                         {
-                            Name = newScript.Name,
-                            Description = newScript.Description,
-                            Version = newScript.Version,
                             MimeType = file.ContentType,
-                            Filename = Path.GetFileNameWithoutExtension(fileName),
                             ScriptFile = newFileName,
                             UploadDate = DateTime.Now,
                         }, EntityModification.Create);
                     }
-                    catch (Exception exception)
+                    catch (Exception e)
                     {
                         TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {exception.Message}";
+                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
                     }
                 }
+
+                try
+                {
+                    newId = _scriptFile.ModifyScript(UserId, newScript, EntityModification.Create).Id;
+                }
+                catch (Exception e)
+                {
+                    TempData["MessageType"] = WebMessageType.Failure;
+                    TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
+                    return RedirectToAction("Add");
+                }
             }
+
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"New script {newScript.Name} saved successfully";
 
             //return to index
             return RedirectToAction("Index");
@@ -128,7 +123,6 @@ namespace Prometheus.WebUI.Controllers
             if (Request.Files.Count > 0)
             {
                 var fileName = Path.GetFileName(file.FileName);
-                // var ps = InterfaceFactory.CreatePortfolioService();
 
                 if (fileName != null)
                 {
@@ -138,18 +132,17 @@ namespace Prometheus.WebUI.Controllers
                     {
                         var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
                         file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-                        new ScriptFileController().ModifyScript(UserId, new ScriptDto()
+                        _scriptFile.ModifyScript(UserId, new ScriptDto()
                         {
                             MimeType = file.ContentType,
-                            Filename = Path.GetFileNameWithoutExtension(fileName),
                             ScriptFile = newFileName,
                             UploadDate = DateTime.Now,
                         }, EntityModification.Create);
                     }
-                    catch (Exception exception)
+                    catch (Exception e)
                     {
                         TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {exception.Message}";
+                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
                     }
                 }
             }

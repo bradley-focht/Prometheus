@@ -4,6 +4,6 @@ namespace Common.Utilities
 {
 	public interface IScriptExecutor
 	{
-		int GetUserDepartment(Guid userGuid);
+		string GetUserDepartment(Guid userGuid);
 	}
 }
