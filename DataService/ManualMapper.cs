@@ -63,7 +63,7 @@ namespace DataService
 				Popularity = src.Popularity,
 				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
 				Utilization = src.Utilization,
-				BasicRequest = src.BasicRequest,
+				//BasicRequest = src.BasicRequest,
 
 				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
@@ -719,6 +719,7 @@ namespace DataService
 				NumberToSelect = src.NumberToSelect,
 				SelectItems = src.SelectItems,
 				AvailableOnRemove = src.AvailableOnRemove,
+				AvailableOnChange = src.AvailableOnChange,
 				AvailableOnAdd = src.AvailableOnAdd
 			});
 
@@ -912,7 +913,8 @@ namespace DataService
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
-				DepartmentId = src.DepartmentId
+				DepartmentId = src.DepartmentId,
+				
 			};
 		}
 
@@ -982,7 +984,7 @@ namespace DataService
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest,
 				ServiceOption = MapServiceOptionToDto(src.ServiceOption),
-				ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
+				//ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
 			};
 		}
 
