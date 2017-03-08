@@ -983,7 +983,6 @@ namespace DataService
 				Name = src.Name,
 				Description = src.Description,
 				Version = src.Version,
-				Filename = src.Filename,
 				ScriptFile = src.ScriptFile,
 				MimeType = src.MimeType,
 				UploadDate = src.UploadDate
@@ -1001,7 +1000,6 @@ namespace DataService
 				Name = src.Name,
 				Description = src.Description,
 				Version = src.Version,
-				Filename = src.Filename,
 				ScriptFile = src.ScriptFile,
 				MimeType = src.MimeType,
 				UploadDate = src.UploadDate

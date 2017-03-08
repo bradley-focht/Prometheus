@@ -23,11 +23,6 @@ namespace Common.Dto
         public string Version { get; set; }
 
         /// <summary>
-        /// Original name of the script file
-        /// </summary>
-        public string Filename { get; set; }
-
-        /// <summary>
         /// The replacement name used in the file system
         /// </summary>
         [Display(Name="Script File")]

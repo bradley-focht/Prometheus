@@ -18,6 +18,7 @@ using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
+
     public class ScriptController : PrometheusController
     {
 		/// <summary>
@@ -64,25 +65,6 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Add");
             }
 
-            //save script
-            int newId;
-
-            try
-            {
-                newId = new ScriptFileController().ModifyScript(UserId, newScript, EntityModification.Create).Id;
-            }
-            catch (Exception e)
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
-                return RedirectToAction("Add");
-            }
-
-
-
-            TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"New script {newScript.Name} saved successfully";
-
             if (Request.Files.Count > 0)
             {
                 var fileName = Path.GetFileName(file.FileName);
@@ -101,7 +83,6 @@ namespace Prometheus.WebUI.Controllers
                             Description = newScript.Description,
                             Version = newScript.Version,
                             MimeType = file.ContentType,
-                            Filename = Path.GetFileNameWithoutExtension(fileName),
                             ScriptFile = newFileName,
                             UploadDate = DateTime.Now,
                         }, EntityModification.Create);
@@ -113,6 +94,25 @@ namespace Prometheus.WebUI.Controllers
                     }
                 }
             }
+
+            //save script
+            int newId;
+
+            try
+            {
+                newId = new ScriptFileController().ModifyScript(UserId, newScript, EntityModification.Create).Id;
+            }
+            catch (Exception e)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
+                return RedirectToAction("Add");
+            }
+
+
+
+            TempData["MessageType"] = WebMessageType.Success;
+            TempData["Message"] = $"New script {newScript.Name} saved successfully";
 
             //return to index
             return RedirectToAction("Index");
@@ -141,7 +141,6 @@ namespace Prometheus.WebUI.Controllers
                         new ScriptFileController().ModifyScript(UserId, new ScriptDto()
                         {
                             MimeType = file.ContentType,
-                            Filename = Path.GetFileNameWithoutExtension(fileName),
                             ScriptFile = newFileName,
                             UploadDate = DateTime.Now,
                         }, EntityModification.Create);
