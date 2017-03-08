@@ -54,6 +54,8 @@
     <Compile Include="AdService\AdUser.cs" />
     <Compile Include="AdService\IAdSearch.cs" />
     <Compile Include="AdService\IDirectoryUser.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
+    <Compile Include="Controllers\IDepartmentController.cs" />
     <Compile Include="Controllers\IRoleController.cs" />
     <Compile Include="Controllers\IUserController.cs" />
     <Compile Include="Controllers\RoleController.cs" />

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using Common.Enums;
 
 namespace DataService.Models
@@ -39,6 +40,39 @@ namespace DataService.Models
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+
+		#region Calculated Fields
+		//These properties are ignored in PrometheusContext.OnModelCreating()
+		/// <summary>
+		/// If all SROs on the SR are basic
+		/// </summary>
+		public bool BasicRequest
+		{
+			get { return this.ServiceRequestOptions.All(x => x.BasicRequest == true); }
+		}
+
+		/// <summary>
+		/// Total monthly price of service request
+		/// </summary>
+		public decimal MonthlyPrice
+		{
+			get
+			{
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly);
+			}
+		}
+
+		/// <summary>
+		/// Total upfront price of service request
+		/// </summary>
+		public decimal UpfrontPrice
+		{
+			get
+			{
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront);
+			}
+		}
+		#endregion
 
 		public virtual ServiceOption ServiceOption { get; set; }
 		public virtual Department Department { get; set; }

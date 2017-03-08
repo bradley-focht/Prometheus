@@ -18,6 +18,7 @@ namespace Common.Dto
 		DateTime? DateUpdated { get; set; }
 		int RequestedByUserId { get; set; }
 		int UpdatedByUserId { get; set; }
+		bool BasicRequest { get; set; }
 
 		IServiceOptionDto ServiceOption { get; set; }
 		IServiceRequestDto ServiceRequest { get; set; }

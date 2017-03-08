@@ -21,6 +21,12 @@ namespace DataService.Models
 		DateTime RequestedForDate { get; set; }
 
 		ServiceRequestState State { get; set; }
+
+		//Calculated fields
+		bool BasicRequest { get; }
+		decimal MonthlyPrice { get; }
+		decimal UpfrontPrice { get; }
+
 		ServiceRequestAction Action { get; set; }
 		int? ServiceOptionId { get; set; }
 

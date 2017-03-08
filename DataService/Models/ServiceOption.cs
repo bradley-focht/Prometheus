@@ -30,6 +30,7 @@ namespace DataService.Models
 		public string Procurement { get; set; }
 		public string Description { get; set; }
 		public string Details { get; set; }
+		public bool BasicRequest { get; set; }
 
 		#region Fields
 		public DateTime? DateCreated { get; set; }

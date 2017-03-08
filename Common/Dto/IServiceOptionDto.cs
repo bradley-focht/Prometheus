@@ -19,5 +19,6 @@ namespace Common.Dto
 		string Details { get; set; }
 		string BusinessValue { get; set; }
 		int Popularity { get; set; }
+		bool BasicRequest { get; set; }
 	}
 }

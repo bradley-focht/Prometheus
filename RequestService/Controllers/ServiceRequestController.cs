@@ -17,9 +17,12 @@ namespace RequestService.Controllers
 	public class ServiceRequestController : EntityController<IServiceRequestDto>, IServiceRequestController
 	{
 		private readonly IUserManager _userManager;
-		public ServiceRequestController(IUserManager userManager)
+		private readonly IRequestManager _requestManager;
+
+		public ServiceRequestController(IUserManager userManager, IRequestManager requestManager)
 		{
 			_userManager = userManager;
+			_requestManager = requestManager;
 		}
 
 		public IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId)
@@ -94,17 +97,22 @@ namespace RequestService.Controllers
 
 		public IEnumerable<IServiceRequestDto> GetServiceRequestsForApproverId(int approverId)
 		{
-			using (var context = new PrometheusContext())
+
+
+			if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveAnyRequests))
 			{
-
-				if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveAnyRequests))
+				//All submitted requests
+				using (var context = new PrometheusContext())
 				{
-					//Get all approvable requests
 					return context.ServiceRequests.Where(x => x.State == ServiceRequestState.Submitted)
-							.Select(x => ManualMapper.MapServiceRequestToDto(x));
+							   .Select(x => ManualMapper.MapServiceRequestToDto(x));
 				}
+			}
 
-				if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveMinistryRequests))
+			if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveMinistryRequests))
+			{
+				//Submitted requests with the same department ID as the approver
+				using (var context = new PrometheusContext())
 				{
 					//Will never be null. UserHasPermission will catch that
 					var approverDepartmentId = context.Users.Find(approverId).DepartmentId;
@@ -112,16 +120,36 @@ namespace RequestService.Controllers
 					return context.ServiceRequests.Where(x => x.State == ServiceRequestState.Submitted && x.DepartmentId == approverDepartmentId)
 							.Select(x => ManualMapper.MapServiceRequestToDto(x));
 				}
-
-				//TODO: Still requires discussion
-				if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveBasicRequests))
-				{
-					return new List<IServiceRequestDto>();
-				}
-
-				throw new PermissionException("Cannot Approve Service Requests",
-					approverId, ApproveServiceRequest.ApproveMinistryRequests);
 			}
+
+
+			if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveBasicRequests))
+			{
+				//Basic Requests that the approver submitted
+				using (var context = new PrometheusContext())
+				{
+					return context.ServiceRequests.Where(x => x.State == ServiceRequestState.Submitted && x.BasicRequest)
+							.Select(x => ManualMapper.MapServiceRequestToDto(x));
+				}
+			}
+
+			throw new PermissionException("Cannot Approve Service Requests",
+				approverId, ApproveServiceRequest.ApproveMinistryRequests);
+		}
+
+		protected override bool UserHasPermissionToModify(int performingUserId, IServiceRequestDto request, EntityModification modification, out object permission)
+		{
+			permission = ServiceRequestSubmission.CanSubmitRequests;
+			switch (modification)
+			{
+				case EntityModification.Create:
+					return _userManager.UserHasPermission(performingUserId, (ServiceRequestSubmission)permission);
+				case EntityModification.Update:
+					return _requestManager.UserCanEditRequest(performingUserId, request.Id);
+				case EntityModification.Delete:
+					return _userManager.UserHasPermission(performingUserId, (ServiceRequestSubmission)permission);
+			}
+			return false;
 		}
 	}
 }

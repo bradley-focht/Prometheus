@@ -68,7 +68,7 @@ namespace RequestService.Controllers
 			return null;
 		}
 
-		protected override bool UserHasPermissionToModify(int performingUserId, EntityModification modification, out object permission)
+		protected override bool UserHasPermissionToModify(int performingUserId, IServiceRequestUserInputDto requestUserInput, EntityModification modification, out object permission)
 		{
 			permission = null;
 			return true;
