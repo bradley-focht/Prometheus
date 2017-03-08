@@ -44,15 +44,20 @@ namespace Prometheus.WebUI.Controllers
 			model.ChangePackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.Change);
 			model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.Remove);
 
-			//add package only
-			if (model.NewPackage != null && model.ChangePackage == null  && model.RemovePackage == null)
+			//default if no package found
+			if (model.NewPackage == null && model.ChangePackage == null  && model.RemovePackage == null)
+			{
+				model.SelectedAction = ServiceRequestAction.New;	
+				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, id);
+			}	//add only package found
+			else if (model.NewPackage != null && model.ChangePackage == null && model.RemovePackage == null)
 			{
 				model.SelectedAction = ServiceRequestAction.New;
-			} //change package only
+			}	//change only package found
 			else if (model.NewPackage == null && model.ChangePackage != null && model.RemovePackage == null)
 			{
 				model.SelectedAction = ServiceRequestAction.Change;
-			} //remove package only
+			}	//remove package
 			else if (model.NewPackage == null && model.ChangePackage == null && model.RemovePackage != null)
 			{
 				model.SelectedAction = ServiceRequestAction.Remove;

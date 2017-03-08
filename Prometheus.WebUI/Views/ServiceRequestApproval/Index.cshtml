@@ -29,7 +29,16 @@
 		@foreach (var item in Model.ServiceRequests)
 		{
 			<tr>
-				<td>@Html.ActionLink(item.Name, "ShowServiceRequest", "ServiceRequestApproval", new {id = item.Id}, null)</td>
+				<td>
+					@if (item.Name != null)
+					{
+						@Html.ActionLink(item.Name, "ShowServiceRequest", "ServiceRequestApproval", new {id = item.Id}, null)
+					}
+					else
+					{
+						@Html.ActionLink($"SR{item.Id}", "ShowServiceRequest", "ServiceRequestApproval", new { id = item.Id }, null)
+					}
+				</td>
 				<td>@item.State</td>
 				<td>@item.DateSubmitted</td>
 				<td>@item.DateRequired.ToString("d")</td>

@@ -74,7 +74,7 @@ namespace Prometheus.WebUI.Helpers
 		/// <returns></returns>
 		public static RequestManager CreateRequestManager()
 		{
-			return new RequestManager();
+			return new RequestManager(new PermissionController());
 		}
 
 		/// <summary>
@@ -91,7 +91,7 @@ namespace Prometheus.WebUI.Helpers
 		/// <returns></returns>
 		public static ServiceRequestController CreateServiceRequestController()
 		{
-			return new ServiceRequestController(CreateUserManagerService());
+			return new ServiceRequestController(new UserManagerService(new PermissionController(), new UserController(), new RoleController(new PermissionController())), new RequestManager(new PermissionController()) );
 		}
 	}
 }

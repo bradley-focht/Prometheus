@@ -2,7 +2,7 @@
 @using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 @{
-	int packageCount = 0;	//test if necessary to allow package selection
+	int packageCount = 0;   //test if necessary to allow package selection
 	if (Model.NewPackage != null) { packageCount++; }
 	if (Model.ChangePackage != null) { packageCount++; }
 	if (Model.RemovePackage != null) { packageCount++; }
@@ -10,55 +10,79 @@
 <div class="dd">
 	@if (Model.ServiceRequest.Id <= 0)
 			{
-	<div class="dd-row">
-		<div class="dt-cell">Action</div>	@*determine action *@
-		<div class="dd-cell">
-			<input type="hidden" name="form.Action" value="@(Model.SelectedAction)" />
-			@* Add only OR no package specified *@
-			@if (packageCount > 0)
-			{
+
+
+		@* Add only OR no package specified *@
+	if (packageCount > 1)
+	{
+		<div class="dd-row">
+			<div class="dt-cell">Action</div>	@*determine action *@
+			<div class="dd-cell">
 				<div class="btn-group">
 					@if (Model.NewPackage != null)
 					{
 						<label class="btn btn-primary" id="New">
-							@Html.ActionLink("New", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.New}, new {style = "color:#fff;"})
+							@if (Model.SelectedAction == ServiceRequestAction.New)
+							{
+								<text>New</text>
+							}
+							else
+							{
+								@Html.ActionLink("New", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.New }, new { style = "color:#fff;" })
+							}
 						</label>
 					}
 					@if (Model.ChangePackage != null)
 					{
-						<label class="btn btn-primary" id="Change">
-							@Html.ActionLink("Change", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Change }, new { style = "color:#fff;" })
+						<label class="btn btn-primary" id="@ServiceRequestAction.Change">
+							@if (Model.SelectedAction == ServiceRequestAction.Change)
+							{
+								<text>Change</text>
+							}
+							else
+							{
+								@Html.ActionLink("Change", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Change }, new { style = "color:#fff;" })
+							}
 						</label>
 					}
 					@if (Model.RemovePackage != null)
 					{
-					<label class="btn btn-primary" id="Remove">
-						@Html.ActionLink("Remove", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Remove}, new {style = "color:#fff;"})
-					</label>
+						<label class="btn btn-primary" id="@ServiceRequestAction.Remove">
+							@if (Model.SelectedAction == ServiceRequestAction.Remove)
+						{
+								<text>Remove</text>
+						}
+						else
+						{
+								@Html.ActionLink("Remove", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Remove }, new { style = "color:#fff;" })
+						}
+						</label>
 					}
 				</div>
 
 				<script type="text/javascript" language="javascript">
 					$('#@(Model.SelectedAction)').button('toggle');
 				</script>
-			}
+			</div>
 		</div>
-	</div>
+		}
+
 	}
 	<div class="dd-row">
 		<div class="dt-cell">
 			Approval Department
 		</div>
 		<div class="dd-cell">
-			<input type="hidden" name="form.DepartmentId" value="1"/>
+			<input type="hidden" name="form.DepartmentId" value="1" />
 			[ dept name ]
 		</div>
 	</div>
 
 	<div class="dd-row">
 		<div class="dt-cell">Requestor</div>
-		<div class="dd-cell">@Session["Displayname"]
-			<input type="hidden" value="@Session["Id"].ToString())" name="form.Requestor"/>
+		<div class="dd-cell">
+			@Session["Displayname"]
+			<input type="hidden" value="@Session["Id"].ToString())" name="form.Requestor" />
 		</div>
 	</div>
 	<div class="dd-row">
@@ -86,13 +110,13 @@
 		<div class="dt-cell">Date Required</div>
 		<div class="dd-cell">
 			<div class="input-group date" data-provide="datepicker">
-				@Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new {@class = "form-control form-date", id = "formRequestedDate", data_val = "true", data_val_required = "Date is required" })
-				<span class="input-group-addon" id="formRequestedDateButton" ><i class="fa fa-calendar" aria-hidden="true"></i></span>
+				@Html.TextBox("form.RequestedDate", Model.RequestedDate > DateTime.MinValue ? Model.RequestedDate.ToString("MM/dd/yyyy") : "", new { @class = "form-control form-date", id = "formRequestedDate", data_val = "true", data_val_required = "Date is required" })
+				<span class="input-group-addon" id="formRequestedDateButton"><i class="fa fa-calendar" aria-hidden="true"></i></span>
 			</div>
 			@Html.ValidationMessage("form.RequestedDate")
 
 			<script language="javascript" type="text/javascript">
-				$(function() {
+				$(function () {
 					$('#formRequestedDate')
 						.datepicker({
 							autoclose: true,
@@ -108,47 +132,49 @@
 	<div class="dd-row">
 		<div class="dt-cell">Comments</div>
 		<div class="dd-cell">
-			@Html.TextArea("form.Comments", Model.Comments, new {@class = "ckeditor"})
+			@Html.TextArea("form.Comments", Model.Comments, new { @class = "ckeditor" })
 			<div class="note">additional requests in comments will not be honoured</div>
 		</div>
 	</div>
 	<div class="dd-row">
 		<div class="dt-cell">Office-Use</div>
-		<div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new {@class = "form-control"})</div>
+		<div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new { @class = "form-control" })</div>
 	</div>
 </div>
 
 
+
+
 <script type="text/javascript" language="javascript">
-				function EnableSelector(enable) {
-					var select = document.getElementById('RequesteesSelect');
+	function EnableSelector(enable) {
+		var select = document.getElementById('RequesteesSelect');
 
-					if (enable) {
-						select.selectize.enable();
+		if (enable) {
+			select.selectize.enable();
 
-					} else {
-						select.selectize.disable();
-					}
-				}
+		} else {
+			select.selectize.disable();
+		}
+	}
 
-				var $select = $(document.getElementById('RequesteesSelect')).selectize({ maxItems: 1 });
-				var selectize = $select[0].selectize;
-				selectize.addOption({ value: 1, text: 'foo' });
-				selectize.addItem(1);
-				//selectize.refreshOptions();
-				/*
+	var $select = $(document.getElementById('RequesteesSelect')).selectize({ maxItems: 1 });
+	var selectize = $select[0].selectize;
+	selectize.addOption({ value: 1, text: 'foo' });
+	selectize.addItem(1);
+	//selectize.refreshOptions();
+	/*
 
-			    $(document)
-				    .ready(function() {
-						    $.get('/Script/People',
-							    function(data) {
-								    console.log(data);
-								    $.each(data,
-									    function(index, value) {
-										    console.log(index + value);
-										    $('<option>').val(value).text(value).appendTo('#RequesteesSelect');
-									    });
-							    });
-					    }
-				    ) */
+	$(document)
+		.ready(function() {
+				$.get('/Script/People',
+					function(data) {
+						console.log(data);
+						$.each(data,
+							function(index, value) {
+								console.log(index + value);
+								$('<option>').val(value).text(value).appendTo('#RequesteesSelect');
+							});
+					});
+			}
+		) */
 </script>
