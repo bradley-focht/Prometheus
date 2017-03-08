@@ -62,6 +62,8 @@ namespace DataService.DataAccessLayer
 
 			//Does not map this field to the database
 			modelBuilder.Entity<ServiceRequest>().Ignore(x => x.BasicRequest);
+			modelBuilder.Entity<ServiceRequest>().Ignore(x => x.UpfrontPrice);
+			modelBuilder.Entity<ServiceRequest>().Ignore(x => x.MonthlyPrice);
 		}
 
 		/// <summary>

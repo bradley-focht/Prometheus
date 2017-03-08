@@ -45,6 +45,10 @@ namespace Common.Dto
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
+		public decimal UpfrontPrice { get; set; }
+
+		public decimal MonthlyPrice { get; set; }
+
 		public virtual ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 		public virtual ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
 	}

@@ -36,10 +36,11 @@ namespace Common.Controllers
 		/// NOTE: Override method to apply a permission.
 		/// </summary>
 		/// <param name="performingUserId">ID for user performing the modification</param>
+		/// <param name="entityDto">Entity attempted to be modified</param>
 		/// <param name="modification">modification being attempted</param>
 		/// <param name="permission">Permission that is required to perform the modification. Object passed in does not matter.</param>
 		/// <returns>If the user can perform the modification</returns>
-		protected virtual bool UserHasPermissionToModify(int performingUserId, EntityModification modification, out object permission)
+		protected virtual bool UserHasPermissionToModify(int performingUserId, T entityDto, EntityModification modification, out object permission)
 		{
 			permission = null;
 			return true;
@@ -58,7 +59,7 @@ namespace Common.Controllers
 				ThrowArgumentNullError(typeof(T).ToString());
 
 			object permission;
-			if (UserHasPermissionToModify(performingUserId, modification, out permission))
+			if (UserHasPermissionToModify(performingUserId, entityDto, modification, out permission))
 			{
 				switch (modification)
 				{
