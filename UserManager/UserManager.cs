@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Common.Dto;
 using Common.Enums.Entities;
+using Common.Utilities;
 using DataService;
 using DataService.DataAccessLayer;
 using DataService.Models;
@@ -14,15 +15,20 @@ namespace UserManager
 	public class UserManagerService : IUserManager
 	{
 		private readonly IPermissionController _permissionController;
-		private IUserController _userController;
-		private IRoleController _roleController;
+		private readonly IUserController _userController;
+		private readonly IRoleController _roleController;
 		private const string AuthorizedUserRoleName = "Authorized User";
+		private IScriptExecutor _scriptExecutor;		// is this a place we should be executing scripts from?
+		private IDepartmentController _departmentController; 
 
 		public UserManagerService(IPermissionController permissionController, IUserController userController, IRoleController roleController)
 		{
 			_permissionController = permissionController;
 			_userController = userController;
 			_roleController = roleController;
+
+			_scriptExecutor = new ScriptExecutor();
+			_departmentController = new DepartmentController();
 		}
 
 		/// <summary>
@@ -45,7 +51,7 @@ namespace UserManager
 					{
 						user = GetUser(adUser.UserGuid);
 					}
-					catch (Exception) { 					}
+					catch (Exception) { /* user does not exist */ }
 					
 					if (user != null)
 					{
@@ -60,6 +66,12 @@ namespace UserManager
 
 						//Get the role that is to be added to the user
 						var authenticatedRole = context.Roles.FirstOrDefault(x => x.Name == AuthorizedUserRoleName);
+						
+						//get the user's department
+						string departmentName = _scriptExecutor.GetUserDepartment(newUser.AdGuid);
+							newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
+								where d.Name == departmentName
+								select d.Id).FirstOrDefault();
 
 						//Add them and their role to the database
 						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(newUser));

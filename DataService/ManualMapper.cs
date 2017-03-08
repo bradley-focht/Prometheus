@@ -815,6 +815,7 @@ namespace DataService
 			{
 				Id = src.Id,
 				Roles = roles,
+				Name = src.Name,
 				AdGuid = src.AdGuid,
 				DepartmentId = src.DepartmentId,
 				Department = MapDepartmentToDto(src.Department)

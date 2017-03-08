@@ -87,6 +87,12 @@ namespace UserManager.Controllers
 						if (user == null)
 							throw new EntityNotFoundException("Cannot add role to user.", typeof(User), userDto.Id);
 
+						throw new EntityNotFoundException("USER IS FOUND");
+						if (user.Roles == null)
+						{
+							user.Roles = new List<Role>();
+						}
+
 						if (!user.Roles.Contains(role))
 						{
 							context.Users.Attach(user);

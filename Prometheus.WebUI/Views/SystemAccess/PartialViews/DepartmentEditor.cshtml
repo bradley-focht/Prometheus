@@ -1,0 +1,20 @@
+﻿@model Common.Dto.DepartmentDto 
+
+<div class="dd make-space-top">
+	<div class="dd-row">
+		<div class="dt-cell">
+			Name
+		</div>
+		<div class="dd-cell">
+			<input type="hidden" name="Id" value="@Model.Id"/>
+			@Html.TextBox("Name", Model.Name, new {@class = "form-control form-short-text"})
+			@Html.ValidationMessage("Name")
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell"></div>
+		<div class="dd-cell">
+			<input type="submit" value="Save" class="btn btn-primary" />
+		</div>
+	</div>
+</div>
