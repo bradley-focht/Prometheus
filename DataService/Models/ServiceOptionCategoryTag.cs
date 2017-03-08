@@ -17,7 +17,9 @@ namespace DataService.Models
 
 		public int Order { get; set; }
 		public int ServiceOptionCategoryId { get; set; }
+		public int ServiceRequestPackageId { get; set; }
 
 		public virtual ServiceOptionCategory ServiceOptionCategory { get; set; }
+		public virtual ServiceRequestPackage ServiceRequestPackage { get; set; }
 	}
 }

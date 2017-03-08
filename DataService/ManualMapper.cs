@@ -835,7 +835,9 @@ namespace DataService
 						Id = tag.Id,
 						Order = tag.Order,
 						ServiceOptionCategoryId = tag.ServiceOptionCategoryId,
-						ServiceOptionCategory = MapOptionCategoryToDto(tag.ServiceOptionCategory)
+						ServiceRequestPackageId = tag.ServiceRequestPackageId,
+						ServiceOptionCategory = MapOptionCategoryToDto(tag.ServiceOptionCategory),
+						ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
 					});
 				}
 			}
@@ -858,7 +860,8 @@ namespace DataService
 			{
 				Id = src.Id,
 				Order = src.Order,
-				ServiceOptionCategoryId = src.ServiceOptionCategoryId
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
+				ServiceRequestPackageId = src.ServiceRequestPackageId
 			};
 		}
 
