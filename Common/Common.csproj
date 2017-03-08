@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="Controllers\EntityController.cs" />
     <Compile Include="Dto\ApprovalDto.cs" />
+    <Compile Include="Dto\IServicePackageTag.cs" />
     <Compile Include="Dto\IApprovalDto.cs" />
     <Compile Include="Dto\IDepartmentDto.cs" />
     <Compile Include="Dto\InputGroupDto.cs" />
@@ -62,6 +63,7 @@
     <Compile Include="Dto\IScriptDto.cs" />
     <Compile Include="Dto\IServiceRequestUserInputDto.cs" />
     <Compile Include="Dto\DepartmentDto.cs" />
+    <Compile Include="Dto\IServiceTagDto.cs" />
     <Compile Include="Dto\ScriptDto.cs" />
     <Compile Include="Dto\ServiceOptionCategoryTagDto.cs" />
     <Compile Include="Dto\IServiceOptionCategoryTagDto.cs" />
@@ -112,6 +114,7 @@
     <Compile Include="Dto\ServiceRequestPackageDto.cs" />
     <Compile Include="Dto\ServiceRequestUserInputDto.cs" />
     <Compile Include="Dto\ServiceSwotDto.cs" />
+    <Compile Include="Dto\ServiceTagDto.cs" />
     <Compile Include="Dto\ServiceWorkUnitDto.cs" />
     <Compile Include="Dto\SwotActivityDto.cs" />
     <Compile Include="Dto\TextInputDto.cs" />

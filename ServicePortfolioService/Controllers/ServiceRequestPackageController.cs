@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
 using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
+using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 using DataService.Models;
@@ -57,34 +57,21 @@ namespace ServicePortfolioService.Controllers
 
 		protected override IServiceRequestPackageDto Update(int performingUserId, IServiceRequestPackageDto entity)
 		{
-			using (var context = new PrometheusContext())
-			{
-				if (!context.ServiceRequestPackages.Any(x => x.Id == entity.Id))
-				{
-					throw new InvalidOperationException(string.Format("Service Request Package with ID {0} cannot be updated since it does not exist.", entity.Id));
-				}
-				var updatedPackage = ManualMapper.MapDtoToServiceRequestPackage(entity);
-				
-				//Set tags to match DTO tags
-				var tags = new List<ServiceOptionCategoryTag>();
-				foreach (var tag in entity.ServiceOptionCategoryTags)
-				{
-					tags.Add(ManualMapper.MapDtoToServiceOptionCategoryTag(tag));
-				}
-
-				updatedPackage.ServiceOptionCategoryTags = tags;
-
-				context.ServiceRequestPackages.Attach(updatedPackage);
-				context.Entry(updatedPackage).State = EntityState.Modified;
-				context.SaveChanges(performingUserId);
-				return ManualMapper.MapServiceRequestPackageToDto(updatedPackage);
-			}
+			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Request Packages.", EntityModification.Update));
 		}
 
 		protected override IServiceRequestPackageDto Delete(int performingUserId, IServiceRequestPackageDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
+				var categoryTagsToDelete = context.ServiceOptionCategoryTags.Where(x => x.ServiceRequestPackageId == entity.Id);
+				context.ServiceOptionCategoryTags.RemoveRange(categoryTagsToDelete);
+				context.SaveChanges(performingUserId);
+
+				var serviceTagsToDelete = context.ServiceTags.Where(x => x.ServiceRequestPackageId == entity.Id);
+				context.ServiceTags.RemoveRange(serviceTagsToDelete);
+				context.SaveChanges(performingUserId);
+
 				var toDelete = context.ServiceRequestPackages.Find(entity.Id);
 				context.ServiceRequestPackages.Remove(toDelete);
 				context.SaveChanges(performingUserId);
@@ -116,7 +103,7 @@ namespace ServicePortfolioService.Controllers
 
 				//All packages where the service option exists in the first category of the package
 				var packages = context.ServiceRequestPackages.Where(
-					x=>x.Action == action && 
+					x => x.Action == action &&
 					x.ServiceOptionCategoryTags.Any(
 						y => y.Order == 1 && y.ServiceOptionCategory.ServiceOptions.Any(
 							z => z.Id == serviceOptionId)));

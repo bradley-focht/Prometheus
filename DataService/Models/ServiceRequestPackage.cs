@@ -20,5 +20,6 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 
 		public virtual ICollection<ServiceOptionCategoryTag> ServiceOptionCategoryTags { get; set; }
+		public virtual ICollection<ServiceTag> ServiceTags { get; set; }
 	}
 }

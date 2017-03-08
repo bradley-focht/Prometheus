@@ -27,7 +27,7 @@ namespace ServicePortfolioService
 		private readonly IServiceOptionCategoryController _optionCategoryController;
 		private readonly ITextInputController _textInputController;
 		private readonly ISelectionInputController _selectionInputController;
-		private readonly IScriptedSelectionController _scriptedSelectionController;
+		private readonly IScriptedSelectionInputController _scriptedSelectionController;
 		private readonly IServiceRequestPackageController _serviceRequestPackageController;
 
 		//Lol I'll make a factory for constructing this
@@ -39,7 +39,7 @@ namespace ServicePortfolioService
 			IServiceMeasureController serviceMeasureController, IServiceOptionController serviceOptionController,
 			IServiceOptionCategoryController optionCategoryController, IServiceProcessController serviceProcessController,
 			ITextInputController textInputController, ISelectionInputController selectionInputController,
-			IScriptedSelectionController scriptedSelectionController, IServiceRequestPackageController serviceRequestPackageController)
+			IScriptedSelectionInputController scriptedSelectionController, IServiceRequestPackageController serviceRequestPackageController)
 		{
 			_serviceBundleController = serviceBundleController;
 			_serviceController = serviceController;

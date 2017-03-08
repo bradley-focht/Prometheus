@@ -1,9 +1,9 @@
 using System;
-using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
+using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 
@@ -44,24 +44,17 @@ namespace ServicePortfolioService.Controllers
 
 		protected override IServiceOptionCategoryDto Update(int performingUserId, IServiceOptionCategoryDto entity)
 		{
-			using (var context = new PrometheusContext())
-			{
-				if (!context.OptionCategories.Any(x => x.Id == entity.Id))
-				{
-					throw new InvalidOperationException(string.Format("Service Option with ID {0} cannot be updated since it does not exist.", entity.Id));
-				}
-				var updatedOption = ManualMapper.MapDtoToOptionCategory(entity);
-				context.OptionCategories.Attach(updatedOption);
-				context.Entry(updatedOption).State = EntityState.Modified;
-				context.SaveChanges(performingUserId);
-				return ManualMapper.MapOptionCategoryToDto(updatedOption);
-			}
+			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Option Categories.", EntityModification.Update));
 		}
 
 		protected override IServiceOptionCategoryDto Delete(int performingUserId, IServiceOptionCategoryDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
+				var tagsToDelete = context.ServiceOptionCategoryTags.Where(x => x.ServiceOptionCategoryId == entity.Id);
+				context.ServiceOptionCategoryTags.RemoveRange(tagsToDelete);
+				context.SaveChanges(performingUserId);
+
 				var toDelete = context.OptionCategories.Find(entity.Id);
 				context.OptionCategories.Remove(toDelete);
 				context.SaveChanges(performingUserId);

@@ -87,6 +87,8 @@
     <Compile Include="Models\IServiceRequestUserInput.cs" />
     <Compile Include="Models\IApproval.cs" />
     <Compile Include="Models\IScript.cs" />
+    <Compile Include="Models\IServicePackageTag.cs" />
+    <Compile Include="Models\IServiceTag.cs" />
     <Compile Include="Models\Script.cs" />
     <Compile Include="Models\ServiceOptionCategoryTag.cs" />
     <Compile Include="Models\IServiceOptionCategoryTag.cs" />
@@ -133,6 +135,7 @@
     <Compile Include="Models\ServiceOption.cs" />
     <Compile Include="Models\ServiceRequestUserInput.cs" />
     <Compile Include="Models\ServiceSwot.cs" />
+    <Compile Include="Models\ServiceTag.cs" />
     <Compile Include="Models\ServiceWorkUnit.cs" />
     <Compile Include="Models\SwotActivity.cs" />
     <Compile Include="Models\TextInput.cs" />

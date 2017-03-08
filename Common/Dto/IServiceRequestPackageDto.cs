@@ -25,6 +25,7 @@ namespace Common.Dto
 		[Display(Order = 1)]
 		string Name { get; set; }
 		ICollection<IServiceOptionCategoryTagDto> ServiceOptionCategoryTags { get; set; }
+		ICollection<IServiceTagDto> ServiceTags { get; set; }
 
 	}
 }

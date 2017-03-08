@@ -837,18 +837,37 @@ namespace DataService
 						Id = tag.Id,
 						Order = tag.Order,
 						ServiceOptionCategoryId = tag.ServiceOptionCategoryId,
-						ServiceOptionCategory = MapOptionCategoryToDto(tag.ServiceOptionCategory)
+						ServiceRequestPackageId = tag.ServiceRequestPackageId,
+						ServiceOptionCategory = MapOptionCategoryToDto(tag.ServiceOptionCategory),
+						ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
 					});
 				}
 			}
 
+			List<IServiceTagDto> serviceTags = new List<IServiceTagDto>();
+			if (src.ServiceTags != null)
+			{
+				foreach (var tag in src.ServiceTags)
+				{
+					serviceTags.Add(new ServiceTagDto()
+					{
+						Id = tag.Id,
+						Order = tag.Order,
+						ServiceId = tag.ServiceId,
+						ServiceRequestPackageId = tag.ServiceRequestPackageId,
+						Service = MapServiceToDto(tag.Service),
+						ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
+					});
+				}
+			}
 
 			return new ServiceRequestPackageDto()
 			{
 				Id = src.Id,
 				Name = src.Name,
 				Action = src.Action,
-				ServiceOptionCategoryTags = serviceOptionCategoryTags
+				ServiceOptionCategoryTags = serviceOptionCategoryTags,
+				ServiceTags = serviceTags
 			};
 		}
 
@@ -860,7 +879,8 @@ namespace DataService
 			{
 				Id = src.Id,
 				Order = src.Order,
-				ServiceOptionCategoryId = src.ServiceOptionCategoryId
+				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
+				ServiceRequestPackageId = src.ServiceRequestPackageId
 			};
 		}
 

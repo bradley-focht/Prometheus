@@ -1,13 +1,8 @@
 ﻿namespace Common.Dto
 {
-	public interface IServiceOptionCategoryTagDto
+	public interface IServiceOptionCategoryTagDto : IServicePackageTag
 	{
-		int Id { get; set; }
-
 		int ServiceOptionCategoryId { get; set; }
-
-		int Order { get; set; }
-
 		IServiceOptionCategoryDto ServiceOptionCategory { get; set; }
 	}
 }

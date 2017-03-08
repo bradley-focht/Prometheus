@@ -10,7 +10,7 @@ using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
-	public class ScriptedSelectionInputController : EntityController<IScriptedSelectionInputDto>, IScriptedSelectionController
+	public class ScriptedSelectionInputController : EntityController<IScriptedSelectionInputDto>, IScriptedSelectionInputController
 	{
 		public IScriptedSelectionInputDto GetScriptedSelectionInput(int performingUserId, int selectionInputId)
 		{

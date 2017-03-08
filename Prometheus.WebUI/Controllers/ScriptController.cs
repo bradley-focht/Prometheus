@@ -87,23 +87,23 @@ namespace Prometheus.WebUI.Controllers
                             UploadDate = DateTime.Now,
                         }, EntityModification.Create);
                     }
-                    catch (Exception exception)
+                    catch (Exception e)
                     {
                         TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {exception.Message}";
+                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
                     }
                 }
-            }
 
-            try
-            {
-                newId = _scriptFile.ModifyScript(UserId, newScript, EntityModification.Create).Id;
-            }
-            catch (Exception e)
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
-                return RedirectToAction("Add");
+                try
+                {
+                    newId = _scriptFile.ModifyScript(UserId, newScript, EntityModification.Create).Id;
+                }
+                catch (Exception e)
+                {
+                    TempData["MessageType"] = WebMessageType.Failure;
+                    TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
+                    return RedirectToAction("Add");
+                }
             }
 
             TempData["MessageType"] = WebMessageType.Success;
@@ -139,10 +139,10 @@ namespace Prometheus.WebUI.Controllers
                             UploadDate = DateTime.Now,
                         }, EntityModification.Create);
                     }
-                    catch (Exception exception)
+                    catch (Exception e)
                     {
                         TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {exception.Message}";
+                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
                     }
                 }
             }

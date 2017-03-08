@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataService.Models
 {
-	public class ServiceOptionCategoryTag : IServiceOptionCategoryTag
+	public class ServiceTag : IServiceTag
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,10 +16,10 @@ namespace DataService.Models
 		public int UpdatedByUserId { get; set; }
 
 		public int Order { get; set; }
-		public int ServiceOptionCategoryId { get; set; }
+		public int ServiceId { get; set; }
 		public int ServiceRequestPackageId { get; set; }
 
-		public virtual ServiceOptionCategory ServiceOptionCategory { get; set; }
+		public virtual Service Service { get; set; }
 		public virtual ServiceRequestPackage ServiceRequestPackage { get; set; }
 	}
 }
