@@ -1,25 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common.Enums;
 
 namespace DataService.Models
 {
-	public class ServiceRequestPackage : IServiceRequestPackage
+	public class ServiceTag : IServiceTag
 	{
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
-		public ServiceRequestAction Action { get; set; }
 
-		public string Name { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-		public virtual ICollection<ServiceOptionCategoryTag> ServiceOptionCategoryTags { get; set; }
-		public virtual ICollection<ServiceTag> ServiceTags { get; set; }
+		public int Order { get; set; }
+		public int ServiceId { get; set; }
+		public int ServiceRequestPackageId { get; set; }
+
+		public virtual Service Service { get; set; }
+		public virtual ServiceRequestPackage ServiceRequestPackage { get; set; }
 	}
 }

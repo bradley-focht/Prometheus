@@ -18,5 +18,6 @@ namespace Common.Dto
 		public int UpdatedByUserId { get; set; }
 
 		public virtual ICollection<IServiceOptionCategoryTagDto> ServiceOptionCategoryTags { get; set; }
+		public virtual ICollection<IServiceTagDto> ServiceTags { get; set; }
 	}
 }

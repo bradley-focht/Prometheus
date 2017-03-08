@@ -843,13 +843,30 @@ namespace DataService
 				}
 			}
 
+			List<IServiceTagDto> serviceTags = new List<IServiceTagDto>();
+			if (src.ServiceTags != null)
+			{
+				foreach (var tag in src.ServiceTags)
+				{
+					serviceTags.Add(new ServiceTagDto()
+					{
+						Id = tag.Id,
+						Order = tag.Order,
+						ServiceId = tag.ServiceId,
+						ServiceRequestPackageId = tag.ServiceRequestPackageId,
+						Service = MapServiceToDto(tag.Service),
+						ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
+					});
+				}
+			}
 
 			return new ServiceRequestPackageDto()
 			{
 				Id = src.Id,
 				Name = src.Name,
 				Action = src.Action,
-				ServiceOptionCategoryTags = serviceOptionCategoryTags
+				ServiceOptionCategoryTags = serviceOptionCategoryTags,
+				ServiceTags = serviceTags
 			};
 		}
 

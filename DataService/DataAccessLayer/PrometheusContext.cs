@@ -37,6 +37,7 @@ namespace DataService.DataAccessLayer
 		//Service Request Entities
 		public DbSet<ServiceRequestPackage> ServiceRequestPackages { get; set; }
 		public DbSet<ServiceOptionCategoryTag> ServiceOptionCategoryTags { get; set; }
+		public DbSet<ServiceTag> ServiceTags { get; set; }
 		public DbSet<ServiceRequest> ServiceRequests { get; set; }
 		public DbSet<ServiceRequestOption> ServiceRequestOptions { get; set; }
 		public DbSet<ServiceRequestUserInput> ServiceRequestUserInputs { get; set; }

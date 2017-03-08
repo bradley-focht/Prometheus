@@ -64,8 +64,12 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				var tagsToDelete = context.ServiceOptionCategoryTags.Where(x => x.ServiceRequestPackageId == entity.Id);
-				context.ServiceOptionCategoryTags.RemoveRange(tagsToDelete);
+				var categoryTagsToDelete = context.ServiceOptionCategoryTags.Where(x => x.ServiceRequestPackageId == entity.Id);
+				context.ServiceOptionCategoryTags.RemoveRange(categoryTagsToDelete);
+				context.SaveChanges(performingUserId);
+
+				var serviceTagsToDelete = context.ServiceTags.Where(x => x.ServiceRequestPackageId == entity.Id);
+				context.ServiceTags.RemoveRange(serviceTagsToDelete);
 				context.SaveChanges(performingUserId);
 
 				var toDelete = context.ServiceRequestPackages.Find(entity.Id);

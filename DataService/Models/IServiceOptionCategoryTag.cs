@@ -1,15 +1,8 @@
 ﻿namespace DataService.Models
 {
-	public interface IServiceOptionCategoryTag : IUserCreatedEntity
+	public interface IServiceOptionCategoryTag : IServicePackageTag
 	{
-		int Id { get; set; }
-
 		int ServiceOptionCategoryId { get; set; }
-		int ServiceRequestPackageId { get; set; }
-		int Order { get; set; }
-
 		ServiceOptionCategory ServiceOptionCategory { get; set; }
-		ServiceRequestPackage ServiceRequestPackage { get; set; }
-
 	}
 }
