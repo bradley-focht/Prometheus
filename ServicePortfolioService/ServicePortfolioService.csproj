@@ -91,7 +91,6 @@
     <Compile Include="Controllers\ServiceWorkUnitController.cs" />
     <Compile Include="Controllers\SwotActivityController.cs" />
     <Compile Include="IPortfolioService.cs" />
-    <Compile Include="AutoMapperConfig\ServicePortfolioProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PortfolioService.cs" />
   </ItemGroup>
@@ -108,10 +107,6 @@
       <Project>{1A415A6A-0658-40D7-9BA2-938EF6E3210E}</Project>
       <Name>UserManager</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

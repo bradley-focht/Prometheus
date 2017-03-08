@@ -1,7 +1,7 @@
 ﻿using Ninject.Modules;
 using UserManager;
+using UserManager.AdService;
 using UserManager.Controllers;
-using IUserController = UserManager.Controllers.IUserController;
 
 namespace DependencyResolver.Modules
 {
@@ -9,10 +9,28 @@ namespace DependencyResolver.Modules
 	{
 		public override void Load()
 		{
+			LoadAdService();
+			LoadControllers();
+			LoadService();
+		}
+
+		private void LoadService()
+		{
+			Bind<IUserManager>().To<UserManagerService>();
+		}
+
+		private void LoadControllers()
+		{
 			Bind<IPermissionController>().To<PermissionController>();
 			Bind<IRoleController>().To<RoleController>();
 			Bind<IUserController>().To<UserController>();
-			Bind<IUserManager>().To<UserManagerService>();
+			Bind<IDepartmentController>().To<DepartmentController>();
+		}
+
+		private void LoadAdService()
+		{
+			Bind<IAdSearch>().To<AdSearch>();
+			Bind<IDirectoryUser>().To<AdUser>();
 		}
 	}
 }

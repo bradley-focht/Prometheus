@@ -4,7 +4,7 @@ using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {
-	public interface IScriptedSelectionController
+	public interface IScriptedSelectionInputController
 	{
 		/// <summary>
 		/// Finds text input with identifier provided and returns its DTO
