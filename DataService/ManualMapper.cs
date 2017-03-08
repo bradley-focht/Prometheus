@@ -914,11 +914,13 @@ namespace DataService
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
-				DepartmentId = src.DepartmentId
+				DepartmentId = src.DepartmentId,
+				UpfrontPrice = src.UpfrontPrice,
+				MonthlyPrice = src.MonthlyPrice
 			});
-			
+
 			//options
-				List <IServiceRequestOptionDto> serviceRequestOptions = new List<IServiceRequestOptionDto>();
+			List<IServiceRequestOptionDto> serviceRequestOptions = new List<IServiceRequestOptionDto>();
 			if (src.ServiceRequestOptions != null)
 			{
 				foreach (var serviceRequestOption in src.ServiceRequestOptions)
@@ -940,7 +942,7 @@ namespace DataService
 			serviceRequest.Value.ServiceRequestUserInputs = serviceRequestInputs;
 
 			//approval comments
-			
+
 
 			return serviceRequest.Value;
 		}

@@ -41,7 +41,8 @@ namespace DataService.Models
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-		//This property is ignored in PrometheusContext.OnModelCreating()
+		#region Calculated Fields
+		//These properties are ignored in PrometheusContext.OnModelCreating()
 		/// <summary>
 		/// If all SROs on the SR are basic
 		/// </summary>
@@ -49,6 +50,29 @@ namespace DataService.Models
 		{
 			get { return this.ServiceRequestOptions.All(x => x.BasicRequest == true); }
 		}
+
+		/// <summary>
+		/// Total monthly price of service request
+		/// </summary>
+		public decimal MonthlyPrice
+		{
+			get
+			{
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly);
+			}
+		}
+
+		/// <summary>
+		/// Total upfront price of service request
+		/// </summary>
+		public decimal UpfrontPrice
+		{
+			get
+			{
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront);
+			}
+		}
+		#endregion
 
 		public virtual ServiceOption ServiceOption { get; set; }
 		public virtual Department Department { get; set; }

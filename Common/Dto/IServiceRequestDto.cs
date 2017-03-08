@@ -25,6 +25,8 @@ namespace Common.Dto
 		ServiceRequestState State { get; set; }
 		ServiceRequestAction Action { get; set; }
 		DateTime? SubmissionDate { get; set; }
+		decimal UpfrontPrice { get; set; }
+		decimal MonthlyPrice { get; set; }
 
 		DateTime? DateCreated { get; set; }
 		DateTime? DateUpdated { get; set; }
