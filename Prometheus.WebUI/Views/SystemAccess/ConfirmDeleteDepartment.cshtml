@@ -1,8 +1,8 @@
 ﻿@model Common.Dto.DepartmentDto
 @{
 	ViewBag.Title = "System Access";
-	ViewBag.SubTitle = "Confirm Delete Queue";
-	Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.SubTitle = "Confirm Delete Department";
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
 	ViewBag.Links = new List<KeyValuePair<string, string>>
 	{
@@ -12,23 +12,33 @@
 	};
 }
 
+@section Content
+{
 <div class="title-div">@ViewBag.SubTitle</div>
 
-@using (Html.BeginForm("DeleteQueue", "SystemAccess", FormMethod.Post))
+@using (Html.BeginForm("DeleteDepartment", "SystemAccess", FormMethod.Post))
 {
+	<input type="hidden" name="id" value="@Model.Id"/>
 	<div class="panel-div">
-		<div class="present-section">
-			
+		Confirm deletion of Department:
+		<div>
+			<div class="present-section">
+				@Model.Name
+			</div>
 		</div>
 	</div>
 
 	<div class="flex-container-col">
 		<div class="panel-footer">
 			<div class="float-right-div">
-				@Html.ActionLink("Back", "ShowQueues", null, new {@class = "btn btn-back btn-default"})
+				@Html.ActionLink("Back", "ShowDepartments", null, new {@class = "btn btn-back btn-default"})
 				<input type="submit" value="Confirm Delete" class="btn btn-danger"/>
 			</div>
 		</div>
 	</div>
 
 }
+}
+
+@section Sidebar
+{}

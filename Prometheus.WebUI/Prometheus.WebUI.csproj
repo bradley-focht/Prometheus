@@ -418,7 +418,7 @@
     <Compile Include="Models\SystemAccess\CurrentUserModel.cs" />
     <Compile Include="Models\SystemAccess\ManageUserDepartmentModel.cs" />
     <Compile Include="Models\SystemAccess\RoleModel.cs" />
-    <Compile Include="Models\SystemAccess\ServiceQueueModel.cs" />
+    <Compile Include="Models\SystemAccess\DepartmentModel.cs" />
     <Compile Include="Models\SystemAccess\UserControlsModel.cs" />
     <Compile Include="Models\SystemAccess\UserDetailsModel.cs" />
     <Compile Include="Models\SystemAccess\ManageUsersModel.cs" />
@@ -548,8 +548,9 @@
     <Content Include="Views\ServiceRequestMaintenance\GetOptionUserInputsText.cshtml" />
     <Content Include="Views\Script\Index.cshtml" />
     <Content Include="Views\Script\Add.cshtml" />
-    <Content Include="Views\SystemAccess\ShowQueues.cshtml" />
-    <Content Include="Views\SystemAccess\ConfirmDeleteServiceQueue.cshtml" />
+    <Content Include="Views\SystemAccess\ShowDepartments.cshtml" />
+    <Content Include="Views\SystemAccess\ConfirmDeleteDepartment.cshtml" />
+    <Content Include="Views\SystemAccess\PartialViews\DepartmentEditor.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

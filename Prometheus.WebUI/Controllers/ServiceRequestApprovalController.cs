@@ -109,7 +109,7 @@ namespace Prometheus.WebUI.Controllers
 						_rm.CancelRequest(UserId, id, message);
 						break;
 					case ServiceRequestState.Submitted:
-						_rm.SubmitRequest(UserId, id, message);
+						_rm.SubmitRequest(UserId, id);
 						break;
 					case ServiceRequestState.Approved:
 						_rm.ApproveRequest(UserId, id, ApprovalResult.Approved, message);

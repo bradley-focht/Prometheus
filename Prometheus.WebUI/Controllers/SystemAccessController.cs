@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
@@ -11,6 +12,7 @@ using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;
 using UserManager;
 using UserManager.AdService;
+using UserManager.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -20,12 +22,14 @@ namespace Prometheus.WebUI.Controllers
 		private readonly IUserManager _userManager;
 		private readonly IScriptExecutor _scriptExecutor;
 		private readonly int _userPageSize;
+		private readonly IDepartmentController _deptController;
 
 		public SystemAccessController()
 		{
 			_userManager = InterfaceFactory.CreateUserManagerService();
 			_userPageSize = ConfigHelper.GetPaginationSize();
 			_scriptExecutor = new ScriptExecutor();
+			_deptController = new DepartmentController();
 		}
 
 		/// <summary>
@@ -374,7 +378,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						try
 						{
-							userDto = _userManager.ModifyUser(UserId, new UserDto { AdGuid = user, DepartmentId = _scriptExecutor.GetUserDepartment(user) }, EntityModification.Create);
+							userDto = _userManager.ModifyUser(UserId, new UserDto { AdGuid = user, DepartmentId = 1}, EntityModification.Create);
 						}
 						catch (Exception exception)
 						{
@@ -398,7 +402,7 @@ namespace Prometheus.WebUI.Controllers
 					foreach (var role in roles)
 						try
 						{
-							var updatedUser = _userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = role } });
+							_userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = role } });
 						}
 						catch (Exception exception)
 						{
@@ -443,58 +447,84 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("ManageUsers");
 		}
 
-		public ActionResult ShowQueues()
+		/// <summary>
+		/// Show all departments
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult ShowDepartments()
 		{
-			ServiceQueueModel model = new ServiceQueueModel();
+			DepartmentModel model = new DepartmentModel();
 
-			//get all queues
+			model.Departments = _deptController.GetDepartments(UserId);
 
 			return View(model);
 		}
 
-		public ActionResult AddServiceQueue()
+		/// <summary>
+		/// Show all departments and enable add
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult AddDepartment()
 		{
-			ServiceQueueModel model = new ServiceQueueModel { EnableAdd = true };
+			DepartmentModel model = new DepartmentModel { EnableAdd = true };
 
-			// get all queues again
+			model.Departments = _deptController.GetDepartments(UserId);
 
-			return View("ShowQueues", model);
+			return View("ShowDepartments", model);
 		}
 
 		/// <summary>
-		/// Save changes to a queue
+		/// Save changes to a department
 		/// </summary>
-		/// <param name="queue">queue to add or update</param>
+		/// <param name="department">department to add or update</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveServiceQueue(DepartmentDto queue)
+		public ActionResult SaveDepartment(DepartmentDto department)
 		{
 			if (!ModelState.IsValid)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save queue due to invalid data";
-				return RedirectToAction("ShowQueues");
+				return RedirectToAction("ShowDepartments");
+			}
+
+			try
+			{
+				_deptController.ModifyDepartment(UserId, department,
+					department.Id > 0 ? EntityModification.Update : EntityModification.Create);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to save department, error: {exception.Message}";
+				return RedirectToAction("ShowDepartments");
 			}
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved queue";
 
-			return RedirectToAction("ShowQueues");
+			return RedirectToAction("ShowDepartments");
 		}
 
-		public ActionResult UpdateServiceQueue(int id)
-		{
-			ServiceQueueModel model = new ServiceQueueModel { SelectedQueue = new DepartmentDto { Id = id } };
 
-			// get all queues again
-			return View("ShowQueues", model);
+		public ActionResult UpdateDepartment(int id)
+		{
+			DepartmentModel model = new DepartmentModel { SelectedDepartment = new DepartmentDto { Id = id } };
+
+			model.Departments = _deptController.GetDepartments(UserId);
+
+			return View("ShowDepartments", model);
 		}
-		public ActionResult ConfirmDeleteServiceQueue(int id)
+
+		/// <summary>
+		/// Confirm deletion of a department
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult ConfirmDeleteDepartment(int id)
 		{
-			DepartmentDto model = new DepartmentDto();
-
-			// get all queues again
-
+			DepartmentDto model = (DepartmentDto)_deptController.GetDepartment(UserId, id);
+			
 			return View(model);
 		}
 		/// <summary>
@@ -503,12 +533,22 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="id"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult DeleteQueue(int id)
+		public ActionResult DeleteDepartment(int id)
 		{
+			try
+			{
+				_deptController.ModifyDepartment(UserId, new DepartmentDto {Id = id}, EntityModification.Delete);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to delete department, error: {exception.Message}";
+				return RedirectToAction("ShowDepartments");
+			}
 
 			TempData["MessageType"] = WebMessageType.Success; //successful assumed now
 			TempData["Message"] = "Successfully deleted queue";
-			return RedirectToAction("ShowQueues");
+			return RedirectToAction("ShowDepartments");
 		}
 
 		public ActionResult UserDepartments()
