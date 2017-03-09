@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Common.Dto.ScriptDto>
+﻿@model IEnumerable<Common.Dto.IScriptDto>
 
 @{
 	ViewBag.Title = "Scripts";
@@ -13,38 +13,22 @@
 
 }
 
-@section Content {
-    <div class="title-div">@ViewBag.SubTitle</div>
-
-    }
-}
+@section Content { <div class="title-div">@ViewBag.SubTitle</div> }
 
 @section Sidebar{
     <div class="flex-container-col">
-        <!--
-        TO DO:
-        - List scripts
-        -->
-        @if (Model != null)
+    @if (Model != null)
     {
 
         foreach (var item in Model)
         {
-                <table class="table">
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Name)
-                        </th>
-                    </tr>
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Name)
-                        </td>
-                    </tr>
-                </table>
-            }
+            <div>
+                @Html.ActionLink(item.Name, "GetScript", new { id = item.Id })
+            </div>
+            
         }
-        
+    }
+
         @* control buttons at the bottom *@
         <div class="panel-footer">
             <div class="float-right-div">

@@ -1,4 +1,5 @@
-﻿using RequestService;
+﻿using Common.Utilities;
+using RequestService;
 using RequestService.Controllers;
 using ServicePortfolioService;
 using ServicePortfolioService.Controllers;
@@ -55,7 +56,9 @@ namespace Prometheus.WebUI.Helpers
 			return new UserManagerService(
 				new PermissionController(),
 				new UserController(),
-				new RoleController(new PermissionController())
+				new RoleController(new PermissionController()),
+                new ScriptExecutor(),
+                new DepartmentController()
 				);
 		}
 
