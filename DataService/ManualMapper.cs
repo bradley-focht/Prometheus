@@ -984,7 +984,7 @@ namespace DataService
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest,
 				ServiceOption = MapServiceOptionToDto(src.ServiceOption),
-				//ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
+				ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
 			};
 		}
 
