@@ -264,7 +264,7 @@ namespace Prometheus.WebUI.Controllers
 					}
 					catch
 					{
-						displayName = user.AdGuid.ToString();
+						displayName = "Name not found";
 					}
 				}
 				else

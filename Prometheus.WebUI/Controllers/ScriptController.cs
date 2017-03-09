@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
+using Common.Utilities;
 using DataService.Models;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Helpers;
@@ -116,7 +117,8 @@ namespace Prometheus.WebUI.Controllers
 		// GET: Script
 		public JsonResult GetRequestees(Guid id)
 		{
-			var people = new List<string>();
+			
+			var people = new HashSet<ScriptResult<Guid, string>>();
 
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 
@@ -124,18 +126,28 @@ namespace Prometheus.WebUI.Controllers
 
 			runspace.Open();
 			Pipeline pipeline = runspace.CreatePipeline();
-			pipeline.Commands.AddScript("[string[]] $run");
-			string[] peeps = { "Brad", "Jamie" };
-			runspace.SessionStateProxy.SetVariable("run", peeps);
+			pipeline.Commands.AddScript("Get-Process");				//gets all the processes on your computer for now
 			Collection<PSObject> results = pipeline.Invoke();
 			runspace.Close();
 
 			foreach (PSObject obj in results)
 			{
-				people.Add(obj.ToString());
+				ScriptResult<Guid, string> result = new ScriptResult<Guid, string>();		//script result is a type that i made, just has a value and a label
+				foreach (var prop in obj.Properties)
+				{
+					if (prop.Name == "Id")						//this is specific to a process returned from powershell
+					{
+						result.Value = Guid.NewGuid();		//processes don't have Guid identifiers mang
+					} else if (prop.Name == "ProcessName")		//specific again
+					{
+						result.Label = prop.Value.ToString();
+					}
+					
+				}
+				people.Add(result);
 			}
 
-			return Json(people, JsonRequestBehavior.AllowGet);
+			return Json(people, JsonRequestBehavior.AllowGet);	//jsonify it
 
 		}
 

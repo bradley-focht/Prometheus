@@ -101,8 +101,8 @@
 				</label>
 			</div>
 
-			<select name="Requestees" id="RequesteesSelect" style="width: 200px">
-				<option>Select Users</option>
+			<select name="Requestees" id="RequesteesSelect" style="width: 400px">
+
 			</select>
 		</div>
 	</div>
@@ -157,23 +157,25 @@
 		}
 	}
 
-	var $select = $(document.getElementById('RequesteesSelect')).selectize({ maxItems: 1 });
+	var $select = $(document.getElementById('RequesteesSelect'))
+	.selectize({
+		maxItems: 99, plugins: ['remove_button'] });
 	var selectize = $select[0].selectize;
-	//selectize.refreshOptions();
+
 	
 
 	$(document)
 		.ready(function() {
 			$.get('/Script/GetRequestees/@(Guid.NewGuid())',
-					function(data) {
-						console.log(data);
-						$.each(data,
-							function(index, value) {
-								console.log(index + value);
-								selectize.addOption({ value: 1, text: data });
-								selectize.addItem(1);
-							});
+					function (data) {
+						
+						
+						$.each(data, function (i, option) {
+							selectize.addOption({ value: option.Value, text: option.Label });
+							console.log(option.Value + " " + option.Label);
+						});
 					});
+				selectize.refreshOptions();
 			}
 		);
 </script>

@@ -17,8 +17,7 @@ namespace UserManager.AdService
 			var searchPrincipal = new UserPrincipal(new PrincipalContext(ContextType.Domain));
 			searchPrincipal.DisplayName = queryString + "*";    // add this for easier user-searching
 
-			var searcher = new PrincipalSearcher();
-			searcher.QueryFilter = searchPrincipal;
+			var searcher = new PrincipalSearcher {QueryFilter = searchPrincipal};
 
 			var results = searcher.FindAll();
 
