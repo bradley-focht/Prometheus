@@ -14,56 +14,57 @@ using DataService.Models;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
+using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
-    public class ScriptController : PrometheusController
-    {
+	public class ScriptController : PrometheusController
+	{
 
-        private ScriptFileController _scriptFile = new ScriptFileController();
+		private ScriptFileController _scriptFile = new ScriptFileController();
 
-        /// <summary>
-        /// Default page of Scripting
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
-	    {
-            // TO DO:
-            // retrieve all available scripts
-		    return View();
-	    }
+		/// <summary>
+		/// Default page of Scripting
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Index()
+		{
+			// TO DO:
+			// retrieve all available scripts
+			return View();
+		}
 
-        /// <summary>
-        /// To get a specific script entry
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult GetScript(int id)
-        {
-            LinkListModel model = new LinkListModel();
-            return View("PartialViews/_LinkList", model);
-        }
+		/// <summary>
+		/// To get a specific script entry
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult GetScript(int id)
+		{
+			LinkListModel model = new LinkListModel();
+			return View("PartialViews/_LinkList", model);
+		}
 
-        /// <summary>
-        /// GET: Script/Add
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Add()
-        {
-            return View(new ScriptDto());
-        }
+		/// <summary>
+		/// GET: Script/Add
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Add()
+		{
+			return View(new ScriptDto());
+		}
 
-        [HttpPost]
-        public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
-        {
-            
-            if (!ModelState.IsValid) /* Server side validation */
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = "Failed to save script due to invalid data";
-                return RedirectToAction("Add");
-            }
+		[HttpPost]
+		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
+		{
+
+			if (!ModelState.IsValid) /* Server side validation */
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to save script due to invalid data";
+				return RedirectToAction("Add");
+			}
 
             try
             {
@@ -124,56 +125,56 @@ namespace Prometheus.WebUI.Controllers
             {
                 var fileName = Path.GetFileName(file.FileName);
 
-                if (fileName != null)
-                {
-                    Guid newFileName = Guid.NewGuid(); //to rename document			
-                                                       //file path location comes from the Web.config file
-                    try
-                    {
-                        var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
-                        file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-                        _scriptFile.ModifyScript(UserId, new ScriptDto()
-                        {
-                            MimeType = file.ContentType,
-                            ScriptFile = newFileName,
-                            UploadDate = DateTime.Now,
-                        }, EntityModification.Create);
-                    }
-                    catch (Exception e)
-                    {
-                        TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
-                    }
-                }
-            }
-            return View();
-        }
+				if (fileName != null)
+				{
+					Guid newFileName = Guid.NewGuid(); //to rename document			
+													   //file path location comes from the Web.config file
+					try
+					{
+						var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+						file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
+						_scriptFile.ModifyScript(UserId, new ScriptDto()
+						{
+							MimeType = file.ContentType,
+							ScriptFile = newFileName,
+							UploadDate = DateTime.Now,
+						}, EntityModification.Create);
+					}
+					catch (Exception e)
+					{
+						TempData["MessageType"] = WebMessageType.Failure;
+						TempData["Message"] = $"Failed to upload document, error: {e.Message}";
+					}
+				}
+			}
+			return View();
+		}
 
-        // GET: Script
-        public JsonResult People()
-        {
-            var people = new List<string>();
+		// GET: Script
+		public JsonResult People()
+		{
+			var people = new List<string>();
 
-            Runspace runspace = RunspaceFactory.CreateRunspace();
+			Runspace runspace = RunspaceFactory.CreateRunspace();
 
-            // open it
+			// open it
 
-            runspace.Open();
-            Pipeline pipeline = runspace.CreatePipeline();
-            pipeline.Commands.AddScript("[string[]] $run");
-            string[] peeps = {"Brad", "Jamie"};
-            runspace.SessionStateProxy.SetVariable("run", peeps );
-            Collection<PSObject> results = pipeline.Invoke();
-            runspace.Close();
+			runspace.Open();
+			Pipeline pipeline = runspace.CreatePipeline();
+			pipeline.Commands.AddScript("[string[]] $run");
+			string[] peeps = { "Brad", "Jamie" };
+			runspace.SessionStateProxy.SetVariable("run", peeps);
+			Collection<PSObject> results = pipeline.Invoke();
+			runspace.Close();
 
-            foreach (PSObject obj in results)
-            {
-                people.Add(obj.ToString());
-            }
+			foreach (PSObject obj in results)
+			{
+				people.Add(obj.ToString());
+			}
 
-            return Json(people, JsonRequestBehavior.AllowGet);
+			return Json(people, JsonRequestBehavior.AllowGet);
 
-        }
+		}
 
-    }
+	}
 }
