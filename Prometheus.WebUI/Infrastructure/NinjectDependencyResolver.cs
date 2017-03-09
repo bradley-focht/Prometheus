@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using DependencyResolver.Modules;
 using Ninject;
-using RequestService.Controllers;
-using ServicePortfolioService;
-using ServicePortfolioService.Controllers;
-using CatalogController = RequestService.Controllers.CatalogController;
-using ServiceController = ServicePortfolioService.Controllers.ServiceController;
+using Ninject.Modules;
 
 namespace Prometheus.WebUI.Infrastructure
 {
@@ -17,7 +14,7 @@ namespace Prometheus.WebUI.Infrastructure
 		public NinjectDependencyResolver(IKernel kernel)
 		{
 			this.kernel = kernel;
-			//AddBindings();
+			LoadModules();
 		}
 		public object GetService(Type serviceType)
 		{
@@ -31,22 +28,17 @@ namespace Prometheus.WebUI.Infrastructure
 		/// <summary>
 		/// This is Sean's stuff that goes in here. He made the bindings 
 		/// </summary>
-		private void AddBindings()
+		private void LoadModules()
 		{
-			kernel.Bind<IPortfolioService>().To<PortfolioService>();
-			kernel.Bind<IServiceController>().To<ServiceController>();
-			kernel.Bind<IServiceBundleController>().To<ServiceBundleController>();
-			kernel.Bind<ILifecycleStatusController>().To<LifecycleStatusController>();
-			kernel.Bind<IServiceContractController>().To<ServiceContractController>();
-			kernel.Bind<IServiceDocumentController>().To<ServiceDocumentController>();
-			kernel.Bind<IServiceGoalController>().To<ServiceGoalController>();
-			kernel.Bind<IServiceMeasureController>().To<ServiceMeasureController>();
-			kernel.Bind<IServiceSwotController>().To<ServiceSwotController>();
-			kernel.Bind<IServiceWorkUnitController>().To<ServiceWorkUnitController>();
-			kernel.Bind<ISwotActivityController>().To<SwotActivityController>();
+			var modules = new List<INinjectModule>
+			{
+				new DtoModule(),
+				new RequestServiceModule(),
+				new ServicePortfolioServiceModule(),
+				new UserManagerModule()
+			};
 
-			kernel.Bind<ICatalogController>().To<CatalogController>();
-
+			kernel.Load(modules);
 		}
 	}
 }
