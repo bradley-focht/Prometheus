@@ -18,162 +18,160 @@ using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
-    public class ScriptController : PrometheusController
-    {
+	public class ScriptController : PrometheusController
+	{
 
-        private ScriptFileController _scriptFile = new ScriptFileController();
+		private ScriptFileController _scriptFile = new ScriptFileController();
 
-        /// <summary>
-        /// Default page of Scripting
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Index()
-	    {
-            // TO DO:
-            // retrieve all available scripts
-		    return View();
-	    }
+		/// <summary>
+		/// Default page of Scripting
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Index()
+		{
+			// TO DO:
+			// retrieve all available scripts
+			return View();
+		}
 
-        /// <summary>
-        /// To get a specific script entry
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public ActionResult GetScript(int id)
-        {
-            LinkListModel model = new LinkListModel();
-            return View("PartialViews/_LinkList", model);
-        }
+		/// <summary>
+		/// To get a specific script entry
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult GetScript(int id)
+		{
+			LinkListModel model = new LinkListModel();
+			return View("PartialViews/_LinkList", model);
+		}
 
-        /// <summary>
-        /// GET: Script/Add
-        /// </summary>
-        /// <returns></returns>
-        public ActionResult Add()
-        {
-            return View(new ScriptDto());
-        }
+		/// <summary>
+		/// GET: Script/Add
+		/// </summary>
+		/// <returns></returns>
+		public ActionResult Add()
+		{
+			return View(new ScriptDto());
+		}
 
-        [HttpPost]
-        public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
-        {
-            
-            if (!ModelState.IsValid) /* Server side validation */
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = "Failed to save script due to invalid data";
-                return RedirectToAction("Add");
-            }
+		[HttpPost]
+		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
+		{
 
-            //save script
-            int newId;
+			if (!ModelState.IsValid) /* Server side validation */
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to save script due to invalid data";
+				return RedirectToAction("Add");
+			}
 
-            if (Request.Files.Count > 0)
-            {
-                var fileName = Path.GetFileName(file.FileName);
+			//save script
+			int newId;
 
-                if (fileName != null)
-                {
-                    Guid newFileName = Guid.NewGuid(); //to rename document			
-                                                       //file path location comes from the Web.config file
-                    try
-                    {
-                        var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
-                        file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-                        _scriptFile.ModifyScript(UserId, new ScriptDto()
-                        {
-                            MimeType = file.ContentType,
-                            ScriptFile = newFileName,
-                            UploadDate = DateTime.Now,
-                        }, EntityModification.Create);
-                    }
-                    catch (Exception e)
-                    {
-                        TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
-                    }
-                }
+			if (Request.Files.Count > 0)
+			{
+				var fileName = Path.GetFileName(file.FileName);
 
-                try
-                {
-                    newId = _scriptFile.ModifyScript(UserId, newScript, EntityModification.Create).Id;
-                }
-                catch (Exception e)
-                {
-                    TempData["MessageType"] = WebMessageType.Failure;
-                    TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
-                    return RedirectToAction("Add");
-                }
-            }
+				if (fileName != null)
+				{
+					Guid newFileName = Guid.NewGuid(); //to rename document			
+													   //file path location comes from the Web.config file
+					try
+					{
+						var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+						file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
+						_scriptFile.ModifyScript(UserId, new ScriptDto()
+						{
+							MimeType = file.ContentType,
+							ScriptFile = newFileName,
+							UploadDate = DateTime.Now,
+						}, EntityModification.Create);
+					}
+					catch (Exception e)
+					{
+						TempData["MessageType"] = WebMessageType.Failure;
+						TempData["Message"] = $"Failed to upload document, error: {e.Message}";
+					}
+				}
 
-            TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"New script {newScript.Name} saved successfully";
+				try
+				{
+					newId = _scriptFile.ModifyScript(UserId, newScript, EntityModification.Create).Id;
+				}
+				catch (Exception e)
+				{
+					TempData["MessageType"] = WebMessageType.Failure;
+					TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
+					return RedirectToAction("Add");
+				}
+			}
 
-            //return to index
-            return RedirectToAction("Index");
-        }
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = $"New script {newScript.Name} saved successfully";
 
-        /// <summary>
-        /// Use for uploading scripts
-        /// </summary>
-        /// <returns></returns>
-        [HttpPost]
-        public ActionResult UploadScriptFile(HttpPostedFileBase file, int id)
-        {
-            if (Request.Files.Count > 0)
-            {
-                var fileName = Path.GetFileName(file.FileName);
+			//return to index
+			return RedirectToAction("Index");
+		}
 
-                if (fileName != null)
-                {
-                    Guid newFileName = Guid.NewGuid(); //to rename document			
-                                                       //file path location comes from the Web.config file
-                    try
-                    {
-                        var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
-                        file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-                        _scriptFile.ModifyScript(UserId, new ScriptDto()
-                        {
-                            MimeType = file.ContentType,
-                            ScriptFile = newFileName,
-                            UploadDate = DateTime.Now,
-                        }, EntityModification.Create);
-                    }
-                    catch (Exception e)
-                    {
-                        TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
-                    }
-                }
-            }
-            return View();
-        }
+		/// <summary>
+		/// Use for uploading scripts
+		/// </summary>
+		/// <returns></returns>
+		[HttpPost]
+		public ActionResult UploadScriptFile(HttpPostedFileBase file, int id)
+		{
+			if (Request.Files.Count > 0)
+			{
+				var fileName = Path.GetFileName(file.FileName);
 
-        // GET: Script
-        public JsonResult People()
-        {
-            var people = new List<string>();
+				if (fileName != null)
+				{
+					Guid newFileName = Guid.NewGuid(); //to rename document			
+													   //file path location comes from the Web.config file
+					try
+					{
+						var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+						file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
+						_scriptFile.ModifyScript(UserId, new ScriptDto()
+						{
+							MimeType = file.ContentType,
+							ScriptFile = newFileName,
+							UploadDate = DateTime.Now,
+						}, EntityModification.Create);
+					}
+					catch (Exception e)
+					{
+						TempData["MessageType"] = WebMessageType.Failure;
+						TempData["Message"] = $"Failed to upload document, error: {e.Message}";
+					}
+				}
+			}
+			return View();
+		}
 
-            Runspace runspace = RunspaceFactory.CreateRunspace();
+		// GET: Script
+		public JsonResult GetRequestees(Guid id)
+		{
+			var people = new List<string>();
 
-            // open it
+			Runspace runspace = RunspaceFactory.CreateRunspace();
 
-            runspace.Open();
-            Pipeline pipeline = runspace.CreatePipeline();
-            pipeline.Commands.AddScript("[string[]] $run");
-            string[] peeps = {"Brad", "Jamie"};
-            runspace.SessionStateProxy.SetVariable("run", peeps );
-            Collection<PSObject> results = pipeline.Invoke();
-            runspace.Close();
+			runspace.Open();
+			Pipeline pipeline = runspace.CreatePipeline();
+			pipeline.Commands.AddScript("[string[]] $run");
+			string[] peeps = { "Brad", "Jamie" };
+			runspace.SessionStateProxy.SetVariable("run", peeps);
+			Collection<PSObject> results = pipeline.Invoke();
+			runspace.Close();
 
-            foreach (PSObject obj in results)
-            {
-                people.Add(obj.ToString());
-            }
+			foreach (PSObject obj in results)
+			{
+				people.Add(obj.ToString());
+			}
 
-            return Json(people, JsonRequestBehavior.AllowGet);
+			return Json(people, JsonRequestBehavior.AllowGet);
 
-        }
+		}
 
-    }
+	}
 }

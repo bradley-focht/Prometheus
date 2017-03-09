@@ -159,22 +159,21 @@
 
 	var $select = $(document.getElementById('RequesteesSelect')).selectize({ maxItems: 1 });
 	var selectize = $select[0].selectize;
-	selectize.addOption({ value: 1, text: 'foo' });
-	selectize.addItem(1);
 	//selectize.refreshOptions();
-	/*
+	
 
 	$(document)
 		.ready(function() {
-				$.get('/Script/People',
+			$.get('/Script/GetRequestees/@(Guid.NewGuid())',
 					function(data) {
 						console.log(data);
 						$.each(data,
 							function(index, value) {
 								console.log(index + value);
-								$('<option>').val(value).text(value).appendTo('#RequesteesSelect');
+								selectize.addOption({ value: 1, text: data });
+								selectize.addItem(1);
 							});
 					});
 			}
-		) */
+		);
 </script>
