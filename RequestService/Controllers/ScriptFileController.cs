@@ -41,14 +41,12 @@ namespace RequestService.Controllers
 
 		public IScriptDto ModifyScript(int performingUserId, IScriptDto script, EntityModification modification)
 		{
-            // throw new NotImplementedException();
             return base.ModifyEntity(performingUserId, script, modification);
 
         }
 
         protected override IScriptDto Create(int performingUserId, IScriptDto script)
 		{
-            // throw new NotImplementedException();
             using (var context = new PrometheusContext())
             {
                 var document = context.Scripts.ToList().FirstOrDefault(x => x.ScriptFile == script.ScriptFile);
@@ -64,14 +62,12 @@ namespace RequestService.Controllers
 
 		protected override IScriptDto Update(int performingUserId, IScriptDto script)
 		{
-            // throw new NotImplementedException();
             throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Documents.", EntityModification.Update));
 
         }
 
         protected override IScriptDto Delete(int performingUserId, IScriptDto script)
 		{
-            // throw new NotImplementedException();
             using (var context = new PrometheusContext())
             {
                 var toDelete = context.Scripts.ToList().FirstOrDefault(x => x.Id == script.Id);

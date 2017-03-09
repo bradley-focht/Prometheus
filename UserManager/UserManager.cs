@@ -18,17 +18,17 @@ namespace UserManager
 		private readonly IUserController _userController;
 		private readonly IRoleController _roleController;
 		private const string AuthorizedUserRoleName = "Authorized User";
-		private IScriptExecutor _scriptExecutor;		// is this a place we should be executing scripts from?
-		private IDepartmentController _departmentController; 
 
-		public UserManagerService(IPermissionController permissionController, IUserController userController, IRoleController roleController)
+		private readonly IScriptExecutor _scriptExecutor;        // is this a place we should be executing scripts from?
+		private readonly IDepartmentController _departmentController;
+
+		public UserManagerService(IPermissionController permissionController, IUserController userController, IRoleController roleController, IScriptExecutor scriptExecutor, IDepartmentController departmentController)
 		{
 			_permissionController = permissionController;
 			_userController = userController;
 			_roleController = roleController;
-
-			_scriptExecutor = new ScriptExecutor();
-			_departmentController = new DepartmentController();
+			_scriptExecutor = scriptExecutor;
+			_departmentController = departmentController;
 		}
 
 		/// <summary>
@@ -52,39 +52,39 @@ namespace UserManager
 						user = GetUser(adUser.UserGuid);
 					}
 					catch (Exception) { /* user does not exist */ }
-					
+
 					if (user != null)
 					{
 						//If they existed retrun them
-					    user.Name = GetDisplayName(user.AdGuid);
-					    return user;
+						user.Name = GetDisplayName(user.AdGuid);
+						return user;
 					}
 					else
 					{
 						//Otherwise add them with the authenticated role
-						var newUser = new UserDto{ AdGuid = adUser.UserGuid };
+						var newUser = new UserDto { AdGuid = adUser.UserGuid };
 
 						//Get the role that is to be added to the user
 						var authenticatedRole = context.Roles.FirstOrDefault(x => x.Name == AuthorizedUserRoleName);
-						
+
 						//get the user's department
 						string departmentName = _scriptExecutor.GetUserDepartment(newUser.AdGuid);
-							newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
-								where d.Name == departmentName
-								select d.Id).FirstOrDefault();
+						newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
+												where d.Name == departmentName
+												select d.Id).FirstOrDefault();
 
 						//Add them and their role to the database
 						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(newUser));
 						savedUser.DepartmentId = 1;
-						savedUser.Roles = new List<Role> {authenticatedRole};
+						savedUser.Roles = new List<Role> { authenticatedRole };
 						context.SaveChanges();
 						newUser = (UserDto)ManualMapper.MapUserToDto(savedUser);
 						newUser.Name = GetDisplayName(newUser.AdGuid);      //Name resolution
-					    return newUser;
+						return newUser;
 					}
 				}
 			}
-		    return new UserDto {Name = "failed"}; //failed login
+			return new UserDto { Name = "failed" }; //failed login
 		}
 
 
