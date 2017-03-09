@@ -63,7 +63,7 @@ namespace DataService
 				Popularity = src.Popularity,
 				ServiceOptionCategoryId = src.ServiceOptionCategoryId,
 				Utilization = src.Utilization,
-				//BasicRequest = src.BasicRequest,
+				BasicRequest = src.BasicRequest,
 
 				TextInputs = new List<ITextInputDto>(), /* lazy loading items later */
 				SelectionInputs = new List<ISelectionInputDto>(),
@@ -914,7 +914,7 @@ namespace DataService
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
 				DepartmentId = src.DepartmentId,
-				
+
 			};
 		}
 

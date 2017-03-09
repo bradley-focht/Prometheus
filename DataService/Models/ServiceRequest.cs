@@ -48,8 +48,12 @@ namespace DataService.Models
 		/// </summary>
 		public bool BasicRequest
 		{
-			get { return true; }
-			//	get { return this.ServiceRequestOptions.All(x => x.BasicRequest == true); }
+			get
+			{
+				if (this.ServiceRequestOptions == null)
+					return false;
+				return this.ServiceRequestOptions.All(x => x.BasicRequest == true);
+			}
 		}
 
 		/// <summary>
@@ -59,8 +63,9 @@ namespace DataService.Models
 		{
 			get
 			{
-				return 4;
-				//return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly);
+				if (this.ServiceRequestOptions == null)
+					return 0;
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly);
 			}
 		}
 
@@ -71,8 +76,9 @@ namespace DataService.Models
 		{
 			get
 			{
-				return 4;
-				//return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront);
+				if (this.ServiceRequestOptions == null)
+					return 0;
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront);
 			}
 		}
 		#endregion
