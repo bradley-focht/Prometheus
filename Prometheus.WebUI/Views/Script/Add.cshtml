@@ -18,10 +18,10 @@
 @section Content {
     <div class="title-div">@ViewBag.SubTitle</div> @* title *@
 
-    @using (Html.BeginForm("SaveScript", "Script", FormMethod.Post))
+    @using (Html.BeginForm("SaveScript", "Script", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        @*if (Model != null)
-        {*@
+        if (Model != null)
+        {
             <div class="panel-div">
                 @* content *@
                 @* Html.Partial("some partial view ") *@
@@ -47,6 +47,7 @@
                         @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
                     </div>
                 </div>
+
                 <div class="dd-row">
                     <div class="dt-cell"> @Html.DisplayNameFor(model => model.ScriptFile) </div>
                     <div class="dd-cell">
@@ -57,15 +58,15 @@
                                 <span class="btn btn-primary btn-file">
                                     <span class="fileupload-new">Select file</span>
                                     <span class="fileupload-exists">Change</span>
-                                    <input type="file" name="file" />
+                                    <input type="file" name="file"/>
                                 </span>
-                                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
+                                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary"/></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        @*}*@
+        }
        <div class="flex-container-col">
             @* control buttons at the bottom *@
             <div class="panel-footer">

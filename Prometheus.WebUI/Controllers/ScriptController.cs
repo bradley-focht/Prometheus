@@ -65,56 +65,56 @@ namespace Prometheus.WebUI.Controllers
                 return RedirectToAction("Add");
             }
 
-            //save script
-            int newId;
-
-            if (Request.Files.Count > 0)
+            try
             {
-                var fileName = Path.GetFileName(file.FileName);
-
-                if (fileName != null)
+                if (Request.Files.Count > 0)
                 {
-                    Guid newFileName = Guid.NewGuid(); //to rename document			
-                                                       //file path location comes from the Web.config file
-                    try
+                    var fileName = Path.GetFileName(file.FileName);
+
+                    if (fileName != null)
                     {
-                        var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
-                        file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-                        _scriptFile.ModifyScript(UserId, new ScriptDto()
+                        Guid newFileName = Guid.NewGuid(); //to rename document			
+                                                           //file path location comes from the Web.config file
+                        try
                         {
-                            MimeType = file.ContentType,
-                            ScriptFile = newFileName,
-                            UploadDate = DateTime.Now,
-                        }, EntityModification.Create);
-                    }
-                    catch (Exception e)
-                    {
-                        TempData["MessageType"] = WebMessageType.Failure;
-                        TempData["Message"] = $"Failed to upload document, error: {e.Message}";
+                            var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+                            file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
+                            _scriptFile.ModifyScript(UserId, new ScriptDto()
+                            {
+                                Id = newScript.Id,
+                                Name = newScript.Name,
+                                Description = newScript.Description,
+                                Version = newScript.Version,
+                                MimeType = file.ContentType,
+                                ScriptFile = newFileName,
+                                UploadDate = DateTime.Now,
+                            }, EntityModification.Create);
+
+                        }
+                        catch (Exception e)
+                        {
+                            TempData["MessageType"] = WebMessageType.Failure;
+                            TempData["Message"] = $"Failed to upload document, error: {e.Message}";
+                        }
                     }
                 }
 
-                try
-                {
-                    newId = _scriptFile.ModifyScript(UserId, newScript, EntityModification.Create).Id;
-                }
-                catch (Exception e)
-                {
-                    TempData["MessageType"] = WebMessageType.Failure;
-                    TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
-                    return RedirectToAction("Add");
-                }
+                TempData["MessageType"] = WebMessageType.Success;
+                TempData["Message"] = $"New script {newScript.Name} saved successfully";
             }
-
-            TempData["MessageType"] = WebMessageType.Success;
-            TempData["Message"] = $"New script {newScript.Name} saved successfully";
+            catch (Exception e)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to save script {newScript.Name}, error: {e}";
+                return RedirectToAction("Add");
+            }
 
             //return to index
             return RedirectToAction("Index");
         }
 
         /// <summary>
-        /// Use for uploading scripts
+        /// Use for uploading scripts - DONT NEED THIS
         /// </summary>
         /// <returns></returns>
         [HttpPost]
