@@ -839,7 +839,7 @@ namespace DataService
 						ServiceOptionCategoryId = tag.ServiceOptionCategoryId,
 						ServiceRequestPackageId = tag.ServiceRequestPackageId,
 						ServiceOptionCategory = MapOptionCategoryToDto(tag.ServiceOptionCategory),
-						ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
+						//ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
 					});
 				}
 			}
@@ -856,7 +856,7 @@ namespace DataService
 						ServiceId = tag.ServiceId,
 						ServiceRequestPackageId = tag.ServiceRequestPackageId,
 						Service = MapServiceToDto(tag.Service),
-						ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
+						//ServiceRequestPackage = MapServiceRequestPackageToDto(tag.ServiceRequestPackage)
 					});
 				}
 			}
@@ -983,8 +983,8 @@ namespace DataService
 				Quantity = src.Quantity,
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest,
-				ServiceOption = MapServiceOptionToDto(src.ServiceOption),
-				ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
+				//ServiceOption = MapServiceOptionToDto(src.ServiceOption),
+				//ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
 			};
 		}
 

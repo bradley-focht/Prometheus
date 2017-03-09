@@ -114,7 +114,7 @@ namespace Prometheus.WebUI.Controllers
         }
 
 		// GET: Script
-		public JsonResult People()
+		public JsonResult GetRequestees(Guid id)
 		{
 			var people = new List<string>();
 

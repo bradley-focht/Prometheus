@@ -35,10 +35,7 @@
 	<input type="hidden" name="form.Id" value="@Model.ServiceRequestId" />
 	<input type="hidden" name="form.CurrentIndex" value="@Model.CurrentIndex" />
 	<input type="hidden" name="form.Mode" value="@Model.Mode" />
-	if (Model.ServiceRequest.Id > 0)
-	{
-		<input type="hidden" name="form.Action" value="@(Model.ServiceRequest.Action)" />
-	}
+	<input type="hidden" name="form.Action" value="@(Model.ServiceRequest.Action)" />
 	<div class="panel panel-default flex-container-row standard-padding">
 		<div class="dd ful">
 			<div class="dd-row">
