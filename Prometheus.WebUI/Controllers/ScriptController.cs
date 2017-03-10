@@ -57,7 +57,14 @@ namespace Prometheus.WebUI.Controllers
 
 	    public ActionResult UpdateScript(int id)
 	    {
-	        return View();
+            var model = _scriptFile.GetScript(UserId, id);
+
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
 	    }
 
 		[HttpPost]

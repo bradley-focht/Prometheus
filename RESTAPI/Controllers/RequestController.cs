@@ -2,6 +2,7 @@
 using System.Web.Http;
 using Common.Dto;
 using Common.Enums.Entities;
+using Common.Utilities;
 using RequestService;
 using RequestService.Controllers;
 using RESTAPI.Models;
@@ -25,7 +26,9 @@ namespace RESTAPI.Controllers
 			var um = new UserManagerService(
 				new PermissionController(),
 				new UserController(),
-				new RoleController(new PermissionController())
+				new RoleController(new PermissionController()),
+                new ScriptExecutor(),
+                new DepartmentController()
 			);
 			var srController = new ServiceRequestController(um);
 
@@ -39,7 +42,9 @@ namespace RESTAPI.Controllers
 			var um = new UserManagerService(
 				new PermissionController(),
 				new UserController(),
-				new RoleController(new PermissionController())
+				new RoleController(new PermissionController()),
+                new ScriptExecutor(),
+                new DepartmentController()
 			);
 			var srController = new ServiceRequestController(um);
 
@@ -54,7 +59,9 @@ namespace RESTAPI.Controllers
 			var um = new UserManagerService(
 				new PermissionController(),
 				new UserController(),
-				new RoleController(new PermissionController())
+				new RoleController(new PermissionController()),
+                new ScriptExecutor(), 
+                new DepartmentController()
 			);
 
 			//Convert the string to a Request
@@ -70,7 +77,9 @@ namespace RESTAPI.Controllers
 			var um = new UserManagerService(
 				new PermissionController(),
 				new UserController(),
-				new RoleController(new PermissionController())
+				new RoleController(new PermissionController()),
+                new ScriptExecutor(), 
+                new DepartmentController()
 			);
 			var srController = new ServiceRequestController(um);
 
