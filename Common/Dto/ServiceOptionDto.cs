@@ -45,10 +45,16 @@ namespace Common.Dto
 		[Display(Order = 2, Name = "Business Value")]
 		public string BusinessValue { get; set; }
 
+		/// <summary>
+		/// Service Request Category
+		/// </summary>
 		[Required(ErrorMessage = "Category is required")]
 		[Display(Order = 8, Name = "Category")]
 		public int ServiceOptionCategoryId { get; set; }
 
+		/// <summary>
+		/// Utilization of the option by clients
+		/// </summary>
 		[Display(Order = 8)]
 		public string Utilization { get; set; }
 
@@ -80,6 +86,10 @@ namespace Common.Dto
 		[Display(Name = "Monthly Price", Order = 7)]
 		public double PriceMonthly { get; set; }
 
+		/// <summary>
+		/// Option "risk" level
+		/// </summary>
+		[Display(Name="Approval Level")]
 		public bool BasicRequest { get; set; }
 
 

@@ -139,7 +139,9 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 					return price;
 			}
 		}
-
+		/// <summary>
+		/// Calculate the monthly price
+		/// </summary>
 		public double PriceMonthly
 		{
 			get
@@ -154,5 +156,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 				return price;
 			}
 		}
+
+		/// <summary>
+		/// If UI should allow SR form to b 
+		/// </summary>
+		public bool CanEdit { get; set; }
 	}
 }

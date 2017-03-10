@@ -1,99 +1,119 @@
 ﻿@model dynamic
-    @foreach (var property in ViewData.ModelMetadata.Properties)
+@foreach (var property in ViewData.ModelMetadata.Properties)
+{
+	switch (property.PropertyName)
 	{
-		switch (property.PropertyName)
-		{
-			case "Code":
-				<div class="dd-row">
-					<div class="dt-cell">
-						Code
+		case "Code":
+			<div class="dd-row">
+				<div class="dt-cell">
+					Code
+				</div>
+				<div class="dd-cell">
+					@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control form-code", type = "text", maxlength = "10", id = "Code" })
+					@Html.ValidationMessage(property.PropertyName)
+					<script type="text/javascript" language="javascript">
+						$("#Code").on({
+							keydown: function (e) {
+								if (e.which === 32)
+									return false;
+							},
+							change: function () {
+								this.value = this.value.replace(/\s/g, "");
+							}
+						});
+					</script>
+				</div>
+			</div>
+			break;
+		case "BasicRequest":
+			<div class="dd-row">
+				<div class="dt-cell">
+					Approval Level
+				</div>
+				<div class="dd-cell">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default" id="BasicRequestTrue">
+							@Html.RadioButton(property.PropertyName, true, false) Basic
+						</label>
+						<label class="btn btn-default" id="BasicRequestFalse">
+							@Html.RadioButton(property.PropertyName, false, false) Approval Required
+						</label>
 					</div>
-					<div class="dd-cell">
-						@Html.TextBox(property.PropertyName, property.Model, new {@class = "form-control form-code", type="text", maxlength = "10", id="Code" })
-						@Html.ValidationMessage(property.PropertyName)
-						<script type="text/javascript" language="javascript">
-							$("#Code").on({
-								keydown: function (e) {
-									if (e.which === 32)
-										return false;
-								},
-								change: function () {
-									this.value = this.value.replace(/\s/g, "");
-								}
-							});
-						</script>
+					<script type="text/javascript" language="javascript">
+						$('#BasicRequest@(property.Model)').button('toggle');
+					</script>
+				</div>
+			</div>
+			break;
+		case "Quantifiable":
+			<div class="dd-row">
+				<div class="dt-cell">
+					Quantifiable
+				</div>
+				<div class="dd-cell">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-default" id="QuantifiableTrue">
+							@Html.RadioButton(property.PropertyName, true, false) Yes
+						</label>
+						<label class="btn btn-default" id="QuantifiableFalse">
+							@Html.RadioButton(property.PropertyName, false, false) No
+						</label>
+					</div>
+					<script type="text/javascript" language="javascript">
+						$('#Quantifiable@(property.Model)').button('toggle');
+					</script>
+				</div>
+			</div>
+			break;
+		case "Popularity":
+			<div class="dd-row">
+				<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+				<div class="dd-cell">
+					<div class="input-group spinner" style="max-width: 50px;">
+						@Html.TextBox(property.PropertyName, property.Model, new { min = "0", max = "99", @class = "form-control numberSelect" })
+
+						<div class="input-group-btn-vertical">
+							<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
+							<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
+						</div>
 					</div>
 				</div>
-					break;
-					case "Quantifiable":
-					<div class="dd-row">
-						<div class="dt-cell">
-							Quantifiable
-						</div>
-						<div class="dd-cell">
-							<div class="btn-group" data-toggle="buttons">
-								<label class="btn btn-default" id="QuantifiableTrue">
-									@Html.RadioButton(property.PropertyName, true, false) Yes
-								</label>
-								<label class="btn btn-default" id="QuantifiableFalse">
-									@Html.RadioButton(property.PropertyName, false, false) No
-								</label>
-							</div>
-							<script type="text/javascript" language="javascript">
-								$('#Quantifiable@(property.Model)').button('toggle');
-							</script>
-						</div>
-					</div>
-					break;
-					case "Popularity":
-					<div class="dd-row">
-						<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-						<div class="dd-cell">
-							<div class="input-group spinner" style="max-width: 50px;">
-								@Html.TextBox(property.PropertyName, property.Model, new { min = "0", max = "99", @class = "form-control numberSelect" })
+			</div>
+			break;
+		case "BusinessValue":
+		case "Details":
+			<div class="dd-row">
+				<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+				<div class="dd-cell">@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })</div>
+			</div>
+			break;
+		case "Picture":
+			<div class="dd-row">
+				<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+				<div class="dd-cell">
+					<input type="hidden" name="Picture" value="@Model.Picture" />
 
-								<div class="input-group-btn-vertical">
-									<button class="btn btn-default" type="button"><i class="fa fa-caret-up"></i></button>
-									<button class="btn btn-default" type="button"><i class="fa fa-caret-down"></i></button>
-								</div>
-							</div>
-						</div>
+					<div style="position: relative">
+						<a class="btn" href="javascript:;">
+							Choose file
+							<input type="file" name="Image" size="40" class="select-button" onchange='$("#upload-file-info").html($(this).val());' />
+						</a>
+						<span class="label label-info" id="upload-file-info"></span>
 					</div>
-					break;
-					case "BusinessValue":
-					case "Details":
-					<div class="dd-row">
-						<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-						<div class="dd-cell">@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })</div>
+					<div>
+						@if (Model.Picture == null)
+						{
+							<div class="form-control-static">No Image</div>
+						}
+						else
+						{
+							<img alt="Picture" class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" />
+						}
 					</div>
-					break;
-					case "Picture":
-					<div class="dd-row">
-						<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-						<div class="dd-cell">
-							<input type="hidden" name="Picture" value="@Model.Picture" />
-
-							<div style="position: relative">
-								<a class="btn" href="javascript:;">
-									Choose file
-									<input type="file" name="Image" size="40" class="select-button" onchange='$("#upload-file-info").html($(this).val());' />
-								</a>
-								<span class="label label-info" id="upload-file-info"></span>
-							</div>
-							<div>
-								@if (Model.Picture == null)
-								{
-									<div class="form-control-static">No Image</div>
-								}
-								else
-								{
-									<img alt="Picture" class="img-thumbnail" width="150" height="150" src="@Url.Action("GetOptionPicture", "Service", new {id = Model.Id})" />
-								}
-							</div>
-						</div>
-					</div>
-					break;
-					default:
-					continue;
-					}
-					}
+				</div>
+			</div>
+			break;
+		default:
+			continue;
+	}
+}

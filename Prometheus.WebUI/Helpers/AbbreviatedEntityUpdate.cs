@@ -84,6 +84,7 @@ namespace Prometheus.WebUI.Helpers
 			target.PictureMimeType = src.PictureMimeType;
 			target.Picture = src.Picture;
 			target.Details = src.Details;
+			target.BasicRequest = src.BasicRequest;
 
 			return target;
 		}
@@ -101,6 +102,7 @@ namespace Prometheus.WebUI.Helpers
 			target.PictureMimeType = src.PictureMimeType;
 			target.Picture = src.Picture;
 			target.Details = src.Details;
+			target.BasicRequest = src.BasicRequest;
 
 			return target;
 		}

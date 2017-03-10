@@ -15,7 +15,7 @@ namespace Prometheus.WebUI.Helpers
 	public class ServiceRequestSummaryHelper
 	{
 		/// <summary>
-		/// Create hte model
+		/// Create the model
 		/// </summary>
 		/// <param name="ps">portfolio service</param>
 		/// <param name="sr"></param>
@@ -49,8 +49,12 @@ namespace Prometheus.WebUI.Helpers
 			List<DisplayListOption> displayList = new List<DisplayListOption>();
 			foreach (var serviceRequestOption in model.ServiceRequestModel.ServiceRequest.ServiceRequestOptions)    //add the option name
 			{
-				var listOption = new DisplayListOption { ServiceRequestOption = serviceRequestOption, UserInputs = new List<DisplayListUserInput>() };
-				listOption.ServiceOption = ps.GetServiceOption(userId, serviceRequestOption.ServiceOptionId);
+				var listOption = new DisplayListOption
+				{
+					ServiceRequestOption = serviceRequestOption,
+					UserInputs = new List<DisplayListUserInput>(),
+					ServiceOption = ps.GetServiceOption(userId, serviceRequestOption.ServiceOptionId)
+				};
 
 				var userInputs = ps.GetInputsForServiceOptions(userId,
 					new IServiceOptionDto[1] { new ServiceOptionDto { Id = serviceRequestOption.ServiceOptionId } });//get user inputs
@@ -126,7 +130,7 @@ namespace Prometheus.WebUI.Helpers
 				if (userInputs != null)
 				{
 
-					foreach (var userData in model.ServiceRequestModel.ServiceRequest.ServiceRequestUserInputs)
+					foreach (var userData in model.ServiceRequestModel.ServiceRequest.ServiceRequestUserInputs)		//iser inputs
 					{
 						if (userData.UserInputType == UserInputType.Text)
 						{

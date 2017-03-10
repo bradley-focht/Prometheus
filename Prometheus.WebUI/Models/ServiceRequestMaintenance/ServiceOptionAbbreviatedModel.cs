@@ -5,6 +5,9 @@ using Common.Dto;
 
 namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
 {
+	/// <summary>
+	/// Reduced set of attributes of an option for Service Request Maintenance tasks
+	/// </summary>
     public class ServiceOptionAbbreviatedModel : ICatalogPublishable
     {
         public int Id { get; set; }
@@ -19,5 +22,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         public string PictureMimeType { get; set; }
         [AllowHtml]
         public string Details { get; set; }
-    }
+		public bool BasicRequest { get; set; }
+
+	}
 }

@@ -6,7 +6,6 @@
 }
 
 
-@Html.AntiForgeryToken()
 <div class="content-body">
 	<div class="panel-primary login-panel">
 		<div class="panel-heading" style="padding-top: 10px;">
@@ -40,7 +39,7 @@
 			<div>
 				@using (Html.BeginForm("Login", "UserAccount", FormMethod.Post))
 				{
-					@Html.AntiForgeryToken()
+					<input type="hidden" value="@Model.ReturnUrl" name="ReturnUrl" />
 
 					<div class="title-div" style="max-width: 650px;">Login</div>
 
@@ -69,10 +68,12 @@
 			</div>
 			@using (Html.BeginForm("LoginGuest", "UserAccount", FormMethod.Post))
 			{
+				<input type="hidden" value="@Model.ReturnUrl" name="ReturnUrl" />
 				<div>Or Continue as a <input type="submit" value="Guest" class="btn-link" /></div>
 			}
 			@using (Html.BeginForm("LoginAdmin", "UserAccount", FormMethod.Post))
 			{
+				<input type="hidden" value="@Model.ReturnUrl" name="ReturnUrl" />
 				<div>Admins click <input type="submit" value="here" class="btn-link" /></div>
 			}
 

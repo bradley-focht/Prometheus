@@ -13,6 +13,6 @@ namespace Prometheus.WebUI.Models.ServiceRequestApproval
 		public IEnumerable<DisplayListOption> DisplayList { get; set; }
 		public ServiceRequestState NextState { get; set; }
 		public bool ConfirmNextState { get; set; }
-
+		public bool CanEditServiceRequest { get; set; }
 	}
 }

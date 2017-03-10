@@ -24,21 +24,28 @@
                                                                             id = (from p in ViewData.ModelMetadata.Properties
                                                                                  where p.PropertyName == "Id"
                                                                                  select p.Model).FirstOrDefault() 
-                                                                                
-                                                                        })"/>
+                                                                                 })"/>
                         }
                     </div>
                 </div>
                 break;
             case "Quantifiable":
-                <div class="dd-row">
-                    <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
-                    <div class="dd-cell">
-                        @(bool.Parse(property.Model.ToString()) ? "Yes" : "No" ) 
-                    </div>
-                </div>
-                    break;
-                    default:
-                    continue;
-                    }
-                    }
+				<div class="dd-row">
+					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="dd-cell">
+						@(bool.Parse(property.Model.ToString()) ? "Yes" : "No" )
+					</div>
+				</div>
+				break;
+			case "BasicRequest":
+				<div class="dd-row">
+					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="dd-cell">
+						@(bool.Parse(property.Model.ToString()) ? "Basic" : "Approval Required" )
+					</div>
+				</div>
+				break;
+			default:
+				continue;
+		}
+	}

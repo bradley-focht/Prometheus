@@ -9,8 +9,10 @@ using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequest;
+using RequestService;
 using RequestService.Controllers;
 using ServicePortfolioService;
+using UserManager.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -23,11 +25,13 @@ namespace Prometheus.WebUI.Controllers
 		private readonly IPortfolioService _ps;
 		private readonly IServiceRequestController _srController;
 		private IServiceRequestOptionController _rs;
+		private readonly IRequestManager _requestManager;
 
 		public ServiceRequestController()
 		{
 			_ps = InterfaceFactory.CreatePortfolioService();
 			_srController = InterfaceFactory.CreateServiceRequestController();
+			_requestManager = new RequestManager(new PermissionController());
 		}
 
 		/// <summary>
@@ -354,10 +358,13 @@ namespace Prometheus.WebUI.Controllers
 		{
 			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = index, ServiceRequestId = id, Mode = mode };
 
-			/* STEP ONE - get SR, get package, and enough  */
+			/* STEP ONE - get SR, get package, and stuff  */
 			try
 			{
 				model.ServiceRequest = _srController.GetServiceRequest(UserId, id);       //get db info
+				if (!_requestManager.UserCanEditRequest(UserId, model.ServiceRequest.Id))	//business logic 
+					throw new Exception("Service Request cannot be edited");
+
 				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action) ??
 				                   ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
 				//deal with no package by making one
@@ -365,9 +372,10 @@ namespace Prometheus.WebUI.Controllers
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
-				TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
+				TempData["Message"] = $"Failed to retrieve Service Request, error: {exception.Message}";
 				return View("ServiceRequest", model);
 			}
+
 
 			/* STEP TWO - get any user inputs & associate with the option */
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
