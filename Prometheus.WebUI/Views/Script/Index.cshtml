@@ -13,27 +13,29 @@
 
 }
 
-@section Content { <div class="title-div">@ViewBag.SubTitle</div> }
+@section Content { 
+    <div class="title-div">@ViewBag.SubTitle</div>
+}
 
 @section Sidebar{
     <div class="flex-container-col">
-    @if (Model != null)
-    {
-
-        foreach (var item in Model)
+        
+        @if (Model != null)
         {
-            <div>
-                @Html.ActionLink(item.Name, "GetScript", new { id = item.Id })
-            </div>
-            
-        }
-    }
 
+            foreach (var item in Model)
+            {
+                <div>
+                    @Html.ActionLink(item.Name, "GetScript", new {id = item.Id})
+                </div>
+
+            }
+        }
+    </div>
         @* control buttons at the bottom *@
-        <div class="panel-footer">
-            <div class="float-right-div">
-                @Html.ActionLink("Add", "Add", new {}, new {@class = "btn btn-primary"})
-            </div>
+    <div class="panel-footer">
+        <div class="float-right-div">
+            @Html.ActionLink("Add", "Add", new {}, new {@class = "btn btn-primary"})
         </div>
     </div>
 }

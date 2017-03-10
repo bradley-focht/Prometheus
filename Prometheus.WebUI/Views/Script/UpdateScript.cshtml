@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Scripts";
-    ViewBag.SubTitle = "Add and Upload Scripts";
+    ViewBag.SubTitle = "Update Script";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -58,21 +58,21 @@
                                 <span class="btn btn-primary btn-file">
                                     <span class="fileupload-new">Select file</span>
                                     <span class="fileupload-exists">Change</span>
-                                    <input type="file" name="file"/>
+                                    <input type="file" name="file" />
                                 </span>
-                                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary"/></span>
+                                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary" /></span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         }
-       <div class="flex-container-col">
+        <div class="flex-container-col">
             @* control buttons at the bottom *@
             <div class="panel-footer">
                 <div class="float-right-div">
-                    @Html.ActionLink("Back", "Index", new {}, new {@class = "btn btn-default btn-back"})
-                    <input type="submit" value="Save" id="Save" class="btn btn-primary"/>
+                    @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default btn-back" })
+                    <input type="submit" value="Save" id="Save" class="btn btn-primary" />
                 </div>
             </div>
         </div>

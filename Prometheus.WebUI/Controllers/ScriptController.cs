@@ -55,6 +55,11 @@ namespace Prometheus.WebUI.Controllers
 			return View(new ScriptDto());
 		}
 
+	    public ActionResult UpdateScript(int id)
+	    {
+	        return View();
+	    }
+
 		[HttpPost]
 		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
 		{
