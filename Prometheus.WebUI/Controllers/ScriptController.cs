@@ -56,36 +56,36 @@ namespace Prometheus.WebUI.Controllers
 			return View(new ScriptDto());
 		}
 
-        /// <summary>
-        /// GET: Script/UpdateScript/id
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-	    public ActionResult UpdateScript(int id)
-	    {
-	        var model = new ScriptDto();
+		/// <summary>
+		/// GET: Script/UpdateScript/id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult UpdateScript(int id)
+		{
+			var model = new ScriptDto();
 
-            if (id == 0)
-            {
-                // new script
-                return View("Add", model);
-            }
+			if (id == 0)
+			{
+				// new script
+				return View("Add", model);
+			}
 
-            // update script
-            model = (ScriptDto)_scriptFileController.GetScript(UserId, id);
-            return View("Add", model);
-	    }
+			// update script
+			model = (ScriptDto)_scriptFileController.GetScript(UserId, id);
+			return View("Add", model);
+		}
 
-        /// <summary>
-        /// Save and update script entries
-        /// </summary>
-        /// <param name="newScript"></param>
-        /// <param name="file"></param>
-        /// <returns></returns>
+		/// <summary>
+		/// Save and update script entries
+		/// </summary>
+		/// <param name="newScript"></param>
+		/// <param name="file"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
 		{
-            
+
 			if (!ModelState.IsValid) /* Server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
@@ -99,34 +99,34 @@ namespace Prometheus.WebUI.Controllers
 				{
 					var fileName = Path.GetFileName(file.FileName);
 
-                    if (fileName != null)
-                    {
-                        Guid newFileName = Guid.NewGuid(); //to rename document			
-                                                           //file path location comes from the Web.config file
-                        try
-                        {
-                            var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
-                            file.SaveAs(Server.MapPath(path)); /*create new doc and upload it */
-                            newScript = new ScriptDto()
-                            {
-                                Id = newScript.Id,
-                                Name = newScript.Name,
-                                Description = newScript.Description,
-                                Version = newScript.Version,
-                                MimeType = file.ContentType,
-                                ScriptFile = newFileName,
-                                UploadDate = DateTime.Now,
-                            };
+					if (fileName != null)
+					{
+						Guid newFileName = Guid.NewGuid(); //to rename document			
+														   //file path location comes from the Web.config file
+						try
+						{
+							var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+							file.SaveAs(Server.MapPath(path)); /*create new doc and upload it */
+							newScript = new ScriptDto()
+							{
+								Id = newScript.Id,
+								Name = newScript.Name,
+								Description = newScript.Description,
+								Version = newScript.Version,
+								MimeType = file.ContentType,
+								ScriptFile = newFileName,
+								UploadDate = DateTime.Now,
+							};
 
-                            _scriptFileController.ModifyScript(UserId, newScript, newScript.Id <= 0? EntityModification.Create : EntityModification.Update);
-                        }
-                        catch (Exception e)
-                        {
-                            TempData["MessageType"] = WebMessageType.Failure;
-                            TempData["Message"] = $"Failed to upload document, error: {e.Message}";
-                        }
-                    }
-                }
+							_scriptFileController.ModifyScript(UserId, newScript, newScript.Id <= 0 ? EntityModification.Create : EntityModification.Update);
+						}
+						catch (Exception e)
+						{
+							TempData["MessageType"] = WebMessageType.Failure;
+							TempData["Message"] = $"Failed to upload document, error: {e.Message}";
+						}
+					}
+				}
 
 				TempData["MessageType"] = WebMessageType.Success;
 				TempData["Message"] = $"New script {newScript.Name} saved successfully";
