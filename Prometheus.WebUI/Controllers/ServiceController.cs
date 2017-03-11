@@ -177,7 +177,7 @@ namespace Prometheus.WebUI.Controllers
 			int newId;
 			try
 			{
-				newId = _portfolioService.ModifyService(newService, EntityModification.Create).Id;
+				newId = _portfolioService.ModifyService(UserId, newService, EntityModification.Create).Id;
 			}
 			catch (Exception e)
 			{
@@ -790,7 +790,7 @@ namespace Prometheus.WebUI.Controllers
 			//perform the save
 			service = (ServiceDto)AbbreviatedEntityUpdate.UpdateService(_portfolioService.GetService(service.Id), service);         //preserve data updated from ICatalogPublishable interface
 
-			_portfolioService.ModifyService(service, EntityModification.Update);   //perform the update
+			_portfolioService.ModifyService(UserId, service, EntityModification.Update);   //perform the update
 
 			return RedirectToAction("Show", new { section = "General", id = service.Id });
 		}

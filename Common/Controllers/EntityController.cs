@@ -53,7 +53,7 @@ namespace Common.Controllers
 		/// <param name="entityDto">entity to be modified</param>
 		/// <param name="modification">type of modification</param>
 		/// <returns>The modified entity DTO</returns>
-		public T ModifyEntity(int performingUserId, T entityDto, EntityModification modification)
+		protected T ModifyEntity(int performingUserId, T entityDto, EntityModification modification)
 		{
 			if (entityDto == null)
 				ThrowArgumentNullError(typeof(T).ToString());

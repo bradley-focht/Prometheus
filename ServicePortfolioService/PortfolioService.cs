@@ -116,9 +116,9 @@ namespace ServicePortfolioService
 			return _serviceController.GetServicesForServiceBundle(serviceBundleId);
 		}
 
-		public IServiceDto ModifyService(IServiceDto service, EntityModification modification)
+		public IServiceDto ModifyService(int performingUserId, IServiceDto service, EntityModification modification)
 		{
-			return _serviceController.ModifyService(service, modification);
+			return _serviceController.ModifyService(performingUserId, service, modification);
 		}
 
 		public IServiceDto GetService(int serviceId)

@@ -209,7 +209,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult DeleteService(DeleteModel item)
 		{
 
-			_portfolioService.ModifyService(new ServiceDto { Id = item.Id }, EntityModification.Delete);
+			_portfolioService.ModifyService(UserId, new ServiceDto { Id = item.Id }, EntityModification.Delete);
 
 			TempData["messageType"] = WebMessageType.Failure;
 			TempData["message"] = $"Failed to delete {item.Name}";
