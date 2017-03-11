@@ -75,14 +75,9 @@ namespace ServicePortfolioService
 			return _serviceBundleController.GetServiceBundleNames();
 		}
 
-		public IServiceBundleDto SaveServiceBundle(IServiceBundleDto serviceBundle)
+		public IServiceBundleDto ModifyServiceBundle(int performingUserId, IServiceBundleDto serviceBundle, EntityModification modification)
 		{
-			return _serviceBundleController.SaveServiceBundle(serviceBundle);
-		}
-
-		public bool DeleteServiceBundle(int serviceBundleId)
-		{
-			return _serviceBundleController.DeleteServiceBundle(serviceBundleId);
+			return _serviceBundleController.ModifyServiceBundle(performingUserId, serviceBundle, modification);
 		}
 
 		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames()
@@ -95,14 +90,9 @@ namespace ServicePortfolioService
 			return _lifecycleStatusController.GetLifecycleStatus(lifecycleStatusId);
 		}
 
-		public ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		public ILifecycleStatusDto ModifyLifecycleStatus(int performingUserId, ILifecycleStatusDto lifecycleStatus, EntityModification modification)
 		{
-			return _lifecycleStatusController.SaveLifecycleStatus(lifecycleStatus);
-		}
-
-		public bool DeleteLifecycleStatus(int lifecycleStatusId)
-		{
-			return _lifecycleStatusController.DeleteLifecycleStatus(lifecycleStatusId);
+			return _lifecycleStatusController.ModifyLifecycleStatus(performingUserId, lifecycleStatus, modification);
 		}
 
 		public int CountLifecycleStatuses()
@@ -154,11 +144,6 @@ namespace ServicePortfolioService
 		public IServiceDocumentDto GetServiceDocument(int performingUserId, int documentGuid)
 		{
 			return _serviceDocumentController.GetServiceDocument(performingUserId, documentGuid);
-		}
-
-		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
-		{
-			return _serviceBundleController.UpdateServiceBundle(serviceBundle);
 		}
 
 		public IServiceSwotDto GetServiceSwot(int performingUserId, int serviceSwotId)

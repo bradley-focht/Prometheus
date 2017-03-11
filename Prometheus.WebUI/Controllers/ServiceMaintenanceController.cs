@@ -127,8 +127,10 @@ namespace Prometheus.WebUI.Controllers
 			if (ModelState.IsValid)
 			{
 
-
-				_portfolioService.SaveLifecycleStatus(model);
+				if (model.Id == 0)
+					_portfolioService.ModifyLifecycleStatus(UserId, model, EntityModification.Create);
+				else
+					_portfolioService.ModifyLifecycleStatus(UserId, model, EntityModification.Update);
 
 				TempData["messageType"] = WebMessageType.Success;
 				TempData["message"] = "successfully saved lifecycle status";
@@ -174,17 +176,16 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteLifecycle(DeleteModel item)
 		{
-
-			if (_portfolioService.DeleteLifecycleStatus(item.Id))
+			if (!ModelState.IsValid)
 			{
-				TempData["messageType"] = WebMessageType.Success;
-				TempData["message"] = $"Successfully deleted lifecycle status {item.Name}";
-
+				TempData["messageType"] = WebMessageType.Failure;
+				TempData["message"] = $"Failed to delete lifecycle status {item.Name}";
 				return RedirectToAction("ShowLifecycle");
 			}
 
-			TempData["messageType"] = WebMessageType.Failure;
-			TempData["message"] = $"Failed to delete lifecycle status {item.Name}";
+			_portfolioService.ModifyLifecycleStatus(UserId, new LifecycleStatusDto() { Id = item.Id }, EntityModification.Delete);
+			TempData["messageType"] = WebMessageType.Success;
+			TempData["message"] = $"Successfully deleted lifecycle status {item.Name}";
 			return RedirectToAction("ShowLifecycle");
 		}
 

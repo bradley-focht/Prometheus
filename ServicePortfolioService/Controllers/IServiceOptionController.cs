@@ -20,7 +20,7 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="performingUserId"></param>
 		/// <param name="serviceOption"></param>
 		/// <param name="modification">Type of modification to make</param>
-		/// <returns>Modified SWOT</returns>
+		/// <returns>Modified Service Option</returns>
 		IServiceOptionDto ModifyServiceOption(int performingUserId, IServiceOptionDto serviceOption, EntityModification modification);
 
 		/// <summary>

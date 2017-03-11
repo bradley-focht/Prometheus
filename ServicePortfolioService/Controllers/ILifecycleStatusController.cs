@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Dto;
+using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -20,23 +21,18 @@ namespace ServicePortfolioService.Controllers
 		IEnumerable<Tuple<int, string>> GetLifecycleStatusNames();
 
 		/// <summary>
-		/// Saves the lifecycle status to the database
+		/// returns a count of the number of Lifecycle statuses found
 		/// </summary>
-		/// <param name="lifecycleStatus"></param>
-		/// <returns>Saved entity DTO</returns>
-		ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus);
+		/// <returns></returns>
+		int CountLifecycleStatuses();
 
 		/// <summary>
-		/// Deletes the lifecycle status from the database
+		/// Modifies the status in the database
 		/// </summary>
-		/// <param name="lifecycleStatusId"></param>
-		/// <returns>True if successful</returns>
-		bool DeleteLifecycleStatus(int lifecycleStatusId);
-
-	    /// <summary>
-	    /// returns a count of the number of Lifecycle statuses found
-	    /// </summary>
-	    /// <returns></returns>
-	    int CountLifecycleStatuses();
+		/// <param name="performingUserId">ID of user performing the modification</param>
+		/// <param name="status"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Lifecycle Status</returns>
+		ILifecycleStatusDto ModifyLifecycleStatus(int performingUserId, ILifecycleStatusDto status, EntityModification modification);
 	}
 }
