@@ -5,6 +5,7 @@ namespace Prometheus.WebUI.App_Start
 {
 	using System;
 	using System.Web;
+	using Infrastructure;
 	using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 	using Ninject;
