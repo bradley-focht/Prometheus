@@ -67,7 +67,7 @@ namespace RequestService.Controllers
 
             using (var context = new PrometheusContext())
             {
-                if (!context.ServiceRequestUserInputs.Any(x => x.Id == script.Id))
+                if (!context.Scripts.Any(x => x.Id == script.Id))
                 {
                     throw new InvalidOperationException(string.Format("Script with ID {0} cannot be updated since it does not exist.", script.Id));
                 }
