@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
 using Common.Dto;
@@ -62,7 +63,20 @@ namespace RequestService.Controllers
 
         protected override IScriptDto Update(int performingUserId, IScriptDto script)
         {
-            throw new ModificationException(string.Format("Modification {0} cannot be performed on Script Documents.", EntityModification.Update));
+            // throw new ModificationException(string.Format("Modification {0} cannot be performed on Script Documents.", EntityModification.Update));
+
+            using (var context = new PrometheusContext())
+            {
+                if (!context.ServiceRequestUserInputs.Any(x => x.Id == script.Id))
+                {
+                    throw new InvalidOperationException(string.Format("Script with ID {0} cannot be updated since it does not exist.", script.Id));
+                }
+                var updated = ManualMapper.MapDtoToScript(script);
+                context.Entry(updated).State = EntityState.Modified;
+                context.SaveChanges(performingUserId);
+                return ManualMapper.MapScriptToDto(updated);
+            }
+
         }
 
         protected override IScriptDto Delete(int performingUserId, IScriptDto script)
