@@ -1,38 +1,40 @@
 ﻿@model IEnumerable<Common.Dto.IScriptDto>
 
 @{
-	ViewBag.Title = "Scripts";
+    ViewBag.Title = "Scripts";
     ViewBag.SubTitle = "Scripts";
-	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
-	ViewBag.Links = new List<KeyValuePair<string, string>>
-	{
-		new KeyValuePair<string, string>("Home", "Home"),
-		new KeyValuePair<string, string>("Scripts", "Script/Index"),
-	};
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("Scripts", "Script/Index"),
+    };
 
 }
 
-@section Content { <div class="title-div">@ViewBag.SubTitle</div> }
+@section Content {
+    <div class="title-div">@ViewBag.SubTitle</div>
+}
 
 @section Sidebar{
     <div class="flex-container-col">
-    @if (Model != null)
+        @if (Model != null)
     {
 
         foreach (var item in Model)
         {
-            <div>
-                @Html.ActionLink(item.Name, "GetScript", new { id = item.Id })
-            </div>
-            
+                <div>
+                    @Html.ActionLink(item.Name, "GetScript", new { id = item.Id })
+                </div>
+
+            }
         }
-    }
 
         @* control buttons at the bottom *@
         <div class="panel-footer">
             <div class="float-right-div">
-                @Html.ActionLink("Add", "Add", new {}, new {@class = "btn btn-primary"})
+                @Html.ActionLink("Add", "Add", new { id = 0 }, new { @class = "btn btn-primary" })
             </div>
         </div>
     </div>

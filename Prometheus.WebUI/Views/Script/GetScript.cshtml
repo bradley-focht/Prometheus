@@ -15,16 +15,17 @@
 }
 
 @section Content{
-    
+
     @Html.Partial("PartialViews/ShowScript", Model)
 
 }
 
 @section Sidebar{
-        @* control buttons at the bottom *@
+    @* control buttons at the bottom *@
+
     <div class="panel-footer">
         <div class="float-right-div">
-            @Html.ActionLink("Add", "Add", new {}, new {@class = "btn btn-primary"})
+            @Html.ActionLink("Add", "Add", new { id = Model.Id }, new { @class = "btn btn-primary" })
         </div>
     </div>
 }

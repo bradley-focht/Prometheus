@@ -1,52 +1,43 @@
 ﻿@model Common.Dto.IScriptDto
 
-@{
-    ViewBag.Links = new List<KeyValuePair<string, string>>
-    {
-        new KeyValuePair<string, string>("Home", "Home"),
-        new KeyValuePair<string, string>("Scripts", "Script/Index"),
-    };
+<div class="title-div">@ViewBag.SubTitle</div>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
 
-}
-    <div class="title-div">@ViewBag.SubTitle</div>
-    <div>
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Description)
-            </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.Description)
-            </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Version)
+        </dt>
 
-            <dt>
-                @Html.DisplayNameFor(model => model.Version)
-            </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Version)
+        </dd>
 
-            <dd>
-                @Html.DisplayFor(model => model.Version)
-            </dd>
+    </dl>
 
-        </dl>
+</div>
 
+<div class="flex-container-col">
+    @* control buttons at the bottom *@
+    <div class="panel-footer">
         <div class="float-right-div">
-            @Html.ActionLink("Update", "UpdateScript", new { id = Model.Id })
-        </div>
-    </div>
+            @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default btn-back" })
+            @Html.ActionLink("Update", "UpdateScript", new { id = Model.Id }, new { @class = "btn btn-primary" })
 
-    <div class="flex-container-col">
-        @* control buttons at the bottom *@
-        <div class="panel-footer">
-            <div class="float-right-div">
-                @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default btn-back" })
-            </div>
         </div>
     </div>
+</div>
