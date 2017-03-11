@@ -1,4 +1,6 @@
 ﻿@using Common.Enums
+@using Common.Enums.Permissions
+@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestStateChangeModel
 @{
 	ViewBag.Title = "Service Request";
@@ -26,8 +28,11 @@
 		new KeyValuePair<string, string>("Service Requests", "ServiceRequestApproval/Index"),
 		new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
 	};
+	int userId;
+	try { userId = int.Parse(Session["Id"].ToString()); }
+	catch(Exception) { return; }
 
-			}
+}
 
 <div class="title-div">@ViewBag.SubTitle</div>
 
@@ -37,28 +42,50 @@
 		<div>
 			@Html.Partial("PartialViews/_ServiceRequestSummary", Model)
 		</div>
-		<div>Approver Comments if needed </div>
-		<div>@Html.TextArea("Message", "", new { @class = "ckeditor" })</div>
+
+		@if (Model.ServiceRequestModel.ServiceRequest.State == ServiceRequestState.Submitted && UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests))
+		{
+			<div class="dd make-space-top">
+				<div class="dd-row">
+					<div class="dt-cell">Approver Comments</div>
+					<div class="dd-cell">
+						@Html.TextArea("Message", "", new {@class = "ckeditor"})
+					</div>
+				</div>
+			</div>
+		}
 
 	</div>
-	<input type="hidden" value="@Model.ServiceRequestModel.ServiceRequest.Id" name="id"/>
-	
+	<input type="hidden" value="@Model.ServiceRequestModel.ServiceRequest.Id" name="id" />
+
 	<div class="flex-container-col">
 		<div class="panel-footer">
 			<div class="float-right-div">
-				@Html.ActionLink("Back", "Index", null, new {@class = "btn btn-default btn-back"})
-				@switch (Model.NextState)
-	{
-					case ServiceRequestState.Submitted:
-						<button type="submit" value="@(Model.NextState)" name="state" class="btn btn-primary">Submit</button>
-						break;
-					case ServiceRequestState.Cancelled:
-						<button type="submit" value="@(Model.NextState)" name="state" class="btn btn-danger">Cancel</button>
-						break;
-					case ServiceRequestState.Approved:
-						<button type="submit" value="@ServiceRequestState.Denied" name="state" class="btn btn-danger">Deny</button>
-						<button type="submit" value="@ServiceRequestState.Approved" name="state" class="btn btn-primary">Approve</button>
-						break;
+				@Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default btn-back" })
+				@if (Model.AvailableStates != null)
+				{
+					foreach (var state in Model.AvailableStates)
+					{
+						switch (state)
+						{
+							case ServiceRequestState.Submitted:
+								<button type="submit" value="@state" name="state" class="btn btn-primary">Submit</button>
+								break;
+							case ServiceRequestState.Cancelled:
+								<button type="submit" value="@state" name="state" class="btn btn-danger">Cancel</button>
+								break;
+							case ServiceRequestState.Denied:
+								<button type="submit" value="@state" name="state" class="btn btn-danger">Deny</button>
+								break;
+							case ServiceRequestState.Approved:
+								<button type="submit" value="@state" name="state" class="btn btn-primary">Approve</button>
+								break;
+							default:
+								<button type="submit" value="@state" name="state" class="btn btn-default">Fulfill</button>
+								break;
+						}
+					}
+
 				}
 			</div>
 		</div>

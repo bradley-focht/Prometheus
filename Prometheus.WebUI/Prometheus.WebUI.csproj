@@ -347,7 +347,6 @@
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
     <Compile Include="Helpers\FinancialCalculator.cs" />
-    <Compile Include="Helpers\InterfaceFactory.cs" />
     <Compile Include="Helpers\ServiceIndexHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="Helpers\Enums\WebMessageType.cs" />

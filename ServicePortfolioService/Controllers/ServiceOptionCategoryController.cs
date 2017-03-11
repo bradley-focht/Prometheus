@@ -1,4 +1,5 @@
 using System;
+using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
 using Common.Dto;
@@ -44,7 +45,18 @@ namespace ServicePortfolioService.Controllers
 
 		protected override IServiceOptionCategoryDto Update(int performingUserId, IServiceOptionCategoryDto entity)
 		{
-			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Option Categories.", EntityModification.Update));
+			using (var context = new PrometheusContext())
+			{
+				if (!context.OptionCategories.Any(x => x.Id == entity.Id))
+				{
+					throw new InvalidOperationException(string.Format("Service Option Category with ID {0} cannot be updated since it does not exist.", entity.Id));
+				}
+				var updatedCategory = ManualMapper.MapDtoToOptionCategory(entity);
+				context.OptionCategories.Attach(updatedCategory);
+				context.Entry(updatedCategory).State = EntityState.Modified;
+				context.SaveChanges(performingUserId);
+				return ManualMapper.MapOptionCategoryToDto(updatedCategory);
+			}
 		}
 
 		protected override IServiceOptionCategoryDto Delete(int performingUserId, IServiceOptionCategoryDto entity)

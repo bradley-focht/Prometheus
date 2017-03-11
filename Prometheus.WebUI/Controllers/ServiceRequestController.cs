@@ -12,7 +12,6 @@ using Prometheus.WebUI.Models.ServiceRequest;
 using RequestService;
 using RequestService.Controllers;
 using ServicePortfolioService;
-using UserManager.Controllers;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -22,16 +21,21 @@ namespace Prometheus.WebUI.Controllers
 	[Authorize]
 	public class ServiceRequestController : PrometheusController
 	{
-		private readonly IPortfolioService _ps;
-		private readonly IServiceRequestController _srController;
-		private IServiceRequestOptionController _rs;
+		private readonly IPortfolioService _portfolioService;
 		private readonly IRequestManager _requestManager;
+		private readonly IServiceRequestController _serviceRequestController;
+		private readonly IServiceRequestOptionController _serviceRequestOptionController;
+		private readonly IServiceRequestUserInputController _serviceRequestUserInputController;
 
-		public ServiceRequestController()
+		public ServiceRequestController(IPortfolioService portfolioService, IServiceRequestController serviceRequestController,
+			IRequestManager requestManager, IServiceRequestOptionController serviceRequestOptionController,
+			IServiceRequestUserInputController serviceRequestUserInputController)
 		{
-			_ps = InterfaceFactory.CreatePortfolioService();
-			_srController = InterfaceFactory.CreateServiceRequestController();
-			_requestManager = new RequestManager(new PermissionController());
+			_portfolioService = portfolioService;
+			_requestManager = requestManager;
+			_serviceRequestController = serviceRequestController;
+			_serviceRequestOptionController = serviceRequestOptionController;
+			_serviceRequestUserInputController = serviceRequestUserInputController;
 		}
 
 		/// <summary>
@@ -42,26 +46,26 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Begin(int id, ServiceRequestAction serviceRequestAction = ServiceRequestAction.New)
 		{
-			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id }, SelectedAction = serviceRequestAction};   //start new SR
-			
-			model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.New);
-			model.ChangePackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.Change);
-			model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _ps, id, ServiceRequestAction.Remove);
+			ServiceRequestModel model = new ServiceRequestModel { ServiceRequest = new ServiceRequestDto { ServiceOptionId = id }, SelectedAction = serviceRequestAction };   //start new SR
+
+			model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, id, ServiceRequestAction.New);
+			model.ChangePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, id, ServiceRequestAction.Change);
+			model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, id, ServiceRequestAction.Remove);
 
 			//default if no package found
-			if (model.NewPackage == null && model.ChangePackage == null  && model.RemovePackage == null)
+			if (model.NewPackage == null && model.ChangePackage == null && model.RemovePackage == null)
 			{
-				model.SelectedAction = ServiceRequestAction.New;	
-				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, id);
-			}	//add only package found
+				model.SelectedAction = ServiceRequestAction.New;
+				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, id);
+			}   //add only package found
 			else if (model.NewPackage != null && model.ChangePackage == null && model.RemovePackage == null)
 			{
 				model.SelectedAction = ServiceRequestAction.New;
-			}	//change only package found
+			}   //change only package found
 			else if (model.NewPackage == null && model.ChangePackage != null && model.RemovePackage == null)
 			{
 				model.SelectedAction = ServiceRequestAction.Change;
-			}	//remove package
+			}   //remove package
 			else if (model.NewPackage == null && model.ChangePackage == null && model.RemovePackage != null)
 			{
 				model.SelectedAction = ServiceRequestAction.Remove;
@@ -85,16 +89,16 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
 			ServiceRequestModel model = new ServiceRequestModel();      //data to be sent to next view
-			if (!ModelState.IsValid)									//server side validation
+			if (!ModelState.IsValid)                                    //server side validation
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save Service Request due to invalid data";
 				return View("ServiceRequest", model);
 			}
 			// data ok from here on
-			ServiceRequestDto request = new ServiceRequestDto	//need an adapter
+			ServiceRequestDto request = new ServiceRequestDto   //need an adapter
 			{
-				Id = form.Id,			
+				Id = form.Id,
 				RequestedByUserId = int.Parse(Session["Id"].ToString()),
 				Comments = form.Comments,
 				Action = form.Action,
@@ -109,12 +113,12 @@ namespace Prometheus.WebUI.Controllers
 			model.CurrentIndex = 0;
 			try
 			{
-				request = (ServiceRequestDto)_srController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+				request = (ServiceRequestDto)_serviceRequestController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 
 				//make sr name & save it
 				if (request.ServiceOptionId != null)
-					request.Name = $"{_ps.GetServiceOptionCategory(UserId, _ps.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}{request.Action.ToString().Substring(0, 3).ToUpper()}{request.Id}";
-				_srController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+					request.Name = $"{_portfolioService.GetServiceOptionCategory(UserId, _portfolioService.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}{request.Action.ToString().Substring(0, 3).ToUpper()}{request.Id}";
+				_serviceRequestController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
 			{
@@ -148,7 +152,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveFormSelection(ServiceRequestFormReturnModel form, int submit)
 		{
-			_rs = InterfaceFactory.CreateServiceRequestOptionController();
 			/* STEP ONE - Get the Service Package and SR */
 			ServiceRequestModel model = new ServiceRequestModel //used to hold all the data until redirecting
 			{
@@ -158,25 +161,25 @@ namespace Prometheus.WebUI.Controllers
 			};
 			try
 			{
-				model.ServiceRequest = _srController.GetServiceRequest(UserId, form.Id); //SR
-				if (model.ServiceRequest.Action == ServiceRequestAction.New)			//Package
+				model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, form.Id); //SR
+				if (model.ServiceRequest.Action == ServiceRequestAction.New)            //Package
 				{
-					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId,
+					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId,
 						ServiceRequestAction.New); //package
-					model.SelectedAction = ServiceRequestAction.New;	//new package
+					model.SelectedAction = ServiceRequestAction.New;    //new package
 					if (model.NewPackage == null)
 					{
-						model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
+						model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId);
 					}
 				}
 				else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
 				{
-					model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId,
+					model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId,
 						ServiceRequestAction.Remove);
-						model.SelectedAction = ServiceRequestAction.Remove;	//remove package
+					model.SelectedAction = ServiceRequestAction.Remove; //remove package
 					if (model.NewPackage == null && model.RemovePackage == null)
 					{
-						model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
+						model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId);
 					}
 				}
 			}
@@ -193,19 +196,19 @@ namespace Prometheus.WebUI.Controllers
 			if (model.ServiceRequest.Action == ServiceRequestAction.New)
 			{
 				if (model.NewPackage != null)
-					currentCategory = _ps.GetServiceOptionCategory(UserId,
+					currentCategory = _portfolioService.GetServiceOptionCategory(UserId,
 							model.NewPackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 			}
 			else if (model.ServiceRequest.Action == ServiceRequestAction.Change)
 			{
 				if (model.ChangePackage != null)
-					currentCategory = _ps.GetServiceOptionCategory(UserId,
+					currentCategory = _portfolioService.GetServiceOptionCategory(UserId,
 							model.ChangePackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 			}
 			else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
 			{
 				if (model.RemovePackage != null)
-					currentCategory = _ps.GetServiceOptionCategory(UserId,
+					currentCategory = _portfolioService.GetServiceOptionCategory(UserId,
 							model.RemovePackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
 			}
 
@@ -235,19 +238,19 @@ namespace Prometheus.WebUI.Controllers
 
 							if (formDto != null && srDto == null)       //add condition
 							{
-								_rs.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
+								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
 							}
 							else if (formDto == null && srDto != null) //remove condition
 							{
-								_rs.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
+								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
 							}
 							else if (formDto != null /* && srDto != null */)    //update condition
 							{
-								_rs.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
-								_rs.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
+								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
+								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
 							}                                                                                                       /* done \*/
 						}
-					model.ServiceRequest = _srController.GetServiceRequest(UserId, form.Id); // refresh the data in the model now
+					model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, form.Id); // refresh the data in the model now
 				}
 				catch (Exception exception)     //what, a problem?
 				{
@@ -259,20 +262,24 @@ namespace Prometheus.WebUI.Controllers
 			}
 			/* STEP FOUR - add/remove user input data */
 			//update and add
-			IServiceRequestUserInputController userInputController = InterfaceFactory.CreateServiceRequestUserInputController();
 			if (form.UserInput != null)
 			{
 				List<ServiceRequestUserInputDto> userDataList = (from u in form.UserInput
 																 where u.Value != null
 																 select new ServiceRequestUserInputDto
-																 { Id = u.Id, Name = u.Name, UserInputType = u.UserInputType,
-																	 ServiceRequestId = form.Id, Value = u.Value, InputId = u.InputId
+																 {
+																	 Id = u.Id,
+																	 Name = u.Name,
+																	 UserInputType = u.UserInputType,
+																	 ServiceRequestId = form.Id,
+																	 Value = u.Value,
+																	 InputId = u.InputId
 																 }).ToList();
 				foreach (var userData in userDataList)
 				{
 					try
 					{
-						userInputController.ModifyServiceRequestUserInput(UserId, userData, userData.Id > 0 ? EntityModification.Update : EntityModification.Create);
+						_serviceRequestUserInputController.ModifyServiceRequestUserInput(UserId, userData, userData.Id > 0 ? EntityModification.Update : EntityModification.Create);
 					}
 					catch (Exception exception)
 					{
@@ -286,7 +293,7 @@ namespace Prometheus.WebUI.Controllers
 			userInputs = form.UserInput == null ? new List<UserInputTag>() : (from u in form.UserInput select new UserInputTag { UserInput = u, Required = false }).ToList();
 
 			var options = from o in model.ServiceRequest.ServiceRequestOptions select new ServiceOptionDto { Id = o.ServiceOptionId };
-			var requiredInputs = _ps.GetInputsForServiceOptions(UserId, options);
+			var requiredInputs = _portfolioService.GetInputsForServiceOptions(UserId, options);
 			//clean up - figure out what can be removed
 			foreach (var userData in userInputs)
 			{
@@ -327,7 +334,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				if (!userData.Required && userData.UserInput.Id > 0) //avoid the new
 				{
-					userInputController.ModifyServiceRequestUserInput(UserId, new ServiceRequestUserInputDto { Id = userData.UserInput.Id }, EntityModification.Delete);
+					_serviceRequestUserInputController.ModifyServiceRequestUserInput(UserId, new ServiceRequestUserInputDto { Id = userData.UserInput.Id }, EntityModification.Delete);
 				}
 			}
 
@@ -361,12 +368,12 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP ONE - get SR, get package, and stuff  */
 			try
 			{
-				model.ServiceRequest = _srController.GetServiceRequest(UserId, id);       //get db info
-				if (!_requestManager.UserCanEditRequest(UserId, model.ServiceRequest.Id))	//business logic 
+				model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, id);       //get db info
+				if (!_requestManager.UserCanEditRequest(UserId, model.ServiceRequest.Id))   //business logic 
 					throw new Exception("Service Request cannot be edited");
 
-				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action) ??
-				                   ServicePackageHelper.GetPackage(UserId, _ps, model.ServiceRequest.ServiceOptionId);
+				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action) ??
+								   ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId);
 				//deal with no package by making one
 			}
 			catch (Exception exception)
@@ -385,26 +392,28 @@ namespace Prometheus.WebUI.Controllers
 				model.OptionCategory = model.NewPackage.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
 				foreach (var option in model.OptionCategory.ServiceOptions)
 				{
-					IEnumerable<IUserInput> inputs = null;	//collect relavent inputs
-					if (model.ServiceRequest.Action == ServiceRequestAction.New)	//new
+					IEnumerable<IUserInput> inputs = null;  //collect relavent inputs
+					if (model.ServiceRequest.Action == ServiceRequestAction.New)    //new
 					{
-						inputs = from i in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> {option}).UserInputs
-							where i.AvailableOnAdd select i;
+						inputs = from i in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
+								 where i.AvailableOnAdd
+								 select i;
 					}
-					else if (model.ServiceRequest.Action == ServiceRequestAction.Change)	//change
+					else if (model.ServiceRequest.Action == ServiceRequestAction.Change)    //change
 					{
-						inputs = from i in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
-								 where i.AvailableOnChange select i;
+						inputs = from i in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
+								 where i.AvailableOnChange
+								 select i;
 					}
-					else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)		//remove
+					else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)        //remove
 					{
-						inputs = from j in _ps.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> {option}).UserInputs
-							where j.AvailableOnRemove
-							select j;
+						inputs = from j in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
+								 where j.AvailableOnRemove
+								 select j;
 					}
 					if (inputs != null) //reduce chances of nulls getting to razor views
 					{
-						optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = UserInputHelper.MakeInputGroupDto(inputs) });			
+						optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = UserInputHelper.MakeInputGroupDto(inputs) });
 					}
 				}
 			}
@@ -414,7 +423,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				foreach (var option in model.ServiceRequest.ServiceRequestOptions)
 				{
-					option.ServiceOption = _ps.GetServiceOption(UserId, option.ServiceOptionId);
+					option.ServiceOption = _portfolioService.GetServiceOption(UserId, option.ServiceOptionId);
 				}
 			}
 			model.UserInputs = optionInputList;

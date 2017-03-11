@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
@@ -22,14 +21,14 @@ namespace Prometheus.WebUI.Controllers
 		private readonly IUserManager _userManager;
 		private readonly IScriptExecutor _scriptExecutor;
 		private readonly int _userPageSize;
-		private readonly IDepartmentController _deptController;
+		private readonly IDepartmentController _departmentController;
 
-		public SystemAccessController()
+		public SystemAccessController(IUserManager userManager, IScriptExecutor scriptExecutor, IDepartmentController departmentController)
 		{
-			_userManager = InterfaceFactory.CreateUserManagerService();
+			_userManager = userManager;
 			_userPageSize = ConfigHelper.GetPaginationSize();
-			_scriptExecutor = new ScriptExecutor();
-			_deptController = new DepartmentController();
+			_scriptExecutor = scriptExecutor;
+			_departmentController = departmentController;
 		}
 
 		/// <summary>
@@ -271,7 +270,7 @@ namespace Prometheus.WebUI.Controllers
 				{
 					displayName = user.Name;
 				}
-				
+
 
 				modelUsers.Add(new UserDetailsModel { UserDto = user, DisplayName = displayName });
 			}
@@ -378,7 +377,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						try
 						{
-							userDto = _userManager.ModifyUser(UserId, new UserDto { AdGuid = user, DepartmentId = 1}, EntityModification.Create);
+							userDto = _userManager.ModifyUser(UserId, new UserDto { AdGuid = user, DepartmentId = 1 }, EntityModification.Create);
 						}
 						catch (Exception exception)
 						{
@@ -455,7 +454,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			DepartmentModel model = new DepartmentModel();
 
-			model.Departments = _deptController.GetDepartments(UserId);
+			model.Departments = _departmentController.GetDepartments(UserId);
 
 			return View(model);
 		}
@@ -468,7 +467,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			DepartmentModel model = new DepartmentModel { EnableAdd = true };
 
-			model.Departments = _deptController.GetDepartments(UserId);
+			model.Departments = _departmentController.GetDepartments(UserId);
 
 			return View("ShowDepartments", model);
 		}
@@ -490,7 +489,7 @@ namespace Prometheus.WebUI.Controllers
 
 			try
 			{
-				_deptController.ModifyDepartment(UserId, department,
+				_departmentController.ModifyDepartment(UserId, department,
 					department.Id > 0 ? EntityModification.Update : EntityModification.Create);
 			}
 			catch (Exception exception)
@@ -511,7 +510,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			DepartmentModel model = new DepartmentModel { SelectedDepartment = new DepartmentDto { Id = id } };
 
-			model.Departments = _deptController.GetDepartments(UserId);
+			model.Departments = _departmentController.GetDepartments(UserId);
 
 			return View("ShowDepartments", model);
 		}
@@ -523,8 +522,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteDepartment(int id)
 		{
-			DepartmentDto model = (DepartmentDto)_deptController.GetDepartment(UserId, id);
-			
+			DepartmentDto model = (DepartmentDto)_departmentController.GetDepartment(UserId, id);
+
 			return View(model);
 		}
 		/// <summary>
@@ -537,7 +536,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			try
 			{
-				_deptController.ModifyDepartment(UserId, new DepartmentDto {Id = id}, EntityModification.Delete);
+				_departmentController.ModifyDepartment(UserId, new DepartmentDto { Id = id }, EntityModification.Delete);
 			}
 			catch (Exception exception)
 			{

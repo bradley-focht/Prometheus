@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Common.Dto;
 using Common.Enums;
 using Prometheus.WebUI.Models.ServiceRequestApproval;
 using RequestService.Controllers;
+using UserManager;
 
 namespace Prometheus.WebUI.Helpers
 {
@@ -16,12 +18,13 @@ namespace Prometheus.WebUI.Helpers
 		/// Returns all service request approval model for the user Id, filtered, and ordered by id
 		/// </summary>
 		/// <param name="srController">service request controller</param>
+		/// <param name="userManager"></param>
 		/// <param name="userId">requesting user</param>
 		/// <param name="currentPage">current page</param>
 		/// <param name="pageSize">page size</param>
 		/// <param name="state">state to filter by</param>
 		/// <returns></returns>
-		public static ServiceRequestApprovalModel GetMyRequests(IServiceRequestController srController, 
+		public static ServiceRequestApprovalModel GetMyRequests(IServiceRequestController srController, IUserManager userManager,
 			int userId, int currentPage, int pageSize, ServiceRequestState state)
 		{
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
@@ -31,7 +34,7 @@ namespace Prometheus.WebUI.Helpers
 						  orderby s.Id
 						  select s).ToList();
 
-			model.ServiceRequests = ConvertToTableModel(srList);
+			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 
 			model.Controls.FilterText = $"Filtered My Service Requests by {state}";
@@ -45,16 +48,17 @@ namespace Prometheus.WebUI.Helpers
 		/// Returns all service request approval model for the user Id, ordered by Id
 		/// </summary>
 		/// <param name="srController">service request controller</param>
+		/// <param name="userManager"></param>
 		/// <param name="userId">requesting user</param>
 		/// <param name="currentPage">current page</param>
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
-		public static ServiceRequestApprovalModel GetAllRequests(IServiceRequestController srController, int userId, int currentPage,
+		public static ServiceRequestApprovalModel GetAllRequests(IServiceRequestController srController, IUserManager userManager, int userId, int currentPage,
 			int pageSize)
 		{
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			var srList = (from s in srController.GetServiceRequestsForRequestorId(userId, userId) where s.State != ServiceRequestState.Cancelled orderby s.Id select s).ToList();
-			model.ServiceRequests = ConvertToTableModel(srList);
+			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 
 			model.Controls.FilterText = "All My Service Requests";
@@ -66,11 +70,12 @@ namespace Prometheus.WebUI.Helpers
 		/// Get all Department requests except cancelled, for an approver
 		/// </summary>
 		/// <param name="srController"></param>
+		/// <param name="userManager"></param>
 		/// <param name="userId"></param>
 		/// <param name="currentPage"></param>
 		/// <param name="pageSize"></param>
 		/// <returns></returns>
-		public static ServiceRequestApprovalModel GetAllDepartmentRequests(IServiceRequestController srController, int userId,
+		public static ServiceRequestApprovalModel GetAllDepartmentRequests(IServiceRequestController srController, IUserManager userManager, int userId,
 			int currentPage, int pageSize)
 		{
 			var model = new ServiceRequestApprovalModel {Controls = new ServiceRequestApprovalControls()};
@@ -78,7 +83,7 @@ namespace Prometheus.WebUI.Helpers
 				where s.State != ServiceRequestState.Cancelled
 				orderby s.Id
 				select s).ToList();
-			model.ServiceRequests = ConvertToTableModel(srList);
+			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 
 			return model;
@@ -88,12 +93,13 @@ namespace Prometheus.WebUI.Helpers
 		/// Get Department Request approvals and filter
 		/// </summary>
 		/// <param name="srController"></param>
+		/// <param name="userManager"></param>
 		/// <param name="userId"></param>
 		/// <param name="currentPage"></param>
 		/// <param name="pageSize"></param>
 		/// <param name="state"></param>
 		/// <returns></returns>
-		public static ServiceRequestApprovalModel GetDepartmentRequests(IServiceRequestController srController, int userId,
+		public static ServiceRequestApprovalModel GetDepartmentRequests(IServiceRequestController srController, IUserManager userManager, int userId,
 			int currentPage, int pageSize, ServiceRequestState state)
 		{
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
@@ -101,7 +107,7 @@ namespace Prometheus.WebUI.Helpers
 						  where s.State != ServiceRequestState.Cancelled
 						  orderby s.Id
 						  select s).ToList();
-			model.ServiceRequests = ConvertToTableModel(srList);
+			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 
 			return model;
@@ -130,20 +136,30 @@ namespace Prometheus.WebUI.Helpers
 		/// <summary>
 		/// Put data into model to be displayed into a table
 		/// </summary>
-		public static List<ServiceRequestTableItemModel> ConvertToTableModel(IEnumerable<IServiceRequestDto> list)
+		public static List<ServiceRequestTableItemModel> ConvertToTableModel(IUserManager userManager, IEnumerable<IServiceRequestDto> list, int userId)
 		{
 			List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
 
 			foreach (var item in list)
 			{
-				requests.Add(new ServiceRequestTableItemModel
+				ServiceRequestTableItemModel modelItem = new ServiceRequestTableItemModel
 				{
 					Id = item.Id,
 					State = item.State,
 					Name = item.Name, //ServicePackageHelper.GetPackage(UserId, _ps, item.ServiceOptionId).Name,
 					DateRequired = item.RequestedForDate,
-					DateSubmitted = item.SubmissionDate
-				});
+					DateSubmitted = item.SubmissionDate,
+				};
+				try
+				{
+					modelItem.UserName = userManager.GetDisplayName(userManager.GetUser(userId, item.RequestedByUserId).AdGuid);
+				}
+				catch(Exception)
+				{
+					modelItem.UserName = "Name not found";
+				}
+
+				requests.Add(modelItem);
 			}
 			return requests;
 		}
