@@ -21,7 +21,7 @@
 			<th>Date Submitted</th>
 			<th>Date Required</th>
 			<th>Requestor</th>
-			<th></th>
+
 		</tr>
 		</thead>
 		@* Build SR Table *@
@@ -42,24 +42,7 @@
 				<td>@item.State</td>
 				<td>@item.DateSubmitted</td>
 				<td>@item.DateRequired.ToString("d")</td>
-				<td></td>
-
-				<td>
-					<div class="btn-group">
-						<div data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn-empty">
-							<span aria-hidden="true">&#x25BC;</span>
-						</div>
-						<ul class="dropdown-menu">
-							<li>@Html.ActionLink("Cancel", "ConfirmServiceRequestStateChange", new {id = item.Id, nextState = ServiceRequestState.Cancelled}) </li>
-
-							<li>@Html.ActionLink("Submit", "ConfirmServiceRequestStateChange", new { id = item.Id, nextState = ServiceRequestState.Submitted })</li>
-
-							<li>@Html.ActionLink("Approve", "ConfirmServiceRequestStateChange", new {id = item.Id, nextState = ServiceRequestState.Approved})</li>
-
-							<li>@Html.ActionLink("Deny", "ConfirmServiceRequestStateChange")</li>
-						</ul>
-					</div>
-				</td>
+				<td>@item.UserName</td>
 			</tr>
 		}
 	</table>

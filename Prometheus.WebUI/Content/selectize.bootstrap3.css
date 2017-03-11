@@ -365,7 +365,7 @@
   z-index: 1000;
   height: auto;
   padding: 0;
-  margin: 2px 0 0 0;
+  margin: 0 0 0 0;
   background: #ffffff;
   border: 1px solid #cccccc;
   border: 1px solid rgba(0, 0, 0, 0.15);
@@ -377,8 +377,9 @@
 }
 
 .selectize-dropdown .optgroup-header {
-  font-size: 12px;
-  line-height: 1.428571429;
+  font-size: 1em;
+	font-weight: 600;
+	background-color: #f5f5f5;
 }
 
 .selectize-dropdown .optgroup:first-child:before {
@@ -388,7 +389,7 @@
 .selectize-dropdown .optgroup:before {
   display: block;
   height: 1px;
-  margin: 9px 0;
+  margin: 0;
   margin-right: -12px;
   margin-left: -12px;
   overflow: hidden;
@@ -397,7 +398,7 @@
 }
 
 .selectize-dropdown-content {
-  padding: 5px 0;
+  padding: 0;
 }
 
 .selectize-dropdown-header {

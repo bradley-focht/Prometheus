@@ -91,8 +91,7 @@ namespace Common.Dto
 		/// </summary>
 		[Display(Name="Approval Level")]
 		public bool BasicRequest { get; set; }
-
-
+		
 		/// <summary>
 		/// Uploaded picture, only one per option allowed
 		/// </summary>

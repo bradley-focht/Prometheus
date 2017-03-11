@@ -72,7 +72,7 @@ namespace ServicePortfolioService.Controllers
 				context.ServiceTags.RemoveRange(serviceTagsToDelete);
 				context.SaveChanges(performingUserId);
 
-				var toDelete = context.ServiceRequestPackages.Find(entity.Id);
+				var toDelete = context.ServiceRequestPackages.FirstOrDefault(x=>x.Id == entity.Id);
 				context.ServiceRequestPackages.Remove(toDelete);
 				context.SaveChanges(performingUserId);
 			}

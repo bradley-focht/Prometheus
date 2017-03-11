@@ -29,7 +29,7 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         /// collection of associated categories
         /// </summary>
         [Required(ErrorMessage = "At least one association is required")]
-        public ICollection<int> Associations { get; set; }
+        public ICollection<string> Associations { get; set; }
 
 		/// <summary>
 		/// Action to which this package is relavent
@@ -41,6 +41,10 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         /// </summary>
         public ICollection<IServiceDto> Services { get; set; }
 
+		/// <summary>
+		/// Existing selections
+		/// </summary>
         public IEnumerable<int> SelectedCategories { get; set; }
-    }
+		public IEnumerable<int> SelectedServices { get; set; }
+	}
 }

@@ -259,7 +259,7 @@
 }
 .selectize-dropdown .optgroup-header {
   color: #303030;
-  background: #ffffff;
+  background-color: #ccc;
   cursor: default;
 }
 .selectize-dropdown .active {
@@ -378,9 +378,11 @@
   padding-top: 7px;
   font-weight: bold;
   font-size: 0.85em;
+	background-color: #ccc;
 }
 .selectize-dropdown .optgroup {
   border-top: 1px solid #f0f0f0;
+	background-color: #ccc;
 }
 .selectize-dropdown .optgroup:first-child {
   border-top: 0 none;

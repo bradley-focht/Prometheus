@@ -203,17 +203,19 @@
 
 		$(document).ready(function() {
 			@if (Model.ServiceRequest.ServiceRequestOptions != null)
-		{
-			foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
 			{
-		<text>
-			if (document.getElementById("option_@(option.ServiceOptionId)"))
+				foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
+				{
+					<text>
+			if (document.getElementById("option_@(option.ServiceOptionId)")) {
 				document.getElementById("option_@(option.ServiceOptionId)").checked = true;
-			</text>
+				document.getElementById("quantity_@(option.ServiceOptionId)").value = '@option.Quantity';
 			}
-			if (Model.ServiceRequest.ServiceRequestOptions == null || !Model.ServiceRequest.ServiceRequestOptions.Any()) // relying on short-circuit here
-			 {
-			<text>
+			</text>
+				}
+				if (Model.ServiceRequest.ServiceRequestOptions == null || !Model.ServiceRequest.ServiceRequestOptions.Any()) // relying on short-circuit here
+				{
+					<text>
 			if (document.getElementById("option_@(Model.ServiceRequest.ServiceOptionId)"))
 				document.getElementById("option_@(Model.ServiceRequest.ServiceOptionId)").checked = true;
 			</text>
