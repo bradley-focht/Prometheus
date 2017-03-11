@@ -553,7 +553,7 @@
     <Content Include="Views\SystemAccess\PartialViews\DepartmentEditor.cshtml" />
     <Content Include="Views\Script\GetScript.cshtml" />
     <Content Include="Views\Script\PartialViews\ShowScript.cshtml" />
-    <Content Include="Views\Script\UpdateScript.cshtml" />
+    <Content Include="Views\Script\PartialViews\UpdateScript.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

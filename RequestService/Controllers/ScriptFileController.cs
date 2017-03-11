@@ -10,10 +10,10 @@ using DataService.DataAccessLayer;
 
 namespace RequestService.Controllers
 {
-	public class ScriptFileController : EntityController<IScriptDto>, IScriptFileController
-	{
-		public IScriptDto GetScript(int performingUserId, int scriptId)
-		{
+    public class ScriptFileController : EntityController<IScriptDto>, IScriptFileController
+    {
+        public IScriptDto GetScript(int performingUserId, int scriptId)
+        {
             // throw new NotImplementedException();
             using (var context = new PrometheusContext())
             {
@@ -22,37 +22,37 @@ namespace RequestService.Controllers
             }
         }
 
-		/// <summary>
-		/// Retrieve all scripts
-		/// </summary>
-		/// <returns></returns>
-		public IEnumerable<IScriptDto> GetScripts(int performingUserId)
-		{
-			using (var context = new PrometheusContext())
-			{
-				var scripts = context.Scripts;
-				if (scripts != null)
-				{
-					foreach(var script in scripts)
-					yield return ManualMapper.MapScriptToDto(script);
-				}
-			}
-		}
+        /// <summary>
+        /// Retrieve all scripts
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<IScriptDto> GetScripts(int performingUserId)
+        {
+            using (var context = new PrometheusContext())
+            {
+                var scripts = context.Scripts;
+                if (scripts != null)
+                {
+                    foreach (var script in scripts)
+                        yield return ManualMapper.MapScriptToDto(script);
+                }
+            }
+        }
 
-		public IScriptDto ModifyScript(int performingUserId, IScriptDto script, EntityModification modification)
-		{
+        public IScriptDto ModifyScript(int performingUserId, IScriptDto script, EntityModification modification)
+        {
             return base.ModifyEntity(performingUserId, script, modification);
 
         }
 
         protected override IScriptDto Create(int performingUserId, IScriptDto script)
-		{
+        {
             using (var context = new PrometheusContext())
             {
                 var document = context.Scripts.ToList().FirstOrDefault(x => x.ScriptFile == script.ScriptFile);
                 if (document != null)
                 {
-                    throw new InvalidOperationException(string.Format("Service Document with ID {0} already exists.", script.ScriptFile));
+                    throw new InvalidOperationException(string.Format("Script with ID {0} already exists.", script.ScriptFile));
                 }
                 var savedDocument = context.Scripts.Add(ManualMapper.MapDtoToScript(script));
                 context.SaveChanges(performingUserId);
@@ -60,14 +60,13 @@ namespace RequestService.Controllers
             }
         }
 
-		protected override IScriptDto Update(int performingUserId, IScriptDto script)
-		{
-            throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Documents.", EntityModification.Update));
-
+        protected override IScriptDto Update(int performingUserId, IScriptDto script)
+        {
+            throw new ModificationException(string.Format("Modification {0} cannot be performed on Script Documents.", EntityModification.Update));
         }
 
         protected override IScriptDto Delete(int performingUserId, IScriptDto script)
-		{
+        {
             using (var context = new PrometheusContext())
             {
                 var toDelete = context.Scripts.ToList().FirstOrDefault(x => x.Id == script.Id);
@@ -76,5 +75,5 @@ namespace RequestService.Controllers
             }
             return null;
         }
-	}
+    }
 }
