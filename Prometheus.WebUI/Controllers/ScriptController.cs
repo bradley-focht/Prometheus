@@ -72,7 +72,7 @@ namespace Prometheus.WebUI.Controllers
             }
 
             // update script
-            model = (ScriptDto)_scriptFile.GetScript(UserId, id);
+            model = (ScriptDto)_scriptFileController.GetScript(UserId, id);
             return View("Add", model);
 	    }
 
@@ -85,7 +85,7 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
 		{
-
+            
 			if (!ModelState.IsValid) /* Server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
@@ -118,7 +118,7 @@ namespace Prometheus.WebUI.Controllers
                                 UploadDate = DateTime.Now,
                             };
 
-                            _scriptFile.ModifyScript(UserId, newScript, newScript.Id <= 0? EntityModification.Create : EntityModification.Update);
+                            _scriptFileController.ModifyScript(UserId, newScript, newScript.Id <= 0? EntityModification.Create : EntityModification.Update);
                         }
                         catch (Exception e)
                         {
