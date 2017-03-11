@@ -56,6 +56,18 @@ namespace Prometheus.WebUI.Controllers
 			return View(new ScriptDto());
 		}
 
+	    public ActionResult UpdateScript(int id)
+	    {
+            var model = _scriptFile.GetScript(UserId, id);
+
+            if (model == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(model);
+	    }
+
 		[HttpPost]
 		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
 		{
