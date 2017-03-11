@@ -7,7 +7,6 @@ using Prometheus.WebUI.Models.ServiceRequestApproval;
 using RequestService;
 using RequestService.Controllers;
 using ServicePortfolioService;
-using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -15,17 +14,17 @@ namespace Prometheus.WebUI.Controllers
 	public class ServiceRequestApprovalController : PrometheusController
 	{
 		private readonly int _pageSize;
-		private readonly IPortfolioService _ps;
-		private readonly IServiceRequestController _srController;
-		private readonly IUserManager _um;
-		private readonly IRequestManager _rm;
+		private readonly IPortfolioService _portfolioService;
+		private readonly IServiceRequestController _serviceRequestController;
+		private readonly IRequestManager _requestManager;
 
-		public ServiceRequestApprovalController()
+		public ServiceRequestApprovalController(IPortfolioService portfolioService, IServiceRequestController serviceRequestController,
+			IRequestManager requestManager)
 		{
-			_rm = InterfaceFactory.CreateRequestManager();
-			_ps = InterfaceFactory.CreatePortfolioService();
-			_srController = InterfaceFactory.CreateServiceRequestController();
-			_um = InterfaceFactory.CreateUserManagerService();
+			_portfolioService = portfolioService;
+			_serviceRequestController = serviceRequestController;
+			_requestManager = requestManager;
+
 			try { _pageSize = ConfigHelper.GetPaginationSize(); }
 			catch (Exception) { _pageSize = 12; }       //just in case
 		}
@@ -35,8 +34,8 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <returns></returns>
 		public ActionResult Index(int pageId = 0)
-		{	//default of my service requests filtered by incomplete
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_srController, UserId, pageId, _pageSize, ServiceRequestState.Incomplete);
+		{   //default of my service requests filtered by incomplete
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_serviceRequestController, UserId, pageId, _pageSize, ServiceRequestState.Incomplete);
 			return View(model);
 		}
 
@@ -48,7 +47,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult FilterStatus(ServiceRequestState state, int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_srController, UserId, pageId, _pageSize, state);
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_serviceRequestController, UserId, pageId, _pageSize, state);
 			model.Controls.FilterAction = "FilterStatus";
 			model.Controls.FilterStateRequired = true;
 			return View("Index", model);
@@ -61,7 +60,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AllServiceRequests(int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllRequests(_srController, UserId, pageId, _pageSize);
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllRequests(_serviceRequestController, UserId, pageId, _pageSize);
 			model.Controls.FilterAction = "AllServiceRequests";
 			return View("Index", model);
 		}
@@ -73,7 +72,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AllDepartmentServiceRequests(int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllDepartmentRequests(_srController, UserId, pageId, _pageSize);
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllDepartmentRequests(_serviceRequestController, UserId, pageId, _pageSize);
 			model.Controls.FilterAction = "GetDepartmentRequests";
 			return View("Index", model);
 		}
@@ -84,9 +83,9 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="state"></param>
 		/// <param name="pageId"></param>
 		/// <returns></returns>
-		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId=0)
+		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetDepartmentRequests(_srController, UserId, pageId, _pageSize, state);
+			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetDepartmentRequests(_serviceRequestController, UserId, pageId, _pageSize, state);
 			model.Controls.FilterAction = "FilterDepartmentStatus";
 			return View("Index", model);
 		}
@@ -106,19 +105,19 @@ namespace Prometheus.WebUI.Controllers
 				switch (state)
 				{
 					case ServiceRequestState.Cancelled:
-						_rm.CancelRequest(UserId, id, message);
+						_requestManager.CancelRequest(UserId, id, message);
 						break;
 					case ServiceRequestState.Submitted:
-						_rm.SubmitRequest(UserId, id);
+						_requestManager.SubmitRequest(UserId, id);
 						break;
 					case ServiceRequestState.Approved:
-						_rm.ApproveRequest(UserId, id, ApprovalResult.Approved, message);
+						_requestManager.ApproveRequest(UserId, id, ApprovalResult.Approved, message);
 						break;
 					case ServiceRequestState.Denied:
-						_rm.ApproveRequest(UserId, id, ApprovalResult.Denied, message);
+						_requestManager.ApproveRequest(UserId, id, ApprovalResult.Denied, message);
 						break;
 					default:
-						throw new Exception("State not implemented");	//incomplete is one of these
+						throw new Exception("State not implemented");   //incomplete is one of these
 				}
 			}
 			catch (Exception exception)
@@ -141,8 +140,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmServiceRequestStateChange(int id, ServiceRequestState nextState)
 		{
-			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_ps, _srController, nextState, UserId, id);
-			
+			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_portfolioService, _serviceRequestController, nextState, UserId, id);
+
 			return View(model);
 		}
 
@@ -153,8 +152,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowServiceRequest(int id)
 		{
-			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_ps, UserId, _srController, id);
-				model.CanEditServiceRequest = _rm.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
+			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_portfolioService, UserId, _serviceRequestController, id);
+			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
 			return View("ConfirmServiceRequestStateChange", model);
 		}
 	}

@@ -16,9 +16,9 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		private readonly IUserManager _userManager;
 
-		public UserAccountController()
+		public UserAccountController(IUserManager userManager)
 		{
-			_userManager = InterfaceFactory.CreateUserManagerService();
+			_userManager = userManager;
 		}
 
 		/// <summary>
@@ -72,7 +72,7 @@ namespace Prometheus.WebUI.Controllers
 			TempData["MessageType"] = WebMessageType.Failure;
 			TempData["Message"] = "Failed to login, please check username and password.";
 
-			return RedirectToAction("Index", "UserAccount", new UserAccountModel {ReturnUrl = userLogin.ReturnUrl});
+			return RedirectToAction("Index", "UserAccount", new UserAccountModel { ReturnUrl = userLogin.ReturnUrl });
 		}
 
 		/// <summary>
