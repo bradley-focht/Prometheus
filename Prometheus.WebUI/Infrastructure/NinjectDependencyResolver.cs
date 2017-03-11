@@ -32,7 +32,7 @@ namespace Prometheus.WebUI.Infrastructure
 		{
 			var modules = new List<INinjectModule>
 			{
-				new DtoModule(),
+				new CommonModule(),
 				new RequestServiceModule(),
 				new ServicePortfolioServiceModule(),
 				new UserManagerModule()

@@ -4,7 +4,7 @@ using Ninject.Modules;
 
 namespace DependencyResolver.Modules
 {
-	public class DtoModule : NinjectModule
+	public class CommonModule : NinjectModule
 	{
 		public override void Load()
 		{

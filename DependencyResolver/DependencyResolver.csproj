@@ -57,7 +57,7 @@
     <Compile Include="Modules\RequestServiceModule.cs" />
     <Compile Include="Modules\ServicePortfolioServiceModule.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Modules\DtoModule.cs" />
+    <Compile Include="Modules\CommonModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
