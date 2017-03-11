@@ -347,7 +347,6 @@
     <Compile Include="Helpers\StringHelper.cs" />
     <Compile Include="Helpers\Enums\FilterByType.cs" />
     <Compile Include="Helpers\FinancialCalculator.cs" />
-    <Compile Include="Helpers\InterfaceFactory.cs" />
     <Compile Include="Helpers\ServiceIndexHelper.cs" />
     <Compile Include="Helpers\ServiceSectionHelper.cs" />
     <Compile Include="Helpers\Enums\WebMessageType.cs" />
@@ -552,6 +551,8 @@
     <Content Include="Views\SystemAccess\ConfirmDeleteDepartment.cshtml" />
     <Content Include="Views\SystemAccess\PartialViews\DepartmentEditor.cshtml" />
     <Content Include="Views\Script\GetScript.cshtml" />
+    <Content Include="Views\Script\PartialViews\ShowScript.cshtml" />
+    <Content Include="Views\Script\UpdateScript.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -565,7 +566,6 @@
     <Folder Include="PoShScriptsFiles\" />
     <Folder Include="ServiceDocs\" />
     <Folder Include="ServiceOptionPics\" />
-    <Folder Include="Views\Script\PartialViews\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
