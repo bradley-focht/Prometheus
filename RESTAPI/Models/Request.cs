@@ -29,6 +29,8 @@ namespace RESTAPI.Models
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+		public decimal UpfrontPrice { get; set; }
+		public decimal MonthlyPrice { get; set; }
 		public ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 		public ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
 	}

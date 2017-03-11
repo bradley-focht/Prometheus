@@ -1,15 +1,19 @@
-[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(Prometheus.WebUI.App_Start.NinjectWebCommon), "Start")]
-[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(Prometheus.WebUI.App_Start.NinjectWebCommon), "Stop")]
+[assembly: WebActivatorEx.PreApplicationStartMethod(typeof(RESTAPI.App_Start.NinjectWebCommon), "Start")]
+[assembly: WebActivatorEx.ApplicationShutdownMethodAttribute(typeof(RESTAPI.App_Start.NinjectWebCommon), "Stop")]
 
-namespace Prometheus.WebUI.App_Start
+namespace RESTAPI.App_Start
 {
 	using System;
+	using System.Collections.Generic;
 	using System.Web;
-	using Infrastructure;
+	using System.Web.Http;
+	using DependencyResolver.Modules;
 	using Microsoft.Web.Infrastructure.DynamicModuleHelper;
 
 	using Ninject;
+	using Ninject.Modules;
 	using Ninject.Web.Common;
+	using NinjectUtilities;
 
 	public static class NinjectWebCommon
 	{
@@ -46,6 +50,9 @@ namespace Prometheus.WebUI.App_Start
 				kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
 				RegisterServices(kernel);
+
+				GlobalConfiguration.Configuration.DependencyResolver = new NinjectDependencyResolver(kernel);
+
 				return kernel;
 			}
 			catch
@@ -61,7 +68,15 @@ namespace Prometheus.WebUI.App_Start
 		/// <param name="kernel">The kernel.</param>
 		private static void RegisterServices(IKernel kernel)
 		{
-			System.Web.Mvc.DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
+			var modules = new List<INinjectModule>
+			{
+				new RequestServiceModule(),
+				new UserManagerModule(),
+				new CommonModule(),
+				new ServicePortfolioServiceModule()
+			};
+
+			kernel.Load(modules);
 		}
 	}
 }
