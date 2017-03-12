@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -44,7 +43,6 @@ namespace Common.Dto
 		#endregion
 
 		#region Navigation properties
-		public virtual ICollection<IServiceDto> Services { get; set; }
 		#endregion
 	}
 }

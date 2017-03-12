@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -30,7 +29,6 @@ namespace DataService.Models
 		public string Measures { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual ICollection<Service> Services { get; set; }
 		#endregion
 	}
 }

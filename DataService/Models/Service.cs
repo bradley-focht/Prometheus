@@ -15,7 +15,7 @@ namespace DataService.Models
 		public int Id { get; set; }
 
 		//FK
-		public int ServiceBundleId { get; set; }
+		public int? ServiceBundleId { get; set; }
 
 		public int LifecycleStatusId { get; set; }
 
@@ -40,7 +40,6 @@ namespace DataService.Models
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual ServiceBundle ServiceBundle { get; set; }
 		public virtual LifecycleStatus LifecycleStatus { get; set; }
 		public virtual ICollection<ServiceContract> ServiceContracts { get; set; }
 		public virtual ICollection<ServiceMeasure> ServiceMeasures { get; set; }

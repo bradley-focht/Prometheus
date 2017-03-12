@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Common.Dto
 {
@@ -13,7 +12,6 @@ namespace Common.Dto
 		int Id { get; set; }
 		string Measures { get; set; }
 		string Name { get; set; }
-		ICollection<IServiceDto> Services { get; set; }
 		int UpdatedByUserId { get; set; }
 	}
 }

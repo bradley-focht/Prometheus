@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DataService.Models
+﻿namespace DataService.Models
 {
 	public interface IServiceBundle : IUserCreatedEntity
 	{
@@ -9,6 +7,5 @@ namespace DataService.Models
 		int Id { get; set; }
 		string Measures { get; set; }
 		string Name { get; set; }
-		ICollection<Service> Services { get; set; }
 	}
 }
