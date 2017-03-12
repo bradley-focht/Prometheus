@@ -31,7 +31,8 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		{
 			get
 			{
-				if (ServiceRequest.ServiceOptionId != null) return (int) ServiceRequest.ServiceOptionId;
+				
+				if (ServiceRequest!= null && ServiceRequest.ServiceOptionId != null) return (int) ServiceRequest.ServiceOptionId;
 				return 0; //by default return an impossible option
 			}
 		}
@@ -66,7 +67,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// <summary>
 		/// To display the list of options
 		/// </summary>
-		public IServiceOptionCategoryDto OptionCategory { get; set; }
+		public List<IServiceOptionCategoryDto> OptionCategories { get; set; }
 
 		/// <summary>
 		/// Display the list of inputs

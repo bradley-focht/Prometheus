@@ -1,14 +1,22 @@
 ﻿@using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
 
-@if (Model.OptionCategory != null)
+@if (Model.OptionCategories != null)
 {
-	var category = Model.OptionCategory; @* room to be scaled to ICatalogPublishable *@
 
-	<div class="dd full-width">
-		@foreach (var option in category.ServiceOptions)
+
+	foreach (var category in Model.OptionCategories)
+	{
+		if (Model.OptionCategories.Count > 1)
 		{
-			@Html.Partial("PartialViews/ServiceOption", new ServiceOptionModel {Quantifiable = category.Quantifiable, ServiceOption = option})
+			<div class="subsubtitle-div">@category.Name</div>
 		}
-	</div>
+
+		<div class="dd full-width">
+			@foreach (var option in category.ServiceOptions)
+			{
+				@Html.Partial("PartialViews/ServiceOption", new ServiceOptionModel {Quantifiable = category.Quantifiable, ServiceOption = option})
+			}
+		</div>
+	}
 }
