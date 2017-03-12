@@ -119,10 +119,22 @@ namespace UserManager.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
+
+				if (userDto.Id == AdministratorId)
+				{
+					throw new InvalidOperationException("Administrator account cannot be updated.");
+				}
+
+				if (userDto.Id == GuestId)
+				{
+
+				}
+
 				if (!context.Users.Any(x => x.Id == userDto.Id))
 				{
 					throw new InvalidOperationException(string.Format("User with ID {0} cannot be updated since it does not exist.", userDto.Id));
 				}
+
 				var updatedUser = ManualMapper.MapDtoToUser(userDto);
 				context.Users.Attach(updatedUser);
 				context.Entry(updatedUser).State = EntityState.Modified;
