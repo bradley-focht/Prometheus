@@ -48,7 +48,7 @@ namespace ServicePortfolioService.Controllers
 					categoryTags.Add(ManualMapper.MapDtoToServiceOptionCategoryTag(tag));
 				}
 				savedPackage.ServiceOptionCategoryTags = categoryTags;
-				
+
 				var serviceTags = new List<ServiceTag>();
 				foreach (var tag in entity.ServiceTags)
 				{
@@ -119,8 +119,6 @@ namespace ServicePortfolioService.Controllers
 							y => y.Order == 1 && y.Service.ServiceOptionCategories.Any(
 								z => z.Id == serviceOptionId))));
 				//Sweet baby jesus
-
-				//TODO: Sean what if a serviceTag comes first
 
 				if (!packages.Any())
 					throw new InvalidOperationException(string.Format("Service Request Package with Service Option ID {0} does not exist.", serviceOptionId));

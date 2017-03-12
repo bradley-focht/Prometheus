@@ -12,9 +12,9 @@ namespace RESTAPI.Controllers
 {
 	public class RequestController : ApiController
 	{
-		private IUserManager _userManager;
-		private IRequestManager _requestManager;
-		private IServiceRequestController _serviceRequestController;
+		private readonly IUserManager _userManager;
+		private readonly IRequestManager _requestManager;
+		private readonly IServiceRequestController _serviceRequestController;
 
 		public RequestController(IUserManager userManager, IRequestManager requestManager, IServiceRequestController serviceRequestController)
 		{

@@ -9,9 +9,6 @@ namespace ServicePortfolioService
 {
 	public class PortfolioService : IPortfolioService
 	{
-		//TODO: Figure out guest account
-		public const int GuestUserId = -1;
-
 		private readonly IServiceBundleController _serviceBundleController;
 		private readonly IServiceController _serviceController;
 		private readonly ILifecycleStatusController _lifecycleStatusController;
@@ -30,7 +27,6 @@ namespace ServicePortfolioService
 		private readonly IScriptedSelectionInputController _scriptedSelectionController;
 		private readonly IServiceRequestPackageController _serviceRequestPackageController;
 
-		//Lol I'll make a factory for constructing this
 		public PortfolioService(IServiceBundleController serviceBundleController,
 			IServiceController serviceController, ILifecycleStatusController lifecycleStatusController,
 			IServiceSwotController serviceSwotController, ISwotActivityController swotActivityController,

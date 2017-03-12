@@ -17,7 +17,6 @@ namespace ServicePortfolioService.Controllers
 			using (var context = new PrometheusContext())
 			{
 				var serviceBundle = context.ServiceBundles.Find(serviceBundleId);
-				//return Mapper.Map<ServiceBundleDto>(serviceBundle);   //stack overflow
 				return ManualMapper.MapServiceBundleToDto(serviceBundle);
 			}
 		}
