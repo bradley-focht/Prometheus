@@ -58,7 +58,7 @@ namespace Prometheus.WebUI.Controllers
 
 	    public ActionResult UpdateScript(int id)
 	    {
-            var model = _scriptFile.GetScript(UserId, id);
+            var model = _scriptFileController.GetScript(UserId, id);
 
             if (model == null)
             {

@@ -884,6 +884,19 @@ namespace DataService
 			};
 		}
 
+		public static ServiceTag MapDtoToServiceTag(IServiceTagDto src)
+		{
+
+			return new ServiceTag
+			{
+				Id = src.Id,
+				Order = src.Order,
+				ServiceId = src.ServiceId,
+				ServiceRequestPackageId = src.ServiceRequestPackageId
+			};
+		}
+
+
 		public static ServiceRequestPackage MapDtoToServiceRequestPackage(IServiceRequestPackageDto src)
 		{
 			if (src == null) return null;
