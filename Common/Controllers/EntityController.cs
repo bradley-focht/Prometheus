@@ -47,6 +47,20 @@ namespace Common.Controllers
 		}
 
 		/// <summary>
+		/// Checks to determine if the user has the required permission in order to retrieve the entity.
+		/// 
+		/// NOTE: Override method to apply a permission.
+		/// </summary>
+		/// <param name="performingUserId">ID for user performing the retrieval</param>
+		/// <param name="permission">Permission that is required to perform the retrieval. Object passed in does not matter.</param>
+		/// <returns>If the user can perform the retrieval</returns>
+		protected virtual bool UserHasPermissionToGet(int performingUserId, out object permission)
+		{
+			permission = null;
+			return true;
+		}
+
+		/// <summary>
 		/// Determines if the user has permission to modify an entity, then performs that modification to the database.
 		/// </summary>
 		/// <param name="performingUserId">User performing the modification</param>
