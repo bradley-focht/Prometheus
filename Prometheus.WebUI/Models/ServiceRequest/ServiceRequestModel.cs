@@ -79,6 +79,47 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		public IServiceRequestPackageDto NewPackage { get; set; }
 		public IServiceRequestPackageDto ChangePackage { get; set; }
 		public IServiceRequestPackageDto RemovePackage { get; set; }
+
+
+		public IEnumerable<IServicePackageTag> GetPackageTags(ServiceRequestAction action)
+		{
+			List<IServicePackageTag> tags = new List<IServicePackageTag>();
+			switch (action)
+			{
+				case ServiceRequestAction.New:
+					if (NewPackage != null)
+					{
+						if (NewPackage.ServiceOptionCategoryTags!= null)
+							tags.AddRange(from o in NewPackage.ServiceOptionCategoryTags select o);
+						if (NewPackage.ServiceTags != null)
+							tags.AddRange(from o in NewPackage.ServiceTags select o);
+						return tags.OrderBy(t => t.Order);
+					}
+					return null;
+				case ServiceRequestAction.Change:
+					if (NewPackage != null)
+					{
+						if (ChangePackage.ServiceOptionCategoryTags != null)
+							tags.AddRange(from o in ChangePackage.ServiceOptionCategoryTags select o);
+						if (ChangePackage.ServiceTags != null)
+							tags.AddRange(from o in ChangePackage.ServiceTags select o);
+						return tags.OrderBy(t => t.Order);
+					}
+					return null;
+				case ServiceRequestAction.Remove:
+					if (NewPackage != null)
+					{
+						if (RemovePackage.ServiceOptionCategoryTags != null)
+							tags.AddRange(from o in RemovePackage.ServiceOptionCategoryTags select o);
+						if (RemovePackage.ServiceTags != null)
+							tags.AddRange(from o in RemovePackage.ServiceTags select o);
+						return tags.OrderBy(t => t.Order);
+					}
+					return null;
+			}
+
+			return null;
+		}
 		/// <summary>
 		/// One action must be selected
 		/// </summary>
