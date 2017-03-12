@@ -31,10 +31,11 @@ namespace ServicePortfolioService.Controllers
 		/// <summary>
 		/// Modifies the service in the database
 		/// </summary>
+		/// <param name="performingUserId">ID for user doing modification</param>
 		/// <param name="service"></param>
 		/// <param name="modification">Type of modification to make</param>
 		/// <returns>Modified entity DTO</returns>
-		IServiceDto ModifyService(IServiceDto service, EntityModification modification);
+		IServiceDto ModifyService(int performingUserId, IServiceDto service, EntityModification modification);
 
 		/// <summary>
 		/// Gets a list of services and names for making lists

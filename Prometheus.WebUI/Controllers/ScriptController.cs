@@ -56,18 +56,32 @@ namespace Prometheus.WebUI.Controllers
 			return View(new ScriptDto());
 		}
 
-	    public ActionResult UpdateScript(int id)
-	    {
-            var model = _scriptFileController.GetScript(UserId, id);
+		/// <summary>
+		/// GET: Script/UpdateScript/id
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ActionResult UpdateScript(int id)
+		{
+			var model = new ScriptDto();
 
-            if (model == null)
-            {
-                return HttpNotFound();
-            }
+			if (id == 0)
+			{
+				// new script
+				return View("Add", model);
+			}
 
-            return View(model);
-	    }
+			// update script
+			model = (ScriptDto)_scriptFileController.GetScript(UserId, id);
+			return View("Add", model);
+		}
 
+		/// <summary>
+		/// Save and update script entries
+		/// </summary>
+		/// <param name="newScript"></param>
+		/// <param name="file"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
 		{
@@ -92,8 +106,8 @@ namespace Prometheus.WebUI.Controllers
 						try
 						{
 							var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
-							file.SaveAs(Server.MapPath(path));      /*create new doc and upload it */
-							_scriptFileController.ModifyScript(UserId, new ScriptDto()
+							file.SaveAs(Server.MapPath(path)); /*create new doc and upload it */
+							newScript = new ScriptDto()
 							{
 								Id = newScript.Id,
 								Name = newScript.Name,
@@ -102,8 +116,9 @@ namespace Prometheus.WebUI.Controllers
 								MimeType = file.ContentType,
 								ScriptFile = newFileName,
 								UploadDate = DateTime.Now,
-							}, EntityModification.Create);
+							};
 
+							_scriptFileController.ModifyScript(UserId, newScript, newScript.Id <= 0 ? EntityModification.Create : EntityModification.Update);
 						}
 						catch (Exception e)
 						{

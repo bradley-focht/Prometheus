@@ -2,7 +2,7 @@
 
 @{
     ViewBag.Title = "Scripts";
-    ViewBag.SubTitle = "Add and Upload Scripts";
+    ViewBag.SubTitle = "Upload Scripts";
     Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -20,59 +20,15 @@
 
     @using (Html.BeginForm("SaveScript", "Script", FormMethod.Post, new { enctype = "multipart/form-data" }))
     {
-        if (Model != null)
-        {
-            <div class="panel-div">
-                @* content *@
-                @* Html.Partial("some partial view ") *@
-                <input type="hidden" name="Id" value="@Model.Id" />
-                <div class="dd-row">
-                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.Name) </div>
-                    <div class="dd-cell">
-                        @Html.TextBox("Name", Model.Name, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="dd-row">
-                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.Description) </div>
-                    <div class="dd-cell">
-                        @Html.TextBox("Description", Model.Description, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="dd-row">
-                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.Version) </div>
-                    <div class="dd-cell">
-                        @Html.TextBox("Version", Model.Version, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.Version, "", new { @class = "text-danger" })
-                    </div>
-                </div>
 
-                <div class="dd-row">
-                    <div class="dt-cell"> @Html.DisplayNameFor(model => model.ScriptFile) </div>
-                    <div class="dd-cell">
-                        <div class="float-right-div">
-                            <div class="fileupload fileupload-new float-right-div" data-provides="fileupload">
-                                <span class="fileupload-preview"></span>
-                                <a href="#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none">×</a>
-                                <span class="btn btn-primary btn-file">
-                                    <span class="fileupload-new">Select file</span>
-                                    <span class="fileupload-exists">Change</span>
-                                    <input type="file" name="file"/>
-                                </span>
-                                <span class="fileupload-exists"><input type="submit" value="Upload" class="btn btn-primary"/></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        }
-       <div class="flex-container-col">
+        @Html.Partial("PartialViews/UpdateScript", Model)
+
+        <div class="flex-container-col">
             @* control buttons at the bottom *@
             <div class="panel-footer">
                 <div class="float-right-div">
-                    @Html.ActionLink("Back", "Index", new {}, new {@class = "btn btn-default btn-back"})
-                    <input type="submit" value="Save" id="Save" class="btn btn-primary"/>
+                    @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default btn-back" })
+                    <input type="submit" value="Save" id="Save" class="btn btn-primary" />
                 </div>
             </div>
         </div>

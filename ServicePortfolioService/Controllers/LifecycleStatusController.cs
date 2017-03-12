@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Controllers;
 using Common.Dto;
+using Common.Enums.Entities;
 using DataService;
 using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
-	public class LifecycleStatusController : ILifecycleStatusController
+	public class LifecycleStatusController : EntityController<ILifecycleStatusDto>, ILifecycleStatusController
 	{
 		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames()
 		{
@@ -25,7 +27,7 @@ namespace ServicePortfolioService.Controllers
 					statuses.Add(ManualMapper.MapLifecycleStatusToDto(status));
 
 				var nameList = new List<Tuple<int, string>>();
-				nameList.AddRange(statuses.OrderBy(x=>x.Position).Select(x => new Tuple<int, string>(x.Id, x.Name)));
+				nameList.AddRange(statuses.OrderBy(x => x.Position).Select(x => new Tuple<int, string>(x.Id, x.Name)));
 				return nameList.OrderBy(x => x.Item1);
 			}
 		}
@@ -42,7 +44,21 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		public int CountLifecycleStatuses()
+		{
+			using (var context = new PrometheusContext())
+			{
+				return context.LifecycleStatuses.Count();
+			}
+		}
+
+		public ILifecycleStatusDto ModifyLifecycleStatus(int performingUserId, ILifecycleStatusDto status,
+			EntityModification modification)
+		{
+			return base.ModifyEntity(performingUserId, status, modification);
+		}
+
+		protected override ILifecycleStatusDto Create(int performingUserId, ILifecycleStatusDto lifecycleStatus)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -50,19 +66,17 @@ namespace ServicePortfolioService.Controllers
 				if (existingStatus == null)
 				{
 					var savedStatus = context.LifecycleStatuses.Add(ManualMapper.MapDtoToLifecycleStatus(lifecycleStatus));
-					context.SaveChanges();
-					//return Mapper.Map<LifecycleStatusDto>(savedStatus);
+					context.SaveChanges(performingUserId);
 					return ManualMapper.MapLifecycleStatusToDto(savedStatus);
 				}
 				else
 				{
-					return UpdateLifecycleStatus(lifecycleStatus);
+					throw new InvalidOperationException(string.Format("Lifecycle Status with ID {0} already exists.", lifecycleStatus.Id));
 				}
 			}
 		}
 
-		//TODO: remove man mapper in here
-		private ILifecycleStatusDto UpdateLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		protected override ILifecycleStatusDto Update(int performingUserId, ILifecycleStatusDto lifecycleStatus)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -73,28 +87,20 @@ namespace ServicePortfolioService.Controllers
 				var updatedStatus = ManualMapper.MapDtoToLifecycleStatus(lifecycleStatus);
 				context.LifecycleStatuses.Attach(updatedStatus);
 				context.Entry(updatedStatus).State = EntityState.Modified;
-				context.SaveChanges();
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapLifecycleStatusToDto(updatedStatus);
 			}
 		}
 
-		public bool DeleteLifecycleStatus(int lifecycleStatusId)
+		protected override ILifecycleStatusDto Delete(int performingUserId, ILifecycleStatusDto entity)
 		{
 			using (var context = new PrometheusContext())
 			{
-				var toDelete = context.LifecycleStatuses.Find(lifecycleStatusId);
+				var toDelete = context.LifecycleStatuses.Find(entity.Id);
 				context.LifecycleStatuses.Remove(toDelete);
-				context.SaveChanges();
+				context.SaveChanges(performingUserId);
 			}
-			return true;
-		}
-
-		public int CountLifecycleStatuses()
-		{
-			using (var context = new PrometheusContext())
-			{
-				return context.LifecycleStatuses.Count();
-			}
+			return null;
 		}
 	}
 }

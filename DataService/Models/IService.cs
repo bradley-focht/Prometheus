@@ -1,5 +1,5 @@
-﻿using Common.Enums.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Common.Enums.Entities;
 
 namespace DataService.Models
 {

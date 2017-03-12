@@ -79,7 +79,7 @@ namespace ServicePortfolioService.Controllers
 				context.ServiceTags.RemoveRange(serviceTagsToDelete);
 				context.SaveChanges(performingUserId);
 
-				var toDelete = context.ServiceRequestPackages.FirstOrDefault(x=>x.Id == entity.Id);
+				var toDelete = context.ServiceRequestPackages.FirstOrDefault(x => x.Id == entity.Id);
 				context.ServiceRequestPackages.Remove(toDelete);
 				context.SaveChanges(performingUserId);
 			}
@@ -109,11 +109,16 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Option with ID {0} does not exist. Cannot retrieve service package with option identifier {0}.", serviceOptionId));
 
 				//All packages where the service option exists in the first category of the package
+				// OR the service option exists in the first service of the package
 				var packages = context.ServiceRequestPackages.Where(
-					x => x.Action == action &&
-					x.ServiceOptionCategoryTags.Any(
+					x => x.Action == action
+					 && (x.ServiceOptionCategoryTags.Any(
 						y => y.Order == 1 && y.ServiceOptionCategory.ServiceOptions.Any(
-							z => z.Id == serviceOptionId)));
+							z => z.Id == serviceOptionId))
+					 || x.ServiceTags.Any(
+							y => y.Order == 1 && y.Service.ServiceOptionCategories.Any(
+								z => z.Id == serviceOptionId))));
+				//Sweet baby jesus
 
 				//TODO: Sean what if a serviceTag comes first
 
