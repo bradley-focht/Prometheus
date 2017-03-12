@@ -80,6 +80,23 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		public IServiceRequestPackageDto ChangePackage { get; set; }
 		public IServiceRequestPackageDto RemovePackage { get; set; }
 
+		public IServiceRequestPackageDto InUsePackage
+		{
+			get
+			{
+				switch (SelectedAction)
+				{
+					case ServiceRequestAction.New:
+						return NewPackage;
+						case ServiceRequestAction.Change:
+						return ChangePackage;
+						case ServiceRequestAction.Remove:
+						return RemovePackage;
+					default:
+						return null;
+				}
+			}
+		}
 
 		public IEnumerable<IServicePackageTag> GetPackageTags(ServiceRequestAction action)
 		{
@@ -97,7 +114,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 					}
 					return null;
 				case ServiceRequestAction.Change:
-					if (NewPackage != null)
+					if (ChangePackage != null)
 					{
 						if (ChangePackage.ServiceOptionCategoryTags != null)
 							tags.AddRange(from o in ChangePackage.ServiceOptionCategoryTags select o);
@@ -107,7 +124,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 					}
 					return null;
 				case ServiceRequestAction.Remove:
-					if (NewPackage != null)
+					if (RemovePackage != null)
 					{
 						if (RemovePackage.ServiceOptionCategoryTags != null)
 							tags.AddRange(from o in RemovePackage.ServiceOptionCategoryTags select o);

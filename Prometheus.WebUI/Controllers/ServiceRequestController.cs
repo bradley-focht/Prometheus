@@ -162,7 +162,8 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, form.Id); //SR
-				if (model.ServiceRequest.Action == ServiceRequestAction.New)            //Package
+				model.SelectedAction = model.ServiceRequest.Action;
+				if (model.SelectedAction == ServiceRequestAction.New)            //Package
 				{
 					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId,
 						ServiceRequestAction.New); //package
@@ -397,11 +398,23 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, id);       //get db info
+				model.SelectedAction = model.ServiceRequest.Action;
 				if (!_requestManager.UserCanEditRequest(UserId, model.ServiceRequest.Id))   //business logic 
 					throw new Exception("Service Request cannot be edited");
 
-				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action) ??
-								   ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId);
+				//add package
+				if (model.ServiceRequest.Action == ServiceRequestAction.New)
+				{
+					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.New);
+				}   //change package 
+				else if (model.SelectedAction == ServiceRequestAction.Change)
+				{
+					model.ChangePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.Change);
+				}   //remove package
+				else if (model.SelectedAction == ServiceRequestAction.Remove)
+				{
+					model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.Remove);
+				}
 				//deal with no package by making one
 			}
 			catch (Exception exception)
@@ -415,9 +428,9 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP TWO - get any user inputs & associate with the option */
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
 			if (index < 0) { /*not much to do here, eh... */ }
-			else if (index < model.NewPackage.ServiceOptionCategoryTags.Count && index < 999)
+			else if (index < model.InUsePackage.ServiceOptionCategoryTags.Count && index < 999)
 			{
-				model.OptionCategory = model.NewPackage.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
+				model.OptionCategory = model.InUsePackage.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
 				foreach (var option in model.OptionCategory.ServiceOptions)
 				{
 					IEnumerable<IUserInput> inputs = null;  //collect relavent inputs
@@ -445,6 +458,9 @@ namespace Prometheus.WebUI.Controllers
 					}
 				}
 			}
+			//you've made it this far, all saving is complete (if saves were done)
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Service Request saved successfully";
 
 			//for each SR option in the SR get the option {monthly price, up front price }
 			if (model.ServiceRequest?.ServiceRequestOptions != null)
