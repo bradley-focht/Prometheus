@@ -117,19 +117,18 @@ namespace UserManager.Controllers
 
 		protected override IUserDto Update(int performingUserId, IUserDto userDto)
 		{
+			if (userDto.Id == AdministratorId)
+			{
+				throw new InvalidOperationException("Administrator account cannot be updated.");
+			}
+
+			if (userDto.Id == GuestId)
+			{
+				throw new InvalidOperationException("Guest account cannot be updated.");
+			}
+
 			using (var context = new PrometheusContext())
 			{
-
-				if (userDto.Id == AdministratorId)
-				{
-					throw new InvalidOperationException("Administrator account cannot be updated.");
-				}
-
-				if (userDto.Id == GuestId)
-				{
-
-				}
-
 				if (!context.Users.Any(x => x.Id == userDto.Id))
 				{
 					throw new InvalidOperationException(string.Format("User with ID {0} cannot be updated since it does not exist.", userDto.Id));
@@ -145,6 +144,16 @@ namespace UserManager.Controllers
 
 		protected override IUserDto Delete(int performingUserId, IUserDto userDto)
 		{
+			if (userDto.Id == AdministratorId)
+			{
+				throw new InvalidOperationException("Administrator account cannot be deleted.");
+			}
+
+			if (userDto.Id == GuestId)
+			{
+				throw new InvalidOperationException("Guest account cannot be deleted.");
+			}
+
 			using (var context = new PrometheusContext())
 			{
 				var toDelete = context.Users.Find(userDto.Id);
