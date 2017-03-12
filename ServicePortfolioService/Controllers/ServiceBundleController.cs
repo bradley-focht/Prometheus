@@ -89,6 +89,18 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
+				//Remove references to Service Bundle
+				var servicesToUpdate = context.Services.Where(x => x.ServiceBundleId == serviceBundle.Id);
+				foreach (var service in servicesToUpdate)
+				{
+					service.ServiceBundleId = null;
+
+					context.Services.Attach(service);
+					context.Entry(service).State = EntityState.Modified;
+					context.SaveChanges(performingUserId);
+				}
+
+				//Delete the Bundle itself
 				var toDelete = context.ServiceBundles.Find(serviceBundle.Id);
 				context.ServiceBundles.Remove(toDelete);
 				context.SaveChanges(performingUserId);

@@ -138,5 +138,23 @@ namespace ServicePortfolioService.Controllers
 			}
 			return null;
 		}
+
+		public IEnumerable<IServiceDto> SetServiceBundleForServices(int performingUserId, int? serviceBundleId, IEnumerable<IServiceDto> services)
+		{
+			using (var context = new PrometheusContext())
+			{
+				foreach (var serviceDto in services)
+				{
+					var service = context.Services.Find(serviceDto.Id);
+					service.ServiceBundleId = serviceBundleId;
+
+					context.Services.Attach(service);
+					context.Entry(service).State = EntityState.Modified;
+					context.SaveChanges(performingUserId);
+
+					yield return ManualMapper.MapServiceToDto(service);
+				}
+			}
+		}
 	}
 }

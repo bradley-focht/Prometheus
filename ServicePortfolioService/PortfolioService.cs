@@ -131,6 +131,11 @@ namespace ServicePortfolioService
 			return _serviceController.GetServices();
 		}
 
+		public IEnumerable<IServiceDto> SetServiceBundleForServices(int performingUserId, int? serviceBundleId, IEnumerable<IServiceDto> services)
+		{
+			return _serviceController.SetServiceBundleForServices(performingUserId, serviceBundleId, services);
+		}
+
 		public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
 		{
 			return _serviceController.GetServiceDocuments(serviceId);
