@@ -1,24 +1,29 @@
 ﻿@using Common.Enums
 @using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.SelectionInputDto>
-
-
-<input type="hidden" name="@(Model.ControlName)Name" value="@(StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName))" />
-<input type="hidden" name="@(Model.ControlName)Type" value="@(UserInputType.Selection))" />
-<input type="hidden" name="@(Model.ControlName)Id" value="@(Model.Id))" />
-<input type="hidden" name="@(Model.ControlName)InputId" value="@(Model.Control.Id))" />
-@Html.TextBox($"{Model.ControlName}Value", null, new { id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), style = "max-width: 350px;", @class="form-control" })
-
+<div class="dd full-width">
+	<div class="dd-row">
+		<div class="dd-cell-nostyle">
+			@Html.TextBox($"{Model.ControlName}Value", null, new { id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), @class = "form-control" })
+		</div>
+		<div class="dd-cell-nostyle" style="width:20px;">
+			@if (!string.IsNullOrEmpty(Model.Control.HelpToolTip))
+			{
+				<span class="btn-round make-space-left" data-html="true" data-toggle="tooltip" data-placement="top" title="@Html.Raw(Model.Control.HelpToolTip)"><i class="fa fa-question" aria-hidden="true"></i></span>
+			}
+		</div>
+	</div>
+</div>
 
 <script type="text/javascript" language="javascript">
-    $('#@(StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName))')
-        .selectize({
-            plugins: ['remove_button'],
-            delimiter: '@Html.Raw(Model.Control.Delimiter)',
-            valueField: 'value',
-            labelField: 'label',
-            persist: false,
-            maxItems: @(Model.Control.NumberToSelect),
-            options: [ @Html.Raw(StringHelper.ConvertStringtoJsValLabelArray(Model.Control.SelectItems, ',')) ]
-        });
+	$('#@(StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName))')
+		.selectize({
+			plugins: ['remove_button'],
+			delimiter: '@Html.Raw(Model.Control.Delimiter)',
+			valueField: 'value',
+			labelField: 'label',
+			persist: false,
+			maxItems: @(Model.Control.NumberToSelect),
+			options: [ @Html.Raw(StringHelper.ConvertStringtoJsValLabelArray(Model.Control.SelectItems, ',')) ]
+		});
 </script>

@@ -233,6 +233,15 @@
     user-select: none;
 }
 
+.btn-round {
+	display: inline-block;
+	text-align: center;
+	padding: 4px 8px;
+	color: #fff;
+	font-size: 1em;
+	background-color: #428bca;
+	border-radius: 12px;
+}
 
 .highlight {
     background-color: #e5e5e5;

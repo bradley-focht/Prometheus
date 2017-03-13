@@ -94,5 +94,23 @@ namespace Prometheus.WebUI.Helpers
 		    return ConfigurationManager.AppSettings["ScriptPath"];
 	    }
 
+		/// <summary>
+		/// Get the script set for identifying user department
+		/// </summary>
+		/// <returns></returns>
+	    public static int GetDepartmentScriptId()
+	    {
+		    return int.Parse(ConfigurationManager.AppSettings["GetDepartmentScriptId"]);
+	    }
+
+		/// <summary>
+		/// Get the script set to return all users in the same department
+		/// </summary>
+		/// <returns></returns>
+	    public static int GetDepartmentUsersScriptId()
+	    {
+			return int.Parse(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"]);
+		}
+
     }
 }
