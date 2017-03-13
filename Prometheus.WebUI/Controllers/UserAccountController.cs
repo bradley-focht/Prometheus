@@ -64,7 +64,7 @@ namespace Prometheus.WebUI.Controllers
 				Session["Id"] = user.Id;
 				Session["Department"] = user.DepartmentId;
 
-				if (userLogin.ReturnUrl == "")
+				if (string.IsNullOrEmpty(userLogin.ReturnUrl))
 					return RedirectToAction("Index", "Home");
 				return Redirect(userLogin.ReturnUrl);
 			}
@@ -86,7 +86,7 @@ namespace Prometheus.WebUI.Controllers
 			FormsAuthentication.SetAuthCookie("Guest", true);
 			Session["DisplayName"] = "Guest";
 			Session["Id"] = _userManager.GuestId;
-			if (returnUrl == "")
+			if (string.IsNullOrEmpty(returnUrl))
 				return RedirectToAction("Index", "Home");
 			return Redirect(returnUrl);
 		}
@@ -102,7 +102,7 @@ namespace Prometheus.WebUI.Controllers
 			FormsAuthentication.SetAuthCookie("Admin", true);
 			Session["DisplayName"] = "Administrator";
 			Session["Id"] = _userManager.AdministratorId;
-			if (returnUrl == "")
+			if (string.IsNullOrEmpty(returnUrl))
 				return RedirectToAction("Index", "Home");
 			return Redirect(returnUrl);
 		}

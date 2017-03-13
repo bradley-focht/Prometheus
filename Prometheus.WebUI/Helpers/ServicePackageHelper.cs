@@ -27,7 +27,7 @@ namespace Prometheus.WebUI.Helpers
 			{
 				package = portfolioService.GetServiceRequestPackagesForServiceOption(performingUserId, optionId, action).FirstOrDefault();
 			}
-			catch (Exception exception) { /* situation is dealt with below */}
+			catch (Exception) { /* situation is dealt with below */}
 
 			return package;
 		}

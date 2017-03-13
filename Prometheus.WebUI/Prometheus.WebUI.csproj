@@ -383,6 +383,7 @@
     <Compile Include="Models\ServiceRequestMaintenance\ServiceRequestOptionModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\UserInputsLinkListModel.cs" />
+    <Compile Include="Models\ServiceRequest\ServiceOptionModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceOptionTag.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestFormReturnModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestModel.cs" />
@@ -554,6 +555,7 @@
     <Content Include="Views\Script\PartialViews\ShowScript.cshtml" />
     <Content Include="Views\Script\PartialViews\UpdateScript.cshtml" />
     <Content Include="Views\Script\ConfirmDeleteScript.cshtml" />
+    <Content Include="Views\ServiceRequest\PartialViews\ServiceOption.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
