@@ -1,5 +1,6 @@
 ﻿using System.Web.Mvc;
 using Common.Dto;
+using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServicePortfolio;
@@ -45,9 +46,9 @@ namespace Prometheus.WebUI.Controllers
 
 
 			if (serviceBundle.Id == 0)
-				_portfolioService.SaveServiceBundle(serviceBundle);
+				_portfolioService.ModifyServiceBundle(UserId, serviceBundle, EntityModification.Create);
 			else
-				_portfolioService.UpdateServiceBundle(serviceBundle);
+				_portfolioService.ModifyServiceBundle(UserId, serviceBundle, EntityModification.Update);
 
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"{serviceBundle.Name} saved successfully";
@@ -126,8 +127,7 @@ namespace Prometheus.WebUI.Controllers
 				return RedirectToAction("Show");
 			}
 
-
-			_portfolioService.DeleteServiceBundle(item.Id);
+			_portfolioService.ModifyServiceBundle(UserId, new ServiceBundleDto() { Id = item.Id }, EntityModification.Delete);
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"Successfully deleted {item.Name}";
 			return RedirectToAction("Show");

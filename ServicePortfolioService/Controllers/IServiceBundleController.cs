@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Common.Dto;
+using Common.Enums.Entities;
 
 namespace ServicePortfolioService.Controllers
 {
@@ -26,25 +27,13 @@ namespace ServicePortfolioService.Controllers
 		IEnumerable<IServiceBundleDto> GetServiceBundles();
 
 		/// <summary>
-		/// Saves the service bundle to the database
+		/// Modifies the service bundle in the database
 		/// </summary>
+		/// <param name="performingUserId"></param>
 		/// <param name="serviceBundle"></param>
-		/// <returns>Saved entity DTO</returns>
-		IServiceBundleDto SaveServiceBundle(IServiceBundleDto serviceBundle);
-
-		/// <summary>
-		/// Deletes the service bundle from the database
-		/// </summary>
-		/// <param name="serviceBundleId"></param>
-		/// <returns>True if successful</returns>
-		bool DeleteServiceBundle(int serviceBundleId);
-
-		/// <summary>
-		/// Update a service bundle
-		/// </summary>
-		/// <param name="serviceBundle"></param>
-		/// <returns></returns>
-		IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle);
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Bundle</returns>
+		IServiceBundleDto ModifyServiceBundle(int performingUserId, IServiceBundleDto serviceBundle, EntityModification modification);
 
 	}
 }

@@ -22,22 +22,26 @@ namespace DataService.DataAccessLayer
 			//Add a sample service bundle with services and service request options
 			context.ServiceBundles.Add(new ServiceBundle
 			{
-				Name = "First Service Bundle Name",
-				Services = new List<Service>
-				{
-					new Service
-					{
-						Name = "Hardware",
-						LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
-					},
-					new Service
-					{
-						Name = "Second Service",LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
-					}
-				}
+				Name = "First Service Bundle Name"
 			});
 			context.SaveChanges();
 
+			int bundleId = context.ServiceBundles.FirstOrDefault().Id;
+			context.Services.AddRange(new List<Service>
+			{
+				new Service
+				{
+					ServiceBundleId = bundleId,
+					Name = "Hardware",
+					LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
+				},
+				new Service
+				{
+					ServiceBundleId = bundleId,
+					Name = "Second Service",
+					LifecycleStatus = ((from c in context.LifecycleStatuses where c.Name == "Operational" select c).First())
+				}
+			});
 		}
 
 		private void AddItilLifecycleStatus(PrometheusContext context)

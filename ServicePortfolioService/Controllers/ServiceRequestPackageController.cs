@@ -42,15 +42,22 @@ namespace ServicePortfolioService.Controllers
 				var savedPackage = context.ServiceRequestPackages.Add(ManualMapper.MapDtoToServiceRequestPackage(entity));
 
 				//Set tags to match DTO tags
-				var tags = new List<ServiceOptionCategoryTag>();
+				var categoryTags = new List<ServiceOptionCategoryTag>();
 				foreach (var tag in entity.ServiceOptionCategoryTags)
 				{
-					tags.Add(ManualMapper.MapDtoToServiceOptionCategoryTag(tag));
+					categoryTags.Add(ManualMapper.MapDtoToServiceOptionCategoryTag(tag));
 				}
+				savedPackage.ServiceOptionCategoryTags = categoryTags;
 
-				savedPackage.ServiceOptionCategoryTags = tags;
+				var serviceTags = new List<ServiceTag>();
+				foreach (var tag in entity.ServiceTags)
+				{
+					serviceTags.Add((ManualMapper.MapDtoToServiceTag(tag)));
+				}
+				savedPackage.ServiceTags = serviceTags;
 
 				context.SaveChanges(performingUserId);
+
 				return ManualMapper.MapServiceRequestPackageToDto(savedPackage);
 			}
 		}
@@ -72,7 +79,7 @@ namespace ServicePortfolioService.Controllers
 				context.ServiceTags.RemoveRange(serviceTagsToDelete);
 				context.SaveChanges(performingUserId);
 
-				var toDelete = context.ServiceRequestPackages.FirstOrDefault(x=>x.Id == entity.Id);
+				var toDelete = context.ServiceRequestPackages.FirstOrDefault(x => x.Id == entity.Id);
 				context.ServiceRequestPackages.Remove(toDelete);
 				context.SaveChanges(performingUserId);
 			}
@@ -102,11 +109,16 @@ namespace ServicePortfolioService.Controllers
 					throw new InvalidOperationException(string.Format("Service Option with ID {0} does not exist. Cannot retrieve service package with option identifier {0}.", serviceOptionId));
 
 				//All packages where the service option exists in the first category of the package
+				// OR the service option exists in the first service of the package
 				var packages = context.ServiceRequestPackages.Where(
-					x => x.Action == action &&
-					x.ServiceOptionCategoryTags.Any(
+					x => x.Action == action
+					 && (x.ServiceOptionCategoryTags.Any(
 						y => y.Order == 1 && y.ServiceOptionCategory.ServiceOptions.Any(
-							z => z.Id == serviceOptionId)));
+							z => z.Id == serviceOptionId))
+					 || x.ServiceTags.Any(
+							y => y.Order == 1 && y.Service.ServiceOptionCategories.Any(
+								z => z.Id == serviceOptionId))));
+				//Sweet baby jesus
 
 				if (!packages.Any())
 					throw new InvalidOperationException(string.Format("Service Request Package with Service Option ID {0} does not exist.", serviceOptionId));

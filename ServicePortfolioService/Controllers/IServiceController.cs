@@ -29,12 +29,24 @@ namespace ServicePortfolioService.Controllers
 		IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId);
 
 		/// <summary>
+		/// Applies a service bundle ID to multiple services.
+		/// 
+		/// NOTE: null can be applied as service bundle ID to remove the services from their bundle
+		/// </summary>
+		/// <param name="performingUserId">ID for user performing adjustment</param>
+		/// <param name="serviceBundleId">ID to add to the services. Can be null</param>
+		/// <param name="services">Services to set the Service Bundle on</param>
+		/// <returns></returns>
+		IEnumerable<IServiceDto> SetServiceBundleForServices(int performingUserId, int? serviceBundleId, IEnumerable<IServiceDto> services);
+
+		/// <summary>
 		/// Modifies the service in the database
 		/// </summary>
+		/// <param name="performingUserId">ID for user doing modification</param>
 		/// <param name="service"></param>
 		/// <param name="modification">Type of modification to make</param>
 		/// <returns>Modified entity DTO</returns>
-		IServiceDto ModifyService(IServiceDto service, EntityModification modification);
+		IServiceDto ModifyService(int performingUserId, IServiceDto service, EntityModification modification);
 
 		/// <summary>
 		/// Gets a list of services and names for making lists

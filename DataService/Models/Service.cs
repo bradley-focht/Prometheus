@@ -1,8 +1,8 @@
-﻿using Common.Enums.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Common.Enums.Entities;
 
 namespace DataService.Models
 {
@@ -15,7 +15,7 @@ namespace DataService.Models
 		public int Id { get; set; }
 
 		//FK
-		public int ServiceBundleId { get; set; }
+		public int? ServiceBundleId { get; set; }
 
 		public int LifecycleStatusId { get; set; }
 
@@ -40,7 +40,6 @@ namespace DataService.Models
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
 		#endregion
 		#region Navigation Properties
-		public virtual ServiceBundle ServiceBundle { get; set; }
 		public virtual LifecycleStatus LifecycleStatus { get; set; }
 		public virtual ICollection<ServiceContract> ServiceContracts { get; set; }
 		public virtual ICollection<ServiceMeasure> ServiceMeasures { get; set; }

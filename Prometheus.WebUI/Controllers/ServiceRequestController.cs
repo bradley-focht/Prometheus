@@ -162,7 +162,8 @@ namespace Prometheus.WebUI.Controllers
 			try
 			{
 				model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, form.Id); //SR
-				if (model.ServiceRequest.Action == ServiceRequestAction.New)            //Package
+				model.SelectedAction = model.ServiceRequest.Action;
+				if (model.SelectedAction == ServiceRequestAction.New)            //Package
 				{
 					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId,
 						ServiceRequestAction.New); //package
@@ -170,12 +171,16 @@ namespace Prometheus.WebUI.Controllers
 					if (model.NewPackage == null)
 					{
 						model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId);
+						model.SelectedAction = ServiceRequestAction.New;
 					}
+				}
+				else if (model.SelectedAction == ServiceRequestAction.Change)
+				{
+					model.ChangePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.Change);
 				}
 				else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
 				{
-					model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId,
-						ServiceRequestAction.Remove);
+					model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.Remove);
 					model.SelectedAction = ServiceRequestAction.Remove; //remove package
 					if (model.NewPackage == null && model.RemovePackage == null)
 					{
@@ -191,25 +196,23 @@ namespace Prometheus.WebUI.Controllers
 				return View("ServiceRequest", model);
 			}
 
-			/* STEP TWO - figure out what category to work with */
-			IServiceOptionCategoryDto currentCategory = null;
+			/* STEP TWO - figure out what category or service to work with */
+			//tag identified
+			IServicePackageTag currentTag = null;
 			if (model.ServiceRequest.Action == ServiceRequestAction.New)
 			{
 				if (model.NewPackage != null)
-					currentCategory = _portfolioService.GetServiceOptionCategory(UserId,
-							model.NewPackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+					currentTag = model.GetPackageTags(ServiceRequestAction.New).ToArray()[form.CurrentIndex];
 			}
 			else if (model.ServiceRequest.Action == ServiceRequestAction.Change)
 			{
 				if (model.ChangePackage != null)
-					currentCategory = _portfolioService.GetServiceOptionCategory(UserId,
-							model.ChangePackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+					currentTag = model.GetPackageTags(ServiceRequestAction.Change).ToArray()[form.CurrentIndex];
 			}
 			else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)
 			{
 				if (model.RemovePackage != null)
-					currentCategory = _portfolioService.GetServiceOptionCategory(UserId,
-							model.RemovePackage.ServiceOptionCategoryTags.ToArray()[form.CurrentIndex].ServiceOptionCategory.Id);
+					currentTag = model.GetPackageTags(ServiceRequestAction.Remove).ToArray()[form.CurrentIndex];
 			}
 
 			/* STEP THREE - add/remove options in the SR */
@@ -228,37 +231,55 @@ namespace Prometheus.WebUI.Controllers
 					model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>();
 				}
 
+				List<IServiceOptionCategoryDto> currentCategories = new List<IServiceOptionCategoryDto>();
+
+				if (currentTag is IServiceOptionCategoryTagDto) //deal with a category
+				{
+					currentCategories.Add(_portfolioService.GetServiceOptionCategory(UserId, ((IServiceOptionCategoryTagDto)model.GetPackageTags(model.SelectedAction).ToArray()[form.CurrentIndex]).ServiceOptionCategoryId));
+				}
+				else if (currentTag is IServiceTagDto)
+				{
+					currentCategories.AddRange(_portfolioService.GetService(((IServiceTagDto)model.GetPackageTags(model.SelectedAction).ToArray()[form.CurrentIndex]).ServiceId).ServiceOptionCategories);
+				}
+
 				try
 				{
-					if (currentCategory != null)
-						foreach (var option in currentCategory.ServiceOptions)                                                          /* sighhhhh */
+					foreach (var category in currentCategories)
+						foreach (var option in category.ServiceOptions) /* sighhhhh */
 						{
 							var formDto = (from o in formOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
-							var srDto = (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).FirstOrDefault();
+							var srDto =
+								(from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o)
+									.FirstOrDefault();
 
-							if (formDto != null && srDto == null)       //add condition
+							if (formDto != null && srDto == null) //add condition
 							{
-								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, (from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
+								_serviceRequestOptionController.ModifyServiceRequestOption(UserId,
+									(from o in formOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Create);
 							}
 							else if (formDto == null && srDto != null) //remove condition
 							{
-								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, (from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(), EntityModification.Delete);
+								_serviceRequestOptionController.ModifyServiceRequestOption(UserId,
+									(from o in model.ServiceRequest.ServiceRequestOptions where o.ServiceOptionId == option.Id select o).First(),
+									EntityModification.Delete);
 							}
-							else if (formDto != null /* && srDto != null */)    //update condition
+							else if (formDto != null /* && srDto != null */) //update condition
 							{
 								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, srDto, EntityModification.Delete);
 								_serviceRequestOptionController.ModifyServiceRequestOption(UserId, formDto, EntityModification.Create);
-							}                                                                                                       /* done \*/
+							} /* done \*/
 						}
-					model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, form.Id); // refresh the data in the model now
+					model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, form.Id);
+					// refresh the data in the model now
 				}
-				catch (Exception exception)     //what, a problem?
+				catch (Exception exception) //what, a problem?
 				{
 					TempData["MessageType"] = WebMessageType.Failure;
 					TempData["Message"] = $"Failed to retrieve service request information, error: {exception.Message}";
 					model.CurrentIndex = -1; //either the SR does not exist or the option does not exist
 					return View("ServiceRequest", model);
 				}
+
 			}
 			/* STEP FOUR - add/remove user input data */
 			//update and add
@@ -337,7 +358,9 @@ namespace Prometheus.WebUI.Controllers
 					_serviceRequestUserInputController.ModifyServiceRequestUserInput(UserId, new ServiceRequestUserInputDto { Id = userData.UserInput.Id }, EntityModification.Delete);
 				}
 			}
-
+			//you've made it this far, all saving is complete (if saves were done)
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = "Service Request saved successfully";
 			/* STEP FIVE - navigation */
 
 			model.CurrentIndex = submit;
@@ -365,15 +388,32 @@ namespace Prometheus.WebUI.Controllers
 		{
 			ServiceRequestModel model = new ServiceRequestModel { CurrentIndex = index, ServiceRequestId = id, Mode = mode };
 
-			/* STEP ONE - get SR, get package, and stuff  */
+			/* STEP ONE - get SR, get package  */
 			try
 			{
 				model.ServiceRequest = _serviceRequestController.GetServiceRequest(UserId, id);       //get db info
+				model.SelectedAction = model.ServiceRequest.Action;
 				if (!_requestManager.UserCanEditRequest(UserId, model.ServiceRequest.Id))   //business logic 
 					throw new Exception("Service Request cannot be edited");
 
-				model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, model.ServiceRequest.Action) ??
-								   ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId);
+				//add package
+				if (model.ServiceRequest.Action == ServiceRequestAction.New)
+				{
+					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.New);
+				}   //change package 
+				else if (model.SelectedAction == ServiceRequestAction.Change)
+				{
+					model.ChangePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.Change);
+				}   //remove package
+				else if (model.SelectedAction == ServiceRequestAction.Remove)
+				{
+					model.RemovePackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.Remove);
+				}
+				if (model.InUsePackage == null)
+				{
+					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId);
+				}
+
 				//deal with no package by making one
 			}
 			catch (Exception exception)
@@ -383,40 +423,56 @@ namespace Prometheus.WebUI.Controllers
 				return View("ServiceRequest", model);
 			}
 
-
 			/* STEP TWO - get any user inputs & associate with the option */
 			List<ServiceOptionTag> optionInputList = new List<ServiceOptionTag>();
 			if (index < 0) { /*not much to do here, eh... */ }
-			else if (index < model.NewPackage.ServiceOptionCategoryTags.Count && index < 999)
+			else if (index < model.GetPackageTags(model.SelectedAction).Count() && index < 999)     //possible package null handled above
 			{
-				model.OptionCategory = model.NewPackage.ServiceOptionCategoryTags.ElementAt(index).ServiceOptionCategory;
-				foreach (var option in model.OptionCategory.ServiceOptions)
+				model.OptionCategories = new List<IServiceOptionCategoryDto>();
+				//adding the categories that will be looked at
+				if (model.GetPackageTags(model.SelectedAction).ElementAt(index) is IServiceOptionCategoryTagDto)
 				{
-					IEnumerable<IUserInput> inputs = null;  //collect relavent inputs
-					if (model.ServiceRequest.Action == ServiceRequestAction.New)    //new
+					var tag = (IServiceOptionCategoryTagDto)model.GetPackageTags(model.SelectedAction).ElementAt(index);
+					model.OptionCategories.Add(tag.ServiceOptionCategory);
+				}
+				else if (model.GetPackageTags(model.SelectedAction).ElementAt(index) is IServiceTagDto)
+				{
+					var tag = (IServiceTagDto)model.GetPackageTags(model.SelectedAction).ElementAt(index);
+					model.OptionCategories.AddRange(tag.Service.ServiceOptionCategories);
+				}
+
+
+				foreach (var category in model.OptionCategories)
+				{
+					foreach (var option in category.ServiceOptions)
 					{
-						inputs = from i in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
-								 where i.AvailableOnAdd
-								 select i;
-					}
-					else if (model.ServiceRequest.Action == ServiceRequestAction.Change)    //change
-					{
-						inputs = from i in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
-								 where i.AvailableOnChange
-								 select i;
-					}
-					else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)        //remove
-					{
-						inputs = from j in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
-								 where j.AvailableOnRemove
-								 select j;
-					}
-					if (inputs != null) //reduce chances of nulls getting to razor views
-					{
-						optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = UserInputHelper.MakeInputGroupDto(inputs) });
+						IEnumerable<IUserInput> inputs = null;  //collect relavent inputs
+						if (model.ServiceRequest.Action == ServiceRequestAction.New)    //new
+						{
+							inputs = from i in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
+									 where i.AvailableOnAdd
+									 select i;
+						}
+						else if (model.ServiceRequest.Action == ServiceRequestAction.Change)    //change
+						{
+							inputs = from i in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
+									 where i.AvailableOnChange
+									 select i;
+						}
+						else if (model.ServiceRequest.Action == ServiceRequestAction.Remove)        //remove
+						{
+							inputs = from j in _portfolioService.GetInputsForServiceOptions(UserId, new List<IServiceOptionDto> { option }).UserInputs
+									 where j.AvailableOnRemove
+									 select j;
+						}
+						if (inputs != null) //reduce chances of nulls getting to razor views
+						{
+							optionInputList.Add(new ServiceOptionTag { ServiceOption = option, UserInputs = UserInputHelper.MakeInputGroupDto(inputs) });
+						}
 					}
 				}
 			}
+
 
 			//for each SR option in the SR get the option {monthly price, up front price }
 			if (model.ServiceRequest?.ServiceRequestOptions != null)

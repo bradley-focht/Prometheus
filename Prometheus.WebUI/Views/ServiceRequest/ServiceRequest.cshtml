@@ -16,15 +16,15 @@
 	var navModel = new ServiceRequestNavigationModel {SelectedIndex = Model.CurrentIndex};
 	if (Model.SelectedAction == ServiceRequestAction.Change)
 	{
-		navModel.Titles = Model.ChangePackage.ServiceOptionCategoryTags;
+		navModel.Titles = Model.GetPackageTags(ServiceRequestAction.Change);
 	}
 	else if (Model.SelectedAction == ServiceRequestAction.New)
 	{
-		navModel.Titles = Model.NewPackage.ServiceOptionCategoryTags;
+		navModel.Titles = Model.GetPackageTags(ServiceRequestAction.New);
 	}
 	else if (Model.SelectedAction == ServiceRequestAction.Remove)
 	{
-		navModel.Titles = Model.RemovePackage.ServiceOptionCategoryTags;
+		navModel.Titles = Model.GetPackageTags(ServiceRequestAction.Remove);
 	}
 
 }
@@ -35,7 +35,7 @@
 	<input type="hidden" name="form.Id" value="@Model.ServiceRequestId" />
 	<input type="hidden" name="form.CurrentIndex" value="@Model.CurrentIndex" />
 	<input type="hidden" name="form.Mode" value="@Model.Mode" />
-	<input type="hidden" name="form.Action" value="@(Model.ServiceRequest.Action)" />
+	<input type="hidden" name="form.Action" value="@(Model.SelectedAction)" />
 	<div class="panel panel-default flex-container-row standard-padding">
 		<div class="dd ful">
 			<div class="dd-row">
@@ -89,7 +89,7 @@
 		}
 		else
 		{
-			if (Model.OptionCategory != null)
+			if (Model.OptionCategories != null)
 			{
 				@Html.Partial("PartialViews/ServiceRequestFormSelect", Model)
 			}
@@ -109,7 +109,7 @@
 				</div>
 			}
 
-			@if (Model.CurrentIndex < (Model.NewPackage.ServiceOptionCategoryTags.Count - 1))
+			@if (Model.CurrentIndex < (Model.InUsePackage.ServiceOptionCategoryTags.Count - 1))
 			{
 				<div>
 					<button name="submit" value="@(Model.CurrentIndex + 1)" class="btn btn-default">Next <i class="fa fa-chevron-right" style="font-size: 0.8em; font-weight: 100;" aria-hidden="true"></i></button>

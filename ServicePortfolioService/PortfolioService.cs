@@ -9,9 +9,6 @@ namespace ServicePortfolioService
 {
 	public class PortfolioService : IPortfolioService
 	{
-		//TODO: Figure out guest account
-		public const int GuestUserId = -1;
-
 		private readonly IServiceBundleController _serviceBundleController;
 		private readonly IServiceController _serviceController;
 		private readonly ILifecycleStatusController _lifecycleStatusController;
@@ -30,7 +27,6 @@ namespace ServicePortfolioService
 		private readonly IScriptedSelectionInputController _scriptedSelectionController;
 		private readonly IServiceRequestPackageController _serviceRequestPackageController;
 
-		//Lol I'll make a factory for constructing this
 		public PortfolioService(IServiceBundleController serviceBundleController,
 			IServiceController serviceController, ILifecycleStatusController lifecycleStatusController,
 			IServiceSwotController serviceSwotController, ISwotActivityController swotActivityController,
@@ -75,14 +71,9 @@ namespace ServicePortfolioService
 			return _serviceBundleController.GetServiceBundleNames();
 		}
 
-		public IServiceBundleDto SaveServiceBundle(IServiceBundleDto serviceBundle)
+		public IServiceBundleDto ModifyServiceBundle(int performingUserId, IServiceBundleDto serviceBundle, EntityModification modification)
 		{
-			return _serviceBundleController.SaveServiceBundle(serviceBundle);
-		}
-
-		public bool DeleteServiceBundle(int serviceBundleId)
-		{
-			return _serviceBundleController.DeleteServiceBundle(serviceBundleId);
+			return _serviceBundleController.ModifyServiceBundle(performingUserId, serviceBundle, modification);
 		}
 
 		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames()
@@ -95,14 +86,9 @@ namespace ServicePortfolioService
 			return _lifecycleStatusController.GetLifecycleStatus(lifecycleStatusId);
 		}
 
-		public ILifecycleStatusDto SaveLifecycleStatus(ILifecycleStatusDto lifecycleStatus)
+		public ILifecycleStatusDto ModifyLifecycleStatus(int performingUserId, ILifecycleStatusDto lifecycleStatus, EntityModification modification)
 		{
-			return _lifecycleStatusController.SaveLifecycleStatus(lifecycleStatus);
-		}
-
-		public bool DeleteLifecycleStatus(int lifecycleStatusId)
-		{
-			return _lifecycleStatusController.DeleteLifecycleStatus(lifecycleStatusId);
+			return _lifecycleStatusController.ModifyLifecycleStatus(performingUserId, lifecycleStatus, modification);
 		}
 
 		public int CountLifecycleStatuses()
@@ -116,9 +102,9 @@ namespace ServicePortfolioService
 			return _serviceController.GetServicesForServiceBundle(serviceBundleId);
 		}
 
-		public IServiceDto ModifyService(IServiceDto service, EntityModification modification)
+		public IServiceDto ModifyService(int performingUserId, IServiceDto service, EntityModification modification)
 		{
-			return _serviceController.ModifyService(service, modification);
+			return _serviceController.ModifyService(performingUserId, service, modification);
 		}
 
 		public IServiceDto GetService(int serviceId)
@@ -141,6 +127,11 @@ namespace ServicePortfolioService
 			return _serviceController.GetServices();
 		}
 
+		public IEnumerable<IServiceDto> SetServiceBundleForServices(int performingUserId, int? serviceBundleId, IEnumerable<IServiceDto> services)
+		{
+			return _serviceController.SetServiceBundleForServices(performingUserId, serviceBundleId, services);
+		}
+
 		public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
 		{
 			return _serviceController.GetServiceDocuments(serviceId);
@@ -154,11 +145,6 @@ namespace ServicePortfolioService
 		public IServiceDocumentDto GetServiceDocument(int performingUserId, int documentGuid)
 		{
 			return _serviceDocumentController.GetServiceDocument(performingUserId, documentGuid);
-		}
-
-		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
-		{
-			return _serviceBundleController.UpdateServiceBundle(serviceBundle);
 		}
 
 		public IServiceSwotDto GetServiceSwot(int performingUserId, int serviceSwotId)

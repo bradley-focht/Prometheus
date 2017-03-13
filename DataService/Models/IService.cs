@@ -1,12 +1,12 @@
-﻿using Common.Enums.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Common.Enums.Entities;
 
 namespace DataService.Models
 {
 	public interface IService : IUserCreatedEntity
 	{
 		int Id { get; set; }
-		int ServiceBundleId { get; set; }
+		int? ServiceBundleId { get; set; }
 
 		string BusinessOwner { get; set; }
 		string Description { get; set; }
@@ -18,7 +18,6 @@ namespace DataService.Models
 		ServiceTypeRole ServiceTypeRole { get; set; }
 		ServiceTypeProvision ServiceTypeProvision { get; set; }
 
-		ServiceBundle ServiceBundle { get; set; }
 		LifecycleStatus LifecycleStatus { get; set; }
 		ICollection<ServiceGoal> ServiceGoals { get; set; }
 		ICollection<ServiceContract> ServiceContracts { get; set; }

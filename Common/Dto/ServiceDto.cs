@@ -1,8 +1,8 @@
-﻿using Common.Enums.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Common.Enums.Entities;
 
 namespace Common.Dto
 {
@@ -13,8 +13,7 @@ namespace Common.Dto
 		public int Id { get; set; }
 
 		//FK
-		[Required(ErrorMessage = "Service bundle must be selected")]
-		public int ServiceBundleId { get; set; }
+		public int? ServiceBundleId { get; set; }
 
 		public int LifecycleStatusId { get; set; }
 

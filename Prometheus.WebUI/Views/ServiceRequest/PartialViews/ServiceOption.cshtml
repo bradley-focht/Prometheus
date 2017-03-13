@@ -1,0 +1,87 @@
+﻿@model Prometheus.WebUI.Models.ServiceRequest.ServiceOptionModel
+	
+
+<div class="dd-row">
+	<div class="dd-cell-base" style="width: 9%">
+		@if (Model.Quantifiable)
+		{
+			<div class="input-group spinner" style="max-width: 50px;">
+				@Html.TextBox("form.Quantity", "0", new { min = "0", max = "99", @class = "form-control numberSelect", id = $"quantity_{Model.ServiceOption.Id}" })
+
+				<div class="input-group-btn-vertical">
+					<button class="btn btn-default" type="button" id="quantity_up_@(Model.ServiceOption.Id)"><i class="fa fa-caret-up"></i></button>
+					<button class="btn btn-default" type="button" id="quantity_down_@(Model.ServiceOption.Id)"><i class="fa fa-caret-down"></i></button>
+				</div>
+			</div>
+		}
+		else
+		{
+			<input type="hidden" id="quantity_@(Model.ServiceOption.Id)" name="form.Quantity" value="1" />
+		}
+	</div>
+	<div class="dd-cell-base" style="width: 91%">
+		<div class="checkbox checkbox-primary">
+			<input value="@Model.ServiceOption.Id" type="checkbox" id="option_@(Model.ServiceOption.Id)" name="form.Options" onchange="UpdateOptions()">
+			<label for="option_@(Model.ServiceOption.Id)">
+				@Model.ServiceOption.Name
+			</label>
+		</div>
+
+		<div style="margin-top: -10px;">
+			<input id="drop-checkbox@(Model.ServiceOption.Id)" type="checkbox" class="drop-checkbox-request">
+			<label for="drop-checkbox@(Model.ServiceOption.Id)" id="example" class="drop-text-request" data-toggle="collapse" data-target="#category@(Model.ServiceOption.Id)">Show details</label>
+
+			<div class="collapse drop-well" id="category@(Model.ServiceOption.Id)" style="width: 100%;">
+				<div class="dd">
+					<div class="dd-row">
+						<div class="dd-cell-base" style="width: 75%">@Html.Raw(Model.ServiceOption.BusinessValue)</div>
+						<div class="dd-cell-nostyle" style="width: 20%">
+							<div class="dd full-width">
+								<div class="dd-row">
+									@if (Model.ServiceOption.PriceUpFront > 0)
+									{
+										<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Up Front</div>
+									}
+									else
+									{ <div class="dd-cell-nostyle"></div> }
+									@if (Model.ServiceOption.PriceMonthly > 0)
+									{
+										<div class="dd-cell-nostyle note" style="border-bottom: 1px solid #ddd; padding: 5px;">Monthly</div>
+									}
+									else
+									{ <div class="dd-cell-nostyle"></div> }
+								</div>
+
+								<div class="dd-row">
+									@if (Model.ServiceOption.PriceUpFront > 0)
+									{
+										<div class="dd-cell note" style="padding: 5px;">@($"${Model.ServiceOption.PriceUpFront}")</div>
+									}
+									else
+									{ <div class="dd-cell-nostyle"></div> }
+									@if (Model.ServiceOption.PriceMonthly > 0)
+									{
+										<div class="dd-cell note" style="padding: 5px;">@($"${Model.ServiceOption.PriceMonthly}")</div>
+									}
+									else
+									{ <div class="dd-cell-nostyle"></div> }
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="dd-row">
+						<div class="dd-cell-base">
+							@if (Model.ServiceOption.Picture != null)
+							{
+								<div class="float-left-div" style="border: 1px solid #ddd; margin-right: 10px;">
+									<img src="@Url.Action("GetOptionPicture", "Service", new {id = Model.ServiceOption.Id})" alt="picture" width="150" />
+								</div>
+							}
+							@Html.Raw(Model.ServiceOption.Details)
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -150,28 +150,31 @@ namespace UserManager.Controllers
 			}
 		}
 
-		//TODO: Sean - permission checks are needed
 		public IEnumerable<IRoleDto> GetRoles(int performingUserId)
 		{
-
-			using (var context = new PrometheusContext())
+			if (_permissionController.UserHasPermission(performingUserId, UserRoleAssignment.CanViewRoles))
 			{
-				var roles = context.Roles;
-				foreach (var role in roles)
+				using (var context = new PrometheusContext())
 				{
-					yield return ManualMapper.MapRoleToDto(role);
+					var roles = context.Roles;
+					foreach (var role in roles)
+					{
+						yield return ManualMapper.MapRoleToDto(role);
+					}
 				}
 			}
 		}
 
-		//TODO: Sean i don't want to deal with this either... yours truly, Brad.
 		public IRoleDto GetRole(int performingUserId, int roleId)
 		{
-			//TODO: Sean > permission things go here <
-			using (var context = new PrometheusContext())
+			if (_permissionController.UserHasPermission(performingUserId, UserRoleAssignment.CanViewRoles))
 			{
-				return ManualMapper.MapRoleToDto(context.Roles.FirstOrDefault(r => r.Id == roleId));
+				using (var context = new PrometheusContext())
+				{
+					return ManualMapper.MapRoleToDto(context.Roles.FirstOrDefault(r => r.Id == roleId));
+				}
 			}
+			return null;
 		}
 
 		protected override bool UserHasPermissionToModify(int performingUserId, IRoleDto role, EntityModification modification, out object permission)

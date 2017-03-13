@@ -12,6 +12,7 @@ namespace Common.Dto
 		/// Script to execute
 		/// </summary>
 		[Display(Order = 5, Name="Script")]
+		[Required(ErrorMessage = "Script is required")]
 		public int ScriptId { get; set; }
 
 		/// <summary>
@@ -23,6 +24,7 @@ namespace Common.Dto
 		/// <summary>
 		/// PK
 		/// </summary>
+		[HiddenInput]
 		public int Id { get; set; }
 
 		/// <summary>

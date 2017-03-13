@@ -254,7 +254,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				newService = AbbreviatedEntityUpdate.UpdateService(service, _portfolioService.GetService(service.Id));
 				//preserve service design documentation
-				_portfolioService.ModifyService(newService, EntityModification.Update);
+				_portfolioService.ModifyService(UserId, newService, EntityModification.Update);
 			}
 			catch (Exception exception)
 			{

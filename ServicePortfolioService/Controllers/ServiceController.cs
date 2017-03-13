@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using AutoMapper;
+using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
-using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
-	public class ServiceController : IServiceController
+	public class ServiceController : EntityController<IServiceDto>, IServiceController
 	{
 		public IServiceDto GetService(int serviceId)
 		{
@@ -27,23 +26,13 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				var serviceBundle = context.ServiceBundles.Find(serviceBundleId);
-				return serviceBundle.Services.Select(x => Mapper.Map<ServiceDto>(x));
+				return context.Services.Where(x => x.ServiceBundleId == serviceBundleId).Select(x => ManualMapper.MapServiceToDto(x));
 			}
 		}
 
-		public IServiceDto ModifyService(IServiceDto service, EntityModification modification)
+		public IServiceDto ModifyService(int performingUserId, IServiceDto service, EntityModification modification)
 		{
-			switch (modification)
-			{
-				case EntityModification.Create:
-					return SaveService(service);
-				case EntityModification.Update:
-					return UpdateService(service);
-				case EntityModification.Delete:
-					return DeleteService(service.Id) ? null : service;
-			}
-			throw new ModificationException(string.Format("Modification {0} was not performed on entity {1}", modification, service));
+			return base.ModifyEntity(performingUserId, service, modification);
 		}
 
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
@@ -52,56 +41,6 @@ namespace ServicePortfolioService.Controllers
 			var nameList = new List<Tuple<int, string>>();
 			nameList.AddRange(services.Select(x => new Tuple<int, string>(x.Id, x.Name)));
 			return nameList.OrderBy(x => x.Item2);
-		}
-
-		private IServiceDto SaveService(IServiceDto service)
-		{
-			using (var context = new PrometheusContext())
-			{
-				var existingService = context.Services.Find(service.Id);
-				if (existingService == null)
-				{
-					//var savedService = context.Services.Add(Mapper.Map<Service>(service));
-					var savedService = context.Services.Add(ManualMapper.MapDtoToService(service));
-					//TODO SAVE FOR USER
-					context.SaveChanges();
-					return ManualMapper.MapServiceToDto(savedService);
-					//return Mapper.Map<ServiceDto>(savedService);
-				}
-				else
-				{
-					return UpdateService(service);
-				}
-			}
-		}
-
-		private IServiceDto UpdateService(IServiceDto service)
-		{
-			using (var context = new PrometheusContext())
-			{
-				if (!context.Services.Any(x => x.Id == service.Id))
-				{
-					throw new InvalidOperationException("Service record must exist in order to be updated.");
-				}
-				var updatedService = ManualMapper.MapDtoToService(service);
-				context.Services.Attach(updatedService);
-				context.Entry(updatedService).State = EntityState.Modified;
-				//TODO SAVE FOR USER
-				context.SaveChanges();
-				return ManualMapper.MapServiceToDto(updatedService);
-			}
-		}
-
-		private bool DeleteService(int serviceId)
-		{
-			using (var context = new PrometheusContext())
-			{
-				var toDelete = context.Services.Find(serviceId);
-				context.Services.Remove(toDelete);
-				//TODO SAVE FOR USER
-				context.SaveChanges();
-			}
-			return true;
 		}
 
 		public IEnumerable<Tuple<int, string>> GetServiceNames()
@@ -147,6 +86,75 @@ namespace ServicePortfolioService.Controllers
 		{
 			var service = GetService(serviceId);
 			return service.ServiceDocuments;
+		}
+
+		protected override IServiceDto Create(int performingUserId, IServiceDto service)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var existingService = context.Services.Find(service.Id);
+				if (existingService == null)
+				{
+					var savedService = context.Services.Add(ManualMapper.MapDtoToService(service));
+					context.SaveChanges(performingUserId);
+					return ManualMapper.MapServiceToDto(savedService);
+				}
+				else
+				{
+					throw new InvalidOperationException(string.Format("Service with ID {0} already exists.", service.Id));
+				}
+			}
+		}
+
+		protected override IServiceDto Update(int performingUserId, IServiceDto service)
+		{
+			using (var context = new PrometheusContext())
+			{
+				if (!context.Services.Any(x => x.Id == service.Id))
+				{
+					throw new InvalidOperationException("Service record must exist in order to be updated.");
+				}
+				var updatedService = ManualMapper.MapDtoToService(service);
+
+				context.Services.Attach(updatedService);
+				context.Entry(updatedService).State = EntityState.Modified;
+				context.SaveChanges(performingUserId);
+				return ManualMapper.MapServiceToDto(updatedService);
+			}
+		}
+
+		protected override IServiceDto Delete(int performingUserId, IServiceDto entity)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var toDelete = context.Services.Find(entity.Id);
+
+				var tagsToDelete = context.ServiceTags.Where(x => x.ServiceId == entity.Id);
+				context.ServiceTags.RemoveRange(tagsToDelete);
+				context.SaveChanges(performingUserId);
+
+				context.Services.Remove(toDelete);
+				context.SaveChanges(performingUserId);
+			}
+			return null;
+		}
+
+		public IEnumerable<IServiceDto> SetServiceBundleForServices(int performingUserId, int? serviceBundleId, IEnumerable<IServiceDto> services)
+		{
+			using (var context = new PrometheusContext())
+			{
+				foreach (var serviceDto in services)
+				{
+					var service = context.Services.Find(serviceDto.Id);
+					service.ServiceBundleId = serviceBundleId;
+
+					context.Services.Attach(service);
+					context.Entry(service).State = EntityState.Modified;
+					context.SaveChanges(performingUserId);
+
+					yield return ManualMapper.MapServiceToDto(service);
+				}
+			}
 		}
 	}
 }

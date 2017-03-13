@@ -1,5 +1,5 @@
-﻿using Common.Enums.Entities;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Common.Enums.Entities;
 
 namespace Common.Dto
 {
@@ -8,11 +8,10 @@ namespace Common.Dto
 		string BusinessOwner { get; set; }
 		string Description { get; set; }
 		int LifecycleStatusId { get; set; }
-		int ServiceBundleId { get; set; }
+		int? ServiceBundleId { get; set; }
 		string ServiceOwner { get; set; }
 		ServiceTypeProvision ServiceTypeProvision { get; set; }
 		ServiceTypeRole ServiceTypeRole { get; set; }
-		IServiceBundleDto ServiceBundle { get; set; }
 		ILifecycleStatusDto LifecycleStatusDto { get; set; }
 		ICollection<IServiceSwotDto> ServiceSwots { get; set; }
 		ICollection<IServiceWorkUnitDto> ServiceWorkUnits { get; set; }

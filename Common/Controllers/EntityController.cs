@@ -47,13 +47,42 @@ namespace Common.Controllers
 		}
 
 		/// <summary>
+		/// Checks to determine if the user has the required permission in order to retrieve the entity type.
+		/// 
+		/// NOTE: Override method to apply a permission.
+		/// </summary>
+		/// <param name="performingUserId">ID for user performing the retrieval</param>
+		/// <param name="permission">Permission that is required to perform the retrieval. Object passed in does not matter.</param>
+		/// <returns>If the user can perform the retrieval</returns>
+		protected virtual bool UserHasPermissionToGetAny(int performingUserId, out object permission)
+		{
+			permission = null;
+			return true;
+		}
+
+		/// <summary>
+		/// Checks to determine if the user has the required permission in order to retrieve the entity.
+		/// Base implementation simply checks if user can retrieve Any of that entity
+		/// 
+		/// NOTE: Override method to apply a permission.
+		/// </summary>
+		/// <param name="performingUserId">ID for user performing the retrieval</param>
+		/// <param name="entityId">ID of Entity to retrieve</param>
+		/// <param name="permission">Permission that is required to perform the retrieval. Object passed in does not matter.</param>
+		/// <returns>If the user can perform the retrieval</returns>
+		protected virtual bool UserHasPermissionToGetById(int performingUserId, int entityId, out object permission)
+		{
+			return UserHasPermissionToGetAny(performingUserId, out permission);
+		}
+
+		/// <summary>
 		/// Determines if the user has permission to modify an entity, then performs that modification to the database.
 		/// </summary>
 		/// <param name="performingUserId">User performing the modification</param>
 		/// <param name="entityDto">entity to be modified</param>
 		/// <param name="modification">type of modification</param>
 		/// <returns>The modified entity DTO</returns>
-		public T ModifyEntity(int performingUserId, T entityDto, EntityModification modification)
+		protected T ModifyEntity(int performingUserId, T entityDto, EntityModification modification)
 		{
 			if (entityDto == null)
 				ThrowArgumentNullError(typeof(T).ToString());

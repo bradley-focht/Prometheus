@@ -1,4 +1,5 @@
-﻿@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestNavigationModel
+﻿@using Common.Dto
+@model Prometheus.WebUI.Models.ServiceRequest.ServiceRequestNavigationModel
 @{
 
 }
@@ -16,20 +17,39 @@
         }
 
         @{
-	        int counter = 0;
-	        foreach (var title in Model.Titles)
-	        {
-		        if (Model.SelectedIndex == counter)
-		        {
-			        <li class="sr-navigation-active"><button disabled="disabled">@title.ServiceOptionCategory.Name </button></li>
-		        }
-		        else
-		        {
-			        <li><button type="submit" name="submit" value="@(counter)">@title.ServiceOptionCategory.Name</button></li>
+			int counter = 0;
+			foreach (var title in Model.Titles)
+			{
+				if (Model.SelectedIndex == counter)
+				{
+					if (title is IServiceOptionCategoryTagDto)
+					{
+						IServiceOptionCategoryTagDto label = (IServiceOptionCategoryTagDto) title;
+						<li class="sr-navigation-active"><button disabled="disabled">@label.ServiceOptionCategory.Name </button></li>
+					}
+					 else if (title is IServiceTagDto)
+					{
+						IServiceTagDto label = (IServiceTagDto)title;
+						<li class="sr-navigation-active"><button disabled="disabled">@label.Service.Name </button></li>
+					}
+
+				}
+				else
+				{
+					if (title is IServiceOptionCategoryTagDto)
+					{
+						IServiceOptionCategoryTagDto label = (IServiceOptionCategoryTagDto)title;
+						<li><button type="submit" name="submit" value="@(counter)">@label.ServiceOptionCategory.Name</button></li>
+					}
+					else if (title is IServiceTagDto)
+					{
+						IServiceTagDto label = (IServiceTagDto)title;
+						<li><button type="submit" name="submit" value="@(counter)">@label.Service.Name </button></li>
+					}
 				}
 				counter++;
 			}
-        }
+		}
 
 	    <li><button disabled="disabled"></button></li>
     </ul>

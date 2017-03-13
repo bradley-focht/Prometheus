@@ -10,7 +10,7 @@ namespace Common.Utilities
 	/// <summary>
 	/// Executes scripts
 	/// </summary>
-    public class ScriptExecutor : IScriptExecutor
+	public class ScriptExecutor : IScriptExecutor
 	{
 		/// <summary>
 		/// Returns the user's department

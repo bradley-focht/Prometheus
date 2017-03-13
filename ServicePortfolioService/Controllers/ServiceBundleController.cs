@@ -2,20 +2,21 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using Common.Controllers;
 using Common.Dto;
+using Common.Enums.Entities;
 using DataService;
 using DataService.DataAccessLayer;
 
 namespace ServicePortfolioService.Controllers
 {
-	public class ServiceBundleController : IServiceBundleController
+	public class ServiceBundleController : EntityController<IServiceBundleDto>, IServiceBundleController
 	{
 		public IServiceBundleDto GetServiceBundle(int serviceBundleId)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var serviceBundle = context.ServiceBundles.Find(serviceBundleId);
-				//return Mapper.Map<ServiceBundleDto>(serviceBundle);   //stack overflow
 				return ManualMapper.MapServiceBundleToDto(serviceBundle);
 			}
 		}
@@ -47,30 +48,27 @@ namespace ServicePortfolioService.Controllers
 
 		}
 
-		public IServiceBundleDto SaveServiceBundle(IServiceBundleDto serviceBundle)
+		public IServiceBundleDto ModifyServiceBundle(int performingUserId, IServiceBundleDto serviceBundle, EntityModification modification)
+		{
+			return base.ModifyEntity(performingUserId, serviceBundle, modification);
+		}
+
+		protected override IServiceBundleDto Create(int performingUserId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
 			{
-				//TODO: Sean i commented out lots of stuff here like lots. Like a lot a lot. 
-				//var existingServiceBundle = context.ServiceBundles.Find(serviceBundle.Id);
-				//if (existingServiceBundle == null)
-				//{
-
-				//var savedServiceBundle = context.ServiceBundles.Add(Mapper.Map<ServiceBundle>(serviceBundle));
-				var savedServiceBundle = context.ServiceBundles.Add(ManualMapper.MapDtoToServiceBundle(serviceBundle));
-				//TODO SAVE FOR USER
-				context.SaveChanges();
-				//return Mapper.Map<ServiceBundleDto>(savedServiceBundle);
-				return ManualMapper.MapServiceBundleToDto(savedServiceBundle);
-				//}
-				//else
-				//{
-				//	return UpdateServiceBundle(serviceBundle);
-				//}
+				var bundle = context.ServiceBundles.Find(serviceBundle.Id);
+				if (bundle != null)
+				{
+					throw new InvalidOperationException(string.Format("Service Bundle with ID {0} already exists.", serviceBundle.Id));
+				}
+				var savedBundle = context.ServiceBundles.Add(ManualMapper.MapDtoToServiceBundle(serviceBundle));
+				context.SaveChanges(performingUserId);
+				return ManualMapper.MapServiceBundleToDto(savedBundle);
 			}
 		}
 
-		public IServiceBundleDto UpdateServiceBundle(IServiceBundleDto serviceBundle)
+		protected override IServiceBundleDto Update(int performingUserId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -81,22 +79,32 @@ namespace ServicePortfolioService.Controllers
 				var updatedServiceBundle = ManualMapper.MapDtoToServiceBundle(serviceBundle);
 				context.ServiceBundles.Attach(updatedServiceBundle);
 				context.Entry(updatedServiceBundle).State = EntityState.Modified;
-				//TODO SAVE FOR USER
-				context.SaveChanges();
+				context.SaveChanges(performingUserId);
 				return ManualMapper.MapServiceBundleToDto(updatedServiceBundle);
 			}
 		}
 
-		public bool DeleteServiceBundle(int serviceBundleId)
+		protected override IServiceBundleDto Delete(int performingUserId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
 			{
-				var toDelete = context.ServiceBundles.Find(serviceBundleId);
+				//Remove references to Service Bundle
+				var servicesToUpdate = context.Services.Where(x => x.ServiceBundleId == serviceBundle.Id);
+				foreach (var service in servicesToUpdate)
+				{
+					service.ServiceBundleId = null;
+
+					context.Services.Attach(service);
+					context.Entry(service).State = EntityState.Modified;
+					context.SaveChanges(performingUserId);
+				}
+
+				//Delete the Bundle itself
+				var toDelete = context.ServiceBundles.Find(serviceBundle.Id);
 				context.ServiceBundles.Remove(toDelete);
-				//TODO SAVE FOR USER
-				context.SaveChanges();
+				context.SaveChanges(performingUserId);
 			}
-			return true;
+			return null;
 		}
 	}
 }
