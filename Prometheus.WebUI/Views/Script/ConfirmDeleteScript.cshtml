@@ -1,0 +1,43 @@
+﻿@model Common.Dto.ScriptDto
+
+@{
+    ViewBag.Title = "Scripts";
+    ViewBag.SubTitle = "Scripts";
+    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+
+    ViewBag.Links = new List<KeyValuePair<string, string>>
+    {
+        new KeyValuePair<string, string>("Home", "Home"),
+        new KeyValuePair<string, string>("Scripts", "Script/Index"),
+        new KeyValuePair<string, string>(ViewBag.SubTitle, "#")
+
+    };
+
+}
+
+@section Sidebar{}
+
+@section Content{
+    @using (Html.BeginForm("DeleteScript", "Script", FormMethod.Post))
+    {
+        @Html.Hidden("Id", Model.Id)
+        <div class="panel std-div">
+            <div class="title-div">Confirm Deletion</div>
+            Confirm that you want to delete Script
+            <div class="present-section">
+                @Model.Name
+            </div>
+            <div class="flex-container-col">
+                <div class="panel-footer">
+                    <div class="float-right-div">
+                        @Html.ActionLink("Back", "Index", new { id = Model.Id }, new { @class = "btn btn-default btn-back" })
+                        <input type="submit" value="Confirm Delete" class="btn btn-danger" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+}
+
+

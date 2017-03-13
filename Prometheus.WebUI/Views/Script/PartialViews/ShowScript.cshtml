@@ -37,7 +37,7 @@
         <div class="float-right-div">
             @Html.ActionLink("Back", "Index", new { }, new { @class = "btn btn-default btn-back" })
             @Html.ActionLink("Update", "UpdateScript", new { id = Model.Id }, new { @class = "btn btn-primary" })
-
+            @Html.ActionLink("Delete", "ConfirmDeleteScript", Model, new { @class = "btn btn-primary" })
         </div>
     </div>
 </div>

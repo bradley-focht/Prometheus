@@ -12,6 +12,7 @@ using Common.Enums.Entities;
 using Common.Utilities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
+using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
 
 namespace Prometheus.WebUI.Controllers
@@ -37,7 +38,7 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// To get a specific script entry
+		/// Genearlly for viewing the namne and description of the script - not for execvuting scripts
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
@@ -142,8 +143,47 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Index");
 		}
 
-		// GET: Script
-		public JsonResult GetRequestees(Guid id)
+        public ActionResult ConfirmDeleteScript(int id)
+        {
+            ScriptDto model = new ScriptDto() { Id = id };
+
+            try
+            {
+                model.Name = _scriptFileController.GetScript(UserId, id).Name; //complete model details
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to retrieve script, error: {exception.Message}";
+            }
+
+            return View("ConfirmDeleteScript", model);
+        }
+
+        [HttpPost]
+        public ActionResult DeleteScript(DeleteModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = "Failed to delete, incomplete data sent";
+                return RedirectToAction("ConfirmDeleteScript", new { id = model.Id });
+            }
+
+            try
+            {
+                _scriptFileController.ModifyScript(UserId, new ScriptDto() { Id = model.Id }, EntityModification.Delete);
+            }
+            catch (Exception exception)
+            {
+                TempData["MessageType"] = WebMessageType.Failure;
+                TempData["Message"] = $"Failed to delete scripte, error: {exception.Message}";
+            }
+            return RedirectToAction("Index");
+        }
+
+        // GET: Script
+        public JsonResult GetRequestees(Guid id)
 		{
 
 			var people = new HashSet<ScriptResult<Guid, string>>();
