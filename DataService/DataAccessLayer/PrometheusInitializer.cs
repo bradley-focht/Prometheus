@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using Common.Enums.Permissions;
 using DataService.Models;
@@ -9,11 +11,9 @@ namespace DataService.DataAccessLayer
 	//https://www.asp.net/mvc/overview/getting-started/getting-started-with-ef-using-mvc/creating-an-entity-framework-data-model-for-an-asp-net-mvc-application
 	public class PrometheusInitializer : System.Data.Entity.DropCreateDatabaseIfModelChanges<PrometheusContext>
 	{
-		private readonly string _temporaryDepartmentName = "SUPER_DUPER_DEPARTMENT_LAND";
-
 		protected override void Seed(PrometheusContext context)
 		{
-			SeedTemporaryDepartment(context);
+			SeedConfigurationDepartment(context);
 			SeedDefaultPermissions(context);
 			AddGuestUser(context);
 			AddAdministrator(context);
@@ -67,6 +67,7 @@ namespace DataService.DataAccessLayer
 			var admin = new User()
 			{
 				Name = "Administrator",
+				AdGuid = Guid.Parse(ConfigurationManager.AppSettings["AdAdministratorGuid"]),
 				Department = department
 			};
 
@@ -223,11 +224,11 @@ namespace DataService.DataAccessLayer
 			context.SaveChanges();
 		}
 
-		private void SeedTemporaryDepartment(PrometheusContext context)
+		private void SeedConfigurationDepartment(PrometheusContext context)
 		{
 			context.Departments.Add(new Department()
 			{
-				Name = _temporaryDepartmentName
+				Name = ConfigurationManager.AppSettings["AdministratorGuestDepartment"]
 			});
 			context.SaveChanges();
 		}

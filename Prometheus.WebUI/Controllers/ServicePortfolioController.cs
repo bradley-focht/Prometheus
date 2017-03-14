@@ -23,8 +23,6 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-
-
 			return View(_portfolioService.GetServiceBundles());
 		}
 		/// <summary>
