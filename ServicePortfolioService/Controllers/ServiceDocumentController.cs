@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Data.Entity;
 using System.Linq;
 using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
-using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 
@@ -42,7 +42,19 @@ namespace ServicePortfolioService.Controllers
 
 		protected override IServiceDocumentDto Update(int performingUserId, IServiceDocumentDto entity)
 		{
-			throw new ModificationException(string.Format("Modification {0} cannot be performed on Service Documents.", EntityModification.Update));
+			using (var context = new PrometheusContext())
+			{
+				if (!context.ServiceDocuments.Any(x => x.Id == entity.Id))
+				{
+					throw new InvalidOperationException(
+						string.Format("Service Document with ID {0} cannot be updated since it does not exist.", entity.Id));
+				}
+				var updatedServiceDocument = ManualMapper.MapDtoToServiceDocument(entity);
+				context.ServiceDocuments.Attach(updatedServiceDocument);
+				context.Entry(updatedServiceDocument).State = EntityState.Modified;
+				context.SaveChanges(performingUserId);
+				return ManualMapper.MapServiceDocumentToDto(updatedServiceDocument);
+			}
 		}
 
 		protected override IServiceDocumentDto Delete(int performingUserId, IServiceDocumentDto document)
