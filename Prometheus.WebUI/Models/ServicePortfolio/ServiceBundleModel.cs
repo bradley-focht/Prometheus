@@ -4,13 +4,13 @@ using Common.Dto;
 
 namespace Prometheus.WebUI.Models.ServicePortfolio
 {
+	/// <summary>
+	/// A single service bundle and related services
+	/// </summary>
 	public class ServiceBundleModel
 	{
-		public ServiceBundleModel(ServiceBundleDto currentServiceBundle)
-		{
-			CurrentServiceBundle = currentServiceBundle;
-		}
-		public ServiceBundleDto CurrentServiceBundle { get; set; }
-		public IEnumerable<Tuple<int, string>> ServiceBundles { get; set; }
+		public IServiceBundleDto ServiceBundle { get; set; }
+
+		public IEnumerable<Tuple<int, string>> ServiceNames { get; set; }
 	}
 }

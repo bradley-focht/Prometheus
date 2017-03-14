@@ -3,7 +3,8 @@
 <div class="panel-div">
     @* content *@
     @* Html.Partial("some partial view ") *@
-    <input type="hidden" name="Id" value="@Model.Id" />
+	<input type="hidden" name="Id" value="@Model.Id"/>
+	@Html.Hidden("ScriptFile", Model.ScriptFile)
     <div class="dd-row">
         <div class="dt-cell"> @Html.DisplayNameFor(model => model.Name) </div>
         <div class="dd-cell">
@@ -14,7 +15,7 @@
     <div class="dd-row">
         <div class="dt-cell"> @Html.DisplayNameFor(model => model.Description) </div>
         <div class="dd-cell">
-            @Html.TextBox("Description", Model.Description, new { @class = "form-control" })
+            @Html.TextArea("Description", Model.Description, new { @class = "ckeditor" })
             @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
         </div>
     </div>

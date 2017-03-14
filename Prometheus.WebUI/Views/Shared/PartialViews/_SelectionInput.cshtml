@@ -4,7 +4,7 @@
 <div class="dd full-width">
 	<div class="dd-row">
 		<div class="dd-cell-nostyle">
-			@Html.TextBox($"{Model.ControlName}Value", null, new { id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), @class = "form-control" })
+			@Html.TextBox($"{Model.ControlName}Value", null, new { id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), @class = "form-control", data_val = "true", data_val_required = "Required" })
 		</div>
 		<div class="dd-cell-nostyle" style="width:20px;">
 			@if (!string.IsNullOrEmpty(Model.Control.HelpToolTip))

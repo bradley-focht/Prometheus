@@ -9,7 +9,7 @@
 			}
 			else
 			{
-				@Html.TextBox(Model.ControlName + "Value", null, new {@class = "form-control", id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), data_val_required = "Required"})
+				@Html.TextBox(Model.ControlName + "Value", null, new {@class = "form-control", id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), data_val="true", data_val_required = "Required"})
 				@Html.ValidationMessage($"{Model.ControlName}Value")
 			}
 		</div>

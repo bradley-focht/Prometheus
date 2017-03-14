@@ -368,6 +368,7 @@
     <Compile Include="Models\ServiceCatalog\CatalogModel.cs" />
     <Compile Include="Models\ServiceCatalog\OptionModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceOptionsModel.cs" />
+    <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
     <Compile Include="Models\ServiceRequestApproval\DisplayListOption.cs" />
     <Compile Include="Models\ServiceRequestApproval\DisplayListUserInput.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestApprovalControls.cs" />
@@ -409,8 +410,7 @@
     <Compile Include="Models\Service\ServiceModel.cs" />
     <Compile Include="Models\Shared\LinkListModel.cs" />
     <Compile Include="Models\ServiceMaintenance\LifecycleModel.cs" />
-    <Compile Include="Models\ServicePortfolio\ServiceBundleModel.cs" />
-    <Compile Include="Models\ServicePortfolio\ServiceBundleEditorModel.cs" />
+    <Compile Include="Models\ServicePortfolio\ServiceBundlesModel.cs" />
     <Compile Include="Models\ServiceRequest\ServiceRequestInfoReturnModel.cs" />
     <Compile Include="Models\Shared\TableDataModel.cs" />
     <Compile Include="Models\Shared\InputModel.cs" />

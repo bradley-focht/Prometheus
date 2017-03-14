@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
@@ -23,7 +24,15 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index()
 		{
-			return View(_portfolioService.GetServiceBundles());
+			var bundlesList = new List<ServiceBundleModel>();
+
+			foreach (var bundle in _portfolioService.GetServiceBundles())
+			{
+				ServiceBundleModel bundleModel = new ServiceBundleModel {ServiceBundle = bundle};
+				bundleModel.ServiceNames = _portfolioService.GetServiceNamesForServiceBundle(bundleModel.ServiceBundle.Id);
+			}
+
+				return View(bundlesList);
 		}
 		/// <summary>
 		/// 
@@ -60,7 +69,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Add()
 		{
-			ServiceBundleModel model = new ServiceBundleModel(new ServiceBundleDto());
+			ServiceBundlesModel model = new ServiceBundlesModel {CurrentServiceBundle = new ServiceBundleModel()};
 
 			return View(model);
 		}
