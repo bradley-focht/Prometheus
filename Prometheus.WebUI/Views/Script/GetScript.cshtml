@@ -21,11 +21,5 @@
 }
 
 @section Sidebar{
-    @* control buttons at the bottom *@
-
-    <div class="panel-footer">
-        <div class="float-right-div">
-            @Html.ActionLink("Add", "Add", new { id = Model.Id }, new { @class = "btn btn-primary" })
-        </div>
-    </div>
+    @Html.Action("GetScripts", Model.Id)
 }

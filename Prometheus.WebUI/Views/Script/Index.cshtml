@@ -18,24 +18,4 @@
 }
 
 @section Sidebar{
-    <div class="flex-container-col">
-        @if (Model != null)
-    {
-
-        foreach (var item in Model)
-        {
-                <div>
-                    @Html.ActionLink(item.Name, "GetScript", new { id = item.Id })
-                </div>
-
-            }
-        }
-
-        @* control buttons at the bottom *@
-        <div class="panel-footer">
-            <div class="float-right-div">
-                @Html.ActionLink("Add", "Add", new { id = 0 }, new { @class = "btn btn-primary" })
-            </div>
-        </div>
-    </div>
-}
+   @Html.Action("GetScripts", new {id = 0})}

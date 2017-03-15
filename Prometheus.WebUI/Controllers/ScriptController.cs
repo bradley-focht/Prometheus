@@ -49,6 +49,28 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
+		/// Create a link list of scripts to select from
+		/// </summary>
+		/// <param name="id">selected script</param>
+		/// <returns></returns>
+		public ActionResult GetScripts(int id)
+		{
+			LinkListModel model = new LinkListModel
+			{
+				AddAction = "Add",
+				SelectAction = "GetScript",
+				Controller = "Script",
+				SelectedItemId = id,
+				Title = "Scripts"
+			};
+
+			model.ListItems = new List<Tuple<int, string>>();
+			model.ListItems = from s in _scriptFileController.GetScripts(UserId) select new Tuple<int, string>(s.Id, s.Name);
+
+			return View("PartialViews/_LinkList", model);
+		}
+
+		/// <summary>
 		/// GET: Script/Add
 		/// </summary>
 		/// <returns></returns>
