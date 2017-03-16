@@ -23,6 +23,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// <summary>
 		/// SR Requestees
 		/// </summary>
+		[Required]
 		public ICollection<string> Requestees { get; set; }
         /// <summary>
         /// User Comments
@@ -33,9 +34,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// Office Use comments
         /// </summary>
         public string OfficeUse { get; set; }
-        /// <summary>
-        /// Requestor Id
-        /// </summary>
+		/// <summary>
+		/// Requestor Id
+		/// </summary>
+		[Required]
 		public Guid Requestor { get; set; }
 		public int RequestorUserId { get; set; }
         /// <summary>

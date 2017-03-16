@@ -94,7 +94,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save Service Request due to invalid data";
-				return View("ServiceRequest", model);
+				if (form.Id > 0)
+					return RedirectToAction("Form", new {id = form.Id});
+				return RedirectToAction("Begin", new {id = form.ServiceOptionId, index = -1});
 			}
 			// data ok from here on
 			ServiceRequestDto request = new ServiceRequestDto   //need an adapter
