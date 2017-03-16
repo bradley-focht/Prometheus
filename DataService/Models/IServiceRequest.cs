@@ -11,7 +11,8 @@ namespace DataService.Models
 		int DepartmentId { get; set; }
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }
-
+		string RequestedForGuids { get; set; }
+		Guid RequestedByGuid { get; set; }
 		string Comments { get; set; }
 		string Officeuse { get; set; }
 		string Name { get; set; }

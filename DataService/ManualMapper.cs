@@ -912,11 +912,12 @@ namespace DataService
 				CreationDate = src.CreationDate,
 				Officeuse = src.Officeuse,
 				RequestedByUserId = src.RequestedByUserId,
+				RequestedForGuids = src.RequestedForGuids,
+				RequestedByGuid = src.RequestedByGuid,
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
 				DepartmentId = src.DepartmentId,
-
 			};
 		}
 
@@ -936,6 +937,8 @@ namespace DataService
 				CreationDate = src.CreationDate,
 				Officeuse = src.Officeuse,
 				RequestedByUserId = src.RequestedByUserId,
+				RequestedForGuids = src.RequestedForGuids,
+				RequestedByGuid = src.RequestedByGuid,
 				SubmissionDate = src.SubmissionDate,
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
@@ -985,8 +988,6 @@ namespace DataService
 				Quantity = src.Quantity,
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest,
-				//ServiceOption = MapServiceOptionToDto(src.ServiceOption),
-				//ServiceRequest = MapServiceRequestToDto(src.ServiceRequest)
 			};
 		}
 
@@ -1036,7 +1037,6 @@ namespace DataService
 				ScriptFile = src.ScriptFile,
 				MimeType = src.MimeType,
 				UploadDate = src.UploadDate
-
 			};
 		}
 
@@ -1093,7 +1093,6 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
-
 			};
 		}
 	}

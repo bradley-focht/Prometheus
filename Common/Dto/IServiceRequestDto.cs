@@ -14,7 +14,8 @@ namespace Common.Dto
 
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }
-
+		string RequestedForGuids { get; set; }
+		Guid RequestedByGuid { get; set; }
 		string Comments { get; set; }
 		DateTime? ApprovalDate { get; set; }
 		DateTime CreationDate { get; set; }

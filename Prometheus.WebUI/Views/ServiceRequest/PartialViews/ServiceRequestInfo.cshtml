@@ -7,11 +7,12 @@
 	if (Model.ChangePackage != null) { packageCount++; }
 	if (Model.RemovePackage != null) { packageCount++; }
 }
+
+
+
 <div class="dd">
 	@if (Model.ServiceRequest.Id <= 0)
 			{
-
-
 		@* Add only OR no package specified *@
 	if (packageCount > 1)
 	{
@@ -66,7 +67,6 @@
 			</div>
 		</div>
 		}
-
 	}
 	<div class="dd-row">
 		<div class="dt-cell">
@@ -82,7 +82,8 @@
 		<div class="dt-cell">Requestor</div>
 		<div class="dd-cell">
 			@Session["Displayname"]
-			<input type="hidden" value="@Session["Id"].ToString())" name="form.Requestor" />
+			<input type="hidden" value="@Session["Guid"].ToString()" name="form.Requestor" />
+
 		</div>
 	</div>
 	<div class="dd-row">
@@ -90,20 +91,25 @@
 			Requested For
 		</div>
 		<div class="dd-cell">
+			<div class="dd">
+				<div class="dd-row">
+					<div class="dd-cell-nostyle">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default" id="RequesteeMe" onclick="EnableSelector(false)">
+								@Html.RadioButton("Requestees", Session["Guid"].ToString()) Me
+							</label>
 
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-default" id="RequesteeMe" onclick="EnableSelector(false)">
-					@Html.RadioButton("Requestees", Session["Id"].ToString(), false) Me
-				</label>
-
-				<label class="btn btn-default" id="RequesteeOther" onclick="EnableSelector(true)">
-					@Html.RadioButton("ServiceTypeRole", "Other", false) Someone else
-				</label>
+							<label class="btn btn-default" id="RequesteeOther" onclick="EnableSelector(true)">
+								@Html.RadioButton("Requestees", "") Other
+							</label>
+						</div>
+					</div>
+					<div class="dd-cell-nostyle" id="div_RequesteeSelect" style="display: none;">
+						<select name="form.Requestees" id="RequesteesSelect" style="width: 400px" data-val = "true" data-val-required = "Requested for is required" ></select>
+						@Html.ValidationMessage("form.Requestees")
+					</div>
+				</div>
 			</div>
-
-			<select name="Requestees" id="RequesteesSelect" style="width: 400px">
-
-			</select>
 		</div>
 	</div>
 	<div class="dd-row">
@@ -122,11 +128,8 @@
 							autoclose: true,
 							format: "mm-dd-yyyy"
 						});
-
 				});
-
 			</script>
-
 		</div>
 	</div>
 	<div class="dd-row">
@@ -142,40 +145,97 @@
 	</div>
 </div>
 
-
-
-
 <script type="text/javascript" language="javascript">
 	function EnableSelector(enable) {
-		var select = document.getElementById('RequesteesSelect');
-
+		var divSelect = document.getElementById('div_RequesteeSelect');
 		if (enable) {
-			select.selectize.enable();
-
+			divSelect.style.display = 'block';
 		} else {
-			select.selectize.disable();
+			divSelect.style.display = 'none';
 		}
 	}
 
+
+	@{
+				//figure out requestee info
+		Guid userGuid;
+		try
+		{
+			userGuid = Guid.Parse(Session["Guid"].ToString());
+		}
+		catch (Exception)
+		{
+			userGuid = Guid.Empty;
+		}
+
+
+		List<string> requesteeGuidStrings;
+		if (Model.ServiceRequest.RequestedForGuids != null)
+		{
+			requesteeGuidStrings = Model.ServiceRequest.RequestedForGuids.Split(',').ToList();
+		}
+		else
+		{
+			requesteeGuidStrings = new List<string>();
+		}
+
+		List<Guid> userGuids = new List<Guid>();
+		foreach (var guid in requesteeGuidStrings)
+		{
+			try
+			{
+				userGuids.Add(Guid.Parse(guid));
+			}
+			catch (Exception)
+			{
+			}
+		}
+
+		if (userGuids.Count <= 1 && userGuids.FirstOrDefault() == userGuid)
+		{
+			<text> @*write javascript *@
+	EnableSelector(false);
+	$('#RequesteeMe').button('toggle');
+	</text>
+		}
+
+	}
+
+
 	var $select = $(document.getElementById('RequesteesSelect'))
-	.selectize({
-		maxItems: 99, plugins: ['remove_button'] });
+		.selectize({
+			maxItems: 99, plugins: ['remove_button']
+		});
 	var selectize = $select[0].selectize;
 
-	
+
 
 	$(document)
-		.ready(function() {
+		.ready(function () {
 			$.get('/Script/GetRequestees/@(Guid.NewGuid())',
-					function (data) {
-						
-						
-						$.each(data, function (i, option) {
-							selectize.addOption({ value: option.Value, text: option.Label });
-							console.log(option.Value + " " + option.Label);
-						});
+				function (data) {
+					$.each(data, function (i, option) {
+						selectize.addOption({ value: option.Value, text: option.Label });
+						console.log(option.Value + " " + option.Label);
 					});
-				selectize.refreshOptions();
+				});
+			selectize.refreshOptions();
+
+			@if (userGuids != null && userGuids.Count > 1)
+			{
+				<text>
+			EnableSelector(true);
+			$('#RequesteeOther').button('toggle');
+
+			</text>
+				foreach (var guid in requesteeGuidStrings)
+				{
+					<text>
+			selectize.addItem('@(guid)');
+			</text>
+				}
 			}
+		}
 		);
+
 </script>

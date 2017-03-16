@@ -27,6 +27,8 @@ namespace DataService.Models
 
 		public string Name { get; set; }
 		public int RequestedByUserId { get; set; }
+		public string RequestedForGuids { get; set; }
+		public Guid RequestedByGuid { get; set; }
 		public string Comments { get; set; }
 		public string Officeuse { get; set; }
 		public DateTime CreationDate { get; set; }
@@ -50,7 +52,7 @@ namespace DataService.Models
 		{
 			get
 			{
-				if (this.ServiceRequestOptions == null)
+				if (ServiceRequestOptions == null)
 					return false;
 				return this.ServiceRequestOptions.All(x => x.BasicRequest == true);
 			}
