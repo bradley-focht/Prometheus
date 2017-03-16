@@ -12,6 +12,7 @@ using Prometheus.WebUI.Models.ServiceRequest;
 using RequestService;
 using RequestService.Controllers;
 using ServicePortfolioService;
+using static System.String;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -98,8 +99,10 @@ namespace Prometheus.WebUI.Controllers
 			// data ok from here on
 			ServiceRequestDto request = new ServiceRequestDto   //need an adapter
 			{
+				RequestedByGuid = form.Requestor,
+				RequestedForGuids = Join(",", form.Requestees.Select(x => x.ToString()).ToArray()),
 				Id = form.Id,
-				RequestedByUserId = int.Parse(Session["Id"].ToString()),
+				RequestedByUserId = form.RequestorUserId,
 				Comments = form.Comments,
 				Action = form.Action,
 				Officeuse = form.OfficeUse,
@@ -118,7 +121,7 @@ namespace Prometheus.WebUI.Controllers
 				//make sr name & save it
 				if (request.ServiceOptionId != null)
 					request.Name = $"{_portfolioService.GetServiceOptionCategory(UserId, _portfolioService.GetServiceOption(UserId, (int)request.ServiceOptionId).ServiceOptionCategoryId).Code}{request.Action.ToString().Substring(0, 3).ToUpper()}{request.Id}";
-				_serviceRequestController.ModifyServiceRequest(UserId, request, request.Id > 0 ? EntityModification.Update : EntityModification.Create);
+				_serviceRequestController.ModifyServiceRequest(UserId, request, EntityModification.Update);
 			}
 			catch (Exception exception)
 			{
@@ -155,9 +158,7 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP ONE - Get the Service Package and SR */
 			ServiceRequestModel model = new ServiceRequestModel //used to hold all the data until redirecting
 			{
-				CurrentIndex = submit,
-				ServiceRequestId = form.Id,
-				Mode = ServiceRequestMode.Selection
+				CurrentIndex = submit, ServiceRequestId = form.Id, Mode = ServiceRequestMode.Selection
 			};
 			try
 			{
@@ -289,13 +290,10 @@ namespace Prometheus.WebUI.Controllers
 																 where u.Value != null
 																 select new ServiceRequestUserInputDto
 																 {
-																	 Id = u.Id,
-																	 Name = u.Name,
+																	 Id = u.Id, Name = u.Name,
 																	 UserInputType = u.UserInputType,
 																	 ServiceRequestId = form.Id,
-																	 Value = u.Value,
-																	 InputId = u.InputId
-																 }).ToList();
+																	 Value = u.Value }).ToList();
 				foreach (var userData in userDataList)
 				{
 					try

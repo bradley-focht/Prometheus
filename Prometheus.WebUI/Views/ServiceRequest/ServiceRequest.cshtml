@@ -35,7 +35,8 @@
 	<input type="hidden" name="form.Id" value="@Model.ServiceRequestId" />
 	<input type="hidden" name="form.CurrentIndex" value="@Model.CurrentIndex" />
 	<input type="hidden" name="form.Mode" value="@Model.Mode" />
-	<input type="hidden" name="form.Action" value="@(Model.SelectedAction)" />
+	<input type="hidden" name="form.Action" value="@(Model.SelectedAction)"/>
+	<input type="hidden" name="form.RequestorUserId" value="@(Session["Id"])" />
 	<div class="panel panel-default flex-container-row standard-padding">
 		<div class="dd ful">
 			<div class="dd-row">
@@ -202,7 +203,7 @@
 		};
 
 		$(document).ready(function() {
-			@if (Model.ServiceRequest.ServiceRequestOptions != null)
+			@if (Model.ServiceRequest.ServiceRequestOptions != null && Model.CurrentIndex >-1)
 			{
 				foreach (var option in Model.ServiceRequest.ServiceRequestOptions)
 				{

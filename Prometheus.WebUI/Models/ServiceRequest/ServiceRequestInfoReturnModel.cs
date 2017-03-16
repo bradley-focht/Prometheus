@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Common.Enums;
 using Prometheus.WebUI.Helpers.Enums;
@@ -19,6 +20,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// </summary>
         public int ServiceOptionId { get; set; }
 
+		/// <summary>
+		/// SR Requestees
+		/// </summary>
+		public ICollection<string> Requestees { get; set; }
         /// <summary>
         /// User Comments
         /// </summary>
@@ -31,8 +36,8 @@ namespace Prometheus.WebUI.Models.ServiceRequest
         /// <summary>
         /// Requestor Id
         /// </summary>
-		public string Requestor { get; set; }
-
+		public Guid Requestor { get; set; }
+		public int RequestorUserId { get; set; }
         /// <summary>
         /// Date requested for
         /// </summary>

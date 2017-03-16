@@ -60,7 +60,7 @@ namespace Prometheus.WebUI.Controllers
 				FormsAuthentication.SetAuthCookie(user.Name, true);                             //enter data in session cookie
 
 				Session["DisplayName"] = user.Name;
-				// Session["Guid"] = user.AdGuid;
+				Session["Guid"] = user.AdGuid;
 				Session["Id"] = user.Id;
 				Session["Department"] = user.DepartmentId;
 
@@ -85,6 +85,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			FormsAuthentication.SetAuthCookie("Guest", true);
 			Session["DisplayName"] = "Guest";
+			Session["Guid"] = Guid.Empty;
 			Session["Id"] = _userManager.GuestId;
 			if (string.IsNullOrEmpty(returnUrl))
 				return RedirectToAction("Index", "Home");
@@ -101,12 +102,12 @@ namespace Prometheus.WebUI.Controllers
 		{
 			FormsAuthentication.SetAuthCookie("Admin", true);
 			Session["DisplayName"] = "Administrator";
+			Session["Guid"] = Guid.Empty;
 			Session["Id"] = _userManager.AdministratorId;
 			if (string.IsNullOrEmpty(returnUrl))
 				return RedirectToAction("Index", "Home");
 			return Redirect(returnUrl);
 		}
-
 
 		/// <summary>
 		/// Destroys the session

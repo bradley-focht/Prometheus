@@ -14,6 +14,9 @@ namespace Common.Dto
 		/// </summary>
 		public int? ServiceOptionId { get; set; }
 
+		/// <summary>
+		/// Approval Department
+		/// </summary>
 		[Required(ErrorMessage = "Approval Department is required")]
 		public int DepartmentId { get; set; }
 
@@ -21,12 +24,29 @@ namespace Common.Dto
 		/// User Making the request, the requestor
 		/// </summary>
 		public int RequestedByUserId { get; set; }
-		public string Comments { get; set; }    /*fields added by brad */
+
+		/// <summary>
+		/// Requestees 
+		/// </summary>
+		public string RequestedForGuids { get; set; }
+
+		/// <summary>
+		/// Requestor
+		/// </summary>
+		public Guid RequestedByGuid { get; set; }
+
+		/// <summary>
+		/// Requestor Comments
+		/// </summary>
+		public string Comments { get; set; }    
 
 		/// <summary>
 		/// In office use such as billing code
 		/// </summary>
 		public string Officeuse { get; set; }
+		/// <summary>
+		/// Service Request Name (e.g. an invoice name)
+		/// </summary>
 		public string Name { get; set; }
 		public DateTime CreationDate { get; set; }
 		[Required(ErrorMessage = "Requested for date is required")]
