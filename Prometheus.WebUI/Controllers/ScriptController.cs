@@ -204,7 +204,12 @@ namespace Prometheus.WebUI.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Script
+        /// <summary>
+        /// Special case: used in service request for generating
+        ///                 who the SR is intended for
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public JsonResult GetRequestees(Guid id)
 		{
 
@@ -222,14 +227,14 @@ namespace Prometheus.WebUI.Controllers
 
 			foreach (PSObject obj in results)
 			{
-				ScriptResult<Guid, string> result = new ScriptResult<Guid, string>();       //script result is a type that i made, just has a value and a label
+				ScriptResult<string, string> result = new ScriptResult<string, string>();       //script result is a type that i made, just has a value and a label
 				foreach (var prop in obj.Properties)
 				{
-					if (prop.Name == "Id")                      //this is specific to a process returned from powershell
+					if (prop.Name == "Key")                      //this is specific to a process returned from powershell
 					{
-						result.Value = Guid.NewGuid();      //processes don't have Guid identifiers mang
+						result.Value = Guid.NewGuid().ToString();      //processes don't have Guid identifiers mang
 					}
-					else if (prop.Name == "ProcessName")        //specific again
+					else if (prop.Name == "Value")        //specific again
 					{
 						result.Label = prop.Value.ToString();
 					}
@@ -241,6 +246,19 @@ namespace Prometheus.WebUI.Controllers
 			return Json(people, JsonRequestBehavior.AllowGet);  //jsonify it
 
 		}
+
+        /// <summary>
+        /// General purpose for running scripts
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+	    public JsonResult GetOptions(Guid UserId, int id)
+        {
+            var options = new HashSet<ScriptResult<Guid, string>>();
+
+            return Json(options);
+        }
 
 	}
 }
