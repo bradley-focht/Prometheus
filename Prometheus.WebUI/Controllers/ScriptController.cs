@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
+using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
@@ -212,50 +213,28 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public JsonResult GetRequestees(Guid id)
+		public JsonResult GetRequestees(Guid userId, Guid scriptId)
 		{
+			JsonResult results = new JsonResult();
+			
+			var depPath = ConfigHelper.GetDepartmentScriptId();
 
-			var people = new HashSet<ScriptResult<string, string>>();
+			// path to where scripts files are stored.
+			// var path = ConfigHelper.GetScriptPath();
 
-			Runspace runspace = RunspaceFactory.CreateRunspace();
+			ScriptExecutor elScriptador = new ScriptExecutor();
+			elScriptador.ExecuteScript(userId, scriptId);
 
-			// open it
-
-			runspace.Open();
-			Pipeline pipeline = runspace.CreatePipeline();
-			pipeline.Commands.AddScript("Get-Process");             //gets all the processes on your computer for now
-			Collection<PSObject> results = pipeline.Invoke();
-			runspace.Close();
-
-			foreach (PSObject obj in results)
-			{
-				ScriptResult<string, string> result = new ScriptResult<string, string>();       //script result is a type that i made, just has a value and a label
-				foreach (var prop in obj.Properties)
-				{
-					if (prop.Name == "Key")                      //this is specific to a process returned from powershell
-					{
-						result.Value = Guid.NewGuid().ToString();      //processes don't have Guid identifiers mang
-					}
-					else if (prop.Name == "Value")        //specific again
-					{
-						result.Label = prop.Value.ToString();
-					}
-
-				}
-				people.Add(result);
-			}
-
-			return Json(people, JsonRequestBehavior.AllowGet);  //jsonify it
-
+			return results;
 		}
 
 		/// <summary>
 		/// General purpose for running scripts
 		/// </summary>
-		/// <param name="userId"></param>
+		/// <param name="UserId"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public JsonResult GetOptions(Guid userId, int id)
+		public JsonResult GetOptions(Guid UserId, int id)
 		{
 			var options = new HashSet<ScriptResult<Guid, string>>();
 

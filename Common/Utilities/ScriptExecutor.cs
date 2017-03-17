@@ -58,14 +58,10 @@ namespace Common.Utilities
 
             Pipeline pipeline = runspace.CreatePipeline();
             pipeline.Commands.AddScript(path);
-
-            pipeline.Commands.Add("Out-String");
-
-            // execute the script
+			// runspace.SessionStateProxy.SetVariable("guid", userGuid);
+			pipeline.Commands.Add("Out-String");
 
             Collection <PSObject> results = pipeline.Invoke();
-
-            // close the runspace
 
             runspace.Close();
 
@@ -74,7 +70,7 @@ namespace Common.Utilities
             StringBuilder stringBuilder = new StringBuilder();
             foreach (PSObject obj in results)
             {
-				//here we go
+				// here we go
                 stringBuilder.AppendLine(obj.ToString());
             }
 
