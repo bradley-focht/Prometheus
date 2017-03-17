@@ -47,9 +47,7 @@ namespace Common.Utilities
 	    {
 	        List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
 
-			string scriptText = "";
-
-	        var path = ConfigurationManager.AppSettings["ServiceDocsPath"];
+	        var path = ConfigurationManager.AppSettings["ScriptPath/scriptId"];
 
             // create PowerShell runspace
             Runspace runspace = RunspaceFactory.CreateRunspace();
@@ -59,16 +57,7 @@ namespace Common.Utilities
             // create a pipeline and feed it the script text
 
             Pipeline pipeline = runspace.CreatePipeline();
-            pipeline.Commands.AddScript(scriptText);
-
-            // add an extra command to transform the script
-            // output objects into nicely formatted strings
-
-            // remove this line to get the actual objects
-            // that the script returns. For example, the script
-
-            // "Get-Process" returns a collection
-            // of System.Diagnostics.Process instances.
+            pipeline.Commands.AddScript(path);
 
             pipeline.Commands.Add("Out-String");
 

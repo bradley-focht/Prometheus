@@ -55,6 +55,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult GetScripts(int id)
 		{
+
 			LinkListModel model = new LinkListModel
 			{
 				AddAction = "Add",
@@ -68,6 +69,7 @@ namespace Prometheus.WebUI.Controllers
 			model.ListItems = from s in _scriptFileController.GetScripts(UserId) select new Tuple<int, string>(s.Id, s.Name);
 
 			return View("PartialViews/_LinkList", model);
+
 		}
 
 		/// <summary>
@@ -165,52 +167,52 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Index");
 		}
 
-        public ActionResult ConfirmDeleteScript(int id)
-        {
-            ScriptDto model = new ScriptDto() { Id = id };
+		public ActionResult ConfirmDeleteScript(int id)
+		{
+			ScriptDto model = new ScriptDto() { Id = id };
 
-            try
-            {
-                model.Name = _scriptFileController.GetScript(UserId, id).Name; //complete model details
-            }
-            catch (Exception exception)
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to retrieve script, error: {exception.Message}";
-            }
+			try
+			{
+				model.Name = _scriptFileController.GetScript(UserId, id).Name; //complete model details
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve script, error: {exception.Message}";
+			}
 
-            return View("ConfirmDeleteScript", model);
-        }
+			return View("ConfirmDeleteScript", model);
+		}
 
-        [HttpPost]
-        public ActionResult DeleteScript(DeleteModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = "Failed to delete, incomplete data sent";
-                return RedirectToAction("ConfirmDeleteScript", new { id = model.Id });
-            }
+		[HttpPost]
+		public ActionResult DeleteScript(DeleteModel model)
+		{
+			if (!ModelState.IsValid)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = "Failed to delete, incomplete data sent";
+				return RedirectToAction("ConfirmDeleteScript", new { id = model.Id });
+			}
 
-            try
-            {
-                _scriptFileController.ModifyScript(UserId, new ScriptDto() { Id = model.Id }, EntityModification.Delete);
-            }
-            catch (Exception exception)
-            {
-                TempData["MessageType"] = WebMessageType.Failure;
-                TempData["Message"] = $"Failed to delete scripte, error: {exception.Message}";
-            }
-            return RedirectToAction("Index");
-        }
+			try
+			{
+				_scriptFileController.ModifyScript(UserId, new ScriptDto() { Id = model.Id }, EntityModification.Delete);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to delete scripte, error: {exception.Message}";
+			}
+			return RedirectToAction("Index");
+		}
 
-        /// <summary>
-        /// Special case: used in service request for generating
-        ///                 who the SR is intended for
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public JsonResult GetRequestees(Guid id)
+		/// <summary>
+		/// Special case: used in service request for generating
+		///                 who the SR is intended for
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public JsonResult GetRequestees(Guid id)
 		{
 
 			var people = new HashSet<ScriptResult<Guid, string>>();
@@ -247,18 +249,18 @@ namespace Prometheus.WebUI.Controllers
 
 		}
 
-        /// <summary>
-        /// General purpose for running scripts
-        /// </summary>
-        /// <param name="UserId"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
-	    public JsonResult GetOptions(Guid UserId, int id)
-        {
-            var options = new HashSet<ScriptResult<Guid, string>>();
+		/// <summary>
+		/// General purpose for running scripts
+		/// </summary>
+		/// <param name="UserId"></param>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public JsonResult GetOptions(Guid UserId, int id)
+		{
+			var options = new HashSet<ScriptResult<Guid, string>>();
 
-            return Json(options);
-        }
+			return Json(options);
+		}
 
 	}
 }
