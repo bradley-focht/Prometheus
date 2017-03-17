@@ -1,4 +1,4 @@
-﻿@model Common.Dto.IServiceRequestPackageDto
+﻿@model  Prometheus.WebUI.Models.ServiceRequestMaintenance.PackageViewModel
 @{
     ViewBag.Title = "Service Request Maintenance";
     ViewBag.SubTitle = "Service Packages";
@@ -15,7 +15,7 @@
 
 @section Content
 {
-    @if (Model.Id > 0)
+    @if (Model.ServiceRequestPackage != null && Model.ServiceRequestPackage.Id > 0)
     {
         <div class="title-div">@ViewBag.SubTitle</div>
         <div class="panel-div">
@@ -25,8 +25,8 @@
         <div class="flex-container-col">
             <div class="panel-footer">
                 <div class="float-right-div">
-                    @Html.ActionLink("Update", "UpdatePackage", new {id = Model.Id}, new {@class="btn btn-primary"})
-                    @Html.ActionLink("Delete", "ConfirmDeletePackage", new {id = Model.Id}, new {@class = "btn btn-danger"})
+                    @Html.ActionLink("Update", "UpdatePackage", new {id = Model.ServiceRequestPackage.Id}, new {@class="btn btn-primary"})
+                    @Html.ActionLink("Delete", "ConfirmDeletePackage", new {id = Model.ServiceRequestPackage.Id}, new {@class = "btn btn-danger"})
                 </div>
             </div>
         </div>
@@ -37,6 +37,6 @@
 
 @section Sidebar
 {
-    @Html.Action("GetPackageNames", new {id = Model.Id })
+    @Html.Action("GetPackageNames", new {id = Model.ServiceRequestPackage.Id })
 }
 

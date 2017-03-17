@@ -215,7 +215,7 @@ namespace Prometheus.WebUI.Controllers
 		public JsonResult GetRequestees(Guid id)
 		{
 
-			var people = new HashSet<ScriptResult<Guid, string>>();
+			var people = new HashSet<ScriptResult<string, string>>();
 
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 
@@ -252,10 +252,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <summary>
 		/// General purpose for running scripts
 		/// </summary>
-		/// <param name="UserId"></param>
+		/// <param name="userId"></param>
 		/// <param name="id"></param>
 		/// <returns></returns>
-		public JsonResult GetOptions(Guid UserId, int id)
+		public JsonResult GetOptions(Guid userId, int id)
 		{
 			var options = new HashSet<ScriptResult<Guid, string>>();
 

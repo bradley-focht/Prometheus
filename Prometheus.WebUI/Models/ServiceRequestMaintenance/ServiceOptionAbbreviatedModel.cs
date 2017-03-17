@@ -18,7 +18,9 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         public string Name { get; set; }
         [AllowHtml]
         public string BusinessValue { get; set; }
-        public Guid? Picture { get; set; }
+
+		public bool Published { get; set; }
+		public Guid? Picture { get; set; }
         public string PictureMimeType { get; set; }
         [AllowHtml]
         public string Details { get; set; }

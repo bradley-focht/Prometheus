@@ -20,6 +20,7 @@ namespace DataService.Models
 		public int Popularity { get; set; }
 		public string Name { get; set; }
 		public string BusinessValue { get; set; }
+		public bool Published { get; set; }
 		public Guid? Picture { get; set; }
 		public string PictureMimeType { get; set; }
 		public double PriceUpFront { get; set; }

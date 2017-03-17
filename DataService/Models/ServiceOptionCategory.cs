@@ -20,6 +20,7 @@ namespace DataService.Models
 		public string Description { get; set; }
 	    public bool Quantifiable { get; set; }
 	    public string BusinessValue { get; set; }
+		public bool Published { get; set; }
 		public string Name { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
