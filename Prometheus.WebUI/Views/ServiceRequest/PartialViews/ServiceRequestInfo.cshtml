@@ -96,11 +96,11 @@
 					<div class="dd-cell-nostyle">
 						<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-default" id="RequesteeMe" onclick="EnableSelector(false)">
-								@Html.RadioButton("Requestees", Session["Guid"].ToString()) Me
+								@Html.RadioButton("form.Requestees", Session["Guid"].ToString()) Me
 							</label>
 
 							<label class="btn btn-default" id="RequesteeOther" onclick="EnableSelector(true)">
-								@Html.RadioButton("Requestees", "") Other
+								@Html.RadioButton("form.Requestees", "") Other
 							</label>
 						</div>
 					</div>

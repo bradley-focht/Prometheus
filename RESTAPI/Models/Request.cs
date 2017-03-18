@@ -17,6 +17,8 @@ namespace RESTAPI.Models
 		public int DepartmentId { get; set; }
 		public int ApproverUserId { get; set; }
 		public int RequestedByUserId { get; set; }
+		public string RequestedForGuids { get; set; }
+		public Guid RequestedByGuid { get; set; }
 		public string Comments { get; set; }
 		public DateTime? ApprovalDate { get; set; }
 		public DateTime CreationDate { get; set; }

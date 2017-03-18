@@ -44,6 +44,11 @@ namespace Common.Dto
 		public string BusinessValue { get; set; }
 
 		/// <summary>
+		/// Enabled in searches
+		/// </summary>
+		public bool Published { get; set; }
+
+		/// <summary>
 		/// Lengthy text description, internal and may be technical
 		/// </summary>
 		[AllowHtml]

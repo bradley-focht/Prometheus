@@ -17,6 +17,7 @@ using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
+	[Authorize]
 	public class ServiceRequestMaintenanceController : PrometheusController
 	{
 		private readonly ICatalogController _catalogController;
@@ -76,24 +77,68 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowPackages(int id = 0)
 		{
-			IServiceRequestPackageDto model = null; //determine if one is selected or not
+			var model = new PackageViewModel();
 			if (id > 0)
 			{
 				try
 				{
-					model = _portfolioService.GetServiceRequestPackage(UserId, id);
+					model.ServiceRequestPackage = _portfolioService.GetServiceRequestPackage(UserId, id);
 				}
 				catch (Exception exception)
 				{
 					TempData["MessageType"] = WebMessageType.Failure;
 					TempData["Message"] = $"Failed to retrieve service package, error: {exception.Message}";
+					return View(model);
 				}
 			}
-
-			if (model == null) //send an empty object if nothing selected, razor will handle
+			//create the list of tags
+			List<IServicePackageTag> tags = new List<IServicePackageTag>();
+			if (model.ServiceRequestPackage == null)
 			{
-				model = new ServiceRequestPackageDto();
+				model.ServiceRequestPackage = new ServiceRequestPackageDto();
 			}
+			if (model.ServiceRequestPackage.ServiceTags != null)
+			{
+				tags.AddRange(from s in model.ServiceRequestPackage.ServiceTags select (IServicePackageTag)s);
+			}
+			if (model.ServiceRequestPackage.ServiceOptionCategoryTags != null)
+			{
+				tags.AddRange(from o in model.ServiceRequestPackage.ServiceOptionCategoryTags select (IServicePackageTag)o);
+			}
+
+			//add useful info for display and for linking
+			var packageItems = new List<PackageItem>();
+			foreach (var tag in tags.OrderBy(t => t.Order))
+			{
+				try
+				{
+					if (tag is IServiceTagDto)
+					{
+						var serviceTag = (IServiceTagDto) tag;
+						var tagInfo = new PackageItem
+						{
+							Name = _portfolioService.GetService(serviceTag.ServiceId).Name,
+							Id = serviceTag.Id,
+							Tag = tag
+						};
+						packageItems.Add(tagInfo);
+					} else if (tag is IServiceOptionCategoryTagDto)
+					{
+						var categoryTag = (IServiceOptionCategoryTagDto)tag;
+						var tagInfo = new PackageItem
+						{
+							Name = _portfolioService.GetServiceOptionCategory(UserId, categoryTag.ServiceOptionCategoryId).Name,
+							Id = categoryTag.Id,
+							Tag = tag
+						};
+						packageItems.Add(tagInfo);
+					}
+
+				}
+				catch(Exception) {  }
+			}
+			model.PackageItems = packageItems;
+
 			return View(model);
 		}
 

@@ -13,5 +13,6 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         public int Popularity { get; set; }
         public string Name { get; set; }
         public string BusinessValue { get; set; }
+	    public bool Published { get; set; }
     }
 }

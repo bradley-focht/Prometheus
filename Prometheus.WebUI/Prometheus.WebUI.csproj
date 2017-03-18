@@ -379,7 +379,9 @@
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestStateChangeModel.cs" />
     <Compile Include="Models\ServiceRequestApproval\ServiceRequestTableItemModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ConfirmDeleteModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\PackageItem.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\PackageModel.cs" />
+    <Compile Include="Models\ServiceRequestMaintenance\PackageViewModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceAbbreviatedModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceCategoryAbbreviatedModel.cs" />
     <Compile Include="Models\ServiceRequestMaintenance\ServiceOptionAbbreviatedModel.cs" />

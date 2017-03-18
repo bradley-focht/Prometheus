@@ -46,6 +46,11 @@ namespace Common.Dto
 		public string BusinessValue { get; set; }
 
 		/// <summary>
+		/// Visible in Catalog
+		/// </summary>
+		public bool Published { get; set; }
+
+		/// <summary>
 		/// Service Request Category
 		/// </summary>
 		[Required(ErrorMessage = "Category is required")]
