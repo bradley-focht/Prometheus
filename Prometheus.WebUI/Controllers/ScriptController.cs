@@ -215,10 +215,11 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public JsonResult GetRequestees(Guid userId)
 		{
-			List<ScriptResult<string, string>> requestees;// = new List<ScriptResult<string, string>>();
+			List<ScriptResult<string, string>> requestees;
 		
 			var scriptId = ConfigHelper.GetDepartmentUsersScriptId();
-			Guid scriptFile; 
+			Guid scriptFile;
+
 			try
 			{
 				scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
@@ -237,12 +238,6 @@ namespace Prometheus.WebUI.Controllers
 
 			// Formatting to output the a JsonResult
 			requestees = elScriptador.ExecuteScript(userId, scriptFile);
-			/*var temp = JsonConvert.SerializeObject(requestees);
-			var results = new JsonResult
-			{
-				Data = JsonConvert.DeserializeObject(temp)
-			}; */ // turns out you don't need this
-
 			return Json(requestees, JsonRequestBehavior.AllowGet); /* you should see what it does without the allowget... actulaly don't */
 		}
 
