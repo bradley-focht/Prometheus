@@ -362,8 +362,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\IScriptExecutor.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\PrometheusController.cs" />
+    <Compile Include="Infrastructure\ScriptExecutor.cs" />
+    <Compile Include="Infrastructure\ScriptResult.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogControlsModel.cs" />
     <Compile Include="Models\ServiceCatalog\PublishableCatalogItemModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceCatalogSearcher.cs" />
@@ -561,6 +564,7 @@
     <Content Include="Views\Script\PartialViews\UpdateScript.cshtml" />
     <Content Include="Views\Script\ConfirmDeleteScript.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceOption.cshtml" />
+    <Content Include="Views\Script\PartialViews\GetScriptsDropDownList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

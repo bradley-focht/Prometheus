@@ -4,7 +4,6 @@ using System.Linq;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
-using Common.Utilities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;

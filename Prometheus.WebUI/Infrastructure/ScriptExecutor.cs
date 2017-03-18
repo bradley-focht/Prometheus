@@ -7,7 +7,7 @@ using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 
-namespace Common.Utilities
+namespace Prometheus.WebUI.Infrastructure
 {
 	/// <summary>
 	/// Executes scripts
@@ -56,10 +56,11 @@ namespace Common.Utilities
             // create a pipeline and feed it the script text
 
             Pipeline pipeline = runspace.CreatePipeline();
-            pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
-			runspace.SessionStateProxy.SetVariable("guid", userGuid);
+	        string text = File.ReadAllText(System.Web.HttpContext.Current.Server.MapPath(path));
+			pipeline.Commands.AddScript(text);
+			// runspace.SessionStateProxy.SetVariable("guid", userGuid);
 			//pipeline.Commands.Add("Out-String"); /* I don't actually know what this does */
-
+			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 			Collection <PSObject> results = pipeline.Invoke();
 
             runspace.Close();
@@ -67,7 +68,7 @@ namespace Common.Utilities
 			// convert the script result into a single string
 
 			/* StringBuilder stringBuilder = new StringBuilder();
-			 foreach (PSObject obj in results)		// this does wierd things 
+			 foreach (PSObject obj in results)		/* this results in a bunch of powershell junk
 			 {
 				 // here we go
 				 stringBuilder.AppendLine(obj.ToString());
@@ -80,7 +81,7 @@ namespace Common.Utilities
 			        if (item.Name == "Label")
 				        myOption.Label = item.Value.ToString();
 					if (item.Name == "Value")
-						myOption.Label = item.Value.ToString();
+						myOption.Value = item.Value.ToString();
 				}
 				myOptions.Add(myOption);
 	        }

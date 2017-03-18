@@ -10,7 +10,6 @@ using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
-using Common.Utilities;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
@@ -212,14 +211,24 @@ namespace Prometheus.WebUI.Controllers
 		/// Special case: used in service request for generating
 		///                 who the SR is intended for
 		/// </summary>
-		/// <param name="id"></param>
+		/// <param name="userId">user calling the script</param>
 		/// <returns></returns>
-		public JsonResult GetRequestees(Guid userId, Guid scriptId)
+		public JsonResult GetRequestees(Guid userId)
 		{
-
-			List<ScriptResult<string, string>> requestees = new List<ScriptResult<string, string>>();
+			List<ScriptResult<string, string>> requestees;// = new List<ScriptResult<string, string>>();
 		
-			var depPath = ConfigHelper.GetDepartmentScriptId();
+			var scriptId = ConfigHelper.GetDepartmentUsersScriptId();
+			Guid scriptFile; 
+			try
+			{
+				scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
+			}
+			catch (Exception exception)	/*.... these error messages aren't so helpful in ajax calls... */
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve requestees, error: {exception}";
+				return null;
+			}
 
 			// path to where scripts files are stored.
 			// var path = ConfigHelper.GetScriptPath();
@@ -227,27 +236,65 @@ namespace Prometheus.WebUI.Controllers
 			ScriptExecutor elScriptador = new ScriptExecutor();
 
 			// Formatting to output the a JsonResult
-			requestees = elScriptador.ExecuteScript(userId, scriptId);
-			var temp = JsonConvert.SerializeObject(requestees);
+			requestees = elScriptador.ExecuteScript(userId, scriptFile);
+			/*var temp = JsonConvert.SerializeObject(requestees);
 			var results = new JsonResult
 			{
 				Data = JsonConvert.DeserializeObject(temp)
-			};
+			}; */ // turns out you don't need this
 
-			return results;
+			return Json(requestees, JsonRequestBehavior.AllowGet); /* you should see what it does without the allowget... actulaly don't */
 		}
 
 		/// <summary>
 		/// General purpose for running scripts
 		/// </summary>
-		/// <param name="UserId"></param>
-		/// <param name="id"></param>
+		/// <param name="userId"></param>
+		/// <param name="scriptId"></param>
 		/// <returns></returns>
-		public JsonResult GetOptions(Guid UserId, int id)
+		public JsonResult GetOptions(Guid userId, int scriptId)
 		{
-			var options = new HashSet<ScriptResult<Guid, string>>();
+			Guid scriptFile;		//get the script file's name
+			try
+			{
+				scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve scripted data, error: {exception}";
+				return null;
+			}
 
-			return Json(options);
+			ScriptExecutor elScriptador = new ScriptExecutor();
+
+			// Formatting to output the a JsonResult
+			var requestees = elScriptador.ExecuteScript(userId, scriptFile);
+
+			return Json(requestees, JsonRequestBehavior.AllowGet); 
+		}
+		/// <summary>
+		/// Used by the ServiceRequestMaintenance ScriptedInput Views
+		/// </summary>
+		/// <returns></returns>
+		[ChildActionOnly]
+		public ActionResult GetScriptsDropDownList(int id)
+		{
+			var model = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Script..." } };
+			var scripts = _scriptFileController.GetScripts(UserId).ToList();
+			if (scripts.Any())
+			{
+				model.AddRange(scripts.Select(s =>
+					new SelectListItem
+					{
+						Value = s.Id.ToString(),
+						Text = s.Name.ToString(),
+						Selected = s.Id == id
+					}).ToList());
+
+				model = model.OrderBy(c => c.Text).ToList();
+			}
+			return PartialView("PartialViews/GetScriptsDropDownList", model);
 		}
 
 	}

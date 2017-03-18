@@ -1685,7 +1685,7 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult GetOptionsDropDown(int serviceId, int id)
 		{
 
-			ICollection<int> selectedOptions = id != 0 ? (from o in _portfolioService.GetServiceOptionCategory(UserId, id).ServiceOptions select o.Id).ToList() : new List<int>();
+			IEnumerable<int> selectedOptions = id != 0 ? (from o in _portfolioService.GetServiceOptionCategory(UserId, id).ServiceOptions select o.Id).ToList() : new List<int>();
 			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Options..." } };
 
 			var options = _portfolioService.GetService(serviceId).ServiceOptions;
@@ -1702,7 +1702,7 @@ namespace Prometheus.WebUI.Controllers
 					}).ToList());
 				model = optionsList.OrderBy(c => c.Text);
 			}
-			return View("PartialViews/OptionsDropDown", model);
+			return PartialView("PartialViews/OptionsDropDown", model);
 		}
 
 		/// <summary>
@@ -1712,13 +1712,12 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public FileContentResult GetOptionPicture(int id)
 		{
-
 			IServiceOptionDto option = _portfolioService.GetServiceOption(UserId, id);
 
 			if (option.Picture == null)
 				return null;
 
-			var path = Path.Combine(ConfigurationManager.AppSettings["OptionPicsPath"], option.Picture.ToString());
+			var path = Path.Combine(ConfigHelper.GetOptionPictureLocation(), option.Picture.ToString());
 			byte[] fileData = null;     //file data to return
 			try
 			{

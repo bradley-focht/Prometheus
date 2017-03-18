@@ -145,11 +145,21 @@ namespace Prometheus.WebUI
 
 			routes.MapRoute(name: "FilterDepartmentServiceRequestApprovals",
 				url: "ServiceRequestApproval/FilterDepartmentStatus/{state}",
-				defaults: new { controller = "ServiceRequestApproval", action = "FilterDepartmentStatus", pageId = UrlParameter.Optional });
+				defaults: new { controller = "ServiceRequestApproval", action = "FilterDepartmentStatus", state = UrlParameter.Optional });
 
 			#endregion
 
+			#region Scripting 
 
+			routes.MapRoute(name: "GetRequestees",
+				url: "Script/GetRequestees/{userId}",
+				defaults: new { controller = "Script", action = "GetRequestees" });
+			
+
+			routes.MapRoute("GetOptions",
+				url: "Script/GetRequestees/{userId}/{scriptId}",
+				defaults: new { controller = "Script", action = "GetOptions" });
+			#endregion
 			routes.MapRoute(
 				name: "Default",
 				url: "{controller}/{action}/{id}",

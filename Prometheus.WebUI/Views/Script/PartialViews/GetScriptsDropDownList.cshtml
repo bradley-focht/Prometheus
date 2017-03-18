@@ -1,0 +1,17 @@
+﻿@model IEnumerable<SelectListItem>
+	
+@if (Model == null || !Model.Any())
+{
+	<text>No scripts exist.</text>
+}
+else
+{
+	@Html.DropDownList("ScriptId", Model, new { placeholder = "Script..." })
+
+	<script type="text/javascript" language="javascript">
+		$('#ScriptId')
+            .selectize({
+                maxItems: 1
+            });
+	</script>
+}

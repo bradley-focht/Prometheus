@@ -1,4 +1,4 @@
-﻿namespace Common.Utilities
+﻿namespace Prometheus.WebUI.Infrastructure
 {
 	public class ScriptResult<TValue, TLabel>
 	{

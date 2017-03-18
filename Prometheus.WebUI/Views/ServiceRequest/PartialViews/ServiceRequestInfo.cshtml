@@ -104,7 +104,7 @@
 							</label>
 						</div>
 					</div>
-					<div class="dd-cell-nostyle" id="div_RequesteeSelect" style="display: none;">
+					<div class="dd-cell-nostyle make-space-left" id="div_RequesteeSelect" style="display: none;">
 						<select name="form.Requestees" id="RequesteesSelect" style="width: 400px" data-val = "true" data-val-required = "Requested for is required" ></select>
 						@Html.ValidationMessage("form.Requestees")
 					</div>
@@ -204,7 +204,9 @@
 
 	var $select = $(document.getElementById('RequesteesSelect'))
 		.selectize({
-			maxItems: 99, plugins: ['remove_button']
+			maxItems: 99, plugins: ['remove_button'],
+			labelField: 'text',
+			valueField: 'value'
 		});
 	var selectize = $select[0].selectize;
 
@@ -216,25 +218,23 @@
 				function (data) {
 					$.each(data, function (i, option) {
 						selectize.addOption({ value: option.Value, text: option.Label });
-						console.log(option.Value + " " + option.Label);
 					});
 				});
-			selectize.refreshOptions();
+			
 
 			@if (userGuids != null && userGuids.Count > 1)
 			{
-				<text>
+			<text>
+			selectize.refreshOptions();
 			EnableSelector(true);
 			$('#RequesteeOther').button('toggle');
-
 			</text>
-				foreach (var guid in requesteeGuidStrings)
+				foreach (var guid in userGuids)
 				{
-					<text>
-			selectize.addItem('@(guid)');
-			</text>
+					<text>selectize.addItem('@(guid.ToString())');</text>
 				}
 			}
+			
 		}
 		);
 
