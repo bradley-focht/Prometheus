@@ -33,7 +33,10 @@ namespace DataService.Models
 		public string Officeuse { get; set; }
 		public DateTime CreationDate { get; set; }
 		public DateTime? SubmissionDate { get; set; }
-		public DateTime? ApprovalDate { get; set; }
+		public DateTime? ApprovedDate { get; set; }
+		public DateTime? DeniedDate { get; set; }
+		public DateTime? CancelledDate { get; set; }
+		public DateTime? FulfilledDate { get; set; }
 		public DateTime RequestedForDate { get; set; }
 		/* end here */
 		public int ApproverUserId { get; set; }

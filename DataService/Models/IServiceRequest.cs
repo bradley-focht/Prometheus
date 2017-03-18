@@ -17,8 +17,13 @@ namespace DataService.Models
 		string Officeuse { get; set; }
 		string Name { get; set; }
 		DateTime CreationDate { get; set; }
+
+		//State Dates
 		DateTime? SubmissionDate { get; set; }
-		DateTime? ApprovalDate { get; set; }
+		DateTime? ApprovedDate { get; set; }
+		DateTime? DeniedDate { get; set; }
+		DateTime? CancelledDate { get; set; }
+		DateTime? FulfilledDate { get; set; }
 		DateTime RequestedForDate { get; set; }
 
 		ServiceRequestState State { get; set; }

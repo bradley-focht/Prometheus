@@ -38,7 +38,7 @@ namespace Common.Dto
 		/// <summary>
 		/// Requestor Comments
 		/// </summary>
-		public string Comments { get; set; }    
+		public string Comments { get; set; }
 
 		/// <summary>
 		/// In office use such as billing code
@@ -57,7 +57,10 @@ namespace Common.Dto
 		/// </summary>
 		public ServiceRequestAction Action { get; set; }
 		public DateTime? SubmissionDate { get; set; }
-		public DateTime? ApprovalDate { get; set; } /* end here */
+		public DateTime? ApprovedDate { get; set; } /* end here */
+		public DateTime? DeniedDate { get; set; }
+		public DateTime? CancelledDate { get; set; }
+		public DateTime? FulfilledDate { get; set; }
 		public int ApproverUserId { get; set; }
 		public ServiceRequestState State { get; set; }
 		public DateTime? DateCreated { get; set; }
