@@ -15,6 +15,7 @@ using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
+using Newtonsoft.Json;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -215,15 +216,23 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public JsonResult GetRequestees(Guid userId, Guid scriptId)
 		{
-			JsonResult results = new JsonResult();
-			
+
+			List<ScriptResult<string, string>> requestees = new List<ScriptResult<string, string>>();
+		
 			var depPath = ConfigHelper.GetDepartmentScriptId();
 
 			// path to where scripts files are stored.
 			// var path = ConfigHelper.GetScriptPath();
 
 			ScriptExecutor elScriptador = new ScriptExecutor();
-			elScriptador.ExecuteScript(userId, scriptId);
+
+			// Formatting to output the a JsonResult
+			requestees = elScriptador.ExecuteScript(userId, scriptId);
+			var temp = JsonConvert.SerializeObject(requestees);
+			var results = new JsonResult
+			{
+				Data = JsonConvert.DeserializeObject(temp)
+			};
 
 			return results;
 		}
