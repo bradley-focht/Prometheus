@@ -36,57 +36,37 @@ namespace Common.Utilities
 			return firstOrDefault?.ToString();
 		}
 
-        /// <summary>
-        /// General case for executing the script
-        /// </summary>
-        /// <param name="userGuid"></param>
-        /// <param name="scriptId"></param>
-        /// <returns></returns>
-	    public List<ScriptResult<string, string>> ExecuteScript(Guid userGuid, Guid scriptId)
-	    {
-	        List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
+		/// <summary>
+		/// General case for executing the script
+		/// </summary>
+		/// <param name="userGuid"></param>
+		/// <param name="scriptId"></param>
+		/// <returns></returns>
+		public List<ScriptResult<string, string>> ExecuteScript(Guid userGuid, Guid scriptId)
+		{
+			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
 
-	        var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptId.ToString()) ;
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptId.ToString());
+			PowerShell psExec = PowerShell.Create();
+			psExec.AddCommand(System.Web.HttpContext.Current.Server.MapPath(path) + ".ps1");
+			psExec.AddArgument(userGuid.ToString());
 
-            // create PowerShell runspace
-            Runspace runspace = RunspaceFactory.CreateRunspace();
-
-            runspace.Open();
-
-            // create a pipeline and feed it the script text
-
-            Pipeline pipeline = runspace.CreatePipeline();
-            pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
-			runspace.SessionStateProxy.SetVariable("guid", userGuid);
-			//pipeline.Commands.Add("Out-String"); /* I don't actually know what this does */
-
-			Collection <PSObject> results = pipeline.Invoke();
-
-            runspace.Close();
-
-			// convert the script result into a single string
-
-			/* StringBuilder stringBuilder = new StringBuilder();
-			 foreach (PSObject obj in results)		// this does wierd things 
-			 {
-				 // here we go
-				 stringBuilder.AppendLine(obj.ToString());
-			 } */
-	        foreach (var result in results)
-	        {
-		        ScriptResult<string, string> myOption = new ScriptResult<string, string>();
-		        foreach (var item in result.Members)
-		        {
-			        if (item.Name == "Label")
-				        myOption.Label = item.Value.ToString();
-					if (item.Name == "Value")
+			var results = psExec.Invoke();
+			foreach (var result in results)
+			{
+				ScriptResult<string, string> myOption = new ScriptResult<string, string>();
+				foreach (var item in result.Members)
+				{
+					if (item.Name == "Label")
 						myOption.Label = item.Value.ToString();
+					if (item.Name == "Value")
+						myOption.Value = item.Value.ToString();
 				}
 				myOptions.Add(myOption);
-	        }
+			}
 
 			return myOptions;
-	    }
+		}
 	}
 }
 

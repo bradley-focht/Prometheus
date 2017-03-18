@@ -362,11 +362,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Infrastructure\IScriptExecutor.cs" />
     <Compile Include="Infrastructure\NinjectDependencyResolver.cs" />
     <Compile Include="Infrastructure\PrometheusController.cs" />
-    <Compile Include="Infrastructure\ScriptExecutor.cs" />
-    <Compile Include="Infrastructure\ScriptResult.cs" />
     <Compile Include="Models\ServiceCatalog\CatalogControlsModel.cs" />
     <Compile Include="Models\ServiceCatalog\PublishableCatalogItemModel.cs" />
     <Compile Include="Models\ServiceCatalog\ServiceCatalogSearcher.cs" />

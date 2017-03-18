@@ -214,7 +214,7 @@
 
 	$(document)
 		.ready(function () {
-			$.get('/Script/GetRequestees/@(Guid.NewGuid())',
+			$.get('/Script/GetRequestees/@(Session["Guid"].ToString())',
 				function (data) {
 					$.each(data, function (i, option) {
 						selectize.addOption({ value: option.Value, text: option.Label });
