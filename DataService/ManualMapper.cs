@@ -1095,5 +1095,37 @@ namespace DataService
 				Name = src.Name,
 			};
 		}
+
+		public static IApprovalDto MapApprovalToDto(Approval src)
+		{
+			if (src == null)
+				return null;
+
+			return new ApprovalDto()
+			{
+				Id = src.Id,
+				ServiceRequestId = src.ServiceRequestId,
+				Comments = src.Comments,
+				ApproverId = src.ApproverId,
+				RequestorId = src.RequestorId,
+				Result = src.Result,
+			};
+		}
+
+		public static Approval MapDtoToApproval(IApprovalDto src)
+		{
+			if (src == null)
+				return null;
+
+			return new Approval()
+			{
+				Id = src.Id,
+				ServiceRequestId = src.ServiceRequestId,
+				Comments = src.Comments,
+				ApproverId = src.ApproverId,
+				RequestorId = src.RequestorId,
+				Result = src.Result,
+			};
+		}
 	}
 }
