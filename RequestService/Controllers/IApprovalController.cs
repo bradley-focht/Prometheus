@@ -14,6 +14,13 @@ namespace RequestService.Controllers
 		IApprovalDto GetApproval(int performingUserId, int approvalId);
 
 		/// <summary>
+		/// Get Approval for an SR
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceRequestId"></param>
+		/// <returns></returns>
+		IApprovalDto GetApprovalForServiceRequest(int performingUserId, int serviceRequestId);
+		/// <summary>
 		/// Modifies the approval in the database
 		/// </summary>
 		/// <param name="performingUserId"></param>

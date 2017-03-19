@@ -105,7 +105,7 @@
 						</div>
 					</div>
 					<div class="dd-cell-nostyle make-space-left" id="div_RequesteeSelect" style="display: none;">
-						<select name="form.Requestees" id="RequesteesSelect" style="width: 400px" data-val = "true" data-val-required = "Requested for is required" ></select>
+						<select name="form.Requestees" id="RequesteesSelect" style="width: 400px" data-val = "true" data-val-required = "Requested for is required"></select>
 						@Html.ValidationMessage("form.Requestees")
 					</div>
 				</div>
@@ -141,7 +141,7 @@
 	</div>
 	<div class="dd-row">
 		<div class="dt-cell">Office-Use</div>
-		<div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new { @class = "form-control" })</div>
+		<div class="dd-cell">@Html.TextBox("form.OfficeUse", Model.OfficeUse, new { @class = "form-control", style="max-width:350px;" })</div>
 	</div>
 </div>
 

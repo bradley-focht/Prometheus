@@ -22,6 +22,17 @@ namespace RequestService.Controllers
 			}
 		}
 
+		public IApprovalDto GetApprovalForServiceRequest(int performingUserId, int serviceRequestId)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var approval = context.Approvals.FirstOrDefault(x => x.ServiceRequestId == serviceRequestId);
+				if (approval != null)
+					return ManualMapper.MapApprovalToDto(approval);
+				return null;
+			}
+		}
+
 		public IApprovalDto ModifyApproval(int performingUserId, IApprovalDto approval, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, approval, modification);
@@ -68,5 +79,7 @@ namespace RequestService.Controllers
 			}
 			return null;
 		}
+
+
 	}
 }

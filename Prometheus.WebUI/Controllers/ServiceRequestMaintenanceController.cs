@@ -496,9 +496,11 @@ namespace Prometheus.WebUI.Controllers
 			newPackage.Action = package.Action;
 			newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
 			newPackage.ServiceTags = new List<IServiceTagDto>();
-
+			List<string> associations = new List<string>();
+			associations.AddRange(package.Associations);		//put the primary to the front so it can all be done at once
+			associations.Insert(0, package.Primary);
 			int i = 1; //used to order the category tags in a package
-			foreach (var association in package.Associations) //build new package
+			foreach (var association in associations) //build new package
 			{
 				int associationId = int.Parse(association.Substring(2, (association.Length - 2)));          //extract the actual Id
 				if (association.Contains("C_"))

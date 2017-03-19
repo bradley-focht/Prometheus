@@ -1107,7 +1107,7 @@ namespace DataService
 			if (src == null)
 				return null;
 
-			return new ApprovalDto()
+			return new ApprovalDto
 			{
 				Id = src.Id,
 				ServiceRequestId = src.ServiceRequestId,

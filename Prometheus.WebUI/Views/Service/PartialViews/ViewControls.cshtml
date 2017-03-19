@@ -13,22 +13,18 @@
                         <li>@Html.ActionLink("All", "Index", "Service", new {filterBy = "All", filterArg = "All", pageId = 0}, new {@class = "dropdown-item"})</li>
                         <li class="divider"></li>
                         @foreach (Tuple<string, string, IEnumerable<Tuple<int, string>>> item in Model.FilterMenu)
-                        {
-                            <li class="dropdown-submenu dropdown-item">
-                                <div style="display: flex;">
-                                    <div style="order: 1; flex: 2 0 0; margin-right: 5px;">@item.Item1</div>
-                                    <div style="order: 2; flex: 1 0 0; text-align: right;">
-                                        <i class="fa fa-caret-right" aria-hidden="true"></i>
-                                    </div>
-                                </div>
-                                <ul class="dropdown-menu">
-                                    @foreach (Tuple<int, string> subItem in item.Item3)
-                                    {
-                                        <li>@Html.ActionLink(subItem.Item2, "Index", new {filterBy = item.Item2, filterArg = subItem.Item1})</li>
-                                    }
-                                </ul>
-                            </li>
-                        }
+						{
+							<li class="dropdown-submenu">
+								<a tabindex="-1" href="#">@item.Item1</a>
+
+								<ul class="dropdown-menu">
+									@foreach (Tuple<int, string> subItem in item.Item3)
+									{
+										<li>@Html.ActionLink(subItem.Item2, "Index", new { filterBy = item.Item2, filterArg = subItem.Item1 })</li>
+									}
+								</ul>
+							</li>
+						}
                     </ul>
                 </div>
             }

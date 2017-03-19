@@ -69,13 +69,13 @@ namespace UserManager
 
 						//get the user's department
 						string departmentName = _scriptExecutor.GetUserDepartment(newUser.AdGuid);
+
 						newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
 												where d.Name == departmentName
 												select d.Id).FirstOrDefault();
 
 						//Add them and their role to the database
 						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(newUser));
-						savedUser.DepartmentId = 1;
 						savedUser.Roles = new List<Role> { authenticatedRole };
 						context.SaveChanges();
 						newUser = (UserDto)ManualMapper.MapUserToDto(savedUser);

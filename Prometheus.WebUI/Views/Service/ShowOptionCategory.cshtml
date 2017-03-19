@@ -6,8 +6,7 @@
 
     ViewBag.Title = "Services";
     ViewBag.SubTitle = "Option Category";
-    ViewBag.Links = new List<KeyValuePair<string, string>> {
-                                                            new KeyValuePair<string, string>("Home", "Home"),
+    ViewBag.Links = new List<KeyValuePair<string, string>> {new KeyValuePair<string, string>("Home", "Home"),
                                                             new KeyValuePair<string, string>("Services", "Service/Index"),
                                                             new KeyValuePair<string, string>(Model.ServiceName, $"Service/Show/Options/{Model.ServiceId}"),
                                                             new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
@@ -22,7 +21,7 @@
 		@ViewBag.SubTitle
 	</div>
 	<div class="panel-div">
-		@if (Model.OptionCategory != null)
+	@if (Model.OptionCategory != null)
 	{
 			@Html.Partial("PartialViews/ShowOffering", Model.OptionCategory)
 	}
@@ -35,11 +34,9 @@
 		<div class="panel-footer">
 			<div class="float-right-div">
 				@Html.ActionLink("Back", "Show", new { id = Model.ServiceId, section = "Options" }, new { @class = "btn btn-default btn-back" })
-
                 @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
                 {
                     @Html.ActionLink("Update", "UpdateOptionCategoryItem", new {id = Model.OptionCategory.Id}, new {@class = "btn btn-primary", style="margin-right: 5px;"})
-
                     @Html.ActionLink("Delete", "ConfirmDeleteOptionCategory", new {id = Model.OptionCategory.Id}, new {@class = "btn btn-danger"})
                 }
 			</div>
@@ -47,10 +44,4 @@
 	</div>
 }
 
-
-}
-
-@section Sidebar
-{
-
-}
+@section Sidebar { }
