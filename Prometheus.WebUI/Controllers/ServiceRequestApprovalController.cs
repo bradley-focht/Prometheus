@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Common.Enums;
 using Prometheus.WebUI.Helpers;
@@ -136,19 +138,6 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// Generic state change screen, will adjust to the state
-		/// </summary>
-		/// <param name="id">Service Requeset Id</param>
-		/// <param name="nextState">next SR state to change to</param>
-		/// <returns></returns>
-		public ActionResult ConfirmServiceRequestStateChange(int id, ServiceRequestState nextState)
-		{
-			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_portfolioService, _serviceRequestController, nextState, UserId, id);
-
-			return View(model);
-		}
-
-		/// <summary>
 		/// Show a single SR summary with all available next actions
 		/// </summary>
 		/// <param name="id"></param>
@@ -156,13 +145,35 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceRequest(int id)
 		{
 			ServiceRequestStateChangeModel model = ServiceRequestSummaryHelper.CreateStateChangeModel(_portfolioService, UserId, _serviceRequestController, id);
-			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
+			if (model.ServiceRequestModel == null) return View("ConfirmServiceRequestStateChange", model);
 
-
+			//check for an sr approval
+			IApprovalController approvalController = new ApprovalController();
+			try
+			{
+				model.ServiceRequestModel.Approval = approvalController.GetApprovalForServiceRequest(UserId, id);
+			}
+			catch (Exception) {  }
+			//deal with the requestees
+			if (model.ServiceRequestModel.ServiceRequest.RequestedForGuids != null)
+			{
+				List<string> displayNames = new List<string>();
+				foreach (var userGuidstring in model.ServiceRequestModel.ServiceRequest.RequestedForGuids.Split(','))
+				{
+					if (userGuidstring != "")	//get names from ad 
+					{
+						try
+						{
+							displayNames.Add(_userManager.GetDisplayName(Guid.Parse(userGuidstring)));
+						} catch (Exception) { /* skip this one */}
+					}
+				}
+				model.ServiceRequestModel.RequesteeDisplayNames = displayNames.OrderBy(x=>x);
+			}
 			// business logic 
 			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
+			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
 			model.AvailableStates = _requestManager.ValidStates(UserId, id);
-
 			return View("ConfirmServiceRequestStateChange", model);
 		}
 	}

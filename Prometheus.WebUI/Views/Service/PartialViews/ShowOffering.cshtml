@@ -3,31 +3,32 @@
 
 
     @foreach (var property in ViewData.ModelMetadata.Properties)
+	{
+		if (property.Model == null)
 		{
-			if (property.Model == null)
-			{
-				continue;
-			}
+			continue;
+		}
 
-			switch (property.PropertyName)
-			{
-				case "Id":  /*do nothing for these attributes */
-				case "ServiceId":
-				case "ServiceOptionId":
-				case "DateCreated":
-				case "DateUpdated":
-				case "CreatedByUserId":
-				case "UpdatedByUserId":
-				case "PictureMimeType":
-				case "Popularity":
-				case "Picture":
-				case "TextInputs":
-				case "ScriptedSelectionInputs":
-				case "SelectionInputs":
-				case "Code":
-
+		switch (property.PropertyName)
+		{
+			case "Id":  /*do nothing for these attributes */
+			case "ServiceId":
+			case "ServiceOptionId":
+			case "DateCreated":
+			case "DateUpdated":
+			case "CreatedByUserId":
+			case "UpdatedByUserId":
+			case "PictureMimeType":
+			case "Popularity":
+			case "Picture":
+			case "TextInputs":
+			case "ScriptedSelectionInputs":
+			case "SelectionInputs":
+			case "Code":
+			case "BasicRequest":
+			case "Published":
 				continue;
-			}
+		}
 
 		<div class="dd-row">
             <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>

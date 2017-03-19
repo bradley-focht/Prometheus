@@ -85,10 +85,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveInfo(ServiceRequestInfoReturnModel form, int submit)
 		{
-			if (submit == 9999 && form.Id == 0)
-			{
-				return RedirectToAction("Index", "ServiceRequestApproval");
-			}
 			ServiceRequestModel model = new ServiceRequestModel();      //data to be sent to next view
 			if (!ModelState.IsValid)                                    //server side validation
 			{
@@ -135,13 +131,13 @@ namespace Prometheus.WebUI.Controllers
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved Service Request";
-			if (submit >= 99999)
+			if (submit >= 99999)	//Submission
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
+				return RedirectToAction("ShowServiceRequest", "ServiceRequestApproval", new {id = form.Id});
 			}
-			if (submit >= 9999)
+			if (submit >= 88888)	//save for later
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
+				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
 
 			return RedirectToAction("Form", new { id = request.Id, index = submit });
@@ -364,13 +360,13 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP FIVE - navigation */
 
 			model.CurrentIndex = submit;
-			if (submit >= 99999)
+			if (submit >= 99999)	//submission
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Cancelled });
+				return RedirectToAction("ShowServiceRequest", "ServiceRequestApproval", new { id = form.Id});
 			}
-			if (submit >= 9999)
+			else if (submit >= 88888)
 			{
-				return RedirectToAction("ConfirmServiceRequestStateChange", "ServiceRequestApproval", new { id = form.Id, nextState = ServiceRequestState.Submitted });
+				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
 
 			model.Mode = ServiceRequestMode.Selection;

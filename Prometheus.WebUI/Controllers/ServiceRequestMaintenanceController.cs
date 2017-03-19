@@ -155,13 +155,25 @@ namespace Prometheus.WebUI.Controllers
 			{
 				var package = (ServiceRequestPackageDto)_portfolioService.GetServiceRequestPackage(UserId, id);
 				model.Name = package.Name;
+				model.Action = package.Action;
+				
 				if (package.ServiceOptionCategoryTags != null)
 				{
-					model.SelectedCategories = from a in package.ServiceOptionCategoryTags select a.Id; //fill selections
+					model.SelectedCategories = from a in package.ServiceOptionCategoryTags select a.ServiceOptionCategoryId; //fill selections
+					if (package.ServiceOptionCategoryTags.FirstOrDefault(x => x.Order == 1) != null)							//figure out primary
+					{
+						model.PrimaryIsService = false;
+						model.PrimaryId = (from c in package.ServiceOptionCategoryTags where c.Order == 1 select c.ServiceOptionCategoryId).First();
+					}
 				}
 				if (package.ServiceTags != null)
 				{
-					model.SelectedCategories = from a in package.ServiceTags select a.Id;
+					model.SelectedServices = from a in package.ServiceTags select a.ServiceId;      //fill sections
+					if (package.ServiceTags.FirstOrDefault(x => x.Order == 1) != null)  //figure out primary if it is in here
+					{
+						model.PrimaryIsService = true;
+						model.PrimaryId = (from c in package.ServiceTags where c.Order == 1 select c.ServiceId).First();
+					}
 				}
 			}
 			catch (Exception exception)
@@ -485,7 +497,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to retrieve service package due to invalid data";
-				if (package.Id > 0)
+				if (package.Id == 0)
 				{
 					return RedirectToAction("AddPackage");
 				}
@@ -496,9 +508,11 @@ namespace Prometheus.WebUI.Controllers
 			newPackage.Action = package.Action;
 			newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
 			newPackage.ServiceTags = new List<IServiceTagDto>();
-
+			List<string> associations = new List<string>();
+			associations.AddRange(package.Associations);		//put the primary to the front so it can all be done at once
+			associations.Insert(0, package.Primary);
 			int i = 1; //used to order the category tags in a package
-			foreach (var association in package.Associations) //build new package
+			foreach (var association in associations) //build new package
 			{
 				int associationId = int.Parse(association.Substring(2, (association.Length - 2)));          //extract the actual Id
 				if (association.Contains("C_"))

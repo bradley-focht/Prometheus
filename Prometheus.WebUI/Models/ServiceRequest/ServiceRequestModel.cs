@@ -48,6 +48,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// </summary>
 		[Required(ErrorMessage = "At least one requestee is required")]
 		public IEnumerable<string> Requestees { get; set; }
+		/// <summary>
+		/// Used for display purposes only
+		/// </summary>
+		public IEnumerable<string> RequesteeDisplayNames { get; set; }
 
 		/// <summary>
 		/// Requested Date
@@ -147,6 +151,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// </summary>
 		public IServiceRequestDto ServiceRequest { get; set; }
 
+		/// <summary>
+		/// Service Request Approval
+		/// </summary>
+		public IApprovalDto Approval { get; set; }
 		/// <summary>
 		/// Currently selected index 
 		/// </summary>

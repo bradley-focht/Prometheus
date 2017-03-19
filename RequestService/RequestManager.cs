@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 using Common.Dto;
 using Common.Enums;
@@ -62,6 +63,7 @@ namespace RequestService
 					//Change state of the entity
 					ClearTemporaryFields(requestEntity);
 					requestEntity.State = ServiceRequestState.Submitted;
+					requestEntity.SubmissionDate = DateTime.UtcNow;
 
 					//Save
 					context.Entry(requestEntity).State = EntityState.Modified;
@@ -104,6 +106,7 @@ namespace RequestService
 
 					//Change state of the entity
 					requestEntity.State = ServiceRequestState.Cancelled;
+					requestEntity.CancelledDate = DateTime.UtcNow;
 
 					//Save
 					context.Entry(requestEntity).State = EntityState.Modified;
@@ -122,7 +125,7 @@ namespace RequestService
 				var request = RequestFromId(requestId);
 
 				return request.RequestedByUserId == userId
-					   && (request.State == ServiceRequestState.Incomplete || request.State == ServiceRequestState.Submitted);
+					   && (request.State == ServiceRequestState.Incomplete /*|| request.State == ServiceRequestState.Submitted */);
 			}
 			return false;
 		}
@@ -158,9 +161,19 @@ namespace RequestService
 
 					//Change state of the entity
 					var requestEntity = context.ServiceRequests.Find(requestId);
-					requestEntity.State = approvalResult == ApprovalResult.Approved
-						? ServiceRequestState.Approved
-						: ServiceRequestState.Denied;
+
+					//Approve or deny
+					if (approvalResult == ApprovalResult.Approved)
+					{
+						requestEntity.State = ServiceRequestState.Approved;
+						requestEntity.ApprovedDate = DateTime.UtcNow;
+					}
+					else
+					{
+						requestEntity.State = ServiceRequestState.Denied;
+						requestEntity.DeniedDate = DateTime.UtcNow;
+					}
+
 					context.Entry(requestEntity).State = EntityState.Modified;
 					context.SaveChanges(userId);
 					request = ManualMapper.MapServiceRequestToDto(requestEntity);
@@ -229,6 +242,7 @@ namespace RequestService
 
 					//Change state of the entity
 					requestEntity.State = ServiceRequestState.Fulfilled;
+					requestEntity.FulfilledDate = DateTime.UtcNow;
 
 					//Save
 					context.Entry(requestEntity).State = EntityState.Modified;

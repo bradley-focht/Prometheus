@@ -5,7 +5,7 @@
 			<span class="subsubtitle-div">Service Request Summary</span>
 			@if (Model.CanEditServiceRequest)
 			{
-				<div class="float-right-div">@Html.ActionLink("Edit Service Request", "Form", "ServiceRequest", new {id = Model.ServiceRequestModel.ServiceRequest.Id, index = -1}, null)</div>
+				<div class="float-right-div">@Html.ActionLink("Edit Service Request", "Form", "ServiceRequest", new { id = Model.ServiceRequestModel.ServiceRequest.Id, index = -1 }, null)</div>
 			}
 			<div class="dd full-width">
 				<div class="dd-row">
@@ -18,7 +18,15 @@
 				</div>
 				<div class="dd-row">
 					<div class="dd-cell-base dt-font">Requested For</div>
-					<div class="dd-cell-base"> hopefully not too many names in here</div>
+					<div class="dd-cell-base" style="max-height: 200px; overflow-y: scroll">
+						@if (Model.ServiceRequestModel.RequesteeDisplayNames != null)
+						{
+							foreach (var requestee in Model.ServiceRequestModel.RequesteeDisplayNames)
+							{
+								<div>@requestee</div>
+							}
+						}
+					</div>
 					<div></div>
 					<div class="dd-cell-base dt-font">Status</div>
 					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.State</div>
@@ -39,15 +47,36 @@
 			<input id="drop-checkbox-dates" type="checkbox" class="drop-checkbox-request">
 			<label for="drop-checkbox-dates" id="example" class="drop-text-request" data-toggle="collapse" data-target="#drop-dates">Show details</label>
 			<div class="collapse" id="drop-dates">
-				<div class="dd-row">
-					<div class="dd-cell-base dt-font">Requested For</div>
-					<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.RequestedForDate.ToString("d")</div>
-				</div>
 				<div class="dd">
+					<div class="dd-row">
+						<div class="dd-cell-base dt-font">Requested For</div>
+						<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.RequestedForDate.ToString("d")</div>
+					</div>
+
 					<div class="dd-row">
 						<div class="dd-cell-base dt-font">Date Started</div>
 						<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.CreationDate.ToString("g")</div>
 					</div>
+					@if (Model.ServiceRequestModel.ServiceRequest.DeniedDate != null || Model.ServiceRequestModel.ServiceRequest.ApprovedDate != null)
+					{
+						<div class="dd-row">
+
+							@if (Model.ServiceRequestModel.ServiceRequest.DeniedDate != null)
+							{
+								<div class="dd-cell-base dt-font">Date Denied</div>
+								<div class="dd-cell-base">
+									@Model.ServiceRequestModel.ServiceRequest.DeniedDate.Value.ToString("g")
+								</div>
+							}
+							else if (Model.ServiceRequestModel.ServiceRequest.ApprovedDate != null)
+							{
+								<div class="dd-cell-base dt-font">Date Approved</div>
+								<div class="dd-cell-base">
+									@Model.ServiceRequestModel.ServiceRequest.ApprovedDate.Value.ToString("g")
+								</div>
+							}
+						</div>
+					}
 				</div>
 			</div>
 		</div>
@@ -59,15 +88,19 @@
 				<div class="dd full-width">
 					<div class="dd-row">
 						<div class="dd-cell-base dt-font">Requestor Comments</div>
-
-						<div class="dd-cell-base dt-font">Approver Comments</div>
-
+						@if (Model.ServiceRequestModel.Approval != null)
+						{
+							<div class="dd-cell-base dt-font">Approver Comments</div>
+						}
 					</div>
 
 					<div class="dd-row">
 						<div class="dd-cell-base">@Html.Raw(Model.ServiceRequestModel.ServiceRequest.Comments)</div>
 						<div class="dd-cell-base">
-							
+							@if (Model.ServiceRequestModel.Approval != null)
+							{
+								@Html.Raw(Model.ServiceRequestModel.Approval.Comments)
+							}
 						</div>
 					</div>
 				</div>

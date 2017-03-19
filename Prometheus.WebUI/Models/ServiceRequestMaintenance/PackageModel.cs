@@ -28,7 +28,21 @@ namespace Prometheus.WebUI.Models.ServiceRequestMaintenance
         /// <summary>
         /// collection of associated categories
         /// </summary>
-        [Required(ErrorMessage = "At least one association is required")]
+        [Required(ErrorMessage = "A primary association is required")]
+		public string Primary { get; set; }
+		
+		/// <summary>
+		/// For rebuilding UpdatePackage UI
+		/// Identify by Id
+		/// </summary>
+		public int PrimaryId { get; set; }
+		/// <summary>
+		/// Identify by type
+		/// </summary>
+		public bool PrimaryIsService { get; set; }
+		/// <summary>
+		/// Other associations
+		/// </summary>
         public ICollection<string> Associations { get; set; }
 
 		/// <summary>

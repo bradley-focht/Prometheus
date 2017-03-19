@@ -906,7 +906,7 @@ namespace DataService
 				Name = src.Name,
 				Action = src.Action,
 				State = src.State,
-				ApprovalDate = src.ApprovalDate,
+				ApprovedDate = src.ApprovedDate,
 				ApproverUserId = src.ApproverUserId,
 				Comments = src.Comments,
 				CreationDate = src.CreationDate,
@@ -918,6 +918,9 @@ namespace DataService
 				RequestedForDate = src.RequestedForDate,
 				ServiceOptionId = src.ServiceOptionId,
 				DepartmentId = src.DepartmentId,
+				CancelledDate = src.CancelledDate,
+				DeniedDate = src.DeniedDate,
+				FulfilledDate = src.FulfilledDate
 			};
 		}
 
@@ -931,7 +934,7 @@ namespace DataService
 				Name = src.Name,
 				Action = src.Action,
 				State = src.State,
-				ApprovalDate = src.ApprovalDate,
+				ApprovedDate = src.ApprovedDate,
 				ApproverUserId = src.ApproverUserId,
 				Comments = src.Comments,
 				CreationDate = src.CreationDate,
@@ -944,7 +947,10 @@ namespace DataService
 				ServiceOptionId = src.ServiceOptionId,
 				DepartmentId = src.DepartmentId,
 				UpfrontPrice = src.UpfrontPrice,
-				MonthlyPrice = src.MonthlyPrice
+				MonthlyPrice = src.MonthlyPrice,
+				CancelledDate = src.CancelledDate,
+				DeniedDate = src.DeniedDate,
+				FulfilledDate = src.FulfilledDate
 			});
 
 			//options
@@ -1093,6 +1099,38 @@ namespace DataService
 			{
 				Id = src.Id,
 				Name = src.Name,
+			};
+		}
+
+		public static IApprovalDto MapApprovalToDto(Approval src)
+		{
+			if (src == null)
+				return null;
+
+			return new ApprovalDto
+			{
+				Id = src.Id,
+				ServiceRequestId = src.ServiceRequestId,
+				Comments = src.Comments,
+				ApproverId = src.ApproverId,
+				RequestorId = src.RequestorId,
+				Result = src.Result,
+			};
+		}
+
+		public static Approval MapDtoToApproval(IApprovalDto src)
+		{
+			if (src == null)
+				return null;
+
+			return new Approval()
+			{
+				Id = src.Id,
+				ServiceRequestId = src.ServiceRequestId,
+				Comments = src.Comments,
+				ApproverId = src.ApproverId,
+				RequestorId = src.RequestorId,
+				Result = src.Result,
 			};
 		}
 	}

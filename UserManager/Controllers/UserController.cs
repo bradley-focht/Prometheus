@@ -36,8 +36,6 @@ namespace UserManager.Controllers
 			}
 		}
 
-
-
 		public IUserDto GetUser(int performingUserId, int userId)
 		{
 			//TODO: Sean - need to do permissions stuff here
@@ -144,11 +142,6 @@ namespace UserManager.Controllers
 
 		protected override IUserDto Delete(int performingUserId, IUserDto userDto)
 		{
-			if (userDto.Id == AdministratorId)
-			{
-				throw new InvalidOperationException("Administrator account cannot be deleted.");
-			}
-
 			if (userDto.Id == GuestId)
 			{
 				throw new InvalidOperationException("Guest account cannot be deleted.");
@@ -156,8 +149,17 @@ namespace UserManager.Controllers
 
 			using (var context = new PrometheusContext())
 			{
-				var toDelete = context.Users.Find(userDto.Id);
-				context.Users.Remove(toDelete);
+				var userToDelete = context.Users.Find(userDto.Id);
+				if (userToDelete.Roles.Any(x => x.Name == "Administrator"))
+				{
+					//If there is only one admin
+					if (context.Users.Count(x => x.Roles.Any(y => y.Name == "Administrator")) <= 1)
+					{
+						throw new InvalidOperationException("Prometheus must have an Administrator account active. " +
+															"Cannot delete this user as it is the only Administrator account.");
+					}
+				}
+				context.Users.Remove(userToDelete);
 				context.SaveChanges();
 			}
 			return null;

@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Management.Automation;
-using System.Management.Automation.Runspaces;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
@@ -14,7 +10,7 @@ using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
-using Newtonsoft.Json;
+using Common.Utilities;
 
 namespace Prometheus.WebUI.Controllers
 {
