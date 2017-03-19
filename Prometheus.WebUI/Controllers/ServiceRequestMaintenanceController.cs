@@ -155,13 +155,25 @@ namespace Prometheus.WebUI.Controllers
 			{
 				var package = (ServiceRequestPackageDto)_portfolioService.GetServiceRequestPackage(UserId, id);
 				model.Name = package.Name;
+				model.Action = package.Action;
+				
 				if (package.ServiceOptionCategoryTags != null)
 				{
-					model.SelectedCategories = from a in package.ServiceOptionCategoryTags select a.Id; //fill selections
+					model.SelectedCategories = from a in package.ServiceOptionCategoryTags select a.ServiceOptionCategoryId; //fill selections
+					if (package.ServiceOptionCategoryTags.FirstOrDefault(x => x.Order == 1) != null)							//figure out primary
+					{
+						model.PrimaryIsService = false;
+						model.PrimaryId = (from c in package.ServiceOptionCategoryTags where c.Order == 1 select c.ServiceOptionCategoryId).First();
+					}
 				}
 				if (package.ServiceTags != null)
 				{
-					model.SelectedCategories = from a in package.ServiceTags select a.Id;
+					model.SelectedServices = from a in package.ServiceTags select a.ServiceId;      //fill sections
+					if (package.ServiceTags.FirstOrDefault(x => x.Order == 1) != null)  //figure out primary if it is in here
+					{
+						model.PrimaryIsService = true;
+						model.PrimaryId = (from c in package.ServiceTags where c.Order == 1 select c.ServiceId).First();
+					}
 				}
 			}
 			catch (Exception exception)
@@ -485,7 +497,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to retrieve service package due to invalid data";
-				if (package.Id > 0)
+				if (package.Id == 0)
 				{
 					return RedirectToAction("AddPackage");
 				}
