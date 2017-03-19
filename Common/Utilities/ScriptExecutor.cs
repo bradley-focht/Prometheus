@@ -53,7 +53,6 @@ namespace Common.Utilities
 
             // create PowerShell runspace
             Runspace runspace = RunspaceFactory.CreateRunspace();
-
             runspace.Open();
 
             // create a pipeline and feed it the script text
@@ -61,20 +60,10 @@ namespace Common.Utilities
             Pipeline pipeline = runspace.CreatePipeline();
             pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
-			//pipeline.Commands.Add("Out-String"); /* I don't actually know what this does */
 
 			Collection <PSObject> results = pipeline.Invoke();
 
             runspace.Close();
-
-			// convert the script result into a single string
-
-			/* StringBuilder stringBuilder = new StringBuilder();
-			 foreach (PSObject obj in results)		// this does wierd things 
-			 {
-				 // here we go
-				 stringBuilder.AppendLine(obj.ToString());
-			 } */
 	        foreach (var result in results)
 	        {
 		        ScriptResult<string, string> myOption = new ScriptResult<string, string>();
