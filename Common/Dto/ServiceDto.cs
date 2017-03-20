@@ -9,12 +9,18 @@ namespace Common.Dto
 	public class ServiceDto : IServiceDto
 	{
 		//PK
-		[HiddenInput(DisplayValue = false)]
+		[HiddenInput]
 		public int Id { get; set; }
 
 		//FK
+		/// <summary>
+		/// Service Bundle in the Service Portfolio
+		/// </summary>
 		public int? ServiceBundleId { get; set; }
-
+		/// <summary>
+		/// Lifecycle Status
+		/// </summary>
+		[Required(ErrorMessage = "Lifecycle Status is required")]
 		public int LifecycleStatusId { get; set; }
 
 
@@ -73,12 +79,14 @@ namespace Common.Dto
 		/// Determines which service catalog (service or supporting) the service belongs in
 		/// </summary>
 		[Display(Name = "Service Type Role", Order = 6)]
+		[Required(ErrorMessage = "Role is Required")]
 		public ServiceTypeRole ServiceTypeRole { get; set; }
 
 		/// <summary>
 		/// Indicate if the service is internally provided or outsourced
 		/// </summary>
 		[Display(Name = "Service Type Provision", Order = 7)]
+		[Required(ErrorMessage = "Provision is Required")]
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
 
 		/// <summary>
@@ -150,6 +158,5 @@ namespace Common.Dto
 		/// </summary>
 		public virtual ICollection<IServiceOptionCategoryDto> ServiceOptionCategories { get; set; }
 	}
-
 	#endregion
 }

@@ -139,22 +139,31 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult AddService()
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
-			model.ServiceBundleNames = _portfolioService.GetServiceBundleNames().Select(b =>
+
+			//create list items for service bundle selection
+			List<SelectListItem> serviceBundleNames = new List<SelectListItem>();
+			serviceBundleNames.Add(new SelectListItem { Text = "Service Bundle..." });
+			serviceBundleNames.AddRange(_portfolioService.GetServiceBundleNames().Select(b =>
 						new SelectListItem
 						{
 							Value = b.Item1.ToString(),
 							Text = b.Item2
-						});
+						}));
+			model.ServiceBundleNames = serviceBundleNames;
 
-			_portfolioService.GetServiceBundleNames();
-			model.StatusNames = _portfolioService.GetLifecycleStatusNames().Select(l =>
+			//create list of service lifecycle statuses
+			List<SelectListItem> statuses = new List<SelectListItem>();
+			statuses.Add(new SelectListItem {Text = "Lifecycle Status..." });
+			statuses.AddRange(_portfolioService.GetLifecycleStatusNames().Select(l =>
 						new SelectListItem
 						{
 							Value = l.Item1.ToString(),
 							Text = l.Item2
-						});
-			model.Service = new ServiceDto();
+						}));
+			model.StatusNames = statuses;
 
+			//empty new service
+			model.Service = new ServiceDto();
 			return View("AddService", model);
 		}
 
@@ -164,7 +173,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="newService"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveService(IServiceDto newService)
+		public ActionResult SaveService(ServiceDto newService)
 		{
 			if (!ModelState.IsValid) /* Server side validation */
 			{
@@ -199,7 +208,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <param name="swotItem"></param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveSwotItem(IServiceSwotDto swotItem)
+		public ActionResult SaveSwotItem(ServiceSwotDto swotItem)
 		{
 			if (!ModelState.IsValid)
 			{
@@ -395,7 +404,7 @@ namespace Prometheus.WebUI.Controllers
 			if (service.ServiceContracts != null && service.ServiceContracts.Any())
 			{
 				tblModel.Titles = new List<string> { "Provider", "Contract", "Start Date", "Expiry Date" };
-				List<Tuple<int, ICollection<string>>> data = new List<Tuple<int, ICollection<string>>>();
+				var data = new List<Tuple<int, ICollection<string>>>();
 
 				foreach (var contract in service.ServiceContracts)
 				//check for data before doing anything, if no data a "add new" message will be displayed
@@ -416,6 +425,11 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("PartialViews/_TableViewer", tblModel);
 		}
 
+		/// <summary>
+		/// Work Units
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowServiceWorkUnits(int id)
 		{
@@ -749,22 +763,39 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult UpdateGeneral(int id)
 		{
 			ServiceSectionModel model = new ServiceSectionModel();
-			model.Service = _portfolioService.GetService(id);
-			model.ServiceBundleNames = _portfolioService.GetServiceBundleNames().Select(b =>
+			try
+			{
+				model.Service = _portfolioService.GetService(id);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed retrieve service: {exception.Message}";
+				return RedirectToAction("Show", new {section = "General", id });
+			}
+			List<SelectListItem> serviceBundleNames = new List<SelectListItem>();
+			serviceBundleNames.Add(new SelectListItem { Text = "Service Bundle..." });
+			serviceBundleNames.AddRange(_portfolioService.GetServiceBundleNames().Select(b =>
 						new SelectListItem
 						{
 							Value = b.Item1.ToString(),
 							Text = b.Item2,
 							Selected = b.Item1 == model.Service.ServiceBundleId
-						});
-			_portfolioService.GetServiceBundleNames();
-			model.StatusNames = _portfolioService.GetLifecycleStatusNames().Select(l =>
+						}));
+			model.ServiceBundleNames = serviceBundleNames;
+
+			//create list of service lifecycle statuses
+			List<SelectListItem> statuses = new List<SelectListItem>();
+			statuses.Add(new SelectListItem { Text = "Lifecycle Status..." });
+			statuses.AddRange(_portfolioService.GetLifecycleStatusNames().Select(l =>
 						new SelectListItem
 						{
 							Value = l.Item1.ToString(),
 							Text = l.Item2,
 							Selected = l.Item1 == model.Service.LifecycleStatusId
-						});
+						}));
+			model.StatusNames = statuses;
+
 			model.Section = "General";
 
 			return View("UpdateSectionItem", model);
@@ -779,22 +810,31 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveGeneralItem(ServiceDto service)
 		{
-			if (ModelState.IsValid)
+			if (!ModelState.IsValid)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"{service.Name} has not been failed due to invalid data";
+				if (service.Id > 0)
+				{
+					return RedirectToAction("UpdateGeneral", new {id = service.Id});
+				}
+				return RedirectToAction("AddService");
 			}
-			TempData["MessageType"] = WebMessageType.Success;
-			TempData["Message"] = $"{service.Name} has been saved";
 
 			//perform the save
 			service = (ServiceDto)AbbreviatedEntityUpdate.UpdateService(_portfolioService.GetService(service.Id), service);         //preserve data updated from ICatalogPublishable interface
 
 			_portfolioService.ModifyService(UserId, service, EntityModification.Update);   //perform the update
-
-			return RedirectToAction("Show", new { section = "General", id = service.Id });
+			TempData["MessageType"] = WebMessageType.Success;
+			TempData["Message"] = $"{service.Name} has been saved";
+			return RedirectToAction("Show", new { section = "General", id = service.Id, pageId=0 });
 		}
 
+		/// <summary>
+		/// Save a Goal
+		/// </summary>
+		/// <param name="goal"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult SaveGoalsItem(ServiceGoalDto goal)
 		{
@@ -1217,7 +1257,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceOption(DeleteSectionItemModel model)
 		{
-
 			int serviceId = 0;
 			try
 			{
@@ -1331,7 +1370,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceMeasure(DeleteSectionItemModel model)
 		{
-
 			try
 			{
 				_portfolioService.ModifyServiceMeasure(UserId, new ServiceMeasureDto() { Id = model.Id }, EntityModification.Delete);
@@ -1659,10 +1697,6 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult GetServicesDropDown(int id)
 		{
-
-
-			//ICollection<int> selectedOptions = (from o in _portfolioService.GetOptionCategory(id).ServiceOptions select o.Id).ToList();
-
 			var optionsList = new List<SelectListItem> { new SelectListItem { Value = "", Text = "Services..." } };
 			optionsList.AddRange(_portfolioService.GetServices().Select(l =>
 				new SelectListItem

@@ -1,112 +1,114 @@
 ﻿@using Common.Enums.Entities
 @model Prometheus.WebUI.Models.Service.ServiceSectionModel
+<div class="panel-div">
+	<input type="hidden" name="Id" value="@Model.Service.Id" />
+	<div class="dd">
 
-<input type="hidden" name="Id" value="@Model.Service.Id" />
-<div class="dd">
+		<div class="dd-row">
+			<div class="dt-cell">Name</div>
+			<div class="dd-cell">
+				@Html.TextBox("Name", Model.Service.Name, new { @class = "form-control" })
+				@Html.ValidationMessageFor(model => model.Name)
+			</div>
+		</div>
 
-    <div class="dd-row">
-        <div class="dt-cell">Name</div>
-        <div class="dd-cell">
-            @Html.TextBox("Name", Model.Service.Name, new {@class = "form-control"})
-            @Html.ValidationMessageFor(model => model.Name )
-        </div>
-    </div>
+		<div class="dd-row">
+			<div class="dt-cell">Description</div>
+			<div class="dd-cell">
+				@Html.TextArea("Description", Model.Service.Description, new { @class = "ckeditor" })
+			</div>
+		</div>
 
+		<div class="dd-row">
+			<div class="dt-cell">Service Owner</div>
+			<div class="dd-cell">
+				@Html.TextBox("ServiceOwner", Model.Service.ServiceOwner, new { @class = "form-control" })
 
-    <div class="dd-row">
-        <div class="dt-cell">Description</div>
-        <div class="dd-cell">
-            @Html.TextArea("Description", Model.Service.Description, new {@class = "ckeditor"})
-        </div>
-    </div>
+			</div>
+		</div>
 
-    <div class="dd-row">
-        <div class="dt-cell">Service Owner</div>
-        <div class="dd-cell">
-            @Html.TextBox("ServiceOwner", Model.Service.ServiceOwner, new {@class = "form-control" })
+		<div class="dd-row">
+			<div class="dt-cell">Service Type</div>
+			<div class="dd-cell">
+				<div class="dd" style="margin-top: 10px; margin-bottom: 10px;">
+					<div class="dd-row">
+						<div class="dt-cell">
+							Role
+						</div>
+						<div class="dd-cell">
+							<div class="btn-group" data-toggle="buttons">
+								<label class="btn btn-default" id="@ServiceTypeRole.Business">
+									@Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Business, false, new { data_val = "true", data_val_required = "Role is required" }) Customer-facing
+								</label>
 
-        </div>
-    </div>
+								<label class="btn btn-default" id="@ServiceTypeRole.Supporting">
+									@Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Supporting, false) Supporting
+								</label>
+							</div>
+							@Html.ValidationMessage("ServiceTypeRole")
+					</div>
+				</div>
+				<div class="dd-row">
+					<div class="dt-cell">
+						Provision
+					</div>
+					<div class="dd-cell">
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-default" id="@ServiceTypeProvision.Internal">
+								@Html.RadioButton("ServiceTypeProvision", ServiceTypeProvision.Internal, false, new { data_val = "true", data_val_required = "Provision type is required" }) Internal
+							</label>
+							<label class="btn btn-default" id="@ServiceTypeProvision.External">
+								@Html.RadioButton("ServiceTypeProvision", ServiceTypeProvision.External, false) External
+							</label>
+						</div>
 
-     <div class="dd-row">
-        <div class="dt-cell">Service Type</div>
-        <div class="dd-cell">
-            <div class="dd" style="margin-top: 10px; margin-bottom: 10px;">
-                <div class="dd-row">
-                    <div class="dt-cell">
-                        Role
-                    </div>
-                    <div class="dd-cell">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default" id="@ServiceTypeRole.Business">
-                                @Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Business, false) Customer-facing
-                            </label>
-
-                            <label class="btn btn-default" id="@ServiceTypeRole.Supporting">
-                                @Html.RadioButton("ServiceTypeRole", ServiceTypeRole.Supporting, false) Supporting
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="dd-row">
-                    <div class="dt-cell">
-                        Provision
-                    </div>
-                    <div class="dd-cell">
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default" id="@ServiceTypeProvision.Internal">
-                                @Html.RadioButton("ServiceTypeProvision", ServiceTypeProvision.Internal, false) Internal
-                            </label>
-                            <label class="btn btn-default" id="@ServiceTypeProvision.External">
-                                @Html.RadioButton("ServiceTypeProvision", ServiceTypeProvision.External, false) External
-                            </label>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="dd-row">
-        <div class="dt-cell">Lifecycle Status</div>
-        <div class="dd-cell">
-            @Html.DropDownList("LifecycleStatusId", Model.StatusNames, new { placeholder = "Lifecycle Status", style = "max-width: 300px;" })
-            @Html.ValidationMessageFor(model => model.LifecycStatusId)
-        </div>
-    </div>
-    <div class="dd-row">
-        <div class="dt-cell">Service Bundle</div>
-        <div class="dd-cell">
-            @Html.DropDownList("ServiceBundleId", Model.ServiceBundleNames, new { placeholder="Service Bundle", style="max-width: 300px;"})
-            @Html.ValidationMessageFor(model => model.ServiceBundleId)
-        </div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Lifecycle Status</div>
+		<div class="dd-cell">
+			@Html.DropDownList("LifecycleStatusId", Model.StatusNames, new { data_placeholder = "Lifecycle Status...", style = "max-width: 300px;", data_val = "true", data_val_required = "Status is required" })
+			@Html.ValidationMessageFor(model => model.LifecycStatusId)
+		</div>
+	</div>
+	<div class="dd-row">
+		<div class="dt-cell">Service Bundle</div>
+		<div class="dd-cell">
+			@Html.DropDownList("ServiceBundleId", Model.ServiceBundleNames, new { data_placeholder = "Service Bundle...", style = "max-width: 300px;" })
+			@Html.ValidationMessageFor(model => model.ServiceBundleId)
+		</div>
 	</div><div class="dd-row">
 		<div class="dt-cell">Dependencies</div>
-		<div class="dd-row">@Html.Action("GetServicesDropDown", new {id=Model.Service.Id})</div>
+		<div class="dd-row">@Html.Action("GetServicesDropDown", new { id = Model.Service.Id })</div>
 	</div>
 </div>
 
 <script type="text/javascript" language="javascript">
-@if (Model.Service.Id > 0)
-{
-    <text>
-        $('#@(Model.Service.ServiceTypeProvision)').button('toggle');
-        $('#@(Model.Service.ServiceTypeRole)').button('toggle');
-    </text>
-}
-    $('#LifecycleStatusId')
-                .selectize({
-                    maxItems: 1
-                });
-    $('#ServiceBundleId')
-                .selectize({
-                    maxItems: 1
-                });
-	$('#ServiceIds').selectize({
-		plugins: ['remove_button'],
-		maxItems: 10,
-		delimiter: ',',
-		persist: false
+	@if (Model.Service.Id > 0)
+	{
+		<text>
+	$('#@(Model.Service.ServiceTypeProvision)').button('toggle');
+	$('#@(Model.Service.ServiceTypeRole)').button('toggle');
+	</text>
+	}
+	$('#LifecycleStatusId')
+		.selectize({
+			maxItems: 1
+		});
+	$('#ServiceBundleId')
+		.selectize({
+			maxItems: 1
+		});
+	$('#ServiceIds')
+		.selectize({
+			plugins: ['remove_button'],
+			maxItems: 10,
+			delimiter: ',',
+			persist: false
 		});
 
 </script>
+</div>
