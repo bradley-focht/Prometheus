@@ -19,11 +19,10 @@ namespace ServiceFulfillmentEngineWebJob
 
 		public void FulfillNewRequests()
 		{
-			var newRequests = GetServiceRequests();
+			var newRequests = GetNewServiceRequests();
 			foreach (var request in newRequests)
 			{
-				if (!IsProcessedRequest(request))
-					ProcessRequest(request);
+				ProcessRequest(request);
 			}
 		}
 
@@ -103,10 +102,17 @@ namespace ServiceFulfillmentEngineWebJob
 		/// Gets all of the service requests from the API and then filters for new ones
 		/// </summary>
 		/// <returns></returns>
-		private IEnumerable<IServiceRequestDto> GetServiceRequests()
+		private IEnumerable<IServiceRequestDto> GetNewServiceRequests()
 		{
 			var controller = new PrometheusApiController(_userId, _apiKey);
-			return controller.GetServiceRequests();
+			var requests = controller.GetServiceRequests();
+			foreach (var request in requests)
+			{
+				if (!IsProcessedRequest(request))
+				{
+					yield return request;
+				}
+			}
 		}
 	}
 }
