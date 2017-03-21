@@ -40,8 +40,21 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(int pageId = 0)
 		{   //default of my service requests filtered by incomplete
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, ServiceRequestState.Incomplete);
-			return View(model);
+			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel();
+			try
+			{
+				model = ServiceRequestApprovalHelper.GetMyRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, ServiceRequestState.Incomplete);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve any service requests, {exception.Message}";
+			}
+			if (model.Controls == null)
+			{
+				model.Controls = new ServiceRequestApprovalControls();
+			}
+			return View("Index", model);
 		}
 
 		/// <summary>
@@ -52,9 +65,25 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult FilterStatus(ServiceRequestState state, int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetMyRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, state);
-			model.Controls.FilterAction = "FilterStatus";
-			model.Controls.FilterStateRequired = true;
+			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel();
+			try
+			{
+				model = ServiceRequestApprovalHelper.GetMyRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, state);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve any service requests, {exception.Message}";
+			}
+			if (model.Controls != null)
+			{
+				model.Controls.FilterAction = "FilterStatus";
+				model.Controls.FilterStateRequired = true;
+			}
+			else
+			{
+				model.Controls = new ServiceRequestApprovalControls();
+			}
 			return View("Index", model);
 		}
 
@@ -65,8 +94,24 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AllServiceRequests(int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize);
-			model.Controls.FilterAction = "AllServiceRequests";
+			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel();
+			try
+			{
+				model = ServiceRequestApprovalHelper.GetAllRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize);			
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve any service requests, {exception.Message}";
+			}
+			if (model.Controls != null)
+			{
+				model.Controls.FilterAction = "AllServiceRequests";
+			}
+			else
+			{
+				model.Controls = new ServiceRequestApprovalControls();
+			}
 			return View("Index", model);
 		}
 
@@ -77,8 +122,26 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AllDepartmentServiceRequests(int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetAllDepartmentRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize);
-			model.Controls.FilterAction = "GetDepartmentRequests";
+			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel();
+			try
+			{
+				model = ServiceRequestApprovalHelper.GetAllDepartmentRequests(_serviceRequestController, _userManager, UserId,
+					pageId, _pageSize);
+				
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve any service requests, {exception.Message}";
+			}
+			if (model.Controls != null)
+			{
+				model.Controls.FilterAction = "AllDepartmentServiceRequests";
+			}
+			else
+			{
+				model.Controls = new ServiceRequestApprovalControls();
+			}
 			return View("Index", model);
 		}
 
@@ -90,8 +153,23 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult FilterDepartmentStatus(ServiceRequestState state, int pageId = 0)
 		{
-			ServiceRequestApprovalModel model = ServiceRequestApprovalHelper.GetDepartmentRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, state);
+			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel();
+			try
+			{
+				model = ServiceRequestApprovalHelper.GetDepartmentRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, state);		
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve any service requests, {exception.Message}";
+			}
+			if (model.Controls != null) { 
 			model.Controls.FilterAction = "FilterDepartmentStatus";
+			}
+			else
+			{
+				model.Controls = new ServiceRequestApprovalControls();
+			}
 			return View("Index", model);
 		}
 
@@ -153,22 +231,23 @@ namespace Prometheus.WebUI.Controllers
 			{
 				model.ServiceRequestModel.Approval = approvalController.GetApprovalForServiceRequest(UserId, id);
 			}
-			catch (Exception) {  }
+			catch (Exception) { }
 			//deal with the requestees
 			if (model.ServiceRequestModel.ServiceRequest.RequestedForGuids != null)
 			{
 				List<string> displayNames = new List<string>();
 				foreach (var userGuidstring in model.ServiceRequestModel.ServiceRequest.RequestedForGuids.Split(','))
 				{
-					if (userGuidstring != "")	//get names from ad 
+					if (userGuidstring != "")   //get names from ad 
 					{
 						try
 						{
 							displayNames.Add(_userManager.GetDisplayName(Guid.Parse(userGuidstring)));
-						} catch (Exception) { /* skip this one */}
+						}
+						catch (Exception) { /* skip this one */}
 					}
 				}
-				model.ServiceRequestModel.RequesteeDisplayNames = displayNames.OrderBy(x=>x);
+				model.ServiceRequestModel.RequesteeDisplayNames = displayNames.OrderBy(x => x);
 			}
 			// business logic 
 			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);

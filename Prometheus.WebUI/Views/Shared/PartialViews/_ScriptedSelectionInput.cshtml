@@ -17,11 +17,10 @@
 <script type="text/javascript" language="javascript">
 	$(document)
 	.ready(function () {
-		$.get('/Script/ExecuteScript/@(Model.Control.ScriptId)/@(Session["Guid"])',
+		$.get('/Script/GetOptions/@(Session["Guid"])/@(Model.Control.ScriptId)',
 				function (data) {
 					$.each(data, function (i, option) {
 						selectize.addOption({ value: option.Value, text: option.Label });
-						console.log(option.Value + " " + option.Label);
 					});
 				});
 		selectize.refreshOptions();

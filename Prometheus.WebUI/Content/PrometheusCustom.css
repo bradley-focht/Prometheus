@@ -983,7 +983,9 @@
   position: relative;
   border-radius: 0;
 }
-
+.dropdown-item {
+	
+}
 .input-group-btn-vertical > .btn:first-child {
   border-top-right-radius: 4px;
 }

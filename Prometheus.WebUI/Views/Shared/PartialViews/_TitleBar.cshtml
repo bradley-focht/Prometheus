@@ -1,7 +1,24 @@
 ﻿@model List<KeyValuePair<string, string>>
+@using Common.Enums.Permissions
 @using Prometheus.WebUI.Helpers
 @using Prometheus.WebUI.HtmlHelpers
 
+@{
+	@* UI Access check for authenticated guest accounts *@
+int userId;
+try
+{
+	userId = int.Parse(Session["Id"].ToString());
+	if (!UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+	{
+		return;
+	}
+}
+catch (Exception)
+{
+	return;
+}
+}
 <div class="navbar-inverse navbar-fixed-top">
 
     <div class="content-body">
@@ -16,7 +33,11 @@
                     <li>@Html.ActionLink("Logout", "Logout", "UserAccount", null, new {@class = "dropdown-item"})</li>
                     <li class="divider"></li>
 	                <li>@Html.ActionLink("Home", "Index", "Home", null, new {@class = "dropdown-item"})</li>
-					<li>@Html.ActionLink("Service Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
+					
+					@if (UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+					{
+						<li>@Html.ActionLink("Service Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
+					}				
                     <li>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new { @class = "dropdown-item" })</li>
                 </ul>
             </div>
