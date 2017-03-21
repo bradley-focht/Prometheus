@@ -68,12 +68,24 @@ namespace UserManager
 						var authenticatedRole = context.Roles.FirstOrDefault(x => x.Name == AuthorizedUserRoleName);
 
 						//get the user's department
+
 						string departmentName = _scriptExecutor.GetUserDepartment(newUser.AdGuid);
 
-						newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
-												where d.Name == departmentName
-												select d.Id).FirstOrDefault();
+						if (string.IsNullOrEmpty(departmentName))
+						{
+							throw new Exception("Login failure: no department available for this account");
+						}
 
+						try
+						{
+							newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
+								where d.Name == departmentName
+								select d.Id).FirstOrDefault();
+						}
+						catch (Exception)
+						{
+							throw new Exception("Login failure: no department configured for this account");
+						}
 						//Add them and their role to the database
 						var savedUser = context.Users.Add(ManualMapper.MapDtoToUser(newUser));
 						savedUser.Roles = new List<Role> { authenticatedRole };

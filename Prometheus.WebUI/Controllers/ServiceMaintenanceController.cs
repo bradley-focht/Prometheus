@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
@@ -27,7 +28,6 @@ namespace Prometheus.WebUI.Controllers
 		{
 			return View();
 		}
-
 
 		/// <summary>
 		/// Basic list of services
@@ -209,11 +209,18 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteService(DeleteModel item)
 		{
-
-			_portfolioService.ModifyService(UserId, new ServiceDto { Id = item.Id }, EntityModification.Delete);
+			try
+			{
+				_portfolioService.ModifyService(UserId, new ServiceDto {Id = item.Id}, EntityModification.Delete);
+			}
+			catch (Exception exception)
+			{
+				TempData["messageType"] = WebMessageType.Failure;
+				TempData["message"] = $"Failed to delete {item.Name}, {exception.Message}";
+			}
 
 			TempData["messageType"] = WebMessageType.Failure;
-			TempData["message"] = $"Failed to delete {item.Name}";
+			TempData["message"] = $"Sucessfully deleted {item.Name}";
 			return RedirectToAction("ShowServices");
 		}
 
@@ -240,6 +247,5 @@ namespace Prometheus.WebUI.Controllers
 			}
 			return View("PartialViews/StatusCountDropDown", optionsList);
 		}
-
 	}
 }

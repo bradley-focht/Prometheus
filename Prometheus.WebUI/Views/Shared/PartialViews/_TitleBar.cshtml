@@ -9,10 +9,6 @@ int userId;
 try
 {
 	userId = int.Parse(Session["Id"].ToString());
-	if (!UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
-	{
-		return;
-	}
 }
 catch (Exception)
 {
