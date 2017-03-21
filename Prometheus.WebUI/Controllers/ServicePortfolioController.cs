@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
@@ -10,6 +11,7 @@ using ServicePortfolioService;
 
 namespace Prometheus.WebUI.Controllers
 {
+	[Authorize]
 	public class ServicePortfolioController : PrometheusController
 	{
 		private readonly IPortfolioService _portfolioService;
@@ -26,13 +28,22 @@ namespace Prometheus.WebUI.Controllers
 		{
 			var bundlesList = new List<ServiceBundleModel>();
 
-			foreach (var bundle in _portfolioService.GetServiceBundles())
+			try
 			{
-				ServiceBundleModel bundleModel = new ServiceBundleModel {ServiceBundle = bundle};
-				bundleModel.ServiceNames = _portfolioService.GetServiceNamesForServiceBundle(bundleModel.ServiceBundle.Id);
+				foreach (var bundle in _portfolioService.GetServiceBundles())
+				{
+					ServiceBundleModel bundleModel = new ServiceBundleModel {ServiceBundle = bundle};
+					bundleModel.ServiceNames = _portfolioService.GetServiceNamesForServiceBundle(bundleModel.ServiceBundle.Id);
+					bundlesList.Add(bundleModel);
+				}
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve service bundles, {exception.Message}";
 			}
 
-				return View(bundlesList);
+			return View(bundlesList);
 		}
 		/// <summary>
 		/// 
@@ -46,11 +57,8 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to save service bundle due to invalid data";
-
 				return RedirectToAction("Update", serviceBundle.Id);
 			}
-
-
 
 			if (serviceBundle.Id == 0)
 				_portfolioService.ModifyServiceBundle(UserId, serviceBundle, EntityModification.Create);
@@ -69,9 +77,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Add()
 		{
-			ServiceBundlesModel model = new ServiceBundlesModel {CurrentServiceBundle = new ServiceBundleModel()};
-
-			return View(model);
+			return View(new ServiceBundleModel());
 		}
 
 
@@ -97,12 +103,25 @@ namespace Prometheus.WebUI.Controllers
 			return View(serviceBundle);
 		}
 
+		/// <summary>
+		/// Update an existing Service Bundle
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult Update(int id = 0)
 		{
-
-
-			ServiceBundleDto serviceBundle = (ServiceBundleDto)_portfolioService.GetServiceBundle(id);
-			return View("Update", serviceBundle);
+			ServiceBundleDto serviceBundle = null;
+			try
+			{
+				serviceBundle = (ServiceBundleDto) _portfolioService.GetServiceBundle(id);
+			}
+			catch (Exception exception)
+			{
+				serviceBundle = new ServiceBundleDto();
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed retrieve Service Bundle {exception.Message}";
+			}
+			return View(serviceBundle);
 		}
 
 		/// <summary>
@@ -112,7 +131,6 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDelete(int id)
 		{
-
 			ServiceBundleDto serviceBundle = (ServiceBundleDto)_portfolioService.GetServiceBundle(id);
 
 			return View(serviceBundle);
@@ -140,11 +158,14 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Show");
 		}
 
+		/// <summary>
+		/// Retrieve a link-list of service bundles
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowServiceBundleList(int id = 0)
 		{
-
-
 			LinkListModel serviceBundleModel = new LinkListModel
 			{
 				AddAction = "Add",

@@ -24,17 +24,12 @@ namespace ServicePortfolioService.Controllers
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
 		{
 			using (var context = new PrometheusContext())
-			{
-				//TODO: Sean i changed this. it was selecting data from the context then returning it but when the receiver got the data, the data was disposed
-				var serviceBundles = context.ServiceBundles;
-				List<ServiceBundleDto> bundleDtos = new List<ServiceBundleDto>();
-
-
-				foreach (var bundle in serviceBundles)
+			{			
+				foreach (var bundle in context.ServiceBundles)
 				{
-					bundleDtos.Add(ManualMapper.MapServiceBundleToDto(bundle)); //LINQ & mappers of any sort are not friends. Doing this the old fashioned way. 
+					yield return ManualMapper.MapServiceBundleToDto(bundle);
 				}
-				return bundleDtos;
+				
 			}
 		}
 

@@ -26,7 +26,8 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				return context.Services.Where(x => x.ServiceBundleId == serviceBundleId).Select(x => ManualMapper.MapServiceToDto(x));
+				foreach (var service in context.Services.Where(x => x.ServiceBundleId == serviceBundleId))
+				yield return ManualMapper.MapServiceToDto(service);
 			}
 		}
 

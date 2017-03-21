@@ -266,16 +266,15 @@ namespace DataService
 		public static ServiceBundleDto MapServiceBundleToDto(IServiceBundle src)
 		{
 			if (src == null) return null;
-
-			var serviceBundle = new ServiceBundleDto
+			Lazy<ServiceBundleDto> bundle = new Lazy<ServiceBundleDto>(() => new ServiceBundleDto
 			{
 				Id = src.Id,
 				Name = src.Name,
 				Description = src.Description,
 				BusinessValue = src.BusinessValue,
 				Measures = src.Measures
-			};
-			return serviceBundle;
+			});
+			return bundle.Value;
 		}
 
 
