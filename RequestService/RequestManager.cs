@@ -174,6 +174,9 @@ namespace RequestService
 						requestEntity.DeniedDate = DateTime.UtcNow;
 					}
 
+					requestEntity.FinalUpfrontPrice = requestEntity.UpfrontPrice;
+					requestEntity.FinalMonthlyPrice = requestEntity.MonthlyPrice;
+
 					context.Entry(requestEntity).State = EntityState.Modified;
 					context.SaveChanges(userId);
 					request = ManualMapper.MapServiceRequestToDto(requestEntity);

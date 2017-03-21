@@ -34,6 +34,8 @@ namespace Common.Dto
 
 		decimal UpfrontPrice { get; set; }
 		decimal MonthlyPrice { get; set; }
+		decimal FinalUpfrontPrice { get; set; }
+		decimal FinalMonthlyPrice { get; set; }
 
 		DateTime? DateCreated { get; set; }
 		DateTime? DateUpdated { get; set; }

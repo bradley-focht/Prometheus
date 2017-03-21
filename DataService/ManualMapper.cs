@@ -920,7 +920,9 @@ namespace DataService
 				DepartmentId = src.DepartmentId,
 				CancelledDate = src.CancelledDate,
 				DeniedDate = src.DeniedDate,
-				FulfilledDate = src.FulfilledDate
+				FulfilledDate = src.FulfilledDate,
+				FinalMonthlyPrice = src.FinalMonthlyPrice,
+				FinalUpfrontPrice = src.FinalUpfrontPrice
 			};
 		}
 
@@ -950,7 +952,9 @@ namespace DataService
 				MonthlyPrice = src.MonthlyPrice,
 				CancelledDate = src.CancelledDate,
 				DeniedDate = src.DeniedDate,
-				FulfilledDate = src.FulfilledDate
+				FulfilledDate = src.FulfilledDate,
+				FinalMonthlyPrice = src.FinalMonthlyPrice,
+				FinalUpfrontPrice = src.FinalUpfrontPrice
 			});
 
 			//options

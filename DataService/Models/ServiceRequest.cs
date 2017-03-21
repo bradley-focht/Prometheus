@@ -86,6 +86,9 @@ namespace DataService.Models
 				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront);
 			}
 		}
+
+		public decimal FinalUpfrontPrice { get; set; }
+		public decimal FinalMonthlyPrice { get; set; }
 		#endregion
 
 		public virtual ServiceOption ServiceOption { get; set; }

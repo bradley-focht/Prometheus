@@ -32,6 +32,8 @@ namespace DataService.Models
 		bool BasicRequest { get; }
 		decimal MonthlyPrice { get; }
 		decimal UpfrontPrice { get; }
+		decimal FinalUpfrontPrice { get; set; }
+		decimal FinalMonthlyPrice { get; set; }
 
 		ServiceRequestAction Action { get; set; }
 		int? ServiceOptionId { get; set; }

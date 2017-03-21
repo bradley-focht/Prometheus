@@ -71,6 +71,8 @@ namespace Common.Dto
 		public decimal UpfrontPrice { get; set; }
 
 		public decimal MonthlyPrice { get; set; }
+		public decimal FinalUpfrontPrice { get; set; }
+		public decimal FinalMonthlyPrice { get; set; }
 
 		public virtual ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 		public virtual ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
