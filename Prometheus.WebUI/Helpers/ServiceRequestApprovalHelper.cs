@@ -30,7 +30,7 @@ namespace Prometheus.WebUI.Helpers
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			// retrieve filtered data
 			var srList = (from s in srController.GetServiceRequestsForRequestorId(userId, userId)
-						  where s.State == state && s.State != ServiceRequestState.Cancelled
+						  where s.State == state && s.State == state
 						  orderby s.Id
 						  select s).ToList();
 
@@ -104,7 +104,7 @@ namespace Prometheus.WebUI.Helpers
 		{
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
-						  where s.State != ServiceRequestState.Cancelled
+						  where s.State == state
 						  orderby s.Id
 						  select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);

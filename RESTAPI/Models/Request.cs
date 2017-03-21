@@ -27,12 +27,18 @@ namespace RESTAPI.Models
 		public ServiceRequestState State { get; set; }
 		public ServiceRequestAction Action { get; set; }
 		public DateTime? SubmissionDate { get; set; }
+		public DateTime? ApprovedDate { get; set; }
+		public DateTime? DeniedDate { get; set; }
+		public DateTime? CancelledDate { get; set; }
+		public DateTime? FulfilledDate { get; set; }
+		public decimal FinalMonthlyPrice { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 		public decimal UpfrontPrice { get; set; }
 		public decimal MonthlyPrice { get; set; }
+		public decimal FinalUpfrontPrice { get; set; }
 		public ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 		public ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
 	}

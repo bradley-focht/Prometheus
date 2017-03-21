@@ -16,7 +16,6 @@ namespace Prometheus.WebUI.Controllers
 {
 	public class ScriptController : PrometheusController
 	{
-
 		private readonly IScriptFileController _scriptFileController;
 
 		public ScriptController(IScriptFileController scriptFileController)
@@ -211,8 +210,6 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public JsonResult GetRequestees(Guid userId)
 		{
-			List<ScriptResult<string, string>> requestees;
-		
 			var scriptId = ConfigHelper.GetDepartmentUsersScriptId();
 			Guid scriptFile;
 
@@ -233,7 +230,7 @@ namespace Prometheus.WebUI.Controllers
 			ScriptExecutor elScriptador = new ScriptExecutor();
 
 			// Formatting to output the a JsonResult
-			requestees = elScriptador.ExecuteScript(userId, scriptFile);
+			var requestees = elScriptador.ExecuteScript(userId, scriptFile);
 			return Json(requestees, JsonRequestBehavior.AllowGet); /* you should see what it does without the allowget... actulaly don't */
 		}
 

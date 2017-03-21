@@ -562,6 +562,7 @@
     <Content Include="Views\Script\ConfirmDeleteScript.cshtml" />
     <Content Include="Views\ServiceRequest\PartialViews\ServiceOption.cshtml" />
     <Content Include="Views\Script\PartialViews\GetScriptsDropDownList.cshtml" />
+    <Content Include="Views\Shared\PartialViews\_NoAccess.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
