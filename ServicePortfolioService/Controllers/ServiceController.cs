@@ -38,9 +38,7 @@ namespace ServicePortfolioService.Controllers
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
 			var services = GetServicesForServiceBundle(serviceBundleId);
-			var nameList = new List<Tuple<int, string>>();
-			nameList.AddRange(services.Select(x => new Tuple<int, string>(x.Id, x.Name)));
-			return nameList.OrderBy(x => x.Item2);
+			return services.Select(x => new Tuple<int, string>(x.Id, x.Name)).OrderBy(x => x.Item2);
 		}
 
 		public IEnumerable<Tuple<int, string>> GetServiceNames()
