@@ -101,10 +101,18 @@ namespace ServicePortfolioService.Controllers
 
 				foreach (var status in context.LifecycleStatuses)
 				{
-					//Update positions to allow for position change
-					if (status.Position >= newPosition && status.Position < currentPosition)
+					//Update positions to allow for position change backwards
+					if (newPosition < currentPosition && status.Position >= newPosition && status.Position < currentPosition)
 					{
 						status.Position++;
+						context.LifecycleStatuses.Attach(status);
+						context.Entry(status).State = EntityState.Modified;
+					}
+
+					//Update positions to allow for position change forwards
+					if (newPosition > currentPosition && status.Position <= newPosition && status.Position > currentPosition)
+					{
+						status.Position--;
 						context.LifecycleStatuses.Attach(status);
 						context.Entry(status).State = EntityState.Modified;
 					}
