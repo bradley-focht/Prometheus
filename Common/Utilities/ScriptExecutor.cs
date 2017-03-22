@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
+using System.Web.Configuration;
 
 namespace Common.Utilities
 {
@@ -21,13 +22,16 @@ namespace Common.Utilities
 		/// <returns></returns>
 		public string GetUserDepartment(Guid userGuid)
 		{
-			//to be removed
+			// get department script guid
+			string scriptGuid = ConfigurationManager.AppSettings["GetDepartmentScriptId"];
+
+			// to be removed
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 
 			// open it
 			runspace.Open();
 			Pipeline pipeline = runspace.CreatePipeline();
-			pipeline.Commands.AddScript("(Get-ADUser -Filter \"ObjectGUID -eq '$guid'\" -properties Department | Select-Object Department | Format-Table -HideTableHeaders | Out-String).Trim()");
+			pipeline.Commands.AddScript(scriptGuid);
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 			Collection<PSObject> results = pipeline.Invoke();
 			runspace.Close();
@@ -42,35 +46,79 @@ namespace Common.Utilities
 		/// <param name="userGuid"></param>
 		/// <param name="scriptId"></param>
 		/// <returns></returns>
-		public List<ScriptResult<string, string>> ExecuteScript(Guid userGuid, Guid scriptId)
+		public List<ScriptResult<string, string>> ExecuteScript(Guid userGuid, Guid scriptGuid)
 		{
 			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
 
-			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptId.ToString());
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid.ToString());
 			PowerShell psExec = PowerShell.Create();
 			psExec.AddCommand(System.Web.HttpContext.Current.Server.MapPath(path) + ".ps1");
 			psExec.AddArgument(userGuid.ToString());
 
-            // create PowerShell runspace
-            Runspace runspace = RunspaceFactory.CreateRunspace();
-            runspace.Open();
+			// create PowerShell runspace
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+			runspace.Open();
 
-            // create a pipeline and feed it the script text
+			// create a pipeline and feed it the script text
 
-            Pipeline pipeline = runspace.CreatePipeline();
-            pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
+			Pipeline pipeline = runspace.CreatePipeline();
+			pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 
-			Collection <PSObject> results = pipeline.Invoke();
+			Collection<PSObject> results = pipeline.Invoke();
 
-            runspace.Close();
-	        foreach (var result in results)
-	        {
-		        ScriptResult<string, string> myOption = new ScriptResult<string, string>();
-		        foreach (var item in result.Members)
-		        {
-			        if (item.Name == "Label")
-				        myOption.Label = item.Value.ToString();
+			runspace.Close();
+			foreach (var result in results)
+			{
+				ScriptResult<string, string> myOption = new ScriptResult<string, string>();
+				foreach (var item in result.Members)
+				{
+					if (item.Name == "Label")
+						myOption.Label = item.Value.ToString();
+					if (item.Name == "Value")
+						myOption.Value = item.Value.ToString();
+				}
+				myOptions.Add(myOption);
+			}
+
+			return myOptions;
+		}
+
+		/// <summary>
+		/// For testing generic scripted selection input
+		/// </summary>
+		/// <param name="userguid"></param>
+		/// <param name="ScriptGuid"></param>
+		/// <returns></returns>
+		public List<ScriptResult<string, string>> GetGenericScript(Guid userGuid, Guid scriptGuid)
+		{
+			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
+
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid.ToString());
+			PowerShell psExec = PowerShell.Create();
+			psExec.AddCommand(System.Web.HttpContext.Current.Server.MapPath(path) + ".ps1");
+			psExec.AddArgument(userGuid.ToString());
+
+			// create PowerShell runspace
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+			runspace.Open();
+
+			// create a pipeline and feed it the script text
+
+			Pipeline pipeline = runspace.CreatePipeline();
+			pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
+			runspace.SessionStateProxy.SetVariable("guid", userGuid);
+
+			Collection<PSObject> results = pipeline.Invoke();
+
+			runspace.Close();
+			foreach (var result in results)
+			{
+				ScriptResult<string, string> myOption = new ScriptResult<string, string>();
+				foreach (var item in result.Members)
+				{
+					if (item.Name == "Label")
+						myOption.Label = item.Value.ToString();
 					if (item.Name == "Value")
 						myOption.Value = item.Value.ToString();
 				}

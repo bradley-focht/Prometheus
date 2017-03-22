@@ -258,7 +258,6 @@ namespace Prometheus.WebUI.Controllers
 
 			// Formatting to output the a JsonResult
 			var requestees = elScriptador.ExecuteScript(userId, scriptFile);
-
 			return Json(requestees, JsonRequestBehavior.AllowGet); 
 		}
 		/// <summary>

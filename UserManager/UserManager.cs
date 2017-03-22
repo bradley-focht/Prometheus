@@ -9,6 +9,7 @@ using DataService.DataAccessLayer;
 using DataService.Models;
 using UserManager.AdService;
 using UserManager.Controllers;
+using System.Configuration;
 
 namespace UserManager
 {
@@ -68,7 +69,6 @@ namespace UserManager
 						var authenticatedRole = context.Roles.FirstOrDefault(x => x.Name == AuthorizedUserRoleName);
 
 						//get the user's department
-
 						string departmentName = _scriptExecutor.GetUserDepartment(newUser.AdGuid);
 
 						if (string.IsNullOrEmpty(departmentName))
