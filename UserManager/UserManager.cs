@@ -38,7 +38,7 @@ namespace UserManager
 		/// <param name="username"></param>
 		/// <param name="password"></param>
 		/// <returns></returns>
-		public IUserDto Login(string username, string password)
+		public IUserDto Login(string username, string password, Guid scriptId)
 		{
 			AdUser adUser = new AdUser();
 			if (adUser.AuthenticateUser(username, password))

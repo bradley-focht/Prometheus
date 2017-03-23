@@ -995,6 +995,8 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				ServiceOptionId = src.ServiceOptionId,
 				Quantity = src.Quantity,
+				Code = src.Code,
+				ServiceOptionName = src.ServiceOptionName,
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest,
 			};
@@ -1009,6 +1011,8 @@ namespace DataService
 				ApproverUserId = src.ApproverUserId,
 				RequestedByUserId = src.RequestedByUserId,
 				Quantity = src.Quantity,
+				Code = src.Code,
+				ServiceOptionName = src.ServiceOptionName,
 				ServiceOptionId = src.ServiceOptionId,
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest

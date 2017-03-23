@@ -224,11 +224,20 @@ namespace Prometheus.WebUI.Controllers
 				else
 				{
 					formOptions = form.GetServiceRequestOptions().ToList();
+					//get metadata for form options
+					foreach (var option in formOptions)
+					{
+						option.ServiceOptionName = _portfolioService.GetServiceOption(UserId, option.ServiceOptionId).Name;
+						option.Code =
+							_portfolioService.GetServiceOptionCategory(UserId,
+								_portfolioService.GetServiceOption(UserId, option.ServiceOptionId).ServiceOptionCategoryId).Code;
+					}
 				}
 				if (model.ServiceRequest.ServiceRequestOptions == null)
 				{
 					model.ServiceRequest.ServiceRequestOptions = new List<IServiceRequestOptionDto>();
 				}
+
 
 				List<IServiceOptionCategoryDto> currentCategories = new List<IServiceOptionCategoryDto>();
 

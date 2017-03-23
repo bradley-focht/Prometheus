@@ -70,7 +70,7 @@ namespace DataService.Models
 			{
 				if (this.ServiceRequestOptions == null)
 					return 0;
-				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly);
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly * x.Quantity);
 			}
 		}
 
@@ -83,7 +83,7 @@ namespace DataService.Models
 			{
 				if (this.ServiceRequestOptions == null)
 					return 0;
-				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront);
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront * x.Quantity);
 			}
 		}
 

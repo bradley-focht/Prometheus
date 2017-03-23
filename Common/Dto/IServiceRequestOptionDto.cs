@@ -12,6 +12,8 @@ namespace Common.Dto
 		int ServiceOptionId { get; set; }
 		int ServiceRequestId { get; set; }
 		int Quantity { get; set; }
+		string Code { get; set; }
+		string ServiceOptionName { get; set; }
 		int ApproverUserId { get; set; }
 		int CreatedByUserId { get; set; }
 		DateTime? DateCreated { get; set; }

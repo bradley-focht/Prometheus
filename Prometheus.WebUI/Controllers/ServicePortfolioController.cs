@@ -93,8 +93,15 @@ namespace Prometheus.WebUI.Controllers
 
 			if (id > 0)
 			{
-
-				serviceBundle = (ServiceBundleDto)_portfolioService.GetServiceBundle(id);
+				try
+				{
+					serviceBundle = (ServiceBundleDto) _portfolioService.GetServiceBundle(id);
+				}
+				catch (Exception exception)
+				{
+					TempData["MessageType"] = WebMessageType.Failure;
+					TempData["Message"] = $"failed to get service bundle, {exception}";
+				}
 			}
 			else
 			{
@@ -110,7 +117,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Update(int id = 0)
 		{
-			ServiceBundleDto serviceBundle = null;
+			ServiceBundleDto serviceBundle;
 			try
 			{
 				serviceBundle = (ServiceBundleDto) _portfolioService.GetServiceBundle(id);
