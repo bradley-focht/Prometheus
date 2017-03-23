@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Common.Dto;
 using Common.Enums;
 using ServiceFulfillmentEngineWebJob.ApiControllers;
+using System.Management.Automation;
+using System.Management.Automation.Runspaces;
 
 namespace ServiceFulfillmentEngineWebJob
 {
@@ -42,6 +44,20 @@ namespace ServiceFulfillmentEngineWebJob
 		/// <param name="request"></param>
 		private void ProcessRequest(IServiceRequestDto request)
 		{
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+			runspace.Open();
+
+			// create a pipeline and feed it the script text
+
+			Pipeline pipeline = runspace.CreatePipeline();
+			pipeline.Commands.AddScript(" A B C ");
+			foreach (var userInput in request.ServiceRequestUserInputs)		//just add everything
+			{
+				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);    
+			}
+			
+
+			/* Just chill for now
 			var processedServiceOptions = new List<IServiceRequestOptionDto>();
 
 			foreach (var option in request.ServiceRequestOptions)
@@ -52,8 +68,8 @@ namespace ServiceFulfillmentEngineWebJob
 					processedServiceOptions.Add(option);
 				}
 			}
-
-			ForwardRequest(request, processedServiceOptions);
+			
+			ForwardRequest(request, processedServiceOptions); */
 			FulfillPrometheusRequest(request);
 		}
 
