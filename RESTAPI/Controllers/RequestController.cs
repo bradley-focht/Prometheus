@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Web.Http;
-using Common.Dto;
 using Common.Enums.Entities;
 using RequestService;
 using RequestService.Controllers;
@@ -31,10 +30,10 @@ namespace RESTAPI.Controllers
 		}
 
 		// GET: api/Request/5
-		public IServiceRequestDto Get(int id)
+		public Request Get(int id)
 		{
 			//Need to change userId
-			return _serviceRequestController.GetServiceRequest(_userManager.GuestId, id);
+			return new Request(_serviceRequestController.GetServiceRequest(_userManager.GuestId, id));
 		}
 
 		// POST: api/Request
