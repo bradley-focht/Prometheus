@@ -47,9 +47,6 @@ namespace Common.Utilities
 			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
 
 			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptId.ToString());
-			PowerShell psExec = PowerShell.Create();
-			psExec.AddCommand(System.Web.HttpContext.Current.Server.MapPath(path) + ".ps1");
-			psExec.AddArgument(userGuid.ToString());
 
             // create PowerShell runspace
             Runspace runspace = RunspaceFactory.CreateRunspace();
