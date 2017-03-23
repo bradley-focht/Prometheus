@@ -35,7 +35,7 @@
 			</ul>
 		</div>
 
-		@if (UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests) || UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveAnyRequests))
+		@if (UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveDepartmentRequests) || UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveAnyRequests))
 		{
 			<div class="dropdown">
 				<button class="dropdown-toggle btn btn-default" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Department Requests</button>

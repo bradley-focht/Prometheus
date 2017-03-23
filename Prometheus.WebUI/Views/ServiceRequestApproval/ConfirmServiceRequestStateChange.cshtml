@@ -43,7 +43,7 @@
 			@Html.Partial("PartialViews/_ServiceRequestSummary", Model)
 		</div>
 
-		@if (Model.ServiceRequestModel.ServiceRequest.State == ServiceRequestState.Submitted && UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveMinistryRequests))
+		@if (Model.ServiceRequestModel.ServiceRequest.State == ServiceRequestState.Submitted && UiPermissionHelper.HasPermission(userId, ApproveServiceRequest.ApproveDepartmentRequests))
 		{
 			<div class="dd make-space-top">
 				<div class="dd-row">

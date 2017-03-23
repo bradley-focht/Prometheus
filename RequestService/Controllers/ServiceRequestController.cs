@@ -113,7 +113,7 @@ namespace RequestService.Controllers
 					}
 				}
 			}
-			else if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveMinistryRequests))
+			else if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveDepartmentRequests))
 			{
 				//Submitted requests with the same department ID as the approver
 				using (var context = new PrometheusContext())
