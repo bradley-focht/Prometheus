@@ -7,7 +7,6 @@ using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
 using Common.Enums.Permissions;
-using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 using UserManager;
@@ -29,7 +28,11 @@ namespace RequestService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				var serviceRequest = context.ServiceRequests.Find(serviceRequestId);
+				var serviceRequest = context.ServiceRequests
+					.Include(x => x.ServiceRequestOptions)
+					.Include(x => x.ServiceRequestUserInputs)
+					.Include(x => x.ServiceRequestOptions.Select(y => y.ServiceOption))
+					.FirstOrDefault(x => x.Id == serviceRequestId);
 				if (serviceRequest != null)
 					return ManualMapper.MapServiceRequestToDto(serviceRequest);
 				return null;
@@ -109,7 +112,8 @@ namespace RequestService.Controllers
 						yield return ManualMapper.MapServiceRequestToDto(serviceRequest);
 					}
 				}
-			} else if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveMinistryRequests))
+			}
+			else if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveMinistryRequests))
 			{
 				//Submitted requests with the same department ID as the approver
 				using (var context = new PrometheusContext())
@@ -125,7 +129,8 @@ namespace RequestService.Controllers
 						yield return ManualMapper.MapServiceRequestToDto(serviceRequest);
 					}
 				}
-			} else if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveBasicRequests))
+			}
+			else if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveBasicRequests))
 			{
 				//Basic Requests that the approver submitted
 				using (var context = new PrometheusContext())
@@ -157,6 +162,19 @@ namespace RequestService.Controllers
 					return _userManager.UserHasPermission(performingUserId, (ServiceRequestSubmission)permission);
 			}
 			return false;
+		}
+
+		public IEnumerable<IServiceRequestDto> GetServiceRequests(int performingUserId)
+		{
+			using (var context = new PrometheusContext())
+			{
+				var serviceRequests = context.ServiceRequests
+					.Include(x => x.ServiceRequestOptions)
+					.Include(x => x.ServiceRequestUserInputs)
+					.Include(x => x.ServiceRequestOptions.Select(y => y.ServiceOption));
+				var toReturn = serviceRequests.AsEnumerable().Select(x => ManualMapper.MapServiceRequestToDto(x));
+				return toReturn.ToList();
+			}
 		}
 	}
 }

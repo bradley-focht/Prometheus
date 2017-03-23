@@ -930,7 +930,7 @@ namespace DataService
 			};
 		}
 
-		public static ServiceRequestDto MapServiceRequestToDto(IServiceRequest src)
+		public static IServiceRequestDto MapServiceRequestToDto(ServiceRequest src)
 		{
 			if (src == null) return null;
 

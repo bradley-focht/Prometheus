@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Common.Enums;
+using ServiceFulfillmentEngineWebJob.Api.Models.Enums;
 
 namespace ServiceFulfillmentEngineWebJob.EntityFramework.Models
 {
