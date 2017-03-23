@@ -122,6 +122,9 @@
     <Compile Include="Dto\TextInputDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Enums\ApprovalResult.cs" />
+    <Compile Include="Enums\Permissions\ApiAccess.cs" />
+    <Compile Include="Enums\Permissions\FulfillmentAccess.cs" />
+    <Compile Include="Enums\Permissions\ScriptAccess.cs" />
     <Compile Include="Enums\Permissions\ServicePortfolio.cs" />
     <Compile Include="Enums\Permissions\ServiceCatalogMaintenance.cs" />
     <Compile Include="Enums\ServiceRequestAction.cs" />

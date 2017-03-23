@@ -63,7 +63,40 @@ namespace UserManager.Controllers
 				return UserCanMaintainServiceCatalog(userId, (ServiceCatalogMaintenance)(object)permission);
 			}
 
+			if (permission is ScriptAccess)
+			{
+				return UserCanAccessScripts(userId, (ScriptAccess)(object)permission);
+			}
+
+			if (permission is FulfillmentAccess)
+			{
+				return UserCanFulfillServiceRequests(userId, (FulfillmentAccess)(object)permission);
+			}
+
+			if (permission is ApiAccess)
+			{
+				return UserCanAccessApi(userId, (ApiAccess)(object)permission);
+			}
+
 			return false;
+		}
+
+		private bool UserCanAccessApi(int userId, ApiAccess permission)
+		{
+			var userRoles = GetUserRoles(userId);
+			return userRoles.Any(role => role.ApiAccess >= permission);
+		}
+
+		private bool UserCanFulfillServiceRequests(int userId, FulfillmentAccess permission)
+		{
+			var userRoles = GetUserRoles(userId);
+			return userRoles.Any(role => role.FulfillmentAccess >= permission);
+		}
+
+		private bool UserCanAccessScripts(int userId, ScriptAccess permission)
+		{
+			var userRoles = GetUserRoles(userId);
+			return userRoles.Any(role => role.ScriptAccess >= permission);
 		}
 
 		private bool UserCanMaintainServiceCatalog(int userId, ServiceCatalogMaintenance permission)
@@ -125,7 +158,7 @@ namespace UserManager.Controllers
 			return typeof(T).IsEnum &&
 				   (en is ApproveServiceRequest || en is BusinessCatalog || en is RolePermissionAdustment || en is ServiceDetails
 					|| en is ServiceRequestSubmission || en is SupportCatalog || en is UserRoleAssignment || en is ServicePortfolio
-					|| en is ServiceCatalogMaintenance);
+					|| en is ServiceCatalogMaintenance || en is ApiAccess || en is ScriptAccess || en is FulfillmentAccess);
 		}
 
 		private IEnumerable<IRoleDto> GetUserRoles(int userId)

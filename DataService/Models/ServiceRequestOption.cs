@@ -14,6 +14,8 @@ namespace DataService.Models
 		public int ServiceRequestId { get; set; }
 		public int Quantity { get; set; }
 		public bool BasicRequest { get; set; }
+		public string Code { get; set; }
+		public string ServiceOptionName { get; set; }
 
 		public int RequestedByUserId { get; set; }
 		public int ApproverUserId { get; set; }

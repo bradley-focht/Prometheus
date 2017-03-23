@@ -18,17 +18,36 @@ namespace Common.Dto
 		public int UpdatedByUserId { get; set; }
 		#endregion
 
-		#region Navigation properties
+		[Display(Order = 1)]
+		public ApiAccess ApiAccess { get; set; }
+		[Display(Order = 2)]
 		public ApproveServiceRequest ApproveServiceRequestAccess { get; set; }
+		[Display(Order = 3)]
 		public BusinessCatalog BusinessCatalogAccess { get; set; }
-		public SupportCatalog SupportCatalogAccess { get; set; }
+		[Display(Order = 4)]
+		public FulfillmentAccess FulfillmentAccess { get; set; }
+		[Display(Order = 4)]
 		public RolePermissionAdustment RolePermissionAdjustmentAccess { get; set; }
-		public ServiceDetails ServiceDetailsAccess { get; set; }
-		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
-		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
+		[Display(Order = 5)]
+		public ScriptAccess ScriptAccess { get; set; }
+		[Display(Order = 6)]
 		public ServiceCatalogMaintenance ServiceCatalogMaintenanceAccess { get; set; }
+		[Display(Order = 7)]
+		public ServiceDetails ServiceDetailsAccess { get; set; }
+		[Display(Order = 8)]
 		public ServicePortfolio ServicePortfolioAccess { get; set; }
+		[Display(Order = 9)]
+		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
+		[Display(Order =10)]
+		public SupportCatalog SupportCatalogAccess { get; set; }
+		[Display(Order = 11)]
+		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 
-		#endregion
+
+
+		
+		
+
+
 	}
 }

@@ -111,7 +111,8 @@ namespace Prometheus.WebUI.Helpers
 		/// Common behaviour of methods in this class
 		/// </summary>
 		/// <param name="model"></param>
-		/// <param name="ps"></param>
+		/// <param name="ps">portfolio service</param>
+		/// <param name="sr">service request</param>
 		/// <param name="userId"></param>
 		/// <param name="serviceRequestId"></param>
 		/// <returns></returns>
@@ -130,9 +131,9 @@ namespace Prometheus.WebUI.Helpers
 				if (userInputs != null)
 				{
 
-					foreach (var userData in model.ServiceRequestModel.ServiceRequest.ServiceRequestUserInputs)		//iser inputs
+					foreach (var userData in model.ServiceRequestModel.ServiceRequest.ServiceRequestUserInputs)		//user inputs
 					{
-						if (userData.UserInputType == UserInputType.Text)
+						if (userData.UserInputType == UserInputType.Text)			//text
 						{
 							foreach (var userInput in userInputs.TextInputs)
 							{
@@ -144,7 +145,7 @@ namespace Prometheus.WebUI.Helpers
 								}
 							}
 						}
-						else if (userData.UserInputType == UserInputType.Selection)
+						else if (userData.UserInputType == UserInputType.Selection)	//selection
 						{
 							foreach (var userInput in userInputs.SelectionInputs)
 							{
@@ -156,7 +157,7 @@ namespace Prometheus.WebUI.Helpers
 								}
 							}
 						}
-						else if (userData.UserInputType == UserInputType.ScriptedSelection)
+						else if (userData.UserInputType == UserInputType.ScriptedSelection)	//scripted
 						{
 							foreach (var userInput in userInputs.ScriptedSelectionInputs)
 							{

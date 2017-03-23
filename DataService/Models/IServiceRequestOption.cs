@@ -7,7 +7,8 @@
 		int ServiceRequestId { get; set; }
 		int Quantity { get; set; }
 		bool BasicRequest { get; set; }
-
+		string Code { get; set; }
+		string ServiceOptionName { get; set; }
 		int ApproverUserId { get; set; }
 		int RequestedByUserId { get; set; }
 

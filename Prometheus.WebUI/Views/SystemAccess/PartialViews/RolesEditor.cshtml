@@ -17,11 +17,22 @@
 
 <div class="flex-container-col">
 
+	<div class="dt-text make-space-top">API Access</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (ApiAccess permission in Enum.GetValues(typeof(ApiAccess)))
+		{
+			<label class="btn btn-default" id="ApiAccess@(permission)">
+				@Html.RadioButton("ApiAccess", permission, Model.ApiAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
 	<div class="make-space-top dt-text">Approve Service Requests</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (ApproveServiceRequest permission in Enum.GetValues(typeof(ApproveServiceRequest)))
 		{
-			<label class="btn btn-default" id="ApproveServiceRequest@(permission)">
+			<label class="btn btn-default" id="ApproveServiceRequestAccess@(permission)">
 				@Html.RadioButton("ApproveServiceRequestAccess", permission, Model.ApproveServiceRequestAccess == permission)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
@@ -33,8 +44,85 @@
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (BusinessCatalog permission in Enum.GetValues(typeof(BusinessCatalog)))
 		{
-			<label class="btn btn-default" id="BusinessCatalog@(permission)">
-				@Html.RadioButton("BusinessCatalogAccess", permission, false)
+			<label class="btn btn-default" id="BusinessCatalogAccess@(permission)">
+				@Html.RadioButton("BusinessCatalogAccess", permission, Model.BusinessCatalogAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+		<div class="dt-text make-space-top">Service Request Fulfillment</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (FulfillmentAccess permission in Enum.GetValues(typeof(FulfillmentAccess)))
+		{
+			<label class="btn btn-default" id="FulfillmentAccess@(permission)">
+				@Html.RadioButton("FulfillmentAccess", permission, Model.FulfillmentAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+	<div class="dt-text make-space-top">Role/Permission Adjustment</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (RolePermissionAdustment permission in Enum.GetValues(typeof(RolePermissionAdustment)))
+		{
+			<label class="btn btn-default" id="RolePermissionAdjustmentAccess@(permission)">
+				@Html.RadioButton("RolePermissionAdjustmentAccess", permission, Model.RolePermissionAdjustmentAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+	<div class="dt-text make-space-top">Script Access</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (ScriptAccess permission in Enum.GetValues(typeof(ScriptAccess)))
+		{
+			<label class="btn btn-default" id="ScriptAccess@(permission)">
+				@Html.RadioButton("ScriptAccess", permission, Model.ScriptAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+	<div class="dt-text make-space-top">Service Catalaog Maintenance</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (ServiceCatalogMaintenance permission in Enum.GetValues(typeof(ServiceCatalogMaintenance)))
+		{
+			<label class="btn btn-default" id="ServiceCatalogMaintenanceAccess@(permission)">
+				@Html.RadioButton("ServiceCatalogMaintenanceAccess", permission, Model.ServiceCatalogMaintenanceAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+	<div class="dt-text make-space-top">Service Details</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (ServiceDetails permission in Enum.GetValues(typeof(ServiceDetails)))
+		{
+			<label class="btn btn-default" id="ServiceDetailsAccess@(permission)">
+				@Html.RadioButton("ServiceDetailsAccess", permission, Model.ServiceDetailsAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+	<div class="dt-text make-space-top">Service Portfolio</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (ServicePortfolio permission in Enum.GetValues(typeof(ServicePortfolio)))
+		{
+			<label class="btn btn-default" id="ServicePortfolioAccess@(permission)">
+				@Html.RadioButton("ServicePortfolioAccess", permission, Model.ServicePortfolioAccess == permission)
+				@StringHelper.CamelToString(permission.ToString())
+			</label>
+		}
+	</div>
+
+	<div class="dt-text make-space-top">Service Request Submission</div>
+	<div class="btn-group" data-toggle="buttons">
+		@foreach (ServiceRequestSubmission permission in Enum.GetValues(typeof(ServiceRequestSubmission)))
+		{
+			<label class="btn btn-default" id="ServiceRequestSubmissionAccess@(permission)">
+				@Html.RadioButton("ServiceRequestSubmissionAccess", permission, Model.ServiceRequestSubmissionAccess)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
@@ -45,63 +133,18 @@
 		@foreach (SupportCatalog permission in Enum.GetValues(typeof(SupportCatalog)))
 		{
 			<label class="btn btn-default" id="SupportingCatalog@(permission)">
-				@Html.RadioButton("SupportCatalogAccess", permission, false)
+				@Html.RadioButton("SupportCatalogAccess", permission, Model.SupportCatalogAccess == permission)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
 	</div>
 
-	<div class="dt-text make-space-top">Service Catalaog Maintenance</div>
-	<div class="btn-group" data-toggle="buttons">
-		@foreach (ServiceCatalogMaintenance permission in Enum.GetValues(typeof(ServiceCatalogMaintenance)))
-		{
-			<label class="btn btn-default" id="ServiceCatalogMaintenance@(permission)">
-				@Html.RadioButton("ServiceCatalogMaintenance", permission, false)
-				@StringHelper.CamelToString(permission.ToString())
-			</label>
-		}
-	</div>
-
-
-	<div class="dt-text make-space-top">Role/Permission Adjustment</div>
-	<div class="btn-group" data-toggle="buttons">
-		@foreach (RolePermissionAdustment permission in Enum.GetValues(typeof(RolePermissionAdustment)))
-		{
-			<label class="btn btn-default" id="RolePermissionAdjustment@(permission)">
-				@Html.RadioButton("RolePermissionAdjustmentAccess", permission, false)
-				@StringHelper.CamelToString(permission.ToString())
-			</label>
-		}
-	</div>
-
-
-	<div class="dt-text make-space-top">Service Details</div>
-	<div class="btn-group" data-toggle="buttons">
-		@foreach (ServiceDetails permission in Enum.GetValues(typeof(ServiceDetails)))
-		{
-			<label class="btn btn-default" id="ServiceDetails@(permission)">
-				@Html.RadioButton("ServiceDetailsAccess", permission, false)
-				@StringHelper.CamelToString(permission.ToString())
-			</label>
-		}
-	</div>
-
-	<div class="dt-text make-space-top">Service Request Assignment</div>
-	<div class="btn-group" data-toggle="buttons">
-		@foreach (ServiceRequestSubmission permission in Enum.GetValues(typeof(ServiceRequestSubmission)))
-		{
-			<label class="btn btn-default" id="ServiceRequestSubmission@(permission)">
-				@Html.RadioButton("ServiceRequestSubmissionAccess", permission, false)
-				@StringHelper.CamelToString(permission.ToString())
-			</label>
-		}
-	</div>
 	<div class="dt-text make-space-top">User/Role Assignment</div>
 	<div class="btn-group" data-toggle="buttons">
 		@foreach (UserRoleAssignment permission in Enum.GetValues(typeof(UserRoleAssignment)))
 		{
-			<label class="btn btn-default" id="UserRoleAssignment@(permission)">
-				@Html.RadioButton("UserRoleAssignmentAccess", permission, false)
+			<label class="btn btn-default" id="UserRoleAssignmentAccess@(permission)">
+				@Html.RadioButton("UserRoleAssignmentAccess", permission, Model.UserRoleAssignmentAccess == permission)
 				@StringHelper.CamelToString(permission.ToString())
 			</label>
 		}
@@ -111,16 +154,16 @@
 
 
 <script type="text/javascript" language="javascript">
-
-	$('#ApproveServiceRequest@(Model.ApproveServiceRequestAccess)').button('toggle');
-	$('#BusinessCatalog@(Model.BusinessCatalogAccess)').button('toggle');
+	$('#ApiAccess@(Model.ApiAccess)').button('toggle');
+	$('#ApproveServiceRequestAccess@(Model.ApproveServiceRequestAccess)').button('toggle');
+	$('#BusinessCatalogAccess@(Model.BusinessCatalogAccess)').button('toggle');
+	$('#FulfillmentAccess@(Model.FulfillmentAccess)').button('toggle');
+	$('#RolePermissionAdjustmentAccess@(Model.RolePermissionAdjustmentAccess)').button('toggle');
+	$('#ScriptAccess@(Model.ScriptAccess)').button('toggle');
 	$('#SupportingCatalog@(Model.SupportCatalogAccess)').button('toggle');
-	$('#ServiceDetails@(Model.ServiceDetailsAccess)').button('toggle');
-	$('#RolePermissionAdjustment@(Model.RolePermissionAdjustmentAccess)').button('toggle');
-	$('#ServiceRequestSubmission@(Model.ServiceRequestSubmissionAccess)').button('toggle');
-	$('#UserRoleAssignment@(Model.UserRoleAssignmentAccess)').button('toggle');
-	$('#ServiceCatalogMaintenance@(Model.ServiceCatalogMaintenanceAccess)').button('toggle');
-
-
-	
+	$('#ServiceDetailsAccess@(Model.ServiceDetailsAccess)').button('toggle');
+	$('#ServicePortfolioAccess@(Model.ServicePortfolioAccess)').button('toggle');
+	$('#ServiceRequestSubmissionAccess@(Model.ServiceRequestSubmissionAccess)').button('toggle');
+	$('#UserRoleAssignmentAccess@(Model.UserRoleAssignmentAccess)').button('toggle');
+	$('#ServiceCatalogMaintenanceAccess@(Model.ServiceCatalogMaintenanceAccess)').button('toggle');
 </script>

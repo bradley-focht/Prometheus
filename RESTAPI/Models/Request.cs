@@ -41,5 +41,30 @@ namespace RESTAPI.Models
 		public decimal FinalUpfrontPrice { get; set; }
 		public ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 		public ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
+
+		internal Request(IServiceRequestDto src)
+		{
+			Id = src.Id;
+			Name = src.Name;
+			Action = src.Action;
+			State = src.State;
+			ApprovedDate = src.ApprovedDate;
+			ApproverUserId = src.ApproverUserId;
+			Comments = src.Comments;
+			CreationDate = src.CreationDate;
+			Officeuse = src.Officeuse;
+			RequestedByUserId = src.RequestedByUserId;
+			RequestedForGuids = src.RequestedForGuids;
+			RequestedByGuid = src.RequestedByGuid;
+			SubmissionDate = src.SubmissionDate;
+			RequestedForDate = src.RequestedForDate;
+			ServiceOptionId = src.ServiceOptionId;
+			DepartmentId = src.DepartmentId;
+			CancelledDate = src.CancelledDate;
+			DeniedDate = src.DeniedDate;
+			FulfilledDate = src.FulfilledDate;
+			FinalMonthlyPrice = src.FinalMonthlyPrice;
+			FinalUpfrontPrice = src.FinalUpfrontPrice;
+		}
 	}
 }

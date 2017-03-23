@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using System.Threading;
 
 namespace ServiceFulfillmentEngineWebJob
 {
@@ -12,6 +13,8 @@ namespace ServiceFulfillmentEngineWebJob
 				string apiKey = ConfigurationManager.AppSettings["FulfillmentUserPrivateKey"];
 				var manager = new FulfillmentManager(userId, apiKey);
 				manager.FulfillNewRequests();
+
+				Thread.Sleep(3000);		//so not a good idea. Should use a timer. 
 			}
 		}
 	}

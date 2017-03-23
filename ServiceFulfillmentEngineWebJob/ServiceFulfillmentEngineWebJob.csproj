@@ -53,6 +53,11 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Management.Automation, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Management.Automation.dll.10.0.10586.0\lib\net40\System.Management.Automation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,10 +68,12 @@
   <ItemGroup>
     <Compile Include="ApiControllers\IPrometheusApiController.cs" />
     <Compile Include="ApiControllers\PrometheusApiController.cs" />
+    <Compile Include="EntityFramework\Models\IScript.cs" />
     <Compile Include="EntityFramework\Models\RequestFulfillment.cs" />
     <Compile Include="EntityFramework\Models\ICreatedEntity.cs" />
     <Compile Include="EntityFramework\DataAccessLayer\ServiceFulfillmentEngineContext.cs" />
     <Compile Include="EntityFramework\Models\RequestOptionFulfillment.cs" />
+    <Compile Include="EntityFramework\Models\Script.cs" />
     <Compile Include="FulfillmentManager.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

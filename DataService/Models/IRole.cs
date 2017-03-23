@@ -16,6 +16,9 @@ namespace DataService.Models
 		UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 		ServiceCatalogMaintenance ServiceCatalogMaintenanceAccess { get; set; }
 		ServicePortfolio ServicePortfolioAccess { get; set; }
+		ScriptAccess ScriptAccess { get; set; }
+		FulfillmentAccess FulfillmentAccess { get; set; }
+		ApiAccess ApiAccess { get; set; }
 
 		ICollection<User> Users { get; set; }
 	}

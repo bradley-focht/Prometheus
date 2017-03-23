@@ -626,8 +626,10 @@ namespace DataService
 				SupportCatalogAccess = src.SupportCatalogAccess,
 				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess,
 				ServiceCatalogMaintenanceAccess = src.ServiceCatalogMaintenanceAccess,
-				ServicePortfolioAccess = src.ServicePortfolioAccess
-
+				ServicePortfolioAccess = src.ServicePortfolioAccess,
+				ApiAccess = src.ApiAccess,
+				ScriptAccess = src.ScriptAccess,
+				FulfillmentAccess = src.FulfillmentAccess,
 			};
 		}
 
@@ -647,7 +649,10 @@ namespace DataService
 				SupportCatalogAccess = src.SupportCatalogAccess,
 				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess,
 				ServiceCatalogMaintenanceAccess = src.ServiceCatalogMaintenanceAccess,
-				ServicePortfolioAccess = src.ServicePortfolioAccess
+				ServicePortfolioAccess = src.ServicePortfolioAccess,
+				ApiAccess = src.ApiAccess,
+				ScriptAccess = src.ScriptAccess,
+				FulfillmentAccess = src.FulfillmentAccess,
 			};
 		}
 
@@ -995,6 +1000,8 @@ namespace DataService
 				RequestedByUserId = src.RequestedByUserId,
 				ServiceOptionId = src.ServiceOptionId,
 				Quantity = src.Quantity,
+				Code = src.Code,
+				ServiceOptionName = src.ServiceOptionName,
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest,
 			};
@@ -1009,6 +1016,8 @@ namespace DataService
 				ApproverUserId = src.ApproverUserId,
 				RequestedByUserId = src.RequestedByUserId,
 				Quantity = src.Quantity,
+				Code = src.Code,
+				ServiceOptionName = src.ServiceOptionName,
 				ServiceOptionId = src.ServiceOptionId,
 				ServiceRequestId = src.ServiceRequestId,
 				BasicRequest = src.BasicRequest

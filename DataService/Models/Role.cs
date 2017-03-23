@@ -24,6 +24,9 @@ namespace DataService.Models
 		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 		public ServiceCatalogMaintenance ServiceCatalogMaintenanceAccess { get; set; }
 		public ServicePortfolio ServicePortfolioAccess { get; set; }
+		public ScriptAccess ScriptAccess { get; set; }
+		public FulfillmentAccess FulfillmentAccess { get; set; }
+		public ApiAccess ApiAccess { get; set; }
 
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }

@@ -257,10 +257,9 @@ namespace RequestService
 			return request;
 		}
 
-		//TODO: ADD ONCE FULFILL PERMISSION IS ADDED
 		public bool UserCanFulfillRequest(int userId, int requestId)
 		{
-			return true;
+			return _permissionController.UserHasPermission(userId, FulfillmentAccess.CanFulfill);
 		}
 
 		public bool UserCanEditRequest(int userId, int requestId)
