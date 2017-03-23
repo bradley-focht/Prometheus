@@ -626,8 +626,10 @@ namespace DataService
 				SupportCatalogAccess = src.SupportCatalogAccess,
 				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess,
 				ServiceCatalogMaintenanceAccess = src.ServiceCatalogMaintenanceAccess,
-				ServicePortfolioAccess = src.ServicePortfolioAccess
-
+				ServicePortfolioAccess = src.ServicePortfolioAccess,
+				ApiAccess = src.ApiAccess,
+				ScriptAccess = src.ScriptAccess,
+				FulfillmentAccess = src.FulfillmentAccess,
 			};
 		}
 
@@ -647,7 +649,10 @@ namespace DataService
 				SupportCatalogAccess = src.SupportCatalogAccess,
 				UserRoleAssignmentAccess = src.UserRoleAssignmentAccess,
 				ServiceCatalogMaintenanceAccess = src.ServiceCatalogMaintenanceAccess,
-				ServicePortfolioAccess = src.ServicePortfolioAccess
+				ServicePortfolioAccess = src.ServicePortfolioAccess,
+				ApiAccess = src.ApiAccess,
+				ScriptAccess = src.ScriptAccess,
+				FulfillmentAccess = src.FulfillmentAccess,
 			};
 		}
 

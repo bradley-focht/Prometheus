@@ -107,7 +107,10 @@ namespace DataService.DataAccessLayer
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					UserRoleAssignmentAccess = UserRoleAssignment.CanAssignRoles,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.CanEdit,
-					ServicePortfolioAccess = ServicePortfolio.CanEdit
+					ServicePortfolioAccess = ServicePortfolio.CanEdit,
+					ApiAccess = ApiAccess.FullApiAccess,
+					FulfillmentAccess = FulfillmentAccess.CanFulfill,
+					ScriptAccess = ScriptAccess.CanEdit
 				},
 				new Role()
 				{
@@ -120,7 +123,10 @@ namespace DataService.DataAccessLayer
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceDetailsAccess = ServiceDetails.CanEditServiceDetails,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.CanEdit,
-					ServicePortfolioAccess = ServicePortfolio.CanEdit
+					ServicePortfolioAccess = ServicePortfolio.CanEdit,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.CanFulfill,
+					ScriptAccess = ScriptAccess.CanExecute
 				},
 				new Role()
 				{
@@ -133,7 +139,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.NoAccess,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.CanView
+					ServicePortfolioAccess = ServicePortfolio.CanView,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.CanExecute
 				},
 				new Role()
 				{
@@ -146,7 +155,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.CanView
+					ServicePortfolioAccess = ServicePortfolio.CanView,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.CanExecute
 				},new Role()
 				{
 					Name = "External Executive",
@@ -158,7 +170,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.NoAccess,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.CanView
+					ServicePortfolioAccess = ServicePortfolio.CanView,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.CanExecute
 				},new Role()
 				{
 					Name = "Internal Executive",
@@ -170,7 +185,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.NoAccess,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.CanView
+					ServicePortfolioAccess = ServicePortfolio.CanView,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.CanExecute
 				},new Role()
 				{
 					Name = "Support Staff",
@@ -182,7 +200,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.CanViewCatalog,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.NoAccess
+					ServicePortfolioAccess = ServicePortfolio.NoAccess,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.CanExecute
 				},new Role()
 				{
 					Name = "Approver",
@@ -194,7 +215,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.NoAccess,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.NoAccess
+					ServicePortfolioAccess = ServicePortfolio.NoAccess,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.CanExecute
 				},new Role()
 				{
 					Name = "Authorized User",
@@ -206,7 +230,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.NoAccess,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.CanSubmitRequests,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.NoAccess
+					ServicePortfolioAccess = ServicePortfolio.NoAccess,
+					ApiAccess = ApiAccess.OnlyUsersRequests,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.CanExecute
 				},new Role()
 				{
 					Name = "Guest",
@@ -218,7 +245,10 @@ namespace DataService.DataAccessLayer
 					SupportCatalogAccess = SupportCatalog.NoAccess,
 					ServiceRequestSubmissionAccess = ServiceRequestSubmission.NoAccess,
 					ServiceCatalogMaintenanceAccess = ServiceCatalogMaintenance.NoAccess,
-					ServicePortfolioAccess = ServicePortfolio.NoAccess
+					ServicePortfolioAccess = ServicePortfolio.NoAccess,
+					ApiAccess = ApiAccess.NoAccess,
+					FulfillmentAccess = FulfillmentAccess.NoAccess,
+					ScriptAccess = ScriptAccess.NoAccess
 				},
 			});
 			context.SaveChanges();

@@ -28,6 +28,9 @@ namespace Common.Dto
 		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 		public ServiceCatalogMaintenance ServiceCatalogMaintenanceAccess { get; set; }
 		public ServicePortfolio ServicePortfolioAccess { get; set; }
+		public ScriptAccess ScriptAccess { get; set; }
+		public FulfillmentAccess FulfillmentAccess { get; set; }
+		public ApiAccess ApiAccess { get; set; }
 
 		#endregion
 	}
