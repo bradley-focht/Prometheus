@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Management.Automation.Runspaces;
 using ServiceFulfillmentEngineWebJob.Api.Controllers;
 using ServiceFulfillmentEngineWebJob.Api.Models;
 using ServiceFulfillmentEngineWebJob.Api.Models.Enums;
+using ServiceFulfillmentEngineWebJob.EntityFramework.DataAccessLayer;
+using ServiceFulfillmentEngineWebJob.EntityFramework.Models;
 
 namespace ServiceFulfillmentEngineWebJob
 {
@@ -34,7 +37,7 @@ namespace ServiceFulfillmentEngineWebJob
 		/// <returns></returns>
 		private bool IsProcessedRequest(IServiceRequest request)
 		{
-			throw new NotImplementedException();
+			return request.State != ServiceRequestState.Approved;
 		}
 
 		/// <summary>
@@ -43,6 +46,17 @@ namespace ServiceFulfillmentEngineWebJob
 		/// <param name="request"></param>
 		private void ProcessRequest(IServiceRequest request)
 		{
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine($"Processing new Request {request.Name}");
+			Console.BackgroundColor = ConsoleColor.White;
+
+			List<Script> scripts = null;
+			using (var context = new ServiceFulfillmentEngineContext())
+			{
+				scripts = context.Scripts.ToList();
+			}
+			
+
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 			runspace.Open();
 

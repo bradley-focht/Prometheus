@@ -17,7 +17,7 @@ namespace ServiceFulfillmentEngineWebJob.EntityFramework.DataAccessLayer
 
 		public DbSet<RequestFulfillment> RequestFulfillments { get; set; }
 		public DbSet<RequestOptionFulfillment> RequestOptionFulfillments { get; set; }
-
+		public DbSet<Script> Scripts { get; set; }
 		/// <summary>
 		/// Add or remove EF conventions in this function
 		/// </summary>

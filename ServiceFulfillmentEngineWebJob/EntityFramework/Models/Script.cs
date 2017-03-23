@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ServiceFulfillmentEngineWebJob.Api.Models.Enums;
 
 namespace ServiceFulfillmentEngineWebJob.EntityFramework.Models
 {
@@ -14,6 +15,9 @@ namespace ServiceFulfillmentEngineWebJob.EntityFramework.Models
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
+
+		public ServiceRequestAction Action { get; set; }
+
 		/// <summary>
 		/// Friendly Name
 		/// </summary>

@@ -7,7 +7,7 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 	{
 		void DeleteRequestById(int serviceRequestId);
 		IServiceRequest GetServiceRequestById(int serviceRequestId);
-		IEnumerable<IServiceRequest> GetServiceRequests();
+		IEnumerable<ServiceRequest> GetServiceRequests();
 		void UpdateRequestById(int serviceRequestId, IServiceRequest serviceRequest);
 	}
 }

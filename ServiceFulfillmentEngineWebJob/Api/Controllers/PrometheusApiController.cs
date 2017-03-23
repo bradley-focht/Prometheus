@@ -20,13 +20,13 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			_apiString = ConfigurationManager.AppSettings["ApiUrl"];
 		}
 
-		public IEnumerable<IServiceRequest> GetServiceRequests()
+		public IEnumerable<ServiceRequest> GetServiceRequests()
 		{
 			var response = Request(Method.GET, null);
 
 			if (response.StatusCode == HttpStatusCode.OK)
 			{
-				return JsonConvert.DeserializeObject<List<IServiceRequest>>(response.Content);
+				return JsonConvert.DeserializeObject<List<ServiceRequest>>(response.Content);
 			}
 
 			throw response.ErrorException;

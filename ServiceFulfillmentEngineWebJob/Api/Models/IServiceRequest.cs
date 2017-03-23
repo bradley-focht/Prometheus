@@ -42,7 +42,7 @@ namespace ServiceFulfillmentEngineWebJob.Api.Models
 		int CreatedByUserId { get; set; }
 		int UpdatedByUserId { get; set; }
 
-		IEnumerable<IServiceRequestOption> ServiceRequestOptions { get; set; }
-		IEnumerable<IServiceRequestUserInput> ServiceRequestUserInputs { get; set; }
+		IEnumerable<ServiceRequestOption> ServiceRequestOptions { get; set; }
+		IEnumerable<ServiceRequestUserInput> ServiceRequestUserInputs { get; set; }
 	}
 }

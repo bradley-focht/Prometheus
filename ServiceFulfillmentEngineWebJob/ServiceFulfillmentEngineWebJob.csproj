@@ -75,6 +75,9 @@
     <Compile Include="Api\Models\Enums\UserInputType.cs" />
     <Compile Include="Api\Models\IServiceRequest.cs" />
     <Compile Include="Api\Models\IServiceRequestUserInput.cs" />
+    <Compile Include="Api\Models\ServiceRequest.cs" />
+    <Compile Include="Api\Models\ServiceRequestOption.cs" />
+    <Compile Include="Api\Models\ServiceRequestUserInput.cs" />
     <Compile Include="EntityFramework\Models\IScript.cs" />
     <Compile Include="EntityFramework\Models\RequestFulfillment.cs" />
     <Compile Include="EntityFramework\Models\ICreatedEntity.cs" />
