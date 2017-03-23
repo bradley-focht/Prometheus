@@ -70,7 +70,10 @@ namespace DataService.Models
 			{
 				if (this.ServiceRequestOptions == null)
 					return 0;
-				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly * x.Quantity);
+
+				int numRequestees = RequestedForGuids.Split(',').Length + 1;
+
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly * x.Quantity) * numRequestees;
 			}
 		}
 
@@ -81,9 +84,11 @@ namespace DataService.Models
 		{
 			get
 			{
+				int numRequestees = RequestedForGuids.Split(',').Length + 1;
+
 				if (this.ServiceRequestOptions == null)
 					return 0;
-				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront * x.Quantity);
+				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceUpFront * x.Quantity) * numRequestees;
 			}
 		}
 

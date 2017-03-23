@@ -57,6 +57,14 @@
 						<div class="dd-cell-base dt-font">Date Started</div>
 						<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.CreationDate.ToString("g")</div>
 					</div>
+					@if (Model.ServiceRequestModel.ServiceRequest.SubmissionDate != null)
+					{
+						<div class="dd-row">
+							<div class="dd-cell-base dt-font">Date Submitted</div>
+							<div class="dd-cell-base">@Model.ServiceRequestModel.ServiceRequest.SubmissionDate.Value.ToString("g")</div>
+						</div>
+					}
+
 					@if (Model.ServiceRequestModel.ServiceRequest.DeniedDate != null || Model.ServiceRequestModel.ServiceRequest.ApprovedDate != null)
 					{
 						<div class="dd-row">
