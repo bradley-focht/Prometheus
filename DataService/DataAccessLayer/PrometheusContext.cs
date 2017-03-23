@@ -12,7 +12,6 @@ namespace DataService.DataAccessLayer
 		private const int NullUserId = 0;
 		public PrometheusContext() : base("PrometheusContext")
 		{
-
 		}
 
 		//Portfolio Service Entities

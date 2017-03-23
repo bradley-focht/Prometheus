@@ -107,7 +107,7 @@ namespace UserManager.Controllers
 				}
 			}
 			throw new PermissionException("Roles not added to the users specified.", performingUserId,
-				RolePermissionAdustment.CanAdustRolePermissions);
+				RolePermissionAdjustment.CanAdjustRolePermissions);
 		}
 
 		public IEnumerable<IUserDto> RemoveRoleFromUsers(int performingUserId, IRoleDto roleDto, IEnumerable<IUserDto> users)
@@ -146,7 +146,7 @@ namespace UserManager.Controllers
 			else
 			{
 				throw new PermissionException("Roles not removed from the users specified.", performingUserId,
-					RolePermissionAdustment.CanAdustRolePermissions);
+					RolePermissionAdjustment.CanAdjustRolePermissions);
 			}
 		}
 
@@ -179,8 +179,8 @@ namespace UserManager.Controllers
 
 		protected override bool UserHasPermissionToModify(int performingUserId, IRoleDto role, EntityModification modification, out object permission)
 		{
-			permission = RolePermissionAdustment.CanAdustRolePermissions;
-			return _permissionController.UserHasPermission(performingUserId, (RolePermissionAdustment)permission);
+			permission = RolePermissionAdjustment.CanAdjustRolePermissions;
+			return _permissionController.UserHasPermission(performingUserId, (RolePermissionAdjustment)permission);
 		}
 	}
 }

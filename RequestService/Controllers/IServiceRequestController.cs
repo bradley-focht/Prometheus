@@ -7,6 +7,13 @@ namespace RequestService.Controllers
 	public interface IServiceRequestController
 	{
 		/// <summary>
+		/// Returns all service requests
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <returns></returns>
+		IEnumerable<IServiceRequestDto> GetServiceRequests(int performingUserId);
+
+		/// <summary>
 		/// Finds service request with identifier provided and returns its DTO
 		/// </summary>
 		/// <param name="performingUserId"></param>

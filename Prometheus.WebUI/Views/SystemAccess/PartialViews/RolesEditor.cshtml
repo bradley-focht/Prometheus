@@ -64,7 +64,7 @@
 
 	<div class="dt-text make-space-top">Role/Permission Adjustment</div>
 	<div class="btn-group" data-toggle="buttons">
-		@foreach (RolePermissionAdustment permission in Enum.GetValues(typeof(RolePermissionAdustment)))
+		@foreach (RolePermissionAdjustment permission in Enum.GetValues(typeof(RolePermissionAdjustment)))
 		{
 			<label class="btn btn-default" id="RolePermissionAdjustmentAccess@(permission)">
 				@Html.RadioButton("RolePermissionAdjustmentAccess", permission, Model.RolePermissionAdjustmentAccess == permission)

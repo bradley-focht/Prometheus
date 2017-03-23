@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Web.Http;
 using Common.Enums.Entities;
 using RequestService;
@@ -23,10 +24,11 @@ namespace RESTAPI.Controllers
 		}
 
 		// GET: api/Request
-		public IEnumerable<string> Get()
+		public IEnumerable<Request> Get()
 		{
 			//Need to determine what we want
-			return new string[] { "value1", "value2" };
+			var requests = _serviceRequestController.GetServiceRequests(_userManager.GuestId);
+			return requests.Select(x => new Request(x));
 		}
 
 		// GET: api/Request/5

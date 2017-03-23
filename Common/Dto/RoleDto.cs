@@ -27,7 +27,7 @@ namespace Common.Dto
 		[Display(Order = 4)]
 		public FulfillmentAccess FulfillmentAccess { get; set; }
 		[Display(Order = 4)]
-		public RolePermissionAdustment RolePermissionAdjustmentAccess { get; set; }
+		public RolePermissionAdjustment RolePermissionAdjustmentAccess { get; set; }
 		[Display(Order = 5)]
 		public ScriptAccess ScriptAccess { get; set; }
 		[Display(Order = 6)]
@@ -38,15 +38,15 @@ namespace Common.Dto
 		public ServicePortfolio ServicePortfolioAccess { get; set; }
 		[Display(Order = 9)]
 		public ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
-		[Display(Order =10)]
+		[Display(Order = 10)]
 		public SupportCatalog SupportCatalogAccess { get; set; }
 		[Display(Order = 11)]
 		public UserRoleAssignment UserRoleAssignmentAccess { get; set; }
 
 
 
-		
-		
+
+
 
 
 	}
