@@ -28,9 +28,9 @@ namespace UserManager.Controllers
 				return UserCanAccessBusinessCatalog(userId, (BusinessCatalog)(object)permission);
 			}
 
-			if (permission is RolePermissionAdustment)
+			if (permission is RolePermissionAdjustment)
 			{
-				return UserCanAccessRolePermissions(userId, (RolePermissionAdustment)(object)permission);
+				return UserCanAccessRolePermissions(userId, (RolePermissionAdjustment)(object)permission);
 			}
 
 			if (permission is ServiceDetails)
@@ -135,7 +135,7 @@ namespace UserManager.Controllers
 			return userRoles.Any(role => role.ServiceDetailsAccess >= permission);
 		}
 
-		private bool UserCanAccessRolePermissions(int userId, RolePermissionAdustment permission)
+		private bool UserCanAccessRolePermissions(int userId, RolePermissionAdjustment permission)
 		{
 			var userRoles = GetUserRoles(userId);
 			return userRoles.Any(role => role.RolePermissionAdjustmentAccess >= permission);
@@ -156,7 +156,7 @@ namespace UserManager.Controllers
 		private bool IsPermissionEnum<T>(T en)
 		{
 			return typeof(T).IsEnum &&
-				   (en is ApproveServiceRequest || en is BusinessCatalog || en is RolePermissionAdustment || en is ServiceDetails
+				   (en is ApproveServiceRequest || en is BusinessCatalog || en is RolePermissionAdjustment || en is ServiceDetails
 					|| en is ServiceRequestSubmission || en is SupportCatalog || en is UserRoleAssignment || en is ServicePortfolio
 					|| en is ServiceCatalogMaintenance || en is ApiAccess || en is ScriptAccess || en is FulfillmentAccess);
 		}

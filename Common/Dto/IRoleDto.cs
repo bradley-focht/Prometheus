@@ -10,7 +10,7 @@ namespace Common.Dto
 		ApproveServiceRequest ApproveServiceRequestAccess { get; set; }
 		BusinessCatalog BusinessCatalogAccess { get; set; }
 		SupportCatalog SupportCatalogAccess { get; set; }
-		RolePermissionAdustment RolePermissionAdjustmentAccess { get; set; }
+		RolePermissionAdjustment RolePermissionAdjustmentAccess { get; set; }
 		ServiceDetails ServiceDetailsAccess { get; set; }
 		ServiceRequestSubmission ServiceRequestSubmissionAccess { get; set; }
 		UserRoleAssignment UserRoleAssignmentAccess { get; set; }

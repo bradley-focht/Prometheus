@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Net;
-using Common.Dto;
 using Newtonsoft.Json;
 using RestSharp;
+using ServiceFulfillmentEngineWebJob.Api.Models;
 
-namespace ServiceFulfillmentEngineWebJob.ApiControllers
+namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 {
 	public class PrometheusApiController : IPrometheusApiController
 	{
@@ -20,31 +20,31 @@ namespace ServiceFulfillmentEngineWebJob.ApiControllers
 			_apiString = ConfigurationManager.AppSettings["ApiUrl"];
 		}
 
-		public IEnumerable<IServiceRequestDto> GetServiceRequests()
+		public IEnumerable<ServiceRequest> GetServiceRequests()
 		{
 			var response = Request(Method.GET, null);
 
 			if (response.StatusCode == HttpStatusCode.OK)
 			{
-				return JsonConvert.DeserializeObject<List<IServiceRequestDto>>(response.Content);
+				return JsonConvert.DeserializeObject<List<ServiceRequest>>(response.Content);
 			}
 
 			throw response.ErrorException;
 		}
 
-		public IServiceRequestDto GetServiceRequestById(int serviceRequestId)
+		public IServiceRequest GetServiceRequestById(int serviceRequestId)
 		{
 			var response = Request(Method.GET, null, serviceRequestId);
 
 			if (response.StatusCode == HttpStatusCode.OK)
 			{
-				return JsonConvert.DeserializeObject<IServiceRequestDto>(response.Content);
+				return JsonConvert.DeserializeObject<IServiceRequest>(response.Content);
 			}
 
 			throw response.ErrorException;
 		}
 
-		public void UpdateRequestById(int serviceRequestId, IServiceRequestDto serviceRequest)
+		public void UpdateRequestById(int serviceRequestId, IServiceRequest serviceRequest)
 		{
 			var response = Request(Method.PUT, serviceRequest, serviceRequestId);
 
@@ -63,7 +63,7 @@ namespace ServiceFulfillmentEngineWebJob.ApiControllers
 			}
 		}
 
-		private IRestResponse Request(Method method, IServiceRequestDto serviceRequest, int requestId = 0)
+		private IRestResponse Request(Method method, IServiceRequest serviceRequest, int requestId = 0)
 		{
 			var url = $"{_apiString}/Request";
 

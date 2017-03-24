@@ -66,8 +66,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApiControllers\IPrometheusApiController.cs" />
-    <Compile Include="ApiControllers\PrometheusApiController.cs" />
+    <Compile Include="Api\Controllers\IPrometheusApiController.cs" />
+    <Compile Include="Api\Controllers\PrometheusApiController.cs" />
+    <Compile Include="Api\Models\IServiceOption.cs" />
+    <Compile Include="Api\Models\IServiceRequestOption.cs" />
+    <Compile Include="Api\Models\Enums\ServiceRequestState.cs" />
+    <Compile Include="Api\Models\Enums\ServiceRequestAction.cs" />
+    <Compile Include="Api\Models\Enums\UserInputType.cs" />
+    <Compile Include="Api\Models\IServiceRequest.cs" />
+    <Compile Include="Api\Models\IServiceRequestUserInput.cs" />
+    <Compile Include="Api\Models\ServiceRequest.cs" />
+    <Compile Include="Api\Models\ServiceRequestOption.cs" />
+    <Compile Include="Api\Models\ServiceRequestUserInput.cs" />
     <Compile Include="EntityFramework\Models\IScript.cs" />
     <Compile Include="EntityFramework\Models\RequestFulfillment.cs" />
     <Compile Include="EntityFramework\Models\ICreatedEntity.cs" />
@@ -81,12 +91,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{0F03BAA4-EC68-446D-BDF4-64C689784DC1}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

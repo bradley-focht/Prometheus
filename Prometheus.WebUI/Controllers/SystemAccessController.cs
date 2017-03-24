@@ -56,10 +56,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowRole(int id = 0)
 		{
-			IRoleDto role = null;
+			RoleDto role = null;
 			try
 			{
-				role = _userManager.GetRole(UserId, id);
+				role = (RoleDto)_userManager.GetRole(UserId, id);
 			}
 			catch (Exception exception)
 			{

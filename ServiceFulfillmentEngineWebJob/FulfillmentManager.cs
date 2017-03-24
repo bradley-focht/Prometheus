@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Common.Dto;
-using Common.Enums;
-using ServiceFulfillmentEngineWebJob.ApiControllers;
-using System.Management.Automation;
+using System.Linq;
 using System.Management.Automation.Runspaces;
+using ServiceFulfillmentEngineWebJob.Api.Controllers;
+using ServiceFulfillmentEngineWebJob.Api.Models;
+using ServiceFulfillmentEngineWebJob.Api.Models.Enums;
+using ServiceFulfillmentEngineWebJob.EntityFramework.DataAccessLayer;
+using ServiceFulfillmentEngineWebJob.EntityFramework.Models;
 
 namespace ServiceFulfillmentEngineWebJob
 {
@@ -33,17 +35,28 @@ namespace ServiceFulfillmentEngineWebJob
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
-		private bool IsProcessedRequest(IServiceRequestDto request)
+		private bool IsProcessedRequest(IServiceRequest request)
 		{
-			throw new NotImplementedException();
+			return request.State != ServiceRequestState.Approved;
 		}
 
 		/// <summary>
 		/// Processes Fulfillment of a Prometheus Service Request
 		/// </summary>
 		/// <param name="request"></param>
-		private void ProcessRequest(IServiceRequestDto request)
+		private void ProcessRequest(IServiceRequest request)
 		{
+			Console.ForegroundColor = ConsoleColor.Green;
+			Console.WriteLine($"Processing new Request {request.Name}");
+			Console.BackgroundColor = ConsoleColor.White;
+
+			List<Script> scripts = null;
+			using (var context = new ServiceFulfillmentEngineContext())
+			{
+				scripts = context.Scripts.ToList();
+			}
+			
+
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 			runspace.Open();
 
@@ -51,11 +64,11 @@ namespace ServiceFulfillmentEngineWebJob
 
 			Pipeline pipeline = runspace.CreatePipeline();
 			pipeline.Commands.AddScript(" A B C ");
-			foreach (var userInput in request.ServiceRequestUserInputs)		//just add everything
+			foreach (var userInput in request.ServiceRequestUserInputs)     //just add everything
 			{
-				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);    
+				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
 			}
-			
+
 
 			/* Just chill for now
 			var processedServiceOptions = new List<IServiceRequestOptionDto>();
@@ -76,7 +89,7 @@ namespace ServiceFulfillmentEngineWebJob
 		/// <summary>
 		/// Fulfills the request in Prometheus
 		/// </summary>
-		private void FulfillPrometheusRequest(IServiceRequestDto request)
+		private void FulfillPrometheusRequest(IServiceRequest request)
 		{
 			request.State = ServiceRequestState.Fulfilled;
 			var controller = new PrometheusApiController(_userId, _apiKey);
@@ -90,7 +103,7 @@ namespace ServiceFulfillmentEngineWebJob
 		/// </summary>
 		/// <param name="request"></param>
 		/// <param name="processedServiceOptions"></param>
-		private void ForwardRequest(IServiceRequestDto request, List<IServiceRequestOptionDto> processedServiceOptions)
+		private void ForwardRequest(IServiceRequest request, List<IServiceRequest> processedServiceOptions)
 		{
 			throw new NotImplementedException();
 		}
@@ -99,7 +112,7 @@ namespace ServiceFulfillmentEngineWebJob
 		/// Runs the script relevant to the SRO
 		/// </summary>
 		/// <param name="option"></param>
-		private void ProcessServiceOption(IServiceRequestOptionDto option)
+		private void ProcessServiceOption(IServiceRequestOption option)
 		{
 			throw new NotImplementedException();
 		}
@@ -109,7 +122,7 @@ namespace ServiceFulfillmentEngineWebJob
 		/// </summary>
 		/// <param name="option"></param>
 		/// <returns></returns>
-		private bool IsProcessableOption(IServiceRequestOptionDto option)
+		private bool IsProcessableOption(IServiceRequestOption option)
 		{
 			throw new NotImplementedException();
 		}
@@ -118,7 +131,7 @@ namespace ServiceFulfillmentEngineWebJob
 		/// Gets all of the service requests from the API and then filters for new ones
 		/// </summary>
 		/// <returns></returns>
-		private IEnumerable<IServiceRequestDto> GetNewServiceRequests()
+		private IEnumerable<IServiceRequest> GetNewServiceRequests()
 		{
 			var controller = new PrometheusApiController(_userId, _apiKey);
 			var requests = controller.GetServiceRequests();
