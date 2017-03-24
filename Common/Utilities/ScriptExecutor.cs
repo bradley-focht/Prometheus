@@ -24,10 +24,37 @@ namespace Common.Utilities
 			//to be removed
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 
+			var scriptGuid = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentScriptId"]);
+
 			// open it
 			runspace.Open();
 			Pipeline pipeline = runspace.CreatePipeline();
-			pipeline.Commands.AddScript("(Get-ADUser -Filter \"ObjectGUID -eq '$guid'\" -properties Department | Select-Object Department | Format-Table -HideTableHeaders | Out-String).Trim()");
+			// pipeline.Commands.AddScript("(Get-ADUser -Filter \"ObjectGUID -eq '$guid'\" -properties Department | Select-Object Department | Format-Table -HideTableHeaders | Out-String).Trim()");
+			
+			// I suppose this is the way to 
+			pipeline.Commands.AddScript(scriptGuid + ".ps1");
+			runspace.SessionStateProxy.SetVariable("guid", userGuid);
+			Collection<PSObject> results = pipeline.Invoke();
+			runspace.Close();
+
+			var firstOrDefault = results.FirstOrDefault();
+			return firstOrDefault?.ToString();
+		}
+
+		public string GetDepartmentUsers(Guid userGuid)
+		{
+			//to be removed
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+
+			var scriptGuid = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"]);
+
+			// open it
+			runspace.Open();
+			Pipeline pipeline = runspace.CreatePipeline();
+			// pipeline.Commands.AddScript("(Get-ADUser -Filter \"ObjectGUID -eq '$guid'\" -properties Department | Select-Object Department | Format-Table -HideTableHeaders | Out-String).Trim()");
+
+			// I suppose this is the way to 
+			pipeline.Commands.AddScript(scriptGuid + ".ps1");
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 			Collection<PSObject> results = pipeline.Invoke();
 			runspace.Close();
@@ -42,25 +69,11 @@ namespace Common.Utilities
 		/// <param name="userGuid"></param>
 		/// <param name="scriptId"></param>
 		/// <returns></returns>
-		public List<ScriptResult<string, string>> ExecuteScript(Guid userGuid, Guid scriptId)
+		public List<ScriptResult<string, string>> ExecuteScript(Guid userGuid, Guid scriptGuid)
 		{
 			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
+			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid);
 
-			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptId.ToString());
-
-            // create PowerShell runspace
-            Runspace runspace = RunspaceFactory.CreateRunspace();
-            runspace.Open();
-
-            // create a pipeline and feed it the script text
-
-            Pipeline pipeline = runspace.CreatePipeline();
-            pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
-			runspace.SessionStateProxy.SetVariable("guid", userGuid);
-
-			Collection <PSObject> results = pipeline.Invoke();
-
-            runspace.Close();
 	        foreach (var result in results)
 	        {
 		        ScriptResult<string, string> myOption = new ScriptResult<string, string>();
@@ -75,6 +88,38 @@ namespace Common.Utilities
 			}
 
 			return myOptions;
+		}
+
+		/// <summary>
+		/// A general function that executes a script
+		/// </summary>
+		/// <param name="userGuid"></param>
+		/// <param name="scriptGuid"></param>
+		/// <returns>
+		/// Collection of PSObject
+		/// </returns>
+		public Collection<PSObject> GeneralElScriptador(Guid userGuid, Guid scriptGuid)
+		{
+
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid.ToString());
+
+			// create PowerShell runspace
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+			runspace.Open();
+
+			// create a pipeline and feed it the script text
+			Pipeline pipeline = runspace.CreatePipeline();
+
+			// BRAD: whats the difference between this line of code and vs line 35?
+			pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path) + "ps1");
+			runspace.SessionStateProxy.SetVariable("guid", userGuid);
+
+			Collection<PSObject> results = pipeline.Invoke();
+
+
+			runspace.Close();
+
+			return results;
 		}
 	}
 }
