@@ -78,7 +78,8 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			if (serviceRequest != null)
 			{
 				request.RequestFormat = DataFormat.Json;
-				request.AddBody(serviceRequest);
+				var serializedRequest = JsonConvert.SerializeObject(serviceRequest);
+				request.AddBody(serializedRequest);
 			}
 
 			return client.Execute(request);
