@@ -21,6 +21,8 @@ namespace UserManager.Controllers
 		/// <returns></returns>
 		IEnumerable<IDepartmentDto> GetDepartments(int performingUserId);
 
+		string GetDepartmentFromScript(int scriptId);
+
 		/// <summary>
 		/// Modifies the Department in the database
 		/// </summary>
