@@ -52,7 +52,17 @@ else if (Model.SelectedAction == ServiceRequestAction.Remove)
 		<div class="dd ful">
 			<div class="dd-row">
 				<div class="dd-cell-base dt-font">Service Request </div>
-				<div class="dd-cell-base">@Model.ServiceRequest.Name</div>
+				<div class="dd-cell-base">
+					@if (!string.IsNullOrEmpty(Model.ServiceRequest.Name))
+					{
+						@Model.ServiceRequest.Name
+					}
+					else
+					{
+						<text>Not yet saved</text>
+					}
+				</div>
+
 				@if (Model.PriceMonthly > 0 || Model.PriceUpFront > 0)
 				{
 					<div class="dd-cell-base dt-font">Price</div>

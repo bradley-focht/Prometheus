@@ -5,15 +5,12 @@
 
 @{
 	@* UI Access check for authenticated guest accounts *@
-int userId;
+int userId = 0;
 try
 {
 	userId = int.Parse(Session["Id"].ToString());
 }
-catch (Exception)
-{
-	return;
-}
+catch (Exception) { }
 }
 <div class="navbar-inverse navbar-fixed-top">
 

@@ -106,7 +106,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult SaveScript(ScriptDto newScript, HttpPostedFileBase file)
 		{
-
 			if (!ModelState.IsValid) /* Server side validation */
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
@@ -126,7 +125,7 @@ namespace Prometheus.WebUI.Controllers
 														   //file path location comes from the Web.config file
 						try
 						{
-							var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName.ToString());
+							var path = Path.Combine(ConfigHelper.GetScriptPath(), newFileName + ".ps1");
 							file.SaveAs(Server.MapPath(path)); /*create new doc and upload it */
 							newScript = new ScriptDto()
 							{

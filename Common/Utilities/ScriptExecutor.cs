@@ -101,7 +101,7 @@ namespace Common.Utilities
 		public Collection<PSObject> GeneralElScriptador(Guid userGuid, Guid scriptGuid)
 		{
 
-			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid.ToString());
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid + ".ps1");
 
 			// create PowerShell runspace
 			Runspace runspace = RunspaceFactory.CreateRunspace();
@@ -111,7 +111,7 @@ namespace Common.Utilities
 			Pipeline pipeline = runspace.CreatePipeline();
 
 			// BRAD: whats the difference between this line of code and vs line 35?
-			pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path) + "ps1");
+			pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 
 			Collection<PSObject> results = pipeline.Invoke();

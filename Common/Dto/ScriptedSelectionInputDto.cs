@@ -40,8 +40,11 @@ namespace Common.Dto
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
 
+		[Display(Name="Available On Add")]
 		public bool AvailableOnAdd { get; set; }
+		[Display(Name="Available On Change")]
 		public bool AvailableOnChange { get; set; }
+		[Display(Name="Available on Remove")]
 		public bool AvailableOnRemove { get; set; }
 
 		/// <summary>
