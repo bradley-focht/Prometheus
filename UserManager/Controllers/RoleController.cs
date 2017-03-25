@@ -100,10 +100,12 @@ namespace UserManager.Controllers
 						}
 					}
 					context.SaveChanges(performingUserId);
+					var usersAdjustedDtos = new List<IUserDto>();
 					foreach (var user in usersAdjusted)
 					{
-						yield return ManualMapper.MapUserToDto(user);
+						usersAdjustedDtos.Add(ManualMapper.MapUserToDto(user));
 					}
+					return usersAdjustedDtos;
 				}
 			}
 			throw new PermissionException("Roles not added to the users specified.", performingUserId,
@@ -137,10 +139,13 @@ namespace UserManager.Controllers
 						}
 					}
 					context.SaveChanges(performingUserId);
+
+					var usersAdjustedDtos = new List<IUserDto>();
 					foreach (var user in usersAdjusted)
 					{
-						yield return ManualMapper.MapUserToDto(user);
+						usersAdjustedDtos.Add(ManualMapper.MapUserToDto(user));
 					}
+					return usersAdjustedDtos;
 				}
 			}
 			else

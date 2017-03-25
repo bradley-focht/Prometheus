@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Configuration;
-using System.IO;
 using System.Linq;
-using System.Management.Automation;
 using System.Management.Automation.Runspaces;
 using ServiceFulfillmentEngineWebJob.Api.Controllers;
 using ServiceFulfillmentEngineWebJob.Api.Models;
@@ -50,59 +46,17 @@ namespace ServiceFulfillmentEngineWebJob
 		/// <param name="request"></param>
 		private void ProcessRequest(IServiceRequest request)
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine($"Processing new Request {request.Name}");
-			Console.ForegroundColor = ConsoleColor.White;
+			Console.BackgroundColor = ConsoleColor.White;
 
 			List<Script> scripts = null;
-
-			if (request.ServiceRequestOptions.Any(r => r.Code == "ACCT"))
+			using (var context = new ServiceFulfillmentEngineContext())
 			{
-
-				Script script = null;
-				using (var context = new ServiceFulfillmentEngineContext())
-				{
-					script = context.Scripts.FirstOrDefault(x => x.ApplicableCode == "ACCT");
-				}
-				if (script != null)
-				{
-					Console.WriteLine("Identified as executable on ACCT");
-
-					Runspace runspace = RunspaceFactory.CreateRunspace();
-					runspace.Open();
-
-					// create a pipeline and feed it the script
-					
-					Pipeline pipeline = runspace.CreatePipeline();
-					var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], script.FileName);
-
-
-
-					pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
-					foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
-					{
-						runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
-					}
-					try
-					{
-						Collection<PSObject> results = pipeline.Invoke();
-						Console.WriteLine("Script results: ");
-						foreach (var psObject in results)
-						{
-							Console.WriteLine(psObject);
-						}
-					}
-					catch(Exception exception)
-					{
-						Console.ForegroundColor = ConsoleColor.Red;
-						Console.WriteLine(exception.Message);
-						Console.ForegroundColor = ConsoleColor.White;
-					}
-				}
+				scripts = context.Scripts.ToList();
 			}
 
-
-
+			DoSomeWeirdScriptLookingStuffThatShouldBeItsOwnFunctionOrCommented(request, scripts);
 
 			/* Just chill for now
 			var processedServiceOptions = new List<IServiceRequestOptionDto>();
@@ -115,10 +69,24 @@ namespace ServiceFulfillmentEngineWebJob
 					processedServiceOptions.Add(option);
 				}
 			}
-			*/
-			ForwardRequest(request);
-
+			
+			ForwardRequest(request, processedServiceOptions); */
 			FulfillPrometheusRequest(request);
+		}
+
+		private void DoSomeWeirdScriptLookingStuffThatShouldBeItsOwnFunctionOrCommented(IServiceRequest request, List<Script> scripts)
+		{
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+			runspace.Open();
+
+			// create a pipeline and feed it the script text
+
+			Pipeline pipeline = runspace.CreatePipeline();
+			pipeline.Commands.AddScript(" A B C ");
+			foreach (var userInput in request.ServiceRequestUserInputs)     //just add everything
+			{
+				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
+			}
 		}
 
 		/// <summary>
@@ -126,7 +94,6 @@ namespace ServiceFulfillmentEngineWebJob
 		/// </summary>
 		private void FulfillPrometheusRequest(IServiceRequest request)
 		{
-			Console.WriteLine("Fulfilling Request");
 			request.State = ServiceRequestState.Fulfilled;
 			var controller = new PrometheusApiController(_userId, _apiKey);
 
@@ -138,10 +105,10 @@ namespace ServiceFulfillmentEngineWebJob
 		/// Also Saves the fulfillment record in the database
 		/// </summary>
 		/// <param name="request"></param>
-
-		private void ForwardRequest(IServiceRequest request)
+		/// <param name="processedServiceOptions"></param>
+		private void ForwardRequest(IServiceRequest request, List<IServiceRequest> processedServiceOptions)
 		{
-			Console.WriteLine($"Forward Request to Ticketing System {request.Name}");
+			throw new NotImplementedException();
 		}
 
 		/// <summary>

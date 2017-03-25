@@ -13,9 +13,7 @@ try
 catch (Exception) { }
 }
 <div class="navbar-inverse navbar-fixed-top">
-
     <div class="content-body">
-
         <div class="float-right-div" style="padding-right: 10px; display: inline-block;">
 
             <div class="dropdown">
@@ -25,19 +23,24 @@ catch (Exception) { }
                 <ul class="dropdown-menu pull-right">
                     <li>@Html.ActionLink("Logout", "Logout", "UserAccount", null, new {@class = "dropdown-item"})</li>
                     <li class="divider"></li>
-	                <li>@Html.ActionLink("Home", "Index", "Home", null, new {@class = "dropdown-item"})</li>
+                    <li>
+                        @Html.ActionLink("Home", "Index", "Home", null, new {@class = "dropdown-item"})
+                    </li>
 					
-					@if (UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
-					{
-						<li>@Html.ActionLink("Service Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
-					}				
+                    @if (UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+                    {
+                        <li>@Html.ActionLink("Service Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
+                    }				
                     <li>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new { @class = "dropdown-item" })</li>
                 </ul>
             </div>
 
         </div>
         <div class="float-left-div">
-            <label class="navbar-brand">@ViewBag.Title</label>
+            <label class="navbar-brand">
+                <img src="~/Content/Images/home.png" style="height: 15px; width: 25px;">
+                @ViewBag.Title
+            </label>
         </div>
     </div>
 </div>
