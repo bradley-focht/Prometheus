@@ -22,7 +22,10 @@ namespace Common.Utilities
 		/// <returns></returns>
 		public string GetUserDepartment(Guid userGuid, Guid scriptGuid)
 		{
-			var path = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentScriptId"], scriptGuid + ".ps1");
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], 
+				ConfigurationManager.AppSettings["GetDepartmentScriptId"], 
+				scriptGuid + ".ps1");
+
 			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid, path);
 			var firstOrDefault = results.FirstOrDefault();
 			return firstOrDefault?.ToString();
@@ -36,6 +39,7 @@ namespace Common.Utilities
 		/// <returns></returns>
 		public List<ScriptResult<string, string>> GetDepartmentUsers(Guid userGuid, Guid scriptGuid)
 		{
+			// var path = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"], scriptGuid + ".ps1");
 			var path = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"], scriptGuid + ".ps1");
 
 			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
