@@ -47,7 +47,7 @@ namespace Prometheus.WebUI.Controllers
 			IUserDto user;
 			try
 			{
-				user = (UserDto)_userManager.Login(userLogin.Username, userLogin.Password, Guid.Empty);    //get the user object
+				user = (UserDto)_userManager.Login(userLogin.Username, userLogin.Password);    //get the user object
 			}
 			catch (Exception exception)
 			{

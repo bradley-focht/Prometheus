@@ -22,9 +22,7 @@ namespace Common.Utilities
 		/// <returns></returns>
 		public string GetUserDepartment(Guid userGuid, Guid scriptGuid)
 		{
-			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], 
-				ConfigurationManager.AppSettings["GetDepartmentScriptId"], 
-				scriptGuid + ".ps1");
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid + ".ps1");
 
 			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid, path);
 			var firstOrDefault = results.FirstOrDefault();

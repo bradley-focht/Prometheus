@@ -59,7 +59,7 @@ namespace RESTAPI.Controllers
 			var request = Newtonsoft.Json.JsonConvert.DeserializeObject<Request>(value);
 
 			//Need to change userId
-			_requestManager.ChangeRequestState(_userManager.GuestId, id, request.State);
+			_requestManager.ChangeRequestState(2, id, request.State);
 		}
 
 		// DELETE: api/Request/5
