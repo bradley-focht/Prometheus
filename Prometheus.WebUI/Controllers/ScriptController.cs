@@ -210,27 +210,50 @@ namespace Prometheus.WebUI.Controllers
 		public JsonResult GetRequestees(Guid userId)
 		{
 			var scriptId = ConfigHelper.GetDepartmentUsersScriptId();
-			Guid scriptFile;
 
 			try
 			{
-				scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
+				Guid scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
+				ScriptExecutor elScriptador = new ScriptExecutor();
+
+				// Formatting to output the a JsonResult
+				var requestees = elScriptador.ExecuteScript(userId, scriptFile);
+				return Json(requestees, JsonRequestBehavior.AllowGet);
+
 			}
-			catch (Exception exception)	/*.... these error messages aren't so helpful in ajax calls... */
+			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to retrieve requestees, error: {exception}";
 				return null;
 			}
+		}
 
-			// path to where scripts files are stored.
-			// var path = ConfigHelper.GetScriptPath();
+		/// <summary>
+		/// Upon login, retrieve department of user
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		public string GetDepartment(Guid userId)
+		{
+			var scriptId = ConfigHelper.GetDepartmentScriptId();
 
-			ScriptExecutor elScriptador = new ScriptExecutor();
+			try
+			{
+				Guid scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
+				ScriptExecutor elScriptador = new ScriptExecutor();
 
-			// Formatting to output the a JsonResult
-			var requestees = elScriptador.ExecuteScript(userId, scriptFile);
-			return Json(requestees, JsonRequestBehavior.AllowGet); /* you should see what it does without the allowget... actulaly don't */
+				// Formatting to output the a JsonResult
+				var department = elScriptador.GetUserDepartment(userId, scriptFile);
+				return department;
+
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to retrieve department, error: {exception}";
+				return null;
+			}
 		}
 
 		/// <summary>
@@ -259,6 +282,7 @@ namespace Prometheus.WebUI.Controllers
 			var requestees = elScriptador.ExecuteScript(userId, scriptFile);
 			return Json(requestees, JsonRequestBehavior.AllowGet); 
 		}
+		
 		/// <summary>
 		/// Used by the ServiceRequestMaintenance ScriptedInput Views
 		/// </summary>
