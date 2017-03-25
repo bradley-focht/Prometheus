@@ -38,24 +38,37 @@
         <div class="dd" style="width: 60%;">
             <div class="dd-row">
                 @if (Model.Users != null && Model.Users.Any())
-                {
+				{
+					Guid userGuid;
+					try
+					{
+						userGuid = Guid.Parse(Session["Guid"].ToString());
+					}
+					catch
+					{
+						userGuid = Guid.Empty;
+					}
+
                     @Html.ValidationMessageFor(model => model.Users)
                     foreach (var user in Model.Users)
                     {
-                        <div class="checkbox checkbox-primary">
-                            <input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="Users">
-                            <label for="@user.UserGuid">
-                                @user.DisplayName
-                                @if (user.UserDto.Roles != null)
-                                {
-                                    <br />
-                                    foreach (var role in user.UserDto.Roles)
-                                    {
-                                        <span class="note"> @role.Name </span>
-                                    }
-                                }
-                            </label>
-                        </div>
+	                    <div class="checkbox checkbox-primary">
+							@if (user.UserGuid != userGuid)
+							{
+								<input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="Users">
+							}
+		                    <label for="@user.UserGuid">
+			                    @user.DisplayName
+			                    @if (user.UserDto.Roles != null)
+			                    {
+				                    <br/>
+				                    foreach (var role in user.UserDto.Roles)
+				                    {
+					                    <span class="note"> @role.Name </span>
+				                    }
+			                    }
+		                    </label>
+	                    </div>
                     }
                 }
                 else if (Model.ReturningSearch && (Model.Users == null || !Model.Users.Any()))

@@ -50,16 +50,14 @@ namespace ServiceFulfillmentEngineWebJob
 		/// <param name="request"></param>
 		private void ProcessRequest(IServiceRequest request)
 		{
-			Console.ForegroundColor = ConsoleColor.Yellow;
+			Console.WriteLine("\n");
+			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine($"Processing new Request {request.Name}");
 			Console.ForegroundColor = ConsoleColor.White;
 
-			List<Script> scripts = null;
-
 			if (request.ServiceRequestOptions.Any(r => r.Code == "ACCT"))
 			{
-
-				Script script = null;
+				Script script;
 				using (var context = new ServiceFulfillmentEngineContext())
 				{
 					script = context.Scripts.FirstOrDefault(x => x.ApplicableCode == "ACCT");
@@ -72,11 +70,8 @@ namespace ServiceFulfillmentEngineWebJob
 					runspace.Open();
 
 					// create a pipeline and feed it the script
-
 					Pipeline pipeline = runspace.CreatePipeline();
 					var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], script.FileName);
-
-
 
 					pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
 					foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
@@ -95,7 +90,7 @@ namespace ServiceFulfillmentEngineWebJob
 					catch (Exception exception)
 					{
 						Console.ForegroundColor = ConsoleColor.Red;
-						Console.WriteLine(exception.Message);
+						Console.WriteLine($"Error in executing script: {exception.Message}");
 						Console.ForegroundColor = ConsoleColor.White;
 					}
 				}
@@ -125,11 +120,19 @@ namespace ServiceFulfillmentEngineWebJob
 		/// </summary>
 		private void FulfillPrometheusRequest(IServiceRequest request)
 		{
-			Console.WriteLine("Fulfilling Request");
+			Console.WriteLine($"Set Request {request.Name} to fulfilled");
 			request.State = ServiceRequestState.Fulfilled;
-			var controller = new PrometheusApiController(_userId, _apiKey);
-
-			controller.UpdateRequestById(request.Id, request);
+			try
+			{
+				var controller = new PrometheusApiController(_userId, _apiKey);
+				controller.UpdateRequestById(request.Id, request);
+			}
+			catch (Exception exception)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine($"Error fulfilling request: {exception.Message}");
+				Console.ForegroundColor = ConsoleColor.White;
+			}		
 		}
 
 		/// <summary>
@@ -170,11 +173,14 @@ namespace ServiceFulfillmentEngineWebJob
 		{
 			var controller = new PrometheusApiController(_userId, _apiKey);
 			var requests = controller.GetServiceRequests();
-			foreach (var request in requests)
+			if (requests != null)
 			{
-				if (!IsProcessedRequest(request))
+				foreach (var request in requests)
 				{
-					yield return request;
+					if (!IsProcessedRequest(request))
+					{
+						yield return request;
+					}
 				}
 			}
 		}

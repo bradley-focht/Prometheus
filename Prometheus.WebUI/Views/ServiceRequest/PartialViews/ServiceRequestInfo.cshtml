@@ -213,7 +213,7 @@
 			valueField: 'value'
 		});
 
-	var selectize = $select[0].selectize;	
+	var selectize = $select[0].selectize;
 
 	function EnableSelector(enable) {
 		selectize.clear();
@@ -242,19 +242,17 @@
 
 			@if (userGuids != null && userGuids.Count > 1)
 			{
-			<text>
-			EnableSelector(true);
-			$('#RequesteeOther').button('toggle');
-			</text>
-			<text>selectize.refreshItems();</text>
+			<text>EnableSelector(true);
+				$('#RequesteeOther').button('toggle');
+				selectize.refreshItems();</text>
 			}
 
 			@if (userGuids.Count <= 1 || userGuids.FirstOrDefault() == userGuid)
 			{
 				<text> @*write javascript *@
-				EnableSelector(false);
-				$('#RequesteeMe').button('toggle');
-				</text>
+			EnableSelector(false);
+			$('#RequesteeMe').button('toggle');
+			</text>
 			}
 		}
 		);
