@@ -81,15 +81,22 @@
 			Approval Department
 		</div>
 		<div class="dd-cell">
-			<input type="hidden" name="form.DepartmentId" value="@(Session["DepartmentId"].ToString())" />
-		@if (Session["DepartmentName"] != null)
-		{
-			Session["DepartmentName"].ToString();
-		}
-		else
-		{
-			<text>None</text>
-		}
+			@if (Model.ServiceRequest.Id > 0)
+			{
+				<input type="hidden" name="form.DepartmentId" value="@(@Model.ServiceRequest.DepartmentId)"/>
+			}
+			else
+			{
+				<input type="hidden" name="form.DepartmentId" value="@(Session["DepartmentId"].ToString())" />
+			}
+			@if (Session["DepartmentName"] != null)
+			{
+				Session["DepartmentName"].ToString();
+			}
+			else
+			{
+				<text>None</text>
+			}
 		</div>
 	</div>
 
@@ -161,15 +168,6 @@
 </div>
 
 <script type="text/javascript" language="javascript">
-	function EnableSelector(enable) {
-		var divSelect = document.getElementById('div_RequesteeSelect');
-		if (enable) {
-			divSelect.style.display = 'block';
-		} else {
-			divSelect.style.display = 'none';
-		}
-	}
-
 
 	@{
 				//figure out requestee info
@@ -199,16 +197,14 @@
 			}
 			catch (Exception) { }
 		}
-		if (userGuids.Count <= 1 || userGuids.FirstOrDefault() == userGuid)
-		{
-			<text> @*write javascript *@
-	EnableSelector(false);
-	$('#RequesteeMe').button('toggle');
-	</text>
-		}
+
 
 	}
-
+	var requestees = [];
+	@foreach (var guid in userGuids)
+	{
+		<text>requestees[requestees.length] = '@(guid.ToString())';</text>
+	}
 
 	var $select = $(document.getElementById('RequesteesSelect'))
 		.selectize({
@@ -216,9 +212,18 @@
 			labelField: 'text',
 			valueField: 'value'
 		});
-	var selectize = $select[0].selectize;
 
+	var selectize = $select[0].selectize;	
 
+	function EnableSelector(enable) {
+		selectize.clear();
+		var divSelect = document.getElementById('div_RequesteeSelect');
+		if (enable) {
+			divSelect.style.display = 'block';
+		} else {
+			divSelect.style.display = 'none';
+		}
+	}
 
 	$(document)
 		.ready(function () {
@@ -226,23 +231,31 @@
 				function (data) {
 					$.each(data, function (i, option) {
 						selectize.addOption({ value: option.Value, text: option.Label });
+						for (var j = 0; j < requestees.length; j++)
+						{
+							if (requestees[j] == option.Value) {
+								selectize.addItem(option.Value);
+							}
+						}
 					});
 				});
-			
 
 			@if (userGuids != null && userGuids.Count > 1)
 			{
 			<text>
-			selectize.refreshOptions();
 			EnableSelector(true);
 			$('#RequesteeOther').button('toggle');
 			</text>
-				foreach (var guid in userGuids)
-				{
-					<text>selectize.addItem('@(guid.ToString())');</text>
-				}
+			<text>selectize.refreshItems();</text>
 			}
-			
+
+			@if (userGuids.Count <= 1 || userGuids.FirstOrDefault() == userGuid)
+			{
+				<text> @*write javascript *@
+				EnableSelector(false);
+				$('#RequesteeMe').button('toggle');
+				</text>
+			}
 		}
 		);
 
