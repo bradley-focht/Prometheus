@@ -19,12 +19,10 @@ namespace Common.Utilities
 		/// </summary>
 		/// <param name="userGuid"></param>
 		/// <returns></returns>
-		public string GetUserDepartment(Guid userGuid)
+		public string GetUserDepartment(Guid userGuid, Guid scriptGuid)
 		{
 			//to be removed
 			Runspace runspace = RunspaceFactory.CreateRunspace();
-
-			var scriptGuid = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentScriptId"]);
 
 			// open it
 			runspace.Open();
@@ -41,19 +39,23 @@ namespace Common.Utilities
 			return firstOrDefault?.ToString();
 		}
 
-		public string GetDepartmentUsers(Guid userGuid)
+		/// <summary>
+		/// I don't think this is used anywhere ... can be deleted
+		/// Returns all the users in the dapartment
+		/// </summary>
+		/// <param name="userGuid"></param>
+		/// <param name="scriptGuid"></param>
+		/// <returns></returns>
+		public string GetDepartmentUsers(Guid userGuid, Guid scriptGuid)
 		{
 			//to be removed
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 
-			var scriptGuid = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"]);
-
+			// var scriptId = ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"];
 			// open it
 			runspace.Open();
 			Pipeline pipeline = runspace.CreatePipeline();
-			// pipeline.Commands.AddScript("(Get-ADUser -Filter \"ObjectGUID -eq '$guid'\" -properties Department | Select-Object Department | Format-Table -HideTableHeaders | Out-String).Trim()");
 
-			// I suppose this is the way to 
 			pipeline.Commands.AddScript(scriptGuid + ".ps1");
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 			Collection<PSObject> results = pipeline.Invoke();
@@ -91,7 +93,8 @@ namespace Common.Utilities
 		}
 
 		/// <summary>
-		/// A general function that executes a script
+		/// A general function that executes a script,
+		/// given the script guid
 		/// </summary>
 		/// <param name="userGuid"></param>
 		/// <param name="scriptGuid"></param>
@@ -115,7 +118,6 @@ namespace Common.Utilities
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 
 			Collection<PSObject> results = pipeline.Invoke();
-
 
 			runspace.Close();
 
