@@ -230,33 +230,6 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// Upon login, retrieve department of user
-		/// </summary>
-		/// <param name="userId"></param>
-		/// <returns></returns>
-		public string GetDepartment(Guid userId)
-		{
-			var scriptId = ConfigHelper.GetDepartmentScriptId();
-
-			try
-			{
-				Guid scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
-				ScriptExecutor elScriptador = new ScriptExecutor();
-
-				// Formatting to output the a JsonResult
-				var department = elScriptador.GetUserDepartment(userId, scriptFile);
-				return department;
-
-			}
-			catch (Exception exception)
-			{
-				TempData["MessageType"] = WebMessageType.Failure;
-				TempData["Message"] = $"Failed to retrieve department, error: {exception}";
-				return null;
-			}
-		}
-
-		/// <summary>
 		/// General purpose for running scripts
 		/// </summary>
 		/// <param name="userId"></param>

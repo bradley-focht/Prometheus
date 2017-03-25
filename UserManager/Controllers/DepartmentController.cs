@@ -31,12 +31,12 @@ namespace UserManager.Controllers
 			}
 		}
 
-		public string GetDepartmentFromScript(int scriptId)
+		public Guid GetDepartmentFromScript(int scriptId)
 		{
 			using (var context = new PrometheusContext())
 			{
 				var document = context.Scripts.ToList().FirstOrDefault(x => x.Id == scriptId);
-				string department = document.ScriptFile.ToString();
+				var department = document.ScriptFile;
 				return department;
 			}
 		}

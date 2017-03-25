@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Common.Dto;
 using Common.Enums.Entities;
@@ -21,7 +22,7 @@ namespace UserManager.Controllers
 		/// <returns></returns>
 		IEnumerable<IDepartmentDto> GetDepartments(int performingUserId);
 
-		string GetDepartmentFromScript(int scriptId);
+		Guid GetDepartmentFromScript(int scriptId);
 
 		/// <summary>
 		/// Modifies the Department in the database
