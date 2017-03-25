@@ -1,0 +1,6 @@
+﻿namespace ServicePortfolioServiceTests
+{
+	class PortfolioService
+	{
+	}
+}
