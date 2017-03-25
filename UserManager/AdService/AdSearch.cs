@@ -53,5 +53,16 @@ namespace UserManager.AdService
 
 			return user?.DisplayName;
 		}
+		/// <summary>
+		/// Resolve a group displayname
+		/// </summary>
+		/// <param name="groupGuid"></param>
+		/// <returns></returns>
+		public string GetGroupDisplayName(Guid groupGuid)
+		{
+			GroupPrincipal group = GroupPrincipal.FindByIdentity(new PrincipalContext(ContextType.Domain), IdentityType.Guid, groupGuid.ToString());
+
+			return group?.DisplayName;
+		}
 	}
 }
