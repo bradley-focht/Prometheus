@@ -55,20 +55,8 @@ namespace ServiceFulfillmentEngineWebJob
 			{
 				scripts = context.Scripts.ToList();
 			}
-			
 
-			Runspace runspace = RunspaceFactory.CreateRunspace();
-			runspace.Open();
-
-			// create a pipeline and feed it the script text
-
-			Pipeline pipeline = runspace.CreatePipeline();
-			pipeline.Commands.AddScript(" A B C ");
-			foreach (var userInput in request.ServiceRequestUserInputs)     //just add everything
-			{
-				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
-			}
-
+			DoSomeWeirdScriptLookingStuffThatShouldBeItsOwnFunctionOrCommented(request, scripts);
 
 			/* Just chill for now
 			var processedServiceOptions = new List<IServiceRequestOptionDto>();
@@ -84,6 +72,21 @@ namespace ServiceFulfillmentEngineWebJob
 			
 			ForwardRequest(request, processedServiceOptions); */
 			FulfillPrometheusRequest(request);
+		}
+
+		private void DoSomeWeirdScriptLookingStuffThatShouldBeItsOwnFunctionOrCommented(IServiceRequest request, List<Script> scripts)
+		{
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+			runspace.Open();
+
+			// create a pipeline and feed it the script text
+
+			Pipeline pipeline = runspace.CreatePipeline();
+			pipeline.Commands.AddScript(" A B C ");
+			foreach (var userInput in request.ServiceRequestUserInputs)     //just add everything
+			{
+				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
+			}
 		}
 
 		/// <summary>

@@ -9,7 +9,6 @@ using DataService.DataAccessLayer;
 using DataService.Models;
 using UserManager.AdService;
 using UserManager.Controllers;
-using System.Configuration;
 
 namespace UserManager
 {
@@ -79,8 +78,8 @@ namespace UserManager
 						try
 						{
 							newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
-								where d.Name == departmentName
-								select d.Id).FirstOrDefault();
+													where d.Name == departmentName
+													select d.Id).FirstOrDefault();
 						}
 						catch (Exception)
 						{
