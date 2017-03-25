@@ -22,21 +22,19 @@
                 @ViewBag.SubTitle
             </div>
 
-            <div class="panel-div">
-                @Html.Partial("Partialviews/ServiceBundleViewer", Model)
+	        <div class="panel-div">
+		        @Html.Partial("Partialviews/ServiceBundleViewer", Model)
+	        </div>
 
-                <div class="flex-container">
+                <div class="flex-container-col">
                     <div class="panel-footer">
-                        <div class="float-right-div">
-                            @Html.ActionLink("Delete", "ConfirmDelete", new { id = Model.Id }, new { @class = "btn btn-danger" })
-                            @Html.ActionLink("Update", "Update", new { id = Model.Id }, new { @class = "btn btn-primary" })
-                        </div>
+	                    <div class="float-right-div">
+		                    @Html.ActionLink("Back", "Index", null, new {@class="btn btn-default btn-back"})
+		                    @Html.ActionLink("Delete", "ConfirmDelete", new {id = Model.Id}, new {@class = "btn btn-danger"})
+		                    @Html.ActionLink("Update", "Update", new {id = Model.Id}, new {@class = "btn btn-primary"})
+	                    </div>
                     </div>
                 </div>
-            </div>
-
-
-
-        }
+	       }
     }
 }

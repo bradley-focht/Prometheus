@@ -117,7 +117,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\Images\globe.png" />
+    <Content Include="Content\Images\home.png" />
     <Content Include="Content\Images\invest.png" />
+    <Content Include="Content\Images\logo.PNG" />
     <Content Include="Content\Images\pad.png" />
     <Content Include="Content\Images\people-network.png" />
     <Content Include="Content\Images\people.gif" />
@@ -603,6 +605,9 @@
       <Project>{1a415a6a-0658-40d7-9ba2-938ef6e3210e}</Project>
       <Name>UserManager</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

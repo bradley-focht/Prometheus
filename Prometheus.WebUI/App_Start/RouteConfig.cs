@@ -157,7 +157,7 @@ namespace Prometheus.WebUI
 			
 
 			routes.MapRoute("GetOptions",
-				url: "Script/GetRequestees/{userId}/{scriptId}",
+				url: "Script/GetOptions/{userId}/{scriptId}",
 				defaults: new { controller = "Script", action = "GetOptions" });
 			#endregion
 			routes.MapRoute(

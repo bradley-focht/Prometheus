@@ -3,7 +3,7 @@
 <div class="dd full-width">
 	<div class="dd-row">
 		<div class="dd-cell-nostyle">
-			@Html.TextBox(Model.ControlName, null, new {id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), @class = "form-control", data_val = "true", data_val_required = "Required" })
+			@Html.TextBox($"{Model.ControlName}Value", null, new { id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), @class = "form-control", data_val = "true", data_val_required = "Required" })
 		</div>
 		<div class="dd-cell-nostyle" style="width: 20px;">
 			@if (!string.IsNullOrEmpty(Model.Control.HelpToolTip))
@@ -17,6 +17,14 @@
 <script type="text/javascript" language="javascript">
 	$(document)
 	.ready(function () {
+		var $select = $(document.getElementById('@(StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName))'))
+	.selectize({
+		maxItems: 99, plugins: ['remove_button'],
+		labelField: 'text',
+		valueField: 'value'
+	});
+		var selectize = $select[0].selectize;
+		
 		$.get('/Script/GetOptions/@(Session["Guid"])/@(Model.Control.ScriptId)',
 				function (data) {
 					$.each(data, function (i, option) {

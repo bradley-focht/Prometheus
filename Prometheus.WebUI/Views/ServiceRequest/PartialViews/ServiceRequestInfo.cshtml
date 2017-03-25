@@ -12,61 +12,68 @@
 
 <div class="dd">
 	@if (Model.ServiceRequest.Id <= 0)
-			{
-		@* Add only OR no package specified *@
-	if (packageCount > 1)
 	{
-		<div class="dd-row">
-			<div class="dt-cell">Action</div>	@*determine action *@
-			<div class="dd-cell">
-				<div class="btn-group">
-					
-					@if (Model.NewPackage != null)
-					{
-						<label class="btn btn-primary" id="New">
-							@if (Model.SelectedAction == ServiceRequestAction.New)
-							{
-								<text>New</text>
-							}
-							else
-							{
-								@Html.ActionLink("New", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.New }, new { style = "color:#fff;" })
-							}
-						</label>
-					}
-					@if (Model.ChangePackage != null)
-					{
-						<label class="btn btn-primary" id="@ServiceRequestAction.Change">
-							@if (Model.SelectedAction == ServiceRequestAction.Change)
-							{
-								<text>Change</text>
-							}
-							else
-							{
-								@Html.ActionLink("Change", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Change }, new { style = "color:#fff;" })
-							}
-						</label>
-					}
-					@if (Model.RemovePackage != null)
-					{
-						<label class="btn btn-primary" id="@ServiceRequestAction.Remove">
-							@if (Model.SelectedAction == ServiceRequestAction.Remove)
-						{
-								<text>Remove</text>
-						}
-						else
-						{
-								@Html.ActionLink("Remove", "Begin", new { id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Remove }, new { style = "color:#fff;" })
-						}
-						</label>
-					}
-				</div>
+		@* Add only OR no package specified *@
+		if (packageCount > 1)
+		{
+			<div class="dd-row">
+				<div class="dt-cell">Action</div> @*determine action *@
+				<div class="dd-cell">
+					<div class="btn-group">
 
-				<script type="text/javascript" language="javascript">
-					$('#@(Model.SelectedAction)').button('toggle');
-				</script>
+						@if (Model.NewPackage != null)
+						{
+							<label class="btn btn-primary" id="New">
+								@if (Model.SelectedAction == ServiceRequestAction.New)
+								{
+									<text>New</text>
+								}
+								else
+								{
+									@Html.ActionLink("New", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.New}, new {style = "color:#fff;"})
+								}
+							</label>
+						}
+						@if (Model.ChangePackage != null)
+						{
+							<label class="btn btn-primary" id="@ServiceRequestAction.Change">
+								@if (Model.SelectedAction == ServiceRequestAction.Change)
+								{
+									<text>Change</text>
+								}
+								else
+								{
+									@Html.ActionLink("Change", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Change}, new {style = "color:#fff;"})
+								}
+							</label>
+						}
+						@if (Model.RemovePackage != null)
+						{
+							<label class="btn btn-primary" id="@ServiceRequestAction.Remove">
+								@if (Model.SelectedAction == ServiceRequestAction.Remove)
+								{
+									<text>Remove</text>
+								}
+								else
+								{
+									@Html.ActionLink("Remove", "Begin", new {id = Model.ServiceOptionId, ServiceRequestAction = ServiceRequestAction.Remove}, new {style = "color:#fff;"})
+								}
+							</label>
+						}
+					</div>
+
+					<script type="text/javascript" language="javascript">
+						$('#@(Model.SelectedAction)').button('toggle');
+					</script>
+				</div>
 			</div>
-		</div>
+		}
+		else
+		{
+			<div class="dd-row">
+		<div class="dt-cell">Action</div>
+				<div class="dd-cell">@Model.SelectedAction</div>
+			</div>
 		}
 	}
 	<div class="dd-row">
@@ -74,8 +81,15 @@
 			Approval Department
 		</div>
 		<div class="dd-cell">
-			<input type="hidden" name="form.DepartmentId" value="1" />
-			[ dept name ]
+			<input type="hidden" name="form.DepartmentId" value="@(Session["DepartmentId"].ToString())" />
+		@if (Session["DepartmentName"] != null)
+		{
+			Session["DepartmentName"].ToString();
+		}
+		else
+		{
+			<text>None</text>
+		}
 		</div>
 	</div>
 
@@ -164,11 +178,7 @@
 		{
 			userGuid = Guid.Parse(Session["Guid"].ToString());
 		}
-		catch (Exception)
-		{
-			userGuid = Guid.Empty;
-		}
-
+		catch (Exception) { userGuid = Guid.Empty; }
 
 		List<string> requesteeGuidStrings;
 		if (Model.ServiceRequest.RequestedForGuids != null)
@@ -187,12 +197,9 @@
 			{
 				userGuids.Add(Guid.Parse(guid));
 			}
-			catch (Exception)
-			{
-			}
+			catch (Exception) { }
 		}
-
-		if (userGuids.Count <= 1 && userGuids.FirstOrDefault() == userGuid)
+		if (userGuids.Count <= 1 || userGuids.FirstOrDefault() == userGuid)
 		{
 			<text> @*write javascript *@
 	EnableSelector(false);

@@ -2,32 +2,35 @@
 
 <div class="title-div">@ViewBag.SubTitle</div>
 <div class="panel-div">
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
+	<div class="dd">
+		<div class="dd-row">
+			<div class="dt-cell">
+				@Html.DisplayNameFor(model => model.Name)
+			</div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
+			<div class="dd-cell">
+				@Html.DisplayFor(model => model.Name)
+			</div>
+		</div>
+		<div class="dd-row">
+			<div class="dt-cell">
+				@Html.DisplayNameFor(model => model.Description)
+			</div>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
+			<div class="dd-cell">
+				@Html.DisplayFor(model => model.Description)
+			</div>
+		</div>
+		<div class="dd-row">
+			<div class="dt-cell">
+				@Html.DisplayNameFor(model => model.Version)
+			</div>
 
-        <dd>
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Version)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Version)
-        </dd>
-
-    </dl>
+			<div class="dd-cell">
+				@Html.DisplayFor(model => model.Version)
+			</div>
+			</div>
+		</div>
 
 </div>
 
