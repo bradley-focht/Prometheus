@@ -64,7 +64,7 @@ namespace UserManager
 					{
 						//Otherwise add them with the authenticated role
 						var newUser = new UserDto { AdGuid = adUser.UserGuid };
-
+						
 						//Get the role that is to be added to the user
 						var authenticatedRole = context.Roles.FirstOrDefault(x => x.Name == AuthorizedUserRoleName);
 
@@ -79,10 +79,14 @@ namespace UserManager
 						}
 
 						try
-						{
+						{						
 							newUser.DepartmentId = (from d in _departmentController.GetDepartments(newUser.Id)
 													where d.Name == departmentName
 													select d.Id).FirstOrDefault();
+							if (newUser.DepartmentId < 1)	//somewhere invalid departments are not getting thrown...
+							{
+								throw new Exception("Login failure: no department configured for this account");
+							}						
 						}
 						catch (Exception)
 						{
@@ -93,6 +97,7 @@ namespace UserManager
 						savedUser.Roles = new List<Role> { authenticatedRole };
 						context.SaveChanges();
 						newUser = (UserDto)ManualMapper.MapUserToDto(savedUser);
+						newUser.Department = new DepartmentDto { Name = departmentName, Id = newUser.DepartmentId }; //attach the department
 						newUser.Name = GetDisplayName(newUser.AdGuid);      //Name resolution
 						return newUser;
 					}

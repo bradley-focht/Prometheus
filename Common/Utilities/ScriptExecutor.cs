@@ -38,7 +38,7 @@ namespace Common.Utilities
 		public List<ScriptResult<string, string>> GetDepartmentUsers(Guid userGuid, Guid scriptGuid)
 		{
 			// var path = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"], scriptGuid + ".ps1");
-			var path = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"], scriptGuid + ".ps1");
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid + ".ps1");
 
 			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
 			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid, path);

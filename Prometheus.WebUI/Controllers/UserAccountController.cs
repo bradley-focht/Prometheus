@@ -107,7 +107,7 @@ namespace Prometheus.WebUI.Controllers
 			Session["DisplayName"] = "Administrator";
 			Session["Guid"] = Guid.Empty;
 			Session["Id"] = _userManager.AdministratorId;
-			Session["DepartmentId"] = 0;
+			Session["DepartmentId"] = 1;
 			Session["DepartmentName"] = null;
 			if (string.IsNullOrEmpty(returnUrl))
 				return RedirectToAction("Index", "Home");
