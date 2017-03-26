@@ -21,6 +21,9 @@ namespace Prometheus.WebUI.Helpers
 		/// <returns></returns>
 		public static string CamelToString(string input)
 		{
+			if (input == null)
+				return null; 
+
 			return Regex.Replace(input, "([a-z])_?([A-Z])", "$1 $2");
 		}
 
