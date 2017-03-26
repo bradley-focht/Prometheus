@@ -169,6 +169,13 @@ namespace UserManager.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
+
+				List<Role> newRoles = new List<Role>();
+				foreach (var role in rolesToAdd)
+				{
+					newRoles.Add((from r in context.Roles where r.Id==role.Id select r).First());	/* attach context objects */
+				}
+
 				if (!context.Users.Any(x => x.Id == adjustedUserId))
 					throw new EntityNotFoundException("Could not add Roles to User.", typeof(User), adjustedUserId);
 
@@ -176,9 +183,9 @@ namespace UserManager.Controllers
 				updatedUser.Roles = new List<Role>();
 				context.Users.Attach(updatedUser);
 
-				foreach (var role in rolesToAdd)
+				foreach (var role in newRoles)
 				{
-					updatedUser.Roles.Add(ManualMapper.MapDtoToRole(role));
+					updatedUser.Roles.Add(role);
 				}
 
 				context.Entry(updatedUser).State = EntityState.Modified;
