@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Management.Automation;
@@ -71,21 +72,34 @@ namespace ServiceFulfillmentEngineWebJob
 
 					// create a pipeline and feed it the script
 					Pipeline pipeline = runspace.CreatePipeline();
-					var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], script.FileName);
+					
+					
+					try
+					{
+						pipeline.Commands.AddScript(@"Scripts\NewUserScript.ps1");
+					}
+					catch (Exception exception)
+					{
+						Console.ForegroundColor = ConsoleColor.Red;
+						Console.WriteLine(exception.Message);
+						Console.ForegroundColor = ConsoleColor.White;
+					} 
 
-					pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
 					foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
 					{
 						runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
+						Console.WriteLine($"Added parameter: label {userInput.Name}, value: {userInput.Value} ");
 					}
 					try
 					{
 						Collection<PSObject> results = pipeline.Invoke();
 						Console.WriteLine("Script results: ");
+						
 						foreach (var psObject in results)
 						{
 							Console.WriteLine(psObject);
 						}
+
 					}
 					catch (Exception exception)
 					{

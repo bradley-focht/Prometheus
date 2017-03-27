@@ -6,6 +6,7 @@
 			@if (Model.Control.MultiLine)
 			{
 				@Html.TextArea(Model.ControlName, null, new {@class = "ckeditor"})
+				@Html.ValidationMessage($"{Model.ControlName}Value")
 			}
 			else
 			{

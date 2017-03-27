@@ -1,9 +1,11 @@
 ﻿@using Prometheus.WebUI.Helpers
 @model Prometheus.WebUI.Models.Shared.InputModel<Common.Dto.ScriptedSelectionInputDto>
+
 <div class="dd full-width">
 	<div class="dd-row">
 		<div class="dd-cell-nostyle">
 			@Html.TextBox($"{Model.ControlName}Value", null, new { id = StringHelper.RemoveNonAlphaNum(Model.Control.DisplayName), @class = "form-control", data_val = "true", data_val_required = "Required" })
+			@Html.ValidationMessage($"{Model.ControlName}Value")
 		</div>
 		<div class="dd-cell-nostyle" style="width: 20px;">
 			@if (!string.IsNullOrEmpty(Model.Control.HelpToolTip))
@@ -13,7 +15,7 @@
 		</div>
 	</div>
 </div>
-
+	@* selectize *@
 <script type="text/javascript" language="javascript">
 	$(document)
 	.ready(function () {

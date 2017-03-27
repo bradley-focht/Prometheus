@@ -1,4 +1,9 @@
-﻿@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestStateChangeModel
+﻿@using Common.Enums
+@using UserManager.AdService
+@model Prometheus.WebUI.Models.ServiceRequestApproval.ServiceRequestStateChangeModel
+@{
+	AdSearch searcher = new AdSearch();
+}
 <div class="panel-group">
 	<div class="panel panel-default">
 		<div class="panel-heading">
@@ -140,7 +145,29 @@
 										<span class="make-space-left make-space-right bold">
 											@userData.DisplayName
 										</span>
-										<span>@userData.ServiceRequestUserInput.Value</span>
+										@if (userData.ServiceRequestUserInput.UserInputType != UserInputType.ScriptedSelection)
+										{
+											<span>@userData.ServiceRequestUserInput.Value</span>
+										}
+										else
+										{
+											var data = userData.ServiceRequestUserInput.Value.Split(',');
+											foreach (var dataItem in data)
+											{
+												try
+												{
+													<div>
+														<span>@searcher.GetGroupDisplayName(Guid.Parse(dataItem))</span>
+													</div>
+												}
+												catch (Exception)
+												{
+													<div>
+														<span>Name not found</span>
+													</div>
+												}
+											}
+										}
 									</div>
 								</div>
 							}
@@ -148,16 +175,17 @@
 					}
 				</div>
 
+				<div class="panel-body">
+					<div class="dd">
+						<div class="dd-row">
+							<div class="dd-cell-base">Price Upfront</div>
+							<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.UpfrontPrice) </div>
+						</div>
 
-				<div class="dd">
-					<div class="dd-row">
-						<div class="dd-cell-base">Price Upfront</div>
-						<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.UpfrontPrice) </div>
-					</div>
-
-					<div class="dd-row">
-						<div class="dd-cell-base">Price Monthly</div>
-						<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.MonthlyPrice)</div>
+						<div class="dd-row">
+							<div class="dd-cell-base">Price Monthly</div>
+							<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.MonthlyPrice)</div>
+						</div>
 					</div>
 				</div>
 			</div>
