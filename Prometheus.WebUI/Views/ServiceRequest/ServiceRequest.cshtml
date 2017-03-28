@@ -40,7 +40,7 @@ else if (Model.SelectedAction == ServiceRequestAction.Remove)
 
 }
 
-@using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
+@using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post, new {name="form", id="form"}))
 {
 	<input type="hidden" name="form.ServiceOptionId" value="@Model.ServiceOptionId" />
 	<input type="hidden" name="form.Id" value="@Model.ServiceRequestId" />
@@ -159,6 +159,8 @@ else if (Model.SelectedAction == ServiceRequestAction.Remove)
 
 
 	<script language="javascript" type="text/javascript">
+		
+	
 		function UpdateOptions() {
 			var inputs = [];
 			@foreach (var input in Model.GetUserInputList())
