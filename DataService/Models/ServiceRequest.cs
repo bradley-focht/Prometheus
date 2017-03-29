@@ -71,7 +71,7 @@ namespace DataService.Models
 				if (this.ServiceRequestOptions == null)
 					return 0;
 
-				int numRequestees = RequestedForGuids.Split(',').Length + 1;
+				int numRequestees = RequestedForGuids.Split(',').Length;
 
 				return (decimal)this.ServiceRequestOptions.Sum(x => x.ServiceOption.PriceMonthly * x.Quantity) * numRequestees;
 			}
@@ -84,7 +84,7 @@ namespace DataService.Models
 		{
 			get
 			{
-				int numRequestees = RequestedForGuids.Split(',').Length + 1;
+				int numRequestees = RequestedForGuids.Split(',').Length;
 
 				if (this.ServiceRequestOptions == null)
 					return 0;

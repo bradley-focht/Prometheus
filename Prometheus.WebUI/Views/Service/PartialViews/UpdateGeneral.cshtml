@@ -80,9 +80,6 @@
 			@Html.DropDownList("ServiceBundleId", Model.ServiceBundleNames, new { data_placeholder = "Service Bundle...", style = "max-width: 300px;" })
 			@Html.ValidationMessageFor(model => model.ServiceBundleId)
 		</div>
-	</div><div class="dd-row">
-		<div class="dt-cell">Dependencies</div>
-		<div class="dd-row">@Html.Action("GetServicesDropDown", new { id = Model.Service.Id })</div>
 	</div>
 </div>
 
