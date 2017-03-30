@@ -51,7 +51,7 @@ namespace UserManager.AdService
 		{
 			UserPrincipal user = UserPrincipal.FindByIdentity(new PrincipalContext(ContextType.Domain), IdentityType.Guid, userGuid.ToString());
 
-			return user?.DisplayName;
+			return user.DisplayName;
 		}
 		/// <summary>
 		/// Resolve a group displayname
@@ -61,8 +61,8 @@ namespace UserManager.AdService
 		public string GetGroupDisplayName(Guid groupGuid)
 		{
 			GroupPrincipal group = GroupPrincipal.FindByIdentity(new PrincipalContext(ContextType.Domain), IdentityType.Guid, groupGuid.ToString());
-
-			return group?.DisplayName;
+			//let the UI deal with exceptions here
+			return group.Name;
 		}
 	}
 }

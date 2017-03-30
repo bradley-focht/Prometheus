@@ -36,7 +36,7 @@
                 </div>
             }
         </div>
-        <div class="make-space-right">
+        <div class="make-space-right make-space-top">
             <div class="btn-group">
                 @for (int i = 0; i < Model.TotalPages; i++)
                 {
@@ -46,7 +46,7 @@
                     }
                     else
                     {
-                        @Html.ActionLink((i + 1).ToString(), "Index", "Service", new { id = Model.SelectedRole, pageId = i }, new { @class = "btn btn-default" })
+                        @Html.ActionLink((i + 1).ToString(), "FilterByRole", "SystemAccess", new { id = Model.SelectedRole, pageId = i }, new { @class = "btn btn-default" })
                     }
                 }
             </div>

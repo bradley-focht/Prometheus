@@ -13,7 +13,7 @@ namespace UserManager
 		/// <param name="username"></param>
 		/// <param name="password"></param>
 		/// <returns></returns>
-		IUserDto Login(string username, string password, Guid scriptGuid);
+		IUserDto Login(string username, string password);
 
 		ICollection<Tuple<Guid, string>> SearchUsers(string searchString);
 		string GetDisplayName(Guid userGuid);

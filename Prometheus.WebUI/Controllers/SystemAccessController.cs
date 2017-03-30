@@ -393,7 +393,8 @@ namespace Prometheus.WebUI.Controllers
 					{
 						try
 						{
-							_userManager.RemoveRoleFromUsers(UserId, role, new List<IUserDto> { userDto });
+							/* useless is a lazy loading work around */
+							var useless = _userManager.RemoveRoleFromUsers(UserId, role, new List<IUserDto> { userDto });
 						}
 						catch (Exception) { /* ignore if user did not have role somehow */ }
 					}
@@ -401,7 +402,8 @@ namespace Prometheus.WebUI.Controllers
 					foreach (var role in roles)
 						try
 						{
-							_userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = role } });
+							var useless = _userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = role } });
+							foreach (var unused in useless) { /*do nothing */ }		//lazy loading work around
 						}
 						catch (Exception exception)
 						{
@@ -548,11 +550,6 @@ namespace Prometheus.WebUI.Controllers
 			TempData["MessageType"] = WebMessageType.Success; //successful assumed now
 			TempData["Message"] = "Successfully deleted queue";
 			return RedirectToAction("ShowDepartments");
-		}
-
-		public ActionResult UserDepartments()
-		{
-			return View();
 		}
 
 	}

@@ -30,9 +30,8 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		public int ServiceOptionId
 		{
 			get
-			{
-				
-				if (ServiceRequest!= null && ServiceRequest.ServiceOptionId != null) return (int) ServiceRequest.ServiceOptionId;
+			{		
+				if (ServiceRequest?.ServiceOptionId != null) return (int) ServiceRequest.ServiceOptionId;
 				return 0; //by default return an impossible option
 			}
 		}
@@ -52,7 +51,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// Used for display purposes only
 		/// </summary>
 		public IEnumerable<string> RequesteeDisplayNames { get; set; }
-
+		/// <summary>
+		/// Used for display purposes only
+		/// </summary>
+		public string RequestorDisplayName { get; set; }
 		/// <summary>
 		/// Requested Date
 		/// </summary>
@@ -160,6 +162,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// </summary>
 		public int CurrentIndex { get; set; }
 
+		/// <summary>
+		/// Return all user input data
+		/// </summary>
+		/// <returns></returns>
 		public List<IUserInput> GetUserInputList()
 		{
 			{

@@ -1,22 +1,40 @@
 ﻿@using Prometheus.WebUI.Models.ServiceRequest
 @model ServiceRequestModel
-
-@if (Model.OptionCategories != null)
-{
-
-
-	foreach (var category in Model.OptionCategories)
+<div class="make-space-bottom">
+	@if (Model.OptionCategories != null)
 	{
-		if (Model.OptionCategories.Count > 1)
+		foreach (var category in Model.OptionCategories)
 		{
-			<div class="subsubtitle-div">@category.Name</div>
-		}
-
-		<div class="dd full-width">
-			@foreach (var option in category.ServiceOptions)
+			if (Model.OptionCategories.Count > 1)
 			{
-				@Html.Partial("PartialViews/ServiceOption", new ServiceOptionModel {Quantifiable = category.Quantifiable, ServiceOption = option})
+				<div class="subsubtitle-div">@category.Name</div>
+
+				<div>
+					<input id="drop-checkbox-cat-@(category.Id)" type="checkbox" class="drop-checkbox">
+					<label for="drop-checkbox-cat-@(category.Id)" id="example" class="drop-text" data-toggle="collapse" data-target="#category-cat-@(category.Id)">See options</label>
+
+					<div class="collapse drop-well" id="category-cat-@(category.Id)" style="width: 100%;">
+						<div class="dd" style="width: 100%;">
+
+							<div class="dd full-width">
+								@foreach (var option in category.ServiceOptions)
+								{
+									@Html.Partial("PartialViews/ServiceOption", new ServiceOptionModel { Quantifiable = category.Quantifiable, ServiceOption = option })
+								}
+							</div>
+						</div>
+					</div>
+				</div>
 			}
-		</div>
+			else
+			{
+				<div class="dd full-width">
+					@foreach (var option in category.ServiceOptions)
+					{
+						@Html.Partial("PartialViews/ServiceOption", new ServiceOptionModel { Quantifiable = category.Quantifiable, ServiceOption = option })
+					}
+				</div>
+			}
+		}
 	}
-}
+</div>

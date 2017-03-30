@@ -1,4 +1,5 @@
-﻿@model dynamic
+﻿@using Prometheus.WebUI.Helpers
+@model dynamic
 	<div class="dd">
 	@foreach (var property in ViewData.ModelMetadata.Properties)
 	{
@@ -11,7 +12,7 @@
 				continue;
 			default:
 				<div class="dd-row">
-					<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+					<div class="dt-cell">@(StringHelper.CamelToString(property.DisplayName) ?? property.PropertyName)</div>
 					<div class="dd-cell">@Html.Raw(property.Model)</div>
 				</div>
 				break;

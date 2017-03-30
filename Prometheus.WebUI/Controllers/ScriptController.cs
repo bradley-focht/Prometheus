@@ -202,8 +202,7 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// Special case: used in service request for generating
-		///                 who the SR is intended for
+		/// Special case: used in service request for generating who the SR is intended for
 		/// </summary>
 		/// <param name="userId">user calling the script</param>
 		/// <returns></returns>
@@ -217,7 +216,7 @@ namespace Prometheus.WebUI.Controllers
 				ScriptExecutor elScriptador = new ScriptExecutor();
 
 				// Formatting to output the a JsonResult
-				var requestees = elScriptador.ExecuteScript(userId, scriptFile);
+				var requestees = elScriptador.GetDepartmentUsers(userId, scriptFile);
 				return Json(requestees, JsonRequestBehavior.AllowGet);
 
 			}
@@ -225,33 +224,6 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to retrieve requestees, error: {exception}";
-				return null;
-			}
-		}
-
-		/// <summary>
-		/// Upon login, retrieve department of user
-		/// </summary>
-		/// <param name="userId"></param>
-		/// <returns></returns>
-		public string GetDepartment(Guid userId)
-		{
-			var scriptId = ConfigHelper.GetDepartmentScriptId();
-
-			try
-			{
-				Guid scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
-				ScriptExecutor elScriptador = new ScriptExecutor();
-
-				// Formatting to output the a JsonResult
-				var department = elScriptador.GetUserDepartment(userId, scriptFile);
-				return department;
-
-			}
-			catch (Exception exception)
-			{
-				TempData["MessageType"] = WebMessageType.Failure;
-				TempData["Message"] = $"Failed to retrieve department, error: {exception}";
 				return null;
 			}
 		}

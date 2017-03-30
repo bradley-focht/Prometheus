@@ -40,7 +40,7 @@ else if (Model.SelectedAction == ServiceRequestAction.Remove)
 
 }
 
-@using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post))
+@using (Html.BeginForm(submitAction, "ServiceRequest", FormMethod.Post, new {name="form", id="form"}))
 {
 	<input type="hidden" name="form.ServiceOptionId" value="@Model.ServiceOptionId" />
 	<input type="hidden" name="form.Id" value="@Model.ServiceRequestId" />
@@ -159,6 +159,8 @@ else if (Model.SelectedAction == ServiceRequestAction.Remove)
 
 
 	<script language="javascript" type="text/javascript">
+		
+	
 		function UpdateOptions() {
 			var inputs = [];
 			@foreach (var input in Model.GetUserInputList())
@@ -252,15 +254,22 @@ else if (Model.SelectedAction == ServiceRequestAction.Remove)
 			if (document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))")) {
 				@if (userData.UserInputType == UserInputType.Selection || userData.UserInputType == UserInputType.ScriptedSelection)
 				{
+					<text>var selectedItems = [];</text>
+					string[] dataItems = userData.Value.Split(',');
+					for (var i = 0; i < dataItems.Length; i++)
+					{
+						<text>selectedItems.push('@(dataItems[i])');</text>
+					}
 					<text>
-				document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))").selectize.setValue('@userData.Value', 0);
+				document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))").selectize.setValue(selectedItems, false);
+				document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))").selectize.refreshItems();
 				</text>
 				}
 				else
 				{
 					<text>
-					document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))").value = '@userData.Value';
-					</text>
+				document.getElementById("@(StringHelper.RemoveNonAlphaNum(userData.Name))").value = '@userData.Value';
+				</text>
 				}
 
 				document.getElementById("data_id_@(StringHelper.RemoveNonAlphaNum(userData.Name))").value = '@userData.Id ';

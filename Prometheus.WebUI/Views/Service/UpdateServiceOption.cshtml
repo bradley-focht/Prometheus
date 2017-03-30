@@ -20,7 +20,7 @@
 	
 	@using (Html.BeginForm("SaveOptionsItem", "Service", FormMethod.Post, new { enctype = "multipart/form-data" }))
 	{
-	    <div class="make-space-top">
+	    <div class="panel-div">
             <div class="dd">
                 <input type="hidden" name="serviceId" value="@Model.ServiceId"/>
 
@@ -35,7 +35,7 @@
                     </div>
                 </div>
             </div>
-		<div class="flex-container">
+		<div class="flex-container-col">
 			<div class="panel-footer">
 				<div class="float-right-div">
 					@if (Model.Action != null && Model.Action == "Update")

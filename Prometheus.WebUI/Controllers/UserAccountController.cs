@@ -47,7 +47,7 @@ namespace Prometheus.WebUI.Controllers
 			IUserDto user;
 			try
 			{
-				user = (UserDto)_userManager.Login(userLogin.Username, userLogin.Password, Guid.Empty);    //get the user object
+				user = (UserDto)_userManager.Login(userLogin.Username, userLogin.Password);    //get the user object
 			}
 			catch (Exception exception)
 			{
@@ -107,7 +107,7 @@ namespace Prometheus.WebUI.Controllers
 			Session["DisplayName"] = "Administrator";
 			Session["Guid"] = Guid.Empty;
 			Session["Id"] = _userManager.AdministratorId;
-			Session["DepartmentId"] = 0;
+			Session["DepartmentId"] = 1;
 			Session["DepartmentName"] = null;
 			if (string.IsNullOrEmpty(returnUrl))
 				return RedirectToAction("Index", "Home");

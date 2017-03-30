@@ -1,4 +1,5 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
 using System.Threading;
 
 namespace ServiceFulfillmentEngineWebJob
@@ -7,15 +8,21 @@ namespace ServiceFulfillmentEngineWebJob
 	{
 		static void Main(string[] args)
 		{
-			while (true)
-			{
-				int userId = int.Parse(ConfigurationManager.AppSettings["FulfillmentUserId"]);
-				string apiKey = ConfigurationManager.AppSettings["FulfillmentUserPrivateKey"];
-				var manager = new FulfillmentManager(userId, apiKey);
-				manager.FulfillNewRequests();
+			Console.ForegroundColor = ConsoleColor.White;
+			Console.WriteLine("sfe is started....");
 
-				Thread.Sleep(3000);		//so not a good idea. Should use a timer. 
-			}
+			Timer t = new Timer(TimerCallback, null, 0, 5000);
+			Console.ReadLine();
+		}
+
+		private static void TimerCallback(Object o)
+		{
+			Console.WriteLine("sfe cycle started");
+
+			int userId = int.Parse(ConfigurationManager.AppSettings["FulfillmentUserId"]);
+			string apiKey = ConfigurationManager.AppSettings["FulfillmentUserPrivateKey"];
+			var manager = new FulfillmentManager(userId, apiKey);
+			manager.FulfillNewRequests();
 		}
 	}
 }

@@ -232,7 +232,8 @@ namespace Prometheus.WebUI.Controllers
 				model.ServiceRequestModel.Approval = approvalController.GetApprovalForServiceRequest(UserId, id);
 			}
 			catch (Exception) { }
-			//deal with the requestees
+			//resolve display names to Guids
+			//requestees
 			if (model.ServiceRequestModel.ServiceRequest.RequestedForGuids != null)
 			{
 				List<string> displayNames = new List<string>();
@@ -244,13 +245,25 @@ namespace Prometheus.WebUI.Controllers
 						{
 							displayNames.Add(_userManager.GetDisplayName(Guid.Parse(userGuidstring)));
 						}
-						catch (Exception) { /* skip this one */}
+						catch (Exception)
+						{
+							displayNames.Add("Name not found");
+						}
 					}
 				}
 				model.ServiceRequestModel.RequesteeDisplayNames = displayNames.OrderBy(x => x);
 			}
-			// business logic 
-			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
+			//requestor
+			try
+			{
+				model.ServiceRequestModel.RequestorDisplayName = _userManager.GetDisplayName(_userManager.GetUser(UserId, model.ServiceRequestModel.Requestor).AdGuid);
+			}
+			catch (Exception)
+			{
+				model.ServiceRequestModel.RequestorDisplayName = "Name not found";
+			}
+		// business logic 
+		model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
 			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
 			model.AvailableStates = _requestManager.ValidStates(UserId, id);
 			return View("ConfirmServiceRequestStateChange", model);

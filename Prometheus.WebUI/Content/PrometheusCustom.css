@@ -12,6 +12,10 @@
     color: #17a7f8;
 }
 
+.font-title1:hover {
+	color: #37c7ff;
+}
+
 .font-title2 {
     font-size: 1.1em;
     color: #17a7f8;
@@ -388,7 +392,7 @@
 }
 
     .color-bar:hover {
-        background-color: #0897e8;
+        background-color: #37c7ff;
     }
 
 .highlight-cell {

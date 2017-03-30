@@ -80,12 +80,12 @@ namespace Prometheus.WebUI.Helpers
 		{
 			var model = new ServiceRequestApprovalModel {Controls = new ServiceRequestApprovalControls()};
 			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
-				where s.State != ServiceRequestState.Cancelled
+				where s.State != ServiceRequestState.Cancelled && s.State != ServiceRequestState.Incomplete
 				orderby s.Id
 				select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
-
+			model.Controls.FilterText = "All Department Service Requests";
 			return model;
 		}
 
@@ -109,7 +109,7 @@ namespace Prometheus.WebUI.Helpers
 						  select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
-
+			model.Controls.FilterText = $"Filtered Department Service Requests by {state}";
 			return model;
 		}
 

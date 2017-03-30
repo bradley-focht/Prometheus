@@ -36,6 +36,14 @@ namespace Prometheus.WebUI.Helpers
 			return AddModelData(model, ps, sr, userId, serviceRequestId);
 		}
 
+		/// <summary>
+		/// Data to show a state change of SR
+		/// </summary>
+		/// <param name="ps"></param>
+		/// <param name="userId"></param>
+		/// <param name="sr"></param>
+		/// <param name="serviceRequestId"></param>
+		/// <returns></returns>
 		public static ServiceRequestStateChangeModel CreateStateChangeModel(IPortfolioService ps, int userId, IServiceRequestController sr,
 			int serviceRequestId)
 		{
@@ -100,8 +108,9 @@ namespace Prometheus.WebUI.Helpers
 							}
 						}
 					}
+					displayList.Add(listOption);
 				}
-				displayList.Add(listOption);
+				
 			}
 			model.DisplayList = displayList;
 			return model;

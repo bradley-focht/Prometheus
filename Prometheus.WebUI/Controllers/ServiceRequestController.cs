@@ -297,9 +297,8 @@ namespace Prometheus.WebUI.Controllers
 																 where u.Value != null
 																 select new ServiceRequestUserInputDto
 																 {
-																	 Id = u.Id, Name = u.Name,
-																	 UserInputType = u.UserInputType,
-																	 ServiceRequestId = form.Id,
+																	 Id = u.Id, Name = u.Name, UserInputType = u.UserInputType,
+																	 ServiceRequestId = form.Id, InputId = u.InputId,
 																	 Value = u.Value }).ToList();
 				foreach (var userData in userDataList)
 				{

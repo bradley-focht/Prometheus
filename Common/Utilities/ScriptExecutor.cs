@@ -18,63 +18,59 @@ namespace Common.Utilities
 		/// Returns the user's department
 		/// </summary>
 		/// <param name="userGuid"></param>
+		/// <param name="scriptGuid"></param>
 		/// <returns></returns>
 		public string GetUserDepartment(Guid userGuid, Guid scriptGuid)
 		{
-			//to be removed
-			Runspace runspace = RunspaceFactory.CreateRunspace();
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid + ".ps1");
 
-			// open it
-			runspace.Open();
-			Pipeline pipeline = runspace.CreatePipeline();
-			// pipeline.Commands.AddScript("(Get-ADUser -Filter \"ObjectGUID -eq '$guid'\" -properties Department | Select-Object Department | Format-Table -HideTableHeaders | Out-String).Trim()");
-			
-			// I suppose this is the way to 
-			pipeline.Commands.AddScript(scriptGuid + ".ps1");
-			runspace.SessionStateProxy.SetVariable("guid", userGuid);
-			Collection<PSObject> results = pipeline.Invoke();
-			runspace.Close();
-
+			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid, path);
 			var firstOrDefault = results.FirstOrDefault();
 			return firstOrDefault?.ToString();
 		}
 
 		/// <summary>
-		/// I don't think this is used anywhere ... can be deleted
 		/// Returns all the users in the dapartment
 		/// </summary>
 		/// <param name="userGuid"></param>
 		/// <param name="scriptGuid"></param>
 		/// <returns></returns>
-		public string GetDepartmentUsers(Guid userGuid, Guid scriptGuid)
+		public List<ScriptResult<string, string>> GetDepartmentUsers(Guid userGuid, Guid scriptGuid)
 		{
-			//to be removed
-			Runspace runspace = RunspaceFactory.CreateRunspace();
+			// var path = Path.Combine(ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"], scriptGuid + ".ps1");
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid + ".ps1");
 
-			// var scriptId = ConfigurationManager.AppSettings["GetDepartmentUsersScriptId"];
-			// open it
-			runspace.Open();
-			Pipeline pipeline = runspace.CreatePipeline();
+			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
+			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid, path);
 
-			pipeline.Commands.AddScript(scriptGuid + ".ps1");
-			runspace.SessionStateProxy.SetVariable("guid", userGuid);
-			Collection<PSObject> results = pipeline.Invoke();
-			runspace.Close();
+			foreach (var result in results)
+			{
+				ScriptResult<string, string> myOption = new ScriptResult<string, string>();
+				foreach (var item in result.Members)
+				{
+					if (item.Name == "Label")
+						myOption.Label = item.Value.ToString();
+					if (item.Name == "Value")
+						myOption.Value = item.Value.ToString();
+				}
+				myOptions.Add(myOption);
+			}
 
-			var firstOrDefault = results.FirstOrDefault();
-			return firstOrDefault?.ToString();
+			return myOptions;
 		}
 
 		/// <summary>
 		/// General case for executing the script
 		/// </summary>
 		/// <param name="userGuid"></param>
-		/// <param name="scriptId"></param>
+		/// <param name="scriptGuid"></param>
 		/// <returns></returns>
 		public List<ScriptResult<string, string>> ExecuteScript(Guid userGuid, Guid scriptGuid)
 		{
+			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid + ".ps1");
+
 			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
-			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid);
+			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid, path);
 
 	        foreach (var result in results)
 	        {
@@ -98,27 +94,22 @@ namespace Common.Utilities
 		/// </summary>
 		/// <param name="userGuid"></param>
 		/// <param name="scriptGuid"></param>
+		/// <param name="path"></param>
 		/// <returns>
 		/// Collection of PSObject
 		/// </returns>
-		public Collection<PSObject> GeneralElScriptador(Guid userGuid, Guid scriptGuid)
+		public Collection<PSObject> GeneralElScriptador(Guid userGuid, Guid scriptGuid, string path)
 		{
-
-			var path = Path.Combine(ConfigurationManager.AppSettings["ScriptPath"], scriptGuid + ".ps1");
-
 			// create PowerShell runspace
 			Runspace runspace = RunspaceFactory.CreateRunspace();
 			runspace.Open();
 
 			// create a pipeline and feed it the script text
 			Pipeline pipeline = runspace.CreatePipeline();
-
-			// BRAD: whats the difference between this line of code and vs line 35?
 			pipeline.Commands.AddScript(System.Web.HttpContext.Current.Server.MapPath(path));
 			runspace.SessionStateProxy.SetVariable("guid", userGuid);
 
 			Collection<PSObject> results = pipeline.Invoke();
-
 			runspace.Close();
 
 			return results;
