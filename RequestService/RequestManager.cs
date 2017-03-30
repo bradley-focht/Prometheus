@@ -259,7 +259,7 @@ namespace RequestService
 
 		public bool UserCanFulfillRequest(int userId, int requestId)
 		{
-			return _permissionController.UserHasPermission(userId, FulfillmentAccess.CanFulfill);
+			return _permissionController.UserHasPermission(userId, FulfillmentAccess.CanFulfill) && RequestFromId(requestId).State == ServiceRequestState.Approved;
 		}
 
 		public bool UserCanEditRequest(int userId, int requestId)
