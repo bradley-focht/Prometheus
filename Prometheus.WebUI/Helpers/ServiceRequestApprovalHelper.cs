@@ -38,7 +38,7 @@ namespace Prometheus.WebUI.Helpers
 			Paginate(model, currentPage, pageSize);
 
 			model.Controls.FilterText = $"Filtered My Service Requests by {state}";
-			model.Controls.FilterState = state;		//hints to pagination
+			model.Controls.FilterState = state;     //hints to pagination
 			model.Controls.FilterStateRequired = true;
 
 			return model;
@@ -78,11 +78,11 @@ namespace Prometheus.WebUI.Helpers
 		public static ServiceRequestApprovalModel GetAllDepartmentRequests(IServiceRequestController srController, IUserManager userManager, int userId,
 			int currentPage, int pageSize)
 		{
-			var model = new ServiceRequestApprovalModel {Controls = new ServiceRequestApprovalControls()};
+			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
-				where s.State != ServiceRequestState.Cancelled && s.State != ServiceRequestState.Incomplete
-				orderby s.Id
-				select s).ToList();
+						  where s.State != ServiceRequestState.Cancelled && s.State != ServiceRequestState.Incomplete
+						  orderby s.Id
+						  select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 			model.Controls.FilterText = "All Department Service Requests";
@@ -136,7 +136,7 @@ namespace Prometheus.WebUI.Helpers
 		/// <summary>
 		/// Put data into model to be displayed into a table
 		/// </summary>
-		public static List<ServiceRequestTableItemModel> ConvertToTableModel(IUserManager userManager, IEnumerable<IServiceRequestDto> list, int userId)
+		public static List<ServiceRequestTableItemModel> ConvertToTableModel(IUserManager userManager, IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> list, int userId)
 		{
 			List<ServiceRequestTableItemModel> requests = new List<ServiceRequestTableItemModel>();
 
@@ -154,7 +154,7 @@ namespace Prometheus.WebUI.Helpers
 				{
 					modelItem.UserName = userManager.GetDisplayName(userManager.GetUser(userId, item.RequestedByUserId).AdGuid);
 				}
-				catch(Exception)
+				catch (Exception)
 				{
 					modelItem.UserName = "Name not found";
 				}

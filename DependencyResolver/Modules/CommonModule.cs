@@ -33,7 +33,7 @@ namespace DependencyResolver.Modules
 			Bind<IServiceOptionCategoryTagDto>().To<ServiceOptionCategoryTagDto>();
 			Bind<IServiceOptionDto>().To<ServiceOptionDto>();
 			Bind<IServiceProcessDto>().To<ServiceProcessDto>();
-			Bind<IServiceRequestDto>().To<ServiceRequestDto>();
+			Bind<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>>().To<ServiceRequestDto>();
 			Bind<IServiceRequestOptionDto>().To<ServiceRequestOptionDto>();
 			Bind<IServiceProcessDto>().To<ServiceProcessDto>();
 			Bind<IServiceRequestUserInputDto>().To<ServiceRequestUserInputDto>();

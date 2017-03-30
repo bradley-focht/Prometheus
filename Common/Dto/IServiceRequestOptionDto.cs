@@ -23,6 +23,6 @@ namespace Common.Dto
 		bool BasicRequest { get; set; }
 
 		IServiceOptionDto ServiceOption { get; set; }
-		IServiceRequestDto ServiceRequest { get; set; }
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ServiceRequest { get; set; }
 	}
 }

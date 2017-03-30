@@ -4,7 +4,9 @@ using Common.Enums;
 
 namespace Common.Dto
 {
-	public interface IServiceRequestDto
+	public interface IServiceRequestDto<T1, T2>
+		where T1 : IServiceRequestOptionDto
+		where T2 : IServiceRequestUserInputDto
 	{
 		int Id { get; set; }
 
@@ -42,7 +44,7 @@ namespace Common.Dto
 		int CreatedByUserId { get; set; }
 		int UpdatedByUserId { get; set; }
 
-		ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
-		ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
+		ICollection<T1> ServiceRequestOptions { get; set; }
+		ICollection<T2> ServiceRequestUserInputs { get; set; }
 	}
 }

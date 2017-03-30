@@ -901,7 +901,7 @@ namespace DataService
 			};
 		}
 
-		public static ServiceRequest MapDtoToServiceRequest(IServiceRequestDto src)
+		public static ServiceRequest MapDtoToServiceRequest(IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> src)
 		{
 			if (src == null) return null;
 			return new ServiceRequest
@@ -930,7 +930,7 @@ namespace DataService
 			};
 		}
 
-		public static IServiceRequestDto MapServiceRequestToDto(ServiceRequest src)
+		public static IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> MapServiceRequestToDto(ServiceRequest src)
 		{
 			if (src == null) return null;
 

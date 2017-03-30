@@ -30,8 +30,8 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		public int ServiceOptionId
 		{
 			get
-			{		
-				if (ServiceRequest?.ServiceOptionId != null) return (int) ServiceRequest.ServiceOptionId;
+			{
+				if (ServiceRequest?.ServiceOptionId != null) return (int)ServiceRequest.ServiceOptionId;
 				return 0; //by default return an impossible option
 			}
 		}
@@ -95,9 +95,9 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 				{
 					case ServiceRequestAction.New:
 						return NewPackage;
-						case ServiceRequestAction.Change:
+					case ServiceRequestAction.Change:
 						return ChangePackage;
-						case ServiceRequestAction.Remove:
+					case ServiceRequestAction.Remove:
 						return RemovePackage;
 					default:
 						return null;
@@ -113,7 +113,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 				case ServiceRequestAction.New:
 					if (NewPackage != null)
 					{
-						if (NewPackage.ServiceOptionCategoryTags!= null)
+						if (NewPackage.ServiceOptionCategoryTags != null)
 							tags.AddRange(from o in NewPackage.ServiceOptionCategoryTags select o);
 						if (NewPackage.ServiceTags != null)
 							tags.AddRange(from o in NewPackage.ServiceTags select o);
@@ -151,7 +151,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		/// <summary>
 		/// Display the SR
 		/// </summary>
-		public IServiceRequestDto ServiceRequest { get; set; }
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ServiceRequest { get; set; }
 
 		/// <summary>
 		/// Service Request Approval
@@ -176,7 +176,7 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 					{
 						inputList.AddRange(option.UserInputs.UserInputs);
 					}
-					inputList = inputList.GroupBy(m => m.DisplayName).Select(g=>g.First()).ToList();	//keep unique only
+					inputList = inputList.GroupBy(m => m.DisplayName).Select(g => g.First()).ToList();  //keep unique only
 					return inputList;
 				}
 				return inputList;
@@ -191,10 +191,10 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 		{
 			if (UserInputs == null)
 				return new List<ServiceOptionTag>();
-			
+
 			return UserInputs;
 		}
-	
+
 		/// <summary>
 		/// calculate the up front price
 		/// </summary>
@@ -207,9 +207,9 @@ namespace Prometheus.WebUI.Models.ServiceRequest
 				double price = 0;
 				foreach (var option in ServiceRequest.ServiceRequestOptions)
 				{
-					price += option.Quantity*option.ServiceOption.PriceUpFront;
+					price += option.Quantity * option.ServiceOption.PriceUpFront;
 				}
-					return price;
+				return price;
 			}
 		}
 		/// <summary>

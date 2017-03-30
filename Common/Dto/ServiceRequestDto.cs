@@ -5,7 +5,7 @@ using Common.Enums;
 
 namespace Common.Dto
 {
-	public class ServiceRequestDto : IServiceRequestDto
+	public class ServiceRequestDto : IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>
 	{
 		public int Id { get; set; }
 

@@ -7,7 +7,7 @@ using Common.Enums;
 namespace RESTAPI.Models
 {
 	[DataContract]
-	public class Request : IServiceRequestDto
+	public class Request : IServiceRequestDto<ServiceRequestOptionDto, ServiceRequestUserInputDto>
 	{
 		public Request() { }
 
@@ -98,12 +98,12 @@ namespace RESTAPI.Models
 		public decimal FinalUpfrontPrice { get; set; }
 
 		[DataMember]
-		public ICollection<IServiceRequestOptionDto> ServiceRequestOptions { get; set; }
+		public ICollection<ServiceRequestOptionDto> ServiceRequestOptions { get; set; }
 
 		[DataMember]
-		public ICollection<IServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
+		public ICollection<ServiceRequestUserInputDto> ServiceRequestUserInputs { get; set; }
 
-		internal Request(IServiceRequestDto src)
+		internal Request(IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> src)
 		{
 			Id = src.Id;
 			Name = src.Name;
@@ -126,8 +126,18 @@ namespace RESTAPI.Models
 			FulfilledDate = src.FulfilledDate;
 			FinalMonthlyPrice = src.FinalMonthlyPrice;
 			FinalUpfrontPrice = src.FinalUpfrontPrice;
-			ServiceRequestOptions = src.ServiceRequestOptions;
-			ServiceRequestUserInputs = src.ServiceRequestUserInputs;
+
+			ServiceRequestOptions = new List<ServiceRequestOptionDto>();
+			foreach (var sro in src.ServiceRequestOptions)
+			{
+				ServiceRequestOptions.Add((ServiceRequestOptionDto)sro);
+			}
+
+			ServiceRequestUserInputs = new List<ServiceRequestUserInputDto>();
+			foreach (var sro in src.ServiceRequestUserInputs)
+			{
+				ServiceRequestUserInputs.Add((ServiceRequestUserInputDto)sro);
+			}
 		}
 	}
 }

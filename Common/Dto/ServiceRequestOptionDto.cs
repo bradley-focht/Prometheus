@@ -12,7 +12,7 @@ namespace Common.Dto
 		public string Code { get; set; }
 		public string ServiceOptionName { get; set; }
 		public bool BasicRequest { get; set; }
-		
+
 
 		public int RequestedByUserId { get; set; }
 		public int ApproverUserId { get; set; }
@@ -22,6 +22,6 @@ namespace Common.Dto
 		public int UpdatedByUserId { get; set; }
 
 		public virtual IServiceOptionDto ServiceOption { get; set; }
-		public virtual IServiceRequestDto ServiceRequest { get; set; }
+		public virtual IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ServiceRequest { get; set; }
 	}
 }

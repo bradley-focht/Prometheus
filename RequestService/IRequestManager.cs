@@ -14,7 +14,7 @@ namespace RequestService
 		/// <param name="state">State to change the Service Request to</param>
 		/// <param name="comments">Optional: Comments tied to the state change if applicable</param>
 		/// <returns>Service Request after state change is attempted</returns>
-		IServiceRequestDto ChangeRequestState(int userId, int requestId, ServiceRequestState state, string comments = null);
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ChangeRequestState(int userId, int requestId, ServiceRequestState state, string comments = null);
 
 		/// <summary>
 		/// Changes the state of a service request to Submitted if the action is possible.
@@ -22,7 +22,7 @@ namespace RequestService
 		/// <param name="userId">ID of user Submitting the request</param>
 		/// <param name="requestId">ID of Service Request to Submit</param>
 		/// <returns>Service Request after Submition is attempted</returns>
-		IServiceRequestDto SubmitRequest(int userId, int requestId);
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> SubmitRequest(int userId, int requestId);
 
 		bool UserCanSubmitRequest(int userId, int requestId);
 
@@ -33,7 +33,7 @@ namespace RequestService
 		/// <param name="requestId">ID of Service Request to Cancel</param>
 		/// <param name="comments">Optional: Comments tied to the submission if applicable</param>
 		/// <returns>Service Request after Cancellation is attempted</returns>
-		IServiceRequestDto CancelRequest(int userId, int requestId, string comments);
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> CancelRequest(int userId, int requestId, string comments);
 
 		bool UserCanCancelRequest(int userId, int requestId);
 
@@ -45,7 +45,7 @@ namespace RequestService
 		/// <param name="approval">Result of the approval transaction (approved or denied)</param>
 		/// <param name="comments">Optional: Comments tied to the Approval if applicable</param>
 		/// <returns>Service Request after Approval is attempted</returns>
-		IServiceRequestDto ApproveRequest(int userId, int requestId, ApprovalResult approval, string comments);
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ApproveRequest(int userId, int requestId, ApprovalResult approval, string comments);
 
 		bool UserCanApproveRequest(int userId, int requestId);
 
@@ -56,7 +56,7 @@ namespace RequestService
 		/// <param name="requestId">ID of Service Request to Fulfill</param>
 		/// <param name="comments">Optional: Comments tied to the Fulfillment if applicable</param>
 		/// <returns>Service Request after Fulfillment is attempted</returns>
-		IServiceRequestDto FulfillRequest(int userId, int requestId, string comments);
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> FulfillRequest(int userId, int requestId, string comments);
 
 		bool UserCanFulfillRequest(int userId, int requestId);
 

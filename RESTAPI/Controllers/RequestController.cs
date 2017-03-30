@@ -53,13 +53,13 @@ namespace RESTAPI.Controllers
 		}
 
 		// PUT: api/Request/5
-		public void Put(int id, [FromBody]string value)
+		public Request Put(int id, [FromBody]string value)
 		{
 			//Convert the string to a Request
 			var request = Newtonsoft.Json.JsonConvert.DeserializeObject<Request>(value);
 
 			//Need to change userId
-			_requestManager.ChangeRequestState(2, id, request.State);
+			return new Request(_requestManager.ChangeRequestState(2, id, request.State));
 		}
 
 		// DELETE: api/Request/5

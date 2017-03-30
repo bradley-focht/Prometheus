@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Configuration;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Management.Automation;
 using System.Management.Automation.Runspaces;
@@ -72,8 +69,8 @@ namespace ServiceFulfillmentEngineWebJob
 
 					// create a pipeline and feed it the script
 					Pipeline pipeline = runspace.CreatePipeline();
-					
-					
+
+
 					try
 					{
 						pipeline.Commands.AddScript(@"Scripts\NewUserScript.ps1");
@@ -83,7 +80,7 @@ namespace ServiceFulfillmentEngineWebJob
 						Console.ForegroundColor = ConsoleColor.Red;
 						Console.WriteLine(exception.Message);
 						Console.ForegroundColor = ConsoleColor.White;
-					} 
+					}
 
 					foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
 					{
@@ -94,7 +91,7 @@ namespace ServiceFulfillmentEngineWebJob
 					{
 						Collection<PSObject> results = pipeline.Invoke();
 						Console.WriteLine("Script results: ");
-						
+
 						foreach (var psObject in results)
 						{
 							Console.WriteLine(psObject);
@@ -139,14 +136,21 @@ namespace ServiceFulfillmentEngineWebJob
 			try
 			{
 				var controller = new PrometheusApiController(_userId, _apiKey);
-				controller.UpdateRequestById(request.Id, request);
+				request = controller.UpdateRequestById(request.Id, request);
+				if (request.State != ServiceRequestState.Fulfilled)
+					DisplayFailedFulfillment($"State set to {request.State}");
 			}
 			catch (Exception exception)
 			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine($"Error fulfilling request: {exception.Message}");
-				Console.ForegroundColor = ConsoleColor.White;
-			}		
+				DisplayFailedFulfillment(exception.Message);
+			}
+		}
+
+		private void DisplayFailedFulfillment(string message)
+		{
+			Console.ForegroundColor = ConsoleColor.Red;
+			Console.WriteLine($"Error fulfilling request: {message}");
+			Console.ForegroundColor = ConsoleColor.White;
 		}
 
 		/// <summary>

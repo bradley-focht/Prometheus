@@ -20,9 +20,9 @@ namespace RequestService
 			_permissionController = permissionController;
 		}
 
-		public IServiceRequestDto ChangeRequestState(int userId, int requestId, ServiceRequestState state, string comments = null)
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ChangeRequestState(int userId, int requestId, ServiceRequestState state, string comments = null)
 		{
-			IServiceRequestDto request = RequestFromId(requestId);
+			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
 
 			switch (state)
 			{
@@ -42,9 +42,9 @@ namespace RequestService
 			return request;
 		}
 
-		public IServiceRequestDto SubmitRequest(int userId, int requestId)
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> SubmitRequest(int userId, int requestId)
 		{
-			IServiceRequestDto request = RequestFromId(requestId);
+			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
 			if (request.State != ServiceRequestState.Incomplete)
 			{
 				throw new ServiceRequestStateException(
@@ -85,9 +85,9 @@ namespace RequestService
 			return false;
 		}
 
-		public IServiceRequestDto CancelRequest(int userId, int requestId, string comments)
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> CancelRequest(int userId, int requestId, string comments)
 		{
-			IServiceRequestDto request = RequestFromId(requestId);
+			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
 
 			if (request.State != ServiceRequestState.Incomplete && request.State != ServiceRequestState.Submitted)
 			{
@@ -130,9 +130,9 @@ namespace RequestService
 			return false;
 		}
 
-		public IServiceRequestDto ApproveRequest(int userId, int requestId, ApprovalResult approvalResult, string comments)
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ApproveRequest(int userId, int requestId, ApprovalResult approvalResult, string comments)
 		{
-			IServiceRequestDto request = RequestFromId(requestId);
+			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
 
 			if (request.State != ServiceRequestState.Submitted)
 			{
@@ -223,9 +223,9 @@ namespace RequestService
 		}
 
 
-		public IServiceRequestDto FulfillRequest(int userId, int requestId, string comments)
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> FulfillRequest(int userId, int requestId, string comments)
 		{
-			IServiceRequestDto request = RequestFromId(requestId);
+			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
 
 			if (request.State != ServiceRequestState.Approved)
 			{
@@ -307,9 +307,9 @@ namespace RequestService
 			return states;
 		}
 
-		private IServiceRequestDto RequestFromId(int requestId)
+		private IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> RequestFromId(int requestId)
 		{
-			IServiceRequestDto request;
+			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request;
 			using (var context = new PrometheusContext())
 			{
 				request = ManualMapper.MapServiceRequestToDto(context.ServiceRequests.Find(requestId));

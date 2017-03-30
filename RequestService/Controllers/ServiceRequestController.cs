@@ -13,7 +13,7 @@ using UserManager;
 
 namespace RequestService.Controllers
 {
-	public class ServiceRequestController : EntityController<IServiceRequestDto>, IServiceRequestController
+	public class ServiceRequestController : EntityController<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>>, IServiceRequestController
 	{
 		private readonly IUserManager _userManager;
 		private readonly IRequestManager _requestManager;
@@ -24,7 +24,7 @@ namespace RequestService.Controllers
 			_requestManager = requestManager;
 		}
 
-		public IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId)
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> GetServiceRequest(int performingUserId, int serviceRequestId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -39,12 +39,12 @@ namespace RequestService.Controllers
 			}
 		}
 
-		public IServiceRequestDto ModifyServiceRequest(int performingUserId, IServiceRequestDto serviceRequest, EntityModification modification)
+		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ModifyServiceRequest(int performingUserId, IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> serviceRequest, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, serviceRequest, modification);
 		}
 
-		protected override IServiceRequestDto Create(int performingUserId, IServiceRequestDto serviceRequestDto)
+		protected override IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> Create(int performingUserId, IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> serviceRequestDto)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -59,7 +59,7 @@ namespace RequestService.Controllers
 			}
 		}
 
-		protected override IServiceRequestDto Update(int performingUserId, IServiceRequestDto serviceRequestDto)
+		protected override IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> Update(int performingUserId, IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> serviceRequestDto)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -75,7 +75,7 @@ namespace RequestService.Controllers
 			}
 		}
 
-		protected override IServiceRequestDto Delete(int performingUserId, IServiceRequestDto serviceRequestDto)
+		protected override IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> Delete(int performingUserId, IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> serviceRequestDto)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -86,7 +86,7 @@ namespace RequestService.Controllers
 			return null;
 		}
 
-		public IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId)
+		public IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -98,7 +98,7 @@ namespace RequestService.Controllers
 			}
 		}
 
-		public IEnumerable<IServiceRequestDto> GetServiceRequestsForApproverId(int approverId)
+		public IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequestsForApproverId(int approverId)
 		{
 			if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveAnyRequests))
 			{
@@ -149,7 +149,7 @@ namespace RequestService.Controllers
 				*/
 		}
 
-		protected override bool UserHasPermissionToModify(int performingUserId, IServiceRequestDto request, EntityModification modification, out object permission)
+		protected override bool UserHasPermissionToModify(int performingUserId, IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request, EntityModification modification, out object permission)
 		{
 			permission = ServiceRequestSubmission.CanSubmitRequests;
 			switch (modification)
@@ -164,7 +164,7 @@ namespace RequestService.Controllers
 			return false;
 		}
 
-		public IEnumerable<IServiceRequestDto> GetServiceRequests(int performingUserId)
+		public IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequests(int performingUserId)
 		{
 			using (var context = new PrometheusContext())
 			{

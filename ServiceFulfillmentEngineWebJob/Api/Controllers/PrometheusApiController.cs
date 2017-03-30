@@ -44,14 +44,15 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			throw response.ErrorException;
 		}
 
-		public void UpdateRequestById(int serviceRequestId, IServiceRequest serviceRequest)
+		public IServiceRequest UpdateRequestById(int serviceRequestId, IServiceRequest serviceRequest)
 		{
 			var response = Request(Method.PUT, serviceRequest, serviceRequestId);
 
-			if (response.StatusCode != HttpStatusCode.OK)
+			if (response.StatusCode == HttpStatusCode.OK)
 			{
-				throw response.ErrorException;
+				return JsonConvert.DeserializeObject<ServiceRequest>(response.Content);
 			}
+			throw response.ErrorException;
 		}
 		public void DeleteRequestById(int serviceRequestId)
 		{

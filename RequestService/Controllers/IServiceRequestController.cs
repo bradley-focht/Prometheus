@@ -11,7 +11,7 @@ namespace RequestService.Controllers
 		/// </summary>
 		/// <param name="performingUserId"></param>
 		/// <returns></returns>
-		IEnumerable<IServiceRequestDto> GetServiceRequests(int performingUserId);
+		IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequests(int performingUserId);
 
 		/// <summary>
 		/// Finds service request with identifier provided and returns its DTO
@@ -19,7 +19,7 @@ namespace RequestService.Controllers
 		/// <param name="performingUserId"></param>
 		/// <param name="serviceRequestId"></param>
 		/// <returns></returns>
-		IServiceRequestDto GetServiceRequest(int performingUserId, int serviceRequestId);
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> GetServiceRequest(int performingUserId, int serviceRequestId);
 
 		/// <summary>
 		/// Modifies the service request in the database
@@ -28,7 +28,7 @@ namespace RequestService.Controllers
 		/// <param name="serviceRequest"></param>
 		/// <param name="modification">Type of modification to make</param>
 		/// <returns>Modified Service Request</returns>
-		IServiceRequestDto ModifyServiceRequest(int performingUserId, IServiceRequestDto serviceRequest, EntityModification modification);
+		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ModifyServiceRequest(int performingUserId, IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> serviceRequest, EntityModification modification);
 
 		/// <summary>
 		/// Retrieves the service requests that the user provided is the requestor for
@@ -36,13 +36,13 @@ namespace RequestService.Controllers
 		/// <param name="performingUserId"></param>
 		/// <param name="requestorUserId"></param>
 		/// <returns></returns>
-		IEnumerable<IServiceRequestDto> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId);
+		IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId);
 
 		/// <summary>
 		/// Retrieves the service requests for an approver based on their department
 		/// </summary>
 		/// <param name="approverId">ID of approver</param>
 		/// <returns></returns>
-		IEnumerable<IServiceRequestDto> GetServiceRequestsForApproverId(int approverId);
+		IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequestsForApproverId(int approverId);
 	}
 }
