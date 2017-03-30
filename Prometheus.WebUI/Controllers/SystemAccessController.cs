@@ -333,12 +333,12 @@ namespace Prometheus.WebUI.Controllers
 		/// <summary>
 		/// Save user accounts and roles
 		/// </summary>
-		/// <param name="roles"></param>
+		/// <param name="roleIds">IDs for all roles the user is being set to</param>
 		/// <param name="users"></param>
 		/// <param name="submitButton">the calling submit button</param>
 		/// <returns></returns>
 		[HttpPost]
-		public ActionResult SaveUsers(ICollection<int> roles, ICollection<Guid> users, string submitButton)
+		public ActionResult SaveUsers(ICollection<int> roleIds, ICollection<Guid> users, string submitButton)
 		{
 			if (submitButton == "Remove")
 			{
@@ -362,7 +362,7 @@ namespace Prometheus.WebUI.Controllers
 				}
 			}
 
-			if (users != null && roles != null && users.Any() && roles.Any())
+			if (users != null && roleIds != null && users.Any() && roleIds.Any())
 			{
 				foreach (var user in users)
 				{
@@ -387,9 +387,8 @@ namespace Prometheus.WebUI.Controllers
 						}
 					}
 
-
-					//get the userId of any user
-					foreach (var role in userDto.Roles) //remove all roles        
+					//Remove roles from the user where all the roleIds do not match the ID
+					foreach (var role in userDto.Roles.Where(x => roleIds.All(y => y != x.Id)))
 					{
 						try
 						{
@@ -399,11 +398,11 @@ namespace Prometheus.WebUI.Controllers
 						catch (Exception) { /* ignore if user did not have role somehow */ }
 					}
 					//add roles
-					foreach (var role in roles)
+					foreach (var roleId in roleIds)
 						try
 						{
-							var useless = _userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = role } });
-							foreach (var unused in useless) { /*do nothing */ }		//lazy loading work around
+							var useless = _userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = roleId } });
+							foreach (var unused in useless) { /*do nothing */ }     //lazy loading work around
 						}
 						catch (Exception exception)
 						{
