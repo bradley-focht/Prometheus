@@ -19,9 +19,9 @@ namespace ServiceFulfillmentEngineWebJob
 		{
 			Console.WriteLine("sfe cycle started");
 
-			int userId = int.Parse(ConfigurationManager.AppSettings["FulfillmentUserId"]);
-			string apiKey = ConfigurationManager.AppSettings["FulfillmentUserPrivateKey"];
-			var manager = new FulfillmentManager(userId, apiKey);
+			string username = ConfigurationManager.AppSettings["FulfillmentUserUsername"];
+			string password = ConfigurationManager.AppSettings["FulfillmentUserPassword"];
+			var manager = new FulfillmentManager(username, password);
 			manager.FulfillNewRequests();
 		}
 	}

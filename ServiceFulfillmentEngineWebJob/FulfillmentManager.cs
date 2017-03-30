@@ -14,13 +14,13 @@ namespace ServiceFulfillmentEngineWebJob
 {
 	public class FulfillmentManager
 	{
-		private int _userId;
-		private string _apiKey;
+		private string _username;
+		private string _password;
 
-		public FulfillmentManager(int userId, string apiKey)
+		public FulfillmentManager(string username, string password)
 		{
-			_userId = userId;
-			_apiKey = apiKey;
+			_username = username;
+			_password = password;
 		}
 
 		public void FulfillNewRequests()
@@ -135,7 +135,7 @@ namespace ServiceFulfillmentEngineWebJob
 			request.State = ServiceRequestState.Fulfilled;
 			try
 			{
-				var controller = new PrometheusApiController(_userId, _apiKey);
+				var controller = new PrometheusApiController(_username, _password);
 				request = controller.UpdateRequestById(request.Id, request);
 				if (request.State != ServiceRequestState.Fulfilled)
 					DisplayFailedFulfillment($"State set to {request.State}");
@@ -189,7 +189,7 @@ namespace ServiceFulfillmentEngineWebJob
 		/// <returns></returns>
 		private IEnumerable<IServiceRequest> GetNewServiceRequests()
 		{
-			var controller = new PrometheusApiController(_userId, _apiKey);
+			var controller = new PrometheusApiController(_username, _password);
 			var requests = controller.GetServiceRequests();
 			if (requests != null)
 			{

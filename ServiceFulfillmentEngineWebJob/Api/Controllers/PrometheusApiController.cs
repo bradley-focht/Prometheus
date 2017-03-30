@@ -10,13 +10,13 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 	public class PrometheusApiController : IPrometheusApiController
 	{
 		private readonly string _apiString;
-		private int _userId;
-		private string _apiKey;
+		private string _username;
+		private string _password;
 
-		public PrometheusApiController(int userId, string apiKey)
+		public PrometheusApiController(string username, string password)
 		{
-			_userId = userId;
-			_apiKey = apiKey;
+			_username = username;
+			_password = password;
 			_apiString = ConfigurationManager.AppSettings["ApiUrl"];
 		}
 
@@ -75,6 +75,8 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 
 			var client = new RestClient(url);
 			var request = new RestRequest(method);
+			request.AddHeader("Username", _username);
+			request.AddHeader("Password", _password);
 
 			if (serviceRequest != null)
 			{
