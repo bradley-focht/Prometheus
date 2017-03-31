@@ -14,8 +14,8 @@ namespace ServiceFulfillmentEngineWebJob
 {
 	public class FulfillmentManager
 	{
-		private string _username;
-		private string _password;
+		private readonly string _username;
+		private readonly string _password;
 
 		public FulfillmentManager(string username, string password)
 		{
@@ -62,14 +62,13 @@ namespace ServiceFulfillmentEngineWebJob
 				}
 				if (script != null)
 				{
-					Console.WriteLine("Identified as executable on ACCT");
+					Console.WriteLine("Identified as executable Service Request ");
 
 					Runspace runspace = RunspaceFactory.CreateRunspace();
 					runspace.Open();
 
 					// create a pipeline and feed it the script
 					Pipeline pipeline = runspace.CreatePipeline();
-
 
 					try
 					{
@@ -85,7 +84,6 @@ namespace ServiceFulfillmentEngineWebJob
 					foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
 					{
 						runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
-						Console.WriteLine($"Added parameter: label {userInput.Name}, value: {userInput.Value} ");
 					}
 					try
 					{
@@ -97,6 +95,7 @@ namespace ServiceFulfillmentEngineWebJob
 							Console.WriteLine(psObject);
 						}
 
+
 					}
 					catch (Exception exception)
 					{
@@ -104,6 +103,7 @@ namespace ServiceFulfillmentEngineWebJob
 						Console.WriteLine($"Error in executing script: {exception.Message}");
 						Console.ForegroundColor = ConsoleColor.White;
 					}
+					Console.WriteLine($"Completed execution of {request.Name}");
 				}
 			}
 

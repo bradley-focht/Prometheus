@@ -3,6 +3,9 @@ using Common.Dto;
 
 namespace Prometheus.WebUI.Models.SystemAccess
 {
+	/// <summary>
+	/// User DTO with the AD display name attached
+	/// </summary>
     public class UserDetailsModel
     {
         public IUserDto UserDto { get; set; }

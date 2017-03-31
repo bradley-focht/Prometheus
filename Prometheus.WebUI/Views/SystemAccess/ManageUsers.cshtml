@@ -39,24 +39,11 @@
             <div class="dd-row">
                 @if (Model.Users != null && Model.Users.Any())
 				{
-					Guid userGuid;
-					try
-					{
-						userGuid = Guid.Parse(Session["Guid"].ToString());
-					}
-					catch
-					{
-						userGuid = Guid.Empty;
-					}
-
                     @Html.ValidationMessageFor(model => model.Users)
                     foreach (var user in Model.Users)
                     {
 	                    <div class="checkbox checkbox-primary">
-							@if (user.UserGuid != userGuid)
-							{
-								<input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="Users">
-							}
+							<input value="@user.UserGuid" type="checkbox" id="@user.UserGuid" name="Users">
 		                    <label for="@user.UserGuid">
 			                    @user.DisplayName
 			                    @if (user.UserDto.Roles != null)

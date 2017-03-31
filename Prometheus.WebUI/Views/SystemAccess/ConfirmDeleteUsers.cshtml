@@ -19,19 +19,21 @@
     <div class="title-div">@ViewBag.SubTitle</div>
 
     @using (Html.BeginForm("DeleteUsers", "SystemAccess", FormMethod.Post))
-    {
-        <div class="panel-div">
-            Confirm removing the following User accounts. This action will remove any roles and reset them to their default state.
-            <div class="present-section flex-container-row">
-                @foreach (var user in Model)
-                {
-                    <div>
-                    @user.DisplayName
-                </div>
-                }
-            </div>
-        </div>
-
+	{
+		<div class="panel-div">
+			Confirm removing the following User accounts. This action will remove any roles and reset them to their default state.
+			<div>
+				<div class="present-section flex-container-row">
+					@foreach (var user in Model)
+					{
+						<input type="hidden" name="users" value="@user.UserGuid"/>
+						<div>
+							@user.DisplayName
+						</div>
+					}
+				</div>
+			</div>
+		</div>
         <div class="flex-container">
             <div class="panel panel-footer">
                 <div class="float-right-div">

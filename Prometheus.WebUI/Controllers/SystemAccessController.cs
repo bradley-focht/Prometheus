@@ -9,6 +9,7 @@ using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;
+using RequestService.Controllers;
 using UserManager;
 using UserManager.AdService;
 using UserManager.Controllers;
@@ -349,7 +350,15 @@ namespace Prometheus.WebUI.Controllers
 
 					foreach (var user in users)
 					{
-						string displayName = "honey bunny"; //TODO: AD
+						string displayName;
+						try
+						{
+							displayName = searcher.GetUserDisplayName(user);
+						}
+						catch (Exception)
+						{
+							displayName = "Name not found";
+						}
 
 						model.Add(new UserDetailsModel
 						{
@@ -366,18 +375,28 @@ namespace Prometheus.WebUI.Controllers
 			{
 				foreach (var user in users)
 				{
-					IUserDto userDto = null;        //the dto, user is just the guid
+					IUserDto userDto = null; //the dto, user is just the guid
 					try
 					{
 						userDto = _userManager.GetUser(user);
 					}
-					catch (Exception) {/* user does not exist */}
+					catch (Exception)
+					{
+						/* user does not exist */
+					}
 
 					if (userDto == null) /* first add anyone new if not found above*/
 					{
+						UserDto newUser = new UserDto { AdGuid = user };
+						ScriptExecutor scriptExecutor = new ScriptExecutor();
+						ScriptFileController scriptController = new ScriptFileController();
 						try
 						{
-							userDto = _userManager.ModifyUser(UserId, new UserDto { AdGuid = user, DepartmentId = 1 }, EntityModification.Create);
+							var scriptGuid = scriptController.GetScript(UserId, ConfigHelper.GetDepartmentScriptId()).ScriptFile;
+							newUser.DepartmentId = (from d in _departmentController.GetDepartments(UserId)
+													where d.Name == scriptExecutor.GetUserDepartment(user, scriptGuid)
+													select d.Id).FirstOrDefault();
+							userDto = _userManager.ModifyUser(UserId, newUser, EntityModification.Create);
 						}
 						catch (Exception exception)
 						{
@@ -394,15 +413,25 @@ namespace Prometheus.WebUI.Controllers
 						{
 							/* useless is a lazy loading work around */
 							var useless = _userManager.RemoveRoleFromUsers(UserId, role, new List<IUserDto> { userDto });
+							foreach (var unused in useless)
+							{
+								/* do nothing */
+							}
 						}
-						catch (Exception) { /* ignore if user did not have role somehow */ }
+						catch (Exception)
+						{
+							/* ignore if user did not have role somehow */
+						}
 					}
 					//add roles
 					foreach (var roleId in roleIds)
 						try
 						{
 							var useless = _userManager.AddRolesToUser(UserId, userDto.Id, new List<IRoleDto> { new RoleDto { Id = roleId } });
-							foreach (var unused in useless) { /*do nothing */ }     //lazy loading work around
+							foreach (var unused in useless)
+							{
+								/*do nothing */
+							} //lazy loading work around
 						}
 						catch (Exception exception)
 						{
@@ -416,6 +445,11 @@ namespace Prometheus.WebUI.Controllers
 				TempData["MessageType"] = WebMessageType.Success; //successful assumed now
 				TempData["Message"] = "Successfully saved users";
 			}
+			else
+			{
+				TempData["MessageType"] = WebMessageType.Info;
+				TempData["Message"] = "No changes made";
+			}
 			return RedirectToAction("ManageUsers");
 		}
 
@@ -427,23 +461,27 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteUsers(ICollection<Guid> users)
 		{
-			try
+			if (users != null)
 			{
 				foreach (var user in users)
 				{
-					int id = (from u in _userManager.GetUsers(UserId) where u.AdGuid == user select u.Id).FirstOrDefault(); //need the user Id
-					_userManager.ModifyUser(UserId, new UserDto { Id = id }, EntityModification.Delete);     //perform the deletion
+					try
+					{//need the user Id
+						int id = (from u in _userManager.GetUsers(UserId) where u.AdGuid == user select u.Id).FirstOrDefault();
+						_userManager.ModifyUser(UserId, new UserDto { Id = id }, EntityModification.Delete); //perform the deletion
+					}
+					catch (Exception exception)
+					{
+						TempData["MessageType"] = WebMessageType.Failure;
+						TempData["Message"] = $"Failed to remove user, error: {exception.Message}";
+						return RedirectToAction("ManageUsers");
+					}
 				}
-			}
-			catch (Exception exception)
-			{
-				TempData["MessageType"] = WebMessageType.Failure;
-				TempData["Message"] = $"Failed to remove user, error: {exception.Message}";
-				return RedirectToAction("ManageUsers");
-			}
 
-			TempData["MessageType"] = WebMessageType.Success; //successful assumed now
-			TempData["Message"] = "Successfully removed users";
+
+				TempData["MessageType"] = WebMessageType.Success; //successful assumed now
+				TempData["Message"] = "Successfully removed users";
+			}
 			return RedirectToAction("ManageUsers");
 		}
 

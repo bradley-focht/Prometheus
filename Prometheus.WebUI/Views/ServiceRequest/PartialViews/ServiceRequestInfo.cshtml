@@ -231,7 +231,7 @@
 					$.each(data, function (i, option) {
 						selectize.addOption({ value: option.Value, text: option.Label });
 						for (var j = 0; j < requestees.length; j++) {
-							if (requestees[j] == option.Value) {
+							if (requestees[j] == option.Value) { 
 								selectize.addItem(option.Value);
 							}
 						}
