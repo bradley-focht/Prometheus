@@ -9,7 +9,7 @@ namespace ServiceFulfillmentEngineWebJob
 		static void Main(string[] args)
 		{
 			Console.ForegroundColor = ConsoleColor.White;
-			Timer timer = new Timer(TimerCallback, null, 0, 5000);
+			Timer timer = new Timer(TimerCallback, null, 0, 10000);
 
 			Console.WriteLine("SFE has started....");
 			Console.ReadLine();

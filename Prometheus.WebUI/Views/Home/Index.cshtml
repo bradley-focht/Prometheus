@@ -38,8 +38,8 @@
                     {
                         <div class="flex-col content-cell">
 	                        <div style="height: 80px;">
-								<a href="@Url.Action("Index", "ServiceRequestApproval")"><img src="~/Content/Images/shake.png" alt="Service Request Approvals" style="height: 70px; width: 88px;"></a></div>
-		                        @Html.ActionLink("My Service Requests", "Index", "ServiceRequestApproval", null, new {@class = "font-home-link"})
+								<a href="@Url.Action("Index", "ServiceRequestApproval")"><img src="~/Content/Images/shake.png" alt="Request Approvals" style="height: 70px; width: 88px;"></a></div>
+		                        @Html.ActionLink("My Requests", "Index", "ServiceRequestApproval", null, new {@class = "font-home-link"})
 	                        
                         </div>
                     }
@@ -73,7 +73,7 @@
                             <div style="height: 80px;">
                                 <a href="@Url.Action("Index", "ServiceRequestMaintenance")"><img src="~/Content/Images/pad.png" alt="Service " style="height: 90px; width: 74px;"></a>
                             </div>
-                            <div>@Html.ActionLink("Service Request Maintenance", "Index", "ServiceRequestMaintenance", null, new {@class = "font-home-link"})</div>
+                            <div>@Html.ActionLink("Request System Maintenance", "Index", "ServiceRequestMaintenance", null, new {@class = "font-home-link"})</div>
                         </div>
                     }
                     @if (UiPermissionHelper.HasPermission(userId, UserRoleAssignment.CanViewRoles))

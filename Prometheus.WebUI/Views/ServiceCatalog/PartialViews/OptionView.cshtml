@@ -69,10 +69,10 @@
 						@if (option.Picture != null)
 						{
 							<div class="float-left-div" style="border: 1px solid #ddd; margin-right: 10px;">
-								<img src="@Url.Action("GetOptionPicture", "Service", new {id = option.Id})" width="150"  alt="picture" />
+								<img src="@Url.Action("GetOptionPicture", "Service", new {id = option.Id})" width="150"  alt="picture"  class="make-space-right" />
 							</div>
 						}
-						@Html.Raw(option.Details)
+							@Html.Raw(option.Details)
 					</div>
 				</div>
 			</div>

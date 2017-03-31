@@ -151,21 +151,28 @@
 										}
 										else
 										{
+											int i = 0;
 											var data = userData.ServiceRequestUserInput.Value.Split(',');
 											foreach (var dataItem in data)
 											{
 												try
 												{
-													<div>
+													if (i < data.Length)
+													{
+														<span>@searcher.GetGroupDisplayName(Guid.Parse(dataItem)),</span>
+													}
+													else
+													{
 														<span>@searcher.GetGroupDisplayName(Guid.Parse(dataItem))</span>
-													</div>
+													}
 												}
 												catch (Exception)
 												{
-													<div>
+
 														<span>Name not found</span>
-													</div>
+
 												}
+												i++;
 											}
 										}
 									</div>
@@ -177,15 +184,21 @@
 
 				<div class="panel-body">
 					<div class="dd">
-						<div class="dd-row">
-							<div class="dd-cell-base">Price Upfront</div>
-							<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.UpfrontPrice) </div>
-						</div>
+						@if (Model.ServiceRequestModel.ServiceRequest.UpfrontPrice > 0)
+						{
+							<div class="dd-row">
+								<div class="dd-cell-base">Price Upfront</div>
+								<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.UpfrontPrice) </div>
+							</div>
+						}
 
-						<div class="dd-row">
-							<div class="dd-cell-base">Price Monthly</div>
-							<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.MonthlyPrice)</div>
-						</div>
+						@if (Model.ServiceRequestModel.ServiceRequest.MonthlyPrice > 0)
+						{
+							<div class="dd-row">
+								<div class="dd-cell-base">Price Monthly</div>
+								<div class="dd-cell-base">$@(Model.ServiceRequestModel.ServiceRequest.MonthlyPrice)</div>
+							</div>
+						}
 					</div>
 				</div>
 			</div>

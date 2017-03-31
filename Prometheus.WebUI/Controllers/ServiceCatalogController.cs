@@ -125,11 +125,11 @@ namespace Prometheus.WebUI.Controllers
 					int take;
 					try
 					{
-						take = int.Parse(ConfigHelper.GetScTopAmount());
+						take = ConfigHelper.GetScTopAmount();
 					}
 					catch (Exception) { take = 3; }
 
-					i.Options = i.Options.OrderBy(o => o.Name).Take(take).ToList();
+					i.Options = i.Options.OrderByDescending(o => o.Popularity).Take(take).ToList();
 
 					model.CatalogItems.Add(i);
 				}
@@ -150,11 +150,12 @@ namespace Prometheus.WebUI.Controllers
 					};
 					i.Options.AddRange((from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList());    //find the top 3 items
 					i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable)o).ToList());
-					i.Options = i.Options.OrderBy(o => o.Name).Take(3).ToList();
+					i.Options = i.Options.OrderByDescending(o => o.Popularity).Take(ConfigHelper.GetScTopAmount()).ToList();
 
 					model.CatalogItems.Add(i);
 				}
 			}
+			model.CatalogItems = model.CatalogItems.OrderByDescending(x => x.Popularity).ToList();
 
 			if (model.CatalogItems != null && model.CatalogItems.Count > _pageSize)
 			{
@@ -250,7 +251,7 @@ namespace Prometheus.WebUI.Controllers
 					options = (from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList();
 				}
 
-				model.Options = options.OrderBy(o => o.Name);
+				model.Options = options.OrderByDescending(o => o.Popularity);
 			}
 			return View(model);
 		}

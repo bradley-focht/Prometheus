@@ -28,7 +28,7 @@
 </div>
 <div class="panel-div full-width">
 	<div class="flex-row full-width" style="flex-wrap: wrap; justify-content: space-between">
-		
+
 		@if (Model != null)
 		{
 			foreach (var serviceBundle in Model)
@@ -47,7 +47,7 @@
 								@if (UiPermissionHelper.HasPermission(userId, ServicePortfolio.CanEdit))
 								{
 									<div class="dd-row">
-										<div class="dd-cell-base">@Html.ActionLink("Edit", "Update", new {id = serviceBundle.ServiceBundle.Id})</div>
+										<div class="dd-cell-base">@Html.ActionLink("Edit", "Update", new { id = serviceBundle.ServiceBundle.Id })</div>
 									</div>
 								}
 								<div class="dd-row">
@@ -69,14 +69,16 @@
 														int i = 1;
 														foreach (var service in serviceBundle.ServiceNames)
 														{
-															<text>@service.Item2</text>
-
 															if (i < serviceBundle.ServiceNames.Count())
 															{
-																<text>,</text>
-																i++;
-															}
+																<text>@service.Item2,</text>
 
+															}
+															else
+															{
+																<text>@service.Item2</text>
+															}
+															i++;
 														}
 													}
 												</div>
@@ -92,7 +94,7 @@
 						</div>
 					</div>
 				</div>
-			}
-		}
+	}
+}
 	</div>
 </div>

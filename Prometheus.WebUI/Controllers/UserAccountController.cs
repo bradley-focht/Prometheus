@@ -100,7 +100,7 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="returnUrl">if entry point is not login page</param>
 		/// <returns></returns>
-		[HttpPost]
+/*		[HttpPost]
 		public ActionResult LoginAdmin(string returnUrl)
 		{
 			FormsAuthentication.SetAuthCookie("Admin", true);
@@ -112,7 +112,7 @@ namespace Prometheus.WebUI.Controllers
 			if (string.IsNullOrEmpty(returnUrl))
 				return RedirectToAction("Index", "Home");
 			return Redirect(returnUrl);
-		}
+		} for testing purposes */
 
 		/// <summary>
 		/// Destroys the session

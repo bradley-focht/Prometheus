@@ -65,9 +65,9 @@ namespace Prometheus.WebUI.Helpers
 		/// Number of Service Catalog results to be assumed "the top"
 		/// </summary>
 		/// <returns></returns>
-		public static string GetScTopAmount()
+		public static int GetScTopAmount()
 		{
-			return ConfigurationManager.AppSettings["ScTopAmount"];
+			return int.Parse(ConfigurationManager.AppSettings["ScTopAmount"]);
 		}
 
 		/// <summary>

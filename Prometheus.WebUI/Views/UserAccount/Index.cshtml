@@ -71,12 +71,6 @@
 				<input type="hidden" value="@Model.ReturnUrl" name="ReturnUrl" />
 				<div>Or Continue as a <input type="submit" value="Guest" class="btn-link" /></div>
 			}
-			@using (Html.BeginForm("LoginAdmin", "UserAccount", FormMethod.Post))
-			{
-				<input type="hidden" value="@Model.ReturnUrl" name="ReturnUrl" />
-				<div>Admins click <input type="submit" value="here" class="btn-link" /></div>
-			}
-
 		</div>
 		<div class="panel-footer">
 			<span class="copyright-notice">&copy;2017 Prometheus</span>

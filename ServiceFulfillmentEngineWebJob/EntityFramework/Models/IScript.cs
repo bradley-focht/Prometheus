@@ -1,4 +1,5 @@
 ﻿using ServiceFulfillmentEngineWebJob.Api.Models.Enums;
+using ServiceFulfillmentEngineWebJob.EntityFramework.Models.Enums;
 
 namespace ServiceFulfillmentEngineWebJob.EntityFramework.Models
 {
@@ -9,5 +10,6 @@ namespace ServiceFulfillmentEngineWebJob.EntityFramework.Models
 		int Id { get; set; }
 		ServiceRequestAction Action { get; set; }
 		string Name { get; set; }
+		Priority Priority { get; set; }
 	}
 }

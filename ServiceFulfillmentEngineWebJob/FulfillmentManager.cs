@@ -9,6 +9,8 @@ using ServiceFulfillmentEngineWebJob.Api.Models;
 using ServiceFulfillmentEngineWebJob.Api.Models.Enums;
 using ServiceFulfillmentEngineWebJob.EntityFramework.DataAccessLayer;
 using ServiceFulfillmentEngineWebJob.EntityFramework.Models;
+using ServiceFulfillmentEngineWebJob.EntityFramework.Models.Enums;
+using ServiceFulfillmentEngineWebJob.Enums;
 
 namespace ServiceFulfillmentEngineWebJob
 {
@@ -49,16 +51,37 @@ namespace ServiceFulfillmentEngineWebJob
 		private void ProcessRequest(IServiceRequest request)
 		{
 			Console.WriteLine("\n");
-			Console.ForegroundColor = ConsoleColor.Green;
-			Console.WriteLine($"Processing new Request {request.Name}");
-			Console.ForegroundColor = ConsoleColor.White;
+			Displaymessage($"Processing new Request {request.Name}", MessageType.GoodNews);
 
-			if (request.ServiceRequestOptions.Any(r => r.Code == "ACCT"))
+
+
+			using (var context = new ServiceFulfillmentEngineContext())
 			{
-				Script script;
-				using (var context = new ServiceFulfillmentEngineContext())
+				Script script = null;
+				IEnumerable<Script> highPriorityScripts;
+				IEnumerable<Script> lowPriorityScripts;
+
+				//get scripts
+				highPriorityScripts = from s in context.Scripts where s.Priority == Priority.High select s;
+				lowPriorityScripts = from s in context.Scripts where s.Priority == Priority.Low select s;
+
+				//try high priority codes available first
+				var code = (from r in request.ServiceRequestOptions
+					where r.Code == (from s in highPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
+					select r.Code).FirstOrDefault();
+
+				//if not try for a lower priority codes
+				if (code == null)
 				{
-					script = context.Scripts.FirstOrDefault(x => x.ApplicableCode == "ACCT");
+					code = (from r in request.ServiceRequestOptions
+								   where r.Code == (from s in lowPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
+								   select r.Code).FirstOrDefault();
+				}
+
+				//see if there is any script for this
+				if (code != null)
+				{
+					script = context.Scripts.FirstOrDefault(x => x.ApplicableCode == code);
 				}
 				if (script != null)
 				{
@@ -76,9 +99,7 @@ namespace ServiceFulfillmentEngineWebJob
 					}
 					catch (Exception exception)
 					{
-						Console.ForegroundColor = ConsoleColor.Red;
-						Console.WriteLine(exception.Message);
-						Console.ForegroundColor = ConsoleColor.White;
+						Displaymessage($"Error: {exception.Message}", MessageType.Failure);
 					}
 
 					foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
@@ -106,21 +127,6 @@ namespace ServiceFulfillmentEngineWebJob
 					Console.WriteLine($"Completed execution of {request.Name}");
 				}
 			}
-
-
-
-
-			/* Just chill for now
-			var processedServiceOptions = new List<IServiceRequestOptionDto>();
-			foreach (var option in request.ServiceRequestOptions)
-			{
-				if (IsProcessableOption(option))
-				{
-					ProcessServiceOption(option);
-					processedServiceOptions.Add(option);
-				}
-			}
-			*/
 			ForwardRequest(request);
 
 			FulfillPrometheusRequest(request);
@@ -131,25 +137,39 @@ namespace ServiceFulfillmentEngineWebJob
 		/// </summary>
 		private void FulfillPrometheusRequest(IServiceRequest request)
 		{
-			Console.WriteLine($"Set Request {request.Name} to fulfilled");
+			Displaymessage($"Set Request {request.Name} to fulfilled", MessageType.Info);
 			request.State = ServiceRequestState.Fulfilled;
 			try
 			{
 				var controller = new PrometheusApiController(_username, _password);
 				request = controller.UpdateRequestById(request.Id, request);
 				if (request.State != ServiceRequestState.Fulfilled)
-					DisplayFailedFulfillment($"State set to {request.State}");
+					Displaymessage($"State set to {request.State}", MessageType.Info);
 			}
 			catch (Exception exception)
 			{
-				DisplayFailedFulfillment(exception.Message);
+				Displaymessage($"Error : {exception.Message}", MessageType.Failure);
 			}
 		}
 
-		private void DisplayFailedFulfillment(string message)
+		/// <summary>
+		/// Display messages to the console
+		/// </summary>
+		/// <param name="message"></param>
+		/// <param name="type"></param>
+		private void Displaymessage(string message, MessageType type)
 		{
-			Console.ForegroundColor = ConsoleColor.Red;
-			Console.WriteLine($"Error fulfilling request: {message}");
+			switch (type)
+			{
+				case MessageType.Failure:
+					Console.ForegroundColor = ConsoleColor.Red;
+					break;
+				case MessageType.GoodNews:
+					Console.ForegroundColor = ConsoleColor.Green;
+					break;
+			}
+
+			Console.WriteLine(message);
 			Console.ForegroundColor = ConsoleColor.White;
 		}
 
