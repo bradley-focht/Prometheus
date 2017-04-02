@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
+using Common.Enums.Permissions;
 using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Service;
 using Prometheus.WebUI.Models.Shared;
 using ServicePortfolioService;
+using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -22,9 +25,10 @@ namespace Prometheus.WebUI.Controllers
 		private const int ServicePageSize = 12;
 		private readonly IPortfolioService _portfolioService;
 
-		public ServiceController(IPortfolioService portfolioService)
+		public ServiceController(IPortfolioService portfolioService, IUserManager userManager)
 		{
 			_portfolioService = portfolioService;
+			_userManager = userManager;
 		}
 
 		/// <summary>
@@ -33,6 +37,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(string filterBy, string filterArg, int pageId = 0)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			if (filterBy == null)       //avoid null pointer exceptions below
 				filterBy = "All";
 			if (filterArg == null)

@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using Common.Dto;
-using Prometheus.WebUI.Helpers.Enums;
+using Prometheus.WebUI.Helpers;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.UserAccount;
 using UserManager;
@@ -14,7 +14,6 @@ namespace Prometheus.WebUI.Controllers
 		/// <summary>
 		/// user manager functions for security
 		/// </summary>
-		private readonly IUserManager _userManager;
 
 		public UserAccountController(IUserManager userManager)
 		{
@@ -96,25 +95,6 @@ namespace Prometheus.WebUI.Controllers
 		}
 
 		/// <summary>
-		/// Login admin
-		/// </summary>
-		/// <param name="returnUrl">if entry point is not login page</param>
-		/// <returns></returns>
-		/*		[HttpPost]
-				public ActionResult LoginAdmin(string returnUrl)
-				{
-					FormsAuthentication.SetAuthCookie("Admin", true);
-					Session["DisplayName"] = "Administrator";
-					Session["Guid"] = Guid.Empty;
-					Session["Id"] = _userManager.AdministratorId;
-					Session["DepartmentId"] = 1;
-					Session["DepartmentName"] = null;
-					if (string.IsNullOrEmpty(returnUrl))
-						return RedirectToAction("Index", "Home");
-					return Redirect(returnUrl);
-				} for testing purposes */
-
-		/// <summary>
 		/// Destroys the session
 		/// </summary>
 		/// <returns></returns>
@@ -124,5 +104,7 @@ namespace Prometheus.WebUI.Controllers
 
 			return RedirectToAction("Index", "UserAccount");
 		}
+
+
 	}
 }

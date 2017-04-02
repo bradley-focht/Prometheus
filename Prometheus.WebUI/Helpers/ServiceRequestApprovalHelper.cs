@@ -37,7 +37,7 @@ namespace Prometheus.WebUI.Helpers
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 
-			model.Controls.FilterText = $"Filtered My Service Requests by {state}";
+			model.Controls.FilterText = $"Filtered My Requests by {state}";
 			model.Controls.FilterState = state;     //hints to pagination
 			model.Controls.FilterStateRequired = true;
 
@@ -61,7 +61,7 @@ namespace Prometheus.WebUI.Helpers
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 
-			model.Controls.FilterText = "All My Service Requests";
+			model.Controls.FilterText = "All My Requests";
 
 			return model;
 		}
@@ -85,7 +85,7 @@ namespace Prometheus.WebUI.Helpers
 						  select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
-			model.Controls.FilterText = "All Department Service Requests";
+			model.Controls.FilterText = "All Department Requests";
 			return model;
 		}
 
@@ -109,7 +109,7 @@ namespace Prometheus.WebUI.Helpers
 						  select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
-			model.Controls.FilterText = $"Filtered Department Service Requests by {state}";
+			model.Controls.FilterText = $"Filtered Department Requests by {state}";
 			return model;
 		}
 
