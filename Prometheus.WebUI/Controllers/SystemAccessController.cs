@@ -19,7 +19,6 @@ namespace Prometheus.WebUI.Controllers
 	[Authorize]
 	public class SystemAccessController : PrometheusController
 	{
-		private readonly IUserManager _userManager;
 		private readonly IScriptExecutor _scriptExecutor;
 		private readonly int _userPageSize;
 		private readonly IDepartmentController _departmentController;

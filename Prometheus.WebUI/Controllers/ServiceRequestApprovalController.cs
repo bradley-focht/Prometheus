@@ -20,7 +20,6 @@ namespace Prometheus.WebUI.Controllers
 		private readonly IPortfolioService _portfolioService;
 		private readonly IServiceRequestController _serviceRequestController;
 		private readonly IRequestManager _requestManager;
-		private readonly IUserManager _userManager;
 
 		public ServiceRequestApprovalController(IPortfolioService portfolioService, IServiceRequestController serviceRequestController,
 			IRequestManager requestManager, IUserManager userManager)

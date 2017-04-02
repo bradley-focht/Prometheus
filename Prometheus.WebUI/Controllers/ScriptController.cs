@@ -11,6 +11,7 @@ using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
 using Common.Utilities;
+using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -18,9 +19,10 @@ namespace Prometheus.WebUI.Controllers
 	{
 		private readonly IScriptFileController _scriptFileController;
 
-		public ScriptController(IScriptFileController scriptFileController)
+		public ScriptController(IScriptFileController scriptFileController, IUserManager userManager)
 		{
 			_scriptFileController = scriptFileController;
+			_userManager = userManager;
 		}
 
 		/// <summary>
