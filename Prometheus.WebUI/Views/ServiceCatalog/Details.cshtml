@@ -32,12 +32,7 @@
                     {
                         optionType = CatalogableType.Category;
                     }
-                    else if (option is IServiceOptionDto)
-                    {
-                        optionType = CatalogableType.Option;
-                    }
-
-
+ 
                     <div class="@(Model.Option.Id == option.Id && selectedType == optionType ? "bg-primary" : "bg-default")">
                         @Html.ActionLink(option.Name, "Details", new {catalog = Model.Catalog, type = optionType, id = option.Id, serviceId = Model.ServiceId })
                     </div>

@@ -3,6 +3,7 @@ using System.Web.Mvc;
 using System.Web.Security;
 using Common.Dto;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.UserAccount;
 using UserManager;

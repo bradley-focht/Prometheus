@@ -149,7 +149,7 @@ namespace Prometheus.WebUI.Controllers
 						Options = new List<ICatalogPublishable>()
 					};
 					i.Options.AddRange((from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList());    //find the top 3 items
-					i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable)o).ToList());
+					//i.Options.AddRange((from o in service.ServiceOptions select (ICatalogPublishable)o).ToList());
 					i.Options = i.Options.OrderByDescending(o => o.Popularity).Take(ConfigHelper.GetScTopAmount()).ToList();
 
 					model.CatalogItems.Add(i);
@@ -204,7 +204,7 @@ namespace Prometheus.WebUI.Controllers
 				List<ICatalogPublishable> options = (from o in service.ServiceOptionCategories select (ICatalogPublishable)o).ToList(); //build list of options & categories
 				if (service.ServiceOptions != null)
 				{
-					options.AddRange(from o in service.ServiceOptions select (ICatalogPublishable)o); //sort by name
+					//options.AddRange(from o in service.ServiceOptions select (ICatalogPublishable)o); //sort by name
 				}
 				options = options.OrderBy(o => o.Name).ToList();
 				model.Options = options;

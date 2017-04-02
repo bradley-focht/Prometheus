@@ -11,6 +11,7 @@ using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
 using Common.Utilities;
+using Prometheus.WebUI.Helpers.Enums;
 using UserManager;
 
 namespace Prometheus.WebUI.Controllers

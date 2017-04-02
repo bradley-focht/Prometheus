@@ -42,8 +42,7 @@ namespace Prometheus.WebUI.Models.ServiceCatalog
 					searchresults.AddRange(from c in service.ServiceOptionCategories where searchString != null && c.Name.ToLower().ToLower().Contains(searchString) select (ICatalogPublishable)c);
 				}
 			}
-			//since search is performed on names only, there isn't much point weighting results. 
-			//sorting first by name only
+
 			searchresults = searchresults.OrderByDescending(a => a.Popularity).ToList();
 			return searchresults;
 		}

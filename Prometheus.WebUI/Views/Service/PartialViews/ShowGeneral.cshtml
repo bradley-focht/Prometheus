@@ -2,33 +2,35 @@
 @model ServiceDto
 <div class="dd full-width">
 	@foreach (var property in ViewData.ModelMetadata.Properties)
-    {
-        switch (property.PropertyName)
-        {
-            case "Id":
-            case "LifecycleStatusId":
-            case "CreatedByUserId":
-            case "Popularity":
-            case "ServiceGoals":
-            case "ServiceSwots":
-            case "ServiceContracts":
-            case "ServiceWorkUnits":
-            case "ServiceOptions":
-            case "ServiceProcesses":
-            case "ServiceDocuments":
-            case "ServiceMeasures":
-            case "UpdatedByUserId":
-            case "DateUpdated":
-            case "DateCreated":
-            case "ServiceBundleId":
-            case "ServiceBundle":
-            case "ServiceOptionCategories":
-            case "BusinessValue":
-                continue;
-            case "LifecycleStatusDto":
-                var status = property.Model as LifecycleStatusDto;
-                if (status != null)
-                {
+	{
+		switch (property.PropertyName)
+		{
+			case "Id":
+			case "LifecycleStatusId":
+			case "CreatedByUserId":
+			case "Popularity":
+			case "ServiceGoals":
+			case "ServiceSwots":
+			case "BusinessOwner":
+			case "Dependencies":
+			case "ServiceContracts":
+			case "ServiceWorkUnits":
+			case "ServiceOptions":
+			case "ServiceProcesses":
+			case "ServiceDocuments":
+			case "ServiceMeasures":
+			case "UpdatedByUserId":
+			case "DateUpdated":
+			case "DateCreated":
+			case "ServiceBundleId":
+			case "ServiceBundle":
+			case "ServiceOptionCategories":
+			case "BusinessValue":
+				continue;
+			case "LifecycleStatusDto":
+				var status = property.Model as LifecycleStatusDto;
+				if (status != null)
+				{
 					<div class="dd-row">
 						<div class="dt-cell">Lifecycle Status</div>
 						<div class="dd-cell tq-width">@status.Name</div>
