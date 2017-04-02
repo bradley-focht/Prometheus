@@ -22,7 +22,6 @@ namespace UserManager.Controllers
 
 		public IEnumerable<IUserDto> GetUsers(int performingUserId)
 		{
-			//TODO: Sean -  need to check permissions...
 			{
 
 				using (var context = new PrometheusContext())
@@ -38,8 +37,6 @@ namespace UserManager.Controllers
 
 		public IUserDto GetUser(int performingUserId, int userId)
 		{
-			//TODO: Sean - need to do permissions stuff here
-
 			using (var context = new PrometheusContext())
 			{
 				var user = (from u in context.Users
