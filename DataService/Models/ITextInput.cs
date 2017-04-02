@@ -3,6 +3,9 @@ using Common.Dto;
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// Text Input for Service Requests
+	/// </summary>
 	public interface ITextInput : IUserInput
 	{
 		/// <summary>

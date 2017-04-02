@@ -5,6 +5,9 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// A requestable item that a Service provides
+	/// </summary>
 	public class ServiceOptionDto : IServiceOptionDto, ICatalogPublishable
 	{
 		[HiddenInput]
@@ -88,15 +91,20 @@ namespace Common.Dto
 		/// </summary>
 		[Display(Name = "Up Front Price", Order = 6)]
 		public double PriceUpFront { get; set; }
+
+		/// <summary>
+		/// profit made
+		/// </summary>
 		[Display(Name = "Monthly Price", Order = 7)]
 		public double PriceMonthly { get; set; }
 
 		/// <summary>
-		/// Option "risk" level
+		/// Option "risk" level. Basic Requests can be Approved by users with 
+		/// the ApproveServiceRequest.ApproveBasicRequests permission
 		/// </summary>
-		[Display(Name="Approval Level")]
+		[Display(Name = "Approval Level")]
 		public bool BasicRequest { get; set; }
-		
+
 		/// <summary>
 		/// Uploaded picture, only one per option allowed
 		/// </summary>
@@ -107,7 +115,9 @@ namespace Common.Dto
 		/// </summary>
 		public int Popularity { get; set; }
 
-
+		/// <summary>
+		/// Media type of the Picture
+		/// </summary>
 		public string PictureMimeType { get; set; }
 
 		#endregion

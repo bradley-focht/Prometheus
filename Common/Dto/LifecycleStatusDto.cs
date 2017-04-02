@@ -4,6 +4,9 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// ITIL Status that a Service can be in
+	/// </summary>
 	public class LifecycleStatusDto : ILifecycleStatusDto
 	{
 		//PK
@@ -11,8 +14,6 @@ namespace Common.Dto
 		public int Id { get; set; }
 
 		//FK
-		//public int ServiceId { get; set; }
-
 		#region Fields
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }

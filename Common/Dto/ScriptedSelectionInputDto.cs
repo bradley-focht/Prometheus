@@ -11,12 +11,12 @@ namespace Common.Dto
 		/// <summary>
 		/// Script to execute
 		/// </summary>
-		[Display(Order = 5, Name="Script")]
+		[Display(Order = 5, Name = "Script")]
 		[Required(ErrorMessage = "Script is required")]
 		public int ScriptId { get; set; }
 
 		/// <summary>
-		/// Disallow the execution of the script
+		/// Allow the execution of the script
 		/// </summary>
 		[Display(Order = 4, Name = "Execution Enabled")]
 		public bool ExecutionEnabled { get; set; }
@@ -30,7 +30,7 @@ namespace Common.Dto
 		/// <summary>
 		/// User friendly name displayed
 		/// </summary>
-		[Display(Order=1, Name = "Display Name")]
+		[Display(Order = 1, Name = "Display Name")]
 		public string DisplayName { get; set; }
 
 		/// <summary>
@@ -40,17 +40,28 @@ namespace Common.Dto
 		[AllowHtml]
 		public string HelpToolTip { get; set; }
 
-		[Display(Name="Available On Add")]
+		/// <summary>
+		/// If the Input is to be used on ServiceRequestAction.New
+		/// </summary>
+		[Display(Name = "Available On Add")]
 		public bool AvailableOnAdd { get; set; }
-		[Display(Name="Available On Change")]
+
+		/// <summary>
+		/// If the Input is to be used on ServiceRequestAction.Change
+		/// </summary>
+		[Display(Name = "Available On Change")]
 		public bool AvailableOnChange { get; set; }
-		[Display(Name="Available on Remove")]
+
+		/// <summary>
+		/// If the Input is to be used on ServiceRequestAction.Remove
+		/// </summary>
+		[Display(Name = "Available on Remove")]
 		public bool AvailableOnRemove { get; set; }
 
 		/// <summary>
 		/// Maximum number of items that can be selected
 		/// </summary>
-		[Display(Order = 3, Name="Number of Selections")]
+		[Display(Order = 3, Name = "Number of Selections")]
 		public int NumberToSelect { get; set; }
 	}
 }

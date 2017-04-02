@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// A PowerShell script that can execute within Prometheus
+	/// </summary>
 	public class Script : IScript
 	{
 		/// <summary>
@@ -17,18 +16,40 @@ namespace DataService.Models
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }
 
-        #region Fields
+		#region Fields
+		/// <summary>
+		/// General name for the script file
+		/// </summary>
+		public string Name { get; set; }
 
-        public string Name { get; set; }
-        public string Description { get; set; }
-        public string Version { get; set; }
-        public Guid ScriptFile { get; set; }
-        public string MimeType { get; set; }
-        public DateTime? UploadDate { get; set; }
+		/// <summary>
+		/// Description of Script functionality
+		/// </summary>
+		public string Description { get; set; }
 
-        #endregion
+		/// <summary>
+		/// Version number of the script
+		/// </summary>
+		public string Version { get; set; }
 
-        public DateTime? DateCreated { get; set; }
+		/// <summary>
+		/// The replacement name used in the file system
+		/// </summary>
+		public Guid ScriptFile { get; set; }
+
+		/// <summary>
+		/// Media type of Script
+		/// </summary>
+		public string MimeType { get; set; }
+
+		/// <summary>
+		/// Date when file was uploaded
+		/// </summary>
+		public DateTime? UploadDate { get; set; }
+
+		#endregion
+
+		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }

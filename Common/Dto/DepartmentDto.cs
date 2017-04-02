@@ -15,6 +15,7 @@ namespace Common.Dto
 		/// </summary>
 		[HiddenInput]
 		public int Id { get; set; }
+
 		/// <summary>
 		/// Queue name to match script result
 		/// </summary>
@@ -26,6 +27,9 @@ namespace Common.Dto
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
+		/// <summary>
+		/// Users that belong to the Department
+		/// </summary>
 		public ICollection<IUserDto> Users { get; set; }
 	}
 }

@@ -23,7 +23,15 @@ namespace DataService.Models
 		public string ServiceProvider { get; set; }
 		public string ContractType { get; set; }
 		public string Description { get; set; }
+
+		/// <summary>
+		/// Date the Contract goes into effect
+		/// </summary>
 		public DateTime StartDate { get; set; }
+
+		/// <summary>
+		/// Date the Contract Expires
+		/// </summary>
 		public DateTime ExpiryDate { get; set; }
 		#endregion
 		#region Navigation Properties

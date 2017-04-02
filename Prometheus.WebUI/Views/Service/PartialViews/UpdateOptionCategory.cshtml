@@ -7,7 +7,7 @@
 <input type="hidden" name="ServiceId" value="@Model.ServiceId" />
 
 <div class="dd make-space-top">
-    @foreach (var property in ViewData.ModelMetadata.Properties)
+	@foreach (var property in ViewData.ModelMetadata.Properties)
 	{
 		switch (property.PropertyName)
 		{
@@ -28,50 +28,50 @@
 			case "Quantifiable":
 				continue;
 		}
-        <div class="dd-row">
-            <div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
+		<div class="dd-row">
+			<div class="dt-cell">@(property.DisplayName ?? property.PropertyName)</div>
 
-            @switch (property.PropertyName)
-            {
-                case "Name":
-                    <div class="dd-cell">
-                        @Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>    break;
-                case "ServiceOptions":
-                    @Html.Action("GetOptionsDropDown", new { serviceId = Model.ServiceId, id = Model.Id })
-                    break;
-                case "Features":
-                case "Benefits":
-                case "Support":
-                case "Description":
-                    <div class="dd-cell">
-                        @Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>    break;
+			@switch (property.PropertyName)
+			{
+				case "Name":
+					<div class="dd-cell">
+						@Html.TextBox(property.PropertyName, property.Model, new { @class = "form-control" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>    break;
+				case "ServiceOptions":
+					@Html.Action("GetOptionsDropDown", new { serviceId = Model.ServiceId, id = Model.Id })
+					break;
+				case "Features":
+				case "Benefits":
+				case "Support":
+				case "Description":
+					<div class="dd-cell">
+						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>    break;
 
-                case "BusinessValue":
-                    <div class="dd-cell">
-                        @Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
-                        @Html.ValidationMessage(property.PropertyName)
-                    </div>
-                    break;
-            }
+				case "BusinessValue":
+					<div class="dd-cell">
+						@Html.TextArea(property.PropertyName, property.Model?.ToString() ?? "", new { @class = "ckeditor" })
+						@Html.ValidationMessage(property.PropertyName)
+					</div>
+					break;
+			}
 
-        </div>
-    }
+		</div>
+	}
 </div>
 
 
 <script type="text/javascript" language="javascript">
-    $('#Popularity')
-        .selectize({
-            maxItems: 1
-        });
-    $('#ServiceOptionIds').selectize({
-        plugins: ['remove_button'],
-        maxItems: 10,
-        delimiter: ',',
-        persist: false
-    });
+	$('#Popularity')
+		.selectize({
+			maxItems: 1
+		});
+	$('#ServiceOptionIds').selectize({
+		plugins: ['remove_button'],
+		maxItems: 10,
+		delimiter: ',',
+		persist: false
+	});
 </script>

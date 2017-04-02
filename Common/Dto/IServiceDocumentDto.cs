@@ -2,15 +2,42 @@
 
 namespace Common.Dto
 {
-    public interface IServiceDocumentDto
-    {
-        string FileExtension { get; set; }
-        string Filename { get; set; }
-        int Id { get; set; }
-        int ServiceId { get; set; }
-        Guid StorageNameGuid { get; set; }
-        DateTime UploadDate { get; set; }
-        string Uploader { get; set; }
+	public interface IServiceDocumentDto
+	{
+		/// <summary>
+		/// original extension 
+		/// </summary>
+		string FileExtension { get; set; }
+
+		/// <summary>
+		/// Original file name that was used when file was uploaded
+		/// </summary>
+		string Filename { get; set; }
+		int Id { get; set; }
+
+		/// <summary>
+		/// ID of the Service that this Document is for
+		/// </summary>
+		int ServiceId { get; set; }
+
+		/// <summary>
+		/// the replacement name used in the file system
+		/// </summary>
+		Guid StorageNameGuid { get; set; }
+
+		/// <summary>
+		/// date uploaded to the system
+		/// </summary>
+		DateTime UploadDate { get; set; }
+
+		/// <summary>
+		/// sid of who did the uploading
+		/// </summary>
+		string Uploader { get; set; }
+
+		/// <summary>
+		/// Save MIME type once so it doesn't have to be generated later
+		/// </summary>
 		string MimeType { get; set; }
-    }
+	}
 }

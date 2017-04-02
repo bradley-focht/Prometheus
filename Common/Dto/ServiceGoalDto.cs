@@ -1,7 +1,7 @@
-﻿using Common.Enums.Entities;
-using System;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
+using Common.Enums.Entities;
 
 
 namespace Common.Dto
@@ -11,6 +11,10 @@ namespace Common.Dto
 	{
 		[HiddenInput]
 		public int Id { get; set; }
+
+		/// <summary>
+		/// ID of Service that the Goal applies to
+		/// </summary>
 		public int ServiceId { get; set; }
 
 		#region Fields
@@ -38,9 +42,15 @@ namespace Common.Dto
 		[Required(ErrorMessage = "Goal type is required")]
 		public ServiceGoalType Type { get; set; }
 
+		/// <summary>
+		/// Date that the Goal begins
+		/// </summary>
 		[Display(Name = "Start Date")]
 		public DateTime? StartDate { get; set; }
 
+		/// <summary>
+		/// Date that the Goal ends
+		/// </summary>
 		[Display(Name = "End Date")]
 		public DateTime? EndDate { get; set; }
 		#endregion

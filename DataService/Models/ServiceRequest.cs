@@ -16,6 +16,9 @@ namespace DataService.Models
 		// prevent a cycle in a cascading delete
 		// the fk is for temporary use until request is approved
 
+		/// <summary>
+		/// Action being performed
+		/// </summary>
 		public ServiceRequestAction Action { get; set; }
 
 		/// <summary>
@@ -23,23 +26,84 @@ namespace DataService.Models
 		/// </summary>
 		public int? ServiceOptionId { get; set; }
 
+		/// <summary>
+		/// Department used for Approval
+		/// </summary>
 		public int DepartmentId { get; set; }
 
+		/// <summary>
+		/// Service Request Name (e.g. an invoice name)
+		/// </summary>
 		public string Name { get; set; }
+
+		/// <summary>
+		/// User Making the request, the requestor
+		/// </summary>
 		public int RequestedByUserId { get; set; }
+
+		/// <summary>
+		/// Requestees 
+		/// </summary>
 		public string RequestedForGuids { get; set; }
+
+		/// <summary>
+		/// Requestor
+		/// </summary>
 		public Guid RequestedByGuid { get; set; }
+
+		/// <summary>
+		/// Requestor Comments
+		/// </summary>
 		public string Comments { get; set; }
+
+		/// <summary>
+		/// In office use such as billing code
+		/// </summary>
 		public string Officeuse { get; set; }
+
+		/// <summary>
+		/// Date that the Service Request was created
+		/// </summary>
 		public DateTime CreationDate { get; set; }
+
+		/// <summary>
+		/// Date that the SR was set to the ServiceRequestState.Submitted State
+		/// </summary>
 		public DateTime? SubmissionDate { get; set; }
+
+		/// <summary>
+		/// Date that the SR was set to the ServiceRequestState.Approved State
+		/// </summary>
 		public DateTime? ApprovedDate { get; set; }
+
+		/// <summary>
+		/// Date that the SR was set to the ServiceRequestState.Denied State
+		/// </summary>
 		public DateTime? DeniedDate { get; set; }
+
+		/// <summary>
+		/// Date that the SR was set to the ServiceRequestState.Cancelled State
+		/// </summary>
 		public DateTime? CancelledDate { get; set; }
+
+		/// <summary>
+		/// Date that the SR was set to the ServiceRequestState.Fulfilled State
+		/// </summary>
 		public DateTime? FulfilledDate { get; set; }
+
+		/// <summary>
+		/// Date that the Service Request is requested for
+		/// </summary>
 		public DateTime RequestedForDate { get; set; }
-		/* end here */
+
+		/// <summary>
+		/// Approver
+		/// </summary>
 		public int ApproverUserId { get; set; }
+
+		/// <summary>
+		/// State that the SR is currently in
+		/// </summary>
 		public ServiceRequestState State { get; set; }
 		public DateTime? DateCreated { get; set; }
 		public DateTime? DateUpdated { get; set; }
@@ -92,7 +156,14 @@ namespace DataService.Models
 			}
 		}
 
+		/// <summary>
+		/// Total upfront price of service request at the time of Approval
+		/// </summary>
 		public decimal FinalUpfrontPrice { get; set; }
+
+		/// <summary>
+		/// Total monthly price of service request at the time of Approval
+		/// </summary>
 		public decimal FinalMonthlyPrice { get; set; }
 		#endregion
 

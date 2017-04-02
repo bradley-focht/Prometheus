@@ -6,6 +6,9 @@ using Common.Enums.Entities;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// ITIL Service offered by the client
+	/// </summary>
 	public class ServiceDto : IServiceDto
 	{
 		//PK
@@ -17,8 +20,9 @@ namespace Common.Dto
 		/// Service Bundle in the Service Portfolio
 		/// </summary>
 		public int? ServiceBundleId { get; set; }
+
 		/// <summary>
-		/// Lifecycle Status
+		/// Lifecycle Status that Service is in
 		/// </summary>
 		[Required(ErrorMessage = "Lifecycle Status is required")]
 		public int LifecycleStatusId { get; set; }
@@ -90,7 +94,7 @@ namespace Common.Dto
 		public ServiceTypeProvision ServiceTypeProvision { get; set; }
 
 		/// <summary>
-		/// Used for sorting in the Service Catalog, inherited from ICatalogable
+		/// Used for sorting in the Service Catalog, inherited from ICatalogable. Larger is more popular
 		/// </summary>
 		public int Popularity { get; set; }
 

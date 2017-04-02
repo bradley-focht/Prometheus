@@ -18,7 +18,12 @@ namespace Common.Dto
 		/// </summary>
 		[HiddenInput]
 		int Id { get; set; }
+
+		/// <summary>
+		/// Action for SR to perform
+		/// </summary>
 		ServiceRequestAction Action { get; set; }
+
 		/// <summary>
 		/// Unique name
 		/// </summary>

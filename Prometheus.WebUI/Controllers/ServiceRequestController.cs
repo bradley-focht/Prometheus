@@ -91,8 +91,8 @@ namespace Prometheus.WebUI.Controllers
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save Service Request due to invalid data";
 				if (form.Id > 0)
-					return RedirectToAction("Form", new {id = form.Id});
-				return RedirectToAction("Begin", new {id = form.ServiceOptionId, index = -1});
+					return RedirectToAction("Form", new { id = form.Id });
+				return RedirectToAction("Begin", new { id = form.ServiceOptionId, index = -1 });
 			}
 			// data ok from here on
 			ServiceRequestDto request = new ServiceRequestDto   //need an adapter
@@ -131,11 +131,11 @@ namespace Prometheus.WebUI.Controllers
 			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = "Successfully saved Service Request";
-			if (submit >= 99999)	//Submission
+			if (submit >= 99999)    //Submission
 			{
-				return RedirectToAction("ShowServiceRequest", "ServiceRequestApproval", new {id = form.Id});
+				return RedirectToAction("ShowServiceRequest", "ServiceRequestApproval", new { id = form.Id });
 			}
-			if (submit >= 88888)	//save for later
+			if (submit >= 88888)    //save for later
 			{
 				return RedirectToAction("Index", "ServiceRequestApproval");
 			}
@@ -156,7 +156,9 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP ONE - Get the Service Package and SR */
 			ServiceRequestModel model = new ServiceRequestModel //used to hold all the data until redirecting
 			{
-				CurrentIndex = submit, ServiceRequestId = form.Id, Mode = ServiceRequestMode.Selection
+				CurrentIndex = submit,
+				ServiceRequestId = form.Id,
+				Mode = ServiceRequestMode.Selection
 			};
 			try
 			{
@@ -297,9 +299,13 @@ namespace Prometheus.WebUI.Controllers
 																 where u.Value != null
 																 select new ServiceRequestUserInputDto
 																 {
-																	 Id = u.Id, Name = u.Name, UserInputType = u.UserInputType,
-																	 ServiceRequestId = form.Id, InputId = u.InputId,
-																	 Value = u.Value }).ToList();
+																	 Id = u.Id,
+																	 Name = u.Name,
+																	 UserInputType = u.UserInputType,
+																	 ServiceRequestId = form.Id,
+																	 InputId = u.InputId,
+																	 Value = u.Value
+																 }).ToList();
 				foreach (var userData in userDataList)
 				{
 					try
@@ -368,9 +374,9 @@ namespace Prometheus.WebUI.Controllers
 			/* STEP FIVE - navigation */
 
 			model.CurrentIndex = submit;
-			if (submit >= 99999)	//submission
+			if (submit >= 99999)    //submission
 			{
-				return RedirectToAction("ShowServiceRequest", "ServiceRequestApproval", new { id = form.Id});
+				return RedirectToAction("ShowServiceRequest", "ServiceRequestApproval", new { id = form.Id });
 			}
 			else if (submit >= 88888)
 			{

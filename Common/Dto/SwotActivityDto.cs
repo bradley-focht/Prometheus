@@ -32,7 +32,7 @@ namespace Common.Dto
 		/// <summary>
 		/// Date the activity took place on, or start date for multi-day events
 		/// </summary>
-		[Required(ErrorMessage =  "Date is required")]
+		[Required(ErrorMessage = "Date is required")]
 		public DateTime Date { get; set; }
 		#endregion
 	}

@@ -5,6 +5,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// ITIL Status that a Service can be in
+	/// </summary>
 	public class LifecycleStatus : ILifecycleStatus
 	{
 		//PK
@@ -20,21 +23,25 @@ namespace DataService.Models
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
 
-        /// <summary>
-        /// Unique name
-        /// </summary>
+		/// <summary>
+		/// Unique name
+		/// </summary>
 		public string Name { get; set; }
-        /// <summary>
-        /// Used to order the display, this does not have any actual function other than display
-        /// </summary>
+
+		/// <summary>
+		/// Used to order the display, this does not have any actual function other than display
+		/// </summary>
 		public int Position { get; set; }
 
-        /// <summary>
-        /// Used to determine whether this should be visible in business/service catalog
-        /// </summary>
+		/// <summary>
+		/// Used to determine whether this should be visible in business/service catalog
+		/// </summary>
 		public bool CatalogVisible { get; set; }
 		#endregion
 		#region Navigation Properties
+		/// <summary>
+		/// Services with this Lifecycle Status applied to them
+		/// </summary>
 		public virtual ICollection<Service> Services { get; set; }
 		#endregion
 	}

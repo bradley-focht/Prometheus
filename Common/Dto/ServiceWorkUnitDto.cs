@@ -8,6 +8,10 @@ namespace Common.Dto
 	{
 		[HiddenInput]
 		public int Id { get; set; }
+
+		/// <summary>
+		/// ID of Service this Work Unit is assigned to
+		/// </summary>
 		[HiddenInput]
 		public int ServiceId { get; set; }
 
@@ -21,16 +25,16 @@ namespace Common.Dto
 		/// The title of a team in the company
 		/// </summary>
 		[Display(Order = 1)]
-        [Required(ErrorMessage = "Work Unit name is required")]
+		[Required(ErrorMessage = "Work Unit name is required")]
 		public string Name { get; set; }
 
-        /// <summary>
-        /// department the team belongs to
-        /// </summary>
-        [Display(Order = 2)]
-	    public string Department { get; set; }
+		/// <summary>
+		/// department the team belongs to
+		/// </summary>
+		[Display(Order = 2)]
+		public string Department { get; set; }
 
-	    /// <summary>
+		/// <summary>
 		/// A manager or someone's name to contact
 		/// </summary>
 		[Display(Order = 3)]

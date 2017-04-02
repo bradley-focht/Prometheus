@@ -9,6 +9,10 @@ namespace Common.Dto
 	{
 
 		public int Id { get; set; }
+
+		/// <summary>
+		/// Action for SR to perform
+		/// </summary>
 		public ServiceRequestAction Action { get; set; }
 
 		public string Name { get; set; }

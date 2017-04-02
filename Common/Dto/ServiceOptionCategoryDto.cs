@@ -5,6 +5,9 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// Logical grouping for Service Options offered by a Service
+	/// </summary>
 	public class ServiceOptionCategoryDto : IServiceOptionCategoryDto
 	{
 		/// <summary>
@@ -16,6 +19,10 @@ namespace Common.Dto
 		/// <summary>
 		/// FK
 		/// </summary>
+
+		/// <summary>
+		/// ID for Service that the Category belongs to
+		/// </summary>
 		[HiddenInput]
 		public int ServiceId { get; set; }
 
@@ -24,11 +31,12 @@ namespace Common.Dto
 		/// </summary>
 		[Display(Order = 2)]
 		public string Code { get; set; }
+
 		/// <summary>
-		/// Used for sorting in service catalog
-		/// Inherited from ICatalogable
+		/// Used for sorting in the Service Catalog. Larger is more popular
 		/// </summary>
 		public int Popularity { get; set; }
+
 		/// <summary>
 		/// These attributes come from the Service Design Package
 		/// </summary>
@@ -76,8 +84,11 @@ namespace Common.Dto
 		/// </summary>
 		public bool Published { get; set; }
 
+		/// <summary>
+		/// If a quantity of the Service Option can be requested
+		/// </summary>
 		[Display(Order = 7)]
-        public bool Quantifiable { get; set; }
+		public bool Quantifiable { get; set; }
 
 		#region Nagivation
 		public virtual IServiceDto Service { get; set; }
