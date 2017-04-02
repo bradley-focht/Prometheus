@@ -85,7 +85,7 @@ namespace ServiceFulfillmentEngineWebJob
 				}
 				if (script != null)
 				{
-					Console.WriteLine("Identified as executable Service Request ");
+					Console.WriteLine($"Identified as executable on {code}'");
 
 					Runspace runspace = RunspaceFactory.CreateRunspace();
 					runspace.Open();
@@ -95,7 +95,7 @@ namespace ServiceFulfillmentEngineWebJob
 
 					try
 					{
-						pipeline.Commands.AddScript(@"Scripts\NewUserScript.ps1");
+						pipeline.Commands.AddScript(@"C:\Scripts\" + script.FileName);
 					}
 					catch (Exception exception)
 					{
@@ -181,7 +181,7 @@ namespace ServiceFulfillmentEngineWebJob
 
 		private void ForwardRequest(IServiceRequest request)
 		{
-			Console.WriteLine($"Forward Request to Ticketing System {request.Name}");
+			Displaymessage($"Forward Request {request.Name} to Ticketing System", MessageType.Info);
 		}
 
 		/// <summary>

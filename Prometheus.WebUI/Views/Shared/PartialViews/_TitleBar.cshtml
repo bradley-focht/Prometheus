@@ -1,7 +1,6 @@
 ﻿@model List<KeyValuePair<string, string>>
 @using Common.Enums.Permissions
 @using Prometheus.WebUI.Helpers
-@using Prometheus.WebUI.Helpers.Enums
 @using Prometheus.WebUI.HtmlHelpers
 
 @{
@@ -14,71 +13,71 @@ try
 catch (Exception) { }
 }
 <div class="navbar-inverse navbar-fixed-top">
-	<div class="content-body">
-		<div class="float-right-div" style="padding-right: 10px; display: inline-block;">
+    <div class="content-body">
+        <div class="float-right-div" style="padding-right: 10px; display: inline-block;">
 
-			<div class="dropdown">
-				<span class="font-inverse" style="font-size: 1em; vertical-align: middle;">@Session["DisplayName"]</span>
-				<span class="hamburger-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
-				
-				<ul class="dropdown-menu pull-right">
-					<li>@Html.ActionLink("Logout", "Logout", "UserAccount", null, new {@class = "dropdown-item"})</li>
-					<li class="divider"></li>
-					<li>
-						@Html.ActionLink("Home", "Index", "Home", null, new {@class = "dropdown-item"})
-					</li>
+            <div class="dropdown">
+                <span class="font-inverse" style="font-size: 1em; vertical-align: middle;">@Session["DisplayName"]</span>
+                <span class="hamburger-menu dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">&equiv;</span>
+                
+                <ul class="dropdown-menu pull-right">
+                    <li><a href="/UserAccount/Logout"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</a></li>
+                    <li class="divider"></li>
+                    <li>
+                        @Html.ActionLink("Home", "Index", "Home", null, new {@class = "dropdown-item"})
+                    </li>
 					
-					@if (UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
-					{
-						<li>@Html.ActionLink("Service Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
-					}				
-					<li>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new { @class = "dropdown-item" })</li>
-				</ul>
-			</div>
+                    @if (UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
+                    {
+                        <li>@Html.ActionLink("Service Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
+                    }				
+                    <li>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new { @class = "dropdown-item" })</li>
+                </ul>
+            </div>
 
-		</div>
-		<div class="float-left-div">
-			<label class="navbar-brand">
+        </div>
+        <div class="float-left-div">
+	        <label class="navbar-brand">
 				<a href="@Url.Action("Index", "Home")">
 					<img src="~/Content/Images/home.png" style="height: 15px; width: 25px;">
 				</a>
-				@ViewBag.Title
-			</label>
-		</div>
-	</div>
+		        @ViewBag.Title
+	        </label>
+        </div>
+    </div>
 </div>
 
 <div class="breadcrumb-container content-body">
-	@if (ViewBag.Links != null)
-	{
-		@Html.BreadrumbTrail(Model, "breadcrumb", "active")
-	}
+    @if (ViewBag.Links != null)
+    {
+        @Html.BreadrumbTrail(Model, "breadcrumb", "active")
+    }
 </div>
 
 @{
-	if (TempData["MessageType"] != null && TempData["Message"] != null) /* display messages */
-	{
-		string cssClass;
-		switch (TempData["MessageType"] as WebMessageType?)
-		{
-			case WebMessageType.Success:
-				cssClass = "alert-success";
-				break;
-			case WebMessageType.Failure:
-				cssClass = "alert-danger";
-				break;
-			case WebMessageType.Info:
-				cssClass = "alert-info";
-				break;
-			default:
-				cssClass = null;
-				break;
-		}
-		<div class="content-body" style="background-color: #fff;">
-			<div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
-				<span class="float-left-div;">&times;</span>
-				@TempData["Message"]
-			</div>
-		</div>
+    if (TempData["MessageType"] != null && TempData["Message"] != null) /* display messages */
+    {
+        string cssClass;
+        switch (TempData["MessageType"] as WebMessageType?)
+        {
+            case WebMessageType.Success:
+                cssClass = "alert-success";
+                break;
+            case WebMessageType.Failure:
+                cssClass = "alert-danger";
+                break;
+            case WebMessageType.Info:
+                cssClass = "alert-info";
+                break;
+            default:
+                cssClass = null;
+                break;
+        }
+	    <div class="content-body" style="background-color: #fff;">
+		    <div class="alert alert-dismissable @cssClass close" role="alert" data-dismiss="alert" aria-label="Close" style="margin-top: -13px;">
+			    <span class="float-left-div;">&times;</span>
+			    @TempData["Message"]
+		    </div>
+	    </div>
 	}
 }
