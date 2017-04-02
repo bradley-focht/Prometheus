@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace Prometheus.WebUI.Helpers.Enums
+﻿namespace Prometheus.WebUI.Helpers.Enums
 {
+	//TODO: Brad what is this?
 	public enum DataAction
 	{
 		FilterBy,

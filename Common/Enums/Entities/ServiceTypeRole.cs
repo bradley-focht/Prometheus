@@ -2,11 +2,21 @@
 
 namespace Common.Enums.Entities
 {
-    public enum ServiceTypeRole
-    {
-        [Display(Name="Customer-Facing Service")]
-        Business,
-        [Display(Name="Supporting Service")]
-        Supporting
-    }
+	/// <summary>
+	/// Catalog visibility setting for a service
+	/// </summary>
+	public enum ServiceTypeRole
+	{
+		/// <summary>
+		/// Visibile in the Business Catalog
+		/// </summary>
+		[Display(Name = "Customer-Facing Service")]
+		Business,
+
+		/// <summary>
+		/// Visibile in the Support Catalog
+		/// </summary>
+		[Display(Name = "Supporting Service")]
+		Supporting
+	}
 }

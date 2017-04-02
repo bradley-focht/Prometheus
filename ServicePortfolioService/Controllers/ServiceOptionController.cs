@@ -78,10 +78,12 @@ namespace ServicePortfolioService.Controllers
 				base.ThrowArgumentNullError(nameof(serviceOptions));
 
 			var inputGroup = new InputGroupDto();
-			//initialize the lists
+
+			//Initialize the lists for inputs
 			List<IScriptedSelectionInputDto> scriptedInputs = new List<IScriptedSelectionInputDto>();
 			List<ISelectionInputDto> selectionInputs = new List<ISelectionInputDto>();
 			List<ITextInputDto> textInputs = new List<ITextInputDto>();
+
 			using (var context = new PrometheusContext())
 			{
 				var options = serviceOptions.Select(x => context.ServiceOptions.Find(x.Id));
@@ -90,9 +92,6 @@ namespace ServicePortfolioService.Controllers
 					textInputs.AddRange(from t in option.TextInputs select ManualMapper.MapTextInputToDto(t));
 					scriptedInputs.AddRange(from t in option.ScriptedSelectionInputs select ManualMapper.MapScriptedSelectionInputToDto(t));
 					selectionInputs.AddRange(from t in option.SelectionInputs select ManualMapper.MapSelectionInputToDto(t));
-					//inputGroup.TextInputs.ToList().AddRange(option.TextInputs.Select(x => ManualMapper.MapTextInputToDto(x))); //TODO: Sean something is up here. Seems to be the ToList()
-					//inputGroup.SelectionInputs.ToList().AddRange(option.SelectionInputs.Select(x => ManualMapper.MapSelectionInputToDto(x)));
-					//inputGroup.ScriptedSelectionInputs.ToList().AddRange(option.ScriptedSelectionInputs.Select(x => ManualMapper.MapScriptedSelectionInputToDto(x)));
 				}
 			}
 

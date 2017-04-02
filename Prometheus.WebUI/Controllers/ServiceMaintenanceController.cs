@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
-using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using ServicePortfolioService;
@@ -211,7 +211,7 @@ namespace Prometheus.WebUI.Controllers
 		{
 			try
 			{
-				_portfolioService.ModifyService(UserId, new ServiceDto {Id = item.Id}, EntityModification.Delete);
+				_portfolioService.ModifyService(UserId, new ServiceDto { Id = item.Id }, EntityModification.Delete);
 			}
 			catch (Exception exception)
 			{

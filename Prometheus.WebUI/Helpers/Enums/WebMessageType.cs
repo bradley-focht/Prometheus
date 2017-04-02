@@ -1,7 +1,9 @@
-﻿namespace Prometheus.WebUI.Helpers
+﻿namespace Prometheus.WebUI.Helpers.Enums
 {
-    public enum WebMessageType
-    {
-        Failure, Success, Info
-    }
+	public enum WebMessageType
+	{
+		Failure,
+		Success,
+		Info
+	}
 }

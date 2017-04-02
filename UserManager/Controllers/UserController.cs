@@ -173,7 +173,7 @@ namespace UserManager.Controllers
 				List<Role> newRoles = new List<Role>();
 				foreach (var role in rolesToAdd)
 				{
-					newRoles.Add((from r in context.Roles where r.Id==role.Id select r).First());	/* attach context objects */
+					newRoles.Add((from r in context.Roles where r.Id == role.Id select r).First()); /* attach context objects */
 				}
 
 				if (!context.Users.Any(x => x.Id == adjustedUserId))

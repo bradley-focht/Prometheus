@@ -1,9 +1,23 @@
 ﻿namespace Common.Enums.Entities
 {
-    public enum PriceType
-    {
-        OneTime,
-        Monthly,
-        Yearly
-    }
+	/// <summary>
+	/// Describes the timing for a payment
+	/// </summary>
+	public enum PriceType
+	{
+		/// <summary>
+		/// Single payment
+		/// </summary>
+		OneTime,
+
+		/// <summary>
+		/// Monthly recurring payment
+		/// </summary>
+		Monthly,
+
+		/// <summary>
+		/// Annual recurring payment
+		/// </summary>
+		Yearly
+	}
 }

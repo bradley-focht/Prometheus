@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
-using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServicePortfolio;
 using Prometheus.WebUI.Models.Shared;
@@ -32,7 +32,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				foreach (var bundle in _portfolioService.GetServiceBundles())
 				{
-					ServiceBundleModel bundleModel = new ServiceBundleModel {ServiceBundle = bundle};
+					ServiceBundleModel bundleModel = new ServiceBundleModel { ServiceBundle = bundle };
 					bundleModel.ServiceNames = _portfolioService.GetServiceNamesForServiceBundle(bundleModel.ServiceBundle.Id);
 					bundlesList.Add(bundleModel);
 				}
@@ -95,7 +95,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				try
 				{
-					serviceBundle = (ServiceBundleDto) _portfolioService.GetServiceBundle(id);
+					serviceBundle = (ServiceBundleDto)_portfolioService.GetServiceBundle(id);
 				}
 				catch (Exception exception)
 				{
@@ -120,7 +120,7 @@ namespace Prometheus.WebUI.Controllers
 			ServiceBundleDto serviceBundle;
 			try
 			{
-				serviceBundle = (ServiceBundleDto) _portfolioService.GetServiceBundle(id);
+				serviceBundle = (ServiceBundleDto)_portfolioService.GetServiceBundle(id);
 			}
 			catch (Exception exception)
 			{
