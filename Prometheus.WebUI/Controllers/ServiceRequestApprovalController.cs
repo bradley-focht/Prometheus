@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Common.Enums;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequestApproval;
 using RequestService;
@@ -97,7 +98,7 @@ namespace Prometheus.WebUI.Controllers
 			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel();
 			try
 			{
-				model = ServiceRequestApprovalHelper.GetAllRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize);			
+				model = ServiceRequestApprovalHelper.GetAllRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize);
 			}
 			catch (Exception exception)
 			{
@@ -127,7 +128,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				model = ServiceRequestApprovalHelper.GetAllDepartmentRequests(_serviceRequestController, _userManager, UserId,
 					pageId, _pageSize);
-				
+
 			}
 			catch (Exception exception)
 			{
@@ -156,15 +157,16 @@ namespace Prometheus.WebUI.Controllers
 			ServiceRequestApprovalModel model = new ServiceRequestApprovalModel();
 			try
 			{
-				model = ServiceRequestApprovalHelper.GetDepartmentRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, state);		
+				model = ServiceRequestApprovalHelper.GetDepartmentRequests(_serviceRequestController, _userManager, UserId, pageId, _pageSize, state);
 			}
 			catch (Exception exception)
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Failed to retrieve any service requests, {exception.Message}";
 			}
-			if (model.Controls != null) { 
-			model.Controls.FilterAction = "FilterDepartmentStatus";
+			if (model.Controls != null)
+			{
+				model.Controls.FilterAction = "FilterDepartmentStatus";
 			}
 			else
 			{
@@ -262,8 +264,8 @@ namespace Prometheus.WebUI.Controllers
 			{
 				model.ServiceRequestModel.RequestorDisplayName = "Name not found";
 			}
-		// business logic 
-		model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
+			// business logic 
+			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
 			model.CanEditServiceRequest = _requestManager.UserCanEditRequest(UserId, model.ServiceRequestModel.ServiceRequest.Id);
 			model.AvailableStates = _requestManager.ValidStates(UserId, id);
 			return View("ConfirmServiceRequestStateChange", model);

@@ -236,7 +236,6 @@ namespace RequestService
 								  ServiceRequestState.Fulfilled, request.State, ServiceRequestState.Approved));
 			}
 
-			//TODO: ADD PERMISSION CHECK
 			if (UserCanFulfillRequest(userId, requestId))
 			{
 				using (var context = new PrometheusContext())

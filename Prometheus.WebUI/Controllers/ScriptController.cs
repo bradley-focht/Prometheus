@@ -6,11 +6,12 @@ using System.Web;
 using System.Web.Mvc;
 using Common.Dto;
 using Common.Enums.Entities;
+using Common.Utilities;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using RequestService.Controllers;
-using Common.Utilities;
 
 namespace Prometheus.WebUI.Controllers
 {
@@ -236,7 +237,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public JsonResult GetOptions(Guid userId, int scriptId)
 		{
-			Guid scriptFile;		//get the script file's name
+			Guid scriptFile;        //get the script file's name
 			try
 			{
 				scriptFile = _scriptFileController.GetScript(UserId, scriptId).ScriptFile;
@@ -252,9 +253,9 @@ namespace Prometheus.WebUI.Controllers
 
 			// Formatting to output the a JsonResult
 			var requestees = elScriptador.ExecuteScript(userId, scriptFile);
-			return Json(requestees, JsonRequestBehavior.AllowGet); 
+			return Json(requestees, JsonRequestBehavior.AllowGet);
 		}
-		
+
 		/// <summary>
 		/// Used by the ServiceRequestMaintenance ScriptedInput Views
 		/// </summary>

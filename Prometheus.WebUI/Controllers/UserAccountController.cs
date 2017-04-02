@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Web.Security;
 using Common.Dto;
-using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.UserAccount;
 using UserManager;
@@ -100,19 +100,19 @@ namespace Prometheus.WebUI.Controllers
 		/// </summary>
 		/// <param name="returnUrl">if entry point is not login page</param>
 		/// <returns></returns>
-/*		[HttpPost]
-		public ActionResult LoginAdmin(string returnUrl)
-		{
-			FormsAuthentication.SetAuthCookie("Admin", true);
-			Session["DisplayName"] = "Administrator";
-			Session["Guid"] = Guid.Empty;
-			Session["Id"] = _userManager.AdministratorId;
-			Session["DepartmentId"] = 1;
-			Session["DepartmentName"] = null;
-			if (string.IsNullOrEmpty(returnUrl))
-				return RedirectToAction("Index", "Home");
-			return Redirect(returnUrl);
-		} for testing purposes */
+		/*		[HttpPost]
+				public ActionResult LoginAdmin(string returnUrl)
+				{
+					FormsAuthentication.SetAuthCookie("Admin", true);
+					Session["DisplayName"] = "Administrator";
+					Session["Guid"] = Guid.Empty;
+					Session["Id"] = _userManager.AdministratorId;
+					Session["DepartmentId"] = 1;
+					Session["DepartmentName"] = null;
+					if (string.IsNullOrEmpty(returnUrl))
+						return RedirectToAction("Index", "Home");
+					return Redirect(returnUrl);
+				} for testing purposes */
 
 		/// <summary>
 		/// Destroys the session

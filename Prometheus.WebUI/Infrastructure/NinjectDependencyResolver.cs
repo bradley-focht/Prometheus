@@ -25,8 +25,9 @@ namespace Prometheus.WebUI.Infrastructure
 		{
 			return kernel.GetAll(serviceType);
 		}
+
 		/// <summary>
-		/// This is Sean's stuff that goes in here. He made the bindings 
+		/// Load Modules with all bindings required for different components of Prometheus
 		/// </summary>
 		private void LoadModules()
 		{

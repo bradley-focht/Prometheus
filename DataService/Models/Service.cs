@@ -9,7 +9,6 @@ namespace DataService.Models
 	public class Service : IService
 	{
 		//PK
-		//[Key, ForeignKey("LifecycleStatus")]
 		[Key]
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		public int Id { get; set; }

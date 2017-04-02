@@ -6,6 +6,7 @@ using Common.Dto;
 using Common.Enums.Entities;
 using Common.Utilities;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.Shared;
 using Prometheus.WebUI.Models.SystemAccess;

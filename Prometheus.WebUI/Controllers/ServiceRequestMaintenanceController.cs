@@ -9,6 +9,7 @@ using Common.Dto;
 using Common.Enums;
 using Common.Enums.Entities;
 using Prometheus.WebUI.Helpers;
+using Prometheus.WebUI.Helpers.Enums;
 using Prometheus.WebUI.Infrastructure;
 using Prometheus.WebUI.Models.ServiceRequestMaintenance;
 using Prometheus.WebUI.Models.Shared;
@@ -114,7 +115,7 @@ namespace Prometheus.WebUI.Controllers
 				{
 					if (tag is IServiceTagDto)
 					{
-						var serviceTag = (IServiceTagDto) tag;
+						var serviceTag = (IServiceTagDto)tag;
 						var tagInfo = new PackageItem
 						{
 							Name = _portfolioService.GetService(serviceTag.ServiceId).Name,
@@ -122,7 +123,8 @@ namespace Prometheus.WebUI.Controllers
 							Tag = tag
 						};
 						packageItems.Add(tagInfo);
-					} else if (tag is IServiceOptionCategoryTagDto)
+					}
+					else if (tag is IServiceOptionCategoryTagDto)
 					{
 						var categoryTag = (IServiceOptionCategoryTagDto)tag;
 						var tagInfo = new PackageItem
@@ -135,7 +137,7 @@ namespace Prometheus.WebUI.Controllers
 					}
 
 				}
-				catch(Exception) {  }
+				catch (Exception) { }
 			}
 			model.PackageItems = packageItems;
 
@@ -156,11 +158,11 @@ namespace Prometheus.WebUI.Controllers
 				var package = (ServiceRequestPackageDto)_portfolioService.GetServiceRequestPackage(UserId, id);
 				model.Name = package.Name;
 				model.Action = package.Action;
-				
+
 				if (package.ServiceOptionCategoryTags != null)
 				{
 					model.SelectedCategories = from a in package.ServiceOptionCategoryTags select a.ServiceOptionCategoryId; //fill selections
-					if (package.ServiceOptionCategoryTags.FirstOrDefault(x => x.Order == 1) != null)							//figure out primary
+					if (package.ServiceOptionCategoryTags.FirstOrDefault(x => x.Order == 1) != null)                            //figure out primary
 					{
 						model.PrimaryIsService = false;
 						model.PrimaryId = (from c in package.ServiceOptionCategoryTags where c.Order == 1 select c.ServiceOptionCategoryId).First();
@@ -509,7 +511,7 @@ namespace Prometheus.WebUI.Controllers
 			newPackage.ServiceOptionCategoryTags = new List<IServiceOptionCategoryTagDto>();
 			newPackage.ServiceTags = new List<IServiceTagDto>();
 			List<string> associations = new List<string>();
-			if (package.Associations != null)				//these are optional
+			if (package.Associations != null)               //these are optional
 			{
 				associations.AddRange(package.Associations); //put the primary to the front so it can all be done at once
 			}
