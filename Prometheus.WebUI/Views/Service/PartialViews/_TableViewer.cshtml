@@ -26,7 +26,7 @@
                 <tr>
                     @foreach (string data in row.Item2)
                     {
-                        <td>
+                        <td class="align-top">
                             @if (firstCol)
                             {
                                 if (Model.ServiceSection == null)
@@ -46,7 +46,7 @@
                         </td>
 
                     }
-                    <td>
+                    <td class="align-top">
                         @if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanEditServiceDetails))
                         {
                             <div class="btn-group">
@@ -85,5 +85,4 @@ else
             @Html.ActionLink("Add", Model.AddAction, new { section = Model.ServiceSection, id = Model.ServiceId })
         }
     </div>
-
 }

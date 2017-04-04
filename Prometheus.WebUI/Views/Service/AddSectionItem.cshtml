@@ -31,7 +31,7 @@
         <div class="title-div">
             @ViewBag.Title
         </div>
-        <div class="panel">
+        <div class="panel-div">
 
             @switch (Model.Section)
             {
@@ -70,7 +70,7 @@
                     break;
             }
         </div>
-        <div class="flex-container">
+        <div class="flex-container-col">
             <div class="panel-footer">
                 <div class="float-right-div">
                     @Html.ActionLink("Back", "Show", new { id = Model.Service.Id, section = ServiceSectionHelper.ConvertNavStringToRouteString((Model.Section)) }, new { @class = "btn btn-default btn-back" })

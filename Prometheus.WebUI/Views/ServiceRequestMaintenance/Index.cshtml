@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Service Request Maintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>>
@@ -9,11 +9,10 @@
     };
 
 }
-
 <div class="title-div">Maintenance Tasks</div>
 <div class="panel-div">
     <div>@Html.ActionLink("Service Catalog Entries", "ShowServices", "ServiceRequestMaintenance")</div>
-    <div> @Html.ActionLink("Service Request Packages", "ShowPackages", "ServiceRequestMaintenance")</div>
-    <div> @Html.ActionLink("User Inputs", "ShowUserInput", "ServiceRequestMaintenance")</div>
+    <div>@Html.ActionLink("Service Request Packages", "ShowPackages", "ServiceRequestMaintenance")</div>
+    <div>@Html.ActionLink("User Inputs", "ShowUserInput", "ServiceRequestMaintenance")</div>
 </div>
 

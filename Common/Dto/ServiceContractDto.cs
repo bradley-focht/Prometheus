@@ -15,15 +15,30 @@ namespace Common.Dto
 		public DateTime? DateUpdated { get; set; }
 		public int CreatedByUserId { get; set; }
 		public int UpdatedByUserId { get; set; }
+
+		/// <summary>
+		/// Contract or Invoice number
+		/// </summary>
 		[Required(ErrorMessage = "Contract Number is Required")]
 		[Display(Name = "Contract Number")]
 		public string ContractNumber { get; set; }
+
+		/// <summary>
+		/// Service Vendor or provider
+		/// </summary>
 		[Required(ErrorMessage = "Service Provider is Required")]
 		[Display(Name = "Service Provider")]
 		public string ServiceProvider { get; set; }
 
-		//I don't really know what this is supposed to be....
+		/// <summary>
+		/// Contract type? unknown
+		/// </summary>
+		[Display(Name="Contract Type")]
 		public string ContractType { get; set; }
+
+		/// <summary>
+		/// Other details of the contract
+		/// </summary>
 		[AllowHtml]
 		public string Description { get; set; }
 
