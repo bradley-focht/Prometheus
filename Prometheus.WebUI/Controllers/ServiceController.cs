@@ -19,6 +19,9 @@ using UserManager;
 
 namespace Prometheus.WebUI.Controllers
 {
+	/// <summary>
+	/// Service Details
+	/// </summary>
 	[Authorize]
 	public class ServiceController : PrometheusController
 	{
@@ -37,6 +40,8 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult Index(string filterBy, string filterArg, int pageId = 0)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
+
 			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			if (filterBy == null)       //avoid null pointer exceptions below
 				filterBy = "All";
@@ -111,8 +116,8 @@ namespace Prometheus.WebUI.Controllers
 		///   incoming section names are validated against the list, if no match then first in list is used
 		///   names should be put just as they will show up, spaces are removed, special characters will cause problems
 		/// </summary>
-		/// <param name="section"></param>
-		/// <param name="id"></param>
+		/// <param name="section">selected section</param>
+		/// <param name="id">selected service id</param>
 		/// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowNav(string section, int id = 0)
@@ -126,15 +131,17 @@ namespace Prometheus.WebUI.Controllers
 		/// Show service list
 		/// </summary>
 		/// <param name="section"></param>
-		/// <param name="id"></param>
-		/// <param name="pageId"></param>
+		/// <param name="id">selected service id</param>
+		/// <param name="pageId">selected page, default is page 9</param>
 		/// <returns></returns>
 		public ActionResult Show(string section, int id = 0, int pageId = 0)
 		{
-			ServiceModel sm = new ServiceModel { CurrentPage = pageId };
-			sm.Service = _portfolioService.GetService(id);
-			sm.SelectedSection = section;
-			return View(sm);
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
+
+			ServiceModel model = new ServiceModel { CurrentPage = pageId };
+			model.Service = _portfolioService.GetService(id);
+			model.SelectedSection = section;
+			return View(model);
 		}
 
 		/// <summary>
@@ -143,6 +150,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AddService()
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			ServiceSectionModel model = new ServiceSectionModel();
 
 			//create list items for service bundle selection
@@ -184,7 +192,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save service due to invalid data";
-				return RedirectToAction("AddService");
+				if (newService.Id < 0)
+					return RedirectToAction("AddService");
+				return RedirectToAction("UpdateGeneral", new {id = newService.Id});
 			}
 			//save service
 
@@ -219,7 +229,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save SWOT item due to invalid data";
-				return RedirectToAction("UpdateServiceSectionItem", new { id = swotItem.ServiceId, section = "Swot" });
+				if (swotItem.Id > 0)
+					return RedirectToAction("UpdateServiceSectionItem", new { serviceId = swotItem.ServiceId, section = "Swot", id=swotItem.Id });
+				return RedirectToAction("AddServiceSectionItem", new {id = swotItem.ServiceId, section = "Swot"});
 			}
 
 			try
@@ -269,6 +281,11 @@ namespace Prometheus.WebUI.Controllers
 			return RedirectToAction("Show", new { section = "WorkUnits", id = workUnit.ServiceId });
 		}
 
+		/// <summary>
+		/// Save changes to, or save a new goal
+		/// </summary>
+		/// <param name="goal"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult SaveServiceGoalItem(ServiceGoalDto goal)
 		{
@@ -276,18 +293,32 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save goal due to invalid data";
-				return RedirectToAction("AddService");
+				if (goal.Id < 1)
+					return RedirectToAction("UpdateServiceSectionItem",
+						new {section = "Goals", id = goal.Id, serviceId = goal.ServiceId});
+				return RedirectToAction("AddServiceSectionItem", new {section="Goals", serviceId=goal.ServiceId});
 			}
 			//save service
-
-			_portfolioService.ModifyServiceGoal(UserId, goal, EntityModification.Create);
-
+			try
+			{
+				_portfolioService.ModifyServiceGoal(UserId, goal, EntityModification.Create);
+			}
+			catch (Exception exception)
+			{
+				TempData["MessageType"] = WebMessageType.Failure;
+				TempData["Message"] = $"Failed to save goal due to error: {exception.Message}";
+			}
 			TempData["MessageType"] = WebMessageType.Success;
 			TempData["Message"] = $"New service {goal.Name} saved successfully";
 
 			return RedirectToAction("Show", new { id = goal.ServiceId, section = "Goals" });
 		}
 
+		/// <summary>
+		/// Save service measure or changes to
+		/// </summary>
+		/// <param name="measure"></param>
+		/// <returns></returns>
 		[HttpPost]
 		public ActionResult SaveMeasuresItem(ServiceMeasureDto measure)
 		{
@@ -295,7 +326,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save measure due to invalid data";
-				return RedirectToAction("AddService");
+				if (measure.Id > 0)
+					return RedirectToAction("UpdateServiceSectionItem", new { section = "Measures", id = measure.Id, serviceId = measure.ServiceId });
+				return RedirectToAction("AddServiceSectionItem", new { section = "Measures", serviceId = measure.ServiceId });
 			}
 			//save service
 			_portfolioService.ModifyServiceMeasure(UserId, measure, measure.Id < 1 ? EntityModification.Create : EntityModification.Update);
@@ -339,7 +372,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = "Failed to save contract due to invalid data";
-				return RedirectToAction("UpdateServiceSectionItem", new { id = contract.ServiceId, section = "Contracts" });
+				if (contract.Id > 0)
+					return RedirectToAction("UpdateServiceSectionItem", new { id = contract.Id, section = "Contracts", serviceId = contract.ServiceId });
+				return RedirectToAction("AddServiceSectionItem", new { section = "Contracts", serviceId = contract.ServiceId });
 			}
 			//save service
 			_portfolioService.ModifyServiceContract(UserId, contract, contract.Id > 0 ? EntityModification.Update : EntityModification.Create);
@@ -393,6 +428,12 @@ namespace Prometheus.WebUI.Controllers
 			return PartialView("PartialViews/_TableViewer", tblModel);
 		}
 
+
+		/// <summary>
+		/// Show service contracts table
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		[ChildActionOnly]
 		public ActionResult ShowServiceContracts(int id)
 		{
@@ -408,7 +449,7 @@ namespace Prometheus.WebUI.Controllers
 
 			if (service.ServiceContracts != null && service.ServiceContracts.Any())
 			{
-				tblModel.Titles = new List<string> { "Provider", "Contract", "Start Date", "Expiry Date" };
+				tblModel.Titles = new List<string> { "Provider", "Contract", "Description", "Start Date", "Expiry Date" };
 				var data = new List<Tuple<int, ICollection<string>>>();
 
 				foreach (var contract in service.ServiceContracts)
@@ -418,6 +459,7 @@ namespace Prometheus.WebUI.Controllers
 					{
 						contract.ServiceProvider,
 						contract.ContractNumber,
+						contract.Description,
 						contract.StartDate.ToString("d"),	//proper date format also used in razor view
 						contract.ExpiryDate.ToString("d")
 					}));
@@ -560,6 +602,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteSwotActivityItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var activity = _portfolioService.GetSwotActivity(UserId, id);
 			var swot = _portfolioService.GetServiceSwot(UserId, activity.ServiceSwotId);
 			var model = new ConfirmDeleteSectionItemModel
@@ -767,6 +810,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult UpdateGeneral(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			ServiceSectionModel model = new ServiceSectionModel();
 			try
 			{
@@ -847,7 +891,9 @@ namespace Prometheus.WebUI.Controllers
 			{
 				TempData["MessageType"] = WebMessageType.Failure;
 				TempData["Message"] = $"Unable to save {goal.Name}";
-				RedirectToAction("Show", new { section = "Goals", id = goal.ServiceId });
+				if (goal.Id > 0)
+					RedirectToAction("UpdateServiceSectionItem", new { section = "Goals", serviceId = goal.ServiceId, id=goal.Id });
+				RedirectToAction("AddServiceSectionItem", new {section = "Goals", id = goal.ServiceId});
 			}
 
 			TempData["MessageType"] = WebMessageType.Success;
@@ -868,6 +914,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowServiceSectionItem(int serviceId, string section, int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			ServiceSectionModel model = new ServiceSectionModel();
 
 			model.Service = _portfolioService.GetService(serviceId);
@@ -935,6 +982,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AddServiceOption(int id, int categoryId = 0)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var model = new ServiceOptionModel { Option = new ServiceOptionDto { ServiceOptionCategoryId = categoryId, Id = 0 }, ServiceId = id }; //setup new model
 			model.Action = "Add";
 			try
@@ -950,8 +998,14 @@ namespace Prometheus.WebUI.Controllers
 			return View("UpdateServiceOption", model);
 		}
 
+		/// <summary>
+		/// Update Service Option or Add new
+		/// </summary>
+		/// <param name="id">option id</param>
+		/// <returns></returns>
 		public ActionResult UpdateServiceOption(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var model = new ServiceOptionModel { Option = _portfolioService.GetServiceOption(UserId, id) };
 			model.ServiceId = _portfolioService.GetServiceOptionCategory(UserId, model.Option.ServiceOptionCategoryId).ServiceId;
 
@@ -961,8 +1015,14 @@ namespace Prometheus.WebUI.Controllers
 			return View("UpdateServiceOption", model);
 		}
 
+		/// <summary>
+		/// Update an existing swot activity
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult UpdateSwotActivityItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var model = new SwotActivityItemModel(new SwotActivityDto { ServiceSwotId = id });
 			ISwotActivityDto swotActivity = _portfolioService.GetSwotActivity(UserId, id);
 			var swotItem = _portfolioService.GetServiceSwot(UserId, swotActivity.ServiceSwotId);
@@ -981,6 +1041,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AddSwotActivityItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var swot = _portfolioService.GetServiceSwot(UserId, id);
 
 			var model = new SwotActivityItemModel(new SwotActivityDto { ServiceSwotId = id });
@@ -999,6 +1060,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AddOptionCategory(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			UpdateOptionCategoryModel model = new UpdateOptionCategoryModel { Action = "Add" };
 			model.ServiceId = id;
 			model.ServiceName = _portfolioService.GetService(id).Name;
@@ -1007,8 +1069,14 @@ namespace Prometheus.WebUI.Controllers
 			return View("UpdateOptionCategory", model);
 		}
 
+		/// <summary>
+		/// Show an option category's details
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
 		public ActionResult ShowOptionCategory(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			ShowOptionCategoryModel model = new ShowOptionCategoryModel { OptionCategory = _portfolioService.GetServiceOptionCategory(UserId, id) };
 			model.ServiceId = model.OptionCategory.ServiceId;
 			model.ServiceName = _portfolioService.GetService(model.OptionCategory.ServiceId).Name;
@@ -1025,6 +1093,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult AddServiceSectionItem(string section, int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var model = new ServiceSectionModel();
 			model.Section = section;
 
@@ -1041,6 +1110,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceGoalsItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var goal = _portfolioService.GetServiceGoal(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1063,6 +1133,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceMeasuresItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var measure = _portfolioService.GetServiceMeasure(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1086,6 +1157,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceSwotItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var item = _portfolioService.GetServiceSwot(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1106,6 +1178,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceContractsItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var item = _portfolioService.GetServiceContract(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1126,6 +1199,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceWorkUnitsItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var item = _portfolioService.GetServiceWorkUnit(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1146,6 +1220,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceOption(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var item = _portfolioService.GetServiceOption(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1165,6 +1240,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteOptionCategory(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var item = _portfolioService.GetServiceOptionCategory(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1184,6 +1260,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceProcessesItem(int id)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var item = _portfolioService.GetServiceProcess(UserId, id);
 			var model = new ConfirmDeleteSectionItemModel
 			{
@@ -1204,6 +1281,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult DeleteServiceProcessesItem(DeleteSectionItemModel model)
 		{
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			try
 			{
 				_portfolioService.ModifyServiceProcess(UserId, new ServiceProcessDto { Id = model.Id }, EntityModification.Delete);
@@ -1349,7 +1427,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceContract(DeleteSectionItemModel model)
 		{
-
 			try
 			{
 				_portfolioService.ModifyServiceContract(UserId, new ServiceContractDto { Id = model.Id }, EntityModification.Delete);
@@ -1365,7 +1442,6 @@ namespace Prometheus.WebUI.Controllers
 			TempData["message"] = "Successfully deleted " + model.FriendlyName;
 			return RedirectToAction("Show", new { id = model.ServiceId, section = "Contracts" });
 		}
-
 
 		/// <summary>
 		/// Complete the deltion of a Service Measure
@@ -1406,8 +1482,6 @@ namespace Prometheus.WebUI.Controllers
 			if (Request.Files.Count > 0)
 			{
 				var fileName = Path.GetFileName(file.FileName);
-
-
 				if (fileName != null)
 				{
 					Guid newFileName = Guid.NewGuid(); //to rename document			
@@ -1445,8 +1519,6 @@ namespace Prometheus.WebUI.Controllers
 		public ActionResult ShowServiceDocuments(int id, int pageId = 0)
 		{
 			DocumentsTableModel model = new DocumentsTableModel { ServiceId = id, CurrentPage = pageId };
-
-
 
 			var documents = _portfolioService.GetServiceDocuments(id).ToList();
 
@@ -1504,7 +1576,6 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult UpdateServiceDocument(int id)
 		{
-
 			var doc = _portfolioService.GetServiceDocument(UserId, id);
 			var service = _portfolioService.GetService(doc.ServiceId);
 
@@ -1526,11 +1597,10 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public FileResult DownloadServiceDocument(int id)
 		{
-
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return null; }
 			var doc = _portfolioService.GetServiceDocument(UserId, id);
 
 			Response.AddHeader("Content-Disposition", @"filename=" + doc.Filename + doc.FileExtension);     //suggest file name to browser
-
 			var path = Path.Combine(ConfigHelper.GetServiceDocsPath(), doc.StorageNameGuid.ToString());
 
 			return new FilePathResult(path, doc.MimeType);
@@ -1544,7 +1614,6 @@ namespace Prometheus.WebUI.Controllers
 		[HttpPost]
 		public ActionResult DeleteServiceDocument(int id)
 		{
-
 			var file = _portfolioService.GetServiceDocument(UserId, id);
 
 			_portfolioService.ModifyServiceDocument(UserId, _portfolioService.GetServiceDocument(UserId, id), EntityModification.Delete);
@@ -1575,7 +1644,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ConfirmDeleteServiceDocument(int id)
 		{
-
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanEditServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var document = _portfolioService.GetServiceDocument(UserId, id);
 			var service = _portfolioService.GetService(document.ServiceId);
 
@@ -1628,7 +1697,7 @@ namespace Prometheus.WebUI.Controllers
 		/// <returns></returns>
 		public ActionResult ShowSwotActivity(int id)
 		{
-
+			if (!_userManager.UserHasPermission(UserId, ServiceDetails.CanViewServiceDetails)) { return new HttpStatusCodeResult(HttpStatusCode.Forbidden); }
 			var model = new SwotActivityItemModel(_portfolioService.GetSwotActivity(UserId, id));
 			var swot = _portfolioService.GetServiceSwot(UserId, model.SwotId);
 			model.SwotName = swot.Item;

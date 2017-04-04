@@ -829,6 +829,9 @@
 .tq-width {
     width: 75%;
 }
+.align-top {
+	vertical-align: top !important;
+}
 
 .make-space-top {
     margin-top: 10px;

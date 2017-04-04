@@ -15,7 +15,7 @@
 {
     <div class="title-div">@ViewBag.SubTitle</div>
 
-    <div class="panel">
+    <div class="panel-div">
     @using (Html.BeginForm("SaveOptionCategory", "Service", FormMethod.Post))
     {
         @Html.Partial("PartialViews/UpdateOptionCategory", Model.OptionCategory)

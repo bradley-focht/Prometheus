@@ -1,58 +1,58 @@
 ﻿@model Prometheus.WebUI.Models.Service.ServiceSectionModel
 @{
-    ViewBag.Title = "Services";
-    ViewBag.SubTitle = "Add New Service";
+	ViewBag.Title = "Services";
+	ViewBag.SubTitle = "Add New Service";
 
-    ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
-                                                             new KeyValuePair<string, string>("Services", "Service/Index"),
-                                                             new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
-    Layout = "~/Views/Shared/_SidebarLayout.cshtml";
+	ViewBag.Links = new List<KeyValuePair<string, string>> { new KeyValuePair<string, string>("Home", "Home"),
+															 new KeyValuePair<string, string>("Services", "Service/Index"),
+															 new KeyValuePair<string, string>(ViewBag.SubTitle, "#")};
+	Layout = "~/Views/Shared/_SidebarLayout.cshtml";
 }
 
 @section Sidebar
 {
-    <div class="instructions-div">
-    <dl>
-        <dt>Service Types</dt>
-        <dd>
-            <ul>
-                <li>Customer-facing: visible in the Business Service Catalog</li>
-                <li>Supporting: visible in the Technical Service Catalog</li>
-            </ul>
-        </dd>
+	<div class="instructions-div">
+		<dl>
+			<dt>Service Types</dt>
+			<dd>
+				<ul>
+					<li>Customer-facing: visible in the Business Service Catalog</li>
+					<li>Supporting: visible in the Technical Service Catalog</li>
+				</ul>
+			</dd>
 
-        <dt>Service Provision</dt>
-        <dd>
-            <ul>
-                <li>Internal: provided by your organization</li>
-                <li>External: outsourced</li>
-            </ul>
-        </dd>
+			<dt>Service Provision</dt>
+			<dd>
+				<ul>
+					<li>Internal: provided by your organization</li>
+					<li>External: outsourced</li>
+				</ul>
+			</dd>
 
-    </dl>
-</div>
+		</dl>
+	</div>
 }
 
 @section Content {
-        <div class="title-div">
-            @ViewBag.SubTitle
-        </div>
+	<div class="title-div">
+		@ViewBag.SubTitle
+	</div>
 
-        @using (Html.BeginForm("SaveService", "Service", FormMethod.Post))
-    {
-            <div class="panel-div">
-                @Html.Partial("PartialViews/UpdateGeneral", Model)
-            </div>
-                <div class="flex-container">
-                    <div class="panel-footer">
-                        <div class="float-right-div">
-                            @Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default btn-back" })
-                            <input type="submit" value="Save" class="btn btn-primary"/>
+	@using (Html.BeginForm("SaveService", "Service", FormMethod.Post))
+	{
+		<div class="panel-div">
+			@Html.Partial("PartialViews/UpdateGeneral", Model)
+		</div>
+			<div class="flex-container">
+				<div class="panel-footer">
+					<div class="float-right-div">
+						@Html.ActionLink("Back", "Index", null, new { @class = "btn btn-default btn-back" })
+						<input type="submit" value="Save" class="btn btn-primary" />
 
 
-                        </div>
-                    </div>
-                </div>
-            
-        }
+					</div>
+				</div>
+			</div>
+
+	}
 }

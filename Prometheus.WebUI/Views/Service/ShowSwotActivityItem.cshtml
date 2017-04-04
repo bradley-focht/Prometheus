@@ -19,11 +19,11 @@
 @section Content
 {
     <div class="title-div">SWOT Activity</div>
-    <div class="panel">
+    <div class="panel-div">
         @Html.Partial("PartialViews/ShowDynamicServiceItem", Model.SwotActivity)
     </div>
 
-<div class="flex-container">
+<div class="flex-container-col">
     <div class="panel-footer">
         <div class="float-right-div">
             @Html.ActionLink("Back", "ShowServiceSectionItem", new { serviceId = Model.ServiceId, section = "Swot", id = Model.SwotId }, new { @class = "btn btn-default btn-back" })

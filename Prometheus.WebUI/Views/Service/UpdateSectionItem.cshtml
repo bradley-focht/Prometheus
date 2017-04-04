@@ -14,23 +14,17 @@
     bool footerAvail = true;
 }
 
-@section Sidebar
-{
-
-}
+@section Sidebar { }
 
 @section Content
 {
     @using (Html.BeginForm("Save" + ServiceSectionHelper.ConvertNavStringToRouteString(Model.Section) + "Item", "Service", FormMethod.Post))
     {
-        <div class="title-div">
-            @ViewBag.SubTitle
-        </div>
-        <div class="panel">
+        <div class="title-div">@ViewBag.SubTitle</div>
+        <div class="panel-div">
             @switch (Model.Section)
             {
                 case "Documents":
-
                     @Html.Partial("PartialViews/RenameDocument", (ServiceDocumentDto) Model.Service.ServiceDocuments.FirstOrDefault((d => d.StorageNameGuid == Model.SectionItemGuid)))
                     controlsAvail = false;
                     footerAvail = false;
@@ -64,16 +58,16 @@
                     var measure = (ServiceMeasureDto) Model.Service.ServiceMeasures.FirstOrDefault(g => g.Id == Model.SectionItemId);
                     if (measure != null)
                     {
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceMeasureDto) measure)
-                        break;
+	                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", measure)
+	                    break;
                     }
                     goto default;
                 case "Processes":
                     var proc = (ServiceProcessDto) Model.Service.ServiceProcesses.FirstOrDefault(g => g.Id == Model.SectionItemId);
                     if (proc != null)
                     {
-                        @Html.Partial("PartialViews/UpdateDynamicServiceItem", (ServiceProcessDto) proc)
-                        break;
+	                    @Html.Partial("PartialViews/UpdateDynamicServiceItem", proc)
+	                    break;
                     }
                     goto default;
                 default:
@@ -87,7 +81,7 @@
 
         if (footerAvail)
          {
-             <div class="flex-container">
+             <div class="flex-container-col">
                  <div class="panel-footer">
                      <div class="float-right-div">
                          @Html.ActionLink("Back", "Show", new {id = Model.Service.Id, section = Model.Section}, new {@class = "btn btn-default btn-back"})
@@ -102,6 +96,3 @@
     }
 
 }
-
-
-
