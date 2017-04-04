@@ -4,6 +4,11 @@ using Common.Exceptions;
 
 namespace Common.Controllers
 {
+	/// <summary>
+	/// Controller used to perform modifications to Entities in Prometheus and check permissions 
+	/// related to that modification and Entity
+	/// </summary>
+	/// <typeparam name="T">Entity type</typeparam>
 	public abstract class EntityController<T>
 	{
 		/// <summary>

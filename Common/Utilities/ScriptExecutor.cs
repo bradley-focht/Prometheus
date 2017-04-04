@@ -72,13 +72,13 @@ namespace Common.Utilities
 			List<ScriptResult<string, string>> myOptions = new List<ScriptResult<string, string>>();
 			Collection<PSObject> results = GeneralElScriptador(userGuid, scriptGuid, path);
 
-	        foreach (var result in results)
-	        {
-		        ScriptResult<string, string> myOption = new ScriptResult<string, string>();
-		        foreach (var item in result.Members)
-		        {
-			        if (item.Name == "Label")
-				        myOption.Label = item.Value.ToString();
+			foreach (var result in results)
+			{
+				ScriptResult<string, string> myOption = new ScriptResult<string, string>();
+				foreach (var item in result.Members)
+				{
+					if (item.Name == "Label")
+						myOption.Label = item.Value.ToString();
 					if (item.Name == "Value")
 						myOption.Value = item.Value.ToString();
 				}

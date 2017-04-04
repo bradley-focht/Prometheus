@@ -2,6 +2,10 @@
 
 namespace Common.Exceptions
 {
+	/// <summary>
+	/// Represents an error that took place where an Entity in Prometheus was requested or required to perform an action
+	/// and that Entity could not be located in the Database.
+	/// </summary>
 	public class EntityNotFoundException : Exception
 	{
 		public EntityNotFoundException()

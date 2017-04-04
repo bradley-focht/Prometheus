@@ -10,9 +10,9 @@ namespace ServicePortfolioService.Controllers
 		/// Finds text input with identifier provided and returns its DTO
 		/// </summary>
 		/// <param name="performingUserId"></param>
-		/// <param name="textInput"></param>
+		/// <param name="textInputId"></param>
 		/// <returns></returns>
-		ITextInputDto GetTextInput(int performingUserId, int textInput);
+		ITextInputDto GetTextInput(int performingUserId, int textInputId);
 
 		/// <summary>
 		/// Retrieve all
@@ -26,7 +26,7 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="performingUserId"></param>
 		/// <param name="textInput"></param>
 		/// <param name="modification">Type of modification to make</param>
-		/// <returns>Modified Service Measure</returns>
+		/// <returns>Modified Text Input</returns>
 		ITextInputDto ModifyTextInput(int performingUserId, ITextInputDto textInput, EntityModification modification);
 	}
 }

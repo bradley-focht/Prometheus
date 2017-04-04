@@ -1,5 +1,8 @@
 ﻿namespace Common.Dto
 {
+	/// <summary>
+	/// An Input that a User can fill out in the Service Request process
+	/// </summary>
 	public interface IUserInput
 	{
 		int Id { get; set; }

@@ -14,6 +14,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceRequestPackageController : EntityController<IServiceRequestPackageDto>, IServiceRequestPackageController
 	{
+		/// <summary>
+		/// Finds service package with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="servicePackageId"></param>
+		/// <returns></returns>
 		public IServiceRequestPackageDto GetServiceRequestPackage(int performingUserId, int servicePackageId)
 		{
 			using (var context = new PrometheusContext())
@@ -25,6 +31,13 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service Package in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="servicePackage"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Request Package</returns>
 		public IServiceRequestPackageDto ModifyServiceRequestPackage(int performingUserId, IServiceRequestPackageDto servicePackage, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, servicePackage, modification);
@@ -86,6 +99,9 @@ namespace ServicePortfolioService.Controllers
 			return null;
 		}
 
+		/// <summary>
+		/// All of the Service Request Packages in the database
+		/// </summary>
 		public IEnumerable<IServiceRequestPackageDto> AllServiceRequestPackages
 		{
 			get
@@ -100,6 +116,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Retrieves the service packages that the service option id exists in
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceOptionId"></param>
+		/// <returns></returns>
 		public IEnumerable<IServiceRequestPackageDto> GetServiceRequestPackagesForServiceOption(int performingUserId, int serviceOptionId, ServiceRequestAction action)
 		{
 			using (var context = new PrometheusContext())

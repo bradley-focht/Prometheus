@@ -9,10 +9,12 @@
 		/// Cannot view services 
 		/// </summary>
 		NoAccess,
+
 		/// <summary>
 		/// Can Get* services
 		/// </summary>
 		CanViewServiceDetails,
+
 		/// <summary>
 		/// Can modify services
 		/// </summary>

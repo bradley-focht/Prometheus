@@ -4,6 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// Logical grouping of ITIL Services
+	/// </summary>
 	public class ServiceBundle : IServiceBundle
 	{
 		//PK

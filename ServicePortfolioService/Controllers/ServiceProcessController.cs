@@ -11,6 +11,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceProcessController : EntityController<IServiceProcessDto>, IServiceProcessController
 	{
+		/// <summary>
+		/// Finds service process with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceProcessId"></param>
+		/// <returns></returns>
 		public IServiceProcessDto GetServiceProcess(int performingUserId, int serviceProcessId)
 		{
 			using (var context = new PrometheusContext())
@@ -22,9 +28,16 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceProcessDto ModifyServiceProcess(int performingUserId, IServiceProcessDto serviceProcessId, EntityModification modification)
+		/// <summary>
+		/// Modifies the service process in the database
+		/// </summary>
+		/// <param name="performingUserId">ID of user performing modification</param>
+		/// <param name="serviceProcess"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Process</returns>
+		public IServiceProcessDto ModifyServiceProcess(int performingUserId, IServiceProcessDto serviceProcess, EntityModification modification)
 		{
-			return base.ModifyEntity(performingUserId, serviceProcessId, modification);
+			return base.ModifyEntity(performingUserId, serviceProcess, modification);
 		}
 
 		protected override IServiceProcessDto Create(int performingUserId, IServiceProcessDto entity)

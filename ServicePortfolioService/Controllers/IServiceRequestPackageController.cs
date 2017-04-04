@@ -21,7 +21,7 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="performingUserId"></param>
 		/// <param name="servicePackage"></param>
 		/// <param name="modification">Type of modification to make</param>
-		/// <returns>Modified Service WorkUnit</returns>
+		/// <returns>Modified Service Request Package</returns>
 		IServiceRequestPackageDto ModifyServiceRequestPackage(int performingUserId, IServiceRequestPackageDto servicePackage, EntityModification modification);
 
 		/// <summary>

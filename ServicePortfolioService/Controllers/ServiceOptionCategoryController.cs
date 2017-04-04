@@ -4,7 +4,6 @@ using System.Linq;
 using Common.Controllers;
 using Common.Dto;
 using Common.Enums.Entities;
-using Common.Exceptions;
 using DataService;
 using DataService.DataAccessLayer;
 
@@ -12,20 +11,33 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceOptionCategoryController : EntityController<IServiceOptionCategoryDto>, IServiceOptionCategoryController
 	{
-		public IServiceOptionCategoryDto GetServiceOptionCategory(int performingUserId, int optionCaegoryId)
+		/// <summary>
+		/// Finds option category with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="optionCategoryId"></param>
+		/// <returns></returns>
+		public IServiceOptionCategoryDto GetServiceOptionCategory(int performingUserId, int optionCategoryId)
 		{
 			using (var context = new PrometheusContext())
 			{
-				var serviceOption = context.OptionCategories.Find(optionCaegoryId);
+				var serviceOption = context.OptionCategories.Find(optionCategoryId);
 				if (serviceOption != null)
 					return ManualMapper.MapOptionCategoryToDto(serviceOption);
 				return null;
 			}
 		}
 
-		public IServiceOptionCategoryDto ModifyServiceOptionCategory(int performingUserId, IServiceOptionCategoryDto optionCaegoryId, EntityModification modification)
+		/// <summary>
+		/// Modifies the option category in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="optionCategory"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Option Category</returns>
+		public IServiceOptionCategoryDto ModifyServiceOptionCategory(int performingUserId, IServiceOptionCategoryDto optionCategory, EntityModification modification)
 		{
-			return base.ModifyEntity(performingUserId, optionCaegoryId, modification);
+			return base.ModifyEntity(performingUserId, optionCategory, modification);
 		}
 
 		protected override IServiceOptionCategoryDto Create(int performingUserId, IServiceOptionCategoryDto entity)

@@ -19,7 +19,7 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="performingUserId"></param>
 		/// <param name="optionCategory"></param>
 		/// <param name="modification">Type of modification to make</param>
-		/// <returns>Modified Service WorkUnit</returns>
+		/// <returns>Modified Service Option Category</returns>
 		IServiceOptionCategoryDto ModifyServiceOptionCategory(int performingUserId, IServiceOptionCategoryDto optionCategory, EntityModification modification);
 	}
 }

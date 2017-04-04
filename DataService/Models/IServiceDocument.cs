@@ -2,6 +2,9 @@
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// Document that a User has attached to a Service that can be requested through Prometheus
+	/// </summary>
 	public interface IServiceDocument : IUserCreatedEntity
 	{
 		/// <summary>

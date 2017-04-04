@@ -4,6 +4,9 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// Logical grouping of ITIL Services
+	/// </summary>
 	public class ServiceBundleDto : IServiceBundleDto
 	{
 		//PK

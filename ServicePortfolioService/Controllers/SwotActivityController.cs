@@ -11,6 +11,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class SwotActivityController : EntityController<ISwotActivityDto>, ISwotActivityController
 	{
+		/// <summary>
+		/// Finds SWOT activity with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="swotActivityId"></param>
+		/// <returns></returns>
 		public ISwotActivityDto GetSwotActivity(int performingUserId, int swotActivityId)
 		{
 			using (var context = new PrometheusContext())
@@ -19,6 +25,13 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the SWOT activity in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="swotActivity"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified SWOT activity</returns>
 		public ISwotActivityDto ModifySwotActivity(int performingUserId, ISwotActivityDto swotActivity, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, swotActivity, modification);

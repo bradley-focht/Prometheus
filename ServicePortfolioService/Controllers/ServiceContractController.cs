@@ -11,6 +11,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceContractController : EntityController<IServiceContractDto>, IServiceContractController
 	{
+		/// <summary>
+		/// Finds service Contract with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceContractId"></param>
+		/// <returns></returns>
 		public IServiceContractDto GetServiceContract(int performingUserId, int serviceContractId)
 		{
 			using (var context = new PrometheusContext())
@@ -19,6 +25,13 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service Contract in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceContract"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Contract</returns>
 		public IServiceContractDto ModifyServiceContract(int performingUserId, IServiceContractDto serviceContract, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, serviceContract, modification);

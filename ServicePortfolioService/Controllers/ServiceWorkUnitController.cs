@@ -11,6 +11,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceWorkUnitController : EntityController<IServiceWorkUnitDto>, IServiceWorkUnitController
 	{
+		/// <summary>
+		/// Finds service WorkUnit with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceWorkUnitId"></param>
+		/// <returns></returns>
 		public IServiceWorkUnitDto GetServiceWorkUnit(int performingUserId, int serviceWorkUnitId)
 		{
 			using (var context = new PrometheusContext())
@@ -19,6 +25,13 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service WorkUnit in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceWorkUnit"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service WorkUnit</returns>
 		public IServiceWorkUnitDto ModifyServiceWorkUnit(int performingUserId, IServiceWorkUnitDto serviceWorkUnit, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, serviceWorkUnit, modification);

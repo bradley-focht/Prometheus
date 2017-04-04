@@ -11,6 +11,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceSwotController : EntityController<IServiceSwotDto>, IServiceSwotController
 	{
+		/// <summary>
+		/// Finds service SWOT with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceSwotId"></param>
+		/// <returns></returns>
 		public IServiceSwotDto GetServiceSwot(int performingUserId, int serviceSwotId)
 		{
 			using (var context = new PrometheusContext())
@@ -22,9 +28,16 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IServiceSwotDto ModifyServiceSwot(int performingUserId, IServiceSwotDto serviceSwotId, EntityModification modification)
+		/// <summary>
+		/// Modifies the service SWOT in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceSwot"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified SWOT</returns>
+		public IServiceSwotDto ModifyServiceSwot(int performingUserId, IServiceSwotDto serviceSwot, EntityModification modification)
 		{
-			return base.ModifyEntity(performingUserId, serviceSwotId, modification);
+			return base.ModifyEntity(performingUserId, serviceSwot, modification);
 		}
 
 		protected override IServiceSwotDto Create(int performingUserId, IServiceSwotDto entity)
