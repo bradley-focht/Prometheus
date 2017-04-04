@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data.Entity;
+﻿using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Data.Entity.Validation;
 using System.Linq;
@@ -15,9 +14,8 @@ namespace ServiceFulfillmentEngineWebJob.EntityFramework.DataAccessLayer
 
 		}
 
-		public DbSet<RequestFulfillment> RequestFulfillments { get; set; }
-		public DbSet<RequestOptionFulfillment> RequestOptionFulfillments { get; set; }
 		public DbSet<Script> Scripts { get; set; }
+
 		/// <summary>
 		/// Add or remove EF conventions in this function
 		/// </summary>
@@ -35,11 +33,10 @@ namespace ServiceFulfillmentEngineWebJob.EntityFramework.DataAccessLayer
 		/// http://stackoverflow.com/questions/15820505/dbentityvalidationexception-how-can-i-easily-tell-what-caused-the-error
 		/// </summary>
 		/// <returns></returns>
-		public int SaveChanges(int userId = NullUserId)
+		public override int SaveChanges()
 		{
 			try
 			{
-				AddMetadata(userId);
 				return base.SaveChanges();
 			}
 			catch (DbEntityValidationException ex)
@@ -57,27 +54,6 @@ namespace ServiceFulfillmentEngineWebJob.EntityFramework.DataAccessLayer
 
 				// Throw a new DbEntityValidationException with the improved exception message.
 				throw new DbEntityValidationException(exceptionMessage, ex.EntityValidationErrors);
-			}
-		}
-
-		/// <summary>
-		/// Sets the metadata fields such as the updated / created date and user
-		/// </summary>
-		/// <param name="userId"></param>
-		private void AddMetadata(int userId)
-		{
-			var createdEntitiesChanged = ChangeTracker.Entries().Where(x => x.Entity is ICreatedEntity && (x.State == EntityState.Added || x.State == EntityState.Modified));
-
-			foreach (var entity in createdEntitiesChanged)
-			{
-				if (entity.State == EntityState.Added)
-				{
-					((ICreatedEntity)entity.Entity).DateCreated = DateTime.UtcNow;
-					((ICreatedEntity)entity.Entity).CreatedByUserId = userId;
-				}
-
-				((ICreatedEntity)entity.Entity).DateUpdated = DateTime.UtcNow;
-				((ICreatedEntity)entity.Entity).UpdatedByUserId = userId;
 			}
 		}
 	}

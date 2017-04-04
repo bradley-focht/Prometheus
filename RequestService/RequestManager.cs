@@ -20,6 +20,14 @@ namespace RequestService
 			_permissionController = permissionController;
 		}
 
+		/// <summary>
+		/// Changes the state of a service request to the state provided if the action is possible.
+		/// </summary>
+		/// <param name="userId">ID of user performing the state change</param>
+		/// <param name="requestId">ID of Service Request to change the state of</param>
+		/// <param name="state">State to change the Service Request to</param>
+		/// <param name="comments">Optional: Comments tied to the state change if applicable</param>
+		/// <returns>Service Request after state change is attempted</returns>
 		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ChangeRequestState(int userId, int requestId, ServiceRequestState state, string comments = null)
 		{
 			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
@@ -42,6 +50,12 @@ namespace RequestService
 			return request;
 		}
 
+		/// <summary>
+		/// Changes the state of a service request to Submitted if the action is possible.
+		/// </summary>
+		/// <param name="userId">ID of user Submitting the request</param>
+		/// <param name="requestId">ID of Service Request to Submit</param>
+		/// <returns>Service Request after Submition is attempted</returns>
 		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> SubmitRequest(int userId, int requestId)
 		{
 			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
@@ -75,6 +89,12 @@ namespace RequestService
 			return request;
 		}
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can Submit the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		public bool UserCanSubmitRequest(int userId, int requestId)
 		{
 			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
@@ -85,6 +105,13 @@ namespace RequestService
 			return false;
 		}
 
+		/// <summary>
+		/// Changes the state of a service request to Cancelled if the action is possible.
+		/// </summary>
+		/// <param name="userId">ID of user Cancelling the request</param>
+		/// <param name="requestId">ID of Service Request to Cancel</param>
+		/// <param name="comments">Optional: Comments tied to the submission if applicable</param>
+		/// <returns>Service Request after Cancellation is attempted</returns>
 		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> CancelRequest(int userId, int requestId, string comments)
 		{
 			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
@@ -118,6 +145,12 @@ namespace RequestService
 			return request;
 		}
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can Cancel the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		public bool UserCanCancelRequest(int userId, int requestId)
 		{
 			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
@@ -130,6 +163,14 @@ namespace RequestService
 			return false;
 		}
 
+		/// <summary>
+		/// Changes the state of a service request to the result of the Approval if the action is possible.
+		/// </summary>
+		/// <param name="userId">ID of user Approving the request</param>
+		/// <param name="requestId">ID of Service Request to Approve</param>
+		/// <param name="approvalResult">Result of the approval transaction (approved or denied)</param>
+		/// <param name="comments">Optional: Comments tied to the Approval if applicable</param>
+		/// <returns>Service Request after Approval is attempted</returns>
 		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ApproveRequest(int userId, int requestId, ApprovalResult approvalResult, string comments)
 		{
 			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
@@ -186,6 +227,12 @@ namespace RequestService
 			return request;
 		}
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can perform an Approval on the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		public bool UserCanApproveRequest(int userId, int requestId)
 		{
 			var request = RequestFromId(requestId);
@@ -222,7 +269,13 @@ namespace RequestService
 			return false;
 		}
 
-
+		/// <summary>
+		/// Changes the state of a service request to Fulfilled if the action is possible.
+		/// </summary>
+		/// <param name="userId">ID of user Fulfilling the request</param>
+		/// <param name="requestId">ID of Service Request to Fulfill</param>
+		/// <param name="comments">Optional: Comments tied to the Fulfillment if applicable</param>
+		/// <returns>Service Request after Fulfillment is attempted</returns>
 		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> FulfillRequest(int userId, int requestId, string comments)
 		{
 			IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> request = RequestFromId(requestId);
@@ -256,11 +309,23 @@ namespace RequestService
 			return request;
 		}
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can Fulfill the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		public bool UserCanFulfillRequest(int userId, int requestId)
 		{
 			return _permissionController.UserHasPermission(userId, FulfillmentAccess.CanFulfill) && RequestFromId(requestId).State == ServiceRequestState.Approved;
 		}
 
+		/// <summary>
+		/// Determines if a user can Edit a request
+		/// </summary>
+		/// <param name="userId">ID of user editing request</param>
+		/// <param name="requestId">ID of request to be edited</param>
+		/// <returns></returns>
 		public bool UserCanEditRequest(int userId, int requestId)
 		{
 			if (_permissionController.UserHasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
@@ -278,6 +343,12 @@ namespace RequestService
 			return false;
 		}
 
+		/// <summary>
+		/// Returns a list of all states that a user can change a service request to
+		/// </summary>
+		/// <param name="userId">ID of user changing states</param>
+		/// <param name="requestId">ID of request to be changed</param>
+		/// <returns></returns>
 		public IEnumerable<ServiceRequestState> ValidStates(int userId, int requestId)
 		{
 			var states = new List<ServiceRequestState>();

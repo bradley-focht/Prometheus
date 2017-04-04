@@ -27,7 +27,7 @@ namespace ServiceFulfillmentEngineWebJob
 
 		public void FulfillNewRequests()
 		{
-			var newRequests = GetNewServiceRequests();
+			var newRequests = GetFulfillableServiceRequests();
 			foreach (var request in newRequests)
 			{
 				ProcessRequest(request);
@@ -35,11 +35,11 @@ namespace ServiceFulfillmentEngineWebJob
 		}
 
 		/// <summary>
-		/// Returns if the request is already processed or not
+		/// Returns if the request is fulfillable or not
 		/// </summary>
 		/// <param name="request"></param>
 		/// <returns></returns>
-		private bool IsProcessedRequest(IServiceRequest request)
+		private bool IsFulfillableRequest(IServiceRequest request)
 		{
 			return request.State != ServiceRequestState.Approved;
 		}
@@ -53,83 +53,105 @@ namespace ServiceFulfillmentEngineWebJob
 			Console.WriteLine("\n");
 			Displaymessage($"Processing new Request {request.Name}", MessageType.GoodNews);
 
+			Script script = null;
+			string code = GetCodeFromRequest(request);
 
+			//see if there is any script for this
+			if (code != null)
+			{
+				using (var context = new ServiceFulfillmentEngineContext())
+				{
+					script = context.Scripts.FirstOrDefault(x => x.ApplicableCode == code);
+				}
+			}
+			if (script != null)
+			{
+				Console.WriteLine($"Identified as executable on {code}'");
+				ExecuteScriptForRequest(script, request);
+			}
 
+			ForwardRequest(request);
+
+			FulfillPrometheusRequest(request);
+		}
+
+		/// <summary>
+		/// Returns the appropriate code for a Request provided one exists. 
+		/// Otherwise return null
+		/// </summary>
+		/// <param name="request"></param>
+		/// <returns></returns>
+		private string GetCodeFromRequest(IServiceRequest request)
+		{
 			using (var context = new ServiceFulfillmentEngineContext())
 			{
-				Script script = null;
-				IEnumerable<Script> highPriorityScripts;
-				IEnumerable<Script> lowPriorityScripts;
-
 				//get scripts
-				highPriorityScripts = from s in context.Scripts where s.Priority == Priority.High select s;
-				lowPriorityScripts = from s in context.Scripts where s.Priority == Priority.Low select s;
+				IEnumerable<Script> highPriorityScripts = from s in context.Scripts where s.Priority == Priority.High select s;
+				IEnumerable<Script> lowPriorityScripts = from s in context.Scripts where s.Priority == Priority.Low select s;
 
 				//try high priority codes available first
 				var code = (from r in request.ServiceRequestOptions
-					where r.Code == (from s in highPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
-					select r.Code).FirstOrDefault();
+							where
+							r.Code == (from s in highPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
+							select r.Code).FirstOrDefault();
 
 				//if not try for a lower priority codes
 				if (code == null)
 				{
 					code = (from r in request.ServiceRequestOptions
-								   where r.Code == (from s in lowPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
-								   select r.Code).FirstOrDefault();
+							where
+							r.Code == (from s in lowPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
+							select r.Code).FirstOrDefault();
 				}
-
-				//see if there is any script for this
-				if (code != null)
-				{
-					script = context.Scripts.FirstOrDefault(x => x.ApplicableCode == code);
-				}
-				if (script != null)
-				{
-					Console.WriteLine($"Identified as executable on {code}'");
-
-					Runspace runspace = RunspaceFactory.CreateRunspace();
-					runspace.Open();
-
-					// create a pipeline and feed it the script
-					Pipeline pipeline = runspace.CreatePipeline();
-
-					try
-					{
-						pipeline.Commands.AddScript(@"C:\Scripts\" + script.FileName);
-					}
-					catch (Exception exception)
-					{
-						Displaymessage($"Error: {exception.Message}", MessageType.Failure);
-					}
-
-					foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
-					{
-						runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
-					}
-					try
-					{
-						Collection<PSObject> results = pipeline.Invoke();
-						Console.WriteLine("Script results: ");
-
-						foreach (var psObject in results)
-						{
-							Console.WriteLine(psObject);
-						}
-
-
-					}
-					catch (Exception exception)
-					{
-						Console.ForegroundColor = ConsoleColor.Red;
-						Console.WriteLine($"Error in executing script: {exception.Message}");
-						Console.ForegroundColor = ConsoleColor.White;
-					}
-					Console.WriteLine($"Completed execution of {request.Name}");
-				}
+				return code;
 			}
-			ForwardRequest(request);
+		}
 
-			FulfillPrometheusRequest(request);
+		/// <summary>
+		/// Do really cool powershell things
+		/// </summary>
+		/// <param name="script"></param>
+		/// <param name="request"></param>
+		private void ExecuteScriptForRequest(Script script, IServiceRequest request)
+		{
+			Runspace runspace = RunspaceFactory.CreateRunspace();
+			runspace.Open();
+
+			// create a pipeline and feed it the script
+			Pipeline pipeline = runspace.CreatePipeline();
+
+			try
+			{
+				pipeline.Commands.AddScript(@"C:\Scripts\" + script.FileName);
+			}
+			catch (Exception exception)
+			{
+				Displaymessage($"Error: {exception.Message}", MessageType.Failure);
+			}
+
+			foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
+			{
+				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
+			}
+			try
+			{
+				Collection<PSObject> results = pipeline.Invoke();
+				Console.WriteLine("Script results: ");
+
+				foreach (var psObject in results)
+				{
+					Console.WriteLine(psObject);
+				}
+
+
+			}
+			catch (Exception exception)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine($"Error in executing script: {exception.Message}");
+				Console.ForegroundColor = ConsoleColor.White;
+			}
+			Console.WriteLine($"Completed execution of {request.Name}");
 		}
 
 		/// <summary>
@@ -178,36 +200,16 @@ namespace ServiceFulfillmentEngineWebJob
 		/// Also Saves the fulfillment record in the database
 		/// </summary>
 		/// <param name="request"></param>
-
 		private void ForwardRequest(IServiceRequest request)
 		{
 			Displaymessage($"Forward Request {request.Name} to Ticketing System", MessageType.Info);
 		}
 
 		/// <summary>
-		/// Runs the script relevant to the SRO
-		/// </summary>
-		/// <param name="option"></param>
-		private void ProcessServiceOption(IServiceRequestOption option)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Returns if the SRO has a script
-		/// </summary>
-		/// <param name="option"></param>
-		/// <returns></returns>
-		private bool IsProcessableOption(IServiceRequestOption option)
-		{
-			throw new NotImplementedException();
-		}
-
-		/// <summary>
-		/// Gets all of the service requests from the API and then filters for new ones
+		/// Gets all of the service requests from the API and then filters for ones that can be fulfilled
 		/// </summary>
 		/// <returns></returns>
-		private IEnumerable<IServiceRequest> GetNewServiceRequests()
+		private IEnumerable<IServiceRequest> GetFulfillableServiceRequests()
 		{
 			var controller = new PrometheusApiController(_username, _password);
 			var requests = controller.GetServiceRequests();
@@ -215,7 +217,7 @@ namespace ServiceFulfillmentEngineWebJob
 			{
 				foreach (var request in requests)
 				{
-					if (!IsProcessedRequest(request))
+					if (!IsFulfillableRequest(request))
 					{
 						yield return request;
 					}

@@ -12,6 +12,12 @@ namespace RequestService.Controllers
 {
 	public class ScriptFileController : EntityController<IScriptDto>, IScriptFileController
 	{
+		/// <summary>
+		/// Retrieve a single script
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="scriptId">script id</param>
+		/// <returns></returns>
 		public IScriptDto GetScript(int performingUserId, int scriptId)
 		{
 			using (var context = new PrometheusContext())
@@ -38,6 +44,13 @@ namespace RequestService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modify a script
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="script">script to modify</param>
+		/// <param name="modification">change to make</param>
+		/// <returns></returns>
 		public IScriptDto ModifyScript(int performingUserId, IScriptDto script, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, script, modification);

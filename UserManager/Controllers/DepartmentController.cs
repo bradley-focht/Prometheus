@@ -12,6 +12,12 @@ namespace UserManager.Controllers
 {
 	public class DepartmentController : EntityController<IDepartmentDto>, IDepartmentController
 	{
+		/// <summary>
+		/// Retrieve a single department
+		/// </summary>
+		/// <param name="performingUserId">user making the request</param>
+		/// <param name="departmentId">department to retrieve</param>
+		/// <returns></returns>
 		public IDepartmentDto GetDepartment(int performingUserId, int departmentId)
 		{
 			using (var context = new PrometheusContext())
@@ -20,6 +26,11 @@ namespace UserManager.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Retrieves all departments
+		/// </summary>
+		/// <param name="performingUserId">user making the request</param>
+		/// <returns></returns>
 		public IEnumerable<IDepartmentDto> GetDepartments(int performingUserId)
 		{
 			using (var context = new PrometheusContext())
@@ -31,7 +42,12 @@ namespace UserManager.Controllers
 			}
 		}
 
-		public Guid GetDepartmentFromScript(int scriptId)
+		/// <summary>
+		/// Retrieves the unique identifier of the Department Script from ID provided
+		/// </summary>
+		/// <param name="scriptId"></param>
+		/// <returns></returns>
+		public Guid GetDepartmentScriptFromId(int scriptId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -41,6 +57,13 @@ namespace UserManager.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the Department in the database
+		/// </summary>
+		/// <param name="performingUserId">User ID for the user performing the modification</param>
+		/// <param name="departmentDto"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns></returns>
 		public IDepartmentDto ModifyDepartment(int performingUserId, IDepartmentDto departmentDto, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, departmentDto, modification);

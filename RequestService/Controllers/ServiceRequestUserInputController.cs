@@ -11,7 +11,13 @@ namespace RequestService.Controllers
 {
 	public class ServiceRequestUserInputController : EntityController<IServiceRequestUserInputDto>, IServiceRequestUserInputController
 	{
-		public IServiceRequestUserInputDto GetServiceRequestUserInput(int performingUser, int userInputId)
+		/// <summary>
+		/// Finds service request user input with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="userInputId"></param>
+		/// <returns></returns>
+		public IServiceRequestUserInputDto GetServiceRequestUserInput(int performingUserId, int userInputId)
 		{
 			using (var context = new PrometheusContext())
 			{
@@ -21,9 +27,17 @@ namespace RequestService.Controllers
 				return null;
 			}
 		}
-		public IServiceRequestUserInputDto ModifyServiceRequestUserInput(int performingUser, IServiceRequestUserInputDto userInput, EntityModification modification)
+
+		/// <summary>
+		/// Modifies the service request input in the database
+		/// </summary>
+		/// <param name="performingUserId">ID of user performing the modification</param>
+		/// <param name="userInput"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Request User Input</returns>
+		public IServiceRequestUserInputDto ModifyServiceRequestUserInput(int performingUserId, IServiceRequestUserInputDto userInput, EntityModification modification)
 		{
-			return base.ModifyEntity(performingUser, userInput, modification);
+			return base.ModifyEntity(performingUserId, userInput, modification);
 		}
 
 		protected override IServiceRequestUserInputDto Create(int performingUser, IServiceRequestUserInputDto entity)

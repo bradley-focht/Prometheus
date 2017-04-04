@@ -22,6 +22,13 @@ namespace UserManager.Controllers
 			_permissionController = permissionController;
 		}
 
+		/// <summary>
+		/// Modifies the Role in the database
+		/// </summary>
+		/// <param name="performingUserId">User ID for the user perfomring the modification</param>
+		/// <param name="roleDto"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns></returns>
 		public IRoleDto ModifyRole(int performingUserId, IRoleDto roleDto, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, roleDto, modification);
@@ -70,6 +77,13 @@ namespace UserManager.Controllers
 			return null;
 		}
 
+		/// <summary>
+		/// Adds a role to all provided users
+		/// </summary>
+		/// <param name="performingUserId">User adding the roles to users</param>
+		/// <param name="roleDto">Role to add</param>
+		/// <param name="users">Users having the role added to them</param>
+		/// <returns>All Users with the Role added</returns>
 		public IEnumerable<IUserDto> AddRoleToUsers(int performingUserId, IRoleDto roleDto, IEnumerable<IUserDto> users)
 		{
 			if (_permissionController.UserHasPermission(performingUserId, UserRoleAssignment.CanAssignRoles))
@@ -112,6 +126,13 @@ namespace UserManager.Controllers
 				RolePermissionAdjustment.CanAdjustRolePermissions);
 		}
 
+		/// <summary>
+		/// Removes a role from all provided users if they had the role to begin with
+		/// </summary>
+		/// <param name="performingUserId">User removing the roles from users</param>
+		/// <param name="roleDto">Role to remove</param>
+		/// <param name="users">Users having the role removed from them</param>
+		/// <returns>All Users with the role removed</returns>
 		public IEnumerable<IUserDto> RemoveRoleFromUsers(int performingUserId, IRoleDto roleDto, IEnumerable<IUserDto> users)
 		{
 			if (_permissionController.UserHasPermission(performingUserId, UserRoleAssignment.CanAssignRoles))
@@ -155,6 +176,11 @@ namespace UserManager.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Get all available roles
+		/// </summary>
+		/// <param name="performingUserId">user requesting the action</param>
+		/// <returns></returns>
 		public IEnumerable<IRoleDto> GetRoles(int performingUserId)
 		{
 			if (_permissionController.UserHasPermission(performingUserId, UserRoleAssignment.CanViewRoles))
@@ -170,6 +196,12 @@ namespace UserManager.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Retrieve a single role
+		/// </summary>
+		/// <param name="performingUserId">user making hte request</param>
+		/// <param name="roleId">role to retrieve</param>
+		/// <returns></returns>
 		public IRoleDto GetRole(int performingUserId, int roleId)
 		{
 			if (_permissionController.UserHasPermission(performingUserId, UserRoleAssignment.CanViewRoles))

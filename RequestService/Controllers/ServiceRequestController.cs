@@ -24,6 +24,12 @@ namespace RequestService.Controllers
 			_requestManager = requestManager;
 		}
 
+		/// <summary>
+		/// Finds service request with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceRequestId"></param>
+		/// <returns></returns>
 		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> GetServiceRequest(int performingUserId, int serviceRequestId)
 		{
 			using (var context = new PrometheusContext())
@@ -39,6 +45,13 @@ namespace RequestService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service request in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceRequest"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Request</returns>
 		public IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ModifyServiceRequest(int performingUserId, IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> serviceRequest, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, serviceRequest, modification);
@@ -86,6 +99,12 @@ namespace RequestService.Controllers
 			return null;
 		}
 
+		/// <summary>
+		/// Retrieves the service requests that the user provided is the requestor for
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="requestorUserId"></param>
+		/// <returns></returns>
 		public IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequestsForRequestorId(int performingUserId, int requestorUserId)
 		{
 			using (var context = new PrometheusContext())
@@ -98,6 +117,11 @@ namespace RequestService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Retrieves the service requests for an approver based on their department
+		/// </summary>
+		/// <param name="approverId">ID of approver</param>
+		/// <returns></returns>
 		public IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequestsForApproverId(int approverId)
 		{
 			if (_userManager.UserHasPermission(approverId, ApproveServiceRequest.ApproveAnyRequests))
@@ -164,6 +188,11 @@ namespace RequestService.Controllers
 			return false;
 		}
 
+		/// <summary>
+		/// Returns all service requests
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <returns></returns>
 		public IEnumerable<IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>> GetServiceRequests(int performingUserId)
 		{
 			using (var context = new PrometheusContext())

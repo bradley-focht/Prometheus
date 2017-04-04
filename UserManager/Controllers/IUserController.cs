@@ -40,8 +40,21 @@ namespace UserManager.Controllers
 		/// <returns></returns>
 		IUserDto GetUser(int performingUserId, int userId);
 
+		/// <summary>
+		/// Gets a specific user from their AD identifier
+		/// </summary>
+		/// <param name="userGuid"></param>
+		/// <returns></returns>
 		IUserDto GetUser(Guid userGuid);
+
+		/// <summary>
+		/// ID of the Guest User of the system
+		/// </summary>
 		int GuestId { get; }
+
+		/// <summary>
+		/// ID of the defaulted Administrator of the system
+		/// </summary>
 		int AdministratorId { get; }
 	}
 }

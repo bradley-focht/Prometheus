@@ -11,6 +11,12 @@ namespace RequestService.Controllers
 {
 	public class ApprovalController : EntityController<IApprovalDto>, IApprovalController
 	{
+		/// <summary>
+		/// Finds approval with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="approvalId"></param>
+		/// <returns></returns>
 		public IApprovalDto GetApproval(int performingUserId, int approvalId)
 		{
 			using (var context = new PrometheusContext())
@@ -22,6 +28,12 @@ namespace RequestService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Get Approval for an SR
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceRequestId"></param>
+		/// <returns></returns>
 		public IApprovalDto GetApprovalForServiceRequest(int performingUserId, int serviceRequestId)
 		{
 			using (var context = new PrometheusContext())
@@ -33,6 +45,13 @@ namespace RequestService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the approval in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="approval"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Approval</returns>
 		public IApprovalDto ModifyApproval(int performingUserId, IApprovalDto approval, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, approval, modification);

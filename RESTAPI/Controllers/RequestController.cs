@@ -29,7 +29,12 @@ namespace RESTAPI.Controllers
 			_serviceRequestController = serviceRequestController;
 		}
 
-		// GET: /Request
+		/// <summary>
+		/// GET: /Request
+		/// 
+		/// Retrieves a list of all SRs that the User making the call can see and returns them.
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<Request> Get()
 		{
 			var userId = Authenticate().Id;
@@ -50,7 +55,12 @@ namespace RESTAPI.Controllers
 			return requests.Select(x => new Request(x));
 		}
 
-		// GET: /Request/5
+		/// <summary>
+		/// GET: /Request/{id}
+		/// 
+		/// Retrieves an SR that matches the ID provided in the URI 
+		/// </summary>
+		/// <returns></returns>
 		public Request Get(int id)
 		{
 			var userId = Authenticate().Id;
@@ -70,13 +80,23 @@ namespace RESTAPI.Controllers
 			throw new PermissionException($"User is not able to access Service Request with ID {id}", userId, ApiAccess.OnlyUsersRequests);
 		}
 
-		// POST: /Request
+		/// <summary>
+		/// POST: /Request
+		/// 
+		/// This call is not supported
+		/// </summary>
+		/// <returns></returns>
 		public void Post([FromBody]Request value)
 		{
 			throw new InvalidOperationException("The /Request API does not support creation of Service Requests");
 		}
 
-		// PUT: /Request/5
+		/// <summary>
+		/// PUT: /Request/{id}
+		/// 
+		/// Updates the SR with the ID provided with the new values provided in the Body of the call
+		/// </summary>
+		/// <returns>Updated version of the Request</returns>
 		public Request Put(int id, [FromBody]string value)
 		{
 			var userId = Authenticate().Id;
@@ -100,7 +120,12 @@ namespace RESTAPI.Controllers
 			throw new PermissionException($"User is not able to access Service Request with ID {id}", userId, ApiAccess.OnlyUsersRequests);
 		}
 
-		// DELETE: /Request/5
+		/// <summary>
+		/// DELETE: /Request/{id}
+		/// 
+		/// Deletes the SR with the ID provided
+		/// </summary>
+		/// <returns></returns>
 		public void Delete(int id)
 		{
 			var userId = Authenticate().Id;
@@ -120,6 +145,13 @@ namespace RESTAPI.Controllers
 			throw new PermissionException($"User is not able to access Service Request with ID {id}", userId, ApiAccess.OnlyUsersRequests);
 		}
 
+		/// <summary>
+		/// Authenticates the call being made by attempting to log into AD with the credentials provided in the Headers of the call.
+		/// Headers:
+		/// 	Username - AD Username
+		/// 	Password - AD Password
+		/// </summary>
+		/// <returns></returns>
 		private IUserDto Authenticate()
 		{
 			var headers = HttpContext.Current.Request.Headers;
