@@ -1,18 +1,18 @@
 ﻿@{
-    ViewBag.Title = "Service Request Maintenance";
+    ViewBag.Title = "Request Maintenance";
     Layout = "~/Views/Shared/_Layout.cshtml";
 
     ViewBag.Links = new List<KeyValuePair<string, string>>
     {
         new KeyValuePair<string, string>("Home", "Home"),
-        new KeyValuePair<string, string>("Service Request Maintenance", "#")
+        new KeyValuePair<string, string>("Request System Maintenance", "#")
     };
 
 }
 <div class="title-div">Maintenance Tasks</div>
 <div class="panel-div">
     <div>@Html.ActionLink("Service Catalog Entries", "ShowServices", "ServiceRequestMaintenance")</div>
-    <div>@Html.ActionLink("Service Request Packages", "ShowPackages", "ServiceRequestMaintenance")</div>
+    <div>@Html.ActionLink("Request Packages", "ShowPackages", "ServiceRequestMaintenance")</div>
     <div>@Html.ActionLink("User Inputs", "ShowUserInput", "ServiceRequestMaintenance")</div>
 </div>
 
