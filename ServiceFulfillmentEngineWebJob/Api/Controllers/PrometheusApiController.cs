@@ -57,7 +57,7 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 		}
 
 		/// <summary>
-		/// Makes Prometheus PUT /Requests/{id} call for a SR provided
+		/// Makes Prometheus PUT /Requests/{id} call for a Service Request provided
 		/// </summary>
 		/// <param name="serviceRequestId"></param>
 		/// <param name="serviceRequest">Updated SR</param>
