@@ -75,7 +75,6 @@ namespace RequestService
 					var requestEntity = context.ServiceRequests.Find(requestId);
 
 					//Change state of the entity
-					ClearTemporaryFields(requestEntity);
 					requestEntity.State = ServiceRequestState.Submitted;
 					requestEntity.SubmissionDate = DateTime.UtcNow;
 
@@ -202,6 +201,7 @@ namespace RequestService
 
 					//Change state of the entity
 					var requestEntity = context.ServiceRequests.Find(requestId);
+					ClearTemporaryFields(requestEntity);
 
 					//Approve or deny
 					if (approvalResult == ApprovalResult.Approved)
