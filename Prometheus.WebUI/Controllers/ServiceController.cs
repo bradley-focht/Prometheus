@@ -25,13 +25,18 @@ namespace Prometheus.WebUI.Controllers
 	[Authorize]
 	public class ServiceController : PrometheusController
 	{
-		private const int ServicePageSize = 12;
+		private readonly int _servicePageSize = 12;
 		private readonly IPortfolioService _portfolioService;
 
 		public ServiceController(IPortfolioService portfolioService, IUserManager userManager)
 		{
 			_portfolioService = portfolioService;
 			_userManager = userManager;
+			try
+			{
+				_servicePageSize = ConfigHelper.GetPaginationSize();
+			}
+			catch(Exception) { }
 		}
 
 		/// <summary>
@@ -95,10 +100,10 @@ namespace Prometheus.WebUI.Controllers
 			}
 
 			//now onto pagination
-			if (model.Services != null && model.Services.Count() > ServicePageSize)
+			if (model.Services != null && model.Services.Count() > _servicePageSize)
 			{
-				model.ControlsModel.TotalPages = ((model.Services.Count() + ServicePageSize - 1) / ServicePageSize);
-				model.Services = model.Services.Skip(ServicePageSize * pageId).Take(ServicePageSize);
+				model.ControlsModel.TotalPages = ((model.Services.Count() + _servicePageSize - 1) / _servicePageSize);
+				model.Services = model.Services.Skip(_servicePageSize * pageId).Take(_servicePageSize);
 			}
 
 			return View(model);
@@ -693,10 +698,10 @@ namespace Prometheus.WebUI.Controllers
 			}
 
 			model.Options = model.Options.OrderBy(o => o.Name).ToList();                                    //sorting
-			if (model.Options != null && model.Options.Count() > ServicePageSize)                           //pagination
+			if (model.Options != null && model.Options.Count() > _servicePageSize)                           //pagination
 			{
-				model.TotalPages = (model.Options.Count + ServicePageSize - 1) / ServicePageSize;
-				model.Options = model.Options.Skip(ServicePageSize * pageId).Take(ServicePageSize).ToList();
+				model.TotalPages = (model.Options.Count + _servicePageSize - 1) / _servicePageSize;
+				model.Options = model.Options.Skip(_servicePageSize * pageId).Take(_servicePageSize).ToList();
 			}
 			try
 			{
@@ -1343,8 +1348,8 @@ namespace Prometheus.WebUI.Controllers
 			int serviceId = 0;
 			try
 			{
+				serviceId = _portfolioService.GetServiceOptionCategory(UserId, _portfolioService.GetServiceOption(UserId, model.Id).ServiceOptionCategoryId).ServiceId;
 				_portfolioService.ModifyServiceOption(UserId, new ServiceOptionDto { Id = model.Id }, EntityModification.Delete);
-				serviceId = _portfolioService.GetServiceOptionCategory(UserId, model.Id).ServiceId;
 			}
 			catch (Exception exception)
 			{
@@ -1524,8 +1529,8 @@ namespace Prometheus.WebUI.Controllers
 
 			if (documents.Any())                           //pagination
 			{
-				model.TotalPages = (documents.Count + ServicePageSize - 1) / ServicePageSize;
-				documents = documents.Skip(ServicePageSize * pageId).Take(ServicePageSize).ToList();
+				model.TotalPages = (documents.Count + _servicePageSize - 1) / _servicePageSize;
+				documents = documents.Skip(_servicePageSize * pageId).Take(_servicePageSize).ToList();
 				model.Documents = documents;
 			}
 
