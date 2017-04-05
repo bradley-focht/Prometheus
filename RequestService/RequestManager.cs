@@ -333,7 +333,8 @@ namespace RequestService
 				var request = RequestFromId(requestId);
 
 				//Requestor or Approver and SUBMITTED
-				if (request.State == ServiceRequestState.Submitted && (request.RequestedByUserId == userId || request.ApproverUserId == userId))
+				if (request.State == ServiceRequestState.Submitted && (request.RequestedByUserId == userId || request.ApproverUserId == userId
+					|| UserCanApproveRequest(userId, requestId)))
 					return true;
 
 				//Requestor and INCOMPLETE
