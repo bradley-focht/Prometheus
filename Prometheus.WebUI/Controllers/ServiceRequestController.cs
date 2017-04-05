@@ -410,6 +410,7 @@ namespace Prometheus.WebUI.Controllers
 				if (model.ServiceRequest.Action == ServiceRequestAction.New)
 				{
 					model.NewPackage = ServicePackageHelper.GetPackage(UserId, _portfolioService, model.ServiceRequest.ServiceOptionId, ServiceRequestAction.New);
+					
 				}   //change package 
 				else if (model.SelectedAction == ServiceRequestAction.Change)
 				{

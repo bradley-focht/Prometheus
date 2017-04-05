@@ -66,7 +66,7 @@ namespace ServiceFulfillmentEngineWebJob
 			}
 			if (script != null)
 			{
-				Console.WriteLine($"Identified as executable on {code}'");
+				Console.WriteLine($"Identified as executable on '{code}'");
 				ExecuteScriptForRequest(script, request);
 			}
 
@@ -85,18 +85,30 @@ namespace ServiceFulfillmentEngineWebJob
 		{
 			using (var context = new ServiceFulfillmentEngineContext())
 			{
-				//get scripts
-				IEnumerable<Script> highPriorityScripts = from s in context.Scripts where s.Priority == Priority.High select s;
-				IEnumerable<Script> lowPriorityScripts = from s in context.Scripts where s.Priority == Priority.Low select s;
+				IEnumerable<Script> highPriorityScripts = null;
+				IEnumerable<Script> lowPriorityScripts = null;
+				try
+				{
+					//get scripts
+					highPriorityScripts = from s in context.Scripts where s.Priority == Priority.High select s;
+					lowPriorityScripts = from s in context.Scripts where s.Priority == Priority.Low select s;
+				}
+				catch (Exception) {/* database empty or other db problem */ }
 
+				string code = null;
 				//try high priority codes available first
-				var code = (from r in request.ServiceRequestOptions
+
+				if (highPriorityScripts != null)
+				{
+					code = (from r in request.ServiceRequestOptions
 							where
-							r.Code == (from s in highPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
+								r.Code ==
+								(from s in highPriorityScripts where s.ApplicableCode == r.Code select s.ApplicableCode).FirstOrDefault()
 							select r.Code).FirstOrDefault();
+				}
 
 				//if not try for a lower priority codes
-				if (code == null)
+				if (code == null && lowPriorityScripts != null)
 				{
 					code = (from r in request.ServiceRequestOptions
 							where

@@ -30,7 +30,7 @@ catch (Exception) { }
 					
 					@if (UiPermissionHelper.HasPermission(userId, ServiceRequestSubmission.CanSubmitRequests))
 					{
-						<li>@Html.ActionLink("Service Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
+						<li>@Html.ActionLink("My Requests", "Index", "ServiceRequestApproval", null, new { @class = "dropdown-item" })</li>
 					}				
 					<li>@Html.ActionLink("Service Catalog", "Index", "ServiceCatalog", null, new { @class = "dropdown-item" })</li>
 				</ul>
