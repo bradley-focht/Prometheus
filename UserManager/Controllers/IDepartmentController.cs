@@ -22,7 +22,12 @@ namespace UserManager.Controllers
 		/// <returns></returns>
 		IEnumerable<IDepartmentDto> GetDepartments(int performingUserId);
 
-		Guid GetDepartmentFromScript(int scriptId);
+		/// <summary>
+		/// Retrieves the unique identifier of the Department Script from ID provided
+		/// </summary>
+		/// <param name="scriptId"></param>
+		/// <returns></returns>
+		Guid GetDepartmentScriptFromId(int scriptId);
 
 		/// <summary>
 		/// Modifies the Department in the database

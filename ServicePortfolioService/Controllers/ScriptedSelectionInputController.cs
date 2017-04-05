@@ -12,6 +12,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ScriptedSelectionInputController : EntityController<IScriptedSelectionInputDto>, IScriptedSelectionInputController
 	{
+		/// <summary>
+		/// Finds Scripted Selection Input with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="scriptedSelection"></param>
+		/// <returns></returns>
 		public IScriptedSelectionInputDto GetScriptedSelectionInput(int performingUserId, int selectionInputId)
 		{
 			using (var context = new PrometheusContext())
@@ -20,6 +26,11 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Returns a list of all of the Scripted Selection Inputs found
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <returns></returns>
 		public IEnumerable<IScriptedSelectionInputDto> GetScriptedSelectionInputs(int performingUserId)
 		{
 			using (var context = new PrometheusContext())
@@ -32,11 +43,24 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(int performingUserId, IScriptedSelectionInputDto textInput, EntityModification modification)
+		/// <summary>
+		/// Modifies the Scripted Selection Input in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="scriptedSelection"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Scripted Selection Input</returns>
+		public IScriptedSelectionInputDto ModifyScriptedSelectionInput(int performingUserId, IScriptedSelectionInputDto scriptedSelection, EntityModification modification)
 		{
-			return base.ModifyEntity(performingUserId, textInput, modification);
+			return base.ModifyEntity(performingUserId, scriptedSelection, modification);
 		}
 
+		/// <summary>
+		/// Creates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User creating the entity</param>
+		/// <param name="entity">Entity to be created</param>
+		/// <returns>Created entity DTO</returns>
 		protected override IScriptedSelectionInputDto Create(int performingUserId, IScriptedSelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())
@@ -52,6 +76,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Updates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User updating the entity</param>
+		/// <param name="entity">Entity to be updated</param>
+		/// <returns>Updated entity DTO</returns>
 		protected override IScriptedSelectionInputDto Update(int performingUserId, IScriptedSelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())
@@ -69,6 +99,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Deletes the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User deleting the entity</param>
+		/// <param name="entity">Entity to be deleted</param>
+		/// <returns>Deleted entity. null if deletion was successfull</returns>
 		protected override IScriptedSelectionInputDto Delete(int performingUserId, IScriptedSelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())

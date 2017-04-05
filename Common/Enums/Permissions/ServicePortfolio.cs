@@ -9,10 +9,12 @@
 		/// No access to Service Bunles
 		/// </summary>
 		NoAccess,
+
 		/// <summary>
 		/// Can Get* Service Bundles
 		/// </summary>
 		CanView,
+
 		/// <summary>
 		/// Can Modify Service Bundles
 		/// </summary>

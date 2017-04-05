@@ -11,6 +11,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceGoalController : EntityController<IServiceGoalDto>, IServiceGoalController
 	{
+		/// <summary>
+		/// Finds service goal with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceGoalId"></param>
+		/// <returns></returns>
 		public IServiceGoalDto GetServiceGoal(int performingUserId, int serviceGoalId)
 		{
 			using (var context = new PrometheusContext())
@@ -19,6 +25,13 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service goal in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceGoal"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Goal</returns>
 		public IServiceGoalDto ModifyServiceGoal(int performingUserId, IServiceGoalDto serviceGoal, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, serviceGoal, modification);

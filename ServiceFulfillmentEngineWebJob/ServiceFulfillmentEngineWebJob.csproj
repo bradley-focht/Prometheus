@@ -108,10 +108,7 @@
     <Compile Include="Api\Models\ServiceRequestUserInput.cs" />
     <Compile Include="EntityFramework\Models\Enums\Priority.cs" />
     <Compile Include="EntityFramework\Models\IScript.cs" />
-    <Compile Include="EntityFramework\Models\RequestFulfillment.cs" />
-    <Compile Include="EntityFramework\Models\ICreatedEntity.cs" />
     <Compile Include="EntityFramework\DataAccessLayer\ServiceFulfillmentEngineContext.cs" />
-    <Compile Include="EntityFramework\Models\RequestOptionFulfillment.cs" />
     <Compile Include="EntityFramework\Models\Script.cs" />
     <Compile Include="Enums\MessageType.cs" />
     <Compile Include="FulfillmentManager.cs" />

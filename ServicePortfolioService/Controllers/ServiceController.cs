@@ -12,6 +12,11 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceController : EntityController<IServiceDto>, IServiceController
 	{
+		/// <summary>
+		/// Finds service with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="serviceId"></param>
+		/// <returns></returns>
 		public IServiceDto GetService(int serviceId)
 		{
 			using (var context = new PrometheusContext())
@@ -22,26 +27,47 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Finds the service bundle from identifier then returns all of its services
+		/// </summary>
+		/// <param name="serviceBundleId"></param>
+		/// <returns></returns>
 		public IEnumerable<IServiceDto> GetServicesForServiceBundle(int serviceBundleId)
 		{
 			using (var context = new PrometheusContext())
 			{
 				foreach (var service in context.Services.Where(x => x.ServiceBundleId == serviceBundleId))
-				yield return ManualMapper.MapServiceToDto(service);
+					yield return ManualMapper.MapServiceToDto(service);
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service in the database
+		/// </summary>
+		/// <param name="performingUserId">ID for user doing modification</param>
+		/// <param name="service"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified entity DTO</returns>
 		public IServiceDto ModifyService(int performingUserId, IServiceDto service, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, service, modification);
 		}
 
+		/// <summary>
+		/// Finds the service bundle from identifier then uses its services
+		/// KVP of all services IDs and names in ascending order by name
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<Tuple<int, string>> GetServiceNamesForServiceBundle(int serviceBundleId)
 		{
 			var services = GetServicesForServiceBundle(serviceBundleId);
 			return services.Select(x => new Tuple<int, string>(x.Id, x.Name)).OrderBy(x => x.Item2);
 		}
 
+		/// <summary>
+		/// Gets a list of services and names for making lists
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<Tuple<int, string>> GetServiceNames()
 		{
 			using (var context = new PrometheusContext())
@@ -63,6 +89,10 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Get a full list of services 
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<IServiceDto> GetServices()
 		{
 			using (var context = new PrometheusContext())
@@ -81,6 +111,11 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Get all documents associated with a service
+		/// </summary>
+		/// <param name="serviceId"></param>
+		/// <returns></returns>
 		public IEnumerable<IServiceDocumentDto> GetServiceDocuments(int serviceId)
 		{
 			var service = GetService(serviceId);
@@ -138,6 +173,15 @@ namespace ServicePortfolioService.Controllers
 			return null;
 		}
 
+		/// <summary>
+		/// Applies a service bundle ID to multiple services.
+		/// 
+		/// NOTE: null can be applied as service bundle ID to remove the services from their bundle
+		/// </summary>
+		/// <param name="performingUserId">ID for user performing adjustment</param>
+		/// <param name="serviceBundleId">ID to add to the services. Can be null</param>
+		/// <param name="services">Services to set the Service Bundle on</param>
+		/// <returns></returns>
 		public IEnumerable<IServiceDto> SetServiceBundleForServices(int performingUserId, int? serviceBundleId, IEnumerable<IServiceDto> services)
 		{
 			using (var context = new PrometheusContext())

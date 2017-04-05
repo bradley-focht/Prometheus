@@ -2,6 +2,9 @@
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// The input value that a User supplies in response to a User Input that was requested in the Service Request process
+	/// </summary>
 	public interface IServiceRequestUserInput : IUserCreatedEntity
 	{
 		int Id { get; set; }

@@ -1,6 +1,9 @@
 ﻿
 namespace Common.Dto
 {
+	/// <summary>
+	/// Inputs where selections can be made
+	/// </summary>
 	public interface ISelectable : IUserInput
 	{
 		/// <summary>

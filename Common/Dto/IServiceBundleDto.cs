@@ -2,6 +2,9 @@
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// Logical grouping of ITIL Services
+	/// </summary>
 	public interface IServiceBundleDto
 	{
 		int Id { get; set; }

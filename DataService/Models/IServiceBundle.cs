@@ -1,5 +1,8 @@
 ﻿namespace DataService.Models
 {
+	/// <summary>
+	/// Logical grouping of ITIL Services
+	/// </summary>
 	public interface IServiceBundle : IUserCreatedEntity
 	{
 		int Id { get; set; }

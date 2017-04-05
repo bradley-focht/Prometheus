@@ -24,6 +24,12 @@ namespace RequestService
 		/// <returns>Service Request after Submition is attempted</returns>
 		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> SubmitRequest(int userId, int requestId);
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can Submit the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		bool UserCanSubmitRequest(int userId, int requestId);
 
 		/// <summary>
@@ -35,6 +41,12 @@ namespace RequestService
 		/// <returns>Service Request after Cancellation is attempted</returns>
 		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> CancelRequest(int userId, int requestId, string comments);
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can Cancel the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		bool UserCanCancelRequest(int userId, int requestId);
 
 		/// <summary>
@@ -47,6 +59,12 @@ namespace RequestService
 		/// <returns>Service Request after Approval is attempted</returns>
 		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> ApproveRequest(int userId, int requestId, ApprovalResult approval, string comments);
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can perform an Approval on the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		bool UserCanApproveRequest(int userId, int requestId);
 
 		/// <summary>
@@ -58,6 +76,12 @@ namespace RequestService
 		/// <returns>Service Request after Fulfillment is attempted</returns>
 		IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto> FulfillRequest(int userId, int requestId, string comments);
 
+		/// <summary>
+		/// Determines if the User with the ID supplied can Fulfill the request with the ID provided
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <param name="requestId"></param>
+		/// <returns></returns>
 		bool UserCanFulfillRequest(int userId, int requestId);
 
 		/// <summary>

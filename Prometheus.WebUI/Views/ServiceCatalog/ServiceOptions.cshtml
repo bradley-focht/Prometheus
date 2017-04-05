@@ -45,7 +45,9 @@
     <div class="content-main panel-div" style="display: flex; flex: 1;">
         <div class="flex-container-col">
             <div class="title-div">Available Options for @ViewBag.Subtitle</div>
-            <div style="font-size: 0.8em; color: #666; padding: 10px;">View all options available. Other services are on the left</div>
+	        <div class="make-space-top">
+				@Html.Raw(Model.ServiceBusinessValue)
+				</div>
         </div>
 
         <div class="flex-container-col">

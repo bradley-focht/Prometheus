@@ -12,6 +12,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class SelectionInputController : EntityController<ISelectionInputDto>, ISelectionInputController
 	{
+		/// <summary>
+		/// Finds text input with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="textInput"></param>
+		/// <returns></returns>
 		public ISelectionInputDto GetSelectionInput(int performingUserId, int textInputId)
 		{
 			using (var context = new PrometheusContext())
@@ -20,23 +26,40 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
-	    public IEnumerable<ISelectionInputDto> GetSelectionInputs(int performingUserId)
-	    {
-	        using (var context = new PrometheusContext())
-	        {
-	            var inputs = context.SelectionInputs;
-	            foreach (var input in inputs)
-	            {
-	                yield return ManualMapper.MapSelectionInputToDto(input);
-	            }
-	        }
-	    }
-
-	    public ISelectionInputDto ModifySelectionInput(int performingUserId, ISelectionInputDto textInput, EntityModification modification)
+		/// <summary>
+		/// Retrieve all. 
+		/// </summary>
+		/// <returns></returns>
+		public IEnumerable<ISelectionInputDto> GetSelectionInputs(int performingUserId)
 		{
-			return base.ModifyEntity(performingUserId, textInput, modification);
+			using (var context = new PrometheusContext())
+			{
+				var inputs = context.SelectionInputs;
+				foreach (var input in inputs)
+				{
+					yield return ManualMapper.MapSelectionInputToDto(input);
+				}
+			}
 		}
 
+		/// <summary>
+		/// Modifies the text input in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="selectionInput"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Measure</returns>
+		public ISelectionInputDto ModifySelectionInput(int performingUserId, ISelectionInputDto selectionInput, EntityModification modification)
+		{
+			return base.ModifyEntity(performingUserId, selectionInput, modification);
+		}
+
+		/// <summary>
+		/// Creates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User creating the entity</param>
+		/// <param name="entity">Entity to be created</param>
+		/// <returns>Created entity DTO</returns>
 		protected override ISelectionInputDto Create(int performingUserId, ISelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())
@@ -52,6 +75,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Updates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User updating the entity</param>
+		/// <param name="entity">Entity to be updated</param>
+		/// <returns>Updated entity DTO</returns>
 		protected override ISelectionInputDto Update(int performingUserId, ISelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())
@@ -69,6 +98,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Deletes the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User deleting the entity</param>
+		/// <param name="entity">Entity to be deleted</param>
+		/// <returns>Deleted entity. null if deletion was successfull</returns>
 		protected override ISelectionInputDto Delete(int performingUserId, ISelectionInputDto entity)
 		{
 			using (var context = new PrometheusContext())

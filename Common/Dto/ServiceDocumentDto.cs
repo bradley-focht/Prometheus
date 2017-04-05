@@ -4,6 +4,9 @@ using System.Web.Mvc;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// Document that a User has attached to a Service that can be requested through Prometheus
+	/// </summary>
 	public class ServiceDocumentDto : IServiceDocumentDto
 	{
 		[HiddenInput]

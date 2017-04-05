@@ -13,6 +13,11 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 		private string _username;
 		private string _password;
 
+		/// <summary>
+		/// Creates the API Controller and uses the credentials provided to make API calls
+		/// </summary>
+		/// <param name="username"></param>
+		/// <param name="password"></param>
 		public PrometheusApiController(string username, string password)
 		{
 			_username = username;
@@ -20,6 +25,9 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			_apiString = ConfigurationManager.AppSettings["ApiUrl"];
 		}
 
+		/// <summary>
+		/// Makes Prometheus GET /Requests call
+		/// </summary>
 		public IEnumerable<ServiceRequest> GetServiceRequests()
 		{
 			var response = Request(Method.GET, null);
@@ -32,6 +40,10 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			throw response.ErrorException;
 		}
 
+		/// <summary>
+		/// Makes Prometheus GET /Requests/{id} call for an ID
+		/// </summary>
+		/// <param name="serviceRequestId"></param>
 		public IServiceRequest GetServiceRequestById(int serviceRequestId)
 		{
 			var response = Request(Method.GET, null, serviceRequestId);
@@ -44,6 +56,11 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			throw response.ErrorException;
 		}
 
+		/// <summary>
+		/// Makes Prometheus PUT /Requests/{id} call for a Service Request provided
+		/// </summary>
+		/// <param name="serviceRequestId"></param>
+		/// <param name="serviceRequest">Updated SR</param>
 		public IServiceRequest UpdateRequestById(int serviceRequestId, IServiceRequest serviceRequest)
 		{
 			var response = Request(Method.PUT, serviceRequest, serviceRequestId);
@@ -54,6 +71,11 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			}
 			throw response.ErrorException;
 		}
+
+		/// <summary>
+		/// Makes Prometheus DELETE /Requests/{id} call for an ID
+		/// </summary>
+		/// <param name="serviceRequestId"></param>
 		public void DeleteRequestById(int serviceRequestId)
 		{
 			var response = Request(Method.DELETE, null, serviceRequestId);
@@ -64,6 +86,13 @@ namespace ServiceFulfillmentEngineWebJob.Api.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Builds a RestRequest and executes it for the Prometheus API
+		/// </summary>
+		/// <param name="method">Type of call to make</param>
+		/// <param name="serviceRequest">Request for body of call</param>
+		/// <param name="requestId">ID to add to URI of the call</param>
+		/// <returns>Result of the RestRequest made</returns>
 		private IRestResponse Request(Method method, IServiceRequest serviceRequest, int requestId = 0)
 		{
 			var url = $"{_apiString}/Request";

@@ -2,6 +2,9 @@
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// Grouping of TextInput SelectionInput ScriptedSelectionInput DTOs into one object for ease of use
+	/// </summary>
 	public class InputGroupDto : IInputGroupDto
 	{
 		public IEnumerable<ITextInputDto> TextInputs { get; set; }

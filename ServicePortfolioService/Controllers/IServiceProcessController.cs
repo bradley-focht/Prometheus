@@ -19,7 +19,7 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="performingUserId">ID of user performing modification</param>
 		/// <param name="serviceProcess"></param>
 		/// <param name="modification">Type of modification to make</param>
-		/// <returns>Modified Service WorkUnit</returns>
+		/// <returns>Modified Service Process</returns>
 		IServiceProcessDto ModifyServiceProcess(int performingUserId, IServiceProcessDto serviceProcess, EntityModification modification);
 	}
 }

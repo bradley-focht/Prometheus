@@ -12,6 +12,10 @@ namespace ServicePortfolioService.Controllers
 {
 	public class LifecycleStatusController : EntityController<ILifecycleStatusDto>, ILifecycleStatusController
 	{
+		/// <summary>
+		/// KVP of all lifecycle IDs and names in ascending order by name
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<Tuple<int, string>> GetLifecycleStatusNames()
 		{
 			using (var context = new PrometheusContext())
@@ -32,6 +36,11 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Finds lifecycle status with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="lifecycleStatusId"></param>
+		/// <returns></returns>
 		public ILifecycleStatusDto GetLifecycleStatus(int lifecycleStatusId)
 		{
 			using (var context = new PrometheusContext())
@@ -43,6 +52,10 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// returns a count of the number of Lifecycle statuses found
+		/// </summary>
+		/// <returns></returns>
 		public int CountLifecycleStatuses()
 		{
 			using (var context = new PrometheusContext())
@@ -51,12 +64,25 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the status in the database
+		/// </summary>
+		/// <param name="performingUserId">ID of user performing the modification</param>
+		/// <param name="status"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Lifecycle Status</returns>
 		public ILifecycleStatusDto ModifyLifecycleStatus(int performingUserId, ILifecycleStatusDto status,
 			EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, status, modification);
 		}
 
+		/// <summary>
+		/// Creates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User creating the entity</param>
+		/// <param name="entity">Entity to be created</param>
+		/// <returns>Created entity DTO</returns>
 		protected override ILifecycleStatusDto Create(int performingUserId, ILifecycleStatusDto lifecycleStatus)
 		{
 			using (var context = new PrometheusContext())
@@ -86,6 +112,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Updates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User updating the entity</param>
+		/// <param name="entity">Entity to be updated</param>
+		/// <returns>Updated entity DTO</returns>
 		protected override ILifecycleStatusDto Update(int performingUserId, ILifecycleStatusDto lifecycleStatusDto)
 		{
 			using (var context = new PrometheusContext())
@@ -126,6 +158,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Deletes the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User deleting the entity</param>
+		/// <param name="entity">Entity to be deleted</param>
+		/// <returns>Deleted entity. null if deletion was successfull</returns>
 		protected override ILifecycleStatusDto Delete(int performingUserId, ILifecycleStatusDto entity)
 		{
 			using (var context = new PrometheusContext())

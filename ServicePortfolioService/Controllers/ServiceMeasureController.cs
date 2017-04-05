@@ -11,6 +11,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceMeasureController : EntityController<IServiceMeasureDto>, IServiceMeasureController
 	{
+		/// <summary>
+		/// Finds service Measure with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceMeasureId"></param>
+		/// <returns></returns>
 		public IServiceMeasureDto GetServiceMeasure(int performingUserId, int serviceMeasureId)
 		{
 			using (var context = new PrometheusContext())
@@ -19,6 +25,13 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service Measure in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceMeasure"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Measure</returns>
 		public IServiceMeasureDto ModifyServiceMeasure(int performingUserId, IServiceMeasureDto serviceMeasure, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, serviceMeasure, modification);

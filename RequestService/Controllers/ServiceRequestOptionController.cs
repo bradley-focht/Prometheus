@@ -10,6 +10,12 @@ namespace RequestService.Controllers
 {
 	public class ServiceRequestOptionController : EntityController<IServiceRequestOptionDto>, IServiceRequestOptionController
 	{
+		/// <summary>
+		/// Finds service request option with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="optionId"></param>
+		/// <returns></returns>
 		public IServiceRequestOptionDto GetServiceRequestOption(int performingUserId, int optionId)
 		{
 			using (var context = new PrometheusContext())
@@ -21,6 +27,13 @@ namespace RequestService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the service request option in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="requestOption"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Request Option</returns>
 		public IServiceRequestOptionDto ModifyServiceRequestOption(int performingUserId, IServiceRequestOptionDto requestOption, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, requestOption, modification);

@@ -6,6 +6,10 @@ using Common.Enums;
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// A collection of orderable items in the Catalog that a Service Request is built from. Items in a Service Request Package
+	/// are ones that should be normally ordered together.
+	/// </summary>
 	public class ServiceRequestPackage : IServiceRequestPackage
 	{
 		[Key]

@@ -7,6 +7,9 @@ using Common.Enums;
 
 namespace DataService.Models
 {
+	/// <summary>
+	/// A request made by a User to order a collection of Service Options from a Catalog
+	/// </summary>
 	public class ServiceRequest : IServiceRequest
 	{
 		[Key]

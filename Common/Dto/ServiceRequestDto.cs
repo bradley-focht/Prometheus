@@ -5,6 +5,9 @@ using Common.Enums;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// A request made by a User to order a collection of Service Options from a Catalog
+	/// </summary>
 	public class ServiceRequestDto : IServiceRequestDto<IServiceRequestOptionDto, IServiceRequestUserInputDto>
 	{
 		public int Id { get; set; }

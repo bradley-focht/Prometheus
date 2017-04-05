@@ -2,6 +2,9 @@
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// The input value that a User supplies in response to a User Input that was requested in the Service Request process
+	/// </summary>
 	public interface IServiceRequestUserInputDto
 	{
 		int Id { get; set; }
@@ -27,7 +30,7 @@ namespace Common.Dto
 		string Name { get; set; }
 
 		/// <summary>
-		/// Value of the user input
+		/// Value the User supplied
 		/// </summary>
 		string Value { get; set; }
 	}

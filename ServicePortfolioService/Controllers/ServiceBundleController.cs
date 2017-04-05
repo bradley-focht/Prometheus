@@ -12,6 +12,11 @@ namespace ServicePortfolioService.Controllers
 {
 	public class ServiceBundleController : EntityController<IServiceBundleDto>, IServiceBundleController
 	{
+		/// <summary>
+		/// Finds service bundle with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="serviceBundleId"></param>
+		/// <returns></returns>
 		public IServiceBundleDto GetServiceBundle(int serviceBundleId)
 		{
 			using (var context = new PrometheusContext())
@@ -21,18 +26,26 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Returns all service bundles
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<IServiceBundleDto> GetServiceBundles()
 		{
 			using (var context = new PrometheusContext())
-			{			
+			{
 				foreach (var bundle in context.ServiceBundles)
 				{
 					yield return ManualMapper.MapServiceBundleToDto(bundle);
 				}
-				
+
 			}
 		}
 
+		/// <summary>
+		/// KVP of all service bundle IDs and names in ascending order by name
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<Tuple<int, string>> GetServiceBundleNames()
 		{
 
@@ -43,11 +56,24 @@ namespace ServicePortfolioService.Controllers
 
 		}
 
+		/// <summary>
+		/// Modifies the service bundle in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="serviceBundle"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Service Bundle</returns>
 		public IServiceBundleDto ModifyServiceBundle(int performingUserId, IServiceBundleDto serviceBundle, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, serviceBundle, modification);
 		}
 
+		/// <summary>
+		/// Creates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User creating the entity</param>
+		/// <param name="entity">Entity to be created</param>
+		/// <returns>Created entity DTO</returns>
 		protected override IServiceBundleDto Create(int performingUserId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
@@ -63,6 +89,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Updates the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User updating the entity</param>
+		/// <param name="entity">Entity to be updated</param>
+		/// <returns>Updated entity DTO</returns>
 		protected override IServiceBundleDto Update(int performingUserId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())
@@ -79,6 +111,12 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Deletes the entity in the database
+		/// </summary>
+		/// <param name="performingUserId">User deleting the entity</param>
+		/// <param name="entity">Entity to be deleted</param>
+		/// <returns>Deleted entity. null if deletion was successfull</returns>
 		protected override IServiceBundleDto Delete(int performingUserId, IServiceBundleDto serviceBundle)
 		{
 			using (var context = new PrometheusContext())

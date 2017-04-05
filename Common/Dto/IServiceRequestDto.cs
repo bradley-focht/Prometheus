@@ -4,6 +4,11 @@ using Common.Enums;
 
 namespace Common.Dto
 {
+	/// <summary>
+	/// A request made by a User to order a collection of Service Options from a Catalog
+	/// </summary>
+	/// <typeparam name="T1">Type used for Service Request Options</typeparam>
+	/// <typeparam name="T2">Type used for Service Request User Inputs</typeparam>
 	public interface IServiceRequestDto<T1, T2>
 		where T1 : IServiceRequestOptionDto
 		where T2 : IServiceRequestUserInputDto

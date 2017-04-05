@@ -241,6 +241,7 @@ namespace Prometheus.WebUI.Controllers
 			{
 				var service = services.FirstOrDefault(s => s.Id == serviceId);
 				model.ServiceName = service.Name;               //fill in the services list
+				model.ServiceBusinessValue = service.BusinessValue;
 				model.ServiceNames = from s in services
 									 select new Tuple<int, string>(s.Id, s.Name);
 

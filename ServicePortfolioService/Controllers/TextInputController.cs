@@ -12,6 +12,12 @@ namespace ServicePortfolioService.Controllers
 {
 	public class TextInputController : EntityController<ITextInputDto>, ITextInputController
 	{
+		/// <summary>
+		/// Finds text input with identifier provided and returns its DTO
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="textInputId"></param>
+		/// <returns></returns>
 		public ITextInputDto GetTextInput(int performingUserId, int textInputId)
 		{
 			using (var context = new PrometheusContext())
@@ -20,6 +26,10 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Retrieve all
+		/// </summary>
+		/// <returns></returns>
 		public IEnumerable<ITextInputDto> GetTextInputs(int performingUserId)
 		{
 			using (var context = new PrometheusContext())
@@ -32,6 +42,13 @@ namespace ServicePortfolioService.Controllers
 			}
 		}
 
+		/// <summary>
+		/// Modifies the text input in the database
+		/// </summary>
+		/// <param name="performingUserId"></param>
+		/// <param name="textInput"></param>
+		/// <param name="modification">Type of modification to make</param>
+		/// <returns>Modified Text Input</returns>
 		public ITextInputDto ModifyTextInput(int performingUserId, ITextInputDto textInput, EntityModification modification)
 		{
 			return base.ModifyEntity(performingUserId, textInput, modification);

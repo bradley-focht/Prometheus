@@ -15,9 +15,7 @@
 
 @section Content
 {
-    <div class="title-div">
-        Confirm Deletion
-    </div>
+    <div class="title-div">Confirm Deletion</div>
 
     @using (Html.BeginForm(Model.DeleteAction, "Service", FormMethod.Post))
         {
@@ -25,11 +23,13 @@
             <input type="hidden" name="ServiceId" value="@Model.ServiceId"/>
             <input type="hidden" name="FriendlyName" value="@Model.Name"/>
 
-                <div class="panel">
+                <div class="pane-divl">
                     Are you sure you want to delete
-                    <div class="present-section">
-                        @Model.Name
-                    </div>
+					<div>
+						<div class="present-section">
+							@Model.Name
+						</div>
+					</div>
                 </div>
 
                 <div class="flex-container-col">

@@ -19,7 +19,7 @@ namespace ServicePortfolioService.Controllers
 		/// <param name="performingUserId"></param>
 		/// <param name="swotActivity"></param>
 		/// <param name="modification">Type of modification to make</param>
-		/// <returns>Modified SWOT</returns>
+		/// <returns>Modified SWOT activity</returns>
 		ISwotActivityDto ModifySwotActivity(int performingUserId, ISwotActivityDto swotActivity, EntityModification modification);
 	}
 }

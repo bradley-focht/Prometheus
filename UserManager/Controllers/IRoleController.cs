@@ -39,6 +39,7 @@ namespace UserManager.Controllers
 		/// <param name="performingUserId">user requesting the action</param>
 		/// <returns></returns>
 		IEnumerable<IRoleDto> GetRoles(int performingUserId);
+
 		/// <summary>
 		/// Retrieve a single role
 		/// </summary>
