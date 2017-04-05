@@ -31,7 +31,7 @@ namespace Prometheus.WebUI.Helpers
 			// retrieve filtered data
 			var srList = (from s in srController.GetServiceRequestsForRequestorId(userId, userId)
 						  where s.State == state && s.State == state
-						  orderby s.Id
+						  orderby s.Id descending 
 						  select s).ToList();
 
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
@@ -57,7 +57,7 @@ namespace Prometheus.WebUI.Helpers
 			int pageSize)
 		{
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
-			var srList = (from s in srController.GetServiceRequestsForRequestorId(userId, userId) where s.State != ServiceRequestState.Cancelled orderby s.Id select s).ToList();
+			var srList = (from s in srController.GetServiceRequestsForRequestorId(userId, userId) where s.State != ServiceRequestState.Cancelled orderby s.Id descending select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
 
@@ -81,7 +81,7 @@ namespace Prometheus.WebUI.Helpers
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
 						  where s.State != ServiceRequestState.Cancelled && s.State != ServiceRequestState.Incomplete
-						  orderby s.Id
+						  orderby s.Id descending 
 						  select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);
@@ -105,7 +105,7 @@ namespace Prometheus.WebUI.Helpers
 			var model = new ServiceRequestApprovalModel { Controls = new ServiceRequestApprovalControls() };
 			var srList = (from s in srController.GetServiceRequestsForApproverId(userId)
 						  where s.State == state
-						  orderby s.Id
+						  orderby s.Id descending 
 						  select s).ToList();
 			model.ServiceRequests = ConvertToTableModel(userManager, srList, userId);
 			Paginate(model, currentPage, pageSize);

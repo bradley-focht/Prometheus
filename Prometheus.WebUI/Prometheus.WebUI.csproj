@@ -443,7 +443,6 @@
     <Content Include="Views\ServiceMaintenance\Index.cshtml" />
     <Content Include="Views\ServiceMaintenance\ShowLifecycle.cshtml" />
     <Content Include="Views\Shared\PartialViews\_LinkList.cshtml" />
-    <Content Include="Views\Shared\PartialViews\_ConfirmDelete.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\LifecycleViewer.cshtml" />
     <Content Include="Views\ServiceMaintenance\PartialViews\LifecycleEditor.cshtml" />
     <Content Include="Views\ServiceMaintenance\ShowServices.cshtml" />
