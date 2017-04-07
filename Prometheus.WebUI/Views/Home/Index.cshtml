@@ -55,7 +55,7 @@
 							<div>@Html.ActionLink("Services", "Index", "Service", null, new { @class = "font-home-link" })</div>
 						</div>
 					}
-					@if (UiPermissionHelper.HasPermission(userId, ServiceDetails.CanViewServiceDetails))
+					@if (UiPermissionHelper.HasPermission(userId, ServicePortfolio.CanView))
 					{
 
 						<div class="flex-col content-cell">

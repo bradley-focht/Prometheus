@@ -94,11 +94,16 @@ namespace Prometheus.WebUI.Controllers
 					return RedirectToAction("Form", new { id = form.Id });
 				return RedirectToAction("Begin", new { id = form.ServiceOptionId, index = -1 });
 			}
+			var requesteeString = Join(",", form.Requestees.Select(x => x.ToString()).ToArray());
+			if (requesteeString.Substring(0, 1) == ",")
+			{
+				requesteeString = requesteeString.Remove(0, 1);
+			}
 			// data ok from here on
 			ServiceRequestDto request = new ServiceRequestDto   //need an adapter
 			{
 				RequestedByGuid = form.Requestor,
-				RequestedForGuids = Join(",", form.Requestees.Select(x => x.ToString()).ToArray()),
+				RequestedForGuids = requesteeString,
 				Id = form.Id,
 				RequestedByUserId = form.RequestorUserId,
 				Comments = form.Comments,

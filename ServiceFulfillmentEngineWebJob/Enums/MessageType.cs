@@ -4,6 +4,7 @@
 	{
 		Failure,
 		Info,
-		GoodNews
+		GoodNews,
+		ScriptResult
 	}
 }

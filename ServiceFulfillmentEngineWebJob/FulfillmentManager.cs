@@ -25,6 +25,9 @@ namespace ServiceFulfillmentEngineWebJob
 			_password = password;
 		}
 
+		/// <summary>
+		/// Handle new, fulfillable, requests
+		/// </summary>
 		public void FulfillNewRequests()
 		{
 			var newRequests = GetFulfillableServiceRequests();
@@ -61,7 +64,7 @@ namespace ServiceFulfillmentEngineWebJob
 			{
 				using (var context = new ServiceFulfillmentEngineContext())
 				{
-					script = context.Scripts.FirstOrDefault(x => x.ApplicableCode == code);
+					script = context.Scripts.FirstOrDefault(x => x.Action == request.Action && x.ApplicableCode == code);
 				}
 			}
 			if (script != null)
@@ -140,7 +143,9 @@ namespace ServiceFulfillmentEngineWebJob
 			{
 				Displaymessage($"Error: {exception.Message}", MessageType.Failure);
 			}
-
+			// add parameters
+			runspace.SessionStateProxy.SetVariable("RequestedFor", request.RequestedForGuids);
+			runspace.SessionStateProxy.SetVariable("Requestor", request.RequestedByGuid);
 			foreach (var userInput in request.ServiceRequestUserInputs) //just add everything
 			{
 				runspace.SessionStateProxy.SetVariable(userInput.Name, userInput.Value);
@@ -148,20 +153,18 @@ namespace ServiceFulfillmentEngineWebJob
 			try
 			{
 				Collection<PSObject> results = pipeline.Invoke();
-				Console.WriteLine("Script results: ");
+				Displaymessage("Script results: ", MessageType.Info);
 
 				foreach (var psObject in results)
 				{
-					Console.WriteLine(psObject);
+					Displaymessage(psObject.ToString(), MessageType.ScriptResult);
 				}
 
 
 			}
 			catch (Exception exception)
 			{
-				Console.ForegroundColor = ConsoleColor.Red;
-				Console.WriteLine($"Error in executing script: {exception.Message}");
-				Console.ForegroundColor = ConsoleColor.White;
+				Displaymessage($"Error in executing script: {exception.Message}", MessageType.Failure);
 			}
 			Console.WriteLine($"Completed execution of {request.Name}");
 		}
@@ -200,6 +203,9 @@ namespace ServiceFulfillmentEngineWebJob
 					break;
 				case MessageType.GoodNews:
 					Console.ForegroundColor = ConsoleColor.Green;
+					break;
+				case MessageType.ScriptResult:
+					Console.ForegroundColor = ConsoleColor.Cyan;
 					break;
 			}
 

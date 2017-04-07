@@ -48,12 +48,21 @@
 			                    @user.DisplayName
 			                    @if (user.UserDto.Roles != null)
 			                    {
+				                    int count = 1;
 				                    <br/>
-				                    foreach (var role in user.UserDto.Roles)
-				                    {
-					                    <span class="note"> @role.Name </span>
-				                    }
-			                    }
+									foreach (var role in user.UserDto.Roles)
+									{
+										if (count < user.UserDto.Roles.Count)
+										{
+											<span class="note">@role.Name,</span>
+										}
+										else
+										{
+											<span class="note">@role.Name</span>
+										}
+										count++;
+									}
+								}
 		                    </label>
 	                    </div>
                     }
