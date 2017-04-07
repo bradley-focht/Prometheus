@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonTests", "CommonTests\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceFulfillmentEngineWebJobTests", "ServiceFulfillmentEngineWebJobTests\ServiceFulfillmentEngineWebJobTests.csproj", "{A9BC9270-873D-4FB3-973B-6AD92431F913}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RESTAPITests", "RESTAPITests\RESTAPITests.csproj", "{A5CDB49E-9409-4F49-A733-243978EDF2F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -99,6 +101,10 @@ Global
 		{A9BC9270-873D-4FB3-973B-6AD92431F913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9BC9270-873D-4FB3-973B-6AD92431F913}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9BC9270-873D-4FB3-973B-6AD92431F913}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5CDB49E-9409-4F49-A733-243978EDF2F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5CDB49E-9409-4F49-A733-243978EDF2F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5CDB49E-9409-4F49-A733-243978EDF2F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5CDB49E-9409-4F49-A733-243978EDF2F3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

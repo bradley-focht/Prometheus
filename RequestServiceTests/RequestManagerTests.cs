@@ -5,12 +5,13 @@ using Common.Enums.Permissions;
 using DataService;
 using DataService.DataAccessLayer;
 using FakeItEasy;
+using RequestService;
 using UserManager.Controllers;
 using Xunit;
 
 namespace RequestServiceTests
 {
-	public class RequestManager
+	public class RequestManagerTests
 	{
 		private const int UserId = 1;
 		private const int DepartmentId = 1;
@@ -24,7 +25,7 @@ namespace RequestServiceTests
 			int requestId = CreateFakeRequest(ServiceRequestState.Incomplete);
 
 			//Do Test Action
-			RequestService.RequestManager rm = new RequestService.RequestManager(fakePermissionController);
+			RequestManager rm = new RequestManager(fakePermissionController);
 			var result = rm.SubmitRequest(UserId, requestId);
 
 			//Clean up before Assert in case the Assert Fails and you dont reach code beyond it... If you want
@@ -43,7 +44,7 @@ namespace RequestServiceTests
 			int requestId = CreateFakeRequest(ServiceRequestState.Submitted);
 
 			//Do Test Action
-			RequestService.RequestManager rm = new RequestService.RequestManager(fakePermissionController);
+			RequestManager rm = new RequestManager(fakePermissionController);
 			var result = rm.ApproveRequest(UserId, requestId, ApprovalResult.Approved, "Approved");
 
 			//Clean up before Assert in case the Assert Fails and you dont reach code beyond it... If you want
@@ -62,7 +63,7 @@ namespace RequestServiceTests
 			int requestId = CreateFakeRequest(ServiceRequestState.Submitted);
 
 			//Do Test Action
-			RequestService.RequestManager rm = new RequestService.RequestManager(fakePermissionController);
+			RequestManager rm = new RequestManager(fakePermissionController);
 			var result = rm.ApproveRequest(UserId, requestId, ApprovalResult.Denied, "Denied");
 
 			//Clean up before Assert in case the Assert Fails and you dont reach code beyond it... If you want
@@ -81,7 +82,7 @@ namespace RequestServiceTests
 			int requestId = CreateFakeRequest(ServiceRequestState.Submitted);
 
 			//Do Test Action
-			RequestService.RequestManager rm = new RequestService.RequestManager(fakePermissionController);
+			RequestManager rm = new RequestManager(fakePermissionController);
 			var result = rm.CancelRequest(UserId, requestId, "Cancelled");
 
 			//Clean up before Assert in case the Assert Fails and you dont reach code beyond it... If you want
@@ -100,7 +101,7 @@ namespace RequestServiceTests
 			int requestId = CreateFakeRequest(ServiceRequestState.Approved);
 
 			//Do Test Action
-			RequestService.RequestManager rm = new RequestService.RequestManager(fakePermissionController);
+			RequestManager rm = new RequestManager(fakePermissionController);
 			var result = rm.FulfillRequest(UserId, requestId, "Fulfilled");
 
 			//Clean up before Assert in case the Assert Fails and you dont reach code beyond it... If you want

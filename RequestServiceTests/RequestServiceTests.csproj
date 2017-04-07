@@ -75,7 +75,7 @@
     <Compile Include="Controllers\ServiceRequestController.cs" />
     <Compile Include="Controllers\ServiceRequestOptionController.cs" />
     <Compile Include="Controllers\ServiceRequestUserInputController.cs" />
-    <Compile Include="RequestManager.cs" />
+    <Compile Include="RequestManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
