@@ -157,7 +157,7 @@ namespace RequestService
 				var request = RequestFromId(requestId);
 
 				return request.RequestedByUserId == userId
-					   && (request.State == ServiceRequestState.Incomplete /*|| request.State == ServiceRequestState.Submitted */);
+					   && (request.State == ServiceRequestState.Incomplete || request.State == ServiceRequestState.Submitted);
 			}
 			return false;
 		}

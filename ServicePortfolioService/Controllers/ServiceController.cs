@@ -21,8 +21,7 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				var service = context.Services.Find(serviceId);
-
+				var service = context.Services.Include(x => x.ServiceDocuments).FirstOrDefault(x => x.Id == serviceId);
 				return ManualMapper.MapServiceToDto(service);
 			}
 		}
@@ -36,8 +35,13 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
-				foreach (var service in context.Services.Where(x => x.ServiceBundleId == serviceBundleId))
-					yield return ManualMapper.MapServiceToDto(service);
+				var toReturn = new List<IServiceDto>();
+				var services = context.Services.Where(x => x.ServiceBundleId == serviceBundleId);
+				foreach (var service in services)
+				{
+					toReturn.Add(ManualMapper.MapServiceToDto(service));
+				}
+				return toReturn;
 			}
 		}
 
@@ -186,6 +190,7 @@ namespace ServicePortfolioService.Controllers
 		{
 			using (var context = new PrometheusContext())
 			{
+				var servicesUpdated = new List<IServiceDto>();
 				foreach (var serviceDto in services)
 				{
 					var service = context.Services.Find(serviceDto.Id);
@@ -195,8 +200,9 @@ namespace ServicePortfolioService.Controllers
 					context.Entry(service).State = EntityState.Modified;
 					context.SaveChanges(performingUserId);
 
-					yield return ManualMapper.MapServiceToDto(service);
+					servicesUpdated.Add(ManualMapper.MapServiceToDto(service));
 				}
+				return servicesUpdated;
 			}
 		}
 	}

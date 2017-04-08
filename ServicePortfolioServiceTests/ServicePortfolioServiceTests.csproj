@@ -38,6 +38,10 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="FakeItEasy, Version=3.2.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
+      <HintPath>..\packages\FakeItEasy.3.2.0\lib\net40\FakeItEasy.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -65,13 +69,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExampleTestClass.cs" />
     <Compile Include="Controllers\LifecycleStatusController.cs" />
     <Compile Include="Controllers\ScriptedSelectionInputController.cs" />
     <Compile Include="Controllers\SelectionInputController.cs" />
     <Compile Include="Controllers\ServiceBundleController.cs" />
     <Compile Include="Controllers\ServiceContractController.cs" />
-    <Compile Include="Controllers\ServiceController.cs" />
+    <Compile Include="Controllers\ServiceControllerTests.cs" />
     <Compile Include="Controllers\ServiceDocumentController.cs" />
     <Compile Include="Controllers\ServiceGoalController.cs" />
     <Compile Include="Controllers\ServiceMeasureController.cs" />
@@ -91,9 +94,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.csproj">
+      <Project>{0F03BAA4-EC68-446D-BDF4-64C689784DC1}</Project>
+      <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataService\DataService.csproj">
+      <Project>{7757884F-C8D9-48AC-A4D6-6238D0203431}</Project>
+      <Name>DataService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ServicePortfolioService\ServicePortfolioService.csproj">
       <Project>{280599d6-a130-4af9-89f0-d5d36a32c330}</Project>
       <Name>ServicePortfolioService</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UserManager\UserManager.csproj">
+      <Project>{1A415A6A-0658-40D7-9BA2-938EF6E3210E}</Project>
+      <Name>UserManager</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
