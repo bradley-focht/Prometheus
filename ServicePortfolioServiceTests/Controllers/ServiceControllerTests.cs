@@ -233,7 +233,7 @@ namespace ServicePortfolioServiceTests.Controllers
 		}
 
 		[Fact]
-		public void ServiceController_GetDocuments()
+		public void ServiceController_GetServiceDocuments()
 		{
 			//Set up test
 			int statusId = CreateFakeLifecycleStatus(LifecycleStatusName);

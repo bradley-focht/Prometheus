@@ -86,7 +86,7 @@
     <Compile Include="Controllers\ServiceWorkUnitController.cs" />
     <Compile Include="Controllers\SwotActivityController.cs" />
     <Compile Include="Controllers\TextInputController.cs" />
-    <Compile Include="PortfolioService.cs" />
+    <Compile Include="PortfolioServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
